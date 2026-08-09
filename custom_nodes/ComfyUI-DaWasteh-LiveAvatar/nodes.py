@@ -122,6 +122,13 @@ class LiveAvatarMetrics:
     def start(self, now=None):
         with self._lock:
             if self._started is None:self._started=time.monotonic() if now is None else now
+    def reset(self, now=None):
+        with self._lock:
+            self.ai_frames = self.presented_frames = self.unique_presentations = 0
+            self.duplicate_presentations = self.dropped_capture_frames = 0
+            self.capture_to_spout_ms.clear(); self.unique_intervals_ms.clear()
+            self._started = time.monotonic() if now is None else now
+            self._last_ai = None
     def produced(self, capture_time=None, now=None):
         now=time.monotonic() if now is None else now
         with self._lock:
@@ -147,9 +154,41 @@ class LiveAvatarMetrics:
             now=time.monotonic() if now is None else now; elapsed=max(0,(now-(self._started if self._started is not None else now)))
             return {"ai_frames":self.ai_frames,"presented_frames":self.presented_frames,"unique_presentations":self.unique_presentations,"duplicate_presentations":self.duplicate_presentations,"dropped_capture_frames":self.dropped_capture_frames,"elapsed_seconds":elapsed,"ai_fps":self.ai_frames/elapsed if elapsed else 0,"presentation_fps":self.presented_frames/elapsed if elapsed else 0,"capture_to_spout_ms":{x:self._percentile(self.capture_to_spout_ms,p) for x,p in (("p50",.5),("p95",.95),("p99",.99))},"unique_frame_interval_ms":{x:self._percentile(self.unique_intervals_ms,p) for x,p in (("p50",.5),("p95",.95),("p99",.99))}}
     def publish_json(self,destination):
-        dest=Path(destination);dest.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(dir=dest.parent,prefix='.metrics-',suffix='.tmp')
+        configured_root = os.environ.get("DAWASTEH_LIVE_AVATAR_LOG_ROOT")
+        if configured_root:
+            root = Path(configured_root).resolve()
+        else:
+            try:
+                import folder_paths
+                root = Path(folder_paths.base_path).resolve().parent / "logs"
+            except (ImportError, AttributeError):
+                root = (Path.cwd() / "logs").resolve()
+        candidate = Path(str(destination).strip())
+        dest = candidate.resolve() if candidate.is_absolute() else (root / candidate).resolve()
+        if dest.suffix.lower() != ".json" or (dest != root and root not in dest.parents):
+            raise ValueError(f"metrics_json_path must be a JSON file under {root}")
+        dest.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(dir=dest.parent,prefix='.metrics-',suffix='.tmp')
         with os.fdopen(fd,'w',encoding='utf-8') as f:json.dump(self.snapshot(),f);f.flush();os.fsync(f.fileno())
         os.replace(tmp,dest)
+
+
+_METRICS_WARNING_KEYS: set[tuple[str, str, str]] = set()
+_METRICS_WARNING_LOCK = threading.Lock()
+
+
+def _publish_metrics_best_effort(metrics: LiveAvatarMetrics, destination: str) -> bool:
+    """Keep optional telemetry failures from terminating the image transport."""
+    try:
+        metrics.publish_json(destination)
+        return True
+    except Exception as error:
+        key = (str(destination), type(error).__name__, str(error))
+        with _METRICS_WARNING_LOCK:
+            first_occurrence = key not in _METRICS_WARNING_KEYS
+            _METRICS_WARNING_KEYS.add(key)
+        if first_occurrence:
+            print(f"LiveAvatar metrics disabled for {destination!r}: {error}", file=sys.stderr)
+        return False
 
 
 class DaWastehVRMLiveAvatarLauncher:
@@ -157,7 +196,15 @@ class DaWastehVRMLiveAvatarLauncher:
 
     @classmethod
     def INPUT_TYPES(cls):
-        return {"required": {"port": ("INT", {"default": 8188, "min": 1, "max": 65535})}}
+        return {
+            "required": {"port": ("INT", {"default": 8188, "min": 1, "max": 65535})},
+            "optional": {
+                "model": ("STRING", {"default": "dawasteh-img00031-highrealism-local-v5.vrm"}),
+                "follow_framing": ("BOOLEAN", {"default": True}),
+                "chroma": ("BOOLEAN", {"default": False}),
+                "presentation": ("BOOLEAN", {"default": False}),
+            },
+        }
 
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("vrm_live_url",)
@@ -165,9 +212,25 @@ class DaWastehVRMLiveAvatarLauncher:
     FUNCTION = "open"
     CATEGORY = "DaWasteh/Live Avatar"
 
-    def open(self, port: int = 8188):
+    def open(
+        self,
+        port: int = 8188,
+        model: str = "dawasteh-img00031-highrealism-local-v5.vrm",
+        follow_framing: bool = True,
+        chroma: bool = False,
+        presentation: bool = False,
+    ):
+        from urllib.parse import urlencode
         from .vrm_server import app_url
-        url = app_url(int(port))
+
+        query = {
+            "follow": "1" if follow_framing else "0",
+            "chroma": "1" if chroma else "0",
+            "present": "1" if presentation else "0",
+        }
+        if model.strip():
+            query["model"] = Path(model.strip()).name
+        url = f"{app_url(int(port))}?{urlencode(query)}"
         return {"ui": {"text": [url]}, "result": (url,)}
 
 
@@ -176,6 +239,8 @@ class LatestFrameSlot:
     """One-element mailbox whose publishers overwrite stale frames."""
 
     frame: Any = None
+    metrics: LiveAvatarMetrics | None = None
+    metrics_path: str = ""
     sequence: int = 0
     closed: bool = False
     error: BaseException | None = None
@@ -482,6 +547,7 @@ class SpoutWorker:
             self.sender.setSenderName(self.sender_name)
             latest = None
             next_tick = time.monotonic()
+            last_metrics_publish = 0.0
             while not self.stop_event.is_set():
                 wait = max(0.0, next_tick - time.monotonic())
                 if self.stop_event.wait(wait):
@@ -499,7 +565,14 @@ class SpoutWorker:
                     height, width = image.shape[:2]
                     self.sender.sendImage(image, width, height, GL.GL_RGBA, False, 0)
                     self.sender.setFrameSync(self.sender_name)
-                    if self.metrics is not None: self.metrics.presented(unique, latest)
+                    if self.metrics is not None:
+                        now = time.monotonic()
+                        self.metrics.presented(unique, latest, now)
+                        with self.slot.lock:
+                            metrics_path = self.slot.metrics_path
+                        if metrics_path and now - last_metrics_publish >= 1.0:
+                            _publish_metrics_best_effort(self.metrics, metrics_path)
+                            last_metrics_publish = now
                 # Advance from the schedule, not from completion: avoid cumulative drift.
                 next_tick += self.delay
                 if next_tick < time.monotonic() - self.delay:
@@ -537,8 +610,10 @@ def _persistent_spout(sender_name: str, fps: int) -> LatestFrameSlot:
             raise RuntimeError(
                 f"persistent Spout sender {sender_name!r} did not stop; refusing an overlapping replacement"
             )
-        slot = LatestFrameSlot()
-        worker = SpoutWorker(slot, sender_name, fps)
+        metrics = LiveAvatarMetrics()
+        metrics.start()
+        slot = LatestFrameSlot(metrics=metrics)
+        worker = SpoutWorker(slot, sender_name, fps, metrics)
         worker.start()
         _PERSISTENT_SPOUTS[sender_name] = (slot, worker)
         return slot
@@ -578,6 +653,7 @@ class DaWastehCachedOpenPose:
                 "detect_face": (["enable", "disable"], {"default": "enable"}),
                 "resolution": ("INT", {"default": 512, "min": 64, "max": 16384, "step": 64}),
                 "scale_stick_for_xinsr_cn": (["disable", "enable"], {"default": "disable"}),
+                "diagnostic_json": (["disable", "enable"], {"default": "disable"}),
             },
         }
 
@@ -618,6 +694,7 @@ class DaWastehCachedOpenPose:
         detect_face: str = "enable",
         resolution: int = 512,
         scale_stick_for_xinsr_cn: str = "disable",
+        diagnostic_json: str = "disable",
         **_: Any,
     ) -> dict[str, Any]:
         import comfy.utils
@@ -650,10 +727,10 @@ class DaWastehCachedOpenPose:
                 progress.update(1)
 
         out = torch.stack(outputs, dim=0)
-        return {
-            "ui": {"openpose_json": [json.dumps(self.openpose_dicts, indent=4)]},
-            "result": (out, self.openpose_dicts),
-        }
+        result = {"result": (out, self.openpose_dicts)}
+        if diagnostic_json == "enable":
+            result["ui"] = {"openpose_json": [json.dumps(self.openpose_dicts, separators=(",", ":"))]}
+        return result
 
 
 class DaWastehPersistentSpout:
@@ -675,14 +752,23 @@ class DaWastehPersistentSpout:
                 "images": ("IMAGE",),
                 "sender_name": ("STRING", {"default": "ComfyLiveAvatar"}),
                 "sender_fps": ("INT", {"default": 30, "min": 1, "max": 60}),
-            }
+            },
+            "optional": {
+                "metrics_json_path": ("STRING", {"default": ""}),
+            },
         }
 
     @classmethod
     def IS_CHANGED(cls, **kwargs: Any) -> float:
         return float("NaN")
 
-    def publish(self, images: Any, sender_name: str, sender_fps: int) -> tuple[()]:
+    def publish(
+        self,
+        images: Any,
+        sender_name: str,
+        sender_fps: int,
+        metrics_json_path: str = "",
+    ) -> tuple[()]:
         import torch
 
         if not sys.platform.startswith("win"):
@@ -692,13 +778,26 @@ class DaWastehPersistentSpout:
         frame = images[0].detach().float().clamp(0, 1)
         if frame.shape[-1] not in (3, 4):
             raise ValueError("images must have RGB or RGBA channels")
-        rgb = frame[..., :3].mul(255).round().byte().cpu().numpy()
-        if frame.shape[-1] == 4:
-            alpha = frame[..., 3:4].mul(255).round().byte().cpu().numpy()
+        transferred = frame.mul(255).round().byte().cpu().numpy()
+        if transferred.shape[-1] == 4:
+            rgba = np.ascontiguousarray(transferred)
         else:
-            alpha = np.full((*rgb.shape[:2], 1), 255, dtype=np.uint8)
-        rgba = np.ascontiguousarray(np.concatenate((rgb, alpha), axis=2))
-        _persistent_spout(str(sender_name), int(sender_fps)).publish(rgba)
+            alpha = np.full((*transferred.shape[:2], 1), 255, dtype=np.uint8)
+            rgba = np.ascontiguousarray(np.concatenate((transferred, alpha), axis=2))
+        slot = _persistent_spout(str(sender_name), int(sender_fps))
+        produced_at = time.monotonic()
+        metrics_path = str(metrics_json_path).strip()
+        channel_metrics = getattr(slot, "metrics", None)
+        with slot.lock:
+            metrics_changed = metrics_path != slot.metrics_path
+            slot.metrics_path = metrics_path
+        if channel_metrics is not None and metrics_changed:
+            channel_metrics.reset(now=produced_at)
+        slot.publish(rgba)
+        if channel_metrics is not None:
+            channel_metrics.produced(now=produced_at)
+            if metrics_path:
+                _publish_metrics_best_effort(channel_metrics, metrics_path)
         return ()
 
 

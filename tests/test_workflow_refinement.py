@@ -316,7 +316,9 @@ class WidgetMappingTests(unittest.TestCase):
         vrm_workflow = workflows[5]
         vrm_nodes = {node["type"]: node for node in vrm_workflow["nodes"]}
         self.assertIn("DaWastehVRMLiveAvatarLauncher", vrm_nodes)
-        self.assertEqual(vrm_nodes["DaWastehVRMLiveAvatarLauncher"]["widgets_values"], [8188])
+        self.assertEqual(vrm_nodes["DaWastehVRMLiveAvatarLauncher"]["widgets_values"], [
+            8188, "dawasteh-img00031-highrealism-local-v5.vrm", True, False, False,
+        ])
         self.assertIn("nicht</em> Qwen-TTS/Voice-LoRA", json.dumps(vrm_workflow))
 
         ai = workflows[6]
@@ -330,7 +332,9 @@ class WidgetMappingTests(unittest.TestCase):
         self.assertEqual(ai_nodes["KSampler"]["widgets_values"][2:7], [4, 1.5, "lcm", "sgm_uniform", 0.5])
         self.assertEqual(ai_nodes["ControlNetApplyAdvanced"]["widgets_values"][0], 0.8)
         self.assertEqual(ai_nodes["IPAdapterAdvanced"]["widgets_values"][0], 0.55)
-        self.assertEqual(ai_nodes["DaWastehPersistentSpout"]["widgets_values"], ["ComfyAICharacterSwapExperimental", 30])
+        self.assertEqual(ai_nodes["DaWastehPersistentSpout"]["widgets_values"], [
+            "ComfyAICharacterSwapExperimental", 30, "live-avatar-07/metrics.json",
+        ])
         prompt_text = json.dumps(ai, ensure_ascii=False).lower()
         for token in ("user interface", "malformed hands", "fused fingers", "brand mark", "keine</b> zusage"):
             self.assertIn(token, prompt_text)
@@ -345,7 +349,11 @@ class WidgetMappingTests(unittest.TestCase):
         )
         self.assertEqual(
             optimized_nodes["DaWastehCachedOpenPose"]["widgets_values"],
-            ["disable", "enable", "enable", 384, "disable"],
+            ["disable", "enable", "enable", 384, "disable", "disable"],
+        )
+        self.assertEqual(
+            optimized_nodes["DaWastehPersistentSpout"]["widgets_values"],
+            ["ComfyAICharacterSwapExperimental", 30, "live-avatar-11/metrics.json"],
         )
         self.assertEqual(optimized_ai["links"], ai["links"])
         optimized_text = json.dumps(optimized_ai, ensure_ascii=False).lower()

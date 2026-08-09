@@ -39,6 +39,29 @@ class LatestSlotTests(unittest.TestCase):
         self.assertEqual(result, [None])
 
 
+class MetricsSafetyTests(unittest.TestCase):
+    def test_metrics_are_resettable_and_confined_to_log_root(self):
+        environment = __import__("os").environ
+        old_root = environment.get("DAWASTEH_LIVE_AVATAR_LOG_ROOT")
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                environment["DAWASTEH_LIVE_AVATAR_LOG_ROOT"] = directory
+                metrics = nodes.LiveAvatarMetrics()
+                metrics.produced(now=1.0)
+                metrics.reset(now=2.0)
+                metrics.produced(now=3.0)
+                metrics.publish_json("safe/metrics.json")
+                self.assertTrue((Path(directory) / "safe" / "metrics.json").is_file())
+                self.assertEqual(metrics.snapshot(now=4.0)["ai_frames"], 1)
+                with self.assertRaises(ValueError):
+                    metrics.publish_json(Path(directory).parent / "outside.json")
+        finally:
+            if old_root is None:
+                environment.pop("DAWASTEH_LIVE_AVATAR_LOG_ROOT", None)
+            else:
+                environment["DAWASTEH_LIVE_AVATAR_LOG_ROOT"] = old_root
+
+
 class ImageUtilityTests(unittest.TestCase):
     def test_centered_square_roi_and_offsets_are_clamped(self):
         frame = np.arange(4 * 8 * 3, dtype=np.uint8).reshape(4, 8, 3)
@@ -75,7 +98,12 @@ class ImageUtilityTests(unittest.TestCase):
         import torch
 
         frames = []
-        sink = types.SimpleNamespace(publish=lambda frame: frames.append(frame.copy()))
+        sink = types.SimpleNamespace(
+            metrics=None,
+            metrics_path="",
+            lock=threading.Lock(),
+            publish=lambda frame: frames.append(frame.copy()),
+        )
         original = nodes._persistent_spout
         nodes._persistent_spout = lambda name, fps: sink
         try:
@@ -90,6 +118,71 @@ class ImageUtilityTests(unittest.TestCase):
         self.assertEqual(frames[0].shape, (1, 2, 4))
         self.assertTrue(np.array_equal(frames[0][0, 0], [255, 128, 0, 255]))
         self.assertTrue(np.array_equal(frames[0][0, 1], [0, 0, 255, 255]))
+
+    @unittest.skipUnless(importlib.util.find_spec("torch"), "torch is only present in the ComfyUI environment")
+    def test_persistent_spout_preserves_rgba_and_counts_unique_production(self):
+        import torch
+
+        frames = []
+        metric_calls = []
+        metrics = types.SimpleNamespace(
+            produced=lambda **kwargs: metric_calls.append(kwargs),
+            reset=lambda **kwargs: metric_calls.append({"reset": kwargs}),
+            publish_json=lambda path: metric_calls.append({"path": path}),
+        )
+        sink = types.SimpleNamespace(
+            metrics=metrics,
+            metrics_path="",
+            lock=threading.Lock(),
+            publish=lambda frame: frames.append(frame.copy()),
+        )
+        original = nodes._persistent_spout
+        nodes._persistent_spout = lambda name, fps: sink
+        try:
+            nodes.DaWastehPersistentSpout().publish(
+                torch.tensor([[[[1.0, 0.5, 0.0, 0.25]]]]),
+                "PersistentMetrics",
+                30,
+                "metrics.json",
+            )
+        finally:
+            nodes._persistent_spout = original
+        self.assertTrue(np.array_equal(frames[0][0, 0], [255, 128, 0, 64]))
+        self.assertIn("now", metric_calls[0]["reset"])
+        self.assertIn("now", metric_calls[1])
+        self.assertEqual(metric_calls[2], {"path": "metrics.json"})
+
+    @unittest.skipUnless(importlib.util.find_spec("torch"), "torch is only present in the ComfyUI environment")
+    def test_optional_metrics_failure_does_not_break_spout_publication(self):
+        import torch
+
+        frames = []
+        produced = []
+        metrics = types.SimpleNamespace(
+            produced=lambda **kwargs: produced.append(kwargs),
+            reset=lambda **kwargs: None,
+            publish_json=lambda _path: (_ for _ in ()).throw(OSError("read-only log root")),
+        )
+        sink = types.SimpleNamespace(
+            metrics=metrics,
+            metrics_path="",
+            lock=threading.Lock(),
+            publish=lambda frame: frames.append(frame.copy()),
+        )
+        original = nodes._persistent_spout
+        nodes._persistent_spout = lambda name, fps: sink
+        try:
+            result = nodes.DaWastehPersistentSpout().publish(
+                torch.tensor([[[[0.1, 0.2, 0.3, 1.0]]]]),
+                "PersistentMetricsFailure",
+                30,
+                "safe/metrics.json",
+            )
+        finally:
+            nodes._persistent_spout = original
+        self.assertEqual(result, ())
+        self.assertEqual(len(frames), 1)
+        self.assertEqual(len(produced), 1)
 
 
 class DependencyTests(unittest.TestCase):
@@ -174,6 +267,40 @@ class CachedOpenPoseTests(unittest.TestCase):
         self.assertEqual(calls, {"load": 1, "to": 1})
 
 
+    @unittest.skipUnless(importlib.util.find_spec("torch"), "torch is only present in the ComfyUI environment")
+    def test_diagnostic_openpose_json_is_opt_in_and_compact(self):
+        import torch
+
+        fake_utils = types.ModuleType("comfy.utils")
+        fake_utils.ProgressBar = lambda total: types.SimpleNamespace(update=lambda amount: None)
+        fake_comfy = types.ModuleType("comfy")
+        fake_comfy.__path__ = []
+        fake_comfy.utils = fake_utils
+        previous_comfy = sys.modules.get("comfy")
+        previous_utils = sys.modules.get("comfy.utils")
+        sys.modules["comfy"] = fake_comfy
+        sys.modules["comfy.utils"] = fake_utils
+        node = nodes.DaWastehCachedOpenPose()
+        pose_image = np.zeros((2, 2, 3), dtype=np.uint8)
+        node._get_model = lambda: lambda *args, **kwargs: (pose_image, {"people": [1]})
+        try:
+            disabled = node.estimate_pose(torch.zeros((1, 2, 2, 3)), diagnostic_json="disable")
+            enabled = node.estimate_pose(torch.zeros((1, 2, 2, 3)), diagnostic_json="enable")
+        finally:
+            if previous_comfy is None:
+                sys.modules.pop("comfy", None)
+            else:
+                sys.modules["comfy"] = previous_comfy
+            if previous_utils is None:
+                sys.modules.pop("comfy.utils", None)
+            else:
+                sys.modules["comfy.utils"] = previous_utils
+        self.assertNotIn("ui", disabled)
+        payload = enabled["ui"]["openpose_json"][0]
+        self.assertNotIn("\n", payload)
+        self.assertEqual(payload, '[{"people":[1]}]')
+
+
 class LifecycleTests(unittest.TestCase):
     def tearDown(self):
         nodes._PERSISTENT_SPOUTS.clear()
@@ -181,7 +308,7 @@ class LifecycleTests(unittest.TestCase):
     def test_failed_persistent_worker_is_recreated_before_publish(self):
         created = []
         class FakeWorker:
-            def __init__(self, slot, name, fps): self.slot, self.delay, self.live = slot, 1 / fps, False; created.append(self)
+            def __init__(self, slot, name, fps, metrics=None): self.slot, self.delay, self.live, self.metrics = slot, 1 / fps, False, metrics; created.append(self)
             def start(self): self.live = True
             def healthy(self): return self.live
             def stop(self): self.live = False; self.slot.close(); return True
@@ -282,10 +409,16 @@ class LifecycleTests(unittest.TestCase):
         sys.modules["OpenGL"] = types.SimpleNamespace(GL=types.SimpleNamespace(GL_RGBA=1))
         try:
             slot = nodes.LatestFrameSlot()
+            slot.metrics_path = "safe/metrics.json"
             slot.publish(np.zeros((2, 2, 4), dtype=np.uint8))
-            worker = nodes.SpoutWorker(slot, "test", 20)
+            metrics = types.SimpleNamespace(
+                presented=lambda *args: None,
+                publish_json=lambda _path: (_ for _ in ()).throw(OSError("read-only log root")),
+            )
+            worker = nodes.SpoutWorker(slot, "test", 20, metrics)
             worker.start()
             time.sleep(0.13)
+            self.assertTrue(worker.healthy())
             self.assertTrue(worker.stop())
             self.assertTrue(released)
             self.assertGreaterEqual(len(send_times), 2)

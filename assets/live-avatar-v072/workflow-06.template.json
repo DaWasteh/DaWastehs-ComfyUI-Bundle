@@ -25,7 +25,7 @@
         "cnr_id": "ComfyUI-Pixaroma"
       },
       "widgets_values": [
-        "{\"version\":1,\"content\":\"<h1>Live Avatar · 06 · VRM Full-Body, Hände, Gesicht</h1><p><b>Echter Livepfad:</b> Das lokale Browserfenster nutzt Webcam-Tracking und eine VRM-Figur für Kopf, Blinzeln, Mund, Körper und Hände. Es lädt keine Kamera-Frames zu ComfyUI oder ins Internet hoch.</p><ol><li>Einmal <b>Run</b> drücken: der Launcher gibt/zeigt die URL; die Node-Schaltfläche kann sie direkt öffnen.</li><li>Im Browser Kamera freigeben, Preset wählen und bei Bedarf kalibrieren.</li><li>OBS-Präsentationsmodus (P) aktivieren, Browserfenster per <b>Window Capture</b> erfassen und optional Chroma-Key anwenden.</li></ol><p>Automatik wechselt erst bei stabil sichtbaren Hüften, Knien und Knöcheln in Ganzkörper; Hände bleiben immer aktiv. Eigene VRM-Dateien bleiben im Browser.</p><p><b>Live-Audio (optional):</b> Der externe DirectML-RVC-Companion ist installierbar: <code>python tools/install_live_voice_converter.py --destination L:/ComfyUI/voice-changer-dml-b2332</code>. In OBS ausschließlich dessen separat geroutete virtuelle Kabelausgabe aufnehmen und das Originalmikrofon im Mix stummschalten. RX-9070-XT-DirectML und ein app-eigener ONNX-Export wurden warm erfolgreich mit etwa 36–41 ms Rechenzeit pro 100-ms-Chunk getestet. Eigene/lizenzierte Stimme, physisches Mikrofon, Virtual Cable, OBS und Langzeitabnahme bleiben erforderlich. Dies ist ausdrücklich <em>nicht</em> Qwen-TTS/Voice-LoRA.</p><p>Vorher Presets einmal mit <code>python tools/install_live_avatar_vrm_models.py --comfy-root L:/ComfyUI/ComfyUI</code> installieren. Nur localhost verwenden.</p><p><b>Ausführung/OBS:</b> Workflow 06 erzeugt ausschließlich die lokale Browser-URL und <b>keinen Spout-Sender</b>. Genau einmal normal <b>Run</b> drücken, niemals Run (Instant). In OBS das Browser-/Chrome-Fenster aufnehmen. Für eine ComfyUI-Spout-Ausgabe stattdessen Workflow 07 verwenden.</p>\",\"buttonColor\":\"#32c48d\",\"lineColor\":\"#32c48d\",\"width\":800,\"height\":780,\"backgroundColor\":\"#2a2a2a\"}",
+        "{\"version\":1,\"content\":\"<h1>Live Avatar · 06 · High-Realism VRM · adaptive 24+ FPS</h1><p><b>v0.8.5:</b> Der lokale High-Realism-v5-Avatar mit quelltreuem, animiertem Gesichtsdetail ist vorausgewählt. <b>Webcam-Bildausschnitt folgen</b> passt Zoom und Position an sichtbare Schulter-/Hüft-/Beinanker an; aus dem Kamerabild verschwundene Körperteile werden auch im Avatarbild ausgeschnitten. Tracking- und Render-FPS werden getrennt angezeigt. Verlorene Gesichts-, Blick-, Mund-, Körper- und Handziele laufen zur Ruhe zurück.</p><p><b>Echter Livepfad:</b> Das lokale Browserfenster nutzt Webcam-Tracking und eine VRM-Figur für Kopf, Blinzeln, Mund, Körper und Hände. Es lädt keine Kamera-Frames zu ComfyUI oder ins Internet hoch.</p><ol><li>Einmal <b>Run</b> drücken: der Launcher gibt/zeigt die URL; die Node-Schaltfläche kann sie direkt öffnen.</li><li>Im Browser Kamera freigeben, Preset wählen und bei Bedarf kalibrieren.</li><li>OBS-Präsentationsmodus (P) aktivieren, Browserfenster per <b>Window Capture</b> erfassen und optional Chroma-Key anwenden.</li></ol><p>Automatik wechselt erst bei stabil sichtbaren Hüften, Knien und Knöcheln in Ganzkörper; Hände bleiben immer aktiv. Eigene VRM-Dateien bleiben im Browser.</p><p><b>Live-Audio (optional):</b> Der externe DirectML-RVC-Companion ist installierbar: <code>python tools/install_live_voice_converter.py --destination L:/ComfyUI/voice-changer-dml-b2332</code>. In OBS ausschließlich dessen separat geroutete virtuelle Kabelausgabe aufnehmen und das Originalmikrofon im Mix stummschalten. RX-9070-XT-DirectML und ein app-eigener ONNX-Export wurden warm erfolgreich mit etwa 36–41 ms Rechenzeit pro 100-ms-Chunk getestet. Eigene/lizenzierte Stimme, physisches Mikrofon, Virtual Cable, OBS und Langzeitabnahme bleiben erforderlich. Dies ist ausdrücklich <em>nicht</em> Qwen-TTS/Voice-LoRA.</p><p>Vorher Presets einmal mit <code>python tools/install_live_avatar_vrm_models.py --comfy-root L:/ComfyUI/ComfyUI</code> installieren. Nur localhost verwenden.</p><p><b>Ausführung/OBS:</b> Workflow 06 erzeugt ausschließlich die lokale Browser-URL und <b>keinen Spout-Sender</b>. Genau einmal normal <b>Run</b> drücken, niemals Run (Instant). In OBS das Browser-/Chrome-Fenster aufnehmen. Für eine ComfyUI-Spout-Ausgabe stattdessen Workflow 07 verwenden.</p>\",\"buttonColor\":\"#32c48d\",\"lineColor\":\"#32c48d\",\"width\":800,\"height\":780,\"backgroundColor\":\"#2a2a2a\"}",
         ""
       ],
       "title": "START HIER · VRM Live Avatar"
@@ -53,6 +53,42 @@
           "widget": {
             "name": "port"
           }
+        },
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "model"
+          }
+        },
+        {
+          "localized_name": "follow_framing",
+          "name": "follow_framing",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "follow_framing"
+          }
+        },
+        {
+          "localized_name": "chroma",
+          "name": "chroma",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "chroma"
+          }
+        },
+        {
+          "localized_name": "presentation",
+          "name": "presentation",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "presentation"
+          }
         }
       ],
       "outputs": [
@@ -68,7 +104,11 @@
         "cnr_id": "ComfyUI-DaWasteh-LiveAvatar"
       },
       "widgets_values": [
-        8188
+        8188,
+        "dawasteh-img00031-highrealism-local-v5.vrm",
+        true,
+        false,
+        false
       ],
       "title": "VRM Live Avatar öffnen"
     },

@@ -22,7 +22,7 @@
         "Node name for S&R": "Workflow 12/13 disclosure"
       },
       "widgets_values": [
-        "# Workflow 12-III — reliable browser VRM\nThis is the existing local browser VRM tracking path. It is a stylized rigged avatar, NOT a photoreal one-image clone. Keep it local; disclose synthetic/avatar presentation."
+        "# Workflow 12-III — adaptive High-Realism browser VRM\nThe local img00031 High-Realism-v5 VRM with source-faithful animated face detail is selected by default. Follow-framing maps visible webcam body anchors to the rendered crop; stale face/body/hand targets decay to rest. Tracking FPS and render FPS are reported separately. This remains a rigged local avatar, NOT a photoreal neural one-image clone."
       ],
       "title": "Workflow 12-III Reliable VRM mode"
     },
@@ -48,6 +48,42 @@
           "widget": {
             "name": "port"
           }
+        },
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "model"
+          }
+        },
+        {
+          "localized_name": "follow_framing",
+          "name": "follow_framing",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "follow_framing"
+          }
+        },
+        {
+          "localized_name": "chroma",
+          "name": "chroma",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "chroma"
+          }
+        },
+        {
+          "localized_name": "presentation",
+          "name": "presentation",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "presentation"
+          }
         }
       ],
       "outputs": [
@@ -59,7 +95,11 @@
       ],
       "properties": {},
       "widgets_values": [
-        8188
+        8188,
+        "dawasteh-img00031-highrealism-local-v5.vrm",
+        true,
+        false,
+        false
       ],
       "title": "Local browser VRM launcher"
     },

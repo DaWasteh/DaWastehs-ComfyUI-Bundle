@@ -1,3 +1,60 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DaWasteh VRM Live Avatar</title>  <script type="module" crossorigin src="./assets/index-DxO31uR3.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BOeSJ-jr.css">
-</head><body><main><canvas id="avatar" aria-label="VRM Avatar Ausgabe"></canvas><section class="panel" aria-label="VRM Live Avatar Steuerung"><h1>VRM Live Avatar</h1><p id="status" role="status">Kamera noch nicht gestartet.</p><label>Kamera <select id="camera"><option value="">Standardkamera</option></select></label><button id="start">Kamera starten</button><label>Preset <select id="preset"><option value="amazonas.vrm">Amazonas</option><option value="olivia.vrm">Olivia</option><option value="lady-koi.vrm">Lady Koi (nichtmenschliche Fantasyfigur)</option><option value="panda-bear.vrm">Panda Bear (CC0-Derivat)</option></select></label><button id="reloadModels" type="button">Modellliste aktualisieren</button><label>Eigene VRM <input id="upload" type="file" accept=".vrm,model/gltf-binary"></label><label>Tracking <select id="tracking"><option value="auto">Automatisch Oberkörper/Ganzkörper</option><option value="upper">Oberkörper erzwingen</option><option value="full">Ganzkörper erzwingen</option></select></label><label>Glättung <input id="smoothing" type="range" min="0.05" max="0.8" value="0.3" step="0.05"></label><label><input id="mirror" type="checkbox" checked> Spiegeln</label><label><input id="chroma" type="checkbox"> OBS-Chroma-Grün</label><label>Zungenstärke <input id="tongueIntensity" type="range" min="0" max="1" value="1" step="0.05"></label><button id="tongue" type="button" aria-pressed="false">Zunge heraus (T halten)</button><label title="Experimentelle Farberkennung im geöffneten Mund; bei Lippenstift oder schlechtem Licht sind Fehltrigger möglich"><input id="tongueHeuristic" type="checkbox"> Webcam-Zungenerkennung (experimentell)</label><button id="calibrate">Neutrale Pose kalibrieren</button><button id="present" aria-pressed="false">OBS-Präsentationsmodus (P)</button><p>Video ist echt live. Mikrofon-Stimmwandlung ist ein separater Begleiter und in diesem Workflow noch <strong>nicht</strong> Qwen-TTS/Voice-LoRA.</p></section><video id="cameraVideo" muted playsinline hidden></video></main><script src="./mediapipe/holistic.js"></script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DaWasteh VRM Live Avatar</title>
+  <script type="module" crossorigin src="./assets/index-DWUMBfyV.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CimQmSMC.css">
+</head>
+<body>
+  <main>
+    <canvas id="avatar" aria-label="VRM-Avatar-Ausgabe"></canvas>
+    <section class="panel" aria-labelledby="panel-title">
+      <h1 id="panel-title">VRM Live Avatar</h1>
+      <p id="status" role="status">Kamera noch nicht gestartet.</p>
+      <output id="metrics" aria-label="Live-Leistungswerte">Tracking 0 FPS · Render 0 FPS</output>
+
+      <label for="camera">Kamera</label>
+      <select id="camera"><option value="">Standardkamera</option></select>
+      <button id="start" type="button">Kamera starten</button>
+
+      <label for="preset">Preset</label>
+      <select id="preset">
+        <option value="amazonas.vrm">Amazonas</option>
+        <option value="olivia.vrm">Olivia</option>
+        <option value="lady-koi.vrm">Lady Koi (nichtmenschliche Fantasyfigur)</option>
+        <option value="panda-bear.vrm">Panda Bear (CC0-Derivat)</option>
+      </select>
+      <button id="reloadModels" type="button">Modellliste aktualisieren</button>
+
+      <label for="upload">Eigene VRM</label>
+      <input id="upload" type="file" accept=".vrm,model/gltf-binary">
+
+      <label for="tracking">Tracking</label>
+      <select id="tracking">
+        <option value="auto">Automatisch Oberkörper/Ganzkörper</option>
+        <option value="upper">Oberkörper erzwingen</option>
+        <option value="full">Ganzkörper erzwingen</option>
+      </select>
+
+      <label for="smoothing">Glättung</label>
+      <input id="smoothing" type="range" min="0.05" max="0.8" value="0.2" step="0.05">
+      <label class="check" for="followFraming"><input id="followFraming" type="checkbox" checked> Webcam-Bildausschnitt folgen</label>
+      <label class="check" for="mirror"><input id="mirror" type="checkbox" checked> Spiegeln</label>
+      <label class="check" for="chroma"><input id="chroma" type="checkbox"> OBS-Chroma-Grün</label>
+
+      <label for="tongueIntensity">Zungenstärke</label>
+      <input id="tongueIntensity" type="range" min="0" max="1" value="1" step="0.05">
+      <button id="tongue" type="button" aria-pressed="false">Zunge heraus (T halten)</button>
+      <label class="check" for="tongueHeuristic" title="Experimentelle Farberkennung im geöffneten Mund; bei Lippenstift oder schlechtem Licht sind Fehltrigger möglich"><input id="tongueHeuristic" type="checkbox"> Webcam-Zungenerkennung (experimentell)</label>
+
+      <button id="calibrate" type="button">Neutrale Pose kalibrieren</button>
+      <button id="present" type="button" aria-pressed="false">OBS-Präsentationsmodus (P)</button>
+      <p>Video ist echt live. Mikrofon-Stimmwandlung ist ein separater Begleiter und in diesem Workflow noch <strong>nicht</strong> Qwen-TTS/Voice-LoRA.</p>
+    </section>
+    <video id="cameraVideo" muted playsinline hidden aria-hidden="true"></video>
+  </main>
+  <script src="./mediapipe/holistic.js"></script>
+</body>
+</html>

@@ -1,8 +1,506 @@
-import * as THREE from 'three';import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';import {VRM,VRMSchema} from '@pixiv/three-vrm';import * as Kalidokit from 'kalidokit';import {ModeController} from './tracking/mode-controller.js';import {handInputs,neutralLegs,loopController} from './tracking/helpers.js';import {disposeObject,fitCamera,serialLifecycle} from './tracking/runtime.js';import {poseTargets} from './tracking/pose-targets.js';import {constrainedHandEuler,validPalmLandmarks} from './tracking/hand-solver.js';import {tongueColorScore,tongueSmoother} from './tracking/tongue-detector.js';import './styles.css';
-const Holistic=globalThis.Holistic;if(typeof Holistic!=='function')throw new Error('Local MediaPipe Holistic runtime failed to load');const $=id=>document.getElementById(id),status=$('status'),canvas=$('avatar'),video=$('cameraVideo'),lifecycle=serialLifecycle();const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true}),scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(35,1,.01,100);renderer.setPixelRatio(Math.min(devicePixelRatio,2));const keyLight=new THREE.DirectionalLight(0xffffff,1.5);keyLight.position.set(1,2,3).normalize();scene.add(keyLight);let vrm,tracker,stream,loop,lastFace,objectUrl,loadGeneration=0,bodyMode=new ModeController(),calibration={x:0,y:0,z:0},tongueHeld=false,lastMouthA=0;const targets=poseTargets(),tongueFilter=tongueSmoother(),mouthCanvas=document.createElement('canvas'),mouthContext=mouthCanvas.getContext('2d',{willReadFrequently:true}),handState=new Map(),handTimes=new Map();mouthCanvas.width=mouthCanvas.height=64;const clock=new THREE.Clock();const TRACKED_BONES=['Neck','Hips','Spine','Chest','LeftUpperArm','LeftLowerArm','RightUpperArm','RightLowerArm',...neutralLegs,...['Left','Right'].flatMap(side=>['Hand',...['Thumb','Index','Middle','Ring','Little'].flatMap(f=>['Proximal','Intermediate','Distal'].map(j=>f+j))].map(n=>side+n))];
-function resize(){renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();if(vrm)fitCamera(camera,new THREE.Box3().setFromObject(vrm.scene),camera.aspect)}addEventListener('resize',resize);resize();function bone(n){return vrm?.humanoid?.getBoneNode(VRMSchema.HumanoidBoneName[n])}function rig(n,r={},s=1){targets.rotation(n,r,s);if(/Hand|Thumb|Index|Middle|Ring|Little/.test(n))targets.hand(n)}function expr(n,v){targets.expression(n,v)}function tongue(value){const amount=Math.max(0,Math.min(1,value))*+$('tongueIntensity').value;expr('TongueOut',amount);expr(VRMSchema.BlendShapePresetName.A,Math.max(lastMouthA,amount*.45))}function detectTongue(landmarks){if(video.readyState<2||!mouthContext)return 0;const left=landmarks[78],right=landmarks[308],upper=landmarks[13],lower=landmarks[14];if(!left||!right||!upper||!lower)return 0;const width=Math.max(.001,Math.abs(right.x-left.x)),openness=Math.abs(lower.y-upper.y)/width;mouthContext.drawImage(video,0,0,64,64);const x0=Math.max(0,Math.floor(Math.min(left.x,right.x)*64)),x1=Math.min(64,Math.ceil(Math.max(left.x,right.x)*64)),y0=Math.max(0,Math.floor(Math.min(upper.y,lower.y)*64)),y1=Math.min(64,Math.ceil(Math.max(upper.y,lower.y)*64));if(x1<=x0||y1<=y0)return 0;return tongueColorScore(mouthContext.getImageData(x0,y0,x1-x0,y1-y0).data,openness)}
-function results(r){if(!vrm)return;const selfie=$('mirror').checked,mode=bodyMode.update(Object.fromEntries(['leftHip','rightHip','leftKnee','rightKnee','leftAnkle','rightAnkle'].map((k,i)=>[k,r.poseLandmarks?.[[23,24,25,26,27,28][i]]])),performance.now(),$('tracking').value);if(r.faceLandmarks){const f=lastFace=Kalidokit.Face.solve(r.faceLandmarks,{runtime:'mediapipe',video});rig('Neck',{x:f.head.x-calibration.x,y:f.head.y-calibration.y,z:f.head.z-calibration.z},.7);expr(VRMSchema.BlendShapePresetName.Blink,Math.min(1,1-(f.eye.l+f.eye.r)/2));lastMouthA=f.mouth.shape.A||0;for(const v of ['A','I','U','E','O']){const value=f.mouth.shape[v]||0;expr(VRMSchema.BlendShapePresetName[v],v==='A'&&tongueHeld?Math.max(value,+$('tongueIntensity').value*.45):value)};if(!tongueHeld){if($('tongueHeuristic').checked)tongue(tongueFilter.update(detectTongue(r.faceLandmarks)));else{tongueFilter.reset();tongue(0)}}vrm.lookAt?.applyer?.lookAt(new THREE.Euler(f.pupil.y,f.pupil.x,0))}if(r.poseLandmarks&&r.ea){const p=Kalidokit.Pose.solve(r.ea,r.poseLandmarks,{runtime:'mediapipe',video});for(const [n,v,s] of [['Hips',p.Hips.rotation,.7],['Spine',p.Spine,.45],['Chest',p.Spine,.25]])rig(n,v,s);for(const n of ['LeftUpperArm','LeftLowerArm','RightUpperArm','RightLowerArm'])rig(n,p[n]);for(const n of neutralLegs)rig(n,mode==='full'?p[n]:{x:0,y:0,z:0})}for(const [side,lm] of handInputs(r,selfie))if(validPalmLandmarks(lm)){const h=Kalidokit.Hand.solve(lm,side),now=performance.now(),dt=Math.max(1/120,Math.min(.1,(now-(handTimes.get(side)||now-33))/1000));handTimes.set(side,now);for(const [name,value] of [...['Thumb','Index','Middle','Ring','Little'].flatMap(f=>['Proximal','Intermediate','Distal'].map(j=>[`${side}${f}${j}`,h[`${side}${f}${j}`]])),[`${side}Hand`,h[`${side}Wrist`]]]){const next=constrainedHandEuler(name,value,handState.get(name),dt);handState.set(name,next);rig(name,next)}}status.textContent=`Tracking: ${mode==='full'?'Ganzkörper':'Oberkörper'} · live`}
-async function stop(){loop?.stop();loop=null;stream?.getTracks().forEach(x=>x.stop());stream=null;video.srcObject=null;const old=tracker;tracker=null;await old?.close?.()}async function enumerate(){const devices=await navigator.mediaDevices.enumerateDevices(),old=$('camera').value;$('camera').replaceChildren(new Option('Standardkamera',''));for(const d of devices.filter(d=>d.kind==='videoinput'))$('camera').add(new Option(d.label||`Kamera ${$('camera').length}`,d.deviceId));$('camera').value=old}
-function start(){return lifecycle.run(async(_,live)=>{await stop();if(!live())return;stream=await navigator.mediaDevices.getUserMedia({video:{deviceId:$('camera').value||undefined,width:{ideal:1280},height:{ideal:720}},audio:false});if(!live()){stream.getTracks().forEach(x=>x.stop());return}video.srcObject=stream;await video.play();await enumerate();if(!live())return;tracker=new Holistic({locateFile:f=>`./mediapipe/${f}`});tracker.setOptions({modelComplexity:1,smoothLandmarks:true,refineFaceLandmarks:true,selfieMode:$('mirror').checked,minDetectionConfidence:.65,minTrackingConfidence:.65});tracker.onResults(results);loop=loopController(()=>tracker?.send({image:video}),e=>status.textContent=`Tracking-Frame verworfen: ${e.message}`);loop.start();status.textContent='Kamera aktiv – kein Frame-Backlog.'})}
-async function load(url,local=false){const token=++loadGeneration;try{const g=await new GLTFLoader().loadAsync(url);if(token!==loadGeneration){disposeObject(g.scene);if(local)URL.revokeObjectURL(url);return}const next=await VRM.from(g);if(token!==loadGeneration){disposeObject(next.scene);if(local)URL.revokeObjectURL(url);return}if(vrm){scene.remove(vrm.scene);disposeObject(vrm.scene)}vrm=next;vrm.scene.rotation.y=Math.PI;scene.add(vrm.scene);targets.captureRest(TRACKED_BONES,bone);targets.resetHands();handState.clear();handTimes.clear();vrm.springBoneManager?.setCenter?.(vrm.scene);vrm.springBoneManager?.reset?.();const fittedBox=new THREE.Box3().setFromObject(vrm.scene);fitCamera(camera,fittedBox,camera.aspect);if(objectUrl&&objectUrl!==url)URL.revokeObjectURL(objectUrl);objectUrl=local?url:undefined;status.textContent='VRM 0.x Ganzkörper-Modell geladen.'}catch(e){if(local)URL.revokeObjectURL(url);status.textContent=`Modell-Fehler: ${e.message}. VRM 1.0 wird noch nicht unterstützt.`}}
-async function refreshModels(){try{const current=$('preset').value,data=await fetch('/dawasteh/vrm-model-list',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(new Error(r.status)));const labels={'amazonas.vrm':'Amazonas','olivia.vrm':'Olivia','lady-koi.vrm':'Lady Koi (nichtmenschliche Fantasyfigur)','panda-bear.vrm':'Panda Bear (CC0-Derivat)'};$('preset').replaceChildren(...data.models.map(name=>new Option(labels[name]||name,name)));if([...$('preset').options].some(o=>o.value===current))$('preset').value=current}catch(e){status.textContent=`Modellliste-Fehler: ${e.message}`}}$('start').onclick=()=>start().catch(e=>status.textContent=`Kamera-Fehler: ${e.message}`);$('tongue').onpointerdown=()=>{tongueHeld=true;$('tongue').setAttribute('aria-pressed','true');tongue(1)};for(const event of ['pointerup','pointerleave','pointercancel'])$('tongue').addEventListener(event,()=>{tongueHeld=false;$('tongue').setAttribute('aria-pressed','false');tongue(0)});$('preset').onchange=e=>load(`/dawasteh/vrm-models/${encodeURIComponent(e.target.value)}`);$('reloadModels').onclick=()=>refreshModels();$('upload').onchange=e=>{const f=e.target.files[0];if(f&&f.size<=32*1024*1024)load(URL.createObjectURL(f),true);else if(f)status.textContent='Upload zu groß (maximal 32 MiB).'};$('mirror').onchange=()=>{video.style.transform=$('mirror').checked?'scaleX(-1)':'none';if(tracker)start().catch(e=>status.textContent=`Kamera-Fehler: ${e.message}`)};$('present').onclick=()=>document.body.classList.toggle('presentation');addEventListener('keydown',e=>{if(e.key==='p'&&!/input|select/i.test(e.target.tagName)){$('present').click();e.preventDefault()}if(e.key.toLowerCase()==='t'&&!e.repeat&&!/input|select/i.test(e.target.tagName)){tongueHeld=true;$('tongue').setAttribute('aria-pressed','true');tongue(1);e.preventDefault()}});addEventListener('keyup',e=>{if(e.key.toLowerCase()==='t'){tongueHeld=false;$('tongue').setAttribute('aria-pressed','false');tongue(0)}});$('tongueHeuristic').onchange=e=>{if(!e.target.checked){tongueFilter.reset();if(!tongueHeld)tongue(0)}};$('chroma').onchange=e=>renderer.setClearColor(e.target.checked?0x00ff00:0,e.target.checked?1:0);$('calibrate').onclick=()=>{if(lastFace){calibration={...lastFace.head};targets.resetHands();handState.clear();vrm?.springBoneManager?.reset?.();status.textContent='Neutrale Kopfpose gespeichert.'}};(function draw(){requestAnimationFrame(draw);const rawDt=clock.getDelta(),dt=Math.min(rawDt,.05);if(vrm){if(rawDt>.25)vrm.springBoneManager?.reset?.();targets.apply({bone,expression:(n,v,a)=>{try{const proxy=vrm.blendShapeProxy,current=proxy?.getValue?.(n)||0;proxy?.setValue(n,current+(v-current)*a)}catch{}},dt,smoothing:+$('smoothing').value});if(tongueHeld)tongue(1);vrm.scene.updateMatrixWorld(true);vrm.update(dt)}renderer.render(scene,camera)})();async function initialize(){await refreshModels();const params=new URLSearchParams(location.search),requested=params.get('model'),options=[...$('preset').options];const selected=options.some(option=>option.value===requested)?requested:(options.some(option=>option.value==='amazonas.vrm')?'amazonas.vrm':options[0]?.value);if(selected){$('preset').value=selected;await load(`/dawasteh/vrm-models/${encodeURIComponent(selected)}`)}if(params.get('chroma')==='1'){$('chroma').checked=true;renderer.setClearColor(0x00ff00,1)}if(params.get('present')==='1')document.body.classList.add('presentation')}initialize().catch(e=>status.textContent=`Start-Fehler: ${e.message}`);addEventListener('beforeunload',()=>{lifecycle.invalidate();stop();if(objectUrl)URL.revokeObjectURL(objectUrl)});
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { VRM, VRMSchema } from "@pixiv/three-vrm";
+import * as Kalidokit from "kalidokit";
+import { ModeController } from "./tracking/mode-controller.js";
+import { FpsMeter, handInputs, neutralLegs, loopController } from "./tracking/helpers.js";
+import { disposeObject, fitCamera, serialLifecycle } from "./tracking/runtime.js";
+import { poseTargets } from "./tracking/pose-targets.js";
+import { constrainedHandEuler, validPalmLandmarks } from "./tracking/hand-solver.js";
+import { tongueColorScore, tongueSmoother } from "./tracking/tongue-detector.js";
+import {
+  BODY_FRAME_ANCHORS,
+  FramingController,
+  frameProjectionElements,
+  solveScreenFraming,
+  visibleFramePairs,
+} from "./tracking/framing-controller.js";
+import "./styles.css";
+
+const Holistic = globalThis.Holistic;
+if (typeof Holistic !== "function") throw new Error("Local MediaPipe Holistic runtime failed to load");
+
+const $ = (id) => document.getElementById(id);
+const status = $("status");
+const metrics = $("metrics");
+const canvas = $("avatar");
+const video = $("cameraVideo");
+const lifecycle = serialLifecycle();
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.outputEncoding = THREE.sRGBEncoding;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 100);
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.25);
+keyLight.position.set(1, 2, 3).normalize();
+const fillLight = new THREE.DirectionalLight(0xbcd7ff, 0.45);
+fillLight.position.set(-2, 1, 2).normalize();
+const rimLight = new THREE.DirectionalLight(0xffd8c0, 0.35);
+rimLight.position.set(1, 2, -3).normalize();
+scene.add(keyLight, fillLight, rimLight);
+
+let vrm;
+let tracker;
+let stream;
+let loop;
+let lastFace;
+let lastFaceAt = 0;
+let lastPoseAt = 0;
+let objectUrl;
+let modelBox;
+let baseProjection = camera.projectionMatrix.clone();
+let modelFramePoints = new Map();
+let currentFraming = { scale: 1, offsetX: 0, offsetY: 0, matchedAnchors: 0 };
+let loadGeneration = 0;
+let bodyMode = new ModeController();
+let calibration = { x: 0, y: 0, z: 0 };
+let tongueHeld = false;
+let lastMouthA = 0;
+let lastMetricsUpdate = 0;
+let gazeTarget = { x: 0, y: 0 };
+let gazeCurrent = { x: 0, y: 0 };
+const targets = poseTargets();
+const framing = new FramingController();
+const trackingMeter = new FpsMeter();
+const renderMeter = new FpsMeter();
+const tongueFilter = tongueSmoother();
+const mouthCanvas = document.createElement("canvas");
+const mouthContext = mouthCanvas.getContext("2d", { willReadFrequently: true });
+const handState = new Map();
+const handTimes = new Map();
+mouthCanvas.width = mouthCanvas.height = 64;
+const clock = new THREE.Clock();
+const TRACKED_BONES = [
+  "Neck", "Hips", "Spine", "Chest",
+  "LeftUpperArm", "LeftLowerArm", "RightUpperArm", "RightLowerArm",
+  ...neutralLegs,
+  ...["Left", "Right"].flatMap((side) => [
+    "Hand",
+    ...["Thumb", "Index", "Middle", "Ring", "Little"].flatMap((finger) =>
+      ["Proximal", "Intermediate", "Distal"].map((joint) => finger + joint)),
+  ].map((name) => side + name)),
+];
+
+function backingPixelRatio() {
+  const cssPixels = Math.max(1, innerWidth * innerHeight);
+  const fullHdRatio = Math.sqrt((1920 * 1080) / cssPixels);
+  return Math.max(1, Math.min(devicePixelRatio || 1, 2, fullHdRatio));
+}
+
+function bone(name) {
+  return vrm?.humanoid?.getBoneNode(VRMSchema.HumanoidBoneName[name]);
+}
+
+function captureModelFramePoints() {
+  modelFramePoints = new Map();
+  if (!vrm) return;
+  camera.projectionMatrix.copy(baseProjection);
+  camera.projectionMatrixInverse.copy(baseProjection).invert();
+  camera.updateMatrixWorld(true);
+  for (const [, name] of BODY_FRAME_ANCHORS) {
+    const node = bone(name);
+    if (!node || modelFramePoints.has(name)) continue;
+    const projected = node.getWorldPosition(new THREE.Vector3()).project(camera);
+    modelFramePoints.set(name, { x: (projected.x + 1) / 2, y: (1 - projected.y) / 2 });
+  }
+}
+
+function fitBaseCamera() {
+  if (!modelBox) return;
+  fitCamera(camera, modelBox, camera.aspect);
+  camera.updateMatrixWorld(true);
+  baseProjection = camera.projectionMatrix.clone();
+  captureModelFramePoints();
+}
+
+function resize() {
+  renderer.setPixelRatio(backingPixelRatio());
+  renderer.setSize(innerWidth, innerHeight, false);
+  camera.aspect = innerWidth / Math.max(1, innerHeight);
+  camera.updateProjectionMatrix();
+  if (vrm) fitBaseCamera();
+}
+addEventListener("resize", resize);
+resize();
+
+function applyFraming(value) {
+  const selected = $("followFraming").checked ? value : { scale: 1, offsetX: 0, offsetY: 0 };
+  camera.projectionMatrix.fromArray(frameProjectionElements(baseProjection.elements, selected));
+  camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+}
+
+function rig(name, rotation = {}, scale = 1, now = performance.now()) {
+  targets.rotation(name, rotation, scale, now);
+  if (/Hand|Thumb|Index|Middle|Ring|Little/.test(name)) targets.hand(name, now);
+}
+
+function expr(name, value, now = performance.now()) {
+  targets.expression(name, value, now);
+}
+
+function tongue(value, now = performance.now()) {
+  const amount = Math.max(0, Math.min(1, value)) * +$("tongueIntensity").value;
+  expr("TongueOut", amount, now);
+  expr(VRMSchema.BlendShapePresetName.A, Math.max(lastMouthA, amount * 0.45), now);
+}
+
+function detectTongue(landmarks) {
+  if (video.readyState < 2 || !mouthContext) return 0;
+  const left = landmarks[78];
+  const right = landmarks[308];
+  const upper = landmarks[13];
+  const lower = landmarks[14];
+  if (!left || !right || !upper || !lower) return 0;
+  const width = Math.max(0.001, Math.abs(right.x - left.x));
+  const openness = Math.abs(lower.y - upper.y) / width;
+  mouthContext.drawImage(video, 0, 0, 64, 64);
+  const x0 = Math.max(0, Math.floor(Math.min(left.x, right.x) * 64));
+  const x1 = Math.min(64, Math.ceil(Math.max(left.x, right.x) * 64));
+  const y0 = Math.max(0, Math.floor(Math.min(upper.y, lower.y) * 64));
+  const y1 = Math.min(64, Math.ceil(Math.max(upper.y, lower.y) * 64));
+  if (x1 <= x0 || y1 <= y0) return 0;
+  return tongueColorScore(mouthContext.getImageData(x0, y0, x1 - x0, y1 - y0).data, openness);
+}
+
+function results(result) {
+  if (!vrm) return;
+  const now = performance.now();
+  trackingMeter.tick(now);
+  const selfie = $("mirror").checked;
+  const legNames = ["leftHip", "rightHip", "leftKnee", "rightKnee", "leftAnkle", "rightAnkle"];
+  const legIndexes = [23, 24, 25, 26, 27, 28];
+  const mode = bodyMode.update(
+    Object.fromEntries(legNames.map((name, index) => [name, result.poseLandmarks?.[legIndexes[index]]])),
+    now,
+    $("tracking").value,
+  );
+
+  if (result.faceLandmarks) {
+    lastFaceAt = now;
+    const face = lastFace = Kalidokit.Face.solve(result.faceLandmarks, { runtime: "mediapipe", video });
+    rig("Neck", {
+      x: face.head.x - calibration.x,
+      y: face.head.y - calibration.y,
+      z: face.head.z - calibration.z,
+    }, 0.7, now);
+    expr(VRMSchema.BlendShapePresetName.Blink, Math.min(1, 1 - (face.eye.l + face.eye.r) / 2), now);
+    lastMouthA = face.mouth.shape.A || 0;
+    for (const vowel of ["A", "I", "U", "E", "O"]) {
+      const value = face.mouth.shape[vowel] || 0;
+      expr(
+        VRMSchema.BlendShapePresetName[vowel],
+        vowel === "A" && tongueHeld ? Math.max(value, +$("tongueIntensity").value * 0.45) : value,
+        now,
+      );
+    }
+    if (!tongueHeld) {
+      if ($("tongueHeuristic").checked) tongue(tongueFilter.update(detectTongue(result.faceLandmarks)), now);
+      else {
+        tongueFilter.reset();
+        tongue(0, now);
+      }
+    }
+    gazeTarget = { x: face.pupil.y, y: face.pupil.x };
+  }
+
+  const worldLandmarks = result.poseWorldLandmarks || result.ea;
+  if (result.poseLandmarks && worldLandmarks) {
+    lastPoseAt = now;
+    const pose = Kalidokit.Pose.solve(worldLandmarks, result.poseLandmarks, { runtime: "mediapipe", video });
+    for (const [name, value, scale] of [["Hips", pose.Hips.rotation, 0.7], ["Spine", pose.Spine, 0.45], ["Chest", pose.Spine, 0.25]]) {
+      rig(name, value, scale, now);
+    }
+    for (const name of ["LeftUpperArm", "LeftLowerArm", "RightUpperArm", "RightLowerArm"]) rig(name, pose[name], 1, now);
+    for (const name of neutralLegs) rig(name, mode === "full" ? pose[name] : { x: 0, y: 0, z: 0 }, 1, now);
+    const pairs = visibleFramePairs(result.poseLandmarks, modelFramePoints);
+    currentFraming = framing.update(solveScreenFraming(pairs), now);
+  } else {
+    currentFraming = framing.update(null, now);
+  }
+
+  for (const [side, landmarks] of handInputs(result, selfie)) {
+    if (!validPalmLandmarks(landmarks)) continue;
+    const hand = Kalidokit.Hand.solve(landmarks, side);
+    const dt = Math.max(1 / 120, Math.min(0.1, (now - (handTimes.get(side) || now - 33)) / 1000));
+    handTimes.set(side, now);
+    const joints = [
+      ...["Thumb", "Index", "Middle", "Ring", "Little"].flatMap((finger) =>
+        ["Proximal", "Intermediate", "Distal"].map((joint) => [`${side}${finger}${joint}`, hand[`${side}${finger}${joint}`]])),
+      [`${side}Hand`, hand[`${side}Wrist`]],
+    ];
+    for (const [name, value] of joints) {
+      const next = constrainedHandEuler(name, value, handState.get(name), dt);
+      handState.set(name, next);
+      rig(name, next, 1, now);
+    }
+  }
+  status.textContent = `Tracking: ${mode === "full" ? "Ganzkörper" : "Oberkörper"} · live`;
+}
+
+async function stop() {
+  loop?.stop();
+  loop = null;
+  stream?.getTracks().forEach((track) => track.stop());
+  stream = null;
+  video.srcObject = null;
+  const oldTracker = tracker;
+  tracker = null;
+  await oldTracker?.close?.();
+}
+
+async function enumerate() {
+  const devices = await navigator.mediaDevices.enumerateDevices();
+  const old = $("camera").value;
+  $("camera").replaceChildren(new Option("Standardkamera", ""));
+  for (const device of devices.filter((entry) => entry.kind === "videoinput")) {
+    $("camera").add(new Option(device.label || `Kamera ${$("camera").length}`, device.deviceId));
+  }
+  $("camera").value = old;
+}
+
+function start() {
+  return lifecycle.run(async (_, live) => {
+    await stop();
+    if (!live()) return;
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { deviceId: $("camera").value || undefined, width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30, max: 60 } },
+      audio: false,
+    });
+    if (!live()) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
+    video.srcObject = stream;
+    await video.play();
+    await enumerate();
+    if (!live()) return;
+    tracker = new Holistic({ locateFile: (file) => `./mediapipe/${file}` });
+    tracker.setOptions({
+      modelComplexity: 1,
+      smoothLandmarks: true,
+      refineFaceLandmarks: true,
+      selfieMode: $("mirror").checked,
+      minDetectionConfidence: 0.65,
+      minTrackingConfidence: 0.65,
+    });
+    tracker.onResults(results);
+    trackingMeter.reset();
+    framing.reset();
+    loop = loopController(
+      () => tracker?.send({ image: video }),
+      (error) => { status.textContent = `Tracking-Frame verworfen: ${error.message}`; },
+      video,
+    );
+    loop.start();
+    status.textContent = "Kamera aktiv – nur neue Kameraframes, kein Frame-Backlog.";
+  });
+}
+
+async function load(url, local = false) {
+  const token = ++loadGeneration;
+  try {
+    const gltf = await new GLTFLoader().loadAsync(url);
+    if (token !== loadGeneration) {
+      disposeObject(gltf.scene);
+      if (local) URL.revokeObjectURL(url);
+      return;
+    }
+    const next = await VRM.from(gltf);
+    if (token !== loadGeneration) {
+      disposeObject(next.scene);
+      if (local) URL.revokeObjectURL(url);
+      return;
+    }
+    if (vrm) {
+      scene.remove(vrm.scene);
+      disposeObject(vrm.scene);
+    }
+    vrm = next;
+    vrm.scene.rotation.y = Math.PI;
+    scene.add(vrm.scene);
+    vrm.scene.updateMatrixWorld(true);
+    targets.captureRest(TRACKED_BONES, bone);
+    targets.resetHands();
+    handState.clear();
+    handTimes.clear();
+    gazeTarget = { x: 0, y: 0 };
+    gazeCurrent = { x: 0, y: 0 };
+    bodyMode.reset();
+    currentFraming = framing.reset();
+    vrm.springBoneManager?.setCenter?.(vrm.scene);
+    vrm.springBoneManager?.reset?.();
+    modelBox = new THREE.Box3().setFromObject(vrm.scene);
+    fitBaseCamera();
+    if (objectUrl && objectUrl !== url) URL.revokeObjectURL(objectUrl);
+    objectUrl = local ? url : undefined;
+    status.textContent = "VRM 0.x Ganzkörper-Modell geladen.";
+  } catch (error) {
+    if (local) URL.revokeObjectURL(url);
+    status.textContent = `Modell-Fehler: ${error.message}. VRM 1.0 wird noch nicht unterstützt.`;
+  }
+}
+
+async function refreshModels() {
+  try {
+    const current = $("preset").value;
+    const data = await fetch("/dawasteh/vrm-model-list", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error(response.status)));
+    const labels = {
+      "amazonas.vrm": "Amazonas",
+      "olivia.vrm": "Olivia",
+      "lady-koi.vrm": "Lady Koi (nichtmenschliche Fantasyfigur)",
+      "panda-bear.vrm": "Panda Bear (CC0-Derivat)",
+      "dawasteh-img00031-highrealism-local-v2.vrm": "DaWasteh High-Realism v2 (legacy)",
+      "dawasteh-img00031-highrealism-local-v5.vrm": "DaWasteh High-Realism v5 · Source-Face (lokal)",
+    };
+    $("preset").replaceChildren(...data.models.map((name) => new Option(labels[name] || name, name)));
+    if ([...$("preset").options].some((option) => option.value === current)) $("preset").value = current;
+  } catch (error) {
+    status.textContent = `Modellliste-Fehler: ${error.message}`;
+  }
+}
+
+$("start").onclick = () => start().catch((error) => { status.textContent = `Kamera-Fehler: ${error.message}`; });
+$("tongue").onpointerdown = () => {
+  tongueHeld = true;
+  $("tongue").setAttribute("aria-pressed", "true");
+  tongue(1);
+};
+for (const event of ["pointerup", "pointerleave", "pointercancel"]) {
+  $("tongue").addEventListener(event, () => {
+    tongueHeld = false;
+    $("tongue").setAttribute("aria-pressed", "false");
+    tongue(0);
+  });
+}
+$("preset").onchange = (event) => load(`/dawasteh/vrm-models/${encodeURIComponent(event.target.value)}`);
+$("reloadModels").onclick = () => refreshModels();
+$("upload").onchange = (event) => {
+  const file = event.target.files[0];
+  if (file && file.size <= 32 * 1024 * 1024) load(URL.createObjectURL(file), true);
+  else if (file) status.textContent = "Upload zu groß (maximal 32 MiB).";
+};
+$("mirror").onchange = () => {
+  video.style.transform = $("mirror").checked ? "scaleX(-1)" : "none";
+  if (tracker) start().catch((error) => { status.textContent = `Kamera-Fehler: ${error.message}`; });
+};
+$("followFraming").onchange = (event) => {
+  if (!event.target.checked) currentFraming = framing.reset();
+};
+$("present").onclick = () => {
+  const enabled = document.body.classList.toggle("presentation");
+  $("present").setAttribute("aria-pressed", String(enabled));
+};
+addEventListener("keydown", (event) => {
+  if (event.key === "p" && !/input|select/i.test(event.target.tagName)) {
+    $("present").click();
+    event.preventDefault();
+  }
+  if (event.key.toLowerCase() === "t" && !event.repeat && !/input|select/i.test(event.target.tagName)) {
+    tongueHeld = true;
+    $("tongue").setAttribute("aria-pressed", "true");
+    tongue(1);
+    event.preventDefault();
+  }
+});
+addEventListener("keyup", (event) => {
+  if (event.key.toLowerCase() === "t") {
+    tongueHeld = false;
+    $("tongue").setAttribute("aria-pressed", "false");
+    tongue(0);
+  }
+});
+$("tongueHeuristic").onchange = (event) => {
+  if (!event.target.checked) {
+    tongueFilter.reset();
+    if (!tongueHeld) tongue(0);
+  }
+};
+$("chroma").onchange = (event) => renderer.setClearColor(event.target.checked ? 0x00ff00 : 0, event.target.checked ? 1 : 0);
+$("calibrate").onclick = () => {
+  if (lastFace && performance.now() - lastFaceAt < 500) {
+    calibration = { ...lastFace.head };
+    targets.resetHands();
+    handState.clear();
+    currentFraming = framing.reset();
+    vrm?.springBoneManager?.reset?.();
+    status.textContent = "Neutrale Kopfpose und Vollbild-Basis gespeichert.";
+  } else status.textContent = "Kalibrierung benötigt ein aktuell sichtbares Gesicht.";
+};
+
+(function draw() {
+  requestAnimationFrame(draw);
+  const now = performance.now();
+  const rawDt = clock.getDelta();
+  const dt = Math.min(rawDt, 0.05);
+  if (now - lastPoseAt > 350) currentFraming = framing.update(null, now);
+  if (vrm) {
+    if (rawDt > 0.25) vrm.springBoneManager?.reset?.();
+    targets.apply({
+      bone,
+      expression: (name, value, alpha) => {
+        try {
+          const proxy = vrm.blendShapeProxy;
+          const current = proxy?.getValue?.(name) || 0;
+          proxy?.setValue(name, current + (value - current) * alpha);
+        } catch {}
+      },
+      now,
+      dt,
+      smoothing: +$("smoothing").value,
+    });
+    if (now - lastFaceAt > 350) {
+      lastMouthA = 0;
+      gazeTarget = { x: 0, y: 0 };
+    }
+    const gazeAlpha = 1 - Math.exp(-Math.max(0.001, dt) * 12);
+    gazeCurrent.x += (gazeTarget.x - gazeCurrent.x) * gazeAlpha;
+    gazeCurrent.y += (gazeTarget.y - gazeCurrent.y) * gazeAlpha;
+    vrm.lookAt?.applyer?.lookAt(new THREE.Euler(gazeCurrent.x, gazeCurrent.y, 0));
+    if (tongueHeld) tongue(1, now);
+    vrm.scene.updateMatrixWorld(true);
+    vrm.update(dt);
+  }
+  applyFraming(currentFraming);
+  renderer.render(scene, camera);
+  renderMeter.tick(now);
+  if (now - lastMetricsUpdate >= 500) {
+    const trackerFps = trackingMeter.fps(now);
+    const renderFps = renderMeter.fps(now);
+    metrics.textContent = `Tracking ${trackerFps.toFixed(1)} FPS · Render ${renderFps.toFixed(1)} FPS · ${renderer.domElement.width}×${renderer.domElement.height} · Scheduler ${loop?.scheduler || "aus"} · doppelte Kamera-Frames ${loop?.duplicates || 0} · ausgelastet ${loop?.dropped || 0}`;
+    lastMetricsUpdate = now;
+  }
+}());
+
+async function initialize() {
+  await refreshModels();
+  const params = new URLSearchParams(location.search);
+  const requested = params.get("model");
+  const options = [...$("preset").options];
+  const preferred = "dawasteh-img00031-highrealism-local-v5.vrm";
+  const selected = options.some((option) => option.value === requested)
+    ? requested
+    : options.some((option) => option.value === preferred)
+      ? preferred
+      : options.some((option) => option.value === "amazonas.vrm")
+        ? "amazonas.vrm"
+        : options[0]?.value;
+  if (selected) {
+    $("preset").value = selected;
+    await load(`/dawasteh/vrm-models/${encodeURIComponent(selected)}`);
+  }
+  if (params.get("chroma") === "1") {
+    $("chroma").checked = true;
+    renderer.setClearColor(0x00ff00, 1);
+  }
+  if (params.get("follow") === "0") $("followFraming").checked = false;
+  if (params.get("present") === "1") {
+    document.body.classList.add("presentation");
+    $("present").setAttribute("aria-pressed", "true");
+  }
+}
+initialize().catch((error) => { status.textContent = `Start-Fehler: ${error.message}`; });
+addEventListener("beforeunload", () => {
+  lifecycle.invalidate();
+  stop();
+  if (objectUrl) URL.revokeObjectURL(objectUrl);
+});

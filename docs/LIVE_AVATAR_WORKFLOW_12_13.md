@@ -1,4 +1,4 @@
-# Live Avatar Workflows 12–14 · v0.8.1
+# Live Avatar Workflows 12–14 · v0.8.5
 
 ## Capability boundary
 
@@ -18,7 +18,7 @@ Workflow 12-I deliberately contains no image path and no Spout producer. A compl
   OBS and the sender on this adapter avoids an unverified cross-adapter Spout copy.
 - **RX 9070 XT:** separate DirectML RVC voice service. Do not run a heavy ComfyUI
   workload on port 8189 during a live voice session.
-- The 32 GB and 16 GB VRAM spaces are **not** a 48 GB pool.
+- The 32 GB and 16 GB VRAM spaces are **not** a 48 GB pool. Ports 8188 and 8189 isolate independent workloads; a ComfyUI bridge cannot accelerate one serial Live-Avatar graph past its slowest stage.
 - `HIP_VISIBLE_DEVICES` and `CUDA_VISIBLE_DEVICES` do not select or prove a DirectML
   adapter. A candidate health response must attest `DmlExecutionProvider`, AMD vendor
   `0x1002`, the expected adapter name, and its DXGI LUID.
@@ -158,10 +158,7 @@ sender does not turn 7–8 produced frames/s into 30 AI frames/s.
 
 ## Workflow 12-III · reliable mode
 
-Workflow 12-III launches the same local browser VRM renderer used by Workflow 06.
-Start the camera in Chrome, calibrate, enable the OBS presentation view, and capture
-the Chrome window. This is the dependable 24/60 FPS renderer, but identity switching
-requires prepared rigged models and is not a photoreal one-image clone.
+Workflow 12-III launches the same local browser VRM renderer used by Workflow 06. v0.8.5 selects the locally prepared `dawasteh-img00031-highrealism-local-v5.vrm` by default and enables adaptive source framing. Visible shoulder, hip, knee and ankle anchors drive a smoothed screen-space crop, so approaching the camera or moving the head/legs outside the webcam also changes which avatar region remains visible. Missing face, gaze, expression, torso, limb and hand targets decay to the model's captured rest pose instead of freezing. The browser displays separate tracking and render FPS and schedules MediaPipe only for unique camera frames. Start the camera in Chrome, calibrate, enable the OBS presentation view, and capture the Chrome window. The v5 preset retains the validated v2 body rig and adds a head-bound, alpha-feathered source-face detail with blink/vowel morphs; frontal resemblance improves substantially, while profiles remain less exact. This is the dependable 24/60 FPS renderer, but identity switching requires prepared rigged models and is not a photoreal one-image clone.
 
 ## Workflow 13 · character sheet
 

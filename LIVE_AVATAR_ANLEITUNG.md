@@ -1,4 +1,4 @@
-# Live-Avatar-Anleitung · v0.8.1
+# Live-Avatar-Anleitung · v0.8.5
 
 Diese Anleitung beschreibt die lokalen Live-Avatar-Wege dieses Repositories auf dem Windows-RDNA4-System. Alle Kamera- und Referenzbilder bleiben bei den lokalen Wegen auf dem Rechner.
 
@@ -8,7 +8,7 @@ Diese Anleitung beschreibt die lokalen Live-Avatar-Wege dieses Repositories auf 
 
 | Ziel | Workflow | Ausgabe für OBS |
 |---|---|---|
-| Geriggter Full-Body-Avatar mit Gesicht, Händen und Körper | 06 | Chrome-Fensteraufnahme |
+| Geriggter High-Realism-Avatar mit Gesicht, Händen, Körper und adaptivem Bildausschnitt | 06 | Chrome-Fensteraufnahme |
 | Drei Bilder + Prompt als später auswählbare lokale VRM-Variante | 08, danach 06 | Chrome-Fensteraufnahme |
 | Transparentes 2D-Bild mit LivePortrait-Gesichtsanimation | 02 → 03 | Spout2 `ComfyLiveAvatar` |
 | Schnellere experimentelle LivePortrait-Dauerausgabe | 05 | Spout2 `ComfyLiveAvatarFast` |
@@ -137,14 +137,18 @@ Ein höheres IPAdapter-Gewicht kann Referenzmerkmale stärker mischen, aber UV-S
 5. Im Browser:
    - Kamera erlauben,
    - **Kamera starten**,
-   - Preset oder eigene VRM0-Datei wählen,
+   - das lokale Preset **DaWasteh High-Realism v5 · Source-Face** verwenden oder eine andere VRM0-Datei wählen,
+   - **Webcam-Bildausschnitt folgen** eingeschaltet lassen: sichtbare Schulter-/Hüft-/Beinanker steuern Zoom und Position, sodass Kopf oder Beine auch im Avatarbild verschwinden, wenn sie die Webcam verlassen,
    - **Neutrale Pose kalibrieren**,
+   - in der Leistungszeile mindestens 24 Render-FPS prüfen; Tracking-FPS und Render-FPS sind absichtlich getrennte Werte,
    - optional **OBS-Chroma-Grün** aktivieren,
    - **OBS-Präsentationsmodus** drücken oder `P`.
 6. In OBS eine **Fensteraufnahme** hinzufügen und das Chrome-Fenster **„DaWasteh VRM Live Avatar“** auswählen.
 7. Bei grünem Hintergrund unter **Filter → Chroma-Key** Grün entfernen.
 
-Browser-Rendering und synthetisches Kameratracking sind automatisiert geprüft. Physische Kameraqualität, Gesten und die konkrete OBS-Szenenkomposition müssen auf dem jeweiligen Aufbau sichtbar kontrolliert werden.
+Der Browser rendert unabhängig vom Tracking-Takt und verarbeitet per `requestVideoFrameCallback` ausschließlich neue Kameraframes. Verlorene Gesichts-, Blick-, Mund-, Körper-, Bein- und Handziele laufen kontrolliert zur Modellruhe zurück, statt die letzte Pose einzufrieren. v0.8.5 begrenzt zusätzlich unplausible Gelenkwinkel und die Änderungsgeschwindigkeit von Körper- und Beinrotationen; die Standardglättung ist ruhiger eingestellt. Full-HD wird nur bis zur für OBS nutzbaren Backing-Auflösung supersampelt. Browser-Rendering und synthetisches Kameratracking sind automatisiert geprüft; physische Kameraqualität, schnelle Gesten und die konkrete OBS-Szenenkomposition müssen auf dem jeweiligen Aufbau sichtbar kontrolliert werden.
+
+Das lokale v5-Modell übernimmt die Körpergeometrie des geprüften v2-Rigs, ergänzt aber ein alpha-gefedertes, an den Kopfknochen gebundenes Gesichtsdetail aus `L:/ComfyUI/ComfyUI/input/liveavatar-img-00031.png`. Dieses Detail besitzt eigene Blink- und Vokal-Morphs. Frontal ist die Ähnlichkeit dadurch deutlich höher; es bleibt bewusst ein hybrides VRM0 und keine vollständige volumetrische Rekonstruktion des einzelnen Portraitfotos. Extreme Profilansichten sind daher weniger quelltreu als die Frontalansicht.
 
 Workflow 06 erzeugt keinen Spout-Sender. Chrome-Fensteraufnahme ist zuverlässiger als eine OBS-Browserquelle, weil Kamera-Freigabe und Interaktion im normalen Browser kontrollierbar bleiben.
 
@@ -182,7 +186,10 @@ Workflow 07 kombiniert Webcam, OpenPose, SD1.5-LCM und IPAdapter. Er läuft auf 
 
 - Wiederholte Ausführung beziehungsweise `Run (Instant)` verwenden.
 - In OBS den Spout2-Sender **`ComfyAICharacterSwapExperimental`** auswählen.
+- Echte AI-Produktion und wiederholte 30-Hz-Präsentation getrennt unter `<ComfyUI-Elternordner>/logs/live-avatar-07/metrics.json` prüfen; der Workflow speichert dafür portabel `live-avatar-07/metrics.json` relativ zum lokalen Log-Root. Beim Wechsel zwischen Workflow 07 und 11 werden die Zähler trotz identischem Sendernamen zurückgesetzt; die Spout-Worker aktualisieren Präsentationen und Duplikate einmal pro Sekunde auch ohne neuen AI-Frame.
 - Die BRIO für ComfyUI frei lassen.
+
+Die v0.8.5-Abnahme enthielt eine echte isolierte OBS-Aufnahme während vier neuer Workflow-07-Ausgaben: 20,03 Sekunden MKV, 1280×720, 30 FPS. Vierzig bei 2 Hz dekodierte Videostichproben ergaben 18 unterschiedliche Hashes. Das temporäre OBS-Testprofil und die Testszene wurden anschließend entfernt; Streaming wurde nie gestartet.
 
 ## Optimierter Buffered AI Mirror · Workflow 11
 
@@ -192,10 +199,12 @@ Workflow 11 bleibt ein separater Graph und überschreibt Workflow 07 nicht. Er v
 - Workflow 11 laden und zuerst einen einzelnen Kaltstart ausführen.
 - Danach `Run (Instant)` aktivieren.
 - Der OBS-Sender bleibt **`ComfyAICharacterSwapExperimental`**.
-- Gemessene warme Laufzeit: 0,62–0,68 Sekunden, Median 0,645 Sekunden beziehungsweise etwa 1,55 neue Bilder/s.
+- Bisher gemessene warme Laufzeit: 0,62–0,68 Sekunden, Median 0,645 Sekunden beziehungsweise etwa 1,55 neue Bilder/s.
+- v0.8.5 deaktiviert nur das ungenutzte OpenPose-Diagnose-JSON; die Poseausgabe und Bildqualität bleiben unverändert.
+- Echte neue AI-Frames, wiederholte Spout-Präsentationen und Duplikate stehen getrennt in `<ComfyUI-Elternordner>/logs/live-avatar-11/metrics.json`; der Workflow verwendet portabel `live-avatar-11/metrics.json` relativ zum lokalen Log-Root. Metrikziele sind aus Sicherheitsgründen auf JSON-Dateien unter dem lokalen `L:/ComfyUI/logs`-Baum beschränkt.
 - Für wichtigere Handposen im Cached-OpenPose-Node `detect_hand = enable` setzen; das kostet auf der R9700 ungefähr 0,54 Sekunden zusätzlich pro Frame.
 
-Zwei Diffusionsläufe auf derselben GPU werden absichtlich nicht parallel gestartet: OpenPose, VAE und Sampler würden um dieselben GPU-Ressourcen konkurrieren, während Frames veralten und die Ende-zu-Ende-Latenz steigt. Das Caching plus kleinere Arbeitsauflösung reduziert stattdessen den tatsächlich seriellen kritischen Pfad.
+Zwei Diffusionsläufe auf derselben GPU werden absichtlich nicht parallel gestartet: OpenPose, VAE und Sampler würden um dieselben GPU-Ressourcen konkurrieren, während Frames veralten und die Ende-zu-Ende-Latenz steigt. Auch 8188 und 8189 poolen keinen VRAM; ein Bridge-Node würde den seriellen Graphen nicht auf 24 neue Bilder/s bringen und zusätzliche Transfer-/Sortierlatenz erzeugen. Daher benötigt der produktive Workflow 06 nur 8188. 8189 bleibt höchstens für eine unabhängige Nebenaufgabe wie den Voice-Begleiter reserviert.
 
 ## OBS-Fehlerbehebung
 
@@ -242,7 +251,7 @@ Nur ein eigenes oder ausdrücklich lizenziertes kompatibles RVC-Modell verwenden
 
 Offene manuelle Abnahmen für diesen optionalen Audiopfad sind physische Mikrofon-/Kabel-Routingqualität, mindestens zehn Minuten Stabilität, hörbare Qualitätsprüfung, kein Feedback beziehungsweise Originalsignal und die gewünschte Ende-zu-Ende-Latenz. Details und gemessene DirectML-Werte: [docs/live-avatar-v072-voice-backend-evaluation.md](docs/live-avatar-v072-voice-backend-evaluation.md).
 
-## Workflow 12–14 · v0.8.1
+## Workflow 12–15 · v0.8.5
 
 Die vollständige Sicherheits-, Supervisor-, Benchmark-, GPU- und Rollback-Anleitung steht in [`docs/LIVE_AVATAR_WORKFLOW_12_13.md`](docs/LIVE_AVATAR_WORKFLOW_12_13.md). Keine externe Face-Swap-App und kein Modell werden durch die Workflows installiert. Die ausgelieferte Beispielkonfiguration ist absichtlich widerrufen, abgelaufen und deaktiviert.
 

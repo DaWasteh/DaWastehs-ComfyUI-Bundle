@@ -55,12 +55,26 @@ AUTHORIZED_NODE_REPLACEMENTS: dict[str, dict[int, str]] = {
         12: "06da5ed6eb7dbfe3ed1b8ea1d01d0c85c51d8487c0dc4c78f64106019d29c5cf",
         22: "faa3cd6ecddd426a253d7980a54f10f1b196f83521e4436b8b3cecffaad6299a",
     },
-    # Pin the BRIO/DirectShow camera repair and its synchronized notes without
-    # allowing unrelated changes to the historical Workflow 07 graph.
+    # v0.8.5 LiveAvatar replacements are limited to runtime configuration and
+    # their synchronized user-facing notes. Every link and unrelated node must
+    # remain byte/semantic-equivalent to the v0.8.4 historical baseline.
+    "workflows/Live Avatar/LiveAvatar-06-VRM-Full-Body-Hand-Face+Live-Mic.json": {
+        1: "4cc78378109966b9de2d770f658126cd89c15937937bf225c108c9e40ca2e707",
+        2: "7dd4252891ebb25f0ce14354628a95b2323c822390ff9958ccf8efc0da8c3f2c",
+    },
     "workflows/Live Avatar/LiveAvatar-07-AI-Webcam-Character-Swap-Experimental.json": {
-        1: "67b307c243e9f3c6095d02dfcd1cc931b8ee16dcf5e593ab3d9051770c7a788d",
-        2: "a91ebfaedaa0b55ac274596e521ccbd14224c5ff6e79ebdb0e57a7c98e2d520f",
-        19: "a6f36375f6b8a37e866c64b7dd0fb41d0c096d25da1937fbeca789bcd44e9994",
+        1: "2361a22fd22235cc672625fc5b0845be047c7ac3c52db19e665c88bafc522f90",
+        17: "152f37b21391c7712e3b079dc7776948bc1318224e4cf1eb8a61c6f1b29875eb",
+    },
+    "workflows/Live Avatar/LiveAvatar-11-AI-Webcam-Character-Swap-Cached-OpenPose.json": {
+        1: "d86ee2a8c23c8ac6b52a07ec45960072e611cf22199dedb7e0454daff27249c7",
+        3: "971e99f2ff08df81b087faed16bb9a488b93e5d8fcd86f07000074e7ce597172",
+        17: "95cd470aea323cc09e0235a006bb1b19bf5b88c2880355975a60322984814fca",
+        20: "da7c2069cc9422c6e417490ee00329566226f22d71cc57a0dfe8e55b4087a782",
+    },
+    "workflows/Live Avatar/LiveAvatar-12-III-Reliable-VRM-Mode.json": {
+        1: "1fafcb08a29d256031edfd5599bf1f94f03ad225853ad9c2ade2a8986739c9a8",
+        2: "8ed5786ad1e52558c93c1bfe6c40d23eb8a38021cf6607394c915ff0f7e40c29",
     },
 }
 AUTHORIZED_WIDGET_VALUE_HASHES: dict[str, dict[int, dict[int, str]]] = {
