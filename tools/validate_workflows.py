@@ -15,10 +15,12 @@ try:
     from tools.refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
     from tools.integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
     from tools.integrate_h3_turbo_lora import DIRECTOR_WORKFLOW, VISIBLE_WORKFLOWS, integrate_director, integrate_visible
+    from tools.generate_dual_gpu_workflows import FAMILIES as DUAL_GPU_FAMILIES, build_family as build_dual_gpu_family
 except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows.py
     from refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
     from integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
     from integrate_h3_turbo_lora import DIRECTOR_WORKFLOW, VISIBLE_WORKFLOWS, integrate_director, integrate_visible
+    from generate_dual_gpu_workflows import FAMILIES as DUAL_GPU_FAMILIES, build_family as build_dual_gpu_family
 
 BLACKLIST = ("cudaexecutionprovider", "nunchaku", "svdq", "nvfp4", "tensorrt", "xformers", "flash_attn")
 INTEGRATION_MARKER = "dawasteh_pixaroma_prompt_integration"
@@ -551,6 +553,18 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
             sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head)),
             sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
         )
+    if current.get("extra", {}).get("dawasteh_dual_gpu", {}).get("version") == 2:
+        family = next((item for item in DUAL_GPU_FAMILIES if item.output == path.name), None)
+        if family is None:
+            errors.append(f"{path}: unexpected centrally controlled dual-GPU workflow")
+        else:
+            expected = build_dual_gpu_family(family)
+            if expected != current:
+                errors.append(f"{path}: differs from deterministic central GPU-control generation")
+        return (
+            sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head)),
+            sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
+        )
     if current.get("extra", {}).get("dawasteh_h3_turbo_lora", {}).get("version") == 1:
         expected = copy.deepcopy(head)
         if path.name == DIRECTOR_WORKFLOW:
@@ -692,7 +706,7 @@ def main() -> int:
                 errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    expected = {"files": 258, "graphs": 309, "nodes": 9249, "notes": 3879, "links": 6359, "timers": 241}
+    expected = {"files": 258, "graphs": 309, "nodes": 9295, "notes": 3902, "links": 6452, "timers": 241}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

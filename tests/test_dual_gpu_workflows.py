@@ -7,7 +7,7 @@ import unittest
 from collections import Counter
 from pathlib import Path
 
-from tools.generate_dual_gpu_workflows import FAMILIES, generate
+from tools.generate_dual_gpu_workflows import CONTROL_ROLES, DEVICE_CONTROL_TYPE, FAMILIES, generate
 from tools.validate_workflows import validate_graph
 
 
@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GENERATED = ROOT / "workflows" / "Dual GPU - R9700 + RX 9070 XT"
 SELECTORS = {"SelectModelDevice", "SelectCLIPDevice", "SelectVAEDevice"}
 LAUNCHER = ROOT / "tools" / "start-MultiGPU.ps1"
+CONTROL_NODE_DIR = ROOT / "custom_nodes" / "ComfyUI-DaWasteh-MultiGPU-Control"
 
 
 def graphs(workflow: dict):
@@ -55,6 +56,53 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 for node in placed:
                     expected = "gpu:0" if node["type"] == "SelectModelDevice" else "gpu:1"
                     self.assertEqual(node["widgets_values"], [expected])
+
+    def test_one_central_control_drives_every_selector_and_dual_h3_director(self):
+        selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
+        for family in FAMILIES:
+            with self.subTest(family=family.name):
+                workflow = json.loads((GENERATED / family.output).read_text(encoding="utf-8"))
+                controls = [node for node in workflow["nodes"] if node["type"] == DEVICE_CONTROL_TYPE]
+                self.assertEqual(len(controls), 1)
+                control = controls[0]
+                self.assertEqual(control["widgets_values"], ["gpu:0", "gpu:1", "gpu:1"])
+                self.assertTrue(all(output.get("links") for output in control["outputs"]))
+                self.assertEqual(workflow["extra"]["dawasteh_dual_gpu"]["version"], 2)
+
+                for graph_index, graph in enumerate(graphs(workflow)):
+                    links = {
+                        link[0] if isinstance(link, list) else link["id"]: link
+                        for link in graph.get("links", [])
+                    }
+                    for selector in [node for node in graph.get("nodes", []) if node.get("type") in selector_roles]:
+                        role = selector_roles[selector["type"]]
+                        device_input = next(item for item in selector["inputs"] if item["name"] == "device")
+                        link = links[device_input["link"]]
+                        origin = link[1] if isinstance(link, list) else link["origin_id"]
+                        origin_slot = link[2] if isinstance(link, list) else link["origin_slot"]
+                        if graph_index == 0:
+                            self.assertEqual(origin, control["id"])
+                            self.assertEqual(origin_slot, CONTROL_ROLES[role][0])
+                        else:
+                            self.assertEqual(origin, graph["inputNode"]["id"])
+                            self.assertEqual(graph["inputs"][origin_slot]["name"], f"daw_{role}")
+
+                subgraph_ids = {
+                    graph["id"] for graph in workflow.get("definitions", {}).get("subgraphs", [])
+                    if any(node.get("type") in selector_roles for node in graph.get("nodes", []))
+                }
+                for instance in [node for node in workflow["nodes"] if node.get("type") in subgraph_ids]:
+                    for role, (slot, _, _) in CONTROL_ROLES.items():
+                        input_item = next(item for item in instance["inputs"] if item["name"] == f"daw_{role}")
+                        link = next(link for link in workflow["links"] if link[0] == input_item["link"])
+                        self.assertEqual((link[1], link[2]), (control["id"], slot))
+
+                if family.h3_director:
+                    director = next(node for node in workflow["nodes"] if node["type"] == "DaWH3MusicVideoDirectorDualGPU")
+                    for role, (slot, _, _) in CONTROL_ROLES.items():
+                        input_item = next(item for item in director["inputs"] if item["name"] == role)
+                        link = next(link for link in workflow["links"] if link[0] == input_item["link"])
+                        self.assertEqual((link[1], link[2]), (control["id"], slot))
 
     def test_selector_links_are_structurally_complete(self):
         for family in FAMILIES:
@@ -105,7 +153,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 source = json.loads((ROOT / "workflows" / "Reference to Video" / spec["source"]).read_text(encoding="utf-8"))
                 executable = lambda data: Counter(
                     node["type"] for node in data["nodes"]
-                    if node["type"] not in SELECTORS | {"MarkdownNote", "PixaromaRunTimer"}
+                    if node["type"] not in SELECTORS | {DEVICE_CONTROL_TYPE, "MarkdownNote", "PixaromaRunTimer"}
                 )
                 self.assertEqual(executable(workflow), executable(source))
 
@@ -207,6 +255,16 @@ class DualGPUWorkflowTests(unittest.TestCase):
         errors = []
         validate_graph(Path("synthetic.json"), "root", null_endpoint, errors)
         self.assertIn("endpoint missing", "\n".join(errors))
+
+    def test_central_control_custom_node_exports_three_combo_outputs(self):
+        self.assertTrue((CONTROL_NODE_DIR / "__init__.py").is_file())
+        source = (CONTROL_NODE_DIR / "nodes.py").read_text(encoding="utf-8")
+        self.assertIn('node_id="DaWMultiGPUDeviceControl"', source)
+        self.assertEqual(source.count("io.Combo.Output("), 3)
+        self.assertIn('io.Combo.Input("model_device"', source)
+        self.assertIn('io.Combo.Input("clip_device"', source)
+        self.assertIn('io.Combo.Input("vae_device"', source)
+        self.assertIn("return io.NodeOutput(str(model_device), str(clip_device), str(vae_device))", source)
 
     def test_versioned_launcher_exposes_both_gpus_conservatively(self):
         script = LAUNCHER.read_text(encoding="utf-8-sig")

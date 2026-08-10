@@ -6,8 +6,8 @@ Diese Sammlung nutzt **einen** ComfyUI-Prozess, der beide Windows-ROCm/HIP-GPUs 
 
 | ComfyUI/HIP-Gerät | Physische GPU | Aufgabe |
 |---|---|---|
-| `gpu:0` | AMD Radeon AI PRO R9700 · 32 GB | Diffusionsmodell/UNET und Sampling |
-| `gpu:1` | AMD Radeon RX 9070 XT · 16 GB | CLIP/Textencoder sowie Bild-, Video- und Audio-VAE |
+| `gpu:0` | AMD Radeon AI PRO R9700 · 32 GB | Standard: Diffusionsmodell/UNET und Sampling |
+| `gpu:1` | AMD Radeon RX 9070 XT · 16 GB | Standard: CLIP/Textencoder sowie Bild-, Video- und Audio-VAE |
 
 Diese Indizes sind **HIP-/PyTorch-Indizes**. Sie sind nicht mit der Vulkan-Reihenfolge anderer Programme gleichzusetzen.
 
@@ -45,6 +45,32 @@ gpu:1 = AMD Radeon RX 9070 XT
 
 Während eines schweren Dual-GPU-Jobs sollte Port 8189 keinen weiteren GPU-intensiven Job ausführen, weil dessen Prozess sonst mit dem 8188-Prozess um die RX 9070 XT konkurriert.
 
+## Zentraler GPU-Control-Node · v0.8.8
+
+Jeder der 23 Workflows enthält genau einen sichtbaren Node:
+
+```text
+DaW Multi-GPU Device Control
+```
+
+Seine drei Dropdowns steuern zentral alle verbundenen offiziellen Selector-Nodes:
+
+| Dropdown | Standard | Gesteuerte Komponenten |
+|---|---|---|
+| `model_device` | `gpu:0` | alle `Select Model Device`-Nodes |
+| `clip_device` | `gpu:1` | alle `Select CLIP Device`-Nodes |
+| `vae_device` | `gpu:1` | alle Bild-, Video- und Audio-`Select VAE Device`-Nodes |
+
+Die Werte `default`, `gpu:0` und `gpu:1` können vor jedem Queue-Lauf geändert werden. MODEL und CLIP bieten zusätzlich `cpu` für Diagnosezwecke; VAE folgt bewusst der offiziellen ComfyUI-Auswahl ohne CPU. Auch Selector-Nodes innerhalb von Subgraphs erhalten die Root-Dropdowns über neue COMBO-Subgraph-Eingänge. Beim H3-Complete-Song-Director werden die drei Werte in jeden intern erzeugten Segment-Graphen übernommen.
+
+Der benötigte Custom Node liegt unter:
+
+```text
+custom_nodes/ComfyUI-DaWasteh-MultiGPU-Control/
+```
+
+Für eine getrennte Live-ComfyUI-Installation muss dieser Ordner nach `L:\ComfyUI\ComfyUI\custom_nodes\` kopiert und ComfyUI neu gestartet werden. Die eigentliche Modellplatzierung bleibt in ComfyUIs offiziellen `Select * Device`-Nodes; der DaWasteh-Node liefert ausschließlich die zentralen Dropdown-Werte.
+
 ## Workflow-Ordner
 
 Alle Varianten liegen unter:
@@ -79,7 +105,7 @@ Enthalten sind je ein kuratierter Workflow für:
 22. MiniMax H3 FL2VA · offene Eingaben
 23. MiniMax H3 Ref2VA · offene Referenzen
 
-Normale Graphen enthalten direkt:
+Normale Graphen enthalten direkt und zentral verbunden:
 
 - `Select Model Device` mit `gpu:0`
 - `Select CLIP Device` mit `gpu:1`
@@ -126,7 +152,7 @@ Audio VAE   -> SelectVAEDevice   gpu:1
 UNETLoader  -> SelectModelDevice gpu:0 -> H3 Turbo LoRA v4 Step-600 EMA
 ```
 
-Der H3-Sigma-Shift, Spectrum-Patch, Guider, Euler-Sampler und Beta-Scheduler erhalten anschließend das LoRA-gepatchte Modell von `gpu:0`; Conditioning und `VAEDecode` verwenden die auf `gpu:1` platzierten Hilfsmodelle. Das v0.8.6-Profil nutzt acht Schritte, Video-Sigma 12 und Audio-Sigma 4. FL2VA und Ref2VA wurden damit über Port 8188 jeweils bis zu fünf dekodierten Frames live ausgeführt; Details stehen in [MINIMAX_H3_TURBO_AND_PROMPTS.md](MINIMAX_H3_TURBO_AND_PROMPTS.md).
+Der H3-Sigma-Shift, Spectrum-Patch, Guider, Euler-Sampler und Beta-Scheduler erhalten anschließend das LoRA-gepatchte Modell vom im zentralen `model_device`-Dropdown gewählten Gerät; Conditioning und `VAEDecode` verwenden die über `clip_device` und `vae_device` gewählten Geräte. Das v0.8.6-Profil nutzt acht Schritte, Video-Sigma 12 und Audio-Sigma 4. FL2VA und Ref2VA wurden damit über Port 8188 jeweils bis zu fünf dekodierten Frames live ausgeführt; Details stehen in [MINIMAX_H3_TURBO_AND_PROMPTS.md](MINIMAX_H3_TURBO_AND_PROMPTS.md).
 
 ## Bewusst ausgeschlossen
 

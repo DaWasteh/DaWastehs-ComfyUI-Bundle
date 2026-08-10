@@ -98,6 +98,13 @@ SELECTOR = {
     "CLIP": ("SelectCLIPDevice", "Select CLIP Device", "clip", HELPER_DEVICE),
     "VAE": ("SelectVAEDevice", "Select VAE Device", "vae", HELPER_DEVICE),
 }
+DEVICE_CONTROL_TYPE = "DaWMultiGPUDeviceControl"
+CONTROL_ROLES = {
+    "model_device": (0, "gpu:0", "SelectModelDevice"),
+    "clip_device": (1, "gpu:1", "SelectCLIPDevice"),
+    "vae_device": (2, "gpu:1", "SelectVAEDevice"),
+}
+
 SELECTOR_OBJECT_INFO = {
     "SelectModelDevice": {
         "display_name": "Select Model Device",
@@ -122,6 +129,18 @@ SELECTOR_OBJECT_INFO = {
         "input_order": {"required": ["vae", "device"]},
         "output_name": ["VAE"],
         "output": ["VAE"],
+    },
+    DEVICE_CONTROL_TYPE: {
+        "display_name": "DaW Multi-GPU Device Control",
+        "description": "Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.",
+        "input": {"required": {
+            "model_device": [["default", "cpu", "gpu:0", "gpu:1"], {}],
+            "clip_device": [["default", "cpu", "gpu:0", "gpu:1"], {}],
+            "vae_device": [["default", "gpu:0", "gpu:1"], {}],
+        }},
+        "input_order": {"required": ["model_device", "clip_device", "vae_device"]},
+        "output_name": ["model_device", "clip_device", "vae_device"],
+        "output": ["COMBO", "COMBO", "COMBO"],
     },
 }
 
@@ -173,17 +192,17 @@ def _redirect_origin(link: Any, node_id: int) -> None:
         link["origin_slot"] = 0
 
 
-def _new_link(template: Any, link_id: int, source_id: Any, source_slot: int, target_id: int, link_type: str) -> Any:
+def _new_link(template: Any, link_id: int, source_id: Any, source_slot: int, target_id: Any, link_type: str, target_slot: int = 0) -> Any:
     if isinstance(template, dict):
         return {
             "id": link_id,
             "origin_id": source_id,
             "origin_slot": source_slot,
             "target_id": target_id,
-            "target_slot": 0,
+            "target_slot": target_slot,
             "type": link_type,
         }
-    return [link_id, source_id, source_slot, target_id, 0, link_type]
+    return [link_id, source_id, source_slot, target_id, target_slot, link_type]
 
 
 def _selector_node(node_id: int, node_type: str, display_name: str, input_name: str, value: str,
@@ -273,6 +292,179 @@ def insert_device_selectors(graph: dict[str, Any]) -> int:
     return len(candidates)
 
 
+def _device_role_for_selector(node_type: str) -> str | None:
+    for role, (_, _, selector_type) in CONTROL_ROLES.items():
+        if node_type == selector_type:
+            return role
+    return None
+
+
+def _graph_needs_control(graph: dict[str, Any]) -> bool:
+    if any(_device_role_for_selector(node.get("type", "")) for node in graph.get("nodes", [])):
+        return True
+    return any(_graph_needs_control(child) for child in graph.get("definitions", {}).get("subgraphs", []))
+
+
+def _update_last_link(graph: dict[str, Any], link_id: int) -> None:
+    if "state" in graph:
+        graph["state"]["lastLinkId"] = max(int(graph["state"].get("lastLinkId", 0)), link_id)
+    else:
+        graph["last_link_id"] = max(int(graph.get("last_link_id", 0)), link_id)
+
+
+def _append_control_link(
+    graph: dict[str, Any], source_id: Any, source_slot: int, source_links: list[int],
+    target: dict[str, Any], input_name: str,
+) -> int:
+    target_slot = len(target.setdefault("inputs", []))
+    link_id = _next_link_id(graph)
+    target["inputs"].append({
+        "localized_name": input_name,
+        "name": input_name,
+        "type": "COMBO",
+        "widget": {"name": input_name},
+        "link": link_id,
+    })
+    template: Any = graph.get("links", [])[0] if graph.get("links") else ({} if "state" in graph else [])
+    graph.setdefault("links", []).append(
+        _new_link(template, link_id, source_id, source_slot, target["id"], "COMBO", target_slot)
+    )
+    source_links.append(link_id)
+    _update_last_link(graph, link_id)
+    return link_id
+
+
+def _wire_selectors(
+    graph: dict[str, Any], source_id: Any, source_slots: dict[str, int], source_link_lists: dict[str, list[int]],
+) -> None:
+    for node in graph.get("nodes", []):
+        role = _device_role_for_selector(node.get("type", ""))
+        if role is None:
+            continue
+        if any(item.get("name") == "device" for item in node.get("inputs", [])):
+            raise ValueError(f"Selector {node.get('id')} already has a connected device input")
+        _append_control_link(graph, source_id, source_slots[role], source_link_lists[role], node, "device")
+        node["title"] = f"{node.get('type', 'Select Device')} · central control"
+
+
+def _prepare_subgraph_control(graph: dict[str, Any], workflow_key: str) -> dict[str, int]:
+    existing = {item.get("name"): index for index, item in enumerate(graph.get("inputs", []))}
+    source_slots: dict[str, int] = {}
+    source_link_lists: dict[str, list[int]] = {}
+    input_node = graph.get("inputNode")
+    if not isinstance(input_node, dict) or "id" not in input_node:
+        raise ValueError(f"Subgraph {graph.get('id')} has no inputNode for central GPU control")
+
+    base_y = float((input_node.get("bounding") or [0, 0, 0, 0])[1])
+    for offset, (role, (_, default, _)) in enumerate(CONTROL_ROLES.items()):
+        name = f"daw_{role}"
+        if name in existing:
+            index = existing[name]
+            item = graph["inputs"][index]
+        else:
+            index = len(graph.setdefault("inputs", []))
+            item = {
+                "id": str(uuid.uuid5(uuid.NAMESPACE_URL, f"{workflow_key}:{graph.get('id')}:{name}")),
+                "name": name,
+                "type": "COMBO",
+                "linkIds": [],
+                "label": f"DaW {role.replace('_', ' ')}",
+                "pos": [float((input_node.get("bounding") or [0, 0])[0]) + 130.0, base_y + index * 20.0],
+                "default": default,
+            }
+            graph["inputs"].append(item)
+        source_slots[role] = index
+        source_link_lists[role] = item.setdefault("linkIds", [])
+
+    bounding = input_node.get("bounding")
+    if isinstance(bounding, list) and len(bounding) >= 4:
+        bounding[3] = max(float(bounding[3]), 40.0 + len(graph.get("inputs", [])) * 20.0)
+
+    _wire_selectors(graph, input_node["id"], source_slots, source_link_lists)
+    for child in graph.get("definitions", {}).get("subgraphs", []):
+        if not _graph_needs_control(child):
+            continue
+        _prepare_subgraph_control(child, workflow_key)
+        for instance in [node for node in graph.get("nodes", []) if node.get("type") == child.get("id")]:
+            _wire_subgraph_instance(graph, instance, input_node["id"], source_slots, source_link_lists)
+    return source_slots
+
+
+def _wire_subgraph_instance(
+    graph: dict[str, Any], instance: dict[str, Any], source_id: Any, source_slots: dict[str, int],
+    source_link_lists: dict[str, list[int]],
+) -> None:
+    for role, (_, default, _) in CONTROL_ROLES.items():
+        _append_control_link(
+            graph, source_id, source_slots[role], source_link_lists[role], instance, f"daw_{role}",
+        )
+        instance.setdefault("widgets_values", []).append(default)
+    if isinstance(instance.get("size"), list) and len(instance["size"]) >= 2:
+        instance["size"][1] = float(instance["size"][1]) + 60.0
+
+
+def _control_node(node_id: int, pos: list[float], order: int) -> dict[str, Any]:
+    return {
+        "id": node_id,
+        "type": DEVICE_CONTROL_TYPE,
+        "pos": pos,
+        "size": [380, 170],
+        "flags": {},
+        "order": order,
+        "mode": 0,
+        "inputs": [],
+        "outputs": [
+            {"localized_name": role, "name": role, "type": "COMBO", "slot_index": slot, "links": []}
+            for role, (slot, _, _) in CONTROL_ROLES.items()
+        ],
+        "properties": {"Node name for S&R": DEVICE_CONTROL_TYPE},
+        "widgets_values": [default for _, default, _ in CONTROL_ROLES.values()],
+        "title": "Central GPU Control · MODEL / CLIP / VAE",
+        "color": "#173f32",
+        "bgcolor": "#205845",
+    }
+
+
+def install_central_device_control(workflow: dict[str, Any], workflow_key: str, h3_director: bool) -> None:
+    root = workflow
+    nodes = root.get("nodes", [])
+    if any(node.get("type") == DEVICE_CONTROL_TYPE for node in nodes):
+        raise ValueError("Workflow already contains a central GPU control node")
+    node_id = _next_node_id(root)
+    min_x = min((float((node.get("pos") or [0, 0])[0]) for node in nodes), default=0.0)
+    min_y = min((float((node.get("pos") or [0, 0])[1]) for node in nodes), default=0.0)
+    control = _control_node(node_id, [min_x - 480.0, min_y], max((int(node.get("order", 0)) for node in nodes), default=0) + 1)
+    nodes.append(control)
+    _set_last_ids(root, node_id, int(root.get("last_link_id", 0)))
+    source_slots = {role: slot for role, (slot, _, _) in CONTROL_ROLES.items()}
+    source_link_lists = {role: control["outputs"][slot]["links"] for role, slot in source_slots.items()}
+    _wire_selectors(root, node_id, source_slots, source_link_lists)
+
+    for child in root.get("definitions", {}).get("subgraphs", []):
+        if not _graph_needs_control(child):
+            continue
+        _prepare_subgraph_control(child, workflow_key)
+        for instance in [node for node in root.get("nodes", []) if node.get("type") == child.get("id")]:
+            for role, (_, default, _) in CONTROL_ROLES.items():
+                _append_control_link(root, node_id, source_slots[role], source_link_lists[role], instance, f"daw_{role}")
+                instance.setdefault("widgets_values", []).append(default)
+            if isinstance(instance.get("size"), list) and len(instance["size"]) >= 2:
+                instance["size"][1] = float(instance["size"][1]) + 60.0
+
+    if h3_director:
+        director = next(node for node in root.get("nodes", []) if node.get("type") == "DaWH3MusicVideoDirectorDualGPU")
+        for role, (_, default, _) in CONTROL_ROLES.items():
+            _append_control_link(root, node_id, source_slots[role], source_link_lists[role], director, role)
+            director.setdefault("widgets_values", []).append(default)
+
+    if not all(source_link_lists[role] for role in CONTROL_ROLES):
+        raise ValueError("Central GPU control has an unconnected device output")
+    workflow.setdefault("extra", {}).setdefault("dawasteh_dual_gpu", {}).update({
+        "central_control": DEVICE_CONTROL_TYPE,
+        "manual_device_dropdowns": {role: default for role, (_, default, _) in CONTROL_ROLES.items()},
+    })
+
+
 def refresh_refinement(workflow: dict[str, Any]) -> None:
     """Rebuild generated notes/layout so copied workflows remain validator-clean."""
     for graph in _graphs(workflow):
@@ -293,13 +485,13 @@ def refresh_refinement(workflow: dict[str, Any]) -> None:
 
 def _dual_gpu_metadata(family: Family) -> dict[str, Any]:
     return {
-        "version": 1,
+        "version": 2,
         "family": family.name,
         "source": f"workflows/{family.source}",
         "server": "127.0.0.1:8188",
         "backend": "ROCm/HIP",
-        "model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
-        "clip_vae_device": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
+        "default_model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
+        "default_clip_vae_device": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
         "execution": "device placement; ComfyUI still executes graph stages sequentially",
     }
 
@@ -321,6 +513,7 @@ def build_family(family: Family) -> dict[str, Any]:
         director["type"] = "DaWH3MusicVideoDirectorDualGPU"
         director["title"] = "H3 Complete-Song Director · Dual GPU · 8188"
         director.setdefault("properties", {})["Node name for S&R"] = "DaWH3MusicVideoDirectorDualGPU"
+        install_central_device_control(workflow, family.output, h3_director=True)
         refresh_refinement(workflow)
         return workflow
 
@@ -328,6 +521,7 @@ def build_family(family: Family) -> dict[str, Any]:
     if inserted == 0:
         raise ValueError(f"No compatible MODEL/CLIP/VAE loader outputs found in {source}")
     extra["dawasteh_dual_gpu"]["selector_count"] = inserted
+    install_central_device_control(workflow, family.output, h3_director=False)
     refresh_refinement(workflow)
     return workflow
 

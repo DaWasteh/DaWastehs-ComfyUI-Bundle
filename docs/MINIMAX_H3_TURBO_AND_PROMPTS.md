@@ -79,7 +79,9 @@ workflows/Dual GPU - R9700 + RX 9070 XT/MiniMax-H3-FL2VA-DualGPU-All-Supported-I
 workflows/Dual GPU - R9700 + RX 9070 XT/MiniMax-H3-Ref2VA-DualGPU-All-Reference-Inputs.json
 ```
 
-FL2VA stellt First/Last Frame und alle üblichen Generierungsparameter bereit. Ref2VA bewahrt die komplette offene Referenzmatrix des Quellworkflows mit neun Bildern, drei Videos, den zugehörigen Video-Audios und drei eigenständigen Audio-Referenzen. Beide platzieren das Diffusionsmodell vor der Turbo-LoRA auf `gpu:0` sowie Qwen3VL und beide VAEs auf `gpu:1`.
+FL2VA stellt First/Last Frame und alle üblichen Generierungsparameter bereit. Ref2VA bewahrt die komplette offene Referenzmatrix des Quellworkflows mit neun Bildern, drei Videos, den zugehörigen Video-Audios und drei eigenständigen Audio-Referenzen.
+
+Ab v0.8.8 besitzen beide offenen Graphen und der Complete-Song-Workflow einen zentralen `DaW Multi-GPU Device Control`-Node. Seine MODEL-, CLIP- und VAE-Dropdowns sind standardmäßig auf `gpu:0`, `gpu:1` und `gpu:1` gesetzt, können aber vor dem Queue-Lauf frei geändert werden. Beim Complete-Song-Director werden die gewählten Werte in den versteckten Segment-Graph geschrieben; die Reihenfolge `UNET → gewähltes MODEL-Gerät → Turbo-LoRA → Sigma` bleibt erhalten.
 
 ## Live-Prüfung auf beiden AMD-GPUs
 
@@ -98,7 +100,8 @@ Ergebnisse:
 - v0.8.7 FL2VA Open: mit zwei echten lokalen First-/Last-Frame-PNGs über den sichtbaren Dual-GPU-Graphen erfolgreich bis zu fünf Frames ausgeführt.
 - v0.8.7 Ref2VA Open: mit einer echten lokalen Bildreferenz über den sichtbaren Dual-GPU-Graphen erfolgreich bis zu fünf Frames ausgeführt.
 - Alle LoRA-Loader-Pfade liefen ohne `lora key not loaded`-Warnung.
-- Modell und Sampling lagen auf `gpu:0`; Qwen3VL, Video-VAE und beim Ref2VA-Lauf Audio-VAE wurden nachweislich als Deepclone auf `gpu:1` erzeugt.
+- Modell und Sampling lagen bei den v0.8.7-H3-Läufen auf `gpu:0`; Qwen3VL, Video-VAE und beim Ref2VA-Lauf Audio-VAE wurden nachweislich als Deepclone auf `gpu:1` erzeugt.
+- v0.8.8 Control-Smoke-Test: Die Dropdowns wurden absichtlich umgekehrt (`MODEL=gpu:1`, `CLIP=gpu:0`, `VAE=gpu:0`). ComfyUI akzeptierte die drei verbundenen COMBO-Ausgänge, klonte das SD-1.5-Modell auf `gpu:1` und führte CLIP-Encoding sowie VAE-Decoding auf `gpu:0` erfolgreich aus.
 
 Die kleinen 5-Frame-Läufe prüfen Laden, LoRA-Kompatibilität, Dual-GPU-Platzierung, Conditioning, acht Sampling-Schritte und VAE-Decoding. Sie ersetzen keine visuelle Langzeitabnahme eines vollständigen 8–15-Sekunden-Clips.
 

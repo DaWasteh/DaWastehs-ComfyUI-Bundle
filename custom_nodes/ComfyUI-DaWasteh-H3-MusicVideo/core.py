@@ -868,10 +868,10 @@ def build_segment_api_prompt(manifest_path: str, segment_index: int, manifest: d
     model_source = ["13", 0]
     if settings.get("dual_gpu", False):
         prompt.update({
-            "30": {"class_type": "SelectCLIPDevice", "inputs": {"clip": ["10", 0], "device": "gpu:1"}},
-            "31": {"class_type": "SelectVAEDevice", "inputs": {"vae": ["11", 0], "device": "gpu:1"}},
-            "32": {"class_type": "SelectVAEDevice", "inputs": {"vae": ["12", 0], "device": "gpu:1"}},
-            "33": {"class_type": "SelectModelDevice", "inputs": {"model": ["13", 0], "device": "gpu:0"}},
+            "30": {"class_type": "SelectCLIPDevice", "inputs": {"clip": ["10", 0], "device": settings.get("clip_device", "gpu:1")}},
+            "31": {"class_type": "SelectVAEDevice", "inputs": {"vae": ["11", 0], "device": settings.get("vae_device", "gpu:1")}},
+            "32": {"class_type": "SelectVAEDevice", "inputs": {"vae": ["12", 0], "device": settings.get("vae_device", "gpu:1")}},
+            "33": {"class_type": "SelectModelDevice", "inputs": {"model": ["13", 0], "device": settings.get("model_device", "gpu:0")}},
         })
         model_source = ["33", 0]
         prompt["17"]["inputs"].update({"clip": ["30", 0], "vae": ["31", 0], "audio_vae": ["32", 0]})

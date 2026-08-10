@@ -1,8 +1,8 @@
 {
   "id": "77db5243-684c-509a-9e1f-f2541707c596",
   "revision": 0,
-  "last_node_id": 5,
-  "last_link_id": 0,
+  "last_node_id": 7,
+  "last_link_id": 3,
   "nodes": [
     {
       "id": 2,
@@ -457,6 +457,33 @@
             "name": "force_reference_as_first_frame"
           },
           "link": null
+        },
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "widget": {
+            "name": "model_device"
+          },
+          "link": 1
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_device"
+          },
+          "link": 2
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_device"
+          },
+          "link": 3
         }
       ],
       "outputs": [
@@ -529,7 +556,10 @@
         "system_ram",
         false,
         "identity lock (recommended)",
-        true
+        true,
+        "gpu:0",
+        "gpu:1",
+        "gpu:1"
       ],
       "color": "#1d1d1d",
       "bgcolor": "#2a2a2a",
@@ -573,6 +603,62 @@
     },
     {
       "id": 5,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        -695.8,
+        -1932.875
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            1
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": [
+            2
+          ]
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:1",
+        "gpu:1"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 6,
       "type": "MarkdownNote",
       "pos": [
         5387.925,
@@ -583,7 +669,7 @@
         540
       ],
       "flags": {},
-      "order": 3,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -595,13 +681,67 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · H3 Complete-Song Director · Dual GPU · 8188 · Node 1\n\n**Zweck:** Lädt, erzeugt oder verarbeitet Videodaten und deren Frames.\n\n**Einstellbare Werte**\n- `value` = `INTRO_SONG.wav` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `song` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_image` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `project_name` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `master_visual_concept` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics_or_story_optional` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_prompt_planner` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `min_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `continuity_from_previous_last_frame` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `width` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed_mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_enabled` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `segment_crf` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `final_crf_fallback` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video_preset` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output_container` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resume_existing` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `force_rebuild` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_base_url` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_model` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_timeout` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `server_address` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `diffusion_model` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text_encoder` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video_vae` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio_vae` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_video` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_audio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_blend_weight` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_degree` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_ridge_lambda` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_window_size` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_flex_window` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_warmup_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_tail_actual_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_max_history` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_history_storage` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_debug` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_strategy` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `force_reference_as_first_frame` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `manifest_path` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `expected_final_file` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · H3 Complete-Song Director · Dual GPU · 8188 · Node 1\n\n**Zweck:** Lädt, erzeugt oder verarbeitet Videodaten und deren Frames.\n\n**Einstellbare Werte**\n- `value` = `INTRO_SONG.wav` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `song` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_image` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `project_name` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `master_visual_concept` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics_or_story_optional` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_prompt_planner` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `min_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `continuity_from_previous_last_frame` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `width` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed_mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_enabled` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `segment_crf` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `final_crf_fallback` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video_preset` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output_container` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resume_existing` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `force_rebuild` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_base_url` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_model` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_timeout` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `server_address` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `diffusion_model` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text_encoder` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video_vae` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio_vae` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_video` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_audio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_blend_weight` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_degree` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_ridge_lambda` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_window_size` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_flex_window` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_warmup_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_tail_actual_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_max_history` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_history_storage` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_debug` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_strategy` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `force_reference_as_first_frame` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_device` (COMBO, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `clip_device` (COMBO, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae_device` (COMBO, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `manifest_path` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `expected_final_file` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 7,
+      "type": "MarkdownNote",
+      "pos": [
+        -269.8,
+        -1932.875
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 5,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 5\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
     }
   ],
-  "links": [],
+  "links": [
+    [
+      1,
+      5,
+      0,
+      1,
+      46,
+      "COMBO"
+    ],
+    [
+      2,
+      5,
+      1,
+      1,
+      47,
+      "COMBO"
+    ],
+    [
+      3,
+      5,
+      2,
+      1,
+      48,
+      "COMBO"
+    ]
+  ],
   "groups": [],
   "config": {},
   "extra": {
@@ -627,18 +767,24 @@
       "ref2va_status": "compatible graph integration; Turbo quality with full-reference conditioning remains community/experimental"
     },
     "dawasteh_dual_gpu": {
-      "version": 1,
+      "version": 2,
       "family": "MiniMax H3",
       "source": "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
       "server": "127.0.0.1:8188",
       "backend": "ROCm/HIP",
-      "model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
-      "clip_vae_device": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
-      "execution": "device placement; ComfyUI still executes graph stages sequentially"
+      "default_model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
+      "default_clip_vae_device": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
+      "execution": "device placement; ComfyUI still executes graph stages sequentially",
+      "central_control": "DaWMultiGPUDeviceControl",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:1",
+        "vae_device": "gpu:1"
+      }
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 1,
+      "generated_notes": 2,
       "x_scale": 2.45,
       "y_scale": 2.35,
       "gap": 34.0

@@ -141,6 +141,7 @@ class H3MusicVideoCoreTests(unittest.TestCase):
             "ref_image_size": "match", "sampler_name": "res_multistep", "scheduler": "beta",
             "steps": 20, "spectrum_enabled": False, "continuity": False,
             "reference_strategy": self.core.IDENTITY_LOCK, "dual_gpu": True,
+            "model_device": "gpu:1", "clip_device": "gpu:0", "vae_device": "cpu",
         }
         manifest = {
             "settings": settings,
@@ -150,10 +151,10 @@ class H3MusicVideoCoreTests(unittest.TestCase):
             ],
         }
         prompt = self.core.build_segment_api_prompt("manifest.json", 0, manifest)
-        self.assertEqual(prompt["30"], {"class_type": "SelectCLIPDevice", "inputs": {"clip": ["10", 0], "device": "gpu:1"}})
-        self.assertEqual(prompt["31"]["inputs"]["device"], "gpu:1")
-        self.assertEqual(prompt["32"]["inputs"]["device"], "gpu:1")
-        self.assertEqual(prompt["33"], {"class_type": "SelectModelDevice", "inputs": {"model": ["13", 0], "device": "gpu:0"}})
+        self.assertEqual(prompt["30"], {"class_type": "SelectCLIPDevice", "inputs": {"clip": ["10", 0], "device": "gpu:0"}})
+        self.assertEqual(prompt["31"]["inputs"]["device"], "cpu")
+        self.assertEqual(prompt["32"]["inputs"]["device"], "cpu")
+        self.assertEqual(prompt["33"], {"class_type": "SelectModelDevice", "inputs": {"model": ["13", 0], "device": "gpu:1"}})
         self.assertEqual(prompt["29"]["class_type"], "LoraLoaderModelOnly")
         self.assertEqual(prompt["29"]["inputs"], {
             "model": ["33", 0],

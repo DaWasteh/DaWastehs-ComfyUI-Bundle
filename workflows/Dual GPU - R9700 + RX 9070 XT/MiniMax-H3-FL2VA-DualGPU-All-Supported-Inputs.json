@@ -1,8 +1,8 @@
 {
   "id": "731d0858-de9c-5d57-89ef-4cf346bc8cb6",
   "revision": 0,
-  "last_node_id": 82,
-  "last_link_id": 46,
+  "last_node_id": 84,
+  "last_link_id": 50,
   "nodes": [
     {
       "id": 1,
@@ -1409,6 +1409,15 @@
           "name": "clip",
           "type": "CLIP",
           "link": 43
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 47
         }
       ],
       "outputs": [
@@ -1429,7 +1438,7 @@
       "widgets_values": [
         "gpu:1"
       ],
-      "title": "Select CLIP Device · gpu:1",
+      "title": "SelectCLIPDevice · central control",
       "color": "#3b2d18",
       "bgcolor": "#5a4322"
     },
@@ -1453,6 +1462,15 @@
           "name": "model",
           "type": "MODEL",
           "link": 44
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 48
         }
       ],
       "outputs": [
@@ -1473,7 +1491,7 @@
       "widgets_values": [
         "gpu:0"
       ],
-      "title": "Select Model Device · gpu:0",
+      "title": "SelectModelDevice · central control",
       "color": "#16334a",
       "bgcolor": "#1d4968"
     },
@@ -1497,6 +1515,15 @@
           "name": "vae",
           "type": "VAE",
           "link": 45
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 49
         }
       ],
       "outputs": [
@@ -1518,7 +1545,7 @@
       "widgets_values": [
         "gpu:1"
       ],
-      "title": "Select VAE Device · gpu:1",
+      "title": "SelectVAEDevice · central control",
       "color": "#3b2d18",
       "bgcolor": "#5a4322"
     },
@@ -1542,6 +1569,15 @@
           "name": "vae",
           "type": "VAE",
           "link": 46
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 50
         }
       ],
       "outputs": [
@@ -1562,12 +1598,69 @@
       "widgets_values": [
         "gpu:1"
       ],
-      "title": "Select VAE Device · gpu:1",
+      "title": "SelectVAEDevice · central control",
       "color": "#3b2d18",
       "bgcolor": "#5a4322"
     },
     {
       "id": 57,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        -15221.85,
+        -2679.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 56,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            48
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": [
+            47
+          ]
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            49,
+            50
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:1",
+        "gpu:1"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 58,
       "type": "MarkdownNote",
       "pos": [
         -9698.2,
@@ -1578,7 +1671,7 @@
         311
       ],
       "flags": {},
-      "order": 56,
+      "order": 57,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1596,7 +1689,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 58,
+      "id": 59,
       "type": "MarkdownNote",
       "pos": [
         -9698.2,
@@ -1607,7 +1700,7 @@
         311
       ],
       "flags": {},
-      "order": 57,
+      "order": 58,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1625,7 +1718,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 59,
+      "id": 60,
       "type": "MarkdownNote",
       "pos": [
         -7017.15,
@@ -1636,7 +1729,7 @@
         294
       ],
       "flags": {},
-      "order": 58,
+      "order": 59,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1654,7 +1747,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 60,
+      "id": 61,
       "type": "MarkdownNote",
       "pos": [
         -7217.15,
@@ -1665,7 +1758,7 @@
         294
       ],
       "flags": {},
-      "order": 59,
+      "order": 60,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1683,7 +1776,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 61,
+      "id": 62,
       "type": "MarkdownNote",
       "pos": [
         -5076.25,
@@ -1694,7 +1787,7 @@
         345
       ],
       "flags": {},
-      "order": 60,
+      "order": 61,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1712,7 +1805,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 62,
+      "id": 63,
       "type": "MarkdownNote",
       "pos": [
         -4796.25,
@@ -1723,7 +1816,7 @@
         294
       ],
       "flags": {},
-      "order": 61,
+      "order": 62,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1741,7 +1834,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 63,
+      "id": 64,
       "type": "MarkdownNote",
       "pos": [
         -1314.7,
@@ -1752,7 +1845,7 @@
         294
       ],
       "flags": {},
-      "order": 62,
+      "order": 63,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1770,7 +1863,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 64,
+      "id": 65,
       "type": "MarkdownNote",
       "pos": [
         916.2,
@@ -1781,7 +1874,7 @@
         294
       ],
       "flags": {},
-      "order": 63,
+      "order": 64,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1799,7 +1892,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 65,
+      "id": 66,
       "type": "MarkdownNote",
       "pos": [
         -4796.25,
@@ -1810,7 +1903,7 @@
         294
       ],
       "flags": {},
-      "order": 64,
+      "order": 65,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1828,7 +1921,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 66,
+      "id": 67,
       "type": "MarkdownNote",
       "pos": [
         -4796.25,
@@ -1839,7 +1932,7 @@
         294
       ],
       "flags": {},
-      "order": 65,
+      "order": 66,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1857,7 +1950,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 67,
+      "id": 68,
       "type": "MarkdownNote",
       "pos": [
         -4796.25,
@@ -1868,7 +1961,7 @@
         294
       ],
       "flags": {},
-      "order": 66,
+      "order": 67,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1886,7 +1979,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 68,
+      "id": 69,
       "type": "MarkdownNote",
       "pos": [
         -1114.65,
@@ -1897,7 +1990,7 @@
         430
       ],
       "flags": {},
-      "order": 67,
+      "order": 68,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1915,7 +2008,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 69,
+      "id": 70,
       "type": "MarkdownNote",
       "pos": [
         3517.3,
@@ -1926,7 +2019,7 @@
         311
       ],
       "flags": {},
-      "order": 68,
+      "order": 69,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1944,7 +2037,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 70,
+      "id": 71,
       "type": "MarkdownNote",
       "pos": [
         3517.3,
@@ -1955,7 +2048,7 @@
         311
       ],
       "flags": {},
-      "order": 69,
+      "order": 70,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1973,7 +2066,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 71,
+      "id": 72,
       "type": "MarkdownNote",
       "pos": [
         3517.3,
@@ -1984,7 +2077,7 @@
         294
       ],
       "flags": {},
-      "order": 70,
+      "order": 71,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2002,7 +2095,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 72,
+      "id": 73,
       "type": "MarkdownNote",
       "pos": [
         3517.3,
@@ -2013,7 +2106,7 @@
         294
       ],
       "flags": {},
-      "order": 71,
+      "order": 72,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2031,7 +2124,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 73,
+      "id": 74,
       "type": "MarkdownNote",
       "pos": [
         5898.325,
@@ -2042,7 +2135,7 @@
         379
       ],
       "flags": {},
-      "order": 72,
+      "order": 73,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2060,7 +2153,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 74,
+      "id": 75,
       "type": "MarkdownNote",
       "pos": [
         7859.15,
@@ -2071,7 +2164,7 @@
         311
       ],
       "flags": {},
-      "order": 73,
+      "order": 74,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2089,7 +2182,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 75,
+      "id": 76,
       "type": "MarkdownNote",
       "pos": [
         7859.15,
@@ -2100,7 +2193,7 @@
         311
       ],
       "flags": {},
-      "order": 74,
+      "order": 75,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2118,7 +2211,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 76,
+      "id": 77,
       "type": "MarkdownNote",
       "pos": [
         9769.925,
@@ -2129,7 +2222,7 @@
         311
       ],
       "flags": {},
-      "order": 75,
+      "order": 76,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2147,7 +2240,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 77,
+      "id": 78,
       "type": "MarkdownNote",
       "pos": [
         12190.825,
@@ -2158,7 +2251,7 @@
         294
       ],
       "flags": {},
-      "order": 76,
+      "order": 77,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2176,7 +2269,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 78,
+      "id": 79,
       "type": "MarkdownNote",
       "pos": [
         -13329.85,
@@ -2187,7 +2280,7 @@
         328
       ],
       "flags": {},
-      "order": 77,
+      "order": 78,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2205,7 +2298,7 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 79,
+      "id": 80,
       "type": "MarkdownNote",
       "pos": [
         -13699.85,
@@ -2213,14 +2306,14 @@
       ],
       "size": [
         390,
-        294
+        311
       ],
       "flags": {},
-      "order": 78,
+      "order": 79,
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · Select CLIP Device · gpu:1 · Node 53",
+      "title": "Erklärung · SelectCLIPDevice · central control · Node 53",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -2228,36 +2321,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Select CLIP Device · gpu:1 · Node 53\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 43): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
-      ],
-      "color": "#1b2638",
-      "bgcolor": "#101722"
-    },
-    {
-      "id": 80,
-      "type": "MarkdownNote",
-      "pos": [
-        -12891.35,
-        -2679.0
-      ],
-      "size": [
-        390,
-        294
-      ],
-      "flags": {},
-      "order": 79,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Erklärung · Select Model Device · gpu:0 · Node 54",
-      "properties": {
-        "Node name for S&R": "MarkdownNote",
-        "cnr_id": "comfy-core",
-        "dawasteh_note_for": 54,
-        "dawasteh_generated_note": true
-      },
-      "widgets_values": [
-        "# Erklärung · Select Model Device · gpu:0 · Node 54\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 44): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SelectCLIPDevice · central control · Node 53\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 43): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 47): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2266,27 +2330,27 @@
       "id": 81,
       "type": "MarkdownNote",
       "pos": [
-        -12082.85,
+        -12891.35,
         -2679.0
       ],
       "size": [
         390,
-        294
+        311
       ],
       "flags": {},
       "order": 80,
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · Select VAE Device · gpu:1 · Node 55",
+      "title": "Erklärung · SelectModelDevice · central control · Node 54",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
-        "dawasteh_note_for": 55,
+        "dawasteh_note_for": 54,
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Select VAE Device · gpu:1 · Node 55\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 45): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SelectModelDevice · central control · Node 54\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 44): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 48): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2295,19 +2359,48 @@
       "id": 82,
       "type": "MarkdownNote",
       "pos": [
-        -11274.35,
+        -12082.85,
         -2679.0
       ],
       "size": [
         390,
-        294
+        311
       ],
       "flags": {},
       "order": 81,
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · Select VAE Device · gpu:1 · Node 56",
+      "title": "Erklärung · SelectVAEDevice · central control · Node 55",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 55,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectVAEDevice · central control · Node 55\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 45): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 49): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 83,
+      "type": "MarkdownNote",
+      "pos": [
+        -11274.35,
+        -2679.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 82,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectVAEDevice · central control · Node 56",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -2315,7 +2408,36 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Select VAE Device · gpu:1 · Node 56\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 46): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SelectVAEDevice · central control · Node 56\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 46): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 50): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 84,
+      "type": "MarkdownNote",
+      "pos": [
+        -14795.85,
+        -2679.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 83,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 57",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 57,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 57\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2657,6 +2779,38 @@
       56,
       0,
       "VAE"
+    ],
+    [
+      47,
+      57,
+      1,
+      53,
+      1,
+      "COMBO"
+    ],
+    [
+      48,
+      57,
+      0,
+      54,
+      1,
+      "COMBO"
+    ],
+    [
+      49,
+      57,
+      2,
+      55,
+      1,
+      "COMBO"
+    ],
+    [
+      50,
+      57,
+      2,
+      56,
+      1,
+      "COMBO"
     ]
   ],
   "groups": [
@@ -2745,19 +2899,25 @@
       "ref2va_status": "compatible graph integration; Turbo quality with full-reference conditioning remains community/experimental"
     },
     "dawasteh_dual_gpu": {
-      "version": 1,
+      "version": 2,
       "family": "MiniMax H3 FL2VA · open inputs",
       "source": "workflows/Reference to Video/MiniMax_H3_Spectrum_FL2VA_All_Supported_Inputs.json",
       "server": "127.0.0.1:8188",
       "backend": "ROCm/HIP",
-      "model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
-      "clip_vae_device": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
+      "default_model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
+      "default_clip_vae_device": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
       "execution": "device placement; ComfyUI still executes graph stages sequentially",
-      "selector_count": 4
+      "selector_count": 4,
+      "central_control": "DaWMultiGPUDeviceControl",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:1",
+        "vae_device": "gpu:1"
+      }
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 26,
+      "generated_notes": 27,
       "x_scale": 2.45,
       "y_scale": 2.35,
       "gap": 34.0

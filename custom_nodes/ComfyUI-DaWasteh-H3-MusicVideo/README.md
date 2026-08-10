@@ -21,7 +21,7 @@ Die LoRA stammt aus `drbaph/MiniMax-H3-Turbo-Lora-ComfyUI`, ist die für pruned/
 
 ## Installation
 
-1. Den Ordner `ComfyUI-DaWasteh-H3-MusicVideo` nach `L:\ComfyUI\ComfyUI\custom_nodes\` kopieren; oder den beiliegenden PowerShell-Installer ausführen.
+1. Den Ordner `ComfyUI-DaWasteh-H3-MusicVideo` nach `L:\ComfyUI\ComfyUI\custom_nodes\` kopieren; für den Dual-GPU-Workflow zusätzlich `ComfyUI-DaWasteh-MultiGPU-Control` installieren. Alternativ den beiliegenden PowerShell-Installer ausführen.
 2. ComfyUI vollständig neu starten.
 3. Im Browser `Strg+F5` drücken.
 4. `MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` laden; für beide GPUs stattdessen `MiniMax-H3-DualGPU-Complete-Song-Music-Video-One-Click.json` aus dem Dual-GPU-Ordner verwenden.
@@ -30,7 +30,7 @@ Keine zusätzlichen Python-Pakete werden installiert.
 
 ## Dual-GPU-Modus auf Port 8188
 
-`DaWH3MusicVideoDirectorDualGPU` ergänzt jeden intern erzeugten Segment-Graphen automatisch um ComfyUIs offizielle Device-Selector-Nodes. Das Diffusionsmodell läuft auf der R9700 (`gpu:0`) und wird dort anschließend mit der Turbo-LoRA gepatcht; Qwen3VL, Video-VAE und Audio-VAE werden auf die RX 9070 XT (`gpu:1`) gelegt. Dafür muss ComfyUI mit beiden sichtbaren HIP-Geräten gestartet sein. Die versionierten Starter liegen unter `tools/start-MultiGPU.ps1` und `tools/start-MultiGPU.bat`; sie können direkt verwendet oder nach `L:\ComfyUI\` kopiert werden.
+`DaWH3MusicVideoDirectorDualGPU` ergänzt jeden intern erzeugten Segment-Graphen automatisch um ComfyUIs offizielle Device-Selector-Nodes. Ab v0.8.8 liefert der sichtbare `DaW Multi-GPU Device Control`-Node drei zentrale Dropdowns für MODEL, CLIP und alle VAEs. Standardmäßig läuft das Diffusionsmodell auf der R9700 (`gpu:0`) und wird dort anschließend mit der Turbo-LoRA gepatcht; Qwen3VL, Video-VAE und Audio-VAE liegen auf der RX 9070 XT (`gpu:1`). Die Auswahl wird in jeden versteckten Segment-Graphen übernommen und kann vor dem Queue-Lauf manuell geändert werden. Dafür muss ComfyUI mit beiden sichtbaren HIP-Geräten gestartet sein. Die versionierten Starter liegen unter `tools/start-MultiGPU.ps1` und `tools/start-MultiGPU.bat`; sie können direkt verwendet oder nach `L:\ComfyUI\` kopiert werden.
 
 Die Schritte bleiben seriell und die VRAM-Speicher werden nicht zu einem 48-GB-Pool vereinigt. Die Platzierung reduziert vor allem Modellwechsel und VRAM-Druck auf der R9700.
 

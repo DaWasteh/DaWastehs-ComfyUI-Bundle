@@ -180,15 +180,7 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
         vae_options, _ = _model_options("vae", DEFAULT_VIDEO_VAE)
         if DEFAULT_AUDIO_VAE not in vae_options:
             vae_options.append(DEFAULT_AUDIO_VAE)
-        return io.Schema(
-            node_id=cls.NODE_ID,
-            display_name=cls.DISPLAY_NAME,
-            category=CATEGORY,
-            description=(
-                "Analyzes a complete song, plans beat-aware shots, renders one MiniMax H3 scene at a time through "
-                "the local ComfyUI queue, resumes failures, concatenates every scene, and stream-copies the original audio."
-            ),
-            inputs=[
+        inputs = [
                 io.Combo.Input("song", options=_song_options(), upload=io.UploadType.audio),
                 io.Combo.Input("reference_image", options=_image_options(), default=NONE_IMAGE, upload=io.UploadType.image),
                 io.String.Input("project_name", default="Intro_Music_Video"),
@@ -263,7 +255,22 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
                     tooltip="For scene 1, replace the generated first frame with a contained, uncropped copy of the selected reference image.",
                     advanced=True,
                 ),
-            ],
+            ]
+        if cls.DUAL_GPU:
+            inputs.extend([
+                io.Combo.Input("model_device", options=["default", "cpu", "gpu:0", "gpu:1"], default="gpu:0", advanced=True),
+                io.Combo.Input("clip_device", options=["default", "cpu", "gpu:0", "gpu:1"], default="gpu:1", advanced=True),
+                io.Combo.Input("vae_device", options=["default", "gpu:0", "gpu:1"], default="gpu:1", advanced=True),
+            ])
+        return io.Schema(
+            node_id=cls.NODE_ID,
+            display_name=cls.DISPLAY_NAME,
+            category=CATEGORY,
+            description=(
+                "Analyzes a complete song, plans beat-aware shots, renders one MiniMax H3 scene at a time through "
+                "the local ComfyUI queue, resumes failures, concatenates every scene, and stream-copies the original audio."
+            ),
+            inputs=inputs,
             outputs=[io.String.Output("manifest_path"), io.String.Output("expected_final_file"), io.String.Output("status")],
             is_output_node=True,
         )
@@ -279,6 +286,7 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
         spectrum_blend_weight, spectrum_degree, spectrum_ridge_lambda, spectrum_window_size,
         spectrum_flex_window, spectrum_warmup_steps, spectrum_tail_actual_steps, spectrum_max_history,
         spectrum_history_storage, spectrum_debug, reference_strategy, force_reference_as_first_frame,
+        model_device="gpu:0", clip_device="gpu:1", vae_device="gpu:1",
     ) -> io.NodeOutput:
         _required_node_check(bool(spectrum_enabled), dual_gpu=cls.DUAL_GPU)
         if int(width) % 32 or int(height) % 32:
@@ -308,6 +316,7 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
             "spectrum_warmup_steps": int(spectrum_warmup_steps), "spectrum_tail_actual_steps": int(spectrum_tail_actual_steps),
             "spectrum_max_history": int(spectrum_max_history), "spectrum_history_storage": str(spectrum_history_storage),
             "spectrum_debug": bool(spectrum_debug), "dual_gpu": cls.DUAL_GPU, "turbo_lora": DEFAULT_TURBO_LORA,
+            "model_device": str(model_device), "clip_device": str(clip_device), "vae_device": str(vae_device),
         }
         fingerprint_payload = {
             "project_name": project_name, "master_visual_concept": str(master_visual_concept),
