@@ -50,6 +50,7 @@ DEFAULT_DIFFUSION = r"MiniMax H3\minimax_h3_ref2va_pruned_int8_convrot.safetenso
 DEFAULT_TEXT_ENCODER = r"MiniMax H3\qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
 DEFAULT_VIDEO_VAE = r"MiniMax H3\minimax_h3_video_vae_fp16.safetensors"
 DEFAULT_AUDIO_VAE = r"MiniMax H3\minimax_h3_audio_vae_fp32.safetensors"
+DEFAULT_TURBO_LORA = r"MiniMax H3\minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors"
 
 _AUDIO_EXTENSIONS = {".wav", ".flac", ".mp3", ".m4a", ".aac", ".ogg", ".opus", ".wma", ".aiff", ".aif", ".mp4", ".mkv", ".mov", ".webm"}
 _IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".tif", ".tiff"}
@@ -90,13 +91,16 @@ def _resolve_input(value: str) -> str:
     return path
 
 
-def _required_node_check(spectrum_enabled: bool) -> None:
+def _required_node_check(spectrum_enabled: bool, dual_gpu: bool = False) -> None:
     required = {
         "CLIPLoader", "VAELoader", "UNETLoader", "MiniMaxH3SigmaShift", "MiniMaxH3ReferenceToVideo",
         "RandomNoise", "BasicGuider", "KSamplerSelect", "BasicScheduler", "SamplerCustomAdvanced", "VAEDecode",
+        "LoraLoaderModelOnly",
     }
     if spectrum_enabled:
         required.add("SpectrumApplyMiniMaxH3")
+    if dual_gpu:
+        required.update({"SelectModelDevice", "SelectCLIPDevice", "SelectVAEDevice"})
     missing = sorted(name for name in required if name not in comfy_nodes.NODE_CLASS_MAPPINGS)
     if missing:
         raise RuntimeError(
@@ -165,6 +169,10 @@ def _queue_next_work_item(manifest_path: str) -> str:
 
 
 class DaWH3MusicVideoDirector(io.ComfyNode):
+    NODE_ID = "DaWH3MusicVideoDirector"
+    DISPLAY_NAME = "H3 Complete-Song Music Video Director (One Click)"
+    DUAL_GPU = False
+
     @classmethod
     def define_schema(cls):
         diffusion_options, diffusion_default = _model_options("diffusion_models", DEFAULT_DIFFUSION)
@@ -173,8 +181,8 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
         if DEFAULT_AUDIO_VAE not in vae_options:
             vae_options.append(DEFAULT_AUDIO_VAE)
         return io.Schema(
-            node_id="DaWH3MusicVideoDirector",
-            display_name="H3 Complete-Song Music Video Director (One Click)",
+            node_id=cls.NODE_ID,
+            display_name=cls.DISPLAY_NAME,
             category=CATEGORY,
             description=(
                 "Analyzes a complete song, plans beat-aware shots, renders one MiniMax H3 scene at a time through "
@@ -207,7 +215,7 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
                 io.Boolean.Input("continuity_from_previous_last_frame", default=True, advanced=True),
                 io.Int.Input("width", default=864, min=320, max=2048, step=32, advanced=True),
                 io.Int.Input("height", default=480, min=320, max=2048, step=32, advanced=True),
-                io.Int.Input("steps", default=20, min=1, max=100, advanced=True),
+                io.Int.Input("steps", default=8, min=1, max=100, advanced=True),
                 io.Int.Input("seed", default=314159265358979, min=0, max=0xFFFFFFFFFFFFFFFF, advanced=True),
                 io.Combo.Input("seed_mode", options=["increment per scene", "fixed", "deterministic hash"], default="fixed", advanced=True),
                 io.Boolean.Input("spectrum_enabled", default=True, advanced=True),
@@ -226,8 +234,8 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
                 io.Combo.Input("video_vae", options=vae_options, default=DEFAULT_VIDEO_VAE, advanced=True),
                 io.Combo.Input("audio_vae", options=vae_options, default=DEFAULT_AUDIO_VAE, advanced=True),
                 io.Float.Input("shift_video", default=12.0, min=0.01, max=100.0, step=0.01, advanced=True),
-                io.Float.Input("shift_audio", default=3.0, min=0.01, max=100.0, step=0.01, advanced=True),
-                io.Combo.Input("sampler_name", options=["res_multistep", "euler"], default="res_multistep", advanced=True),
+                io.Float.Input("shift_audio", default=4.0, min=0.01, max=100.0, step=0.01, advanced=True),
+                io.Combo.Input("sampler_name", options=["euler", "res_multistep"], default="euler", advanced=True),
                 io.Combo.Input("scheduler", options=["beta", "normal", "simple"], default="beta", advanced=True),
                 io.Float.Input("spectrum_blend_weight", default=0.50, min=0.0, max=1.0, step=0.01, advanced=True),
                 io.Int.Input("spectrum_degree", default=4, min=1, max=16, advanced=True),
@@ -272,7 +280,7 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
         spectrum_flex_window, spectrum_warmup_steps, spectrum_tail_actual_steps, spectrum_max_history,
         spectrum_history_storage, spectrum_debug, reference_strategy, force_reference_as_first_frame,
     ) -> io.NodeOutput:
-        _required_node_check(bool(spectrum_enabled))
+        _required_node_check(bool(spectrum_enabled), dual_gpu=cls.DUAL_GPU)
         if int(width) % 32 or int(height) % 32:
             raise ValueError("MiniMax H3 width and height must be divisible by 32")
         if not (float(min_scene_seconds) <= float(target_scene_seconds) <= float(max_scene_seconds)):
@@ -299,7 +307,7 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
             "spectrum_window_size": float(spectrum_window_size), "spectrum_flex_window": float(spectrum_flex_window),
             "spectrum_warmup_steps": int(spectrum_warmup_steps), "spectrum_tail_actual_steps": int(spectrum_tail_actual_steps),
             "spectrum_max_history": int(spectrum_max_history), "spectrum_history_storage": str(spectrum_history_storage),
-            "spectrum_debug": bool(spectrum_debug),
+            "spectrum_debug": bool(spectrum_debug), "dual_gpu": cls.DUAL_GPU, "turbo_lora": DEFAULT_TURBO_LORA,
         }
         fingerprint_payload = {
             "project_name": project_name, "master_visual_concept": str(master_visual_concept),
@@ -449,6 +457,12 @@ class DaWH3MusicVideoDirector(io.ComfyNode):
         return float("nan")
 
 
+class DaWH3MusicVideoDirectorDualGPU(DaWH3MusicVideoDirector):
+    NODE_ID = "DaWH3MusicVideoDirectorDualGPU"
+    DISPLAY_NAME = "H3 Complete-Song Music Video Director (Dual GPU · 8188)"
+    DUAL_GPU = True
+
+
 class DaWH3MusicVideoLoadSegment(io.ComfyNode):
     @classmethod
     def define_schema(cls):
@@ -595,7 +609,8 @@ class DaWH3MusicVideoFinalize(io.ComfyNode):
 class DaWastehH3MusicVideoExtension(ComfyExtension):
     async def get_node_list(self):
         return [
-            DaWH3MusicVideoDirector, DaWH3MusicVideoLoadSegment, DaWH3MusicVideoLoadImagePath,
+            DaWH3MusicVideoDirector, DaWH3MusicVideoDirectorDualGPU,
+            DaWH3MusicVideoLoadSegment, DaWH3MusicVideoLoadImagePath,
             DaWH3MusicVideoSaveSegment, DaWH3MusicVideoFinalize,
         ]
 

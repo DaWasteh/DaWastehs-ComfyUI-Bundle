@@ -27,6 +27,7 @@ except Exception:  # FFmpeg fallbacks cover every operation used by this extensi
 H3_FPS = 24.0
 H3_MAX_FRAMES = 3600
 ANALYSIS_SAMPLE_RATE = 12000
+DEFAULT_H3_TURBO_LORA = r"MiniMax H3\minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors"
 
 
 def sanitize_name(value: str, default: str = "Intro_Music_Video") -> str:
@@ -864,6 +865,23 @@ def build_segment_api_prompt(manifest_path: str, segment_index: int, manifest: d
             "max_history": settings["spectrum_max_history"], "debug": settings["spectrum_debug"],
             "history_storage": settings["spectrum_history_storage"],
         }}
+    model_source = ["13", 0]
+    if settings.get("dual_gpu", False):
+        prompt.update({
+            "30": {"class_type": "SelectCLIPDevice", "inputs": {"clip": ["10", 0], "device": "gpu:1"}},
+            "31": {"class_type": "SelectVAEDevice", "inputs": {"vae": ["11", 0], "device": "gpu:1"}},
+            "32": {"class_type": "SelectVAEDevice", "inputs": {"vae": ["12", 0], "device": "gpu:1"}},
+            "33": {"class_type": "SelectModelDevice", "inputs": {"model": ["13", 0], "device": "gpu:0"}},
+        })
+        model_source = ["33", 0]
+        prompt["17"]["inputs"].update({"clip": ["30", 0], "vae": ["31", 0], "audio_vae": ["32", 0]})
+        prompt["22"]["inputs"]["vae"] = ["31", 0]
+    prompt["29"] = {"class_type": "LoraLoaderModelOnly", "inputs": {
+        "model": model_source,
+        "lora_name": settings.get("turbo_lora", DEFAULT_H3_TURBO_LORA),
+        "strength_model": 1.0,
+    }}
+    prompt["14"]["inputs"]["model"] = ["29", 0]
     return prompt
 
 

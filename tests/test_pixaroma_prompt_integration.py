@@ -42,6 +42,14 @@ class PixaromaIntegrationTests(unittest.TestCase):
         self.assertEqual(self.manifest["workflow_count"], 186)
         self.assertEqual(len(manifest_paths), len(set(manifest_paths)))
         self.assertTrue(set(manifest_paths) <= paths)
+        generated_unmanaged = {
+            path for path in paths
+            if path.startswith("workflows/Dual GPU - R9700 + RX 9070 XT/")
+            or path in {
+                "workflows/Prompt Enhancer/MiniMax_H3_Base_FL2VA-Official-Guide-Prompt-Enhancer.json",
+                "workflows/Prompt Enhancer/MiniMax_H3_Ref2VA-Official-Guide-Prompt-Enhancer.json",
+            }
+        }
         self.assertEqual(
             paths - set(manifest_paths),
             {
@@ -92,7 +100,7 @@ class PixaromaIntegrationTests(unittest.TestCase):
                 "workflows/Live Avatar/LiveAvatar-15-Local-High-Realism-VRM.json",
                 "workflows/LoRA Generation/Qwen3-TTS_0.6B-Voice-LoRA-Training.json",
                 "workflows/Voice Design/Qwen3-TTS_LoRA-Low-Latency-Live-Voice.json",
-            },
+            } | generated_unmanaged,
         )
         for entry in self.manifest["entries"]:
             self.assertIn(entry["action"], {"integrate", "skip"})
@@ -171,7 +179,19 @@ class PixaromaIntegrationTests(unittest.TestCase):
             for path in (ROOT / "workflows").rglob("*.json")
             for node in load(path)["nodes"]
         )
-        self.assertEqual(total_marked_prompts, 146)
+        dual_marked_prompts = sum(
+            node.get("properties", {}).get(MARK, {}).get("kind") == "prompt"
+            for path in (ROOT / "workflows" / "Dual GPU - R9700 + RX 9070 XT").glob("*.json")
+            for node in load(path)["nodes"]
+        )
+        h3_enhancer_marked_prompts = sum(
+            node.get("properties", {}).get(MARK, {}).get("kind") == "prompt"
+            for path in (ROOT / "workflows" / "Prompt Enhancer").glob("MiniMax_H3_*Official-Guide-Prompt-Enhancer.json")
+            for node in load(path)["nodes"]
+        )
+        self.assertEqual(dual_marked_prompts, 18)
+        self.assertEqual(h3_enhancer_marked_prompts, 2)
+        self.assertEqual(total_marked_prompts, 146 + dual_marked_prompts + h3_enhancer_marked_prompts)
 
     def test_pause_gates_are_reciprocal_and_have_textgenerate_ancestry(self):
         pause_count = 0

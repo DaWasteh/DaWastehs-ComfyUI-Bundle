@@ -1,8 +1,8 @@
 {
   "id": "abc5d39a-6598-4577-a7a8-c1f51b01a757",
   "revision": 0,
-  "last_node_id": 49,
-  "last_link_id": 41,
+  "last_node_id": 51,
+  "last_link_id": 42,
   "nodes": [
     {
       "id": 1,
@@ -341,7 +341,7 @@
           "name": "MODEL",
           "type": "MODEL",
           "links": [
-            1
+            42
           ]
         }
       ],
@@ -389,9 +389,9 @@
       },
       "widgets_values": [
         12.0,
-        3.0
+        4.0
       ],
-      "title": "MiniMax H3 Sigma Shift — video 12 / audio 3"
+      "title": "MiniMax H3 Sigma Shift — video 12 / audio 4"
     },
     {
       "id": 10,
@@ -544,9 +544,9 @@
         "Node name for S&R": "KSamplerSelect"
       },
       "widgets_values": [
-        "res_multistep"
+        "euler"
       ],
-      "title": "SAMPLER — res_multistep"
+      "title": "SAMPLER — euler"
     },
     {
       "id": 18,
@@ -582,11 +582,11 @@
         "Node name for S&R": "BasicScheduler"
       },
       "widgets_values": [
-        "simple",
-        20,
+        "beta",
+        8,
         1
       ],
-      "title": "SCHEDULER — simple / 20 steps"
+      "title": "SCHEDULER — beta / 8 steps"
     },
     {
       "id": 19,
@@ -1517,7 +1517,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · MiniMax H3 Sigma Shift — video 12 / audio 3 · Node 9",
+      "title": "Erklärung · MiniMax H3 Sigma Shift — video 12 / audio 4 · Node 9",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1525,7 +1525,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · MiniMax H3 Sigma Shift — video 12 / audio 3 · Node 9\n\n**Zweck:** Set the video/audio flow shifts.\n\n**Einstellbare Werte**\n- `shift_video` = `12.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n- `shift_audio` = `3.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · MiniMax H3 Sigma Shift — video 12 / audio 4 · Node 9\n\n**Zweck:** Set the video/audio flow shifts.\n\n**Einstellbare Werte**\n- `shift_video` = `12.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n- `shift_audio` = `4.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1749,7 +1749,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · SAMPLER — res_multistep · Node 17",
+      "title": "Erklärung · SAMPLER — euler · Node 17",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1757,7 +1757,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SAMPLER — res_multistep · Node 17\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `sampler_name` = `res_multistep` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `SAMPLER` (SAMPLER, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SAMPLER — euler · Node 17\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `sampler_name` = `euler` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `SAMPLER` (SAMPLER, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1778,7 +1778,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · SCHEDULER — simple / 20 steps · Node 18",
+      "title": "Erklärung · SCHEDULER — beta / 8 steps · Node 18",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1786,7 +1786,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SCHEDULER — simple / 20 steps · Node 18\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `scheduler` = `simple` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `steps` = `20` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `denoise` = `1` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `SIGMAS` (SIGMAS, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SCHEDULER — beta / 8 steps · Node 18\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `scheduler` = `beta` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `steps` = `8` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `denoise` = `1` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `SIGMAS` (SIGMAS, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1935,12 +1935,105 @@
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
+    },
+    {
+      "id": 50,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -5733.0,
+        -1483.5
+      ],
+      "size": [
+        670,
+        140
+      ],
+      "flags": {},
+      "order": 49,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 42
+        },
+        {
+          "localized_name": "lora_name",
+          "name": "lora_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "lora_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "strength_model",
+          "name": "strength_model",
+          "type": "FLOAT",
+          "widget": {
+            "name": "strength_model"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly",
+        "cnr_id": "comfy-core",
+        "dawasteh_h3_turbo": true
+      },
+      "widgets_values": [
+        "MiniMax H3\\minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors",
+        1.0
+      ],
+      "title": "MiniMax H3 Turbo · v4 Step-600 EMA · 8 Steps",
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 51,
+      "type": "MarkdownNote",
+      "pos": [
+        -5013.0,
+        -1483.5
+      ],
+      "size": [
+        560,
+        430
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · MiniMax H3 Turbo LoRA · Node 50",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 50,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · MiniMax H3 Turbo LoRA · Node 50\n\n**Zweck:** Lädt die empfohlene v4-Step-600-EMA-Turbo-LoRA für die pruned/curve-form MiniMax-H3-ComfyUI-Modelle und reduziert die Sampling-Konfiguration auf acht qualitätsorientierte Schritte.\n\n**Einstellbare Werte**\n- `lora_name` = `MiniMax H3\\minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors` — Kompatibilitätskonvertierung aus `drbaph/MiniMax-H3-Turbo-Lora-ComfyUI`.\n- `strength_model` = `1.0` — Empfohlener Ausgangswert des Autors; niedrigere Werte schwächen, höhere Werte verstärken den Turbo-Effekt.\n\n**Abgestimmte Samplingwerte**\n- 8 Schritte, Euler-Sampler, Beta-Scheduler\n- Video-Sigma-Shift 12, Audio-Sigma-Shift 4\n\n**Eingänge**\n- `model`: MiniMax-H3-Diffusionsmodell vom UNET-Loader.\n\n**Ausgänge**\n- `MODEL`: Mit der Turbo-LoRA gepatchtes Modell für Sigma-Shift, Spectrum und Sampling.\n"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
     }
   ],
   "links": [
     [
       1,
-      8,
+      50,
       0,
       9,
       0,
@@ -2233,6 +2326,14 @@
       14,
       3,
       "IMAGE"
+    ],
+    [
+      42,
+      8,
+      0,
+      50,
+      0,
+      "MODEL"
     ]
   ],
   "groups": [
@@ -2308,10 +2409,24 @@
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 21,
+      "generated_notes": 22,
       "x_scale": 2.45,
       "y_scale": 2.35,
       "gap": 34.0
+    },
+    "dawasteh_h3_turbo_lora": {
+      "version": 1,
+      "lora_name": "MiniMax H3\\minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors",
+      "source": "https://huggingface.co/drbaph/MiniMax-H3-Turbo-Lora-ComfyUI",
+      "sha256": "7098acf3ee75028fd9fcd948f50fcc8d995057fabb76f86bd3ca2c0ffc58e409",
+      "sampling": {
+        "steps": 8,
+        "sampler": "euler",
+        "scheduler": "beta",
+        "shift_video": 12.0,
+        "shift_audio": 4.0
+      },
+      "ref2va_status": "compatible graph integration; Turbo quality with full-reference conditioning remains community/experimental"
     }
   },
   "version": 0.4

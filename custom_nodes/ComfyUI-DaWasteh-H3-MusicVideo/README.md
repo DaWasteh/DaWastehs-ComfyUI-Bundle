@@ -7,23 +7,38 @@ Ein einzelner sichtbarer ComfyUI-Master-Workflow für lange Musikvideos. Der Mas
 - Aktuelles ComfyUI mit nativer MiniMax-H3-Unterstützung (`MiniMaxH3ReferenceToVideo`, `MiniMaxH3SigmaShift`, `VAEDecode`).
 - `ComfyUI-Spectrum-MiniMax-H3`, sofern `spectrum_enabled = true` bleibt.
 - Funktionierendes FFmpeg **und ffprobe**. VideoHelperSuite bringt gewöhnlich ein passendes FFmpeg mit; alternativ beide Programme auf `PATH` legen.
-- Die vier bereits verwendeten Modelle:
+- Die vier H3-Komponenten sowie die v0.8.6-Turbo-LoRA:
 
 ```text
 models/diffusion_models/MiniMax H3/minimax_h3_ref2va_pruned_int8_convrot.safetensors
 models/text_encoders/MiniMax H3/qwen3vl_32b_minimax_h3_int8_convrot.safetensors
 models/vae/MiniMax H3/minimax_h3_video_vae_fp16.safetensors
 models/vae/MiniMax H3/minimax_h3_audio_vae_fp32.safetensors
+models/loras/MiniMax H3/minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors
 ```
+
+Die LoRA stammt aus `drbaph/MiniMax-H3-Turbo-Lora-ComfyUI`, ist die für pruned/curve-form-ComfyUI-Modelle konvertierte v4-Step-600-EMA-Empfehlung und muss den SHA-256-Wert `7098acf3ee75028fd9fcd948f50fcc8d995057fabb76f86bd3ca2c0ffc58e409` besitzen.
 
 ## Installation
 
 1. Den Ordner `ComfyUI-DaWasteh-H3-MusicVideo` nach `L:\ComfyUI\ComfyUI\custom_nodes\` kopieren; oder den beiliegenden PowerShell-Installer ausführen.
 2. ComfyUI vollständig neu starten.
 3. Im Browser `Strg+F5` drücken.
-4. `MiniMax_H3_Complete_Song_to_Music_Video_One_Click_LOCAL.json` laden.
+4. `MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` laden; für beide GPUs stattdessen `MiniMax-H3-DualGPU-Complete-Song-Music-Video-One-Click.json` aus dem Dual-GPU-Ordner verwenden.
 
 Keine zusätzlichen Python-Pakete werden installiert.
+
+## Dual-GPU-Modus auf Port 8188
+
+`DaWH3MusicVideoDirectorDualGPU` ergänzt jeden intern erzeugten Segment-Graphen automatisch um ComfyUIs offizielle Device-Selector-Nodes. Das Diffusionsmodell läuft auf der R9700 (`gpu:0`) und wird dort anschließend mit der Turbo-LoRA gepatcht; Qwen3VL, Video-VAE und Audio-VAE werden auf die RX 9070 XT (`gpu:1`) gelegt. Dafür muss ComfyUI mit beiden sichtbaren HIP-Geräten gestartet sein. Die versionierten Starter liegen unter `tools/start-MultiGPU.ps1` und `tools/start-MultiGPU.bat`; sie können direkt verwendet oder nach `L:\ComfyUI\` kopiert werden.
+
+Die Schritte bleiben seriell und die VRAM-Speicher werden nicht zu einem 48-GB-Pool vereinigt. Die Platzierung reduziert vor allem Modellwechsel und VRAM-Druck auf der R9700.
+
+## Turbo-Samplingprofil · v0.8.6
+
+Alle H3-Workflows verwenden die vom Kompatibilitäts-Repository empfohlene Qualitätskonfiguration: LoRA-Stärke 1,0, 8 Schritte, Euler-Sampler, Beta-Scheduler, Video-Sigma-Shift 12 und Audio-Sigma-Shift 4. Vier Schritte sind schneller, acht Schritte sind für die v4-Step-600-EMA-Konvertierung ausdrücklich als bessere Ausgangskonfiguration empfohlen.
+
+Die LoRA wurde live mit beiden lokalen pruned INT8-ConvRot-Modellen geprüft: FL2VA und Ref2VA luden ohne ungelöste LoRA-Keys und erzeugten über den Dual-GPU-Server jeweils fünf dekodierte Testframes. Ref2VA-Turbo bleibt hinsichtlich Referenztreue eine Community-/Kompatibilitätskombination und sollte für lange Produktionen zuerst mit einem kurzen Referenzsegment geprüft werden.
 
 ## Bedienung
 

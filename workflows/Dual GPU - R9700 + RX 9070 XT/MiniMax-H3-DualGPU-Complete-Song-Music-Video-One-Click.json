@@ -1,15 +1,15 @@
 {
-  "id": "dawasteh-h3-complete-song-music-video",
+  "id": "77db5243-684c-509a-9e1f-f2541707c596",
   "revision": 0,
-  "last_node_id": 4,
+  "last_node_id": 5,
   "last_link_id": 0,
   "nodes": [
     {
       "id": 2,
       "type": "MarkdownNote",
       "pos": [
-        196.0,
-        188.0
+        480.2,
+        441.8
       ],
       "size": [
         610,
@@ -30,10 +30,10 @@
     },
     {
       "id": 1,
-      "type": "DaWH3MusicVideoDirector",
+      "type": "DaWH3MusicVideoDirectorDualGPU",
       "pos": [
-        1886.5,
-        188.0
+        4621.925,
+        441.8
       ],
       "size": [
         720,
@@ -480,7 +480,7 @@
         }
       ],
       "properties": {
-        "Node name for S&R": "DaWH3MusicVideoDirector"
+        "Node name for S&R": "DaWH3MusicVideoDirectorDualGPU"
       },
       "widgets_values": [
         "INTRO_SONG.wav",
@@ -532,14 +532,15 @@
         true
       ],
       "color": "#1d1d1d",
-      "bgcolor": "#2a2a2a"
+      "bgcolor": "#2a2a2a",
+      "title": "H3 Complete-Song Director · Dual GPU · 8188"
     },
     {
       "id": 3,
       "type": "PixaromaRunTimer",
       "pos": [
-        2646.0,
-        -822.5
+        6482.7,
+        -1932.875
       ],
       "size": [
         226,
@@ -571,11 +572,11 @@
       "bgcolor": "#2a2a2a"
     },
     {
-      "id": 4,
+      "id": 5,
       "type": "MarkdownNote",
       "pos": [
-        2652.5,
-        188.0
+        5387.925,
+        441.8
       ],
       "size": [
         390,
@@ -586,7 +587,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · DaWH3MusicVideoDirector · Node 1",
+      "title": "Erklärung · H3 Complete-Song Director · Dual GPU · 8188 · Node 1",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -594,7 +595,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · H3 Complete-Song Music Video Director (One Click) · Node 1\n\n**Zweck:** Analyzes a complete song, plans beat-aware shots, renders one MiniMax H3 scene at a time through the local ComfyUI queue, resumes failures, concatenates every scene, and stream-copies the original audio.\n\n**Einstellbare Werte**\n- `song` = `INTRO_SONG.wav` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `reference_image` = `NONE — audio + text only` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `project_name` = `Intro_Music_Video` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `master_visual_concept` = `A cinematic streamer intro music video. A recurring protagonist moves through an evolving science-fiction wor…` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lyrics_or_story_optional` = `` — Optional plain lyrics/story, or timestamped LRC-style lines such as [01:23.45] text. Rhythm analysis alone cannot infer lyrical meaning. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `scene_prompt_planner` = `automatic audio analysis` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `target_scene_seconds` = `10.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `min_scene_seconds` = `7.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `max_scene_seconds` = `13.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `continuity_from_previous_last_frame` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `width` = `864` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `480` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `steps` = `8` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `seed` = `314159265358979` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `seed_mode` = `fixed` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `spectrum_enabled` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `segment_crf` = `14.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `final_crf_fallback` = `18.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `video_preset` = `medium` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `output_container` = `mkv` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `resume_existing` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `force_rebuild` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `local_llm_base_url` = `http://127.0.0.1:8080/v1` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `local_llm_model` = `` — Steuert diesen Parameter. Ein anderer kompatibler Eintrag wechselt Modell/Adapter und verändert Stil, Qualität und Speicherbedarf.\n- `local_llm_timeout` = `180.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `server_address` = `127.0.0.1:8188` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `diffusion_model` = `MiniMax H3\\minimax_h3_ref2va_pruned_int8_convrot.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `text_encoder` = `MiniMax H3\\qwen3vl_32b_minimax_h3_int8_convrot.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `video_vae` = `MiniMax H3\\minimax_h3_video_vae_fp16.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `audio_vae` = `MiniMax H3\\minimax_h3_audio_vae_fp32.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `shift_video` = `12.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n- `shift_audio` = `4.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n- `sampler_name` = `euler` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `scheduler` = `beta` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `spectrum_blend_weight` = `0.5` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n- `spectrum_degree` = `4` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `spectrum_ridge_lambda` = `0.1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `spectrum_window_size` = `2.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `spectrum_flex_window` = `0.75` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `spectrum_warmup_steps` = `5` — Steuert diesen Parameter. Höher fährt die Lernrate länger sanft hoch und stabilisiert den Start, verkürzt aber die volle Lernphase; niedriger erreicht die Ziel-Lernrate früher.\n- `spectrum_tail_actual_steps` = `1` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `spectrum_max_history` = `8` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `spectrum_history_storage` = `system_ram` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `spectrum_debug` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `reference_strategy` = `identity lock (recommended)` — Identity lock sends only the original reference to every scene and avoids recursive character drift. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `force_reference_as_first_frame` = `True` — For scene 1, replace the generated first frame with a contained, uncropped copy of the selected reference image. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `song` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_image` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `project_name` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `master_visual_concept` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics_or_story_optional` (STRING, nicht verbunden): Optional plain lyrics/story, or timestamped LRC-style lines such as [01:23.45] text. Rhythm analysis alone cannot infer lyrical meaning.\n- `scene_prompt_planner` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `min_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `continuity_from_previous_last_frame` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `width` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed_mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_enabled` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `segment_crf` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `final_crf_fallback` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video_preset` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output_container` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resume_existing` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `force_rebuild` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_base_url` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_model` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_timeout` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `server_address` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `diffusion_model` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text_encoder` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video_vae` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio_vae` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_video` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_audio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_blend_weight` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_degree` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_ridge_lambda` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_window_size` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_flex_window` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_warmup_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_tail_actual_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_max_history` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_history_storage` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_debug` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_strategy` (COMBO, nicht verbunden): Identity lock sends only the original reference to every scene and avoids recursive character drift.\n- `force_reference_as_first_frame` (BOOLEAN, nicht verbunden): For scene 1, replace the generated first frame with a contained, uncropped copy of the selected reference image.\n\n**Ausgänge**\n- `manifest_path` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `expected_final_file` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · H3 Complete-Song Director · Dual GPU · 8188 · Node 1\n\n**Zweck:** Lädt, erzeugt oder verarbeitet Videodaten und deren Frames.\n\n**Einstellbare Werte**\n- `value` = `INTRO_SONG.wav` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `song` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_image` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `project_name` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `master_visual_concept` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics_or_story_optional` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_prompt_planner` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `min_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `continuity_from_previous_last_frame` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `width` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed_mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_enabled` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `segment_crf` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `final_crf_fallback` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video_preset` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output_container` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resume_existing` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `force_rebuild` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_base_url` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_model` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `local_llm_timeout` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `server_address` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `diffusion_model` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text_encoder` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video_vae` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio_vae` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_video` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_audio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_blend_weight` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_degree` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_ridge_lambda` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_window_size` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_flex_window` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_warmup_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_tail_actual_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_max_history` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_history_storage` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `spectrum_debug` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_strategy` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `force_reference_as_first_frame` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `manifest_path` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `expected_final_file` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -611,13 +612,6 @@
         20
       ]
     },
-    "dawasteh_workflow_refinement": {
-      "version": 1,
-      "generated_notes": 1,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
-    },
     "dawasteh_h3_turbo_lora": {
       "version": 1,
       "lora_name": "MiniMax H3\\minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors",
@@ -631,6 +625,23 @@
         "shift_audio": 4.0
       },
       "ref2va_status": "compatible graph integration; Turbo quality with full-reference conditioning remains community/experimental"
+    },
+    "dawasteh_dual_gpu": {
+      "version": 1,
+      "family": "MiniMax H3",
+      "source": "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
+      "clip_vae_device": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
+      "execution": "device placement; ComfyUI still executes graph stages sequentially"
+    },
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 1,
+      "x_scale": 2.45,
+      "y_scale": 2.35,
+      "gap": 34.0
     }
   },
   "version": 0.4

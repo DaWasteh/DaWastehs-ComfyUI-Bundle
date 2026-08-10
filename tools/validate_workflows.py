@@ -11,8 +11,14 @@ import sys
 from pathlib import Path
 from typing import Any, Iterable
 
-from refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
-from integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
+try:
+    from tools.refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
+    from tools.integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
+    from tools.integrate_h3_turbo_lora import DIRECTOR_WORKFLOW, VISIBLE_WORKFLOWS, integrate_director, integrate_visible
+except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows.py
+    from refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
+    from integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
+    from integrate_h3_turbo_lora import DIRECTOR_WORKFLOW, VISIBLE_WORKFLOWS, integrate_director, integrate_visible
 
 BLACKLIST = ("cudaexecutionprovider", "nunchaku", "svdq", "nvfp4", "tensorrt", "xformers", "flash_attn")
 INTEGRATION_MARKER = "dawasteh_pixaroma_prompt_integration"
@@ -113,15 +119,30 @@ def link_id(entry: Any) -> Any:
 
 
 def endpoints(entry: Any) -> tuple[Any, Any]:
+    origin, _, target, _, _ = connection(entry)
+    return origin, target
+
+
+def connection(entry: Any) -> tuple[Any, Any, Any, Any, Any]:
     if isinstance(entry, list) and len(entry) >= 5:
-        return entry[1], entry[3]
+        return entry[1], entry[2], entry[3], entry[4], entry[5] if len(entry) > 5 else None
     if isinstance(entry, dict):
         origin = entry.get("origin_id", entry.get("originId", entry.get("from", entry.get("source"))))
         target = entry.get("target_id", entry.get("targetId", entry.get("to", entry.get("target"))))
         if isinstance(origin, dict): origin = origin.get("node_id", origin.get("nodeId", origin.get("id")))
         if isinstance(target, dict): target = target.get("node_id", target.get("nodeId", target.get("id")))
-        return origin, target
-    return None, None
+        origin_slot = entry.get("origin_slot", entry.get("originSlot", entry.get("source_slot", entry.get("sourceSlot"))))
+        target_slot = entry.get("target_slot", entry.get("targetSlot"))
+        return origin, origin_slot, target, target_slot, entry.get("type")
+    return None, None, None, None, None
+
+
+def _compatible_link_type(slot_type: Any, link_type: Any) -> bool:
+    if slot_type in (None, "*") or link_type in (None, "*"):
+        return True
+    slot_types = {value.strip() for value in str(slot_type).split(",")}
+    link_types = {value.strip() for value in str(link_type).split(",")}
+    return bool(slot_types.intersection(link_types))
 
 
 def rect(node: dict[str, Any]) -> tuple[float, float, float, float]:
@@ -148,8 +169,13 @@ def validate_graph(path: Path, locator: str, graph: dict[str, Any], errors: list
     if len(ids) != len(set(ids)):
         errors.append(f"{path}:{locator}: duplicate node IDs")
     numeric = [i for i in ids if isinstance(i, int)]
-    if numeric and int(graph.get("last_node_id", -1)) < max(numeric):
+    is_subgraph = locator != "root"
+    if "last_node_id" not in graph:
+        errors.append(f"{path}:{locator}: last_node_id missing")
+    elif numeric and int(graph.get("last_node_id", -1)) < max(numeric):
         errors.append(f"{path}:{locator}: last_node_id below maximum")
+    if is_subgraph and not isinstance(graph.get("state"), dict):
+        errors.append(f"{path}:{locator}: subgraph state missing")
 
     targets = [n for n in nodes if is_target(n) and not n.get("properties", {}).get("dawasteh_generated_note")]
     notes = [n for n in nodes if n.get("properties", {}).get("dawasteh_generated_note")]
@@ -177,25 +203,91 @@ def validate_graph(path: Path, locator: str, graph: dict[str, Any], errors: list
     if len(link_ids) != len(set(link_ids)):
         errors.append(f"{path}:{locator}: duplicate link IDs")
     known_links = set(link_ids)
+    numeric_links = [value for value in link_ids if isinstance(value, int)]
+    if not is_subgraph and "last_link_id" not in graph:
+        errors.append(f"{path}:{locator}: last_link_id missing")
+    elif "last_link_id" in graph and numeric_links and int(graph.get("last_link_id", -1)) < max(numeric_links):
+        errors.append(f"{path}:{locator}: last_link_id below maximum")
+    state = graph.get("state")
+    if isinstance(state, dict):
+        if "lastNodeId" not in state:
+            errors.append(f"{path}:{locator}: state.lastNodeId missing")
+        elif numeric and int(state.get("lastNodeId", -1)) < max(numeric):
+            errors.append(f"{path}:{locator}: state.lastNodeId below maximum")
+        if "lastLinkId" not in state:
+            errors.append(f"{path}:{locator}: state.lastLinkId missing")
+        elif numeric_links and int(state.get("lastLinkId", -1)) < max(numeric_links):
+            errors.append(f"{path}:{locator}: state.lastLinkId below maximum")
     node_ids = set(ids)
-    interface_ids = set()
-    for key in ("inputNode", "outputNode"):
-        interface = graph.get(key)
-        if isinstance(interface, dict):
-            interface_ids.add(interface.get("id"))
-    allowed_nodes = node_ids | interface_ids | {None}
+    nodes_by_id = {node.get("id"): node for node in nodes}
+    input_interface = graph.get("inputNode") if isinstance(graph.get("inputNode"), dict) else None
+    output_interface = graph.get("outputNode") if isinstance(graph.get("outputNode"), dict) else None
+    input_interface_id = input_interface.get("id") if input_interface else None
+    output_interface_id = output_interface.get("id") if output_interface else None
+    interface_ids = {value for value in (input_interface_id, output_interface_id) if value is not None}
+    allowed_nodes = node_ids | interface_ids
+    entries_by_id = {link_id(entry): entry for entry in entries}
     for entry in entries:
-        origin, target = endpoints(entry)
+        lid = link_id(entry)
+        origin, origin_slot, target, target_slot, linked_type = connection(entry)
+        if linked_type in (None, ""):
+            errors.append(f"{path}:{locator}: link {lid} type missing")
         if origin not in allowed_nodes or target not in allowed_nodes:
-            errors.append(f"{path}:{locator}: link {link_id(entry)} endpoint missing ({origin}->{target})")
+            errors.append(f"{path}:{locator}: link {lid} endpoint missing ({origin}->{target})")
+            continue
+        if origin == output_interface_id:
+            errors.append(f"{path}:{locator}: link {lid} cannot originate at outputNode")
+        elif origin == input_interface_id:
+            graph_inputs = graph.get("inputs", []) or []
+            if not isinstance(origin_slot, int) or not 0 <= origin_slot < len(graph_inputs):
+                errors.append(f"{path}:{locator}: link {lid} inputNode source slot missing ({origin_slot})")
+            elif not _compatible_link_type(graph_inputs[origin_slot].get("type"), linked_type):
+                errors.append(f"{path}:{locator}: link {lid} inputNode type mismatch")
+        if target == input_interface_id:
+            errors.append(f"{path}:{locator}: link {lid} cannot target inputNode")
+        elif target == output_interface_id:
+            graph_outputs = graph.get("outputs", []) or []
+            if not isinstance(target_slot, int) or not 0 <= target_slot < len(graph_outputs):
+                errors.append(f"{path}:{locator}: link {lid} outputNode target slot missing ({target_slot})")
+            elif not _compatible_link_type(graph_outputs[target_slot].get("type"), linked_type):
+                errors.append(f"{path}:{locator}: link {lid} outputNode type mismatch")
+        if origin in nodes_by_id:
+            outputs = nodes_by_id[origin].get("outputs", []) or []
+            if not isinstance(origin_slot, int) or not 0 <= origin_slot < len(outputs):
+                errors.append(f"{path}:{locator}: link {lid} source slot missing ({origin}:{origin_slot})")
+            else:
+                output = outputs[origin_slot]
+                if lid not in (output.get("links") or []):
+                    errors.append(f"{path}:{locator}: link {lid} absent from source output ({origin}:{origin_slot})")
+                if not _compatible_link_type(output.get("type"), linked_type):
+                    errors.append(f"{path}:{locator}: link {lid} source type mismatch ({output.get('type')} != {linked_type})")
+        if target in nodes_by_id:
+            inputs = nodes_by_id[target].get("inputs", []) or []
+            if not isinstance(target_slot, int) or not 0 <= target_slot < len(inputs):
+                errors.append(f"{path}:{locator}: link {lid} target slot missing ({target}:{target_slot})")
+            else:
+                input_slot = inputs[target_slot]
+                if input_slot.get("link") != lid:
+                    errors.append(f"{path}:{locator}: link {lid} absent from target input ({target}:{target_slot})")
+                if not _compatible_link_type(input_slot.get("type"), linked_type):
+                    errors.append(f"{path}:{locator}: link {lid} target type mismatch ({input_slot.get('type')} != {linked_type})")
     for node in nodes:
-        for inp in node.get("inputs", []) or []:
-            if inp.get("link") is not None and inp.get("link") not in known_links:
-                errors.append(f"{path}:{locator}: node {node.get('id')} input link {inp.get('link')} missing")
-        for out in node.get("outputs", []) or []:
+        for slot, inp in enumerate(node.get("inputs", []) or []):
+            lid = inp.get("link")
+            if lid is not None and lid not in known_links:
+                errors.append(f"{path}:{locator}: node {node.get('id')} input link {lid} missing")
+            elif lid is not None:
+                _, _, target, target_slot, _ = connection(entries_by_id[lid])
+                if (target, target_slot) != (node.get("id"), slot):
+                    errors.append(f"{path}:{locator}: node {node.get('id')} input {slot} is not reciprocal with link {lid}")
+        for slot, out in enumerate(node.get("outputs", []) or []):
             for lid in out.get("links") or []:
                 if lid not in known_links:
                     errors.append(f"{path}:{locator}: node {node.get('id')} output link {lid} missing")
+                else:
+                    origin, origin_slot, _, _, _ = connection(entries_by_id[lid])
+                    if (origin, origin_slot) != (node.get("id"), slot):
+                        errors.append(f"{path}:{locator}: node {node.get('id')} output {slot} is not reciprocal with link {lid}")
 
     # Every node rectangle must be collision-free. Touching edges is allowed.
     rects = [(n.get("id"), rect(n)) for n in nodes]
@@ -459,6 +551,20 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
             sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head)),
             sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
         )
+    if current.get("extra", {}).get("dawasteh_h3_turbo_lora", {}).get("version") == 1:
+        expected = copy.deepcopy(head)
+        if path.name == DIRECTOR_WORKFLOW:
+            integrate_director(expected)
+        elif path.name in VISIBLE_WORKFLOWS:
+            integrate_visible(expected, path.name)
+        else:
+            errors.append(f"{path}: unexpected H3 Turbo migration target")
+        if expected != current:
+            errors.append(f"{path}: differs from the deterministic H3 Turbo migration")
+        return (
+            sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head)),
+            sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
+        )
     head_graphs = dict(graph_locator(head))
     current_graphs = dict(graph_locator(current))
     if set(head_graphs) != set(current_graphs):
@@ -586,7 +692,7 @@ def main() -> int:
                 errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    expected = {"files": 233, "graphs": 279, "nodes": 8126, "notes": 3366, "links": 5667, "timers": 216}
+    expected = {"files": 256, "graphs": 307, "nodes": 9100, "notes": 3811, "links": 6261, "timers": 239}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

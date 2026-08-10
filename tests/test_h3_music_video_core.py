@@ -28,11 +28,13 @@ class H3WorkflowSerializationTests(unittest.TestCase):
         values = director["widgets_values"]
         input_names = [entry["name"] for entry in director["inputs"]]
         self.assertEqual(input_names[-2:], ["reference_strategy", "force_reference_as_first_frame"])
+        self.assertEqual(values[12], 8)
         self.assertEqual(values[13], 314159265358979)
         self.assertEqual(values[14], "fixed")
         self.assertEqual(values[15], "fixed")
         self.assertIs(values[16], True)
         self.assertEqual(values[17:21], [14.0, 18.0, "medium", "mkv"])
+        self.assertEqual(values[31:35], [12.0, 4.0, "euler", "beta"])
         self.assertEqual(values[-2:], ["identity lock (recommended)", True])
 
 
@@ -130,6 +132,39 @@ class H3MusicVideoCoreTests(unittest.TestCase):
         self.assertNotIn("3", prompt)
         reference_inputs = [name for name in prompt["17"]["inputs"] if name.startswith("ref_images.")]
         self.assertEqual(reference_inputs, ["ref_images.ref_image_0"])
+
+    def test_dual_gpu_child_prompt_routes_model_clip_and_vaes(self):
+        settings = {
+            "text_encoder": "text.safetensors", "video_vae": "video.safetensors",
+            "audio_vae": "audio.safetensors", "diffusion_model": "model.safetensors",
+            "shift_video": 12.0, "shift_audio": 3.0, "width": 480, "height": 864,
+            "ref_image_size": "match", "sampler_name": "res_multistep", "scheduler": "beta",
+            "steps": 20, "spectrum_enabled": False, "continuity": False,
+            "reference_strategy": self.core.IDENTITY_LOCK, "dual_gpu": True,
+        }
+        manifest = {
+            "settings": settings,
+            "reference_image_path": None,
+            "segments": [
+                {"h3_frames": 22, "target_frames": 20, "prompt": "first", "seed": 1, "continuity_path": "first-last.png"},
+            ],
+        }
+        prompt = self.core.build_segment_api_prompt("manifest.json", 0, manifest)
+        self.assertEqual(prompt["30"], {"class_type": "SelectCLIPDevice", "inputs": {"clip": ["10", 0], "device": "gpu:1"}})
+        self.assertEqual(prompt["31"]["inputs"]["device"], "gpu:1")
+        self.assertEqual(prompt["32"]["inputs"]["device"], "gpu:1")
+        self.assertEqual(prompt["33"], {"class_type": "SelectModelDevice", "inputs": {"model": ["13", 0], "device": "gpu:0"}})
+        self.assertEqual(prompt["29"]["class_type"], "LoraLoaderModelOnly")
+        self.assertEqual(prompt["29"]["inputs"], {
+            "model": ["33", 0],
+            "lora_name": self.core.DEFAULT_H3_TURBO_LORA,
+            "strength_model": 1.0,
+        })
+        self.assertEqual(prompt["14"]["inputs"]["model"], ["29", 0])
+        self.assertEqual(prompt["17"]["inputs"]["clip"], ["30", 0])
+        self.assertEqual(prompt["17"]["inputs"]["vae"], ["31", 0])
+        self.assertEqual(prompt["17"]["inputs"]["audio_vae"], ["32", 0])
+        self.assertEqual(prompt["22"]["inputs"]["vae"], ["31", 0])
 
     def test_encoder_forces_canonical_reference_as_first_frame(self):
         import av
