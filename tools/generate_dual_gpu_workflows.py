@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate one curated ComfyUI dual-GPU workflow per supported model family.
+"""Generate curated ComfyUI dual-GPU workflows for supported model families.
 
 The generated workflows target the Windows ROCm/HIP order used on Pandaking:
 
@@ -67,6 +67,16 @@ FAMILIES = (
         "Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
         "MiniMax-H3-DualGPU-Complete-Song-Music-Video-One-Click.json",
         h3_director=True,
+    ),
+    Family(
+        "MiniMax H3 FL2VA · open inputs",
+        "Reference to Video/MiniMax_H3_Spectrum_FL2VA_All_Supported_Inputs.json",
+        "MiniMax-H3-FL2VA-DualGPU-All-Supported-Inputs.json",
+    ),
+    Family(
+        "MiniMax H3 Ref2VA · open references",
+        "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json",
+        "MiniMax-H3-Ref2VA-DualGPU-All-Reference-Inputs.json",
     ),
 )
 

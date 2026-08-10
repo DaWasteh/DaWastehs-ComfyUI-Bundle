@@ -76,6 +76,8 @@ Enthalten sind je ein kuratierter Workflow für:
 19. ACE-Step 1.5
 20. Stable Audio 3
 21. MiniMax H3 Complete-Song One-Click
+22. MiniMax H3 FL2VA · offene Eingaben
+23. MiniMax H3 Ref2VA · offene Referenzen
 
 Normale Graphen enthalten direkt:
 
@@ -84,6 +86,28 @@ Normale Graphen enthalten direkt:
 - `Select VAE Device` mit `gpu:1`
 
 Wenn ein Modell zwei Diffusionsloader besitzt, etwa WAN 2.2 oder Ideogram 4, erhält jeder Loader einen eigenen `Select Model Device`-Node.
+
+## Offene MiniMax-H3-Workflows · v0.8.7
+
+Neben dem spezialisierten Musik-Director enthält der Dual-GPU-Ordner jetzt zwei direkt ausführbare H3-Arbeitsgraphen:
+
+```text
+MiniMax-H3-FL2VA-DualGPU-All-Supported-Inputs.json
+MiniMax-H3-Ref2VA-DualGPU-All-Reference-Inputs.json
+```
+
+Die FL2VA-Variante behält Prompt, First Frame, Last Frame, Auflösung und Länge offen. Die Ref2VA-Variante stellt weiterhin alle neun Bildreferenzen, drei Videoreferenzen, drei zugehörige Video-Audios, drei eigenständige Audio-Referenzen, Prompt, Auflösung, Länge und `ref_image_size=match` bereit. Nicht benötigte Referenz-Slots können wie im Quellworkflow unverbunden bleiben.
+
+Beide Graphen verwenden sichtbar und ohne internen Director:
+
+```text
+UNETLoader -> SelectModelDevice gpu:0 -> H3 Turbo LoRA -> Sigma Shift -> Spectrum/Sampling
+CLIPLoader -> SelectCLIPDevice gpu:1 -> H3 Conditioning
+Video VAE  -> SelectVAEDevice gpu:1 -> Conditioning + Decode
+Audio VAE  -> SelectVAEDevice gpu:1 -> Ref2VA/Audio Decode
+```
+
+Damit eignen sie sich für normale Bild-/Keyframe-, Charakter-, Objekt-, Bewegungs-, Kamera-, Video- und Audio-Referenzaufgaben, ohne dass ein kompletter Song oder die serielle Segmentplanung des Directors erforderlich ist.
 
 ## MiniMax H3 Complete-Song
 
@@ -110,7 +134,7 @@ YuE, HeartMuLa, MOSS-TTS, Qwen-TTS und ähnliche Custom-Nodes geben keine standa
 
 ## Regeneration und Prüfung
 
-Die 21 Dateien sind deterministisch generiert:
+Die 23 Dateien sind deterministisch generiert:
 
 ```powershell
 python tools/generate_dual_gpu_workflows.py

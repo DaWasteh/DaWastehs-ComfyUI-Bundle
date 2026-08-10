@@ -4,6 +4,7 @@ import copy
 import json
 import tempfile
 import unittest
+from collections import Counter
 from pathlib import Path
 
 from tools.generate_dual_gpu_workflows import FAMILIES, generate
@@ -84,6 +85,49 @@ class DualGPUWorkflowTests(unittest.TestCase):
                         target = link[3] if isinstance(link, list) else link["target_id"]
                         self.assertIn(source, node_ids)
                         self.assertIn(target, node_ids)
+
+    def test_open_h3_variants_preserve_inputs_and_route_model_before_lora(self):
+        cases = {
+            "MiniMax-H3-FL2VA-DualGPU-All-Supported-Inputs.json": {
+                "source": "MiniMax_H3_Spectrum_FL2VA_All_Supported_Inputs.json",
+                "conditioning": "MiniMaxH3ImageToVideo",
+                "required_inputs": {"first_frame", "last_frame", "prompt", "width", "height", "length"},
+            },
+            "MiniMax-H3-Ref2VA-DualGPU-All-Reference-Inputs.json": {
+                "source": "MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json",
+                "conditioning": "MiniMaxH3ReferenceToVideo",
+                "required_inputs": {"ref_images.ref_image_8", "ref_videos.ref_video_2", "ref_video_audios.ref_video_audio_2", "ref_audios.ref_audio_2", "prompt", "width", "height", "length"},
+            },
+        }
+        for output, spec in cases.items():
+            with self.subTest(workflow=output):
+                workflow = json.loads((GENERATED / output).read_text(encoding="utf-8"))
+                source = json.loads((ROOT / "workflows" / "Reference to Video" / spec["source"]).read_text(encoding="utf-8"))
+                executable = lambda data: Counter(
+                    node["type"] for node in data["nodes"]
+                    if node["type"] not in SELECTORS | {"MarkdownNote", "PixaromaRunTimer"}
+                )
+                self.assertEqual(executable(workflow), executable(source))
+
+                by_id = {node["id"]: node for node in workflow["nodes"]}
+                links = {link[0]: link for link in workflow["links"]}
+                unet = next(node for node in by_id.values() if node["type"] == "UNETLoader")
+                model_selector = next(node for node in by_id.values() if node["type"] == "SelectModelDevice")
+                lora = next(node for node in by_id.values() if node["type"] == "LoraLoaderModelOnly")
+                sigma = next(node for node in by_id.values() if node["type"] == "MiniMaxH3SigmaShift")
+                self.assertEqual((links[model_selector["inputs"][0]["link"]][1], links[model_selector["inputs"][0]["link"]][3]), (unet["id"], model_selector["id"]))
+                self.assertEqual((links[lora["inputs"][0]["link"]][1], links[lora["inputs"][0]["link"]][3]), (model_selector["id"], lora["id"]))
+                self.assertEqual((links[sigma["inputs"][0]["link"]][1], links[sigma["inputs"][0]["link"]][3]), (lora["id"], sigma["id"]))
+                self.assertEqual(lora["widgets_values"][1], 1.0)
+                self.assertEqual(sigma["widgets_values"], [12.0, 4.0])
+                scheduler = next(node for node in by_id.values() if node["type"] == "BasicScheduler")
+                sampler = next(node for node in by_id.values() if node["type"] == "KSamplerSelect")
+                self.assertEqual(scheduler["widgets_values"][:2], ["beta", 8])
+                self.assertEqual(sampler["widgets_values"], ["euler"])
+
+                conditioning = next(node for node in by_id.values() if node["type"] == spec["conditioning"])
+                self.assertTrue(spec["required_inputs"].issubset({item["name"] for item in conditioning["inputs"]}))
+                self.assertEqual(conditioning["widgets_values"][-1], "match" if spec["conditioning"] == "MiniMaxH3ReferenceToVideo" else 124)
 
     def test_custom_model_objects_remain_excluded(self):
         sources = {family.source for family in FAMILIES}

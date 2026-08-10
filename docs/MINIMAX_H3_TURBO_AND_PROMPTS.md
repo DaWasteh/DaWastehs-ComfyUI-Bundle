@@ -70,6 +70,17 @@ models/diffusion_models/MiniMax H3/minimax_h3_ref2va_pruned_int8_convrot.safeten
 
 Die LoRA-Konvertierung passt strukturell zu beiden pruned Modellen. FL2VA ist der klar dokumentierte Beispielpfad des LoRA-Repositories. Ref2VA lädt und sampelt lokal erfolgreich, seine Referenztreue mit Turbo bleibt jedoch eine Community-/Kompatibilitätskombination. Vor langen Ref2VA-Jobs ist deshalb ein kurzes reales Referenzsegment sinnvoll.
 
+## Offene Dual-GPU-Graphen · v0.8.7
+
+Zusätzlich zum Complete-Song-Director werden zwei normale, direkt editierbare Multi-GPU-Workflows ausgeliefert:
+
+```text
+workflows/Dual GPU - R9700 + RX 9070 XT/MiniMax-H3-FL2VA-DualGPU-All-Supported-Inputs.json
+workflows/Dual GPU - R9700 + RX 9070 XT/MiniMax-H3-Ref2VA-DualGPU-All-Reference-Inputs.json
+```
+
+FL2VA stellt First/Last Frame und alle üblichen Generierungsparameter bereit. Ref2VA bewahrt die komplette offene Referenzmatrix des Quellworkflows mit neun Bildern, drei Videos, den zugehörigen Video-Audios und drei eigenständigen Audio-Referenzen. Beide platzieren das Diffusionsmodell vor der Turbo-LoRA auf `gpu:0` sowie Qwen3VL und beide VAEs auf `gpu:1`.
+
 ## Live-Prüfung auf beiden AMD-GPUs
 
 Geprüft wurde mit einem ComfyUI-Prozess auf Port 8188:
@@ -84,8 +95,10 @@ Ergebnisse:
 
 - FL2VA + Turbo-LoRA + 8 Schritte: erfolgreich, fünf Frames bei 320×320 dekodiert und gespeichert.
 - Ref2VA + Turbo-LoRA + 8 Schritte: erfolgreich, fünf Frames bei 320×320 dekodiert und gespeichert.
-- Beide LoRA-Loader-Pfade liefen ohne `lora key not loaded`-Warnung.
-- Modell und Sampling lagen auf `gpu:0`; CLIP und VAEs wurden über die offiziellen Selector-Nodes nach `gpu:1` tiefgeklont.
+- v0.8.7 FL2VA Open: mit zwei echten lokalen First-/Last-Frame-PNGs über den sichtbaren Dual-GPU-Graphen erfolgreich bis zu fünf Frames ausgeführt.
+- v0.8.7 Ref2VA Open: mit einer echten lokalen Bildreferenz über den sichtbaren Dual-GPU-Graphen erfolgreich bis zu fünf Frames ausgeführt.
+- Alle LoRA-Loader-Pfade liefen ohne `lora key not loaded`-Warnung.
+- Modell und Sampling lagen auf `gpu:0`; Qwen3VL, Video-VAE und beim Ref2VA-Lauf Audio-VAE wurden nachweislich als Deepclone auf `gpu:1` erzeugt.
 
 Die kleinen 5-Frame-Läufe prüfen Laden, LoRA-Kompatibilität, Dual-GPU-Platzierung, Conditioning, acht Sampling-Schritte und VAE-Decoding. Sie ersetzen keine visuelle Langzeitabnahme eines vollständigen 8–15-Sekunden-Clips.
 
