@@ -1,4 +1,4 @@
-# DaWasteh – konsolidierte ComfyUI-Workflows · v0.8.8
+# DaWasteh – konsolidierte ComfyUI-Workflows · v0.8.9
 
 Dieser Ordner ist jetzt der **kuratierte Hauptordner** für die lokalen Workflows auf Windows 11 mit:
 
@@ -19,6 +19,7 @@ Der maschinenlesbare Abschluss-Audit liegt hier:
 
 - **258 kuratierte Workflow-Dateien** in 31 Kategorien
 - **23 zusätzliche Dual-GPU-Workflows** für einen gemeinsamen ComfyUI-Server auf Port 8188: Jeder besitzt ab v0.8.8 genau einen zentralen `DaW Multi-GPU Device Control`-Node mit getrennten MODEL-, CLIP- und VAE-Dropdowns; voreingestellt sind R9700 (`gpu:0`) für Diffusion sowie RX 9070 XT (`gpu:1`) für CLIP/Textencoder und VAEs
+- **v0.8.9: inkrementeller Windows-Updater** unter `tools/update-comfyui-rdna4.ps1`: Er verwendet ausschließlich den echten Klon `L:/GitHub/DaWastehs-ComfyUI-Bundle`, kopiert eigene Workflows und Nodes nur bei geändertem SHA-256-Inhalt, entfernt nur zuvor manifestierte Dateien und erzeugt keine zweite Repository-Kopie mehr
 - **alle 9 MiniMax-H3-Quellworkflows und 3 daraus abgeleitete H3-Dual-GPU-Varianten** verwenden die empfohlene pruned-ComfyUI-Turbo-LoRA `v4 step-600 EMA` mit dem qualitätsorientierten Profil aus 8 Schritten, Euler, Beta, Video-Sigma 12 und Audio-Sigma 4; FL2VA und Ref2VA wurden auf beiden GPUs live bis zum dekodierten 5-Frame-Ergebnis geprüft
 - **2 MiniMax-Guide-basierte H3-Prompt-Enhancer** setzen die vom Nutzer als MiniMax-Ausgabe bereitgestellten Regeln getrennt für Base/FL2VA und Ref2VA um; ein deterministischer Regex-Abschluss entfernt regelwidrige Shot-1-Zeitstempel auch dann, wenn das lokale 4B-LLM sie erzeugt
 - **146 Pixaroma Prompt**-Eingaben in 117 gezielt ausgewählten Workflows sowie **9 Pause Text**-Freigaben; insgesamt wurden 120 Workflows sinnvoll erweitert
@@ -49,6 +50,22 @@ Der maschinenlesbare Abschluss-Audit liegt hier:
 - exakte und funktionale Tutorial-Duplikate nicht erneut übernommen
 - NVIDIA-/CUDA-exklusive Varianten durch lokale AMD-taugliche Varianten ersetzt oder ausgelassen
 - vorhandene Modell- und Input-Referenzen auf die lokale Installation angepasst
+
+## Inkrementelles Update · v0.8.9
+
+Die versionierten Startdateien `tools/update-comfyui-rdna4.ps1` und `tools/update-comfyui-rdna4.bat` gehören nach `L:/ComfyUI/`. Der Batch-Aufruf bleibt unverändert; vor dem Update müssen die ComfyUI-Server auf Port 8188 und 8189 beendet sein.
+
+Der Updater verwendet jetzt den vorhandenen Hauptklon `L:/GitHub/DaWastehs-ComfyUI-Bundle` direkt. Dieser Klon muss vor und nach dem Fast-Forward-Pull sauber sein, damit ausschließlich der eindeutig zu `HEAD` gehörende Inhalt verteilt wird. Der frühere Nebenklon `L:/GitHub/DaWasteh ComfyUI Nodes` wird nicht mehr erzeugt; ein vorhandener alter Klon wird nur dann automatisch entfernt, wenn sein Remote eindeutig dem früheren Repository entspricht und sein Arbeitsbaum einschließlich ungetrackter und ignorierter Dateien vollständig leer ist.
+
+Eigene Inhalte werden inkrementell nach `L:/ComfyUI/ComfyUI/user/default/workflows/DaWasteh` und `L:/ComfyUI/ComfyUI/custom_nodes/` synchronisiert:
+
+- SHA-256-Vergleiche überspringen byte-identische Dateien.
+- Nur ersetzte oder entfernte Dateien werden unter `L:/ComfyUI/_update_backups/<Zeitstempel>/` gesichert.
+- `L:/ComfyUI/config/dawasteh-bundle-sync-manifest.json` merkt sich ausschließlich die zuletzt aus Git ausgelieferten Dateien. Nur dadurch bekannte, später aus Git entfernte Dateien dürfen im Ziel gelöscht werden; fremde lokale Dateien bleiben unangetastet.
+- Requirements eigener Node-Packs werden nur erneut installiert, wenn sich Dateien dieses Packs tatsächlich geändert haben.
+- Die Synchronisierung liest jede Datei binär direkt aus den Git-Blobs eines einmal festgehaltenen Commit-Hashes statt aus veränderlichen Arbeitsbaumdateien. Die Validierung vergleicht das Manifest mit genau diesem Commit-Baum, prüft jede ausgelieferte Datei nochmals per SHA-256, liest Workflow-JSON und parst Python-Quelltext ohne `__pycache__` oder `.pyc` zu erzeugen. Kurzlebige Blob-/Validierungsdateien liegen ausschließlich in `%TEMP%` und werden in `finally`-Blöcken entfernt.
+- Lexische Pfadgrenzen sowie ein Symlink-/Junction-Verbot in den verwalteten Zielpfaden verhindern, dass Kopier- oder Löschoperationen das vorgesehene Ziel verlassen.
+- `ComfyUI-DaWasteh-MultiGPU-Control` ist jetzt Teil des regulären Updates. Nach einem erfolgreichen Pull aktualisiert die versionierte `.ps1`-Datei außerdem ihre installierte PowerShell-Kopie für den nächsten Lauf; der gerade aktive Batch-Launcher wird aus Sicherheitsgründen nicht während seiner eigenen Ausführung überschrieben.
 
 ## Ordnerübersicht
 
