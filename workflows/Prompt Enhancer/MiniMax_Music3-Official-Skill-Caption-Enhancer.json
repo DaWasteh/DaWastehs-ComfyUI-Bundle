@@ -1,0 +1,935 @@
+{
+  "id": "d93adb0e-f60e-5fa4-8549-0a25ca66f5eb",
+  "revision": 0,
+  "last_node_id": 17,
+  "last_link_id": 7,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "StringConcatenate",
+      "pos": [
+        -9377.811,
+        7838.667
+      ],
+      "size": [
+        621.9166870117188,
+        975.5833129882812
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "string_a",
+          "name": "string_a",
+          "type": "STRING",
+          "widget": {
+            "name": "string_a"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "string_b",
+          "name": "string_b",
+          "type": "STRING",
+          "widget": {
+            "name": "string_b"
+          },
+          "link": 4
+        },
+        {
+          "localized_name": "delimiter",
+          "name": "delimiter",
+          "type": "STRING",
+          "widget": {
+            "name": "delimiter"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "Official MiniMax Music 3 Skill + Caption",
+      "properties": {
+        "Node name for S&R": "StringConcatenate",
+        "cnr_id": "comfy-core",
+        "ver": "0.21.1"
+      },
+      "widgets_values": [
+        "You are a strict MiniMax Music 3 caption rewriter.\n\nTASK\nTransform the user's Caption and optional tagged Lyrics into a new, generation-ready MiniMax Music 3 structured caption.\n\nLOCAL COMFYUI ADAPTATION\nThis one-pass workflow has the official core skill and genre router embedded below, but it cannot open the skill's family-index and template files at generation time. Follow the official input, constraint, lyric-safety, timeline, and validation rules. This adapter intentionally narrows the skill's language and machine-readable output exceptions to one English caption with three headings because its result feeds ComfyUI's Music 3 Caption field directly. Use the embedded router as musical guidance, then synthesize directly from the user's brief. Do not claim to have retrieved, scored, or copied a template. Do not expose private reasoning.\n\nMANDATORY OUTPUT CONTRACT\n- Return only the finished caption in English.\n- Return exactly these three Markdown headings, once each and in this order:\n  ### Global Metadata\n  ### Vocal Details\n  ### Arrangement\n- Target approximately 250–450 words.\n- Lyrics are context only: never quote, paraphrase, summarize, or reproduce lyric lines.\n- Treat only bracketed lyric tags as executable section, musical, vocal, or production directives.\n- Preserve every explicit constraint and exclusion; never invent an exact BPM, key, vocal gender, or technical detail when it is not justified.\n- Do not add a title, preamble, explanation, checklist, JSON, template ID, or Markdown fence.\n\nOFFICIAL MINIMAX MUSIC CAPTION REWRITER SKILL\n---\nname: music-caption-rewriter\ndescription: Turn a brief music description and optional tagged lyrics into a professional MiniMax Music 3 structured caption with Global Metadata, Vocal Details, and a section-aware Arrangement. Use when users ask to enhance a music-generation prompt, preserve lyric-section directives, retrieve a similar style from bundled templates, fuse styles, or produce JSON or JSONL caption output.\n---\n\n# Music Caption Rewriter\n\nTransform the user's musical intent into a new, generation-oriented structured caption. Find useful references through progressive disclosure: route to a small style family, compare compact cards, then read only the selected complete templates.\n\nUse natural-language reasoning and local text files only. Do not execute scripts, build a database, calculate embeddings, call external APIs, or scan all 1,000 templates.\n\n## Inputs\n\nAccept:\n\n- `Caption`: required natural-language music description.\n- `Lyrics`: optional lyrics containing bracketed section or control tags.\n- Additional constraints: optional length, format, exclusions, or creative direction.\n\nUse lyric text only to infer broad emotional context and narrative intensity. Never quote, paraphrase, summarize, or reproduce it. Treat only bracketed tags as executable structural, musical, vocal, or production directives.\n\n## Workflow\n\nFollow these stages in order:\n\n1. Build a private Music Brief from the inputs.\n2. Resolve explicit constraints and section-local directives.\n3. Read [references/genre-router.md](references/genre-router.md).\n4. Read one primary family index and, only when useful, one secondary family index.\n5. Select up to three references with distinct roles.\n6. Read only the complete template files named by those cards.\n7. Design a coherent section-by-section timeline.\n8. Render and validate the new caption.\n\nDo not expose the Music Brief, routing choices, scores, or template IDs unless the user requests diagnostics.\n\n## Build the Music Brief\n\nExtract only supported or reasonably inferred values:\n\n- macro genre, subgenres, and cultural or market style\n- mood and emotional arc\n- approximate tempo, meter, and groove\n- vocal presence, gender, register, timbre, and delivery\n- core instruments and production texture\n- section structure and section-specific changes\n- spatial character and explicit exclusions\n\nClassify each value internally as `explicit`, `tagged`, `inferred`, or `unspecified`.\n\nDo not invent a precise key, BPM, vocal gender, melodic interval, or production technique when a broader description is sufficient.\n\nPreserve an explicit instrumental request. Do not add vocals. If vocal presence is unspecified, choose a conservative treatment supported by the user's description and the closest style family.\n\n## Resolve Constraints\n\nApply this precedence:\n\n1. Explicit user requirements and exclusions.\n2. Section-local directives from lyric tags, within that section.\n3. Strong implications from the user's Caption.\n4. Selected reference characteristics.\n5. Conservative musical defaults.\n\nA section tag may change its local arrangement without replacing the song's global genre. Preserve a hard user exclusion when a tag conflicts with it.\n\nWhen two explicit instructions conflict, prefer the more specific and later instruction if the intent remains clear. Otherwise make the smallest musically coherent compromise.\n\nNever silently reverse an explicit vocal gender, instrumental requirement, tempo limit, required instrument, or prohibited element.\n\n## Route by Progressive Disclosure\n\nRead the genre router first. Choose:\n\n- one primary family for a clear genre request\n- one primary and one secondary family for an explicit fusion\n- at most two plausible families for an ambiguous genre\n- the general pop and ballad family when only mood or imagery is available\n\nUse genre, groove, instrumentation, and cultural context as stronger routing signals than generic adjectives such as `emotional`, `epic`, `dark`, or `modern`.\n\nRead only the family indexes selected by the router. Do not inspect every family index, reconstruct a global catalog, or scan every template filename.\n\n## Select References\n\nCompare cards in the selected family indexes using this priority:\n\n1. Genre and subgenre compatibility.\n2. Explicit requirements and exclusions.\n3. Groove and tempo compatibility, including plausible half-time or double-time relationships.\n4. Vocal configuration.\n5. Instrumentation.\n6. Mood and emotional arc.\n7. Production character.\n\nApply a strong penalty to direct conflicts. Prefer a close musical family over a card that merely shares mood vocabulary.\n\nSelect up to three references with different responsibilities:\n\n- `Foundation`: closest overall identity, groove, and songwriting language.\n- `Modifier`: best source for a requested secondary genre, vocal character, cultural color, or production texture.\n- `Arrangement`: best source for section development, energy contour, transitions, and instrument lifecycle.\n\nUse one or two references when the request is simple. Do not select a weak match merely to reach three.\n\n## Use Templates Safely\n\nUse the Foundation for broad musical identity, the Modifier only for its matched dimension, and the Arrangement reference only for timeline logic.\n\nDo not inherit unsupported details such as a template's exact key, BPM, vocalist, instruments, emotional story, or section order.\n\nDo not copy sentences, distinctive phrases, or a template's complete structure. Synthesize a new caption around the user's brief.\n\n## Plan the Timeline\n\nBuild around the user's section tags when present. Otherwise choose only sections appropriate to the style, for example:\n\n`Intro → Verse → Pre-Chorus → Chorus → Verse → Chorus → Bridge → Final Chorus → Outro`\n\nFor every included section, state what enters, exits, changes, or intensifies. Keep instrument behavior continuous and make transitions musically plausible.\n\nCreate a readable energy arc rather than a static equipment list or a stack of production terminology.\n\n## Output Contract\n\nWrite the final caption in English unless the user explicitly requests another language.\n\nReturn exactly these three top-level headings in this order:\n\n### Global Metadata\n\nInclude genre and subgenres, tempo, emotional progression, and overall sonic and production profile. Use an exact BPM only when explicit or strongly justified; otherwise use a range or qualitative tempo. Include key and scale only when explicit or musically useful.\n\n### Vocal Details\n\nFor vocal music, describe the lead configuration, timbre, register, delivery, harmony or backing vocals, and restrained vocal effects.\n\nFor instrumental music, state that the piece is instrumental and identify the instrument or texture carrying the lead melodic role.\n\nDo not invent lyrical subject matter or reproduce lyrics.\n\n### Arrangement\n\nDescribe the song as a section-by-section timeline. Explain primary and secondary instrument lifecycles, groove development, transitions, embellishments, texture, and spatial effects only where relevant.\n\nPrefer concrete musical changes over decorative prose. Default to approximately 250–450 English words unless the user requests another length.\n\nDo not include a song title, track ID, selected template ID, reasoning trace, or copied lyric line.\n\n## Machine-Readable Output\n\nReturn JSON or JSONL only when explicitly requested. Include original inputs and `rewritten_caption`. Include routing diagnostics or selected template IDs only when explicitly requested.\n\nNever include complete template contents in machine-readable output unless the user specifically asks for them.\n\n## Validate Before Returning\n\nVerify that:\n\n- every explicit user constraint is preserved\n- every actionable section tag appears in the matching section\n- no quoted, paraphrased, or summarized lyric content, title, or track ID appears\n- an instrumental request remains instrumental\n- vocal gender is not contradicted\n- genre and local modifiers coexist coherently\n- the three required headings are present\n- the arrangement follows a readable timeline\n- instruments have coherent entrances, changes, and exits\n- exact BPM, key, and technical details are not fabricated\n- no template sentence or complete template structure is copied\n- the caption is specific enough to guide generation without becoming an essay\n\nRevise once when any check fails, then return only the corrected result.\n\n## Static Library Maintenance\n\nKeep the library entirely text-based. When adding a template:\n\n1. Add one complete Caption file under `templates/`.\n2. Add one compact card to exactly one family index linked from the genre router.\n3. Record compatible secondary families in that card instead of duplicating it.\n4. Confirm that the card ID matches the template filename and that its path exists.\n5. Update the family count in that index.\n\nDo not add scripts, generated catalogs, embeddings, vector stores, databases, or external service configuration.\n\n\nOFFICIAL GENRE ROUTER\n# Genre Router\n\nUse this file as the first disclosure layer. Route the Music Brief to one primary family and, only when useful, one secondary family. Then read only those family indexes.\n\n## Routing contract\n\n1. Normalize explicit genre names and cultural-market terms with the aliases below.\n2. Choose the primary family from the user's main genre, not from a generic mood adjective.\n3. Add one secondary family only for an explicit fusion or a clearly requested contrasting palette.\n4. Read no more than two family indexes for ordinary requests.\n5. Within those indexes, prefer a card that already combines both requested styles before mixing separate references.\n6. Treat `ballad`, `emotional`, `epic`, `modern`, `dark`, and `cinematic` as modifiers unless the input supplies stronger genre, groove, or instrumentation evidence.\n\n## Family map\n\n| Route | Positive cues | Disambiguation | Index |\n|---|---|---|---|\n| `east-asian-modern` | Mandopop, C-pop, Cantopop, J-pop with electronic, R&B, hip-hop, dance, funk, rock, or metal production | Use the heritage family for acoustic, orchestral, traditional, or conventional ballad writing | [index-east-asian-modern.md](index-east-asian-modern.md) |\n| `east-asian-ballad-heritage` | Mandopop, C-pop, Cantopop, J-pop ballad, guofeng pop, acoustic or orchestral East Asian pop | Add roots/traditional only when traditional instruments are central rather than decorative | [index-east-asian-ballad-heritage.md](index-east-asian-ballad-heritage.md) |\n| `modern-rnb-neo-soul` | Contemporary R&B, alternative R&B, neo-soul, trap soul, atmospheric R&B | Lo-fi R&B may also use hip-hop; classic soul belongs to soul/blues/gospel | [index-modern-rnb-neo-soul.md](index-modern-rnb-neo-soul.md) |\n| `soul-blues-gospel` | Soul, blues, blues rock, gospel, worship, soul-blues | Route jazz-blues primarily by the user's stated identity and groove | [index-soul-blues-gospel.md](index-soul-blues-gospel.md) |\n| `cinematic-pop-ballad` | Cinematic pop, cinematic ballad, orchestral pop song, soundtrack-like vocal ballad | Use cinematic orchestral when score, trailer, orchestra, or choir is the main identity | [index-cinematic-pop-ballad.md](index-cinematic-pop-ballad.md) |\n| `cinematic-orchestral-epic` | Film score, orchestral, trailer, epic choral, symphonic soundtrack, contemporary classical | `Cinematic` alone is normally a modifier, not enough to choose this family | [index-cinematic-orchestral-epic.md](index-cinematic-orchestral-epic.md) |\n| `electronic-synth-ambient-pop` | Synth-pop, electropop, dream pop, ambient pop, darkwave, retrowave, downtempo | Use club/EDM only when the request emphasizes drops, club grooves, house, trance, or festival energy | [index-electronic-synth-ambient-pop.md](index-electronic-synth-ambient-pop.md) |\n| `jazz-swing-big-band` | Vocal jazz, jazz ballad, big band, swing, bossa nova, lounge jazz | Traditional crooner pop without strong jazz ensemble cues may use traditional vocal/stage | [index-jazz-swing-big-band.md](index-jazz-swing-big-band.md) |\n| `traditional-vocal-stage` | Traditional pop, crooner, doo-wop, a cappella, musical theatre, show tune, cabaret | Use jazz/swing when the rhythm section or big-band language is dominant | [index-traditional-vocal-stage.md](index-traditional-vocal-stage.md) |\n| `hip-hop-rap` | Hip-hop, rap, trap, drill, lo-fi hip-hop, conscious rap, melodic rap | R&B singing over trap drums may use modern R&B as primary and hip-hop as secondary | [index-hip-hop-rap.md](index-hip-hop-rap.md) |\n| `metal-heavy-rock` | Metalcore, power metal, symphonic metal, nu-metal, hard rock, post-hardcore | Alternative and pop rock without heavy-metal technique belong to pop/alternative rock | [index-metal-heavy-rock.md](index-metal-heavy-rock.md) |\n| `pop-alternative-rock` | Pop rock, alternative rock, indie rock, arena rock, J-rock, punk, post-grunge | Country rock, blues rock, and folk rock follow their roots family when that identity is primary | [index-pop-alternative-rock.md](index-pop-alternative-rock.md) |\n| `contemporary-folk-acoustic` | Indie folk, contemporary folk, folk pop, singer-songwriter, modern acoustic pop | Use roots/traditional for heritage, regional, maritime, Celtic, or traditional folk identity | [index-contemporary-folk-acoustic.md](index-contemporary-folk-acoustic.md) |\n| `roots-traditional-global` | Traditional folk, Celtic, Chinese traditional, folk blues, reggae, maritime, global folk fusion | Guofeng pop remains East Asian pop when pop songwriting is primary | [index-roots-traditional-global.md](index-roots-traditional-global.md) |\n| `general-pop-ballad` | Pop, contemporary pop, pop ballad, broadly described emotional song | Use only as fallback when no more specific genre family is supported | [index-general-pop-ballad.md](index-general-pop-ballad.md) |\n| `dance-pop-disco-funk` | Dance-pop, nu-disco, funk-pop, disco revival, groove-led pop | House, trance, hardstyle, and festival drops belong to club/EDM | [index-dance-pop-disco-funk.md](index-dance-pop-disco-funk.md) |\n| `club-edm-house-trance` | EDM, house, trance, hardstyle, dubstep, techno, festival electronic | Electronic pop without a club or drop structure belongs to electronic/synth/ambient pop | [index-club-edm-house-trance.md](index-club-edm-house-trance.md) |\n| `country-americana` | Country, Americana, bluegrass, country rock, country pop, rockabilly | Folk-country follows the user's primary label; read contemporary folk second only when necessary | [index-country-americana.md](index-country-americana.md) |\n\n## Common aliases\n\n| User wording | Normalize toward |\n|---|---|\n| 华语流行、国语流行 | Mandopop / C-pop |\n| 粤语流行 | Cantopop |\n| 国风流行 | East Asian pop, optionally roots/traditional |\n| 氛围 R&B、另类节奏布鲁斯 | Alternative R&B |\n| 复古电子 | Resolve from synthwave/retrowave versus disco/house cues |\n| 朋克流行 | Pop-punk |\n| 后摇感 | Alternative rock unless the user explicitly requests post-rock |\n| 电影感 | A modifier; choose cinematic as primary only for score-led writing |\n| 史诗感 | A modifier; choose cinematic orchestral only with orchestral, trailer, or choral evidence |\n| 燃、炸、强烈 | Energy cues, never genre evidence by themselves |\n\nNormalize spelling variants such as `Hip Hop`/`Hip-Hop`, `Dance Pop`/`Dance-Pop`, `Synth Pop`/`Synth-Pop`, and `R&B`/`R'n'B` before routing.\n\n## Fusion rules\n\n- Interpret `X with Y influences` as primary `X`, secondary `Y`.\n- Interpret an ordered form such as `X / Y` the same way unless the user explicitly gives both equal weight.\n- Read at most two family indexes. Keep a third style as an in-index ranking cue rather than opening a third index.\n- Prefer a hybrid card in the primary index that already expresses both styles.\n- Use the secondary reference only for its requested dimension: instrumentation, groove, vocal treatment, cultural color, arrangement, or production.\n- Never let a secondary reference overwrite explicit genre, tempo, vocal, instrument, or exclusion constraints.\n\nExamples:\n\n- `Mandopop with trap R&B production` → primary `east-asian-modern`, secondary `modern-rnb-neo-soul` or `hip-hop-rap` according to whether singing or beat language dominates.\n- `Metalcore with Chinese traditional instruments` → primary `metal-heavy-rock`, secondary `roots-traditional-global`.\n- `Cinematic folk ballad` → primary `contemporary-folk-acoustic` when it is a song; primary `cinematic-orchestral-epic` when it is a score.\n- `Lo-fi female R&B` → primary `modern-rnb-neo-soul`, secondary `hip-hop-rap` only when a lo-fi beat is central.\n\n## Fallback routing\n\nWhen the user gives no genre:\n\n1. Use groove evidence such as swing, trap, four-on-the-floor, breakbeat, or acoustic strumming.\n2. Then use core instrumentation and vocal delivery.\n3. Then use cultural or market context.\n4. If only mood or imagery remains, read [index-general-pop-ballad.md](index-general-pop-ballad.md) and keep the result conservative.\n\nDo not route from mood alone when stronger musical evidence exists.\n\n\nUSER CAPTION\n",
+        "",
+        "\n\n"
+      ],
+      "color": "#1e3323",
+      "bgcolor": "#36543d"
+    },
+    {
+      "id": 2,
+      "type": "TextGenerate",
+      "pos": [
+        -5411.413,
+        8095.957
+      ],
+      "size": [
+        400,
+        560
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "showAdvanced": true,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 1
+        },
+        {
+          "localized_name": "image",
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "video",
+          "name": "video",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 2
+        },
+        {
+          "localized_name": "max_length",
+          "name": "max_length",
+          "type": "INT",
+          "widget": {
+            "name": "max_length"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sampling_mode",
+          "name": "sampling_mode",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "sampling_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "temperature",
+          "name": "sampling_mode.temperature",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.temperature"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "top_k",
+          "name": "sampling_mode.top_k",
+          "type": "INT",
+          "widget": {
+            "name": "sampling_mode.top_k"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "top_p",
+          "name": "sampling_mode.top_p",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.top_p"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "min_p",
+          "name": "sampling_mode.min_p",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.min_p"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "repetition_penalty",
+          "name": "sampling_mode.repetition_penalty",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.repetition_penalty"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "sampling_mode.seed",
+          "type": "INT",
+          "widget": {
+            "name": "sampling_mode.seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "presence_penalty",
+          "name": "sampling_mode.presence_penalty",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.presence_penalty"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "thinking",
+          "name": "thinking",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "thinking"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_default_template",
+          "name": "use_default_template",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_default_template"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "generated_text",
+          "name": "generated_text",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "TextGenerate",
+        "cnr_id": "comfy-core",
+        "ver": "0.21.0"
+      },
+      "widgets_values": [
+        "",
+        4096,
+        "on",
+        0.25,
+        64,
+        0.9,
+        0.05,
+        1.05,
+        0,
+        0,
+        false,
+        true
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a",
+      "title": "Generate Structured MiniMax Music 3 Caption"
+    },
+    {
+      "id": 3,
+      "type": "PixaromaShowText",
+      "pos": [
+        -2766.956,
+        8089.974
+      ],
+      "size": [
+        426.45001220703125,
+        565.183349609375
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "source",
+          "name": "source",
+          "type": "*",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixaromaShowText",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "c82f95989e0347b5cc48ddf52a51f2d776a1f83b"
+      },
+      "widgets_values": [
+        "The enhanced MiniMax Music 3 caption appears here after the first run."
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a",
+      "title": "COPY THIS INTO THE MUSIC WORKFLOW'S CAPTION FIELD"
+    },
+    {
+      "id": 4,
+      "type": "CLIPLoader",
+      "pos": [
+        -5475.931,
+        6936.815
+      ],
+      "size": [
+        495.8833312988281,
+        140
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "type",
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.76"
+      },
+      "widgets_values": [
+        "Qwen\\qwen3.5_4b_bf16.safetensors",
+        "stable_diffusion",
+        "default"
+      ],
+      "color": "#f66744",
+      "bgcolor": "#2a2a2a",
+      "title": "Qwen 3.5 4B · Official Music 3 Skill Adapter"
+    },
+    {
+      "id": 5,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        -4926.585,
+        11538.709
+      ],
+      "size": [
+        226,
+        16
+      ],
+      "flags": {
+        "no_title": true
+      },
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "ffcf2f56aa448f2df763b09b70857632792b7805",
+        "runTimerLastMs": 49062
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 9,
+      "type": "PixaromaPrompt",
+      "title": "1 · YOUR MUSIC IDEA / CAPTION",
+      "pos": [
+        -10774.311,
+        7932.667
+      ],
+      "size": [
+        470,
+        230
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text_in",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "fc17bd2b58ef0089cc62a40502669cf71ae86db7",
+        "Node name for S&R": "PixaromaPrompt",
+        "promptState": {
+          "text": "",
+          "order": "mine",
+          "sep": ", ",
+          "accent": null,
+          "showExpanded": true
+        },
+        "dawasteh_pixaroma_prompt_integration": {
+          "kind": "prompt",
+          "target": [
+            1,
+            "string_b"
+          ]
+        }
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#1e3323",
+      "bgcolor": "#36543d"
+    },
+    {
+      "id": 10,
+      "type": "VRAM_Debug",
+      "pos": [
+        -4089.185,
+        8092.965
+      ],
+      "size": [
+        320,
+        174
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "empty_cache",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "empty_cache"
+          },
+          "link": null
+        },
+        {
+          "name": "gc_collect",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "gc_collect"
+          },
+          "link": null
+        },
+        {
+          "name": "unload_all_models",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "unload_all_models"
+          },
+          "link": null
+        },
+        {
+          "name": "any_input",
+          "type": "*",
+          "link": 3
+        },
+        {
+          "name": "image_pass",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "model_pass",
+          "type": "MODEL",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "any_output",
+          "type": "*",
+          "links": [
+            5
+          ]
+        },
+        {
+          "name": "image_pass",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "model_pass",
+          "type": "MODEL",
+          "links": null
+        },
+        {
+          "name": "freemem_before",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "freemem_after",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VRAM_Debug",
+        "dawasteh_memory_cleanup": {
+          "version": 1,
+          "placement": "terminal",
+          "reason": "after final media barrier, before PixaromaShowText"
+        }
+      },
+      "widgets_values": [
+        true,
+        true,
+        true
+      ],
+      "color": "#3b1f2b",
+      "bgcolor": "#24131b"
+    },
+    {
+      "id": 11,
+      "type": "PixaromaPrompt",
+      "title": "2 · OPTIONAL TAGGED LYRICS",
+      "pos": [
+        -10774.311,
+        9107.667
+      ],
+      "size": [
+        470,
+        230
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text_in",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "fc17bd2b58ef0089cc62a40502669cf71ae86db7",
+        "Node name for S&R": "PixaromaPrompt",
+        "promptState": {
+          "text": "",
+          "order": "mine",
+          "sep": ", ",
+          "accent": null,
+          "showExpanded": true
+        },
+        "dawasteh_pixaroma_prompt_integration": {
+          "kind": "prompt",
+          "target": [
+            12,
+            "string_b"
+          ]
+        }
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#1e3323",
+      "bgcolor": "#36543d"
+    },
+    {
+      "id": 12,
+      "type": "StringConcatenate",
+      "pos": [
+        -7515.811,
+        7838.667
+      ],
+      "size": [
+        520,
+        330
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "string_a",
+          "name": "string_a",
+          "type": "STRING",
+          "widget": {
+            "name": "string_a"
+          },
+          "link": 6
+        },
+        {
+          "localized_name": "string_b",
+          "name": "string_b",
+          "type": "STRING",
+          "widget": {
+            "name": "string_b"
+          },
+          "link": 7
+        },
+        {
+          "localized_name": "delimiter",
+          "name": "delimiter",
+          "type": "STRING",
+          "widget": {
+            "name": "delimiter"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "title": "Caption + Optional Lyrics (tags are executable)",
+      "properties": {
+        "Node name for S&R": "StringConcatenate",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "",
+        "",
+        "\n\nUSER LYRICS (never reproduce lyric lines; use bracketed tags only)\n"
+      ],
+      "color": "#1e3323",
+      "bgcolor": "#36543d"
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "pos": [
+        -8709.894,
+        7838.667
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Official MiniMax Music 3 Skill + Caption · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 1,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Official MiniMax Music 3 Skill + Caption · Node 1\n\n**Zweck:** Erzeugt, kombiniert, ersetzt oder extrahiert Text für nachfolgende Workflow-Schritte.\n\n**Einstellbare Werte**\n- `value` = `You are a strict MiniMax Music 3 caption rewriter. ↵  ↵ TASK ↵ Transform the user's Caption and optional tagg…` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `string_a` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `string_b` (STRING, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `delimiter` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 14,
+      "type": "MarkdownNote",
+      "pos": [
+        -4965.413,
+        8095.957
+      ],
+      "size": [
+        390,
+        540
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Generate Structured MiniMax Music 3 Caption · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Generate Structured MiniMax Music 3 Caption · Node 2\n\n**Zweck:** Erzeugt mit dem geladenen Sprachmodell Text aus Prompt und optionalen Bild-, Video- oder Audio-Eingaben.\n\n**Einstellbare Werte**\n- `value` = `` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `clip` (CLIP, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio` (AUDIO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt` (STRING, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_length` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.top_k` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.top_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.min_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.repetition_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.presence_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `thinking` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `use_default_template` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `generated_text` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 15,
+      "type": "MarkdownNote",
+      "pos": [
+        -4934.048,
+        6936.815
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Qwen 3.5 4B · Official Music 3 Skill Adapter · Node 4",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 4,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Qwen 3.5 4B · Official Music 3 Skill Adapter · Node 4\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `value` = `Qwen\\qwen3.5_4b_bf16.safetensors` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `clip_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 16,
+      "type": "MarkdownNote",
+      "pos": [
+        -3723.185,
+        8092.965
+      ],
+      "size": [
+        390,
+        447
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VRAM_Debug · Node 10",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 10,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VRAM_Debug · Node 10\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `VRAM_Debug` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `value` = `True` — Direkter Primitive-Wert für verbundene Nodes. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `empty_cache` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gc_collect` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `unload_all_models` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `any_input` (*, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_pass` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_pass` (MODEL, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `any_output` (*, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `image_pass` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `model_pass` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_before` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_after` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 17,
+      "type": "MarkdownNote",
+      "pos": [
+        -6949.811,
+        7838.667
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Caption + Optional Lyrics (tags are executable) · Node 12",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 12,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Caption + Optional Lyrics (tags are executable) · Node 12\n\n**Zweck:** Erzeugt, kombiniert, ersetzt oder extrahiert Text für nachfolgende Workflow-Schritte.\n\n**Einstellbare Werte**\n- `value` = `` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `string_a` (STRING, Link 6): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `string_b` (STRING, Link 7): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `delimiter` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      4,
+      0,
+      2,
+      0,
+      "CLIP"
+    ],
+    [
+      2,
+      12,
+      0,
+      2,
+      4,
+      "STRING"
+    ],
+    [
+      3,
+      2,
+      0,
+      10,
+      3,
+      "STRING"
+    ],
+    [
+      4,
+      9,
+      0,
+      1,
+      1,
+      "STRING"
+    ],
+    [
+      5,
+      10,
+      0,
+      3,
+      0,
+      "STRING"
+    ],
+    [
+      6,
+      1,
+      0,
+      12,
+      0,
+      "STRING"
+    ],
+    [
+      7,
+      11,
+      0,
+      12,
+      1,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 2.0240283945098754,
+      "offset": [
+        1136.5200010962626,
+        -1443.1505783580333
+      ]
+    },
+    "dawasteh_minimax_music3_prompt_skill": {
+      "version": 1,
+      "upstream": "https://github.com/MiniMax-AI/MiniMax-Music3/tree/main/skills/music-caption-rewriter",
+      "model": "Qwen\\qwen3.5_4b_bf16.safetensors",
+      "sources": [
+        {
+          "path": "prompt-libraries/MiniMax-Music3-Official-Skill/SKILL.md",
+          "sha256": "510f27d504bb06eb3859eb8a627773e655108e72df028d760be3ae98b3d4832c"
+        },
+        {
+          "path": "prompt-libraries/MiniMax-Music3-Official-Skill/genre-router.md",
+          "sha256": "07cfe89ce0769982aa9c44c0f3d27476773acff3d785525da2442b9e77253ac6"
+        }
+      ],
+      "adapter_limit": "one-pass workflow embeds the core skill and router, not the 1000-template progressive-disclosure library",
+      "output_contract": [
+        "### Global Metadata",
+        "### Vocal Details",
+        "### Arrangement"
+      ]
+    },
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 5,
+      "x_scale": 2.45,
+      "y_scale": 2.35,
+      "gap": 34.0
+    }
+  },
+  "version": 0.4
+}

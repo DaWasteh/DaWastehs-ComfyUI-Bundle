@@ -47,7 +47,7 @@ Während eines schweren Dual-GPU-Jobs sollte Port 8189 keinen weiteren GPU-inten
 
 ## Zentraler GPU-Control-Node · v0.8.8
 
-Jeder der 27 Workflows enthält genau einen sichtbaren Node:
+Jeder der 28 Workflows enthält genau einen sichtbaren Node:
 
 ```text
 DaW Multi-GPU Device Control
@@ -105,9 +105,10 @@ Enthalten sind je ein kuratierter Workflow für:
 22. Kandinsky 5
 23. ACE-Step 1.5
 24. Stable Audio 3
-25. MiniMax H3 Complete-Song One-Click
-26. MiniMax H3 FL2VA · offene Eingaben
-27. MiniMax H3 Ref2VA · offene Referenzen
+25. MiniMax Music 3 · FP32-DiT + BF16-Textencoder
+26. MiniMax H3 Complete-Song One-Click
+27. MiniMax H3 FL2VA · offene Eingaben
+28. MiniMax H3 Ref2VA · offene Referenzen
 
 Normale Graphen enthalten direkt und zentral verbunden:
 
@@ -116,6 +117,10 @@ Normale Graphen enthalten direkt und zentral verbunden:
 - `Select VAE Device` mit `gpu:1`
 
 Wenn ein Modell zwei Diffusionsloader besitzt, etwa WAN 2.2 oder Ideogram 4, erhält jeder Loader einen eigenen `Select Model Device`-Node.
+
+MiniMax Music 3 ist wegen der bewusst verwendeten Vollpräzisionsgewichte die dokumentierte Ausnahme zur Standardbelegung: Der große BF16-Autoregressions-/Text-Stack läuft auf `gpu:0` (R9700, 32 GB), während FP32-Flow-Matching-DiT und DAV-Audiodecoder auf `gpu:1` (RX 9070 XT, 16 GB) liegen. Der zentrale Control-Node startet deshalb in diesem Workflow mit `MODEL=gpu:1`, `CLIP=gpu:0`, `VAE=gpu:1`. Das entspricht der funktionalen Zweiteilung des offiziellen Inferenzpfads und erzeugt weiterhin keinen gemeinsamen VRAM-Pool.
+
+Der v0.9.1-Live-Smoke-Test expandierte den Graph über ComfyUIs echten Browser-Serializer und verwendete eine instrumentale Caption, vier Sekunden Maximaldauer, alle 30 Euler-/Simple-Schritte sowie tiled DAV decode. ComfyUI 0.33.0 meldete nach 38,89 Sekunden `execution_success` und speicherte ein endliches, nichtleeres 44,1-kHz-Stereo-FLAC mit 7,988 Sekunden Laufzeit. Das Serverlog bestätigte 17.605,78 MB vollständig geladenen Textstack auf `cuda:0`, den Music-3-MODEL-Deepclone nach `cuda:1` und den vollständig geladenen DAV auf `cuda:1`.
 
 ## LTX-2.5 und Wan Animate 2 · v0.9.0
 
@@ -174,7 +179,7 @@ YuE, HeartMuLa, MOSS-TTS, Qwen-TTS und ähnliche Custom-Nodes geben keine standa
 
 ## Regeneration und Prüfung
 
-Die 27 Dateien sind deterministisch generiert:
+Die 28 Dateien sind deterministisch generiert:
 
 ```powershell
 python tools/generate_dual_gpu_workflows.py

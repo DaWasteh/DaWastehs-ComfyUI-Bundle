@@ -41,6 +41,17 @@ class Family:
     output: str
     h3_director: bool = False
     template: str | None = None
+    model_device: str = MODEL_DEVICE
+    clip_device: str = HELPER_DEVICE
+    vae_device: str = HELPER_DEVICE
+
+    @property
+    def devices(self) -> dict[str, str]:
+        return {
+            "MODEL": self.model_device,
+            "CLIP": self.clip_device,
+            "VAE": self.vae_device,
+        }
 
 
 FAMILIES = (
@@ -68,6 +79,17 @@ FAMILIES = (
     Family("Kandinsky 5", "Text+Image to Video/Kandinsky5_Lite-Text+Image-to-Video.json", "Kandinsky5-DualGPU-Text+Image-to-Video.json"),
     Family("ACE-Step 1.5", "Music Generation/ACE-Step1_5_Turbo_4B-Music-Generation.json", "ACE-Step1_5-DualGPU-Music-Generation.json"),
     Family("Stable Audio 3", "Music Generation/StableAudio3_Medium-Audio-Generation.json", "StableAudio3-DualGPU-Audio-Generation.json"),
+    Family(
+        "MiniMax Music 3",
+        "",
+        "MiniMax-Music3-DualGPU-Text-to-Music.json",
+        template="audio_minimax_music_3.json",
+        # The full BF16 8B+0.6B autoregressive text stack needs the 32 GB card;
+        # the smaller FP32 Flow-Matching DiT and DAV decoder fit the 16 GB card.
+        model_device="gpu:1",
+        clip_device="gpu:0",
+        vae_device="gpu:1",
+    ),
     Family(
         "MiniMax H3",
         "Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
@@ -245,7 +267,7 @@ def _selector_node(node_id: int, node_type: str, display_name: str, input_name: 
     }
 
 
-def insert_device_selectors(graph: dict[str, Any]) -> int:
+def insert_device_selectors(graph: dict[str, Any], devices: dict[str, str] | None = None) -> int:
     nodes = graph.get("nodes", [])
     links = graph.get("links", [])
     if not nodes or not links:
@@ -277,7 +299,8 @@ def insert_device_selectors(graph: dict[str, Any]) -> int:
 
     for index, (source, source_slot, output, old_link_ids) in enumerate(candidates):
         link_type = output["type"]
-        node_type, display_name, input_name, value = SELECTOR[link_type]
+        node_type, display_name, input_name, default_value = SELECTOR[link_type]
+        value = (devices or {}).get(link_type, default_value)
         node_id = next_node
         link_id = next_link
         next_node += 1
@@ -438,7 +461,7 @@ def install_run_timer(workflow: dict[str, Any]) -> None:
     _set_last_ids(workflow, node_id, int(workflow.get("last_link_id", 0)))
 
 
-def _control_node(node_id: int, pos: list[float], order: int) -> dict[str, Any]:
+def _control_node(node_id: int, pos: list[float], order: int, devices: dict[str, str] | None = None) -> dict[str, Any]:
     return {
         "id": node_id,
         "type": DEVICE_CONTROL_TYPE,
@@ -453,14 +476,20 @@ def _control_node(node_id: int, pos: list[float], order: int) -> dict[str, Any]:
             for role, (slot, _, _) in CONTROL_ROLES.items()
         ],
         "properties": {"Node name for S&R": DEVICE_CONTROL_TYPE},
-        "widgets_values": [default for _, default, _ in CONTROL_ROLES.values()],
+        "widgets_values": [
+            (devices or {}).get(role.removesuffix("_device").upper(), default)
+            for role, (_, default, _) in CONTROL_ROLES.items()
+        ],
         "title": "Central GPU Control · MODEL / CLIP / VAE",
         "color": "#173f32",
         "bgcolor": "#205845",
     }
 
 
-def install_central_device_control(workflow: dict[str, Any], workflow_key: str, h3_director: bool) -> None:
+def install_central_device_control(
+    workflow: dict[str, Any], workflow_key: str, h3_director: bool,
+    devices: dict[str, str] | None = None,
+) -> None:
     root = workflow
     nodes = root.get("nodes", [])
     if any(node.get("type") == DEVICE_CONTROL_TYPE for node in nodes):
@@ -468,7 +497,11 @@ def install_central_device_control(workflow: dict[str, Any], workflow_key: str, 
     node_id = _next_node_id(root)
     min_x = min((float((node.get("pos") or [0, 0])[0]) for node in nodes), default=0.0)
     min_y = min((float((node.get("pos") or [0, 0])[1]) for node in nodes), default=0.0)
-    control = _control_node(node_id, [min_x - 480.0, min_y], max((int(node.get("order", 0)) for node in nodes), default=0) + 1)
+    control = _control_node(
+        node_id, [min_x - 480.0, min_y],
+        max((int(node.get("order", 0)) for node in nodes), default=0) + 1,
+        devices,
+    )
     nodes.append(control)
     _set_last_ids(root, node_id, int(root.get("last_link_id", 0)))
     source_slots = {role: slot for role, (slot, _, _) in CONTROL_ROLES.items()}
@@ -496,7 +529,10 @@ def install_central_device_control(workflow: dict[str, Any], workflow_key: str, 
         raise ValueError("Central GPU control has an unconnected device output")
     workflow.setdefault("extra", {}).setdefault("dawasteh_dual_gpu", {}).update({
         "central_control": DEVICE_CONTROL_TYPE,
-        "manual_device_dropdowns": {role: default for role, (_, default, _) in CONTROL_ROLES.items()},
+        "manual_device_dropdowns": {
+            role: (devices or {}).get(role.removesuffix("_device").upper(), default)
+            for role, (_, default, _) in CONTROL_ROLES.items()
+        },
     })
 
 
@@ -537,6 +573,9 @@ def _localize_model_paths(workflow: dict[str, Any]) -> None:
         "lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors": r"WAN\lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors",
         "umt5_xxl_fp8_e4m3fn_scaled.safetensors": r"UMT5\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
         "Wan2_1_VAE_bf16.safetensors": r"WAN\Wan2_1_VAE_bf16.safetensors",
+        "minimax_music3_dit_fp16.safetensors": r"MiniMax Music 3\minimax_music3_dit_fp32.safetensors",
+        "minimax_music3_text_encoder_pruned_int8_convrot.safetensors": r"MiniMax Music 3\minimax_music3_text_encoder_bf16.safetensors",
+        "minimax_music3_dav.safetensors": r"MiniMax Music 3\minimax_music3_dav.safetensors",
     }
     model_directories = {
         "ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors": "diffusion_models/LTX",
@@ -549,6 +588,18 @@ def _localize_model_paths(workflow: dict[str, Any]) -> None:
         "lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors": "loras/WAN",
         "umt5_xxl_fp8_e4m3fn_scaled.safetensors": "text_encoders/UMT5",
         "Wan2_1_VAE_bf16.safetensors": "vae/WAN",
+        "minimax_music3_dit_fp16.safetensors": "diffusion_models/MiniMax Music 3",
+        "minimax_music3_text_encoder_pruned_int8_convrot.safetensors": "text_encoders/MiniMax Music 3",
+        "minimax_music3_dav.safetensors": "vae/MiniMax Music 3",
+    }
+    model_names = {
+        "minimax_music3_dit_fp16.safetensors": "minimax_music3_dit_fp32.safetensors",
+        "minimax_music3_text_encoder_pruned_int8_convrot.safetensors": "minimax_music3_text_encoder_bf16.safetensors",
+    }
+    model_urls = {
+        name: f"https://huggingface.co/Comfy-Org/MiniMax-Music-3/resolve/main/{directory.split('/')[0]}/{target}"
+        for name, target in model_names.items()
+        if (directory := model_directories.get(name))
     }
     wan_animate = any(
         node.get("type") == "WanAnimate2Cache"
@@ -563,8 +614,45 @@ def _localize_model_paths(workflow: dict[str, Any]) -> None:
                 if wan_animate:
                     node["widgets_values"] = ["cpu" if value == "gpu" else value for value in node["widgets_values"]]
             for model in node.get("properties", {}).get("models", []) or []:
-                if isinstance(model, dict) and model.get("name") in model_directories:
-                    model["directory"] = model_directories[model["name"]]
+                if not isinstance(model, dict):
+                    continue
+                original_name = model.get("name")
+                if original_name in model_directories:
+                    model["directory"] = model_directories[original_name]
+                if original_name in model_names:
+                    model["name"] = model_names[original_name]
+                    model["url"] = model_urls[original_name]
+
+    if any(
+        value == r"MiniMax Music 3\minimax_music3_dit_fp32.safetensors"
+        for graph in _graphs(workflow)
+        for node in graph.get("nodes", [])
+        for value in (node.get("widgets_values") or [])
+    ):
+        note = next((node for node in workflow.get("nodes", []) if node.get("id") == 40), None)
+        if note is not None:
+            note["widgets_values"] = ["""## Model Links · Full Quality
+
+**diffusion_models/MiniMax Music 3**
+- [minimax_music3_dit_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-Music-3/resolve/main/diffusion_models/minimax_music3_dit_fp32.safetensors)
+
+**text_encoders/MiniMax Music 3**
+- [minimax_music3_text_encoder_bf16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-Music-3/resolve/main/text_encoders/minimax_music3_text_encoder_bf16.safetensors)
+
+**vae/MiniMax Music 3**
+- [minimax_music3_dav.safetensors](https://huggingface.co/Comfy-Org/MiniMax-Music-3/resolve/main/vae/minimax_music3_dav.safetensors)
+
+This bundle deliberately uses the locally installed full FP32 DiT and full BF16 text encoder. The dual-GPU workflow places the large autoregressive text stack on the 32 GB R9700 and the Flow-Matching DiT plus DAV decoder on the 16 GB RX 9070 XT.
+"""]
+
+
+def _device_label(device: str) -> str:
+    return {
+        "gpu:0": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
+        "gpu:1": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
+        "cpu": "cpu · system RAM",
+        "default": "default · ComfyUI automatic placement",
+    }.get(device, device)
 
 
 def _dual_gpu_metadata(family: Family) -> dict[str, Any]:
@@ -572,16 +660,32 @@ def _dual_gpu_metadata(family: Family) -> dict[str, Any]:
         f"comfyui-workflow-templates-json:{family.template}"
         if family.template else f"workflows/{family.source}"
     )
-    return {
+    metadata = {
         "version": 2,
         "family": family.name,
         "source": source,
         "server": "127.0.0.1:8188",
         "backend": "ROCm/HIP",
-        "default_model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
-        "default_clip_vae_device": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
+        "default_model_device": _device_label(family.model_device),
+        "default_clip_vae_device": (
+            _device_label(family.clip_device)
+            if family.clip_device == family.vae_device
+            else f"CLIP {_device_label(family.clip_device)}; VAE {_device_label(family.vae_device)}"
+        ),
         "execution": "device placement; ComfyUI still executes graph stages sequentially",
     }
+    if family.clip_device != family.vae_device:
+        metadata["default_clip_device"] = _device_label(family.clip_device)
+        metadata["default_vae_device"] = _device_label(family.vae_device)
+    if family.name == "MiniMax Music 3":
+        metadata["validation"] = {
+            "status": "live-smoke-passed",
+            "date": "2026-08-14",
+            "profile": "4 second maximum duration, 30 Euler/simple steps, tiled DAV decode",
+            "result": "execution_success; 7.988 second nonempty 44.1 kHz stereo FLAC",
+            "observed_placement": "CLIP cuda:0 R9700; MODEL and DAV deepcloned to cuda:1 RX 9070 XT",
+        }
+    return metadata
 
 
 def build_family(family: Family) -> dict[str, Any]:
@@ -604,15 +708,15 @@ def build_family(family: Family) -> dict[str, Any]:
         director["type"] = "DaWH3MusicVideoDirectorDualGPU"
         director["title"] = "H3 Complete-Song Director · Dual GPU · 8188"
         director.setdefault("properties", {})["Node name for S&R"] = "DaWH3MusicVideoDirectorDualGPU"
-        install_central_device_control(workflow, family.output, h3_director=True)
+        install_central_device_control(workflow, family.output, h3_director=True, devices=family.devices)
         refresh_refinement(workflow)
         return workflow
 
-    inserted = sum(insert_device_selectors(graph) for graph in _graphs(workflow))
+    inserted = sum(insert_device_selectors(graph, family.devices) for graph in _graphs(workflow))
     if inserted == 0:
         raise ValueError(f"No compatible MODEL/CLIP/VAE loader outputs found in {source}")
     extra["dawasteh_dual_gpu"]["selector_count"] = inserted
-    install_central_device_control(workflow, family.output, h3_director=False)
+    install_central_device_control(workflow, family.output, h3_director=False, devices=family.devices)
     refresh_refinement(workflow)
     return workflow
 

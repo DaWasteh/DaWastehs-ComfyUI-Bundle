@@ -48,6 +48,8 @@ class PixaromaIntegrationTests(unittest.TestCase):
             or path in {
                 "workflows/Prompt Enhancer/MiniMax_H3_Base_FL2VA-Official-Guide-Prompt-Enhancer.json",
                 "workflows/Prompt Enhancer/MiniMax_H3_Ref2VA-Official-Guide-Prompt-Enhancer.json",
+                "workflows/Prompt Enhancer/MiniMax_Music3-Official-Skill-Caption-Enhancer.json",
+                "workflows/Music Generation/MiniMax_Music3_FP32-BF16-Text-to-Music.json",
             }
         }
         self.assertEqual(
@@ -184,14 +186,18 @@ class PixaromaIntegrationTests(unittest.TestCase):
             for path in (ROOT / "workflows" / "Dual GPU - R9700 + RX 9070 XT").glob("*.json")
             for node in load(path)["nodes"]
         )
-        h3_enhancer_marked_prompts = sum(
+        minimax_enhancer_marked_prompts = sum(
             node.get("properties", {}).get(MARK, {}).get("kind") == "prompt"
-            for path in (ROOT / "workflows" / "Prompt Enhancer").glob("MiniMax_H3_*Official-Guide-Prompt-Enhancer.json")
+            for pattern in (
+                "MiniMax_H3_*Official-Guide-Prompt-Enhancer.json",
+                "MiniMax_Music3-Official-Skill-Caption-Enhancer.json",
+            )
+            for path in (ROOT / "workflows" / "Prompt Enhancer").glob(pattern)
             for node in load(path)["nodes"]
         )
         self.assertEqual(dual_marked_prompts, 18)
-        self.assertEqual(h3_enhancer_marked_prompts, 2)
-        self.assertEqual(total_marked_prompts, 146 + dual_marked_prompts + h3_enhancer_marked_prompts)
+        self.assertEqual(minimax_enhancer_marked_prompts, 4)
+        self.assertEqual(total_marked_prompts, 146 + dual_marked_prompts + minimax_enhancer_marked_prompts)
 
     def test_pause_gates_are_reciprocal_and_have_textgenerate_ancestry(self):
         pause_count = 0

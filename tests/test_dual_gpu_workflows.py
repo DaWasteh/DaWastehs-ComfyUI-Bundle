@@ -44,6 +44,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
             "video_ltx2_5_i2v.json": "bcd3239835e8e5bf287a664954c253c67cd31147a4a4193ef5975525e246a7a0",
             "video_ltx2_5_flf2v.json": "d93d8d6c63279e15c81d8e81595031449530628a5e4f3644b5ef53b3b345d113",
             "video_wan_animate2.json": "772a7dfce6d5b61b8f838ec0609211a0c9b1c04a7c64e26d05f0852f147edac7",
+            "audio_minimax_music_3.json": "0322153265b3e785961511b7849f6659f46a8fa7e8cb66976e5279ff1774b228",
         }
         self.assertEqual(
             {path.name for path in PINNED_TEMPLATES.glob("*.json")},
@@ -56,6 +57,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
             "LTX25-DualGPU-Image-to-Video.json": "video_ltx2_5_i2v.json",
             "LTX25-DualGPU-FLF2V.json": "video_ltx2_5_flf2v.json",
             "Wan-Animate-2-DualGPU-Motion-Transfer.json": "video_wan_animate2.json",
+            "MiniMax-Music3-DualGPU-Text-to-Music.json": "audio_minimax_music_3.json",
         }
         actual = {family.output: family.template for family in FAMILIES if family.template}
         self.assertEqual(actual, expected)
@@ -64,7 +66,11 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 continue
             workflow = json.loads((GENERATED / family.output).read_text(encoding="utf-8"))
             raw = json.dumps(workflow, ensure_ascii=False)
-            self.assertIn("int8", raw.lower())
+            if family.name == "MiniMax Music 3":
+                self.assertIn("minimax_music3_dit_fp32.safetensors", raw)
+                self.assertIn("minimax_music3_text_encoder_bf16.safetensors", raw)
+            else:
+                self.assertIn("int8", raw.lower())
             self.assertNotIn("nvfp4", raw.lower())
             self.assertNotIn("nunchaku", raw.lower())
             self.assertNotIn("CUDAExecutionProvider", raw)
@@ -88,6 +94,11 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 r"WAN\lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors",
                 r"UMT5\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
                 r"WAN\Wan2_1_VAE_bf16.safetensors",
+            },
+            "MiniMax-Music3-DualGPU-Text-to-Music.json": {
+                r"MiniMax Music 3\minimax_music3_dit_fp32.safetensors",
+                r"MiniMax Music 3\minimax_music3_text_encoder_bf16.safetensors",
+                r"MiniMax Music 3\minimax_music3_dav.safetensors",
             },
         }
         for output, expected in expected_models.items():
@@ -124,9 +135,13 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 self.assertGreaterEqual(len(placed), 3)
                 self.assertIn("SelectModelDevice", {node["type"] for node in placed})
                 self.assertIn("SelectCLIPDevice", {node["type"] for node in placed})
+                expected_devices = {
+                    "SelectModelDevice": family.model_device,
+                    "SelectCLIPDevice": family.clip_device,
+                    "SelectVAEDevice": family.vae_device,
+                }
                 for node in placed:
-                    expected = "gpu:0" if node["type"] == "SelectModelDevice" else "gpu:1"
-                    self.assertEqual(node["widgets_values"], [expected])
+                    self.assertEqual(node["widgets_values"], [expected_devices[node["type"]]])
 
     def test_one_central_control_drives_every_selector_and_dual_h3_director(self):
         selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
@@ -136,7 +151,10 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 controls = [node for node in workflow["nodes"] if node["type"] == DEVICE_CONTROL_TYPE]
                 self.assertEqual(len(controls), 1)
                 control = controls[0]
-                self.assertEqual(control["widgets_values"], ["gpu:0", "gpu:1", "gpu:1"])
+                self.assertEqual(
+                    control["widgets_values"],
+                    [family.model_device, family.clip_device, family.vae_device],
+                )
                 self.assertTrue(all(output.get("links") for output in control["outputs"]))
                 self.assertEqual(workflow["extra"]["dawasteh_dual_gpu"]["version"], 2)
 
