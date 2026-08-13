@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import tempfile
 import unittest
@@ -13,6 +14,7 @@ from tools.validate_workflows import validate_graph
 
 ROOT = Path(__file__).resolve().parents[1]
 GENERATED = ROOT / "workflows" / "Dual GPU - R9700 + RX 9070 XT"
+PINNED_TEMPLATES = ROOT / "tools" / "workflow_templates"
 SELECTORS = {"SelectModelDevice", "SelectCLIPDevice", "SelectVAEDevice"}
 LAUNCHER = ROOT / "tools" / "start-MultiGPU.ps1"
 CONTROL_NODE_DIR = ROOT / "custom_nodes" / "ComfyUI-DaWasteh-MultiGPU-Control"
@@ -35,6 +37,75 @@ class DualGPUWorkflowTests(unittest.TestCase):
             self.assertEqual(len(generated), len(FAMILIES))
             for path in generated:
                 self.assertEqual(path.read_bytes(), (GENERATED / path.name).read_bytes())
+
+    def test_official_int8_template_families_are_pinned(self):
+        expected_hashes = {
+            "video_ltx2_5_t2v.json": "b8ab11a3cb349bf6dccd9ad09307213e0088d833d1867270d23e1f794bab6a9d",
+            "video_ltx2_5_i2v.json": "bcd3239835e8e5bf287a664954c253c67cd31147a4a4193ef5975525e246a7a0",
+            "video_ltx2_5_flf2v.json": "d93d8d6c63279e15c81d8e81595031449530628a5e4f3644b5ef53b3b345d113",
+            "video_wan_animate2.json": "772a7dfce6d5b61b8f838ec0609211a0c9b1c04a7c64e26d05f0852f147edac7",
+        }
+        self.assertEqual(
+            {path.name for path in PINNED_TEMPLATES.glob("*.json")},
+            set(expected_hashes),
+        )
+        for name, expected_hash in expected_hashes.items():
+            self.assertEqual(hashlib.sha256((PINNED_TEMPLATES / name).read_bytes()).hexdigest(), expected_hash)
+        expected = {
+            "LTX25-DualGPU-Text-to-Video.json": "video_ltx2_5_t2v.json",
+            "LTX25-DualGPU-Image-to-Video.json": "video_ltx2_5_i2v.json",
+            "LTX25-DualGPU-FLF2V.json": "video_ltx2_5_flf2v.json",
+            "Wan-Animate-2-DualGPU-Motion-Transfer.json": "video_wan_animate2.json",
+        }
+        actual = {family.output: family.template for family in FAMILIES if family.template}
+        self.assertEqual(actual, expected)
+        for family in FAMILIES:
+            if not family.template:
+                continue
+            workflow = json.loads((GENERATED / family.output).read_text(encoding="utf-8"))
+            raw = json.dumps(workflow, ensure_ascii=False)
+            self.assertIn("int8", raw.lower())
+            self.assertNotIn("nvfp4", raw.lower())
+            self.assertNotIn("nunchaku", raw.lower())
+            self.assertNotIn("CUDAExecutionProvider", raw)
+            self.assertEqual(
+                workflow["extra"]["dawasteh_dual_gpu"]["source"],
+                f"comfyui-workflow-templates-json:{family.template}",
+            )
+
+    def test_template_model_paths_and_wan_cache_are_release_safe(self):
+        expected_models = {
+            "LTX25-DualGPU-Text-to-Video.json": {
+                r"LTX\ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors",
+                r"LTX\gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors",
+                r"LTX\ltx-2.5-video-vae-bf16.safetensors",
+                r"LTX\ltx-2.5-audio-vae-bf16.safetensors",
+                r"LTX\ltx-2.5-latent-spatial-upscaler-x2-bf16-1.0.safetensors",
+                r"Gemma\gemma4_e2b_it_bf16.safetensors",
+            },
+            "Wan-Animate-2-DualGPU-Motion-Transfer.json": {
+                r"WAN\wan_animate_2_int8_convrot.safetensors",
+                r"WAN\lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors",
+                r"UMT5\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+                r"WAN\Wan2_1_VAE_bf16.safetensors",
+            },
+        }
+        for output, expected in expected_models.items():
+            workflow = json.loads((GENERATED / output).read_text(encoding="utf-8"))
+            actual = {
+                value
+                for graph in graphs(workflow)
+                for node in graph.get("nodes", [])
+                for value in (node.get("widgets_values") or [])
+                if isinstance(value, str) and value.endswith(".safetensors")
+            }
+            self.assertTrue(expected.issubset(actual))
+        wan = json.loads((GENERATED / "Wan-Animate-2-DualGPU-Motion-Transfer.json").read_text(encoding="utf-8"))
+        cache_nodes = [node for graph in graphs(wan) for node in graph.get("nodes", []) if node.get("type") == "WanAnimate2Cache"]
+        self.assertEqual(len(cache_nodes), 2)
+        self.assertTrue(all(node["widgets_values"][:2] == ["cpu", "int8"] for node in cache_nodes))
+        instances = [node for node in wan["nodes"] if node.get("type") in {graph["id"] for graph in wan["definitions"]["subgraphs"] if graph.get("name") == "Motion Transfer (Wan Animate 2)"}]
+        self.assertTrue(all("gpu" not in node.get("widgets_values", []) for node in instances))
 
     def test_every_family_has_correct_device_placement(self):
         self.assertEqual({path.name for path in GENERATED.glob("*.json")}, {family.output for family in FAMILIES})

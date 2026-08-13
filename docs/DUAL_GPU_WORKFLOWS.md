@@ -47,7 +47,7 @@ Während eines schweren Dual-GPU-Jobs sollte Port 8189 keinen weiteren GPU-inten
 
 ## Zentraler GPU-Control-Node · v0.8.8
 
-Jeder der 23 Workflows enthält genau einen sichtbaren Node:
+Jeder der 27 Workflows enthält genau einen sichtbaren Node:
 
 ```text
 DaW Multi-GPU Device Control
@@ -98,12 +98,16 @@ Enthalten sind je ein kuratierter Workflow für:
 15. Bernini-R
 16. WAN 2.2
 17. LTX 2.3
-18. Kandinsky 5
-19. ACE-Step 1.5
-20. Stable Audio 3
-21. MiniMax H3 Complete-Song One-Click
-22. MiniMax H3 FL2VA · offene Eingaben
-23. MiniMax H3 Ref2VA · offene Referenzen
+18. LTX 2.5 Text-to-Video · INT8 ConvRot
+19. LTX 2.5 Image-to-Video · INT8 ConvRot
+20. LTX 2.5 First/Last-Frame-to-Video · INT8 ConvRot
+21. Wan Animate 2 Motion Transfer · INT8 ConvRot
+22. Kandinsky 5
+23. ACE-Step 1.5
+24. Stable Audio 3
+25. MiniMax H3 Complete-Song One-Click
+26. MiniMax H3 FL2VA · offene Eingaben
+27. MiniMax H3 Ref2VA · offene Referenzen
 
 Normale Graphen enthalten direkt und zentral verbunden:
 
@@ -112,6 +116,16 @@ Normale Graphen enthalten direkt und zentral verbunden:
 - `Select VAE Device` mit `gpu:1`
 
 Wenn ein Modell zwei Diffusionsloader besitzt, etwa WAN 2.2 oder Ideogram 4, erhält jeder Loader einen eigenen `Select Model Device`-Node.
+
+## LTX-2.5 und Wan Animate 2 · v0.9.0
+
+Die vier v0.9.0-Workflows werden deterministisch aus den mit ComfyUI `0.32.0` und `comfyui-workflow-templates-json 0.1.43` ausgelieferten offiziellen Templates erzeugt. Gepinnte Kopien liegen unter `tools/workflow_templates/`; dadurch hängt eine Regeneration nicht von einem später veränderten installierten Python-Paket ab. Paketversion, Upstream und SHA-256-Werte aller vier Dateien sind in [`tools/workflow_templates/README.md`](../tools/workflow_templates/README.md) dokumentiert.
+
+LTX-2.5 verwendet den offiziellen distilled INT8-ConvRot-DiT und INT8-ConvRot-Gemma-4-12B-Textencoder. T2V und I2V verwenden zusätzlich den räumlichen LTX-2.5-Latent-Upscaler; FLF2V interpoliert direkt zwischen erstem und letztem Bild. Wan Animate 2 verwendet den INT8-ConvRot-DiT, FP8-UMT5, CLIP-Vision, WAN-VAE und die LightX2V-I2V-LoRA. Die Modelldateien sind lokal nach Familien unter `models/.../LTX`, `models/.../WAN`, `models/text_encoders/Gemma` und `models/text_encoders/UMT5` abgelegt; die Workflows referenzieren diese Unterordner ausdrücklich.
+
+Für Wan Animate 2 wird `WanAnimate2Cache` gegenüber dem offiziellen Template bewusst auf `cpu`/`int8` gesetzt: Der Core-Node warnt, dass der Cache bei typischer Auflösung/Länge neben dem Modell nicht sicher in VRAM passt. Das große MODEL wird zentral nach `gpu:0` gelegt; CLIP und VAE gehen nach `gpu:1`. CLIP-Vision besitzt keinen offiziellen `SelectCLIPDevice`-kompatiblen CLIP-Ausgang und bleibt deshalb unverändert.
+
+Die vier Graphen wurden vor v0.9.0 über ComfyUIs echten Browser-Serializer in API-Prompts expandiert und mit den realen Gewichten auf Windows-ROCm ausgeführt. Die kurzen Abnahmeläufe waren LTX-2.5 T2V/I2V/FLF2V mit jeweils 2 Sekunden bei 320×320 sowie Wan Animate 2 mit 9 Frames bei 256×256; alle vier endeten mit `execution_success` und schrieben nichtleere MP4-Ausgaben. Diese Smoke-Profile bestätigen Loader, Selector-Wiring, Sampling und Decode, sind aber keine Qualitäts- oder Langzeitmessung der ausgelieferten höheren Standardauflösungen.
 
 ## Offene MiniMax-H3-Workflows · v0.8.7
 
@@ -160,7 +174,7 @@ YuE, HeartMuLa, MOSS-TTS, Qwen-TTS und ähnliche Custom-Nodes geben keine standa
 
 ## Regeneration und Prüfung
 
-Die 23 Dateien sind deterministisch generiert:
+Die 27 Dateien sind deterministisch generiert:
 
 ```powershell
 python tools/generate_dual_gpu_workflows.py

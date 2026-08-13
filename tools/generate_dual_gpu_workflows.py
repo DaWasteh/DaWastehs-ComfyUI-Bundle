@@ -28,6 +28,7 @@ except ModuleNotFoundError:  # Direct execution: python tools/generate_dual_gpu_
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / "workflows"
 DEFAULT_DESTINATION = WORKFLOWS / "Dual GPU - R9700 + RX 9070 XT"
+WORKFLOW_TEMPLATES = ROOT / "tools" / "workflow_templates"
 
 MODEL_DEVICE = "gpu:0"
 HELPER_DEVICE = "gpu:1"
@@ -39,6 +40,7 @@ class Family:
     source: str
     output: str
     h3_director: bool = False
+    template: str | None = None
 
 
 FAMILIES = (
@@ -59,6 +61,10 @@ FAMILIES = (
     Family("Bernini-R", "Image Editing/Bernini_R-Image-Edit.json", "Bernini-R-DualGPU-Image-Edit.json"),
     Family("WAN 2.2", "Text to Video/WAN22_14B_fp8_lightx2v-Text-to-Video.json", "WAN22-DualGPU-Text-to-Video.json"),
     Family("LTX 2.3", "Text to Video/LTX23_dev_mxfp8-Text-to-Video.json", "LTX23-DualGPU-Text-to-Video.json"),
+    Family("LTX 2.5 Text to Video", "", "LTX25-DualGPU-Text-to-Video.json", template="video_ltx2_5_t2v.json"),
+    Family("LTX 2.5 Image to Video", "", "LTX25-DualGPU-Image-to-Video.json", template="video_ltx2_5_i2v.json"),
+    Family("LTX 2.5 FLF2V", "", "LTX25-DualGPU-FLF2V.json", template="video_ltx2_5_flf2v.json"),
+    Family("Wan Animate 2 Motion Transfer", "", "Wan-Animate-2-DualGPU-Motion-Transfer.json", template="video_wan_animate2.json"),
     Family("Kandinsky 5", "Text+Image to Video/Kandinsky5_Lite-Text+Image-to-Video.json", "Kandinsky5-DualGPU-Text+Image-to-Video.json"),
     Family("ACE-Step 1.5", "Music Generation/ACE-Step1_5_Turbo_4B-Music-Generation.json", "ACE-Step1_5-DualGPU-Music-Generation.json"),
     Family("Stable Audio 3", "Music Generation/StableAudio3_Medium-Audio-Generation.json", "StableAudio3-DualGPU-Audio-Generation.json"),
@@ -403,6 +409,35 @@ def _wire_subgraph_instance(
         instance["size"][1] = float(instance["size"][1]) + 60.0
 
 
+def _timer_node(node_id: int, pos: list[float], order: int) -> dict[str, Any]:
+    return {
+        "id": node_id,
+        "type": "PixaromaRunTimer",
+        "pos": pos,
+        "size": [226, 136],
+        "flags": {},
+        "order": order,
+        "mode": 0,
+        "inputs": [],
+        "outputs": [],
+        "properties": {"Node name for S&R": "PixaromaRunTimer", "cnr_id": "ComfyUI-Pixaroma"},
+        "widgets_values": [{"version": 1, "color": "#f66744", "decimals": 0, "chime": True, "sound": "", "volume": 70}],
+        "color": "#1d1d1d",
+        "bgcolor": "#2a2a2a",
+    }
+
+
+def install_run_timer(workflow: dict[str, Any]) -> None:
+    if any(node.get("type") == "PixaromaRunTimer" for node in workflow.get("nodes", [])):
+        return
+    nodes = workflow.setdefault("nodes", [])
+    node_id = _next_node_id(workflow)
+    min_x = min((float((node.get("pos") or [0, 0])[0]) for node in nodes), default=0.0)
+    max_y = max((float((node.get("pos") or [0, 0])[1]) + float((node.get("size") or [0, 0])[1]) for node in nodes), default=0.0)
+    nodes.append(_timer_node(node_id, [min_x, max_y + 120.0], max((int(node.get("order", 0)) for node in nodes), default=0) + 1))
+    _set_last_ids(workflow, node_id, int(workflow.get("last_link_id", 0)))
+
+
 def _control_node(node_id: int, pos: list[float], order: int) -> dict[str, Any]:
     return {
         "id": node_id,
@@ -483,11 +518,64 @@ def refresh_refinement(workflow: dict[str, Any]) -> None:
             graph["state"]["lastNodeId"] = max(int(graph["state"].get("lastNodeId", 0)), maximum)
 
 
+def _workflow_template_path(template: str) -> Path:
+    path = WORKFLOW_TEMPLATES / template
+    if not path.is_file():
+        raise FileNotFoundError(f"Pinned official ComfyUI workflow template is missing: {path}")
+    return path
+
+
+def _localize_model_paths(workflow: dict[str, Any]) -> None:
+    replacements = {
+        "ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors": r"LTX\ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors",
+        "gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors": r"LTX\gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors",
+        "ltx-2.5-video-vae-bf16.safetensors": r"LTX\ltx-2.5-video-vae-bf16.safetensors",
+        "ltx-2.5-audio-vae-bf16.safetensors": r"LTX\ltx-2.5-audio-vae-bf16.safetensors",
+        "ltx-2.5-latent-spatial-upscaler-x2-bf16-1.0.safetensors": r"LTX\ltx-2.5-latent-spatial-upscaler-x2-bf16-1.0.safetensors",
+        "gemma4_e2b_it_bf16.safetensors": r"Gemma\gemma4_e2b_it_bf16.safetensors",
+        "wan_animate_2_int8_convrot.safetensors": r"WAN\wan_animate_2_int8_convrot.safetensors",
+        "lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors": r"WAN\lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors",
+        "umt5_xxl_fp8_e4m3fn_scaled.safetensors": r"UMT5\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "Wan2_1_VAE_bf16.safetensors": r"WAN\Wan2_1_VAE_bf16.safetensors",
+    }
+    model_directories = {
+        "ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors": "diffusion_models/LTX",
+        "gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors": "text_encoders/LTX",
+        "ltx-2.5-video-vae-bf16.safetensors": "vae/LTX",
+        "ltx-2.5-audio-vae-bf16.safetensors": "vae/LTX",
+        "ltx-2.5-latent-spatial-upscaler-x2-bf16-1.0.safetensors": "latent_upscale_models/LTX",
+        "gemma4_e2b_it_bf16.safetensors": "text_encoders/Gemma",
+        "wan_animate_2_int8_convrot.safetensors": "diffusion_models/WAN",
+        "lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors": "loras/WAN",
+        "umt5_xxl_fp8_e4m3fn_scaled.safetensors": "text_encoders/UMT5",
+        "Wan2_1_VAE_bf16.safetensors": "vae/WAN",
+    }
+    wan_animate = any(
+        node.get("type") == "WanAnimate2Cache"
+        for graph in _graphs(workflow)
+        for node in graph.get("nodes", [])
+    )
+    for graph in _graphs(workflow):
+        for node in graph.get("nodes", []):
+            values = node.get("widgets_values")
+            if isinstance(values, list):
+                node["widgets_values"] = [replacements.get(value, value) for value in values]
+                if wan_animate:
+                    node["widgets_values"] = ["cpu" if value == "gpu" else value for value in node["widgets_values"]]
+            for model in node.get("properties", {}).get("models", []) or []:
+                if isinstance(model, dict) and model.get("name") in model_directories:
+                    model["directory"] = model_directories[model["name"]]
+
+
 def _dual_gpu_metadata(family: Family) -> dict[str, Any]:
+    source = (
+        f"comfyui-workflow-templates-json:{family.template}"
+        if family.template else f"workflows/{family.source}"
+    )
     return {
         "version": 2,
         "family": family.name,
-        "source": f"workflows/{family.source}",
+        "source": source,
         "server": "127.0.0.1:8188",
         "backend": "ROCm/HIP",
         "default_model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
@@ -497,9 +585,12 @@ def _dual_gpu_metadata(family: Family) -> dict[str, Any]:
 
 
 def build_family(family: Family) -> dict[str, Any]:
-    source = WORKFLOWS / family.source
+    source = _workflow_template_path(family.template) if family.template else WORKFLOWS / family.source
     workflow = json.loads(source.read_text(encoding="utf-8-sig"))
     workflow = copy.deepcopy(workflow)
+    if family.template:
+        _localize_model_paths(workflow)
+        install_run_timer(workflow)
     workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-dual-gpu:{family.output}"))
     workflow["revision"] = 0
     extra = workflow.setdefault("extra", {})
