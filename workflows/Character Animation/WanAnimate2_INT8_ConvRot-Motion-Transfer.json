@@ -1,15 +1,15 @@
 {
   "id": "995b69b9-f973-50ef-9513-f7bee5d3c263",
   "revision": 0,
-  "last_node_id": 591,
-  "last_link_id": 863,
+  "last_node_id": 595,
+  "last_link_id": 870,
   "nodes": [
     {
       "id": 261,
       "type": "11706f8a-428d-4ef9-b24f-863f651c1b0b",
       "pos": [
         1700.0,
-        80.0
+        720.0
       ],
       "size": [
         500,
@@ -143,7 +143,7 @@
           "widget": {
             "name": "resize_type.width"
           },
-          "link": null
+          "link": 864
         },
         {
           "label": "height",
@@ -152,7 +152,7 @@
           "widget": {
             "name": "resize_type.height_1"
           },
-          "link": null
+          "link": 865
         },
         {
           "label": "unet",
@@ -225,6 +225,16 @@
             "name": "daw_vae_device"
           },
           "link": 855
+        },
+        {
+          "label": "length · seconds controlled",
+          "localized_name": "length",
+          "name": "length",
+          "type": "INT",
+          "widget": {
+            "name": "length"
+          },
+          "link": 870
         }
       ],
       "outputs": [
@@ -263,7 +273,7 @@
         1,
         0,
         1,
-        false,
+        true,
         "cpu",
         "int8",
         false,
@@ -285,8 +295,8 @@
       "id": 477,
       "type": "b798a87e-23ec-483d-ab9b-6af5b298d0ad",
       "pos": [
-        1700.0,
-        1280.0
+        2280.0,
+        80.0
       ],
       "size": [
         500,
@@ -420,7 +430,7 @@
           "widget": {
             "name": "resize_type.width"
           },
-          "link": null
+          "link": 866
         },
         {
           "label": "height",
@@ -429,7 +439,7 @@
           "widget": {
             "name": "resize_type.height_1"
           },
-          "link": null
+          "link": 867
         },
         {
           "label": "unet",
@@ -557,7 +567,7 @@
       "type": "BatchImagesNode",
       "pos": [
         1700.0,
-        1180.0
+        1800.0
       ],
       "size": [
         230,
@@ -599,8 +609,8 @@
       "id": 245,
       "type": "CreateVideo",
       "pos": [
-        1700.0,
-        2360.0
+        2280.0,
+        1220.0
       ],
       "size": [
         270,
@@ -649,7 +659,7 @@
     },
     {
       "id": 189,
-      "type": "LoadImage",
+      "type": "DaWAdaptiveLoadImage",
       "pos": [
         1040.0,
         80.0
@@ -664,7 +674,7 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "IMAGE",
+          "name": "image",
           "type": "IMAGE",
           "links": [
             703,
@@ -672,23 +682,51 @@
           ]
         },
         {
-          "name": "MASK",
+          "name": "mask",
           "type": "MASK",
+          "links": null
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [
+            864,
+            866
+          ]
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [
+            865,
+            867
+          ]
+        },
+        {
+          "name": "model_profile",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "info",
+          "type": "STRING",
           "links": null
         }
       ],
-      "title": "Load Image (Reference Image)",
+      "title": "Adaptive Load Image · Wan Animate 2 · auto",
       "properties": {
-        "Node name for S&R": "LoadImage"
+        "Node name for S&R": "DaWAdaptiveLoadImage"
       },
       "widgets_values": [
         "pink_hair_mech_arms_ref.png",
-        "image"
+        "Auto (connected model)",
+        "Model native (100%)",
+        "Wan 2.x / Animate 2 (480p)"
       ]
     },
     {
       "id": 240,
-      "type": "LoadVideo",
+      "type": "DaWAdaptiveLoadVideo",
       "pos": [
         1040.0,
         980.0
@@ -703,7 +741,7 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "VIDEO",
+          "name": "video",
           "type": "VIDEO",
           "links": [
             704,
@@ -711,15 +749,47 @@
             832,
             845
           ]
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "name": "duration",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "name": "model_profile",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "info",
+          "type": "STRING",
+          "links": null
         }
       ],
-      "title": "Load Video (Pose Video)",
+      "title": "Adaptive Load Video · Wan Animate 2 · auto",
       "properties": {
-        "Node name for S&R": "LoadVideo"
+        "Node name for S&R": "DaWAdaptiveLoadVideo"
       },
       "widgets_values": [
         "street_dance_drive.mp4",
-        "image"
+        "Auto (connected model)",
+        "Model native (100%)",
+        "Wan 2.x / Animate 2 (480p)"
       ]
     },
     {
@@ -727,7 +797,7 @@
       "type": "GetVideoComponents",
       "pos": [
         1700.0,
-        1040.0
+        240.0
       ],
       "size": [
         260,
@@ -762,7 +832,8 @@
           "name": "fps",
           "type": "FLOAT",
           "links": [
-            730
+            730,
+            869
           ]
         },
         {
@@ -781,7 +852,7 @@
       "type": "79280513-53b2-4417-93f8-f3e116bb6736",
       "pos": [
         2280.0,
-        540.0
+        1520.0
       ],
       "size": [
         290,
@@ -830,7 +901,7 @@
       "type": "SaveVideo",
       "pos": [
         2280.0,
-        740.0
+        1720.0
       ],
       "size": [
         850,
@@ -865,7 +936,7 @@
       "type": "SaveVideo",
       "pos": [
         2280.0,
-        200.0
+        1360.0
       ],
       "size": [
         650,
@@ -901,8 +972,8 @@
       "id": 536,
       "type": "ComfyMathExpression",
       "pos": [
-        2280.0,
-        80.0
+        1700.0,
+        1680.0
       ],
       "size": [
         230,
@@ -959,7 +1030,7 @@
       "type": "GetImageSize",
       "pos": [
         1700.0,
-        2240.0
+        380.0
       ],
       "size": [
         230,
@@ -1006,7 +1077,7 @@
       "type": "PreviewAny",
       "pos": [
         2280.0,
-        360.0
+        1040.0
       ],
       "size": [
         230,
@@ -1053,7 +1124,7 @@
       "title": "Note",
       "properties": {},
       "widgets_values": [
-        "[Native loop support PR](https://github.com/Comfy-Org/ComfyUI/pull/13180) is still under review, so you have to manually copy and paste the `Motion Transfer (Wan Animate 2)` subgraph in order to make a longer video, the number here indicates how many subgraphs you need to match the pose reference video length."
+        "Use OUTPUT DURATION · SECONDS for the normal longer-video path; the active Motion Transfer subgraph uses context windows automatically. The bypassed second subgraph and manual copy/paste chaining remain optional expert tools when you deliberately want separate segments."
       ],
       "color": "#222",
       "bgcolor": "#000"
@@ -1101,7 +1172,7 @@
       "title": "Note: Wan Animate2",
       "properties": {},
       "widgets_values": [
-        "# Wan Animate 2 — Character Animation\n\n## What is this model?\n**Wan-Animate-2** (by Wan-Video / Alibaba) is an **end-to-end character animation model**:\n\n> Reference image (who) + Driving video (what motion) → your character performing that motion\n\nKey properties:\n- **No pose/keypoint extraction** — unlike v1 (Wan 2.2 Animate), the raw driving video frames are used directly. No skeleton/pose preprocessing needed.\n- **Identity preservation** — the output character matches the reference image.\n- **Text-controlled background and camera** — the output background is generated from the prompt, fully decoupled from both the reference image and the driving video.\n\n## How it works (brief)\n\n    Reference image ──VAE──▶ ref latent ──┐\n                                          ├──▶ DiT (14B) ──▶ frames ──▶ video\n    Driving video  ──VAE──▶ pose latent ──┘   pose branch feeds K/V per frame\n           ▲\n    Text prompt ──▶ text conditioning (character + background)\n\nEach generated frame attends to the reference frame (identity) plus the pose video frame (motion).\n\n## How to use this workflow\n\n1. **LoadImage** — your character image (background doesn't matter; the output background follows the prompt).\n2. **LoadVideo** — the driving video (any resolution; keep the character framing similar to the reference image, e.g. full-body to full-body).\n3. **Set the prompts** on the `Motion Transfer` subgraph:\n   - `text_1` (main): `Character appearance description: ...` + `Background description: ...` — describe the LOOKS only, no motion words.\n   - `text_2` (pose): describe the motion in the video, e.g. `a person dancing`.\n4. **Queue it** — `SaveVideo` writes the result; the node on the right shows a side-by-side comparison with the driving video.\n\n## Making longer videos (extending)\n\nEach `Motion Transfer` subgraph generates **81 frames** (~3.4 s @ 24 fps). To extend beyond that, chain multiple subgraphs manually:\n\n1. **Duplicate** the `Motion Transfer (Wan Animate 2)` subgraph — select it, press `Ctrl-C` then `Ctrl-Shift-V`.\n2. **Wire the previous subgraph to the new one**:\n   - previous `IMAGE` → new `continue_motion` (uses the last frame as a temporal anchor)\n   - previous `video_frame_offset` → new `video_frame_offset` (continues reading the driving video where it left off)\n3. **Concatenate the outputs** — connect the new subgraph's `IMAGE` to the `Batch Images` node (its inputs auto-grow with the `+` button).\n4. Consecutive segments overlap by 1 frame by design (that frame keeps the motion continuous). If you see a 1-frame \"hiccup\" at the seam, drop the new segment's first frame (the `trim_image` output = how many frames to remove).\n\n> How many subgraphs do you need? Roughly `driving video frames / 81` — the math node in the bottom-left computes this for you.\n\n**Alternative (future):** the [Native loop support PR](https://github.com/Comfy-Org/ComfyUI/pull/13180) will allow looping/extension without manual duplication. It's still under review — until it lands, manual chaining above is the way. You can also try the community `ComfyUI-NativeLooping_testing` nodes for window-to-window seamless loops.\n\n## Tips\n- Framing mismatch (close-up vs full-body) is the #1 cause of bad results.\n- Frames are taken 1:1 from the video (no fps resampling) — resample to ~16-24 fps if the motion looks too slow.\n- Set `WanAnimate2Cache` device to **cpu** to avoid VRAM spikes."
+        "# Wan Animate 2 — Character Animation\n\n## What is this model?\n**Wan-Animate-2** (by Wan-Video / Alibaba) is an **end-to-end character animation model**:\n\n> Reference image (who) + Driving video (what motion) → your character performing that motion\n\nKey properties:\n- **No pose/keypoint extraction** — unlike v1 (Wan 2.2 Animate), the raw driving video frames are used directly. No skeleton/pose preprocessing needed.\n- **Identity preservation** — the output character matches the reference image.\n- **Text-controlled background and camera** — the output background is generated from the prompt, fully decoupled from both the reference image and the driving video.\n\n## How it works (brief)\n\n    Reference image ──VAE──▶ ref latent ──┐\n                                          ├──▶ DiT (14B) ──▶ frames ──▶ video\n    Driving video  ──VAE──▶ pose latent ──┘   pose branch feeds K/V per frame\n           ▲\n    Text prompt ──▶ text conditioning (character + background)\n\nEach generated frame attends to the reference frame (identity) plus the pose video frame (motion).\n\n## How to use this workflow\n\n1. **Adaptive Load Image** — choose the character image. Auto detects Wan Animate 2; the manual model dropdown remains available.\n2. **Adaptive Load Video** — choose the driving video. Both loaders scale to a Wan-valid resolution without cropping; use lower quality levels for drafts.\n3. **Set the prompts** on the `Motion Transfer` subgraph:\n   - `text_1` (main): `Character appearance description: ...` + `Background description: ...` — describe the LOOKS only, no motion words.\n   - `text_2` (pose): describe the motion in the video, e.g. `a person dancing`.\n4. **Queue it** — `SaveVideo` writes the result; the node on the right shows a side-by-side comparison with the driving video.\n\n## Direct duration in seconds\n\nSet **OUTPUT DURATION · SECONDS**. The workflow combines that value with the loaded pose video's real FPS and snaps it to Wan's valid `4n+1` frame grid. Context windows are enabled on the active Motion Transfer subgraph, so durations are no longer limited to the old fixed 81-frame widget.\n\nThe second bypassed Motion Transfer subgraph remains available as an expert/manual extension alternative. Enable and chain it only when you deliberately want separate segments.\n\n## Tips\n- Framing mismatch (close-up vs full-body) is the #1 cause of bad results.\n- Duration uses the loaded video's FPS; frames are not temporally resampled. Change the source FPS first if the motion speed itself is wrong.\n- The adaptive loaders never crop. Matching character framing in reference and pose media still gives the best transfer.\n- Set `WanAnimate2Cache` device to **cpu** to avoid VRAM spikes."
       ],
       "color": "#222",
       "bgcolor": "#000"
@@ -1238,7 +1309,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · Load Image (Reference Image) · Node 189",
+      "title": "Erklärung · Adaptive Load Image · Wan Animate 2 · auto · Node 189",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1246,7 +1317,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Load Image (Reference Image) · Node 189\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `pink_hair_mech_arms_ref.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · Adaptive Load Image · Wan Animate 2 · auto · Node 189\n\n**Zweck:** Loads and scales a complete image to a model-valid resolution without cropping.\n\n**Einstellbare Werte**\n- `image` = `pink_hair_mech_arms_ref.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `model_profile` = `Auto (connected model)` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `quality` = `Model native (100%)` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `detected_profile` = `Wan 2.x / Animate 2 (480p)` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `image` (IMAGE, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `mask` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `width` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `height` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `model_profile` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1267,7 +1338,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · Load Video (Pose Video) · Node 240",
+      "title": "Erklärung · Adaptive Load Video · Wan Animate 2 · auto · Node 240",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1275,7 +1346,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Load Video (Pose Video) · Node 240\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `file` = `street_dance_drive.mp4` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `VIDEO` (VIDEO, 4 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · Adaptive Load Video · Wan Animate 2 · auto · Node 240\n\n**Zweck:** Loads video lazily and scales complete frames to a model-valid resolution without cropping.\n\n**Einstellbare Werte**\n- `file` = `street_dance_drive.mp4` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `model_profile` = `Auto (connected model)` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `quality` = `Model native (100%)` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `detected_profile` = `Wan 2.x / Animate 2 (480p)` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `video` (VIDEO, 4 Verbindung(en)): Ergebnis dieses Nodes\n- `width` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `height` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `fps` (FLOAT, nicht verbunden): Ergebnis dieses Nodes\n- `duration` (FLOAT, nicht verbunden): Ergebnis dieses Nodes\n- `model_profile` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1362,7 +1433,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Motion Transfer (Wan Animate 2) · Node 261\n\n**Zweck:** Führt den eingebetteten Subgraph „Motion Transfer (Wan Animate 2)“ aus.\n\n**Einstellbare Werte**\n- `value` = `0` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `input` (IMAGE,MASK, Link 703): Subgraph-Eingang\n- `video` (VIDEO, Link 704): Subgraph-Eingang\n- `continue_motion` (IMAGE, nicht verbunden): Subgraph-Eingang\n- `video_frame_offset_1` (INT, nicht verbunden): Subgraph-Eingang\n- `text` (STRING, nicht verbunden): Subgraph-Eingang\n- `reference_image_strength_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `text_4` (STRING, nicht verbunden): Subgraph-Eingang\n- `pose_strength_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `pose_start_percent_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `pose_end_percent_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `switch_1` (BOOLEAN, nicht verbunden): Subgraph-Eingang\n- `device_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `dtype_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `value_1` (BOOLEAN, nicht verbunden): Subgraph-Eingang\n- `resize_type.width` (INT, nicht verbunden): Subgraph-Eingang\n- `resize_type.height_1` (INT, nicht verbunden): Subgraph-Eingang\n- `unet_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `lora_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `clip_name_2` (COMBO, nicht verbunden): Subgraph-Eingang\n- `clip_name_3` (COMBO, nicht verbunden): Subgraph-Eingang\n- `vae_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `daw_model_device` (COMBO, Link 853): Subgraph-Eingang\n- `daw_clip_device` (COMBO, Link 854): Subgraph-Eingang\n- `daw_vae_device` (COMBO, Link 855): Subgraph-Eingang\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `video_frame_offset` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `output` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · Motion Transfer (Wan Animate 2) · Node 261\n\n**Zweck:** Führt den eingebetteten Subgraph „Motion Transfer (Wan Animate 2)“ aus.\n\n**Einstellbare Werte**\n- `value` = `0` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `input` (IMAGE,MASK, Link 703): Subgraph-Eingang\n- `video` (VIDEO, Link 704): Subgraph-Eingang\n- `continue_motion` (IMAGE, nicht verbunden): Subgraph-Eingang\n- `video_frame_offset_1` (INT, nicht verbunden): Subgraph-Eingang\n- `text` (STRING, nicht verbunden): Subgraph-Eingang\n- `reference_image_strength_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `text_4` (STRING, nicht verbunden): Subgraph-Eingang\n- `pose_strength_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `pose_start_percent_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `pose_end_percent_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `switch_1` (BOOLEAN, nicht verbunden): Subgraph-Eingang\n- `device_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `dtype_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `value_1` (BOOLEAN, nicht verbunden): Subgraph-Eingang\n- `resize_type.width` (INT, Link 864): Subgraph-Eingang\n- `resize_type.height_1` (INT, Link 865): Subgraph-Eingang\n- `unet_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `lora_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `clip_name_2` (COMBO, nicht verbunden): Subgraph-Eingang\n- `clip_name_3` (COMBO, nicht verbunden): Subgraph-Eingang\n- `vae_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `daw_model_device` (COMBO, Link 853): Subgraph-Eingang\n- `daw_clip_device` (COMBO, Link 854): Subgraph-Eingang\n- `daw_vae_device` (COMBO, Link 855): Subgraph-Eingang\n- `length` (INT, Link 870): Subgraph-Eingang\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `video_frame_offset` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `output` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1391,7 +1462,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Get Video Components · Node 288\n\n**Zweck:** Extracts all components from a video: frames, audio, framerate, and bit depth.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `video` (VIDEO, Link 728): The video to extract components from.\n\n**Ausgänge**\n- `images` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `audio` (AUDIO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `fps` (FLOAT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `bit_depth` (INT, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · Get Video Components · Node 288\n\n**Zweck:** Extracts all components from a video: frames, audio, framerate, and bit depth.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `video` (VIDEO, Link 728): The video to extract components from.\n\n**Ausgänge**\n- `images` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `audio` (AUDIO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `fps` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `bit_depth` (INT, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1507,7 +1578,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Motion Transfer (Wan Animate 2) · Node 477\n\n**Zweck:** Führt den eingebetteten Subgraph „Motion Transfer (Wan Animate 2)“ aus.\n\n**Einstellbare Werte**\n- `value` = `0` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `input` (IMAGE,MASK, Link 831): Subgraph-Eingang\n- `video` (VIDEO, Link 832): Subgraph-Eingang\n- `continue_motion` (IMAGE, Link 833): Subgraph-Eingang\n- `video_frame_offset_1` (INT, Link 834): Subgraph-Eingang\n- `text` (STRING, nicht verbunden): Subgraph-Eingang\n- `reference_image_strength_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `text_4` (STRING, nicht verbunden): Subgraph-Eingang\n- `pose_strength_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `pose_start_percent_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `pose_end_percent_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `switch_1` (BOOLEAN, nicht verbunden): Subgraph-Eingang\n- `device_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `dtype_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `value_1` (BOOLEAN, nicht verbunden): Subgraph-Eingang\n- `resize_type.width` (INT, nicht verbunden): Subgraph-Eingang\n- `resize_type.height_1` (INT, nicht verbunden): Subgraph-Eingang\n- `unet_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `lora_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `clip_name_2` (COMBO, nicht verbunden): Subgraph-Eingang\n- `clip_name_3` (COMBO, nicht verbunden): Subgraph-Eingang\n- `vae_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `daw_model_device` (COMBO, Link 856): Subgraph-Eingang\n- `daw_clip_device` (COMBO, Link 857): Subgraph-Eingang\n- `daw_vae_device` (COMBO, Link 858): Subgraph-Eingang\n\n**Ausgänge**\n- `IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `video_frame_offset` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `output` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · Motion Transfer (Wan Animate 2) · Node 477\n\n**Zweck:** Führt den eingebetteten Subgraph „Motion Transfer (Wan Animate 2)“ aus.\n\n**Einstellbare Werte**\n- `value` = `0` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `input` (IMAGE,MASK, Link 831): Subgraph-Eingang\n- `video` (VIDEO, Link 832): Subgraph-Eingang\n- `continue_motion` (IMAGE, Link 833): Subgraph-Eingang\n- `video_frame_offset_1` (INT, Link 834): Subgraph-Eingang\n- `text` (STRING, nicht verbunden): Subgraph-Eingang\n- `reference_image_strength_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `text_4` (STRING, nicht verbunden): Subgraph-Eingang\n- `pose_strength_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `pose_start_percent_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `pose_end_percent_1` (FLOAT, nicht verbunden): Subgraph-Eingang\n- `switch_1` (BOOLEAN, nicht verbunden): Subgraph-Eingang\n- `device_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `dtype_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `value_1` (BOOLEAN, nicht verbunden): Subgraph-Eingang\n- `resize_type.width` (INT, Link 866): Subgraph-Eingang\n- `resize_type.height_1` (INT, Link 867): Subgraph-Eingang\n- `unet_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `lora_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `clip_name_2` (COMBO, nicht verbunden): Subgraph-Eingang\n- `clip_name_3` (COMBO, nicht verbunden): Subgraph-Eingang\n- `vae_name_1` (COMBO, nicht verbunden): Subgraph-Eingang\n- `daw_model_device` (COMBO, Link 856): Subgraph-Eingang\n- `daw_clip_device` (COMBO, Link 857): Subgraph-Eingang\n- `daw_vae_device` (COMBO, Link 858): Subgraph-Eingang\n\n**Ausgänge**\n- `IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `video_frame_offset` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `output` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1624,6 +1695,188 @@
       },
       "widgets_values": [
         "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 577\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 592,
+      "type": "PrimitiveFloat",
+      "pos": [
+        1700.0,
+        80.0
+      ],
+      "size": [
+        300,
+        110
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "value",
+          "name": "value",
+          "type": "FLOAT",
+          "widget": {
+            "name": "value"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FLOAT",
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "slot_index": 0,
+          "links": [
+            868
+          ]
+        }
+      ],
+      "title": "OUTPUT DURATION · SECONDS",
+      "properties": {
+        "Node name for S&R": "PrimitiveFloat",
+        "cnr_id": "comfy-core",
+        "dawasteh_duration_control": true
+      },
+      "widgets_values": [
+        3.0
+      ],
+      "color": "#4b3475",
+      "bgcolor": "#6b4aa0"
+    },
+    {
+      "id": 593,
+      "type": "ComfyMathExpression",
+      "pos": [
+        1700.0,
+        480.0
+      ],
+      "size": [
+        390,
+        190
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 34,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "seconds",
+          "localized_name": "values.a",
+          "name": "values.a",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 868
+        },
+        {
+          "label": "source fps",
+          "localized_name": "values.b",
+          "name": "values.b",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 869
+        },
+        {
+          "localized_name": "expression",
+          "name": "expression",
+          "type": "STRING",
+          "widget": {
+            "name": "expression"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FLOAT",
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "localized_name": "INT",
+          "name": "INT",
+          "type": "INT",
+          "slot_index": 1,
+          "links": [
+            870
+          ]
+        },
+        {
+          "localized_name": "BOOL",
+          "name": "BOOL",
+          "type": "BOOLEAN",
+          "links": null
+        }
+      ],
+      "title": "SECONDS + SOURCE FPS → WAN 4n+1 FRAMES",
+      "properties": {
+        "Node name for S&R": "ComfyMathExpression",
+        "cnr_id": "comfy-core",
+        "dawasteh_duration_control": true
+      },
+      "widgets_values": [
+        "max(5, round((a * b - 1) / 4) * 4 + 1)"
+      ],
+      "color": "#704c1c",
+      "bgcolor": "#956827"
+    },
+    {
+      "id": 594,
+      "type": "MarkdownNote",
+      "pos": [
+        4720.0,
+        820.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · OUTPUT DURATION · SECONDS · Node 592",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 592,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · OUTPUT DURATION · SECONDS · Node 592\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `3.0` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 595,
+      "type": "MarkdownNote",
+      "pos": [
+        4720.0,
+        1160.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SECONDS + SOURCE FPS → WAN 4n+1 FRAMES · Node 593",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 593,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SECONDS + SOURCE FPS → WAN 4n+1 FRAMES · Node 593\n\n**Zweck:** Berechnet oder konvertiert numerische Werte für nachfolgende Nodes.\n\n**Einstellbare Werte**\n- `expression` = `max(5, round((a * b - 1) / 4) * 4 + 1)` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `values.a` (FLOAT,INT,BOOLEAN, Link 868): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.b` (FLOAT,INT,BOOLEAN, Link 869): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `expression` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, nicht verbunden): Ergebnis dieses Nodes\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `BOOL` (BOOLEAN, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1821,6 +2074,62 @@
       477,
       23,
       "COMBO"
+    ],
+    [
+      864,
+      189,
+      2,
+      261,
+      14,
+      "INT"
+    ],
+    [
+      865,
+      189,
+      3,
+      261,
+      15,
+      "INT"
+    ],
+    [
+      866,
+      189,
+      2,
+      477,
+      14,
+      "INT"
+    ],
+    [
+      867,
+      189,
+      3,
+      477,
+      15,
+      "INT"
+    ],
+    [
+      868,
+      592,
+      0,
+      593,
+      0,
+      "FLOAT"
+    ],
+    [
+      869,
+      288,
+      2,
+      593,
+      1,
+      "FLOAT"
+    ],
+    [
+      870,
+      593,
+      1,
+      261,
+      24,
+      "INT"
     ]
   ],
   "groups": [
@@ -1839,14 +2148,14 @@
     },
     {
       "id": 2,
-      "title": "E1 · ENCODE & CONDITION",
+      "title": "O1 · ORIGIN INPUTS",
       "bounding": [
         1000.0,
         0.0,
         580.0,
         1880.0
       ],
-      "color": "#C68B31",
+      "color": "#7C5CC4",
       "font_size": 24,
       "flags": {}
     },
@@ -1857,7 +2166,7 @@
         1660.0,
         0.0,
         1500.0,
-        2520.0
+        1920.0
       ],
       "color": "#3F9E6D",
       "font_size": 24,
@@ -10991,12 +11300,15 @@
     "dawasteh_duration_seconds": {
       "version": 1,
       "unit": "seconds",
-      "mode": "source-media-duration",
-      "behavior": "output duration follows or is trimmed from the loaded audio/video duration"
+      "mode": "explicit-seconds-dynamic-source-fps",
+      "fps": "loaded pose video",
+      "frame_alignment": "4n+1",
+      "target": "261.length",
+      "default_seconds": 3.0
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 14,
+      "generated_notes": 16,
       "x_scale": 1.0,
       "y_scale": 1.0,
       "gap": 40.0,
@@ -11013,8 +11325,19 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "c98a1345094e61c0e60f83409210061880ee6b16b00e84cf89020406d50230ea",
+      "topology_sha256": "dbfc61f50aed79593c2fcb2cda2126c6f52f0cfe5b60dc945cc021490a6e8144",
       "exceptions": []
+    },
+    "dawasteh_v094_adaptive_media": {
+      "version": 4,
+      "release": "v0.9.4",
+      "adaptive_loaders": [
+        "DaWAdaptiveLoadImage",
+        "DaWAdaptiveLoadVideo"
+      ],
+      "no_crop": true,
+      "wan_seconds_control": true,
+      "context_windows_enabled": true
     }
   },
   "version": 0.4

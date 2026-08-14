@@ -39,6 +39,7 @@ try:
         refine_graph,
     )
     from tools.rodent_layout import RODENT_KEY, apply_rodent_layout
+    from tools.upgrade_v094 import ADAPTIVE_OBJECT_INFO, upgrade_workflow as upgrade_v094_workflow
 except ModuleNotFoundError:  # Direct execution
     from generate_dual_gpu_workflows import (
         DEVICE_CONTROL_TYPE,
@@ -61,6 +62,7 @@ except ModuleNotFoundError:  # Direct execution
         refine_graph,
     )
     from rodent_layout import RODENT_KEY, apply_rodent_layout
+    from upgrade_v094 import ADAPTIVE_OBJECT_INFO, upgrade_workflow as upgrade_v094_workflow
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / "workflows"
@@ -115,6 +117,7 @@ def _load_object_info() -> dict[str, Any]:
     path = ROOT / "assets" / "live-avatar-v072" / "object-info.json"
     info = json.loads(path.read_text(encoding="utf-8"))
     info.update(SELECTOR_OBJECT_INFO)
+    info.update(ADAPTIVE_OBJECT_INFO)
     return info
 
 
@@ -202,6 +205,17 @@ def _ensure_parameter_notes(workflow: dict[str, Any]) -> None:
             for node in graph.get("nodes", [])
             if node.get("properties", {}).get("dawasteh_generated_note")
         }
+        for target in graph.get("nodes", []):
+            properties = target.get("properties", {})
+            if not properties.pop("dawasteh_refresh_generated_note", False):
+                continue
+            note = notes.get(target.get("id"))
+            if note is None:
+                continue
+            node_type = str(target.get("type", ""))
+            sub_name, schema = schemas.get(node_type, (None, OBJECT_INFO.get(node_type, {})))
+            note["title"] = f"Erklärung · {target.get('title') or schema.get('display_name') or sub_name or node_type} · Node {target['id']}"
+            note["widgets_values"] = [build_note_text(target, schema, sub_name)]
         missing = [
             node for node in graph.get("nodes", [])
             if is_target(node)
@@ -257,7 +271,8 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
     marker = migrated.get("extra", {}).get(MIGRATION_KEY, {})
     if marker.get("version") == MIGRATION_VERSION:
         migrated, duration_changed = integrate_duration_seconds(migrated, path_key)
-        if duration_changed:
+        migrated, v094_changed = upgrade_v094_workflow(migrated, path_key)
+        if duration_changed or v094_changed:
             _rebuild_presentation(migrated, path_key)
         else:
             apply_rodent_layout(migrated, path_key)
@@ -313,6 +328,7 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
     }
 
     migrated, _ = integrate_duration_seconds(migrated, path_key)
+    migrated, _ = upgrade_v094_workflow(migrated, path_key)
     # Rebuild one generated parameter note per executable node, including the
     # newly inserted selectors, GPU control, and duration controls.
     _rebuild_presentation(migrated, path_key)

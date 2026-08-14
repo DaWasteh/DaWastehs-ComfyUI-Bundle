@@ -7,6 +7,7 @@ from pathlib import Path
 from tools.integrate_duration_seconds import (
     DURATION_KEY,
     DURATION_VERSION,
+    DYNAMIC_SOURCE_FPS_PATHS,
     GENERATION_FOLDERS,
     SOURCE_DURATION_PATHS,
     SPECS,
@@ -35,7 +36,8 @@ class DurationSecondsTests(unittest.TestCase):
         self.assertEqual(modes, {
             "native-seconds": 32,
             "explicit-seconds-to-model-valid-frames": 12,
-            "source-media-duration": 10,
+            "explicit-seconds-dynamic-source-fps": 1,
+            "source-media-duration": 9,
         })
 
     def test_explicit_controls_drive_every_manifested_frame_input(self):
@@ -86,6 +88,49 @@ class DurationSecondsTests(unittest.TestCase):
                 node.get("properties", {}).get("dawasteh_duration_control")
                 for node in workflow["nodes"]
             ), key)
+
+    def test_wan_animate_uses_seconds_source_fps_and_4n_plus_1_frames(self):
+        self.assertEqual(DYNAMIC_SOURCE_FPS_PATHS, {
+            "Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json"
+        })
+        key = next(iter(DYNAMIC_SOURCE_FPS_PATHS))
+        workflow = json.loads((WORKFLOWS / key).read_text(encoding="utf-8"))
+        marker = workflow["extra"][DURATION_KEY]
+        self.assertEqual(marker["mode"], "explicit-seconds-dynamic-source-fps")
+        nodes = {node.get("id"): node for node in workflow["nodes"]}
+        links = {link[0]: link for link in workflow["links"]}
+        seconds = next(node for node in nodes.values() if node.get("title") == "OUTPUT DURATION · SECONDS")
+        math_node = next(node for node in nodes.values() if node.get("title") == "SECONDS + SOURCE FPS → WAN 4n+1 FRAMES")
+        self.assertEqual(seconds["widgets_values"], [3.0])
+        self.assertEqual(
+            math_node["widgets_values"][0],
+            "max(5, round((a * b - 1) / 4) * 4 + 1)",
+        )
+        self.assertEqual(links[868][1:5], [seconds["id"], 0, math_node["id"], 0])
+        self.assertEqual(links[869][1:5], [288, 2, math_node["id"], 1])
+        self.assertEqual(links[870][1:5], [math_node["id"], 1, 261, 24])
+        target = nodes[261]
+        self.assertEqual(target["inputs"][24]["name"], "length")
+        self.assertEqual(target["inputs"][24]["link"], 870)
+        self.assertTrue(target["widgets_values"][7], "context windows must be enabled for longer durations")
+        self.assertEqual(nodes[477]["mode"], 4, "manual second segment must stay bypassed")
+        self.assertEqual(nodes[189]["type"], "DaWAdaptiveLoadImage")
+        self.assertEqual(nodes[240]["type"], "DaWAdaptiveLoadVideo")
+        for link_id, expected in {
+            864: [189, 2, 261, 14],
+            865: [189, 3, 261, 15],
+            866: [189, 2, 477, 14],
+            867: [189, 3, 477, 15],
+        }.items():
+            self.assertEqual(links[link_id][1:5], expected)
+        note_text = {
+            node.get("properties", {}).get("dawasteh_note_for"): node["widgets_values"][0]
+            for node in workflow["nodes"]
+            if node.get("properties", {}).get("dawasteh_generated_note")
+        }
+        self.assertIn("Adaptive Load Image", note_text[189])
+        self.assertIn("`length` (INT, Link 870)", note_text[261])
+        self.assertIn("`fps` (FLOAT, 2 Verbindung(en))", note_text[288])
 
     def test_duration_integration_is_idempotent(self):
         for path in sorted(WORKFLOWS.rglob("*.json")):

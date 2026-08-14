@@ -1,4 +1,5 @@
 from pathlib import Path
+import subprocess
 import unittest
 
 
@@ -70,6 +71,20 @@ class IncrementalUpdateScriptTests(unittest.TestCase):
             "ComfyUI-DaWasteh-Qwen3TTS-LoRA",
         ):
             self.assertIn(f'"{name}"', self.source)
+
+    def test_v094_adaptive_nodes_arrive_through_a_v093_managed_pack(self) -> None:
+        pack = ROOT / "custom_nodes" / "ComfyUI-DaWasteh-MultiGPU-Control"
+        self.assertTrue((pack / "adaptive_nodes.py").is_file())
+        self.assertTrue((pack / "adaptive_profiles.py").is_file())
+        self.assertTrue((pack / "web" / "adaptive_media.js").is_file())
+        self.assertNotIn("ComfyUI-DaWasteh-Adaptive-Media", self.source)
+        previous = subprocess.check_output(
+            ["git", "show", "v0.9.3:tools/update-comfyui-rdna4.ps1"],
+            cwd=ROOT,
+            text=True,
+            encoding="utf-8",
+        )
+        self.assertIn('"ComfyUI-DaWasteh-MultiGPU-Control"', previous)
 
     def test_validation_does_not_generate_bytecode(self) -> None:
         self.assertIn("ast.parse", self.source)

@@ -8,6 +8,8 @@ from comfy_api.latest import ComfyExtension, io
 
 import comfy.model_management
 
+from .adaptive_nodes import DaWAdaptiveLoadImage, DaWAdaptiveLoadVideo
+
 
 DEFAULT_MODEL_DEVICE = "gpu:0"
 DEFAULT_HELPER_DEVICE = "gpu:1"
@@ -76,7 +78,7 @@ class DaWMultiGPUDeviceControl(io.ComfyNode):
 class DaWMultiGPUControlExtension(ComfyExtension):
     @override
     async def get_node_list(self) -> list[type[io.ComfyNode]]:
-        return [DaWMultiGPUDeviceControl]
+        return [DaWMultiGPUDeviceControl, DaWAdaptiveLoadImage, DaWAdaptiveLoadVideo]
 
 
 async def comfy_entrypoint() -> DaWMultiGPUControlExtension:

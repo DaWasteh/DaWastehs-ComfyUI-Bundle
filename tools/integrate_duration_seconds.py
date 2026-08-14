@@ -49,12 +49,15 @@ SPECS: dict[str, DurationSpec] = {
     "Character Animation/SCAIL2-Character-Replacement.json": DurationSpec(16, 4, 5, ((101, "length"), (113, "frame_load_cap")), 5.0),
 }
 
+DYNAMIC_SOURCE_FPS_PATHS = {
+    "Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json",
+}
+
 SOURCE_DURATION_PATHS = {
     "Audio to Video/FLUX2_Klein_4B_Gemma4-Audio-Context-to-AudioReact-Video.json",
     "Audio to Video/LTX23-Image+Audio-to-Generative-Matching-Length-Video.json",
     "Audio to Video/Pixaroma-Image+Audio-to-AudioReact-Video.json",
     "Character Animation/WAN21_SCAIL2-Character-Replacement.json",
-    "Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json",
     "Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
     "Reference to Video/MiniMax_H3_Spectrum_RefImage_Audio_to_Video_OriginalAudio_AutoLength.json",
     "Reference to Video/MiniMax_H3_Spectrum_RefImage_RefVideo_to_Video_Audio_AutoLength.json",
@@ -240,7 +243,9 @@ def integrate_duration_seconds(workflow: dict[str, Any], path_key: str) -> tuple
             "frame_alignment": f"{spec.alignment}n+1",
             "targets": [f"{node_id}.{name}" for node_id, name in spec.targets],
         }
-    elif path_key in SOURCE_DURATION_PATHS:
+    elif path_key in SOURCE_DURATION_PATHS or path_key in DYNAMIC_SOURCE_FPS_PATHS:
+        # Wan Animate 2 is upgraded immediately afterwards by upgrade_v094.py;
+        # this temporary source contract keeps standalone duration migration safe.
         mode = "source-media-duration"
         details = {"behavior": "output duration follows or is trimmed from the loaded audio/video duration"}
     elif _contains_native_seconds(migrated):
