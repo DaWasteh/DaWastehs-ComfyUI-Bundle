@@ -403,7 +403,7 @@ class WidgetMappingTests(unittest.TestCase):
         self.assertEqual(nodes["PlaySoundKJ"]["widgets_values"][1], "on_change")
         self.assertEqual(nodes["SaveAudio"]["widgets_values"], ["audio/avatar-voice/qwen3tts-lora"])
 
-    def test_qwen3_tts_authorized_delta_rejects_unexpected_rank(self):
+    def test_qwen3_tts_v092_migration_rejects_unexpected_rank(self):
         path = Path("workflows/LoRA Generation/Qwen3-TTS_0.6B-Voice-LoRA-Training.json")
         workflow = json.loads(path.read_text(encoding="utf-8"))
         corrupted = copy.deepcopy(workflow)
@@ -413,8 +413,7 @@ class WidgetMappingTests(unittest.TestCase):
         note["widgets_values"][0] = "unexpected note"
         errors: list[str] = []
         compare_head(path, corrupted, errors)
-        self.assertTrue(any("authorized widget value 2:9" in error for error in errors), errors)
-        self.assertTrue(any("authorized widget value 1:0" in error for error in errors), errors)
+        self.assertTrue(any("differs from deterministic v0.9.2 collection migration" in error for error in errors), errors)
 
     def test_qwen3_tts_lora_node_uses_safe_adapter_files(self):
         source = Path("custom_nodes/ComfyUI-DaWasteh-Qwen3TTS-LoRA/nodes.py").read_text(encoding="utf-8")

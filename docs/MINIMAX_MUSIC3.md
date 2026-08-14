@@ -22,11 +22,9 @@ Der Workflow übernimmt die offizielle Music-3-Topologie: strukturierte Caption 
 
 Der Live-Smoke-Test am 2026-08-14 verwendete eine instrumentale Caption, vier Sekunden Maximaldauer, alle 30 ausgelieferten Euler-/Simple-Schritte und tiled DAV decode. ComfyUI meldete `execution_success` nach 32,55 Sekunden und speicherte ein nichtleeres, endliches 44,1-kHz-Stereo-FLAC mit 7,988 Sekunden Laufzeit.
 
-## Dual GPU
+## Optionale verteilte GPU-Belegung
 
-```text
-workflows/Dual GPU - R9700 + RX 9070 XT/MiniMax-Music3-DualGPU-Text-to-Music.json
-```
+Seit v0.9.2 sitzt die GPU-Steuerung direkt im oben genannten kanonischen Music-3-Workflow; ein separater Dual-GPU-Klon wird nicht mehr ausgeliefert.
 
 Vollpräzisionsbelegung:
 
@@ -63,4 +61,4 @@ Darum liefert dieses Bundle bewusst **keinen scheinbar funktionalen LoRA-Workflo
 
 ## Aktueller Prüfstatus
 
-Statische JSON-/Topologie-, Determinismus-, Pfad-, Skill-Hash- und Repository-Tests sind vorhanden. Normaler Workflow, Dual-GPU-Workflow und Caption-Enhancer sind mit den vollständigen lokalen Gewichten live bestätigt. Die kurzen Smoke-Profile beweisen Loader, Textencoding, Geräteplatzierung, 30-Schritt-Sampling, DAV-Decoding und Dateiausgabe, aber keine Qualität oder Stabilität bei den ausgelieferten längeren Standarddauern.
+Statische JSON-/Topologie-, Determinismus-, Pfad-, Skill-Hash- und Repository-Tests sind vorhanden. Der kanonische Workflow ist sowohl mit vollständiger R9700-Belegung als auch mit verteilter GPU-Belegung live bestätigt; der Caption-Enhancer wurde ebenfalls mit den vollständigen lokalen Gewichten geprüft. Die kurzen Smoke-Profile beweisen Loader, Textencoding, Geräteplatzierung, 30-Schritt-Sampling, DAV-Decoding und Dateiausgabe, aber keine Qualität oder Stabilität bei den ausgelieferten längeren Standarddauern.

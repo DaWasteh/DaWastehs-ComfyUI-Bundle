@@ -1,5 +1,5 @@
 {
-  "id": "67fc9a40-d0b7-52f6-a17a-a23c379793d5",
+  "id": "f28ceda1-60cc-50ff-9e70-1dd3a169b216",
   "revision": 0,
   "last_node_id": 265,
   "last_link_id": 386,
@@ -8,8 +8,8 @@
       "id": 31,
       "type": "LoadImage",
       "pos": [
-        3185.0,
-        5428.5
+        760.0,
+        80.0
       ],
       "size": [
         430,
@@ -60,8 +60,8 @@
       "id": 39,
       "type": "LoadImage",
       "pos": [
-        3185.0,
-        6932.5
+        760.0,
+        700.0
       ],
       "size": [
         440,
@@ -112,8 +112,8 @@
       "id": 68,
       "type": "SaveVideo",
       "pos": [
-        6149.5,
-        5405.0
+        1360.0,
+        880.0
       ],
       "size": [
         1110,
@@ -163,8 +163,8 @@
       "id": 251,
       "type": "cf70afc4-5a03-47ce-8210-734b1de6c6bc",
       "pos": [
-        4679.5,
-        5405.0
+        1360.0,
+        80.0
       ],
       "size": [
         520,
@@ -331,8 +331,8 @@
       "id": 254,
       "type": "MarkdownNote",
       "pos": [
-        1935.5,
-        5428.5
+        40.0,
+        80.0
       ],
       "size": [
         440,
@@ -355,8 +355,8 @@
       "id": 255,
       "type": "MarkdownNote",
       "pos": [
-        465.5,
-        5452.0
+        40.0,
+        1760.0
       ],
       "size": [
         550,
@@ -379,8 +379,8 @@
       "id": 258,
       "type": "MarkdownNote",
       "pos": [
-        465.5,
-        5099.5
+        40.0,
+        2680.0
       ],
       "size": [
         340,
@@ -403,8 +403,8 @@
       "id": 259,
       "type": "PixaromaRunTimer",
       "pos": [
-        465.5,
-        9564.5
+        40.0,
+        2800.0
       ],
       "size": [
         226,
@@ -436,8 +436,8 @@
       "id": 260,
       "type": "DaWMultiGPUDeviceControl",
       "pos": [
-        -710.5,
-        5099.5
+        40.0,
+        2980.0
       ],
       "size": [
         380,
@@ -492,8 +492,8 @@
       "id": 261,
       "type": "MarkdownNote",
       "pos": [
-        3661.0,
-        5428.5
+        2640.0,
+        80.0
       ],
       "size": [
         390,
@@ -512,7 +512,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Load First Frame · Node 31\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `value` = `robot_hand_back.png` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · Load First Frame · Node 31\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `robot_hand_back.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -521,8 +521,8 @@
       "id": 262,
       "type": "MarkdownNote",
       "pos": [
-        3671.0,
-        6932.5
+        2640.0,
+        440.0
       ],
       "size": [
         390,
@@ -541,7 +541,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Load Last Frame · Node 39\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `value` = `robot_hand_energy.png` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · Load Last Frame · Node 39\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `robot_hand_energy.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -550,19 +550,19 @@
       "id": 263,
       "type": "MarkdownNote",
       "pos": [
-        7305.5,
-        5405.0
+        3120.0,
+        80.0
       ],
       "size": [
         390,
-        294
+        328
       ],
       "flags": {},
       "order": 11,
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · SaveVideo · Node 68",
+      "title": "Erklärung · Save Video · Node 68",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -570,7 +570,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SaveVideo · Node 68\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `value` = `video/ltx2.5_flf2v` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `video` (VIDEO, Link 369): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `video` (VIDEO, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · Save Video · Node 68\n\n**Zweck:** Saves the input videos to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `video/ltx2.5_flf2v` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `format` = `auto` — The format to save the video as. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `codec` = `auto` — The codec to use for the video. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `video` (VIDEO, Link 369): The video to save.\n\n**Ausgänge**\n- `video` (VIDEO, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -579,8 +579,8 @@
       "id": 264,
       "type": "MarkdownNote",
       "pos": [
-        5245.5,
-        5405.0
+        3120.0,
+        440.0
       ],
       "size": [
         390,
@@ -608,8 +608,8 @@
       "id": 265,
       "type": "MarkdownNote",
       "pos": [
-        -284.5,
-        5099.5
+        3600.0,
+        80.0
       ],
       "size": [
         390,
@@ -684,7 +684,60 @@
       "COMBO"
     ]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        640.0,
+        3200.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        720.0,
+        0.0,
+        520.0,
+        1320.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        1320.0,
+        0.0,
+        1200.0,
+        1040.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        2600.0,
+        0.0,
+        1440.0,
+        1000.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
   "definitions": {
     "subgraphs": [
       {
@@ -702,8 +755,8 @@
         "inputNode": {
           "id": -10,
           "bounding": [
-            -280,
-            2210,
+            -200.0,
+            80.0,
             183.814453125,
             380.0
           ]
@@ -711,8 +764,8 @@
         "outputNode": {
           "id": -20,
           "bounding": [
-            3540,
-            2261,
+            5760.0,
+            80.0,
             128,
             68
           ]
@@ -728,8 +781,8 @@
             "localized_name": "input",
             "label": "first_frame",
             "pos": [
-              -120.185546875,
-              2234
+              -80.0,
+              120.0
             ]
           },
           {
@@ -742,8 +795,8 @@
             "localized_name": "input_1",
             "label": "last_frame",
             "pos": [
-              -120.185546875,
-              2254
+              -80.0,
+              140.0
             ]
           },
           {
@@ -755,8 +808,8 @@
             ],
             "label": "prompt",
             "pos": [
-              -120.185546875,
-              2274
+              -80.0,
+              160.0
             ]
           },
           {
@@ -768,8 +821,8 @@
             ],
             "label": "prompt_enhance",
             "pos": [
-              -120.185546875,
-              2294
+              -80.0,
+              180.0
             ]
           },
           {
@@ -781,8 +834,8 @@
             ],
             "label": "duration",
             "pos": [
-              -120.185546875,
-              2314
+              -80.0,
+              200.0
             ]
           },
           {
@@ -794,8 +847,8 @@
             ],
             "label": "width",
             "pos": [
-              -120.185546875,
-              2334
+              -80.0,
+              220.0
             ]
           },
           {
@@ -807,8 +860,8 @@
             ],
             "label": "height",
             "pos": [
-              -120.185546875,
-              2354
+              -80.0,
+              240.0
             ]
           },
           {
@@ -819,8 +872,8 @@
               378
             ],
             "pos": [
-              -120.185546875,
-              2374
+              -80.0,
+              260.0
             ]
           },
           {
@@ -832,8 +885,8 @@
             ],
             "label": "fram_rate",
             "pos": [
-              -120.185546875,
-              2394
+              -80.0,
+              280.0
             ]
           },
           {
@@ -844,8 +897,8 @@
               380
             ],
             "pos": [
-              -120.185546875,
-              2414
+              -80.0,
+              300.0
             ]
           },
           {
@@ -857,8 +910,8 @@
             ],
             "label": "video_vae",
             "pos": [
-              -120.185546875,
-              2434
+              -80.0,
+              320.0
             ]
           },
           {
@@ -870,8 +923,8 @@
             ],
             "label": "audio_vae",
             "pos": [
-              -120.185546875,
-              2454
+              -80.0,
+              340.0
             ]
           },
           {
@@ -882,8 +935,8 @@
               383
             ],
             "pos": [
-              -120.185546875,
-              2474
+              -80.0,
+              360.0
             ]
           },
           {
@@ -895,12 +948,12 @@
             ],
             "label": "prompt_enhance_model",
             "pos": [
-              -120.185546875,
-              2494
+              -80.0,
+              380.0
             ]
           },
           {
-            "id": "e196cb63-7d65-55ac-8853-af47235c29c4",
+            "id": "edcfaf96-5c72-5677-93cd-ceb598535abd",
             "name": "daw_model_device",
             "type": "COMBO",
             "linkIds": [
@@ -908,13 +961,13 @@
             ],
             "label": "DaW model device",
             "pos": [
-              -150.0,
-              2490.0
+              -80.0,
+              400.0
             ],
             "default": "gpu:0"
           },
           {
-            "id": "9b53612c-e01b-5ad9-b18f-6fc4cea3ef4a",
+            "id": "fe17438a-ac19-511f-a07f-347a1c7502ec",
             "name": "daw_clip_device",
             "type": "COMBO",
             "linkIds": [
@@ -923,13 +976,13 @@
             ],
             "label": "DaW clip device",
             "pos": [
-              -150.0,
-              2510.0
+              -80.0,
+              420.0
             ],
             "default": "gpu:1"
           },
           {
-            "id": "b18c4a78-552a-5655-8097-aa558a75a7fd",
+            "id": "e94f1a0f-dbf2-5ef8-bea3-4d4f6eaef979",
             "name": "daw_vae_device",
             "type": "COMBO",
             "linkIds": [
@@ -938,8 +991,8 @@
             ],
             "label": "DaW vae device",
             "pos": [
-              -150.0,
-              2530.0
+              -80.0,
+              440.0
             ],
             "default": "gpu:1"
           }
@@ -954,8 +1007,8 @@
             ],
             "localized_name": "VIDEO",
             "pos": [
-              3564,
-              2285
+              5880.0,
+              120.0
             ]
           }
         ],
@@ -965,8 +1018,8 @@
             "id": 210,
             "type": "LTXVConcatAVLatent",
             "pos": [
-              5537.0,
-              6133.5
+              3160.0,
+              480.0
             ],
             "size": [
               280,
@@ -1022,8 +1075,8 @@
             "id": 219,
             "type": "VAEDecodeTiled",
             "pos": [
-              6713.0,
-              5052.5
+              3160.0,
+              900.0
             ],
             "size": [
               280,
@@ -1085,8 +1138,8 @@
             "id": 220,
             "type": "LTXVAudioVAEDecode",
             "pos": [
-              6713.0,
-              5734.0
+              3160.0,
+              760.0
             ],
             "size": [
               280,
@@ -1143,8 +1196,8 @@
             "id": 221,
             "type": "LTXVSeparateAVLatent",
             "pos": [
-              5831.0,
-              4935.0
+              3160.0,
+              620.0
             ],
             "size": [
               250,
@@ -1202,8 +1255,8 @@
             "id": 206,
             "type": "LTXVAddGuide",
             "pos": [
-              6762.0,
-              6885.5
+              1580.0,
+              1080.0
             ],
             "size": [
               280,
@@ -1310,8 +1363,8 @@
             "id": 239,
             "type": "ManualSigmas",
             "pos": [
-              4655.0,
-              5781.0
+              1580.0,
+              80.0
             ],
             "size": [
               500,
@@ -1344,8 +1397,8 @@
             "id": 204,
             "type": "LTXVAddGuide",
             "pos": [
-              6762.0,
-              7637.5
+              1580.0,
+              1360.0
             ],
             "size": [
               280,
@@ -1454,8 +1507,8 @@
             "id": 197,
             "type": "LTXVEmptyLatentAudio",
             "pos": [
-              5831.0,
-              7872.5
+              40.0,
+              1520.0
             ],
             "size": [
               280,
@@ -1527,8 +1580,8 @@
             "id": 200,
             "type": "LTXVCropGuides",
             "pos": [
-              6737.5,
-              4582.5
+              1580.0,
+              1640.0
             ],
             "size": [
               280,
@@ -1602,8 +1655,8 @@
             "id": 201,
             "type": "EmptyLTXVLatentVideo",
             "pos": [
-              5831.0,
-              7308.5
+              2800.0,
+              840.0
             ],
             "size": [
               280,
@@ -1679,8 +1732,8 @@
             "id": 211,
             "type": "SamplerCustomAdvanced",
             "pos": [
-              5831.0,
-              4347.5
+              2360.0,
+              920.0
             ],
             "size": [
               230,
@@ -1760,8 +1813,8 @@
             "id": 202,
             "type": "LTXVConditioning",
             "pos": [
-              5831.0,
-              6885.5
+              1580.0,
+              920.0
             ],
             "size": [
               280,
@@ -1836,8 +1889,8 @@
             "id": 208,
             "type": "SamplerEulerAncestral",
             "pos": [
-              4679.5,
-              5264.0
+              2360.0,
+              240.0
             ],
             "size": [
               280,
@@ -1883,8 +1936,8 @@
             "id": 218,
             "type": "CreateVideo",
             "pos": [
-              7840.0,
-              4324.0
+              3160.0,
+              1120.0
             ],
             "size": [
               280,
@@ -1953,8 +2006,8 @@
             "id": 235,
             "type": "LTXVDualCFGGuider",
             "pos": [
-              4679.5,
-              4700.0
+              2360.0,
+              720.0
             ],
             "size": [
               270,
@@ -2014,8 +2067,8 @@
             "id": 196,
             "type": "RandomNoise",
             "pos": [
-              4679.5,
-              4324.0
+              2360.0,
+              80.0
             ],
             "size": [
               280,
@@ -2073,8 +2126,8 @@
             "id": 217,
             "type": "CLIPTextEncode",
             "pos": [
-              2989.0,
-              5757.5
+              1580.0,
+              220.0
             ],
             "size": [
               590,
@@ -2130,8 +2183,8 @@
             "id": 222,
             "type": "CLIPTextEncode",
             "pos": [
-              2940.0,
-              4418.0
+              1580.0,
+              460.0
             ],
             "size": [
               620,
@@ -2194,8 +2247,8 @@
             "id": 248,
             "type": "ComfySwitchNode",
             "pos": [
-              4042.5,
-              3548.5
+              2800.0,
+              1080.0
             ],
             "size": [
               270,
@@ -2258,8 +2311,8 @@
             "id": 203,
             "type": "GetImageSize",
             "pos": [
-              4679.5,
-              7097.0
+              2800.0,
+              680.0
             ],
             "size": [
               230,
@@ -2323,8 +2376,8 @@
             "id": 195,
             "type": "LTXVPreprocess",
             "pos": [
-              4679.5,
-              7755.0
+              2360.0,
+              400.0
             ],
             "size": [
               230,
@@ -2378,8 +2431,8 @@
             "id": 199,
             "type": "LTXVPreprocess",
             "pos": [
-              4679.5,
-              6721.0
+              2360.0,
+              560.0
             ],
             "size": [
               230,
@@ -2434,8 +2487,8 @@
             "id": 247,
             "type": "TextGenerateLTX2Prompt",
             "pos": [
-              2744.0,
-              2585.0
+              40.0,
+              1720.0
             ],
             "size": [
               400,
@@ -2525,8 +2578,8 @@
             "id": 213,
             "type": "ResizeImageMaskNode",
             "pos": [
-              3822.0,
-              6721.0
+              2800.0,
+              160.0
             ],
             "size": [
               280,
@@ -2604,8 +2657,8 @@
             "id": 214,
             "type": "ResizeImageMaskNode",
             "pos": [
-              3822.0,
-              7755.0
+              2800.0,
+              380.0
             ],
             "size": [
               280,
@@ -2682,8 +2735,8 @@
             "id": 249,
             "type": "PreviewAny",
             "pos": [
-              4802.0,
-              2632.0
+              3160.0,
+              80.0
             ],
             "size": [
               510,
@@ -2726,8 +2779,8 @@
             "id": 230,
             "type": "UNETLoader",
             "pos": [
-              1690.5,
-              4629.5
+              640.0,
+              480.0
             ],
             "size": [
               400,
@@ -2778,8 +2831,8 @@
             "id": 229,
             "type": "VAELoader",
             "pos": [
-              1690.5,
-              5005.5
+              640.0,
+              360.0
             ],
             "size": [
               410,
@@ -2829,8 +2882,8 @@
             "id": 227,
             "type": "VAELoader",
             "pos": [
-              1690.5,
-              5358.0
+              640.0,
+              80.0
             ],
             "size": [
               400,
@@ -2880,8 +2933,8 @@
             "id": 228,
             "type": "CLIPLoader",
             "pos": [
-              1690.5,
-              5757.5
+              640.0,
+              200.0
             ],
             "size": [
               370,
@@ -2933,8 +2986,8 @@
             "id": 246,
             "type": "CLIPLoader",
             "pos": [
-              1641.5,
-              2608.5
+              640.0,
+              600.0
             ],
             "size": [
               370,
@@ -2986,8 +3039,8 @@
             "id": 250,
             "type": "PrimitiveBoolean",
             "pos": [
-              1690.5,
-              3713.0
+              40.0,
+              720.0
             ],
             "size": [
               270,
@@ -3038,8 +3091,8 @@
             "id": 215,
             "type": "PrimitiveInt",
             "pos": [
-              2891.0,
-              6721.0
+              40.0,
+              400.0
             ],
             "size": [
               230,
@@ -3097,8 +3150,8 @@
             "id": 216,
             "type": "PrimitiveInt",
             "pos": [
-              2891.0,
-              7073.5
+              40.0,
+              560.0
             ],
             "size": [
               230,
@@ -3156,8 +3209,8 @@
             "id": 212,
             "type": "ComfyMathExpression",
             "pos": [
-              2891.0,
-              8201.5
+              2800.0,
+              80.0
             ],
             "size": [
               225,
@@ -3233,8 +3286,8 @@
             "id": 198,
             "type": "PrimitiveInt",
             "pos": [
-              2891.0,
-              7426.0
+              40.0,
+              80.0
             ],
             "size": [
               230,
@@ -3291,8 +3344,8 @@
             "id": 226,
             "type": "ComfyMathExpression",
             "pos": [
-              2891.0,
-              8342.5
+              2800.0,
+              600.0
             ],
             "size": [
               225,
@@ -3369,8 +3422,8 @@
             "id": 205,
             "type": "PrimitiveInt",
             "pos": [
-              2891.0,
-              7802.0
+              40.0,
+              240.0
             ],
             "size": [
               230,
@@ -3429,8 +3482,8 @@
             "id": 252,
             "type": "PrimitiveStringMultiline",
             "pos": [
-              1690.5,
-              6744.5
+              40.0,
+              860.0
             ],
             "size": [
               430,
@@ -3475,8 +3528,8 @@
             "id": 259,
             "type": "SelectModelDevice",
             "pos": [
-              1641.5,
-              2232.5
+              1120.0,
+              80.0
             ],
             "size": [
               300,
@@ -3528,8 +3581,8 @@
             "id": 260,
             "type": "SelectVAEDevice",
             "pos": [
-              2450.0,
-              2232.5
+              1120.0,
+              200.0
             ],
             "size": [
               300,
@@ -3583,8 +3636,8 @@
             "id": 261,
             "type": "SelectVAEDevice",
             "pos": [
-              3258.5,
-              2232.5
+              1120.0,
+              320.0
             ],
             "size": [
               300,
@@ -3637,8 +3690,8 @@
             "id": 262,
             "type": "SelectCLIPDevice",
             "pos": [
-              4067.0,
-              2232.5
+              1120.0,
+              440.0
             ],
             "size": [
               300,
@@ -3691,8 +3744,8 @@
             "id": 263,
             "type": "SelectCLIPDevice",
             "pos": [
-              4875.5,
-              2232.5
+              1120.0,
+              560.0
             ],
             "size": [
               300,
@@ -3744,8 +3797,8 @@
             "id": 264,
             "type": "MarkdownNote",
             "pos": [
-              4955.5,
-              7755.0
+              3840.0,
+              80.0
             ],
             "size": [
               390,
@@ -3756,7 +3809,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · LTXVPreprocess · Node 195",
+            "title": "Erklärung · LTXV Preprocess · Node 195",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -3764,7 +3817,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · LTXVPreprocess · Node 195\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `LTXVPreprocess` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `value` = `18` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `image` (IMAGE, Link 277): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output_image` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · LTXV Preprocess · Node 195\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `LTXVPreprocess` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `img_compression` = `18` — Amount of compression to apply on image. Höher komprimiert Guide-Bilder stärker und spart Speicher/Bandbreite, kann aber Referenzdetails verlieren.\n\n**Eingänge**\n- `image` (IMAGE, Link 277): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output_image` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -3773,8 +3826,8 @@
             "id": 265,
             "type": "MarkdownNote",
             "pos": [
-              5005.5,
-              4324.0
+              3840.0,
+              420.0
             ],
             "size": [
               390,
@@ -3793,7 +3846,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · RandomNoise · Node 196\n\n**Zweck:** Erzeugt oder verändert das Start-Rauschen, das die Variation des generierten Ergebnisses bestimmt.\n\n**Einstellbare Werte**\n- `value` = `358144640282042` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `noise_seed` (INT, Link 378): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `NOISE` (NOISE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · RandomNoise · Node 196\n\n**Zweck:** Erzeugt oder verändert das Start-Rauschen, das die Variation des generierten Ergebnisses bestimmt.\n\n**Einstellbare Werte**\n- `noise_seed` = `358144640282042` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `noise_seed` (INT, Link 378): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `NOISE` (NOISE, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -3802,19 +3855,19 @@
             "id": 266,
             "type": "MarkdownNote",
             "pos": [
-              6157.0,
-              7872.5
+              3840.0,
+              780.0
             ],
             "size": [
               390,
-              328
+              362
             ],
             "flags": {},
             "order": 46,
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · LTXVEmptyLatentAudio · Node 197",
+            "title": "Erklärung · LTXV Empty Latent Audio · Node 197",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -3822,7 +3875,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · LTXVEmptyLatentAudio · Node 197\n\n**Zweck:** Erzeugt ein leeres Latent mit den vorgegebenen Abmessungen als Startpunkt der Generierung.\n\n**Einstellbare Werte**\n- `value` = `97` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `audio_vae` (VAE, Link 332): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `frames_number` (INT, Link 330): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `frame_rate` (FLOAT,INT, Link 279): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `Latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · LTXV Empty Latent Audio · Node 197\n\n**Zweck:** Erzeugt ein leeres Latent mit den vorgegebenen Abmessungen als Startpunkt der Generierung.\n\n**Einstellbare Werte**\n- `frames_number` = `97` — Number of frames. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `frame_rate` = `25` — Number of frames per second. Höher wirkt flüssiger und erzeugt/verarbeitet mehr Frames pro Sekunde; niedriger spart Rechenzeit/Dateigröße.\n- `batch_size` = `1` — The number of latent audio samples in the batch. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n\n**Eingänge**\n- `audio_vae` (VAE, Link 332): The Audio VAE model to get configuration from.\n- `frames_number` (INT, Link 330): Number of frames.\n- `frame_rate` (FLOAT,INT, Link 279): Number of frames per second.\n\n**Ausgänge**\n- `Latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -3831,8 +3884,8 @@
             "id": 267,
             "type": "MarkdownNote",
             "pos": [
-              3167.0,
-              7426.0
+              3840.0,
+              1180.0
             ],
             "size": [
               390,
@@ -3851,7 +3904,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · Duration · Node 198\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `5` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, Link 375): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Duration · Node 198\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `5` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, Link 375): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -3860,8 +3913,8 @@
             "id": 268,
             "type": "MarkdownNote",
             "pos": [
-              4955.5,
-              6721.0
+              3840.0,
+              1540.0
             ],
             "size": [
               390,
@@ -3872,7 +3925,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · LTXVPreprocess · Node 199",
+            "title": "Erklärung · LTXV Preprocess · Node 199",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -3880,7 +3933,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · LTXVPreprocess · Node 199\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `LTXVPreprocess` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `value` = `18` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `image` (IMAGE, Link 280): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output_image` (IMAGE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · LTXV Preprocess · Node 199\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `LTXVPreprocess` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `img_compression` = `18` — Amount of compression to apply on image. Höher komprimiert Guide-Bilder stärker und spart Speicher/Bandbreite, kann aber Referenzdetails verlieren.\n\n**Eingänge**\n- `image` (IMAGE, Link 280): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output_image` (IMAGE, 2 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -3889,8 +3942,8 @@
             "id": 269,
             "type": "MarkdownNote",
             "pos": [
-              7063.5,
-              4582.5
+              3840.0,
+              1880.0
             ],
             "size": [
               390,
@@ -3918,12 +3971,12 @@
             "id": 270,
             "type": "MarkdownNote",
             "pos": [
-              6157.0,
-              7308.5
+              3840.0,
+              2280.0
             ],
             "size": [
               390,
-              328
+              379
             ],
             "flags": {},
             "order": 50,
@@ -3938,7 +3991,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · EmptyLTXVLatentVideo · Node 201\n\n**Zweck:** Erzeugt, kombiniert oder transformiert Daten im Latent-Raum vor Sampling oder Decoding.\n\n**Einstellbare Werte**\n- `value` = `768` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `width` (INT, Link 284): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, Link 285): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `length` (INT, Link 331): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · EmptyLTXVLatentVideo · Node 201\n\n**Zweck:** Erzeugt, kombiniert oder transformiert Daten im Latent-Raum vor Sampling oder Decoding.\n\n**Einstellbare Werte**\n- `width` = `768` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `512` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `length` = `97` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n\n**Eingänge**\n- `width` (INT, Link 284): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, Link 285): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `length` (INT, Link 331): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -3947,8 +4000,8 @@
             "id": 271,
             "type": "MarkdownNote",
             "pos": [
-              6157.0,
-              6885.5
+              3840.0,
+              2700.0
             ],
             "size": [
               390,
@@ -3967,7 +4020,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · LTXVConditioning · Node 202\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- `value` = `25` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `positive` (CONDITIONING, Link 358): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 287): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `frame_rate` (FLOAT, Link 288): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `positive` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `negative` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · LTXVConditioning · Node 202\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- `frame_rate` = `25` — Steuert diesen Parameter. Höher wirkt flüssiger und erzeugt/verarbeitet mehr Frames pro Sekunde; niedriger spart Rechenzeit/Dateigröße.\n\n**Eingänge**\n- `positive` (CONDITIONING, Link 358): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 287): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `frame_rate` (FLOAT, Link 288): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `positive` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `negative` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -3976,8 +4029,8 @@
             "id": 272,
             "type": "MarkdownNote",
             "pos": [
-              4955.5,
-              7097.0
+              3840.0,
+              3080.0
             ],
             "size": [
               390,
@@ -3988,7 +4041,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · GetImageSize · Node 203",
+            "title": "Erklärung · Get Image Size · Node 203",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -3996,7 +4049,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · GetImageSize · Node 203\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `image` (IMAGE, Link 289): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `width` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `height` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `batch_size` (INT, nicht verbunden): Ergebnis dieses Nodes"
+              "# Erklärung · Get Image Size · Node 203\n\n**Zweck:** Returns width and height of the image, and passes it through unchanged.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `image` (IMAGE, Link 289): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `width` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `height` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `batch_size` (INT, nicht verbunden): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4005,12 +4058,12 @@
             "id": 273,
             "type": "MarkdownNote",
             "pos": [
-              7088.0,
-              7637.5
+              3840.0,
+              3440.0
             ],
             "size": [
               390,
-              430
+              447
             ],
             "flags": {},
             "order": 53,
@@ -4025,7 +4078,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · LTXVAddGuide · Node 204\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `LTXVAddGuide` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `value` = `-1` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `positive` (CONDITIONING, Link 290): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 291): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 334): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 293): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 294): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `attention_mask` (MASK, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `iclora_parameters` (IC_LORA_PARAMETERS, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `positive` (CONDITIONING, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `negative` (CONDITIONING, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · LTXVAddGuide · Node 204\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `LTXVAddGuide` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `frame_idx` = `-1` — Frame index to start the conditioning at. For single-frame images or videos with 1-8 frames, any frame_idx value is acceptable. For videos with 9+ frames, frame_idx must be divisi… Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `strength` = `0.7` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `positive` (CONDITIONING, Link 290): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 291): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 334): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 293): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 294): Image or video to condition the latent video on. Must be 8*n + 1 frames. If the video is not 8*n + 1 frames, it will be cropped to the nearest 8*n + …\n- `attention_mask` (MASK, nicht verbunden): Optional pixel-space spatial mask. Controls per-region conditioning influence via self-attention, multiplied by strength.\n- `iclora_parameters` (IC_LORA_PARAMETERS, nicht verbunden): Optional IC-LoRA parameters from a Get IC-LoRA Parameters node. Used for adjusting guide processing as required by certain IC-LoRAs (eg. those with a…\n\n**Ausgänge**\n- `positive` (CONDITIONING, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `negative` (CONDITIONING, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4034,8 +4087,8 @@
             "id": 274,
             "type": "MarkdownNote",
             "pos": [
-              3167.0,
-              7802.0
+              3840.0,
+              3920.0
             ],
             "size": [
               390,
@@ -4054,7 +4107,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · Frame Rate(int) · Node 205\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `24` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, Link 379): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 3 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Frame Rate(int) · Node 205\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `24` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, Link 379): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 3 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4063,12 +4116,12 @@
             "id": 275,
             "type": "MarkdownNote",
             "pos": [
-              7088.0,
-              6885.5
+              4320.0,
+              80.0
             ],
             "size": [
               390,
-              430
+              447
             ],
             "flags": {},
             "order": 55,
@@ -4083,7 +4136,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · LTXVAddGuide · Node 206\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `LTXVAddGuide` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `value` = `0` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `positive` (CONDITIONING, Link 295): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 296): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 335): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 298): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 299): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `attention_mask` (MASK, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `iclora_parameters` (IC_LORA_PARAMETERS, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `positive` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `negative` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · LTXVAddGuide · Node 206\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `LTXVAddGuide` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `frame_idx` = `0` — Frame index to start the conditioning at. For single-frame images or videos with 1-8 frames, any frame_idx value is acceptable. For videos with 9+ frames, frame_idx must be divisi… Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `strength` = `0.7` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `positive` (CONDITIONING, Link 295): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 296): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 335): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 298): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 299): Image or video to condition the latent video on. Must be 8*n + 1 frames. If the video is not 8*n + 1 frames, it will be cropped to the nearest 8*n + …\n- `attention_mask` (MASK, nicht verbunden): Optional pixel-space spatial mask. Controls per-region conditioning influence via self-attention, multiplied by strength.\n- `iclora_parameters` (IC_LORA_PARAMETERS, nicht verbunden): Optional IC-LoRA parameters from a Get IC-LoRA Parameters node. Used for adjusting guide processing as required by certain IC-LoRAs (eg. those with a…\n\n**Ausgänge**\n- `positive` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `negative` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4092,12 +4145,12 @@
             "id": 276,
             "type": "MarkdownNote",
             "pos": [
-              5005.5,
-              5264.0
+              4320.0,
+              560.0
             ],
             "size": [
               390,
-              294
+              311
             ],
             "flags": {},
             "order": 56,
@@ -4112,7 +4165,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · SamplerEulerAncestral · Node 208\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `value` = `0` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `SAMPLER` (SAMPLER, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · SamplerEulerAncestral · Node 208\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `eta` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `s_noise` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `SAMPLER` (SAMPLER, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4121,8 +4174,8 @@
             "id": 277,
             "type": "MarkdownNote",
             "pos": [
-              5863.0,
-              6133.5
+              4320.0,
+              920.0
             ],
             "size": [
               390,
@@ -4150,8 +4203,8 @@
             "id": 278,
             "type": "MarkdownNote",
             "pos": [
-              6107.0,
-              4347.5
+              4320.0,
+              1280.0
             ],
             "size": [
               390,
@@ -4179,8 +4232,8 @@
             "id": 279,
             "type": "MarkdownNote",
             "pos": [
-              3162.0,
-              8201.5
+              4320.0,
+              1700.0
             ],
             "size": [
               390,
@@ -4191,7 +4244,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · ComfyMathExpression · Node 212",
+            "title": "Erklärung · Math Expression · Node 212",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4199,7 +4252,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · ComfyMathExpression · Node 212\n\n**Zweck:** Berechnet oder konvertiert numerische Werte für nachfolgende Nodes.\n\n**Einstellbare Werte**\n- `value` = `a` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `values.a` (FLOAT,INT,BOOLEAN, Link 310): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.b` (FLOAT,INT,BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `INT` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `BOOL` (BOOLEAN, nicht verbunden): Ergebnis dieses Nodes"
+              "# Erklärung · Math Expression · Node 212\n\n**Zweck:** Berechnet oder konvertiert numerische Werte für nachfolgende Nodes.\n\n**Einstellbare Werte**\n- `expression` = `a` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `values.a` (FLOAT,INT,BOOLEAN, Link 310): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.b` (FLOAT,INT,BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `INT` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `BOOL` (BOOLEAN, nicht verbunden): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4208,19 +4261,19 @@
             "id": 280,
             "type": "MarkdownNote",
             "pos": [
-              4148.0,
-              6721.0
+              4320.0,
+              2080.0
             ],
             "size": [
               390,
-              328
+              396
             ],
             "flags": {},
             "order": 60,
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · ResizeImageMaskNode · Node 213",
+            "title": "Erklärung · Resize Image/Mask · Node 213",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4228,7 +4281,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · ResizeImageMaskNode · Node 213\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- `value` = `scale dimensions` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `input` (IMAGE,MASK, Link 325): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resize_type.width` (INT, Link 311): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resize_type.height` (INT, Link 312): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `resized` (IMAGE,MASK, 2 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Resize Image/Mask · Node 213\n\n**Zweck:** Resize an image or mask using various scaling methods.\n\n**Einstellbare Werte**\n- `resize_type` = `scale dimensions` — Select how to resize: by exact dimensions, scale factor, matching another image, etc. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `width` = `640` — Target width in pixels. Set to 0 to auto-calculate from height while preserving aspect ratio. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `360` — Target height in pixels. Set to 0 to auto-calculate from width while preserving aspect ratio. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `crop` = `center` — How to handle aspect ratio mismatch: 'disabled' stretches to fit, 'center' crops to maintain aspect ratio. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `scale_method` = `nearest-exact` — Interpolation algorithm. 'area' is best for downscaling, 'lanczos' for upscaling, 'nearest-exact' for pixel art. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `input` (IMAGE,MASK, Link 325): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resize_type.width` (INT, Link 311): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resize_type.height` (INT, Link 312): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `resized` (IMAGE,MASK, 2 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4237,19 +4290,19 @@
             "id": 281,
             "type": "MarkdownNote",
             "pos": [
-              4148.0,
-              7755.0
+              4320.0,
+              2520.0
             ],
             "size": [
               390,
-              328
+              396
             ],
             "flags": {},
             "order": 61,
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · ResizeImageMaskNode · Node 214",
+            "title": "Erklärung · Resize Image/Mask · Node 214",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4257,7 +4310,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · ResizeImageMaskNode · Node 214\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- `value` = `scale dimensions` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `input` (IMAGE,MASK, Link 326): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resize_type.width` (INT, Link 313): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resize_type.height` (INT, Link 314): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `resized` (IMAGE,MASK, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Resize Image/Mask · Node 214\n\n**Zweck:** Resize an image or mask using various scaling methods.\n\n**Einstellbare Werte**\n- `resize_type` = `scale dimensions` — Select how to resize: by exact dimensions, scale factor, matching another image, etc. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `width` = `640` — Target width in pixels. Set to 0 to auto-calculate from height while preserving aspect ratio. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `360` — Target height in pixels. Set to 0 to auto-calculate from width while preserving aspect ratio. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `crop` = `center` — How to handle aspect ratio mismatch: 'disabled' stretches to fit, 'center' crops to maintain aspect ratio. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `scale_method` = `nearest-exact` — Interpolation algorithm. 'area' is best for downscaling, 'lanczos' for upscaling, 'nearest-exact' for pixel art. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `input` (IMAGE,MASK, Link 326): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resize_type.width` (INT, Link 313): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resize_type.height` (INT, Link 314): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `resized` (IMAGE,MASK, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4266,8 +4319,8 @@
             "id": 282,
             "type": "MarkdownNote",
             "pos": [
-              3167.0,
-              6721.0
+              4320.0,
+              2960.0
             ],
             "size": [
               390,
@@ -4286,7 +4339,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · Width · Node 215\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `1280` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, Link 376): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Width · Node 215\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `1280` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, Link 376): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4295,8 +4348,8 @@
             "id": 283,
             "type": "MarkdownNote",
             "pos": [
-              3167.0,
-              7073.5
+              4320.0,
+              3320.0
             ],
             "size": [
               390,
@@ -4315,7 +4368,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · height · Node 216\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `720` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, Link 377): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · height · Node 216\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `720` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, Link 377): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4324,8 +4377,8 @@
             "id": 284,
             "type": "MarkdownNote",
             "pos": [
-              3625.0,
-              5757.5
+              4320.0,
+              3680.0
             ],
             "size": [
               390,
@@ -4336,7 +4389,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · CLIPTextEncode · Node 217",
+            "title": "Erklärung · CLIP Text Encode (Prompt) · Node 217",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4344,7 +4397,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · CLIPTextEncode · Node 217\n\n**Zweck:** Kodiert Text bzw. Prompts mit CLIP in eine Konditionierung für das generative Modell.\n\n**Einstellbare Werte**\n- `value` = `blurry, out of focus, overexposed, underexposed, low contrast, washed out colors, excessive noise, grainy tex…` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `clip` (CLIP, Link 337): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · CLIP Text Encode (Prompt) · Node 217\n\n**Zweck:** Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.\n\n**Einstellbare Werte**\n- `text` = `blurry, out of focus, overexposed, underexposed, low contrast, washed out colors, excessive noise, grainy tex…` — The text to be encoded. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `clip` (CLIP, Link 337): The CLIP model used for encoding the text.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 1 Verbindung(en)): A conditioning containing the embedded text used to guide the diffusion model."
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4353,19 +4406,19 @@
             "id": 285,
             "type": "MarkdownNote",
             "pos": [
-              8166.0,
-              4324.0
+              4320.0,
+              4020.0
             ],
             "size": [
               390,
-              328
+              345
             ],
             "flags": {},
             "order": 65,
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · CreateVideo · Node 218",
+            "title": "Erklärung · Create Video · Node 218",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4373,7 +4426,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · CreateVideo · Node 218\n\n**Zweck:** Lädt, erzeugt oder verarbeitet Videodaten und deren Frames.\n\n**Einstellbare Werte**\n- `value` = `24` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `images` (IMAGE, Link 316): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio` (AUDIO, Link 317): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `fps` (FLOAT, Link 318): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VIDEO` (VIDEO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Create Video · Node 218\n\n**Zweck:** Create a video from images.\n\n**Einstellbare Werte**\n- `fps` = `24` — Steuert diesen Parameter. Höher wirkt flüssiger und erzeugt/verarbeitet mehr Frames pro Sekunde; niedriger spart Rechenzeit/Dateigröße.\n- `bit_depth` = `8` — Bit depth of the created video. 10-bit keeps smoother gradients with less banding, but some players and downstream nodes may not support it. Höher bewahrt feinere Farb-/Dynamikabstufungen, vergrößert aber Datenmenge und Datei; niedriger ist kompakter.\n\n**Eingänge**\n- `images` (IMAGE, Link 316): The images to create a video from.\n- `audio` (AUDIO, Link 317): The audio to add to the video.\n- `fps` (FLOAT, Link 318): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VIDEO` (VIDEO, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4382,19 +4435,19 @@
             "id": 286,
             "type": "MarkdownNote",
             "pos": [
-              7039.0,
-              5052.5
+              4800.0,
+              80.0
             ],
             "size": [
               390,
-              311
+              362
             ],
             "flags": {},
             "order": 66,
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · VAEDecodeTiled · Node 219",
+            "title": "Erklärung · VAE Decode (Tiled) · Node 219",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4402,7 +4455,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · VAEDecodeTiled · Node 219\n\n**Zweck:** Dekodiert Latents mit dem VAE zu sicht- oder hörbaren Mediendaten.\n\n**Einstellbare Werte**\n- `value` = `512` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `samples` (LATENT, Link 319): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 336): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · VAE Decode (Tiled) · Node 219\n\n**Zweck:** Dekodiert Latents mit dem VAE zu sicht- oder hörbaren Mediendaten.\n\n**Einstellbare Werte**\n- `tile_size` = `512` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `overlap` = `64` — Steuert diesen Parameter. Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n- `temporal_size` = `64` — Only used for video VAEs: Amount of frames to decode at a time. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `temporal_overlap` = `16` — Only used for video VAEs: Amount of frames to overlap. Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n\n**Eingänge**\n- `samples` (LATENT, Link 319): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 336): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4411,8 +4464,8 @@
             "id": 287,
             "type": "MarkdownNote",
             "pos": [
-              7039.0,
-              5734.0
+              4800.0,
+              480.0
             ],
             "size": [
               390,
@@ -4423,7 +4476,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · LTXVAudioVAEDecode · Node 220",
+            "title": "Erklärung · LTXV Audio VAE Decode · Node 220",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4431,7 +4484,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · LTXVAudioVAEDecode · Node 220\n\n**Zweck:** Dekodiert Latents mit dem VAE zu sicht- oder hörbaren Mediendaten.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `samples` (LATENT, Link 321): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio_vae` (VAE, Link 333): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `Audio` (AUDIO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · LTXV Audio VAE Decode · Node 220\n\n**Zweck:** Dekodiert Latents mit dem VAE zu sicht- oder hörbaren Mediendaten.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `samples` (LATENT, Link 321): The latent to be decoded.\n- `audio_vae` (VAE, Link 333): The Audio VAE model used for decoding the latent.\n\n**Ausgänge**\n- `Audio` (AUDIO, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4440,8 +4493,8 @@
             "id": 288,
             "type": "MarkdownNote",
             "pos": [
-              6127.0,
-              4935.0
+              4800.0,
+              840.0
             ],
             "size": [
               390,
@@ -4460,7 +4513,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · LTXVSeparateAVLatent · Node 221\n\n**Zweck:** Erzeugt, kombiniert oder transformiert Daten im Latent-Raum vor Sampling oder Decoding.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `av_latent` (LATENT, Link 323): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `video_latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `audio_latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · LTXVSeparateAVLatent · Node 221\n\n**Zweck:** LTXV Separate AV Latent\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `av_latent` (LATENT, Link 323): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `video_latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `audio_latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4469,8 +4522,8 @@
             "id": 289,
             "type": "MarkdownNote",
             "pos": [
-              3606.0,
-              4418.0
+              4800.0,
+              1200.0
             ],
             "size": [
               390,
@@ -4481,7 +4534,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · CLIPTextEncode · Node 222",
+            "title": "Erklärung · CLIP Text Encode (Prompt) · Node 222",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4489,7 +4542,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · CLIPTextEncode · Node 222\n\n**Zweck:** Kodiert Text bzw. Prompts mit CLIP in eine Konditionierung für das generative Modell.\n\n**Einstellbare Werte**\n- `value` = `` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `clip` (CLIP, Link 338): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text` (STRING, Link 364): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · CLIP Text Encode (Prompt) · Node 222\n\n**Zweck:** Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.\n\n**Einstellbare Werte**\n- `text` = `` — The text to be encoded. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `clip` (CLIP, Link 338): The CLIP model used for encoding the text.\n- `text` (STRING, Link 364): The text to be encoded.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 1 Verbindung(en)): A conditioning containing the embedded text used to guide the diffusion model."
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4498,8 +4551,8 @@
             "id": 290,
             "type": "MarkdownNote",
             "pos": [
-              3162.0,
-              8606.5
+              4800.0,
+              1560.0
             ],
             "size": [
               390,
@@ -4510,7 +4563,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · ComfyMathExpression · Node 226",
+            "title": "Erklärung · Math Expression · Node 226",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4518,7 +4571,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · ComfyMathExpression · Node 226\n\n**Zweck:** Berechnet oder konvertiert numerische Werte für nachfolgende Nodes.\n\n**Einstellbare Werte**\n- `value` = `a * b + 1` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `values.a` (FLOAT,INT,BOOLEAN, Link 328): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.b` (FLOAT,INT,BOOLEAN, Link 329): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.c` (FLOAT,INT,BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, nicht verbunden): Ergebnis dieses Nodes\n- `INT` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `BOOL` (BOOLEAN, nicht verbunden): Ergebnis dieses Nodes"
+              "# Erklärung · Math Expression · Node 226\n\n**Zweck:** Berechnet oder konvertiert numerische Werte für nachfolgende Nodes.\n\n**Einstellbare Werte**\n- `expression` = `a * b + 1` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `values.a` (FLOAT,INT,BOOLEAN, Link 328): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.b` (FLOAT,INT,BOOLEAN, Link 329): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.c` (FLOAT,INT,BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, nicht verbunden): Ergebnis dieses Nodes\n- `INT` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `BOOL` (BOOLEAN, nicht verbunden): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4527,8 +4580,8 @@
             "id": 291,
             "type": "MarkdownNote",
             "pos": [
-              2136.5,
-              5358.0
+              4800.0,
+              1960.0
             ],
             "size": [
               390,
@@ -4539,7 +4592,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · VAELoader · Node 227",
+            "title": "Erklärung · Load VAE · Node 227",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4547,7 +4600,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · VAELoader · Node 227\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `value` = `LTX\\ltx-2.5-audio-vae-bf16.safetensors` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `vae_name` (COMBO, Link 382): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Load VAE · Node 227\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `vae_name` = `LTX\\ltx-2.5-audio-vae-bf16.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `vae_name` (COMBO, Link 382): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4556,19 +4609,19 @@
             "id": 292,
             "type": "MarkdownNote",
             "pos": [
-              2106.5,
-              5757.5
+              4800.0,
+              2300.0
             ],
             "size": [
               390,
-              294
+              328
             ],
             "flags": {},
             "order": 72,
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · CLIPLoader · Node 228",
+            "title": "Erklärung · Load CLIP · Node 228",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4576,7 +4629,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · CLIPLoader · Node 228\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `value` = `LTX\\gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `clip_name` (COMBO, Link 383): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Load CLIP · Node 228\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `LTX\\gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `ltxv` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, Link 383): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4585,8 +4638,8 @@
             "id": 293,
             "type": "MarkdownNote",
             "pos": [
-              2146.5,
-              5005.5
+              4800.0,
+              2660.0
             ],
             "size": [
               390,
@@ -4597,7 +4650,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · VAELoader · Node 229",
+            "title": "Erklärung · Load VAE · Node 229",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4605,7 +4658,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · VAELoader · Node 229\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `value` = `LTX\\ltx-2.5-video-vae-bf16.safetensors` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `vae_name` (COMBO, Link 381): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Load VAE · Node 229\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `vae_name` = `LTX\\ltx-2.5-video-vae-bf16.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `vae_name` (COMBO, Link 381): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4614,19 +4667,19 @@
             "id": 294,
             "type": "MarkdownNote",
             "pos": [
-              2136.5,
-              4629.5
+              4800.0,
+              3000.0
             ],
             "size": [
               390,
-              294
+              311
             ],
             "flags": {},
             "order": 74,
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · UNETLoader · Node 230",
+            "title": "Erklärung · Load Diffusion Model · Node 230",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4634,7 +4687,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · UNETLoader · Node 230\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `value` = `LTX\\ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `unet_name` (COMBO, Link 380): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Load Diffusion Model · Node 230\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `LTX\\ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, Link 380): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4643,8 +4696,8 @@
             "id": 295,
             "type": "MarkdownNote",
             "pos": [
-              4995.5,
-              4700.0
+              4800.0,
+              3360.0
             ],
             "size": [
               390,
@@ -4672,8 +4725,8 @@
             "id": 296,
             "type": "MarkdownNote",
             "pos": [
-              5201.0,
-              5781.0
+              4800.0,
+              3720.0
             ],
             "size": [
               390,
@@ -4692,7 +4745,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · ManualSigmas · Node 239\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `value` = `1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `SIGMAS` (SIGMAS, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · ManualSigmas · Node 239\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `sigmas` = `1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `SIGMAS` (SIGMAS, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4701,19 +4754,19 @@
             "id": 297,
             "type": "MarkdownNote",
             "pos": [
-              2057.5,
-              2608.5
+              5280.0,
+              80.0
             ],
             "size": [
               390,
-              294
+              328
             ],
             "flags": {},
             "order": 77,
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · CLIPLoader · Node 246",
+            "title": "Erklärung · Load CLIP · Node 246",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4721,7 +4774,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · CLIPLoader · Node 246\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `value` = `Gemma\\gemma4_e2b_it_bf16.safetensors` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `clip_name` (COMBO, Link 384): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Load CLIP · Node 246\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `Gemma\\gemma4_e2b_it_bf16.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `ltxv` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, Link 384): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4730,19 +4783,19 @@
             "id": 298,
             "type": "MarkdownNote",
             "pos": [
-              3190.0,
-              2585.0
+              5280.0,
+              440.0
             ],
             "size": [
               390,
-              362
+              540
             ],
             "flags": {},
             "order": 78,
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · TextGenerateLTX2Prompt · Node 247",
+            "title": "Erklärung · Generate LTX2 Prompt · Node 247",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4750,7 +4803,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · TextGenerateLTX2Prompt · Node 247\n\n**Zweck:** Erzeugt mit dem geladenen Sprachmodell Text aus Prompt und optionalen Bild-, Video- oder Audio-Eingaben.\n\n**Einstellbare Werte**\n- `value` = `` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `clip` (CLIP, Link 360): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 366): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio` (AUDIO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt` (STRING, Link 371): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `generated_text` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Generate LTX2 Prompt · Node 247\n\n**Zweck:** Erzeugt mit dem geladenen Sprachmodell Text aus Prompt und optionalen Bild-, Video- oder Audio-Eingaben.\n\n**Einstellbare Werte**\n- `prompt` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `max_length` = `600` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `sampling_mode` = `on` — Sampling Mode Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `temperature` = `0.7` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `top_k` = `64` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `top_p` = `0.95` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `min_p` = `0.05` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `repetition_penalty` = `1.15` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n- `seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `presence_penalty` = `0` — Steuert diesen Parameter. Höher bevorzugt neue Inhalte statt bereits verwendeter Tokens; 0 lässt die ursprüngliche Modellverteilung unverändert.\n- `thinking` = `False` — Operate in thinking mode if the model supports it. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `use_default_template` = `True` — Use the built in system prompt/template if the model has one. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `clip` (CLIP, Link 360): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 366): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video` (IMAGE, nicht verbunden): Video frames as image batch. Assumed to be 24 FPS; subsampled to 1 FPS internally.\n- `audio` (AUDIO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt` (STRING, Link 371): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `generated_text` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4759,8 +4812,8 @@
             "id": 299,
             "type": "MarkdownNote",
             "pos": [
-              4358.5,
-              3548.5
+              5280.0,
+              1020.0
             ],
             "size": [
               390,
@@ -4771,7 +4824,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · ComfySwitchNode · Node 248",
+            "title": "Erklärung · If/Else Switch · Node 248",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4779,7 +4832,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · ComfySwitchNode · Node 248\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `value` = `False` — Direkter Primitive-Wert für verbundene Nodes. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (STRING, Link 372): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (STRING, Link 361): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 362): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (STRING, 2 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · If/Else Switch · Node 248\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (STRING, Link 372): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (STRING, Link 361): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 362): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (STRING, 2 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4788,8 +4841,8 @@
             "id": 300,
             "type": "MarkdownNote",
             "pos": [
-              5358.0,
-              2632.0
+              5280.0,
+              1380.0
             ],
             "size": [
               390,
@@ -4800,7 +4853,7 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "title": "Erklärung · PreviewAny · Node 249",
+            "title": "Erklärung · Preview as Text · Node 249",
             "properties": {
               "Node name for S&R": "MarkdownNote",
               "cnr_id": "comfy-core",
@@ -4808,7 +4861,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · PreviewAny · Node 249\n\n**Zweck:** Zeigt eine Vorschau des erzeugten Ergebnisses an, ohne den Verarbeitungsinhalt zu ändern.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `source` (*, Link 363): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+              "# Erklärung · Preview as Text · Node 249\n\n**Zweck:** Preview any input value as text.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `source` (*, Link 363): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, nicht verbunden): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4817,8 +4870,8 @@
             "id": 301,
             "type": "MarkdownNote",
             "pos": [
-              2006.5,
-              3713.0
+              5280.0,
+              1720.0
             ],
             "size": [
               390,
@@ -4837,7 +4890,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · Boolean (Enable Prompt Enhance) · Node 250\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `True` — Direkter Primitive-Wert für verbundene Nodes. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `value` (BOOLEAN, Link 374): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `BOOLEAN` (BOOLEAN, 1 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Boolean (Enable Prompt Enhance) · Node 250\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `value` (BOOLEAN, Link 374): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `BOOLEAN` (BOOLEAN, 1 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4846,8 +4899,8 @@
             "id": 302,
             "type": "MarkdownNote",
             "pos": [
-              2166.5,
-              6744.5
+              5280.0,
+              2060.0
             ],
             "size": [
               390,
@@ -4866,7 +4919,7 @@
               "dawasteh_generated_note": true
             },
             "widgets_values": [
-              "# Erklärung · Prompt · Node 252\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (STRING, Link 373): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 2 Verbindung(en)): Ergebnis dieses Nodes"
+              "# Erklärung · Prompt · Node 252\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (STRING, Link 373): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 2 Verbindung(en)): Ergebnis dieses Nodes"
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
@@ -4875,8 +4928,8 @@
             "id": 303,
             "type": "MarkdownNote",
             "pos": [
-              1987.5,
-              2232.5
+              5280.0,
+              2400.0
             ],
             "size": [
               390,
@@ -4904,8 +4957,8 @@
             "id": 304,
             "type": "MarkdownNote",
             "pos": [
-              2796.0,
-              2232.5
+              5280.0,
+              2760.0
             ],
             "size": [
               390,
@@ -4933,8 +4986,8 @@
             "id": 305,
             "type": "MarkdownNote",
             "pos": [
-              3604.5,
-              2232.5
+              5280.0,
+              3120.0
             ],
             "size": [
               390,
@@ -4962,8 +5015,8 @@
             "id": 306,
             "type": "MarkdownNote",
             "pos": [
-              4413.0,
-              2232.5
+              5280.0,
+              3480.0
             ],
             "size": [
               390,
@@ -4991,8 +5044,8 @@
             "id": 307,
             "type": "MarkdownNote",
             "pos": [
-              5221.5,
-              2232.5
+              5280.0,
+              3840.0
             ],
             "size": [
               390,
@@ -5019,110 +5072,81 @@
         ],
         "groups": [
           {
-            "id": 7,
-            "title": "Sampling",
-            "bounding": [
-              4627.0,
-              4270.0,
-              1918.0,
-              2202.5
-            ],
-            "color": "#3f789e",
-            "flags": {}
-          },
-          {
-            "id": 8,
-            "title": "Decoding",
-            "bounding": [
-              6685.0,
-              4528.5,
-              796.5,
-              1544.5
-            ],
-            "color": "#3f789e",
-            "flags": {}
-          },
-          {
             "id": 1,
-            "title": "Conditioning",
+            "title": "O1 · ORIGIN INPUTS",
             "bounding": [
-              5803.0,
-              6831.5,
-              1703.0,
-              1397.0
+              0.0,
+              0.0,
+              520.0,
+              2220.0
             ],
-            "color": "#3f789e",
-            "flags": {}
-          },
-          {
-            "id": 6,
-            "title": "Prompt",
-            "bounding": [
-              2912.0,
-              4364.0,
-              1131.0,
-              1715.5
-            ],
-            "color": "#3f789e",
-            "flags": {}
-          },
-          {
-            "id": 3,
-            "title": "FIrst Frame",
-            "bounding": [
-              3794.0,
-              6667.0,
-              1579.5,
-              786.0
-            ],
-            "color": "#b06634",
-            "flags": {}
-          },
-          {
-            "id": 4,
-            "title": "Last Frame",
-            "bounding": [
-              3794.0,
-              7701.0,
-              1579.5,
-              410.0
-            ],
-            "color": "#b06634",
+            "color": "#7C5CC4",
+            "font_size": 24,
             "flags": {}
           },
           {
             "id": 2,
-            "title": "Video Settings",
+            "title": "D1 · DEPENDENCIES",
             "bounding": [
-              1662.5,
-              6667.0,
-              1922.5,
-              2329.5
+              600.0,
+              0.0,
+              860.0,
+              760.0
             ],
-            "color": "#8A8",
+            "color": "#3F789E",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 3,
+            "title": "E1 · ENCODE & CONDITION",
+            "bounding": [
+              1540.0,
+              0.0,
+              700.0,
+              1800.0
+            ],
+            "color": "#C68B31",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 4,
+            "title": "N1 · NEURAL EXECUTION",
+            "bounding": [
+              2320.0,
+              0.0,
+              360.0,
+              1120.0
+            ],
+            "color": "#B85C5C",
+            "font_size": 24,
             "flags": {}
           },
           {
             "id": 5,
-            "title": "Model",
+            "title": "T1 · TRANSFORM & TERMINAL",
             "bounding": [
-              1662.5,
-              4575.5,
-              902.0,
-              1504.0
+              2760.0,
+              0.0,
+              960.0,
+              1280.0
             ],
-            "color": "#3f789e",
+            "color": "#3F9E6D",
+            "font_size": 24,
             "flags": {}
           },
           {
-            "id": 9,
-            "title": "Prompt Enhancement",
+            "id": 6,
+            "title": "R9 · PARAMETER REFERENCE",
             "bounding": [
-              1613.5,
-              2531.0,
-              4162.5,
-              1504.0
+              3800.0,
+              0.0,
+              1920.0,
+              4400.0
             ],
+            "color": "#5B6472",
+            "font_size": 24,
             "flags": {}
           }
         ],
@@ -5812,9 +5836,24 @@
           "dawasteh_workflow_refinement": {
             "version": 1,
             "generated_notes": 44,
-            "x_scale": 2.45,
-            "y_scale": 2.35,
-            "gap": 34.0
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "gap": 40.0,
+            "layout": "rodent-v1"
+          },
+          "dawasteh_rodent_layout": {
+            "version": 1,
+            "method": "RODENT Method",
+            "credit": "Nerdy Rodent",
+            "algorithm": "rodent-v1",
+            "grid": 20,
+            "node_gap": [
+              80,
+              40
+            ],
+            "stage_gap": 120,
+            "topology_sha256": "85bc3b2e59ed24603780f4197eac51d14502f7f9d4057ec036901f0c62743dd8",
+            "exceptions": []
           }
         },
         "last_node_id": 307
@@ -5837,29 +5876,71 @@
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
     "VHS_KeepIntermediate": true,
+    "dawasteh_template_source": {
+      "template": "video_ltx2_5_flf2v.json",
+      "pinned_under": "tools/workflow_templates"
+    },
     "dawasteh_dual_gpu": {
-      "version": 2,
-      "family": "LTX 2.5 FLF2V",
-      "source": "comfyui-workflow-templates-json:video_ltx2_5_flf2v.json",
-      "server": "127.0.0.1:8188",
-      "backend": "ROCm/HIP",
-      "default_model_device": "gpu:0 · AMD Radeon AI PRO R9700 32 GB",
-      "default_clip_vae_device": "gpu:1 · AMD Radeon RX 9070 XT 16 GB",
-      "execution": "device placement; ComfyUI still executes graph stages sequentially",
-      "selector_count": 5,
       "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ],
+      "placement_support": "official-selectors",
       "manual_device_dropdowns": {
         "model_device": "gpu:0",
         "clip_device": "gpu:1",
         "vae_device": "gpu:1"
-      }
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "LTX 2.5 First/Last Frame to Video",
+      "source": "workflows/Text+Image to Video/LTX25_INT8_ConvRot-First+Last-Frame-to-Video.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 5,
+      "curated_split_default": true,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:1",
+        "VAE": "gpu:1"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_duration_seconds": {
+      "version": 1,
+      "unit": "seconds",
+      "mode": "native-seconds"
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
       "generated_notes": 5,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "00122c02cde600eede42393df94cceaa3218ffea15e296a5067877b8eed19222",
+      "exceptions": []
     }
   },
   "version": 0.4

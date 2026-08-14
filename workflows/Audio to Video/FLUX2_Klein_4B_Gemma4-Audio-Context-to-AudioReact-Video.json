@@ -1,1 +1,2511 @@
-{"id":"bc50c853-ecd2-41c3-85c5-e6458613bcf9","revision":0,"last_node_id":35,"last_link_id":21,"nodes":[{"id":1,"type":"UNETLoader","pos":[1929.0350042061746,55.20496049889789],"size":[381.76666259765625,108.80000305175781],"flags":{},"order":0,"mode":0,"inputs":[{"localized_name":"unet_name","name":"unet_name","type":"COMBO","widget":{"name":"unet_name"},"link":null},{"localized_name":"weight_dtype","name":"weight_dtype","type":"COMBO","widget":{"name":"weight_dtype"},"link":null}],"outputs":[{"localized_name":"MODEL","name":"MODEL","type":"MODEL","slot_index":0,"links":[3]}],"title":"FLUX.2 Klein 4B · Diffusion Model","properties":{"Node name for S&R":"UNETLoader","cnr_id":"comfy-core","ver":"0.3.68"},"widgets_values":["FLUX\\flux-2-klein-4b.safetensors","default"]},{"id":2,"type":"CLIPLoader","pos":[1929.0350042061746,478.2049604988979],"size":[491.45001220703125,140],"flags":{},"order":1,"mode":0,"inputs":[{"localized_name":"clip_name","name":"clip_name","type":"COMBO","widget":{"name":"clip_name"},"link":null},{"localized_name":"type","name":"type","type":"COMBO","widget":{"name":"type"},"link":null},{"localized_name":"device","name":"device","shape":7,"type":"COMBO","widget":{"name":"device"},"link":null}],"outputs":[{"localized_name":"CLIP","name":"CLIP","type":"CLIP","slot_index":0,"links":[1]}],"title":"FLUX.2 · Qwen3 Text Encoder","properties":{"Node name for S&R":"CLIPLoader","cnr_id":"comfy-core","ver":"0.3.68"},"widgets_values":["Qwen\\qwen_3_4b.safetensors","flux2","default"]},{"id":3,"type":"CLIPTextEncode","pos":[2835.5350042061746,478.2049604988979],"size":[430,240],"flags":{},"order":23,"mode":0,"inputs":[{"localized_name":"clip","name":"clip","type":"CLIP","link":1},{"localized_name":"text","name":"text","type":"STRING","widget":{"name":"text"},"link":13}],"outputs":[{"localized_name":"CONDITIONING","name":"CONDITIONING","type":"CONDITIONING","slot_index":0,"links":[2,4]}],"title":"Gemma-Audiokontext → Bildprompt","properties":{"Node name for S&R":"CLIPTextEncode","cnr_id":"comfy-core","ver":"0.3.68"},"widgets_values":[""],"color":"#232","bgcolor":"#353"},{"id":4,"type":"ConditioningZeroOut","pos":[2835.5350042061746,948.2049604988979],"size":[430,80],"flags":{},"order":24,"mode":0,"inputs":[{"localized_name":"conditioning","name":"conditioning","type":"CONDITIONING","link":2}],"outputs":[{"localized_name":"CONDITIONING","name":"CONDITIONING","type":"CONDITIONING","slot_index":0,"links":[5]}],"title":"Negativ (ZeroOut, CFG=1)","properties":{"Node name for S&R":"ConditioningZeroOut","cnr_id":"comfy-core","ver":"0.3.68"},"widgets_values":[],"color":"#322","bgcolor":"#533"},{"id":5,"type":"EmptyFlux2LatentImage","pos":[2835.5350042061746,1300.704960498898],"size":[360,144],"flags":{},"order":2,"mode":0,"inputs":[{"localized_name":"width","name":"width","type":"INT","widget":{"name":"width"},"link":null},{"localized_name":"height","name":"height","type":"INT","widget":{"name":"height"},"link":null},{"localized_name":"batch_size","name":"batch_size","type":"INT","widget":{"name":"batch_size"},"link":null}],"outputs":[{"localized_name":"LATENT","name":"LATENT","type":"LATENT","slot_index":0,"links":[6]}],"title":"1024 × 1024 Referenzszene","properties":{"Node name for S&R":"EmptyFlux2LatentImage","cnr_id":"comfy-core","ver":"0.3.68"},"widgets_values":[1024,1024,1]},{"id":6,"type":"KSampler","pos":[3742.0350042061746,478.2049604988979],"size":[330,340],"flags":{},"order":25,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL","link":3},{"localized_name":"positive","name":"positive","type":"CONDITIONING","link":4},{"localized_name":"negative","name":"negative","type":"CONDITIONING","link":5},{"localized_name":"latent_image","name":"latent_image","type":"LATENT","link":6},{"localized_name":"seed","name":"seed","type":"INT","widget":{"name":"seed"},"link":null},{"localized_name":"steps","name":"steps","type":"INT","widget":{"name":"steps"},"link":null},{"localized_name":"cfg","name":"cfg","type":"FLOAT","widget":{"name":"cfg"},"link":null},{"localized_name":"sampler_name","name":"sampler_name","type":"COMBO","widget":{"name":"sampler_name"},"link":null},{"localized_name":"scheduler","name":"scheduler","type":"COMBO","widget":{"name":"scheduler"},"link":null},{"localized_name":"denoise","name":"denoise","type":"FLOAT","widget":{"name":"denoise"},"link":null}],"outputs":[{"localized_name":"LATENT","name":"LATENT","type":"LATENT","slot_index":0,"links":[7]}],"title":"Referenzszene generieren","properties":{"Node name for S&R":"KSampler","cnr_id":"comfy-core","ver":"0.3.68"},"widgets_values":[1001920795125207,"randomize",4,1,"euler","simple",1]},{"id":7,"type":"VAELoader","pos":[3742.0350042061746,1300.704960498898],"size":[330,80],"flags":{},"order":3,"mode":0,"inputs":[{"localized_name":"vae_name","name":"vae_name","type":"COMBO","widget":{"name":"vae_name"},"link":null}],"outputs":[{"localized_name":"VAE","name":"VAE","type":"VAE","slot_index":0,"links":[8]}],"title":"VAE","properties":{"Node name for S&R":"VAELoader","cnr_id":"comfy-core","ver":"0.3.68"},"widgets_values":["FLUX2\\flux2-vae.safetensors"]},{"id":8,"type":"VAEDecode","pos":[4526.035004206175,478.2049604988979],"size":[225,72],"flags":{},"order":26,"mode":0,"inputs":[{"localized_name":"samples","name":"samples","type":"LATENT","link":20},{"localized_name":"vae","name":"vae","type":"VAE","link":8}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","slot_index":0,"links":[14]}],"title":"Referenzszene dekodieren","properties":{"Node name for S&R":"VAEDecode","cnr_id":"comfy-core","ver":"0.3.68"},"widgets_values":[]},{"id":12,"type":"PixaromaRunTimer","pos":[199.7430324421166,1396.3477122271238],"size":[226,14],"flags":{"no_title":true},"order":4,"mode":0,"inputs":[],"outputs":[],"properties":{"Node name for S&R":"PixaromaRunTimer","cnr_id":"ComfyUI-Pixaroma","ver":"ffcf2f56aa448f2df763b09b70857632792b7805"},"widgets_values":[{"version":1,"color":"#f66744","decimals":0,"chime":true,"sound":"","volume":70}],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":13,"type":"LoadAudio","pos":[147,517],"size":[400,138],"flags":{},"order":5,"mode":0,"inputs":[{"localized_name":"audio","name":"audio","type":"COMBO","widget":{"name":"audio"},"link":null},{"localized_name":"audioUI","name":"audioUI","type":"AUDIO_UI","widget":{"name":"audioUI"},"link":null},{"localized_name":"choose file to upload","name":"upload","type":"AUDIOUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"AUDIO","name":"AUDIO","type":"AUDIO","links":[11,15]}],"title":"1 · Sound laden","properties":{"Node name for S&R":"LoadAudio","cnr_id":"comfy-core","ver":"0.21.1"},"widgets_values":["Basti_Ref_Audio.mp3",null,null],"color":"#004835","bgcolor":"#1d1d1d"},{"id":14,"type":"CLIPLoader","pos":[147,1034],"size":[400,114],"flags":{},"order":6,"mode":0,"inputs":[{"localized_name":"clip_name","name":"clip_name","type":"COMBO","widget":{"name":"clip_name"},"link":null},{"localized_name":"type","name":"type","type":"COMBO","widget":{"name":"type"},"link":null},{"localized_name":"device","name":"device","shape":7,"type":"COMBO","widget":{"name":"device"},"link":null}],"outputs":[{"localized_name":"CLIP","name":"CLIP","type":"CLIP","links":[9]}],"title":"Gemma 4 · Audio verstehen","properties":{"Node name for S&R":"CLIPLoader","cnr_id":"comfy-core","ver":"0.21.1"},"widgets_values":["Gemma\\gemma4_e4b_it_fp8_scaled.safetensors","stable_diffusion","default"],"color":"#004835","bgcolor":"#1d1d1d"},{"id":15,"type":"PixaromaText","pos":[1029,1386.5],"size":[400,211.13333129882812],"flags":{},"order":7,"mode":0,"inputs":[{"localized_name":"text","name":"text","type":"STRING","widget":{"name":"text"},"link":null}],"outputs":[{"localized_name":"text","name":"text","type":"STRING","links":[10]}],"title":"Audio → visueller Kontextprompt","properties":{"Node name for S&R":"PixaromaText","cnr_id":"ComfyUI-Pixaroma","ver":"c82f95989e0347b5cc48ddf52a51f2d776a1f83b"},"widgets_values":["Analyze the entire audio, including speech, lyrics, music, ambience, emotion, tempo, setting, and audible events. Create one cohesive English cinematic image prompt that visually represents the dominant context of the sound. Describe the main subject, environment, mood, lighting, color palette, composition, and camera perspective. Do not transcribe or quote lyrics or speech. Do not explain your reasoning. Do not add labels. Avoid visible text, subtitles, and logos. Output only the final image prompt.",""],"color":"#15261c","bgcolor":"#004835"},{"id":16,"type":"TextGenerate","pos":[1029,517],"size":[379.70001220703125,494],"flags":{},"order":21,"mode":0,"showAdvanced":true,"inputs":[{"localized_name":"clip","name":"clip","type":"CLIP","link":9},{"localized_name":"image","name":"image","shape":7,"type":"IMAGE","link":null},{"localized_name":"video","name":"video","shape":7,"type":"IMAGE","link":null},{"localized_name":"audio","name":"audio","shape":7,"type":"AUDIO","link":11},{"localized_name":"prompt","name":"prompt","type":"STRING","widget":{"name":"prompt"},"link":10},{"localized_name":"max_length","name":"max_length","type":"INT","widget":{"name":"max_length"},"link":null},{"localized_name":"sampling_mode","name":"sampling_mode","type":"COMFY_DYNAMICCOMBO_V3","widget":{"name":"sampling_mode"},"link":null},{"localized_name":"temperature","name":"sampling_mode.temperature","type":"FLOAT","widget":{"name":"sampling_mode.temperature"},"link":null},{"localized_name":"top_k","name":"sampling_mode.top_k","type":"INT","widget":{"name":"sampling_mode.top_k"},"link":null},{"localized_name":"top_p","name":"sampling_mode.top_p","type":"FLOAT","widget":{"name":"sampling_mode.top_p"},"link":null},{"localized_name":"min_p","name":"sampling_mode.min_p","type":"FLOAT","widget":{"name":"sampling_mode.min_p"},"link":null},{"localized_name":"repetition_penalty","name":"sampling_mode.repetition_penalty","type":"FLOAT","widget":{"name":"sampling_mode.repetition_penalty"},"link":null},{"localized_name":"seed","name":"sampling_mode.seed","type":"INT","widget":{"name":"sampling_mode.seed"},"link":null},{"localized_name":"presence_penalty","name":"sampling_mode.presence_penalty","shape":7,"type":"FLOAT","widget":{"name":"sampling_mode.presence_penalty"},"link":null},{"localized_name":"thinking","name":"thinking","shape":7,"type":"BOOLEAN","widget":{"name":"thinking"},"link":null},{"localized_name":"use_default_template","name":"use_default_template","shape":7,"type":"BOOLEAN","widget":{"name":"use_default_template"},"link":null}],"outputs":[{"localized_name":"generated_text","name":"generated_text","type":"STRING","links":[12,19]}],"title":"2 · Audiokontext analysieren","properties":{"Node name for S&R":"TextGenerate","cnr_id":"comfy-core","ver":"0.21.0"},"widgets_values":["",1024,"on",0.45,48,0.9,0.05,1.05,0,0,false,true],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":17,"type":"PixaromaShowText","pos":[1862,1386.5],"size":[411.0666809082031,412],"flags":{},"order":22,"mode":0,"inputs":[{"localized_name":"source","name":"source","type":"*","link":12}],"outputs":[{"localized_name":"text","name":"text","type":"STRING","links":null}],"title":"Generierter visueller Prompt","properties":{"Node name for S&R":"PixaromaShowText","cnr_id":"ComfyUI-Pixaroma","ver":"c82f95989e0347b5cc48ddf52a51f2d776a1f83b"},"widgets_values":["Der aus dem Audio erzeugte Bildprompt erscheint hier."],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":18,"type":"PixaromaAudioStudio","pos":[5244.871849054576,472.93065725468614],"size":[295.3833312988281,126],"flags":{},"order":27,"mode":0,"inputs":[{"localized_name":"image","name":"image","shape":7,"type":"IMAGE","link":14},{"localized_name":"audio","name":"audio","shape":7,"type":"AUDIO","link":15}],"outputs":[{"localized_name":"video_frames","name":"video_frames","type":"IMAGE","links":[16]},{"localized_name":"audio","name":"audio","type":"AUDIO","links":[17]},{"localized_name":"fps","name":"fps","type":"FLOAT","links":[18]}],"title":"4 · Kontextbild audio-reaktiv animieren","properties":{"audioStudioState":{"schema_version":1,"motion_mode":"scale_pulse","intensity":0.8,"audio_band":"full","motion_speed":0.2,"motion_direction":1,"shake_axis":"both","ripple_density":1,"slit_density":1,"glitch_bands":30,"wave_density":1,"pixelate_blocks":24,"squeeze_axis":"x","smoothing":5,"loop_safe":true,"fps":24,"glitch_strength":0,"bloom_strength":0,"vignette_strength":0,"hue_shift_strength":0,"grade_strength":0,"letterbox_strength":0,"scanline_strength":0,"grain_strength":0,"aspect_ratio":"Original","custom_width":1024,"custom_height":1024,"image_source":"upstream","image_path":null,"audio_source":"upstream","audio_path":null,"image_force_inline":false,"audio_force_inline":false,"image_uploaded_at":0,"audio_uploaded_at":0},"Node name for S&R":"PixaromaAudioStudio","cnr_id":"ComfyUI-Pixaroma","ver":"52daaba187bd9a1964938a73c60e72dffbb025c2"},"widgets_values":[null],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":19,"type":"PixaromaSaveMp4","pos":[5599.781770052371,478.2049604988979],"size":[320,474],"flags":{},"order":28,"mode":0,"inputs":[{"localized_name":"video_frames","name":"video_frames","type":"IMAGE","link":16},{"localized_name":"audio","name":"audio","shape":7,"type":"AUDIO","link":17},{"localized_name":"fps","name":"fps","type":"FLOAT","widget":{"name":"fps"},"link":18},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","widget":{"name":"filename_prefix"},"link":null},{"localized_name":"save_mode","name":"save_mode","type":"COMBO","widget":{"name":"save_mode"},"link":null},{"localized_name":"trim_to_audio","name":"trim_to_audio","type":"BOOLEAN","widget":{"name":"trim_to_audio"},"link":null}],"outputs":[],"title":"5 · MP4 mit Originalsound speichern","properties":{"Node name for S&R":"PixaromaSaveMp4","cnr_id":"ComfyUI-Pixaroma","ver":"278bcd5143bc00ecef8fab04535c395570438697"},"widgets_values":[24,"AudioVideo/AudioContext","save",true,""],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":20,"type":"PixaromaLabel","pos":[147,94],"size":[511,21],"flags":{"no_title":true},"order":8,"mode":0,"inputs":[],"outputs":[],"properties":{"Node name for S&R":"PixaromaLabel","cnr_id":"ComfyUI-Pixaroma","ver":"80b307e8d1882fd933959cb0ea94a26d143557b5","aux_id":"pixaroma/ComfyUI-Pixaroma"},"widgets_values":["{\"text\":\"Audio Context → AudioReact Video\",\"fontSize\":31,\"fontFamily\":\"Arial\",\"fontColor\":\"#ffffff\",\"textAlign\":\"left\",\"backgroundColor\":\"#f66744\",\"padding\":10,\"borderRadius\":0,\"opacity\":1,\"fontWeight\":\"normal\",\"lineHeight\":1}",""],"color":"rgba(0,0,0,0)","bgcolor":"rgba(0,0,0,0)"},{"id":21,"type":"MarkdownNote","pos":[147,1786],"size":[820,280],"flags":{},"order":9,"mode":0,"inputs":[],"outputs":[],"title":"Audio-Kontext → AudioReact · kein generatives Video","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","ver":"0.3.68"},"widgets_values":["# Audio-Kontext → AudioReact-Bildanimation\n\n**Wichtig:** Gemma 4 und FLUX.2 erzeugen hier nur ein passendes Standbild. Pixaroma Audio Studio bewegt dieses Bild anschließend audio-reaktiv; es entstehen keine generativ fortgeschriebenen Szenen.\n\n1. Unter **Sound laden** eine Audio-Datei wählen.\n2. Gemma 4 analysiert Sprache, Musik, Stimmung und hörbare Ereignisse.\n3. FLUX.2 Klein 4B erzeugt daraus ein Kontextbild.\n4. Pixaroma Audio Studio animiert dieses Bild passend zum Audio.\n5. `PixaromaSaveMp4` speichert die Animation mit dem Originalsound.\n\nFür echte neu generierte Videoframes den separaten LTX-2.3-Workflow in diesem Ordner verwenden."],"color":"#222","bgcolor":"#111"},{"id":22,"type":"MarkdownNote","pos":[2356.8020042061744,55.20496049889789],"size":[395.6666564941406,414.29998779296875],"flags":{},"order":10,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · FLUX.2 Klein 4B · Diffusion Model · Node 1","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":1,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · FLUX.2 Klein 4B · Diffusion Model · Node 1\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `FLUX\\flux-2-klein-4b.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":23,"type":"MarkdownNote","pos":[2290.4850042061744,654.2049604988979],"size":[390,560.2999877929688],"flags":{},"order":11,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · FLUX.2 · Qwen3 Text Encoder · Node 2","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":2,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · FLUX.2 · Qwen3 Text Encoder · Node 2\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `Qwen\\qwen_3_4b.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `flux2` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":24,"type":"MarkdownNote","pos":[3311.5350042061746,478.2049604988979],"size":[413.1000061035156,325.29998779296875],"flags":{},"order":12,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Gemma-Audiokontext → Bildprompt · Node 3","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":3,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Gemma-Audiokontext → Bildprompt · Node 3\n\n**Zweck:** Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.\n\n**Einstellbare Werte**\n- `text` = `` — The text to be encoded. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `clip` (CLIP, Link 1): The CLIP model used for encoding the text.\n- `text` (STRING, Link 13): The text to be encoded.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): A conditioning containing the embedded text used to guide the diffusion model."],"color":"#1b2638","bgcolor":"#101722"},{"id":25,"type":"MarkdownNote","pos":[3311.5350042061746,948.2049604988979],"size":[390,294],"flags":{},"order":13,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Negativ (ZeroOut, CFG=1) · Node 4","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":4,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Negativ (ZeroOut, CFG=1) · Node 4\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `conditioning` (CONDITIONING, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":26,"type":"MarkdownNote","pos":[3241.5350042061746,1300.704960498898],"size":[390,487.1500244140625],"flags":{},"order":14,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · 1024 × 1024 Referenzszene · Node 5","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":5,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · 1024 × 1024 Referenzszene · Node 5\n\n**Zweck:** Erzeugt, kombiniert oder transformiert Daten im Latent-Raum vor Sampling oder Decoding.\n\n**Einstellbare Werte**\n- `width` = `1024` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `1024` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n\n**Eingänge**\n- `width` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `batch_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":27,"type":"MarkdownNote","pos":[4118.035004206175,610.2049604988979],"size":[390,1116.1500244140625],"flags":{},"order":15,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Referenzszene generieren · Node 6","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":6,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Referenzszene generieren · Node 6\n\n**Zweck:** Uses the provided model, positive and negative conditioning to denoise the latent image.\n\n**Einstellbare Werte**\n- `seed` = `1001920795125207` — The random seed used for creating the noise. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `steps` = `4` — The number of steps used in the denoising process. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `cfg` = `1` — The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will ne… Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `sampler_name` = `euler` — The algorithm used when sampling, this can affect the quality, speed, and style of the generated output. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `scheduler` = `simple` — The scheduler controls how noise is gradually removed to form the image. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `denoise` = `1` — The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 3): The model used for denoising the input latent.\n- `positive` (CONDITIONING, Link 4): The conditioning describing the attributes you want to include in the image.\n- `negative` (CONDITIONING, Link 5): The conditioning describing the attributes you want to exclude from the image.\n- `latent_image` (LATENT, Link 6): The latent image to denoise.\n- `seed` (INT, nicht verbunden): The random seed used for creating the noise.\n- `steps` (INT, nicht verbunden): The number of steps used in the denoising process.\n- `cfg` (FLOAT, nicht verbunden): The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt h…\n- `sampler_name` (COMBO, nicht verbunden): The algorithm used when sampling, this can affect the quality, speed, and style of the generated output.\n- `scheduler` (COMBO, nicht verbunden): The scheduler controls how noise is gradually removed to form the image.\n- `denoise` (FLOAT, nicht verbunden): The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling.\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): The denoised latent."],"color":"#1b2638","bgcolor":"#101722"},{"id":28,"type":"MarkdownNote","pos":[4118.035004206175,1300.704960498898],"size":[390,294],"flags":{},"order":16,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · VAE · Node 7","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":7,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · VAE · Node 7\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `vae_name` = `FLUX2\\flux2-vae.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `vae_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":29,"type":"MarkdownNote","pos":[4797.035004206175,478.2049604988979],"size":[390,311],"flags":{},"order":17,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Referenzszene dekodieren · Node 8","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":8,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Referenzszene dekodieren · Node 8\n\n**Zweck:** Decodes latent images back into pixel space images.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `samples` (LATENT, Link 7): The latent to be decoded.\n- `vae` (VAE, Link 8): The VAE model used for decoding the latent.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): The decoded image."],"color":"#1b2638","bgcolor":"#101722"},{"id":30,"type":"MarkdownNote","pos":[593,517],"size":[390,294],"flags":{},"order":18,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · 1 · Sound laden · Node 13","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":13,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · 1 · Sound laden · Node 13\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `audio` = `Basti_Ref_Audio.mp3` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `AUDIO` (AUDIO, 2 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":31,"type":"MarkdownNote","pos":[593,1034],"size":[390,461.29998779296875],"flags":{},"order":19,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Gemma 4 · Audio verstehen · Node 14","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":14,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Gemma 4 · Audio verstehen · Node 14\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `Gemma\\gemma4_e4b_it_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `stable_diffusion` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":32,"type":"MarkdownNote","pos":[1454.701,517],"size":[390,1075.300048828125],"flags":{},"order":20,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · 2 · Audiokontext analysieren · Node 16","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":16,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · 2 · Audiokontext analysieren · Node 16\n\n**Zweck:** Erzeugt mit dem geladenen Sprachmodell Text aus Prompt und optionalen Bild-, Video- oder Audio-Eingaben.\n\n**Einstellbare Werte**\n- `prompt` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `max_length` = `1024` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `sampling_mode` = `on` — Sampling Mode Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `temperature` = `0.45` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `top_k` = `48` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `top_p` = `0.9` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `min_p` = `0.05` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `repetition_penalty` = `1.05` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n- `seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `presence_penalty` = `0` — Steuert diesen Parameter. Höher bevorzugt neue Inhalte statt bereits verwendeter Tokens; 0 lässt die ursprüngliche Modellverteilung unverändert.\n- `thinking` = `False` — Operate in thinking mode if the model supports it. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `use_default_template` = `True` — Use the built in system prompt/template if the model has one. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `clip` (CLIP, Link 9): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video` (IMAGE, nicht verbunden): Video frames as image batch. Assumed to be 24 FPS; subsampled to 1 FPS internally.\n- `audio` (AUDIO, Link 11): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt` (STRING, Link 10): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `generated_text` (STRING, 2 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":33,"type":"PixaromaPauseText","title":"Approve LLM text","pos":[1715.5350042061746,-441.7950395011021],"size":[535,492],"flags":{},"order":0,"mode":0,"inputs":[{"name":"text","shape":7,"type":"STRING","link":19}],"outputs":[{"name":"text","type":"STRING","links":[13]}],"properties":{"cnr_id":"ComfyUI-Pixaroma","ver":"fc17bd2b58ef0089cc62a40502669cf71ae86db7","Node name for S&R":"PixaromaPauseText","pauseTextState":{"gate":"pause","text":"","original":""},"dawasteh_pixaroma_prompt_integration":{"kind":"pause","pause_target":13}},"widgets_values":[""]},{"id":34,"type":"VRAM_Debug","pos":[4134.035,478.205],"size":[320,174],"flags":{},"order":29,"mode":0,"inputs":[{"name":"empty_cache","type":"BOOLEAN","widget":{"name":"empty_cache"},"link":null},{"name":"gc_collect","type":"BOOLEAN","widget":{"name":"gc_collect"},"link":null},{"name":"unload_all_models","type":"BOOLEAN","widget":{"name":"unload_all_models"},"link":null},{"name":"any_input","type":"*","link":7},{"name":"image_pass","type":"IMAGE","link":null},{"name":"model_pass","type":"MODEL","link":null}],"outputs":[{"name":"any_output","type":"*","links":[20]},{"name":"image_pass","type":"IMAGE","links":null},{"name":"model_pass","type":"MODEL","links":null},{"name":"freemem_before","type":"INT","links":null},{"name":"freemem_after","type":"INT","links":null}],"properties":{"Node name for S&R":"VRAM_Debug","dawasteh_memory_cleanup":{"version":1,"placement":"pre_decode","reason":"single final KSampler to VAEDecode phase boundary"}},"widgets_values":[true,true,true],"color":"#3b1f2b","bgcolor":"#24131b"}],"links":[[1,2,0,3,0,"CLIP"],[2,3,0,4,0,"CONDITIONING"],[3,1,0,6,0,"MODEL"],[4,3,0,6,1,"CONDITIONING"],[5,4,0,6,2,"CONDITIONING"],[6,5,0,6,3,"LATENT"],[7,6,0,34,3,"LATENT"],[8,7,0,8,1,"VAE"],[9,14,0,16,0,"CLIP"],[10,15,0,16,4,"STRING"],[11,13,0,16,3,"AUDIO"],[12,16,0,17,0,"STRING"],[13,33,0,3,1,"STRING"],[14,8,0,18,0,"IMAGE"],[15,13,0,18,1,"AUDIO"],[16,18,0,19,0,"IMAGE"],[17,18,1,19,1,"AUDIO"],[18,18,2,19,2,"FLOAT"],[19,16,0,33,0,"STRING"],[20,34,0,8,0,"LATENT"]],"groups":[],"config":{},"extra":{"ds":{"scale":0.18959850310037757,"offset":[7407.891474138788,2749.2796621067587]},"dawasteh_workflow_refinement":{"version":1,"generated_notes":11,"x_scale":2.45,"y_scale":2.35,"gap":34}},"version":0.4}
+{
+  "id": "bc50c853-ecd2-41c3-85c5-e6458613bcf9",
+  "revision": 0,
+  "last_node_id": 45,
+  "last_link_id": 28,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        1700.0,
+        80.0
+      ],
+      "size": [
+        381.76666259765625,
+        108.80000305175781
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "unet_name",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weight_dtype",
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_dtype"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            21
+          ]
+        }
+      ],
+      "title": "FLUX.2 Klein 4B · Diffusion Model",
+      "properties": {
+        "Node name for S&R": "UNETLoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        "FLUX\\flux-2-klein-4b.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [
+        1700.0,
+        220.0
+      ],
+      "size": [
+        491.45001220703125,
+        140
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "type",
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 0,
+          "links": [
+            22
+          ]
+        }
+      ],
+      "title": "FLUX.2 · Qwen3 Text Encoder",
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        "Qwen\\qwen_3_4b.safetensors",
+        "flux2",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "CLIPTextEncode",
+      "pos": [
+        2760.0,
+        80.0
+      ],
+      "size": [
+        430,
+        240
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 1
+        },
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            2,
+            4
+          ]
+        }
+      ],
+      "title": "Gemma-Audiokontext → Bildprompt",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 4,
+      "type": "ConditioningZeroOut",
+      "pos": [
+        2760.0,
+        360.0
+      ],
+      "size": [
+        430,
+        80
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "conditioning",
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            5
+          ]
+        }
+      ],
+      "title": "Negativ (ZeroOut, CFG=1)",
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 5,
+      "type": "EmptyFlux2LatentImage",
+      "pos": [
+        1020.0,
+        80.0
+      ],
+      "size": [
+        360,
+        144
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "batch_size",
+          "name": "batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "batch_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "1024 × 1024 Referenzszene",
+      "properties": {
+        "Node name for S&R": "EmptyFlux2LatentImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 6,
+      "type": "KSampler",
+      "pos": [
+        3360.0,
+        80.0
+      ],
+      "size": [
+        330,
+        340
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "localized_name": "positive",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 4
+        },
+        {
+          "localized_name": "negative",
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 5
+        },
+        {
+          "localized_name": "latent_image",
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 6
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "steps",
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "cfg",
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sampler_name",
+          "name": "sampler_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "scheduler",
+          "name": "scheduler",
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "denoise",
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            7
+          ]
+        }
+      ],
+      "title": "Referenzszene generieren",
+      "properties": {
+        "Node name for S&R": "KSampler",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        1001920795125207,
+        "randomize",
+        4,
+        1,
+        "euler",
+        "simple",
+        1
+      ]
+    },
+    {
+      "id": 7,
+      "type": "VAELoader",
+      "pos": [
+        1700.0,
+        400.0
+      ],
+      "size": [
+        330,
+        80
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae_name",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            23
+          ]
+        }
+      ],
+      "title": "VAE",
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        "FLUX2\\flux2-vae.safetensors"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "VAEDecode",
+      "pos": [
+        3840.0,
+        1620.0
+      ],
+      "size": [
+        225,
+        72
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 20
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            14
+          ]
+        }
+      ],
+      "title": "Referenzszene dekodieren",
+      "properties": {
+        "Node name for S&R": "VAEDecode",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 12,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        226,
+        14
+      ],
+      "flags": {
+        "no_title": true
+      },
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "ffcf2f56aa448f2df763b09b70857632792b7805"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 13,
+      "type": "LoadAudio",
+      "pos": [
+        1020.0,
+        260.0
+      ],
+      "size": [
+        400,
+        138
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "COMBO",
+          "widget": {
+            "name": "audio"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "audioUI",
+          "name": "audioUI",
+          "type": "AUDIO_UI",
+          "widget": {
+            "name": "audioUI"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "AUDIOUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "AUDIO",
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            11,
+            15
+          ]
+        }
+      ],
+      "title": "1 · Sound laden",
+      "properties": {
+        "Node name for S&R": "LoadAudio",
+        "cnr_id": "comfy-core",
+        "ver": "0.21.1"
+      },
+      "widgets_values": [
+        "Basti_Ref_Audio.mp3",
+        null,
+        null
+      ],
+      "color": "#004835",
+      "bgcolor": "#1d1d1d"
+    },
+    {
+      "id": 14,
+      "type": "CLIPLoader",
+      "pos": [
+        1700.0,
+        520.0
+      ],
+      "size": [
+        400,
+        114
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "type",
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "title": "Gemma 4 · Audio verstehen",
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.21.1"
+      },
+      "widgets_values": [
+        "Gemma\\gemma4_e4b_it_fp8_scaled.safetensors",
+        "stable_diffusion",
+        "default"
+      ],
+      "color": "#004835",
+      "bgcolor": "#1d1d1d"
+    },
+    {
+      "id": 15,
+      "type": "PixaromaText",
+      "pos": [
+        1020.0,
+        440.0
+      ],
+      "size": [
+        400,
+        211.13333129882812
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "title": "Audio → visueller Kontextprompt",
+      "properties": {
+        "Node name for S&R": "PixaromaText",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "c82f95989e0347b5cc48ddf52a51f2d776a1f83b"
+      },
+      "widgets_values": [
+        "Analyze the entire audio, including speech, lyrics, music, ambience, emotion, tempo, setting, and audible events. Create one cohesive English cinematic image prompt that visually represents the dominant context of the sound. Describe the main subject, environment, mood, lighting, color palette, composition, and camera perspective. Do not transcribe or quote lyrics or speech. Do not explain your reasoning. Do not add labels. Avoid visible text, subtitles, and logos. Output only the final image prompt.",
+        ""
+      ],
+      "color": "#15261c",
+      "bgcolor": "#004835"
+    },
+    {
+      "id": 16,
+      "type": "TextGenerate",
+      "pos": [
+        3840.0,
+        80.0
+      ],
+      "size": [
+        379.70001220703125,
+        494
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "showAdvanced": true,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 9
+        },
+        {
+          "localized_name": "image",
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "video",
+          "name": "video",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 11
+        },
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 10
+        },
+        {
+          "localized_name": "max_length",
+          "name": "max_length",
+          "type": "INT",
+          "widget": {
+            "name": "max_length"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sampling_mode",
+          "name": "sampling_mode",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "sampling_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "temperature",
+          "name": "sampling_mode.temperature",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.temperature"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "top_k",
+          "name": "sampling_mode.top_k",
+          "type": "INT",
+          "widget": {
+            "name": "sampling_mode.top_k"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "top_p",
+          "name": "sampling_mode.top_p",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.top_p"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "min_p",
+          "name": "sampling_mode.min_p",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.min_p"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "repetition_penalty",
+          "name": "sampling_mode.repetition_penalty",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.repetition_penalty"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "sampling_mode.seed",
+          "type": "INT",
+          "widget": {
+            "name": "sampling_mode.seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "presence_penalty",
+          "name": "sampling_mode.presence_penalty",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.presence_penalty"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "thinking",
+          "name": "thinking",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "thinking"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_default_template",
+          "name": "use_default_template",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_default_template"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "generated_text",
+          "name": "generated_text",
+          "type": "STRING",
+          "links": [
+            12,
+            19
+          ]
+        }
+      ],
+      "title": "2 · Audiokontext analysieren",
+      "properties": {
+        "Node name for S&R": "TextGenerate",
+        "cnr_id": "comfy-core",
+        "ver": "0.21.0"
+      },
+      "widgets_values": [
+        "",
+        1024,
+        "on",
+        0.45,
+        48,
+        0.9,
+        0.05,
+        1.05,
+        0,
+        0,
+        false,
+        true
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 17,
+      "type": "PixaromaShowText",
+      "pos": [
+        3840.0,
+        620.0
+      ],
+      "size": [
+        411.0666809082031,
+        412
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "source",
+          "name": "source",
+          "type": "*",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "Generierter visueller Prompt",
+      "properties": {
+        "Node name for S&R": "PixaromaShowText",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "c82f95989e0347b5cc48ddf52a51f2d776a1f83b"
+      },
+      "widgets_values": [
+        "Der aus dem Audio erzeugte Bildprompt erscheint hier."
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 18,
+      "type": "PixaromaAudioStudio",
+      "pos": [
+        3840.0,
+        1740.0
+      ],
+      "size": [
+        295.3833312988281,
+        126
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 14
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "video_frames",
+          "name": "video_frames",
+          "type": "IMAGE",
+          "links": [
+            16
+          ]
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            17
+          ]
+        },
+        {
+          "localized_name": "fps",
+          "name": "fps",
+          "type": "FLOAT",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "title": "4 · Kontextbild audio-reaktiv animieren",
+      "properties": {
+        "audioStudioState": {
+          "schema_version": 1,
+          "motion_mode": "scale_pulse",
+          "intensity": 0.8,
+          "audio_band": "full",
+          "motion_speed": 0.2,
+          "motion_direction": 1,
+          "shake_axis": "both",
+          "ripple_density": 1,
+          "slit_density": 1,
+          "glitch_bands": 30,
+          "wave_density": 1,
+          "pixelate_blocks": 24,
+          "squeeze_axis": "x",
+          "smoothing": 5,
+          "loop_safe": true,
+          "fps": 24,
+          "glitch_strength": 0,
+          "bloom_strength": 0,
+          "vignette_strength": 0,
+          "hue_shift_strength": 0,
+          "grade_strength": 0,
+          "letterbox_strength": 0,
+          "scanline_strength": 0,
+          "grain_strength": 0,
+          "aspect_ratio": "Original",
+          "custom_width": 1024,
+          "custom_height": 1024,
+          "image_source": "upstream",
+          "image_path": null,
+          "audio_source": "upstream",
+          "audio_path": null,
+          "image_force_inline": false,
+          "audio_force_inline": false,
+          "image_uploaded_at": 0,
+          "audio_uploaded_at": 0
+        },
+        "Node name for S&R": "PixaromaAudioStudio",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "52daaba187bd9a1964938a73c60e72dffbb025c2"
+      },
+      "widgets_values": [
+        null
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 19,
+      "type": "PixaromaSaveMp4",
+      "pos": [
+        3840.0,
+        1900.0
+      ],
+      "size": [
+        320,
+        474
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "video_frames",
+          "name": "video_frames",
+          "type": "IMAGE",
+          "link": 16
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 17
+        },
+        {
+          "localized_name": "fps",
+          "name": "fps",
+          "type": "FLOAT",
+          "widget": {
+            "name": "fps"
+          },
+          "link": 18
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "save_mode",
+          "name": "save_mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "save_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "trim_to_audio",
+          "name": "trim_to_audio",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "trim_to_audio"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [],
+      "title": "5 · MP4 mit Originalsound speichern",
+      "properties": {
+        "Node name for S&R": "PixaromaSaveMp4",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "278bcd5143bc00ecef8fab04535c395570438697"
+      },
+      "widgets_values": [
+        24,
+        "AudioVideo/AudioContext",
+        "save",
+        true,
+        ""
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 20,
+      "type": "PixaromaLabel",
+      "pos": [
+        1020.0,
+        700.0
+      ],
+      "size": [
+        511,
+        21
+      ],
+      "flags": {
+        "no_title": true
+      },
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaLabel",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "80b307e8d1882fd933959cb0ea94a26d143557b5",
+        "aux_id": "pixaroma/ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        "{\"text\":\"Audio Context → AudioReact Video\",\"fontSize\":31,\"fontFamily\":\"Arial\",\"fontColor\":\"#ffffff\",\"textAlign\":\"left\",\"backgroundColor\":\"#f66744\",\"padding\":10,\"borderRadius\":0,\"opacity\":1,\"fontWeight\":\"normal\",\"lineHeight\":1}",
+        ""
+      ],
+      "color": "rgba(0,0,0,0)",
+      "bgcolor": "rgba(0,0,0,0)"
+    },
+    {
+      "id": 21,
+      "type": "MarkdownNote",
+      "pos": [
+        40.0,
+        160.0
+      ],
+      "size": [
+        820,
+        280
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Audio-Kontext → AudioReact · kein generatives Video",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        "# Audio-Kontext → AudioReact-Bildanimation\n\n**Wichtig:** Gemma 4 und FLUX.2 erzeugen hier nur ein passendes Standbild. Pixaroma Audio Studio bewegt dieses Bild anschließend audio-reaktiv; es entstehen keine generativ fortgeschriebenen Szenen.\n\n1. Unter **Sound laden** eine Audio-Datei wählen.\n2. Gemma 4 analysiert Sprache, Musik, Stimmung und hörbare Ereignisse.\n3. FLUX.2 Klein 4B erzeugt daraus ein Kontextbild.\n4. Pixaroma Audio Studio animiert dieses Bild passend zum Audio.\n5. `PixaromaSaveMp4` speichert die Animation mit dem Originalsound.\n\nFür echte neu generierte Videoframes den separaten LTX-2.3-Workflow in diesem Ordner verwenden."
+      ],
+      "color": "#222",
+      "bgcolor": "#111"
+    },
+    {
+      "id": 22,
+      "type": "MarkdownNote",
+      "pos": [
+        4540.0,
+        80.0
+      ],
+      "size": [
+        395.6666564941406,
+        414.29998779296875
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · FLUX.2 Klein 4B · Diffusion Model · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 1,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · FLUX.2 Klein 4B · Diffusion Model · Node 1\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `FLUX\\flux-2-klein-4b.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 23,
+      "type": "MarkdownNote",
+      "pos": [
+        4540.0,
+        540.0
+      ],
+      "size": [
+        390,
+        560.2999877929688
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · FLUX.2 · Qwen3 Text Encoder · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · FLUX.2 · Qwen3 Text Encoder · Node 2\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `Qwen\\qwen_3_4b.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `flux2` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 24,
+      "type": "MarkdownNote",
+      "pos": [
+        4540.0,
+        1140.0
+      ],
+      "size": [
+        413.1000061035156,
+        325.29998779296875
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Gemma-Audiokontext → Bildprompt · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 3,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Gemma-Audiokontext → Bildprompt · Node 3\n\n**Zweck:** Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.\n\n**Einstellbare Werte**\n- `text` = `` — The text to be encoded. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `clip` (CLIP, Link 1): The CLIP model used for encoding the text.\n- `text` (STRING, Link 13): The text to be encoded.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): A conditioning containing the embedded text used to guide the diffusion model."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 25,
+      "type": "MarkdownNote",
+      "pos": [
+        4540.0,
+        1500.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Negativ (ZeroOut, CFG=1) · Node 4",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 4,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Negativ (ZeroOut, CFG=1) · Node 4\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `conditioning` (CONDITIONING, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 26,
+      "type": "MarkdownNote",
+      "pos": [
+        4540.0,
+        1840.0
+      ],
+      "size": [
+        390,
+        487.1500244140625
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · 1024 × 1024 Referenzszene · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 5,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · 1024 × 1024 Referenzszene · Node 5\n\n**Zweck:** Erzeugt, kombiniert oder transformiert Daten im Latent-Raum vor Sampling oder Decoding.\n\n**Einstellbare Werte**\n- `width` = `1024` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `1024` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n\n**Eingänge**\n- `width` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `batch_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 27,
+      "type": "MarkdownNote",
+      "pos": [
+        5040.0,
+        80.0
+      ],
+      "size": [
+        390,
+        1116.1500244140625
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Referenzszene generieren · Node 6",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 6,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Referenzszene generieren · Node 6\n\n**Zweck:** Uses the provided model, positive and negative conditioning to denoise the latent image.\n\n**Einstellbare Werte**\n- `seed` = `1001920795125207` — The random seed used for creating the noise. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `steps` = `4` — The number of steps used in the denoising process. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `cfg` = `1` — The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will ne… Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `sampler_name` = `euler` — The algorithm used when sampling, this can affect the quality, speed, and style of the generated output. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `scheduler` = `simple` — The scheduler controls how noise is gradually removed to form the image. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `denoise` = `1` — The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 3): The model used for denoising the input latent.\n- `positive` (CONDITIONING, Link 4): The conditioning describing the attributes you want to include in the image.\n- `negative` (CONDITIONING, Link 5): The conditioning describing the attributes you want to exclude from the image.\n- `latent_image` (LATENT, Link 6): The latent image to denoise.\n- `seed` (INT, nicht verbunden): The random seed used for creating the noise.\n- `steps` (INT, nicht verbunden): The number of steps used in the denoising process.\n- `cfg` (FLOAT, nicht verbunden): The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt h…\n- `sampler_name` (COMBO, nicht verbunden): The algorithm used when sampling, this can affect the quality, speed, and style of the generated output.\n- `scheduler` (COMBO, nicht verbunden): The scheduler controls how noise is gradually removed to form the image.\n- `denoise` (FLOAT, nicht verbunden): The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling.\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): The denoised latent."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 28,
+      "type": "MarkdownNote",
+      "pos": [
+        5040.0,
+        1240.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VAE · Node 7",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 7,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VAE · Node 7\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `vae_name` = `FLUX2\\flux2-vae.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `vae_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 29,
+      "type": "MarkdownNote",
+      "pos": [
+        5040.0,
+        1580.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Referenzszene dekodieren · Node 8",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 8,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Referenzszene dekodieren · Node 8\n\n**Zweck:** Decodes latent images back into pixel space images.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `samples` (LATENT, Link 7): The latent to be decoded.\n- `vae` (VAE, Link 8): The VAE model used for decoding the latent.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): The decoded image."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 30,
+      "type": "MarkdownNote",
+      "pos": [
+        5040.0,
+        1940.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · 1 · Sound laden · Node 13",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 13,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · 1 · Sound laden · Node 13\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `audio` = `Basti_Ref_Audio.mp3` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `AUDIO` (AUDIO, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 31,
+      "type": "MarkdownNote",
+      "pos": [
+        5040.0,
+        2280.0
+      ],
+      "size": [
+        390,
+        461.29998779296875
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Gemma 4 · Audio verstehen · Node 14",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 14,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Gemma 4 · Audio verstehen · Node 14\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `Gemma\\gemma4_e4b_it_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `stable_diffusion` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 32,
+      "type": "MarkdownNote",
+      "pos": [
+        5520.0,
+        80.0
+      ],
+      "size": [
+        390,
+        1075.300048828125
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · 2 · Audiokontext analysieren · Node 16",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 16,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · 2 · Audiokontext analysieren · Node 16\n\n**Zweck:** Erzeugt mit dem geladenen Sprachmodell Text aus Prompt und optionalen Bild-, Video- oder Audio-Eingaben.\n\n**Einstellbare Werte**\n- `prompt` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `max_length` = `1024` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `sampling_mode` = `on` — Sampling Mode Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `temperature` = `0.45` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `top_k` = `48` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `top_p` = `0.9` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `min_p` = `0.05` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `repetition_penalty` = `1.05` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n- `seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `presence_penalty` = `0` — Steuert diesen Parameter. Höher bevorzugt neue Inhalte statt bereits verwendeter Tokens; 0 lässt die ursprüngliche Modellverteilung unverändert.\n- `thinking` = `False` — Operate in thinking mode if the model supports it. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `use_default_template` = `True` — Use the built in system prompt/template if the model has one. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `clip` (CLIP, Link 9): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video` (IMAGE, nicht verbunden): Video frames as image batch. Assumed to be 24 FPS; subsampled to 1 FPS internally.\n- `audio` (AUDIO, Link 11): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt` (STRING, Link 10): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `generated_text` (STRING, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 33,
+      "type": "PixaromaPauseText",
+      "title": "Approve LLM text",
+      "pos": [
+        3840.0,
+        1080.0
+      ],
+      "size": [
+        535,
+        492
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "shape": 7,
+          "type": "STRING",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "fc17bd2b58ef0089cc62a40502669cf71ae86db7",
+        "Node name for S&R": "PixaromaPauseText",
+        "pauseTextState": {
+          "gate": "pause",
+          "text": "",
+          "original": ""
+        },
+        "dawasteh_pixaroma_prompt_integration": {
+          "kind": "pause",
+          "pause_target": 13
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 34,
+      "type": "VRAM_Debug",
+      "pos": [
+        2280.0,
+        440.0
+      ],
+      "size": [
+        320,
+        174
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "empty_cache",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "empty_cache"
+          },
+          "link": null
+        },
+        {
+          "name": "gc_collect",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "gc_collect"
+          },
+          "link": null
+        },
+        {
+          "name": "unload_all_models",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "unload_all_models"
+          },
+          "link": null
+        },
+        {
+          "name": "any_input",
+          "type": "*",
+          "link": 7
+        },
+        {
+          "name": "image_pass",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "model_pass",
+          "type": "MODEL",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "any_output",
+          "type": "*",
+          "links": [
+            20
+          ]
+        },
+        {
+          "name": "image_pass",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "model_pass",
+          "type": "MODEL",
+          "links": null
+        },
+        {
+          "name": "freemem_before",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "freemem_after",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VRAM_Debug",
+        "dawasteh_memory_cleanup": {
+          "version": 1,
+          "placement": "pre_decode",
+          "reason": "single final KSampler to VAEDecode phase boundary"
+        }
+      },
+      "widgets_values": [
+        true,
+        true,
+        true
+      ],
+      "color": "#3b1f2b",
+      "bgcolor": "#24131b"
+    },
+    {
+      "id": 35,
+      "type": "SelectModelDevice",
+      "pos": [
+        1700.0,
+        680.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 21
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectModelDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectModelDevice · central control",
+      "color": "#16334a",
+      "bgcolor": "#1d4968"
+    },
+    {
+      "id": 36,
+      "type": "SelectCLIPDevice",
+      "pos": [
+        2280.0,
+        80.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 22
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 26
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 0,
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectCLIPDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectCLIPDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 37,
+      "type": "SelectVAEDevice",
+      "pos": [
+        2280.0,
+        200.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 23
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectVAEDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectVAEDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 38,
+      "type": "SelectCLIPDevice",
+      "pos": [
+        2280.0,
+        320.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 24
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 0,
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectCLIPDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectCLIPDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 39,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        480.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            25
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": [
+            26,
+            28
+          ]
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            27
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 40,
+      "type": "MarkdownNote",
+      "pos": [
+        5520.0,
+        1200.0
+      ],
+      "size": [
+        390,
+        481
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VRAM Debug · Node 34",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 34,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VRAM Debug · Node 34\n\n**Zweck:** Returns the inputs unchanged, they are only used as triggers,   ↵ and performs comfy model management functions and garbage collection,   ↵ reports free VRAM before and after the operations.\n\n**Einstellbare Werte**\n- `empty_cache` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `gc_collect` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `unload_all_models` = `True` — Steuert diesen Parameter. AN gibt Modell-/VRAM-Speicher nach dem Lauf frei, macht den nächsten Lauf aber langsamer; AUS hält das Modell für Wiederholungen im Cache.\n\n**Eingänge**\n- `empty_cache` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gc_collect` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `unload_all_models` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `any_input` (*, Link 7): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_pass` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_pass` (MODEL, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `any_output` (*, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `image_pass` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `model_pass` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_before` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_after` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 41,
+      "type": "MarkdownNote",
+      "pos": [
+        5520.0,
+        1720.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectModelDevice · central control · Node 35",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 35,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectModelDevice · central control · Node 35\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 21): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 25): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 42,
+      "type": "MarkdownNote",
+      "pos": [
+        5520.0,
+        2080.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectCLIPDevice · central control · Node 36",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 36,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectCLIPDevice · central control · Node 36\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 22): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 26): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 43,
+      "type": "MarkdownNote",
+      "pos": [
+        5520.0,
+        2440.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectVAEDevice · central control · Node 37",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 37,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectVAEDevice · central control · Node 37\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 23): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 27): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 44,
+      "type": "MarkdownNote",
+      "pos": [
+        6000.0,
+        80.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectCLIPDevice · central control · Node 38",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 38,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectCLIPDevice · central control · Node 38\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 24): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 28): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 45,
+      "type": "MarkdownNote",
+      "pos": [
+        6000.0,
+        440.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 39",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 39,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 39\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      36,
+      0,
+      3,
+      0,
+      "CLIP"
+    ],
+    [
+      2,
+      3,
+      0,
+      4,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      3,
+      35,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      3,
+      0,
+      6,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      5,
+      4,
+      0,
+      6,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      6,
+      5,
+      0,
+      6,
+      3,
+      "LATENT"
+    ],
+    [
+      7,
+      6,
+      0,
+      34,
+      3,
+      "LATENT"
+    ],
+    [
+      8,
+      37,
+      0,
+      8,
+      1,
+      "VAE"
+    ],
+    [
+      9,
+      38,
+      0,
+      16,
+      0,
+      "CLIP"
+    ],
+    [
+      10,
+      15,
+      0,
+      16,
+      4,
+      "STRING"
+    ],
+    [
+      11,
+      13,
+      0,
+      16,
+      3,
+      "AUDIO"
+    ],
+    [
+      12,
+      16,
+      0,
+      17,
+      0,
+      "STRING"
+    ],
+    [
+      13,
+      33,
+      0,
+      3,
+      1,
+      "STRING"
+    ],
+    [
+      14,
+      8,
+      0,
+      18,
+      0,
+      "IMAGE"
+    ],
+    [
+      15,
+      13,
+      0,
+      18,
+      1,
+      "AUDIO"
+    ],
+    [
+      16,
+      18,
+      0,
+      19,
+      0,
+      "IMAGE"
+    ],
+    [
+      17,
+      18,
+      1,
+      19,
+      1,
+      "AUDIO"
+    ],
+    [
+      18,
+      18,
+      2,
+      19,
+      2,
+      "FLOAT"
+    ],
+    [
+      19,
+      16,
+      0,
+      33,
+      0,
+      "STRING"
+    ],
+    [
+      20,
+      34,
+      0,
+      8,
+      0,
+      "LATENT"
+    ],
+    [
+      21,
+      1,
+      0,
+      35,
+      0,
+      "MODEL"
+    ],
+    [
+      22,
+      2,
+      0,
+      36,
+      0,
+      "CLIP"
+    ],
+    [
+      23,
+      7,
+      0,
+      37,
+      0,
+      "VAE"
+    ],
+    [
+      24,
+      14,
+      0,
+      38,
+      0,
+      "CLIP"
+    ],
+    [
+      25,
+      39,
+      0,
+      35,
+      1,
+      "COMBO"
+    ],
+    [
+      26,
+      39,
+      1,
+      36,
+      1,
+      "COMBO"
+    ],
+    [
+      27,
+      39,
+      2,
+      37,
+      1,
+      "COMBO"
+    ],
+    [
+      28,
+      39,
+      1,
+      38,
+      1,
+      "COMBO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        900.0,
+        680.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        980.0,
+        0.0,
+        600.0,
+        780.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1660.0,
+        0.0,
+        980.0,
+        800.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "E1 · ENCODE & CONDITION",
+      "bounding": [
+        2720.0,
+        0.0,
+        520.0,
+        480.0
+      ],
+      "color": "#C68B31",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        3320.0,
+        0.0,
+        400.0,
+        460.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        3800.0,
+        0.0,
+        620.0,
+        2420.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 7,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        4500.0,
+        0.0,
+        1940.0,
+        2800.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.18959850310037757,
+      "offset": [
+        7407.891474138788,
+        2749.2796621067587
+      ]
+    },
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 17,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ],
+      "placement_support": "official-selectors",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "FLUX2_Klein_4B_Gemma4-Audio-Context-to-AudioReact-Video",
+      "source": "workflows/Audio to Video/FLUX2_Klein_4B_Gemma4-Audio-Context-to-AudioReact-Video.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 4,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_duration_seconds": {
+      "version": 1,
+      "unit": "seconds",
+      "mode": "source-media-duration",
+      "behavior": "output duration follows or is trimmed from the loaded audio/video duration"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "17880a23e29698fa850d192efd7398aed30bff70296a1805fc70b89b901c2484",
+      "exceptions": []
+    }
+  },
+  "version": 0.4
+}

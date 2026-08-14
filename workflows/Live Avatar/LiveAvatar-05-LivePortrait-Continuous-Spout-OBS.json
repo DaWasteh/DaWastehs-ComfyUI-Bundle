@@ -1,1 +1,979 @@
-{"id":"c0fdabf4-18e3-4ab6-9fcb-6d8d8617db21","revision":0,"last_node_id":24,"last_link_id":18,"nodes":[{"id":12,"type":"PixaromaNote","pos":[40,80],"size":[800,1016],"flags":{},"order":0,"mode":0,"inputs":[{"localized_name":"note_json","name":"note_json","type":"STRING","link":null,"widget":{"name":"note_json"}}],"outputs":[],"properties":{"Node name for S&R":"PixaromaNote","cnr_id":"ComfyUI-Pixaroma","ver":"ffcf2f56aa448f2df763b09b70857632792b7805"},"widgets_values":["{\"version\":1,\"content\":\"<h1>Live Avatar · 05 · Continuous LivePortrait → Spout → OBS</h1><p>Experimenteller, latenzarmer Gesichts-Avatar: Webcam-Aufnahme, LivePortrait-Inferenz und RGBA-Spout laufen als gepipelter Dauerbetrieb. Alte Webcam-Frames werden verworfen statt eine Warteschlange aufzubauen.</p><h2>Start</h2><ol><li>Das transparente PNG aus Workflow 02 im Load-Image-Node wählen.</li><li>Im Continuous-Node den Kameraindex prüfen: Elgato Facecam Pro aktuell <code>1</code>, Logitech BRIO aktuell <code>2</code>.</li><li>Genau einmal normales <b>Run</b> drücken. <b>Nicht Run (Instant)</b> verwenden.</li><li>Zum Beenden ComfyUI <b>Interrupt</b> drücken. Der Node gibt Kamera und Spout im Cleanup frei.</li><li>In OBS den Sender <code>ComfyLiveAvatarFast</code> mit Composite Mode <b>Default</b> wählen.</li></ol><h2>Qualität und Leistung</h2><p>Die Webcam wird mittig quadratisch zugeschnitten und vor der GPU auf 256×256 skaliert. <code>delta_multiplier = 0.75</code> reduziert Gesichtsverzerrungen; kleinere Werte übertragen weniger Mimik. Während dieses Nodes läuft, sind andere ComfyUI-Jobs absichtlich blockiert.</p><p><b>Grenze:</b> LivePortrait animiert nur Gesicht und Kopf. Körper und Hände benötigen den separaten VRM-/Tracking-Pfad.</p><h2>Abhängigkeiten</h2><ul><li>ComfyUI-DaWasteh-LiveAvatar</li><li>ComfyUI-LivePortraitKJ</li><li>SpoutGL und PyOpenGL aus Jovi_Spout</li><li>ComfyUI-Pixaroma</li></ul><p><a href=\\\"https://github.com/Off-World-Live/obs-spout2-plugin/releases\\\" target=\\\"_blank\\\" rel=\\\"noopener noreferrer\\\">OBS Spout2 Plugin</a></p><div>C:/ProgramData/obs-studio/plugins/win-spout/</div>\",\"buttonColor\":\"#f66744\",\"lineColor\":\"#f66744\",\"width\":800,\"height\":980,\"backgroundColor\":\"#2a2a2a\"}",""],"title":"START HIER · Continuous LivePortrait und OBS","color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":1,"type":"LoadImage","pos":[2401.0,376.0],"size":[430,500],"flags":{},"order":1,"mode":0,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","link":null,"widget":{"name":"image"}},{"localized_name":"upload","name":"upload","type":"IMAGEUPLOAD","link":null,"widget":{"name":"upload"}}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[4,17]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":[18]}],"properties":{"Node name for S&R":"LoadImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["example.png","image"],"title":"Transparenten Avatar laden"},{"id":2,"type":"DownloadAndLoadLivePortraitModels","pos":[2401.0,1786.0],"size":[380,120],"flags":{},"order":2,"mode":0,"inputs":[{"localized_name":"precision","name":"precision","type":"COMBO","link":null,"widget":{"name":"precision"}},{"localized_name":"mode","name":"mode","type":"COMBO","link":null,"widget":{"name":"mode"}}],"outputs":[{"localized_name":"live_portrait_pipe","name":"live_portrait_pipe","type":"LIVEPORTRAITPIPE","links":[1,15]}],"properties":{"Node name for S&R":"DownloadAndLoadLivePortraitModels","cnr_id":"comfyui-liveportraitkj","ver":"4d9dc6205b793ffd0fb319816136d9b8c0dbfdff"},"widgets_values":["fp16","human"],"title":"LivePortrait · AMD FP16"},{"id":3,"type":"LivePortraitLoadFaceAlignmentCropper","pos":[2401.0,2303.0],"size":[380,120],"flags":{},"order":3,"mode":0,"inputs":[{"localized_name":"face_detector","name":"face_detector","type":"COMBO","link":null,"widget":{"name":"face_detector"}},{"localized_name":"landmarkrunner_device","name":"landmarkrunner_device","type":"COMBO","link":null,"widget":{"name":"landmarkrunner_device"}},{"localized_name":"face_detector_device","name":"face_detector_device","type":"COMBO","link":null,"widget":{"name":"face_detector_device"}},{"localized_name":"face_detector_dtype","name":"face_detector_dtype","type":"COMBO","link":null,"widget":{"name":"face_detector_dtype"}},{"localized_name":"keep_model_loaded","name":"keep_model_loaded","type":"BOOLEAN","link":null,"widget":{"name":"keep_model_loaded"}}],"outputs":[{"localized_name":"cropper","name":"cropper","type":"LPCROPPER","links":[3]}],"properties":{"Node name for S&R":"LivePortraitLoadFaceAlignmentCropper","cnr_id":"comfyui-liveportraitkj","ver":"4d9dc6205b793ffd0fb319816136d9b8c0dbfdff"},"widgets_values":["blazeface_back_camera","torch_gpu","cpu","fp32",true],"title":"FaceAlignment · Torch-Landmarks auf R9700"},{"id":4,"type":"LivePortraitCropper","pos":[4067.0,376.0],"size":[430,330],"flags":{},"order":4,"mode":0,"inputs":[{"localized_name":"pipeline","name":"pipeline","type":"LIVEPORTRAITPIPE","link":1},{"localized_name":"cropper","name":"cropper","type":"LPCROPPER","link":3},{"localized_name":"source_image","name":"source_image","type":"IMAGE","link":4},{"localized_name":"dsize","name":"dsize","type":"INT","link":null,"widget":{"name":"dsize"}},{"localized_name":"scale","name":"scale","type":"FLOAT","link":null,"widget":{"name":"scale"}},{"localized_name":"vx_ratio","name":"vx_ratio","type":"FLOAT","link":null,"widget":{"name":"vx_ratio"}},{"localized_name":"vy_ratio","name":"vy_ratio","type":"FLOAT","link":null,"widget":{"name":"vy_ratio"}},{"localized_name":"face_index","name":"face_index","type":"INT","link":null,"widget":{"name":"face_index"}},{"localized_name":"face_index_order","name":"face_index_order","type":"COMBO","link":null,"widget":{"name":"face_index_order"}},{"localized_name":"rotate","name":"rotate","type":"BOOLEAN","link":null,"widget":{"name":"rotate"}}],"outputs":[{"localized_name":"cropped_image","name":"cropped_image","type":"IMAGE","links":null},{"localized_name":"crop_info","name":"crop_info","type":"CROPINFO","links":[16]}],"properties":{"Node name for S&R":"LivePortraitCropper","cnr_id":"comfyui-liveportraitkj","ver":"4d9dc6205b793ffd0fb319816136d9b8c0dbfdff"},"widgets_values":[512,2.3,0.0,-0.125,0,"large-small",false],"title":"Kopf-Crop · scale 2.30"},{"id":13,"type":"MarkdownNote","pos":[2877.0,376.0],"size":[390,328],"flags":{},"order":6,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Transparenten Avatar laden · Node 1","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":1,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Transparenten Avatar laden · Node 1\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `image` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `upload` (IMAGEUPLOAD, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":14,"type":"MarkdownNote","pos":[2827.0,1786.0],"size":[390,328],"flags":{},"order":7,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · LivePortrait · AMD FP16 · Node 2","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":2,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · LivePortrait · AMD FP16 · Node 2\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `DownloadAndLoadLivePortraitModels` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `precision` = `fp16` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n- `mode` = `human` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n\n**Eingänge**\n- `precision` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `live_portrait_pipe` (LIVEPORTRAITPIPE, 2 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":15,"type":"MarkdownNote","pos":[2827.0,2303.0],"size":[390,328],"flags":{},"order":8,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · FaceAlignment · Torch-Landmarks auf R9700 · Node 3","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":3,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · FaceAlignment · Torch-Landmarks auf R9700 · Node 3\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- `face_detector` = `blazeface_back_camera` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `landmarkrunner_device` = `torch_gpu` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `face_detector_device` = `cpu` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `face_detector_dtype` = `fp32` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n- `keep_model_loaded` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `face_detector` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `landmarkrunner_device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `face_detector_device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `face_detector_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `keep_model_loaded` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `cropper` (LPCROPPER, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":16,"type":"MarkdownNote","pos":[4543.0,376.0],"size":[390,540],"flags":{},"order":9,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Kopf-Crop · scale 2.30 · Node 4","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":4,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Kopf-Crop · scale 2.30 · Node 4\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- `dsize` = `512` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `scale` = `2.3` — Steuert diesen Parameter. Höher vergrößert das Ergebnis proportional und erhöht Pixelzahl, Zeit und VRAM; unter 1 verkleinert es.\n- `vx_ratio` = `0.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `vy_ratio` = `-0.125` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `face_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `face_index_order` = `large-small` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `rotate` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `pipeline` (LIVEPORTRAITPIPE, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `cropper` (LPCROPPER, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `source_image` (IMAGE, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `dsize` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scale` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vx_ratio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vy_ratio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `face_index` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `face_index_order` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `rotate` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `cropped_image` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `crop_info` (CROPINFO, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":23,"type":"DaWastehContinuousLiveAvatar","pos":[9359.0,376.0],"size":[460,520],"flags":{},"order":10,"mode":0,"inputs":[{"name":"pipeline","type":"LIVEPORTRAITPIPE","link":15},{"name":"crop_info","type":"CROPINFO","link":16},{"name":"source_image","type":"IMAGE","link":17},{"name":"source_mask","type":"MASK","link":18},{"name":"sender_name","type":"STRING","link":null,"widget":{"name":"sender_name"}},{"name":"sender_fps","type":"INT","link":null,"widget":{"name":"sender_fps"}},{"name":"cam_index","type":"INT","link":null,"widget":{"name":"cam_index"}},{"name":"capture_width","type":"INT","link":null,"widget":{"name":"capture_width"}},{"name":"capture_height","type":"INT","link":null,"widget":{"name":"capture_height"}},{"name":"square_crop","type":"BOOLEAN","link":null,"widget":{"name":"square_crop"}},{"name":"crop_offset_x","type":"INT","link":null,"widget":{"name":"crop_offset_x"}},{"name":"crop_offset_y","type":"INT","link":null,"widget":{"name":"crop_offset_y"}},{"name":"mirror","type":"BOOLEAN","link":null,"widget":{"name":"mirror"}},{"name":"delta_multiplier","type":"FLOAT","link":null,"widget":{"name":"delta_multiplier"}},{"name":"stitching","type":"BOOLEAN","link":null,"widget":{"name":"stitching"}},{"name":"lip_zero","type":"BOOLEAN","link":null,"widget":{"name":"lip_zero"}},{"name":"lip_zero_threshold","type":"FLOAT","link":null,"widget":{"name":"lip_zero_threshold"}},{"name":"max_frames","type":"INT","link":null,"widget":{"name":"max_frames"}}],"outputs":[],"properties":{"Node name for S&R":"DaWastehContinuousLiveAvatar","cnr_id":"ComfyUI-DaWasteh-LiveAvatar"},"widgets_values":["ComfyLiveAvatarFast",30,1,960,540,true,0,0,true,0.75,true,false,0.03,0],"title":"Continuous LivePortrait · normal Run, Interrupt zum Stoppen","color":"#233","bgcolor":"#355"},{"id":24,"type":"MarkdownNote","pos":[9860.0,376.0],"size":[650,620],"flags":{},"order":11,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Continuous LivePortrait · Node 23","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":23,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Continuous LivePortrait · Node 23\n\n**Zweck:** Startet einen kontinuierlichen Webcam→LivePortrait→RGBA-Spout-Datenstrom ohne ComfyUI-Auto-Queue. Nur Webcam-I/O und Spout senden in Hilfsthreads; alle Torch-/ROCm-Arbeit bleibt im blockierenden ComfyUI-Ausführungsthread.\n\n**Bedienung**\n- Einmal normales **Run** drücken; niemals **Run (Instant)**.\n- Mit **Interrupt** stoppen.\n- `max_frames = 0` läuft bis zum Interrupt; ein positiver Wert begrenzt Testläufe.\n- `delta_multiplier = 0.75` dämpft extreme Mimiken und reduziert Verzerrungen.\n- `crop_offset_x/y` verschiebt den mittigen quadratischen Webcam-Ausschnitt.\n\n**Ausgabe**\n- Spout-Sender `ComfyLiveAvatarFast`, standardmäßig 30 Wiederholungen des neuesten fertigen RGBA-Frames pro Sekunde.\n- Der Node animiert ausschließlich Gesicht und Kopf; Körper und Hände bleiben statisch.\n\n**Wichtig:** Während des Dauerlaufs blockiert dieser Node andere ComfyUI-Jobs absichtlich."],"color":"#1b2638","bgcolor":"#101722"}],"links":[[1,2,0,4,0,"LIVEPORTRAITPIPE"],[3,3,0,4,1,"LPCROPPER"],[4,1,0,4,2,"IMAGE"],[15,2,0,23,0,"LIVEPORTRAITPIPE"],[16,4,1,23,1,"CROPINFO"],[17,1,0,23,2,"IMAGE"],[18,1,1,23,3,"MASK"]],"groups":[],"config":{},"extra":{"workflowRendererVersion":"LG","frontendVersion":"1.47.11","VHS_latentpreview":false,"VHS_latentpreviewrate":0,"VHS_MetadataImage":true,"VHS_KeepIntermediate":true,"dawasteh_workflow_refinement":{"version":1,"generated_notes":5,"x_scale":2.45,"y_scale":2.35,"gap":34.0}},"version":0.4}
+{
+  "id": "c0fdabf4-18e3-4ab6-9fcb-6d8d8617db21",
+  "revision": 0,
+  "last_node_id": 26,
+  "last_link_id": 18,
+  "nodes": [
+    {
+      "id": 12,
+      "type": "PixaromaNote",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        800,
+        1016
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "note_json",
+          "name": "note_json",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "note_json"
+          }
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaNote",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "ffcf2f56aa448f2df763b09b70857632792b7805"
+      },
+      "widgets_values": [
+        "{\"version\":1,\"content\":\"<h1>Live Avatar · 05 · Continuous LivePortrait → Spout → OBS</h1><p>Experimenteller, latenzarmer Gesichts-Avatar: Webcam-Aufnahme, LivePortrait-Inferenz und RGBA-Spout laufen als gepipelter Dauerbetrieb. Alte Webcam-Frames werden verworfen statt eine Warteschlange aufzubauen.</p><h2>Start</h2><ol><li>Das transparente PNG aus Workflow 02 im Load-Image-Node wählen.</li><li>Im Continuous-Node den Kameraindex prüfen: Elgato Facecam Pro aktuell <code>1</code>, Logitech BRIO aktuell <code>2</code>.</li><li>Genau einmal normales <b>Run</b> drücken. <b>Nicht Run (Instant)</b> verwenden.</li><li>Zum Beenden ComfyUI <b>Interrupt</b> drücken. Der Node gibt Kamera und Spout im Cleanup frei.</li><li>In OBS den Sender <code>ComfyLiveAvatarFast</code> mit Composite Mode <b>Default</b> wählen.</li></ol><h2>Qualität und Leistung</h2><p>Die Webcam wird mittig quadratisch zugeschnitten und vor der GPU auf 256×256 skaliert. <code>delta_multiplier = 0.75</code> reduziert Gesichtsverzerrungen; kleinere Werte übertragen weniger Mimik. Während dieses Nodes läuft, sind andere ComfyUI-Jobs absichtlich blockiert.</p><p><b>Grenze:</b> LivePortrait animiert nur Gesicht und Kopf. Körper und Hände benötigen den separaten VRM-/Tracking-Pfad.</p><h2>Abhängigkeiten</h2><ul><li>ComfyUI-DaWasteh-LiveAvatar</li><li>ComfyUI-LivePortraitKJ</li><li>SpoutGL und PyOpenGL aus Jovi_Spout</li><li>ComfyUI-Pixaroma</li></ul><p><a href=\\\"https://github.com/Off-World-Live/obs-spout2-plugin/releases\\\" target=\\\"_blank\\\" rel=\\\"noopener noreferrer\\\">OBS Spout2 Plugin</a></p><div>C:/ProgramData/obs-studio/plugins/win-spout/</div>\",\"buttonColor\":\"#f66744\",\"lineColor\":\"#f66744\",\"width\":800,\"height\":980,\"backgroundColor\":\"#2a2a2a\"}",
+        ""
+      ],
+      "title": "START HIER · Continuous LivePortrait und OBS",
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        1000.0,
+        80.0
+      ],
+      "size": [
+        430,
+        500
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "localized_name": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "link": null,
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            4,
+            17
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ],
+      "title": "Transparenten Avatar laden"
+    },
+    {
+      "id": 2,
+      "type": "DownloadAndLoadLivePortraitModels",
+      "pos": [
+        1600.0,
+        80.0
+      ],
+      "size": [
+        380,
+        120
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "precision",
+          "name": "precision",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "precision"
+          }
+        },
+        {
+          "localized_name": "mode",
+          "name": "mode",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "mode"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "live_portrait_pipe",
+          "name": "live_portrait_pipe",
+          "type": "LIVEPORTRAITPIPE",
+          "links": [
+            1,
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DownloadAndLoadLivePortraitModels",
+        "cnr_id": "comfyui-liveportraitkj",
+        "ver": "4d9dc6205b793ffd0fb319816136d9b8c0dbfdff"
+      },
+      "widgets_values": [
+        "fp16",
+        "human"
+      ],
+      "title": "LivePortrait · AMD FP16"
+    },
+    {
+      "id": 3,
+      "type": "LivePortraitLoadFaceAlignmentCropper",
+      "pos": [
+        2140.0,
+        80.0
+      ],
+      "size": [
+        380,
+        120
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "face_detector",
+          "name": "face_detector",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "face_detector"
+          }
+        },
+        {
+          "localized_name": "landmarkrunner_device",
+          "name": "landmarkrunner_device",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "landmarkrunner_device"
+          }
+        },
+        {
+          "localized_name": "face_detector_device",
+          "name": "face_detector_device",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "face_detector_device"
+          }
+        },
+        {
+          "localized_name": "face_detector_dtype",
+          "name": "face_detector_dtype",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "face_detector_dtype"
+          }
+        },
+        {
+          "localized_name": "keep_model_loaded",
+          "name": "keep_model_loaded",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "keep_model_loaded"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "cropper",
+          "name": "cropper",
+          "type": "LPCROPPER",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LivePortraitLoadFaceAlignmentCropper",
+        "cnr_id": "comfyui-liveportraitkj",
+        "ver": "4d9dc6205b793ffd0fb319816136d9b8c0dbfdff"
+      },
+      "widgets_values": [
+        "blazeface_back_camera",
+        "torch_gpu",
+        "cpu",
+        "fp32",
+        true
+      ],
+      "title": "FaceAlignment · Torch-Landmarks auf R9700"
+    },
+    {
+      "id": 4,
+      "type": "LivePortraitCropper",
+      "pos": [
+        2680.0,
+        80.0
+      ],
+      "size": [
+        430,
+        330
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "pipeline",
+          "name": "pipeline",
+          "type": "LIVEPORTRAITPIPE",
+          "link": 1
+        },
+        {
+          "localized_name": "cropper",
+          "name": "cropper",
+          "type": "LPCROPPER",
+          "link": 3
+        },
+        {
+          "localized_name": "source_image",
+          "name": "source_image",
+          "type": "IMAGE",
+          "link": 4
+        },
+        {
+          "localized_name": "dsize",
+          "name": "dsize",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "dsize"
+          }
+        },
+        {
+          "localized_name": "scale",
+          "name": "scale",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "scale"
+          }
+        },
+        {
+          "localized_name": "vx_ratio",
+          "name": "vx_ratio",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "vx_ratio"
+          }
+        },
+        {
+          "localized_name": "vy_ratio",
+          "name": "vy_ratio",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "vy_ratio"
+          }
+        },
+        {
+          "localized_name": "face_index",
+          "name": "face_index",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "face_index"
+          }
+        },
+        {
+          "localized_name": "face_index_order",
+          "name": "face_index_order",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "face_index_order"
+          }
+        },
+        {
+          "localized_name": "rotate",
+          "name": "rotate",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "rotate"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "cropped_image",
+          "name": "cropped_image",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "localized_name": "crop_info",
+          "name": "crop_info",
+          "type": "CROPINFO",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LivePortraitCropper",
+        "cnr_id": "comfyui-liveportraitkj",
+        "ver": "4d9dc6205b793ffd0fb319816136d9b8c0dbfdff"
+      },
+      "widgets_values": [
+        512,
+        2.3,
+        0.0,
+        -0.125,
+        0,
+        "large-small",
+        false
+      ],
+      "title": "Kopf-Crop · scale 2.30"
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "pos": [
+        3300.0,
+        80.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Transparenten Avatar laden · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 1,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Transparenten Avatar laden · Node 1\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `image` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `upload` (IMAGEUPLOAD, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 14,
+      "type": "MarkdownNote",
+      "pos": [
+        3300.0,
+        440.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LivePortrait · AMD FP16 · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LivePortrait · AMD FP16 · Node 2\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `DownloadAndLoadLivePortraitModels` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `precision` = `fp16` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n- `mode` = `human` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n\n**Eingänge**\n- `precision` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `live_portrait_pipe` (LIVEPORTRAITPIPE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 15,
+      "type": "MarkdownNote",
+      "pos": [
+        3760.0,
+        80.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · FaceAlignment · Torch-Landmarks auf R9700 · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 3,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · FaceAlignment · Torch-Landmarks auf R9700 · Node 3\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- `face_detector` = `blazeface_back_camera` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `landmarkrunner_device` = `torch_gpu` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `face_detector_device` = `cpu` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `face_detector_dtype` = `fp32` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n- `keep_model_loaded` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `face_detector` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `landmarkrunner_device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `face_detector_device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `face_detector_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `keep_model_loaded` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `cropper` (LPCROPPER, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 16,
+      "type": "MarkdownNote",
+      "pos": [
+        3760.0,
+        440.0
+      ],
+      "size": [
+        390,
+        540
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Kopf-Crop · scale 2.30 · Node 4",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 4,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Kopf-Crop · scale 2.30 · Node 4\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- `dsize` = `512` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `scale` = `2.3` — Steuert diesen Parameter. Höher vergrößert das Ergebnis proportional und erhöht Pixelzahl, Zeit und VRAM; unter 1 verkleinert es.\n- `vx_ratio` = `0.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `vy_ratio` = `-0.125` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `face_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `face_index_order` = `large-small` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `rotate` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `pipeline` (LIVEPORTRAITPIPE, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `cropper` (LPCROPPER, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `source_image` (IMAGE, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `dsize` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scale` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vx_ratio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vy_ratio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `face_index` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `face_index_order` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `rotate` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `cropped_image` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `crop_info` (CROPINFO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 23,
+      "type": "DaWastehContinuousLiveAvatar",
+      "pos": [
+        2680.0,
+        440.0
+      ],
+      "size": [
+        460,
+        520
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pipeline",
+          "type": "LIVEPORTRAITPIPE",
+          "link": 15
+        },
+        {
+          "name": "crop_info",
+          "type": "CROPINFO",
+          "link": 16
+        },
+        {
+          "name": "source_image",
+          "type": "IMAGE",
+          "link": 17
+        },
+        {
+          "name": "source_mask",
+          "type": "MASK",
+          "link": 18
+        },
+        {
+          "name": "sender_name",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "sender_name"
+          }
+        },
+        {
+          "name": "sender_fps",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "sender_fps"
+          }
+        },
+        {
+          "name": "cam_index",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "cam_index"
+          }
+        },
+        {
+          "name": "capture_width",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "capture_width"
+          }
+        },
+        {
+          "name": "capture_height",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "capture_height"
+          }
+        },
+        {
+          "name": "square_crop",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "square_crop"
+          }
+        },
+        {
+          "name": "crop_offset_x",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "crop_offset_x"
+          }
+        },
+        {
+          "name": "crop_offset_y",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "crop_offset_y"
+          }
+        },
+        {
+          "name": "mirror",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "mirror"
+          }
+        },
+        {
+          "name": "delta_multiplier",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "delta_multiplier"
+          }
+        },
+        {
+          "name": "stitching",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "stitching"
+          }
+        },
+        {
+          "name": "lip_zero",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "lip_zero"
+          }
+        },
+        {
+          "name": "lip_zero_threshold",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "lip_zero_threshold"
+          }
+        },
+        {
+          "name": "max_frames",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "max_frames"
+          }
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "DaWastehContinuousLiveAvatar",
+        "cnr_id": "ComfyUI-DaWasteh-LiveAvatar"
+      },
+      "widgets_values": [
+        "ComfyLiveAvatarFast",
+        30,
+        1,
+        960,
+        540,
+        true,
+        0,
+        0,
+        true,
+        0.75,
+        true,
+        false,
+        0.03,
+        0
+      ],
+      "title": "Continuous LivePortrait · normal Run, Interrupt zum Stoppen",
+      "color": "#233",
+      "bgcolor": "#355"
+    },
+    {
+      "id": 24,
+      "type": "MarkdownNote",
+      "pos": [
+        4240.0,
+        80.0
+      ],
+      "size": [
+        650,
+        620
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Continuous LivePortrait · Node 23",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 23,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Continuous LivePortrait · Node 23\n\n**Zweck:** Startet einen kontinuierlichen Webcam→LivePortrait→RGBA-Spout-Datenstrom ohne ComfyUI-Auto-Queue. Nur Webcam-I/O und Spout senden in Hilfsthreads; alle Torch-/ROCm-Arbeit bleibt im blockierenden ComfyUI-Ausführungsthread.\n\n**Bedienung**\n- Einmal normales **Run** drücken; niemals **Run (Instant)**.\n- Mit **Interrupt** stoppen.\n- `max_frames = 0` läuft bis zum Interrupt; ein positiver Wert begrenzt Testläufe.\n- `delta_multiplier = 0.75` dämpft extreme Mimiken und reduziert Verzerrungen.\n- `crop_offset_x/y` verschiebt den mittigen quadratischen Webcam-Ausschnitt.\n\n**Ausgabe**\n- Spout-Sender `ComfyLiveAvatarFast`, standardmäßig 30 Wiederholungen des neuesten fertigen RGBA-Frames pro Sekunde.\n- Der Node animiert ausschließlich Gesicht und Kopf; Körper und Hände bleiben statisch.\n\n**Wichtig:** Während des Dauerlaufs blockiert dieser Node andere ComfyUI-Jobs absichtlich."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 25,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1140.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 26,
+      "type": "MarkdownNote",
+      "pos": [
+        4240.0,
+        740.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 25",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 25,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 25\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      4,
+      0,
+      "LIVEPORTRAITPIPE"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      1,
+      "LPCROPPER"
+    ],
+    [
+      4,
+      1,
+      0,
+      4,
+      2,
+      "IMAGE"
+    ],
+    [
+      15,
+      2,
+      0,
+      23,
+      0,
+      "LIVEPORTRAITPIPE"
+    ],
+    [
+      16,
+      4,
+      1,
+      23,
+      1,
+      "CROPINFO"
+    ],
+    [
+      17,
+      1,
+      0,
+      23,
+      2,
+      "IMAGE"
+    ],
+    [
+      18,
+      1,
+      1,
+      23,
+      3,
+      "MASK"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        880.0,
+        1360.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        960.0,
+        0.0,
+        520.0,
+        620.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1560.0,
+        0.0,
+        460.0,
+        240.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "E1 · ENCODE & CONDITION",
+      "bounding": [
+        2100.0,
+        0.0,
+        460.0,
+        240.0
+      ],
+      "color": "#C68B31",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2640.0,
+        0.0,
+        540.0,
+        1000.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        3260.0,
+        0.0,
+        1660.0,
+        1140.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "workflowRendererVersion": "LG",
+    "frontendVersion": "1.47.11",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true,
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 6,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "LiveAvatar-05-LivePortrait-Continuous-Spout-OBS",
+      "source": "workflows/Live Avatar/LiveAvatar-05-LivePortrait-Continuous-Spout-OBS.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "584367187cd0b3198b3dc7e6b21533e4754330612cff7991113ed97e036f98fe",
+      "exceptions": []
+    }
+  },
+  "version": 0.4
+}

@@ -1,1 +1,1026 @@
-{"id":"78224ffd-171f-4565-80ea-bb100e63c26e","revision":0,"last_node_id":31,"last_link_id":21,"nodes":[{"id":25,"type":"AILab_LoadImage","pos":[1124.5575378911617,1356.708129319948],"size":[384.2166748046875,565.6166381835938],"flags":{},"order":0,"mode":0,"inputs":[{"localized_name":"Image Path or URL","name":"image_path_or_URL","type":"STRING","widget":{"name":"image_path_or_URL"},"link":null},{"localized_name":"Image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"Upscale Method","name":"upscale_method","type":"COMBO","widget":{"name":"upscale_method"},"link":null},{"localized_name":"megapixels","name":"megapixels","type":"FLOAT","widget":{"name":"megapixels"},"link":null},{"localized_name":"Scale By","name":"scale_by","type":"FLOAT","widget":{"name":"scale_by"},"link":null},{"localized_name":"Resize Mode","name":"resize_mode","type":"COMBO","widget":{"name":"resize_mode"},"link":null},{"localized_name":"Size","name":"size","type":"INT","widget":{"name":"size"},"link":null},{"localized_name":"upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[21]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null},{"localized_name":"WIDTH","name":"WIDTH","type":"INT","links":null},{"localized_name":"HEIGHT","name":"HEIGHT","type":"INT","links":null}],"title":"Load Image (RMBG) 🖼️ (Background)","properties":{"Node name for S&R":"AILab_LoadImage","cnr_id":"comfyui-rmbg","ver":"d7402513f23f58db7d56754b02a4f51a148b4941"},"widgets_values":["","example.png","lanczos",0,1,"longest_side",0,"image"],"color":"#2e3e57","bgcolor":"#4b5b73"},{"id":18,"type":"RMBG","pos":[2154.45,621.419],"size":[340,352],"flags":{},"order":9,"mode":0,"inputs":[{"localized_name":"Image","name":"image","type":"IMAGE","link":20},{"localized_name":"Model","name":"model","type":"COMBO","widget":{"name":"model"},"link":null},{"localized_name":"Sensitivity","name":"sensitivity","shape":7,"type":"FLOAT","widget":{"name":"sensitivity"},"link":null},{"localized_name":"Processing Resolution","name":"process_res","shape":7,"type":"INT","widget":{"name":"process_res"},"link":null},{"localized_name":"Mask Blur","name":"mask_blur","shape":7,"type":"INT","widget":{"name":"mask_blur"},"link":null},{"localized_name":"Mask Offset","name":"mask_offset","shape":7,"type":"INT","widget":{"name":"mask_offset"},"link":null},{"localized_name":"Invert Output","name":"invert_output","shape":7,"type":"BOOLEAN","widget":{"name":"invert_output"},"link":null},{"localized_name":"Refine Foreground","name":"refine_foreground","shape":7,"type":"BOOLEAN","widget":{"name":"refine_foreground"},"link":null},{"localized_name":"Background","name":"background","shape":7,"type":"COMBO","widget":{"name":"background"},"link":null},{"localized_name":"Background Color","name":"background_color","shape":7,"type":"COLORCODE","widget":{"name":"background_color"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[17]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null},{"localized_name":"MASK IMAGE","name":"MASK_IMAGE","type":"IMAGE","links":null}],"properties":{"Node name for S&R":"RMBG","cnr_id":"comfyui-rmbg","ver":"d7402513f23f58db7d56754b02a4f51a148b4941"},"widgets_values":["RMBG-2.0",1,1024,0,0,false,false,"Alpha","#222222"],"color":"#222e40","bgcolor":"#364254"},{"id":21,"type":"AILab_ImageCombiner","pos":[3059.137,621.419],"size":[300,238],"flags":{},"order":10,"mode":0,"inputs":[{"localized_name":"Foreground","name":"foreground","type":"IMAGE","link":17},{"localized_name":"Background","name":"background","type":"IMAGE","link":21},{"localized_name":"Foreground Mask","name":"foreground_mask","shape":7,"type":"MASK","link":null},{"localized_name":"Mode","name":"mode","type":"COMBO","widget":{"name":"mode"},"link":null},{"localized_name":"Foreground Opacity","name":"foreground_opacity","type":"FLOAT","widget":{"name":"foreground_opacity"},"link":null},{"localized_name":"Foreground Scale","name":"foreground_scale","type":"FLOAT","widget":{"name":"foreground_scale"},"link":null},{"localized_name":"Position X","name":"position_x","type":"INT","widget":{"name":"position_x"},"link":null},{"localized_name":"Position Y","name":"position_y","type":"INT","widget":{"name":"position_y"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[19]},{"localized_name":"WIDTH","name":"WIDTH","type":"INT","links":null},{"localized_name":"HEIGHT","name":"HEIGHT","type":"INT","links":null}],"properties":{"Node name for S&R":"AILab_ImageCombiner","cnr_id":"comfyui-rmbg","ver":"d7402513f23f58db7d56754b02a4f51a148b4941"},"widgets_values":["normal",1,1,50,50],"color":"#2e3e57","bgcolor":"#4b5b73"},{"id":23,"type":"SaveImage","pos":[3865.824,621.419],"size":[644.0833129882812,710.316650390625],"flags":{},"order":11,"mode":0,"inputs":[{"localized_name":"images","name":"images","type":"IMAGE","link":19},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","widget":{"name":"filename_prefix"},"link":null}],"outputs":[{"localized_name":"images","name":"images","type":"IMAGE","links":null}],"properties":{"Node name for S&R":"SaveImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["imgCombined"]},{"id":4,"type":"MarkdownNote","pos":[737.6216285032838,617.9895126303873],"size":[302.2833251953125,182.1666717529297],"flags":{"collapsed":false},"order":1,"mode":0,"inputs":[],"outputs":[],"title":"👑 Pixaroma - Note - START HERE","properties":{},"widgets_values":["\n## 🧩 Nodes Installed from Manager  \n\n- ComfyUI-RMBG\n\n---\n\n## 📚 Resources  \n🎥 **Tutorials:** [Pixaroma YouTube Channel](https://www.youtube.com/@pixaroma)  \n💬 **Community Discord:** [Join Here](https://discord.com/invite/gggpkVgBf3)\n"],"color":"#432","bgcolor":"#653"},{"id":24,"type":"AILab_LoadImage","pos":[1141.419,621.419],"size":[384.2166748046875,565.6166381835938],"flags":{},"order":2,"mode":0,"inputs":[{"localized_name":"Image Path or URL","name":"image_path_or_URL","type":"STRING","widget":{"name":"image_path_or_URL"},"link":null},{"localized_name":"Image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"Upscale Method","name":"upscale_method","type":"COMBO","widget":{"name":"upscale_method"},"link":null},{"localized_name":"megapixels","name":"megapixels","type":"FLOAT","widget":{"name":"megapixels"},"link":null},{"localized_name":"Scale By","name":"scale_by","type":"FLOAT","widget":{"name":"scale_by"},"link":null},{"localized_name":"Resize Mode","name":"resize_mode","type":"COMBO","widget":{"name":"resize_mode"},"link":null},{"localized_name":"Size","name":"size","type":"INT","widget":{"name":"size"},"link":null},{"localized_name":"upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[20]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null},{"localized_name":"WIDTH","name":"WIDTH","type":"INT","links":null},{"localized_name":"HEIGHT","name":"HEIGHT","type":"INT","links":null}],"title":"Load Image (RMBG) 🖼️ (Foreground)","properties":{"Node name for S&R":"AILab_LoadImage","cnr_id":"comfyui-rmbg","ver":"d7402513f23f58db7d56754b02a4f51a148b4941"},"widgets_values":["","example.png","lanczos",0,1,"longest_side",0,"image"],"color":"#2e3e57","bgcolor":"#4b5b73"},{"id":26,"type":"PixaromaRunTimer","pos":[1209.7425675507595,1275.4435214020646],"size":[226,14],"flags":{"no_title":true},"order":3,"mode":0,"inputs":[],"outputs":[],"properties":{"Node name for S&R":"PixaromaRunTimer","cnr_id":"ComfyUI-Pixaroma","ver":"ffcf2f56aa448f2df763b09b70857632792b7805"},"widgets_values":[{"version":1,"color":"#f66744","decimals":0,"chime":true,"sound":"","volume":70}],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":27,"type":"MarkdownNote","pos":[2540.45,621.419],"size":[390,950.2999877929688],"flags":{},"order":4,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Remove Background (RMBG) · Node 18","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":18,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Remove Background (RMBG) · Node 18\n\n**Zweck:** Trennt Vordergrund und Hintergrund und erzeugt dafür Bild, Maske oder Transparenz.\n\n**Einstellbare Werte**\n- `model` = `RMBG-2.0` — Select the background removal model to use (RMBG-2.0, INSPYRENET, BEN). Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `sensitivity` = `1` — Adjust the strength of mask detection (higher values result in more aggressive detection). Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `process_res` = `1024` — Set the processing resolution (higher values require more VRAM and may increase processing time). Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `mask_blur` = `0` — Specify the amount of blur to apply to the mask edges (0 for no blur, higher values for more blur). Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n- `mask_offset` = `0` — Adjust the mask boundary (positive values expand the mask, negative values shrink it). Höher erweitert Maske oder Box nach außen; niedriger bzw. negativ zieht den Bereich enger zusammen.\n- `invert_output` = `False` — Enable to invert both the image and mask output (useful for certain effects). AN kehrt Maske oder Ausgabe um; AUS behält Vordergrund und Hintergrund in der ursprünglichen Zuordnung.\n- `refine_foreground` = `False` — Use Fast Foreground Colour Estimation to optimize transparent background AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `background` = `Alpha` — Choose output type: Alpha (transparent) or Color (custom background color). Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `background_color` = `#222222` — Pick background color (supports alpha, use color picker). Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image` (IMAGE, Link 20): Input image to be processed for background removal.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `MASK_IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":28,"type":"MarkdownNote","pos":[3405.137,621.419],"size":[390,781.2999877929688],"flags":{},"order":5,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Image Combiner (RMBG) 🖼️ · Node 21","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":21,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Image Combiner (RMBG) 🖼️ · Node 21\n\n**Zweck:** Führt mehrere kompatible Datenströme oder Konditionierungen zu einem Ergebnis zusammen.\n\n**Einstellbare Werte**\n- `mode` = `normal` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `foreground_opacity` = `1` — Steuert diesen Parameter. Höher macht die Ebene sichtbarer/deckender; niedriger lässt den Hintergrund stärker durchscheinen.\n- `foreground_scale` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `position_x` = `50` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `position_y` = `50` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `foreground_mask` = `None` — Steuert diesen Parameter. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `foreground` (IMAGE, Link 17): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `background` (IMAGE, Link 21): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `foreground_mask` (MASK, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `WIDTH` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `HEIGHT` (INT, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":29,"type":"MarkdownNote","pos":[4555.91,621.419],"size":[390,294],"flags":{},"order":6,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Save Image · Node 23","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":23,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Save Image · Node 23\n\n**Zweck:** Saves the input images to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `imgCombined` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `images` (IMAGE, Link 19): The images to save.\n\n**Ausgänge**\n- Keine Ausgänge."],"color":"#1b2638","bgcolor":"#101722"},{"id":30,"type":"MarkdownNote","pos":[1571.641,621.419],"size":[430.5333251953125,668.2999877929688],"flags":{},"order":7,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Load Image (RMBG) 🖼️ (Foreground) · Node 24","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":24,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Load Image (RMBG) 🖼️ (Foreground) · Node 24\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image_path_or_URL` = `` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `upscale_method` = `lanczos` — Steuert diesen Parameter. Die Auswahl ändert die Skalierungsmethode und damit Schärfe, Kanten und mögliche Artefakte.\n- `megapixels` = `0` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `scale_by` = `1` — Steuert diesen Parameter. Höher vergrößert das Ergebnis proportional und erhöht Pixelzahl, Zeit und VRAM; unter 1 verkleinert es.\n- `resize_mode` = `longest_side` — Steuert diesen Parameter. Die Auswahl ändert die Skalierungsmethode und damit Schärfe, Kanten und mögliche Artefakte.\n- `size` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `WIDTH` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `HEIGHT` (INT, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":31,"type":"MarkdownNote","pos":[1554.7795378911617,1356.708129319948],"size":[433.0833435058594,668.2999877929688],"flags":{},"order":8,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Load Image (RMBG) 🖼️ (Background) · Node 25","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":25,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Load Image (RMBG) 🖼️ (Background) · Node 25\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image_path_or_URL` = `` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `upscale_method` = `lanczos` — Steuert diesen Parameter. Die Auswahl ändert die Skalierungsmethode und damit Schärfe, Kanten und mögliche Artefakte.\n- `megapixels` = `0` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `scale_by` = `1` — Steuert diesen Parameter. Höher vergrößert das Ergebnis proportional und erhöht Pixelzahl, Zeit und VRAM; unter 1 verkleinert es.\n- `resize_mode` = `longest_side` — Steuert diesen Parameter. Die Auswahl ändert die Skalierungsmethode und damit Schärfe, Kanten und mögliche Artefakte.\n- `size` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `WIDTH` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `HEIGHT` (INT, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"}],"links":[[17,18,0,21,0,"IMAGE"],[19,21,0,23,0,"IMAGE"],[20,24,0,18,0,"IMAGE"],[21,25,0,21,1,"IMAGE"]],"groups":[],"config":{},"extra":{"workflowRendererVersion":"LG","ds":{"scale":0.3558410273836767,"offset":[1308.5539744248663,-434.7803297696375]},"frontendVersion":"1.39.19","VHS_latentpreview":false,"VHS_latentpreviewrate":0,"VHS_MetadataImage":true,"VHS_KeepIntermediate":true,"dawasteh_workflow_refinement":{"version":1,"generated_notes":5,"x_scale":2.45,"y_scale":2.35,"gap":34}},"version":0.4}
+{
+  "id": "78224ffd-171f-4565-80ea-bb100e63c26e",
+  "revision": 0,
+  "last_node_id": 33,
+  "last_link_id": 21,
+  "nodes": [
+    {
+      "id": 25,
+      "type": "AILab_LoadImage",
+      "pos": [
+        580.0,
+        680.0
+      ],
+      "size": [
+        384.2166748046875,
+        565.6166381835938
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "Image Path or URL",
+          "name": "image_path_or_URL",
+          "type": "STRING",
+          "widget": {
+            "name": "image_path_or_URL"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Upscale Method",
+          "name": "upscale_method",
+          "type": "COMBO",
+          "widget": {
+            "name": "upscale_method"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "megapixels",
+          "name": "megapixels",
+          "type": "FLOAT",
+          "widget": {
+            "name": "megapixels"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Scale By",
+          "name": "scale_by",
+          "type": "FLOAT",
+          "widget": {
+            "name": "scale_by"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Resize Mode",
+          "name": "resize_mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "resize_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Size",
+          "name": "size",
+          "type": "INT",
+          "widget": {
+            "name": "size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            21
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "localized_name": "WIDTH",
+          "name": "WIDTH",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "HEIGHT",
+          "name": "HEIGHT",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "title": "Load Image (RMBG) 🖼️ (Background)",
+      "properties": {
+        "Node name for S&R": "AILab_LoadImage",
+        "cnr_id": "comfyui-rmbg",
+        "ver": "d7402513f23f58db7d56754b02a4f51a148b4941"
+      },
+      "widgets_values": [
+        "",
+        "example.png",
+        "lanczos",
+        0,
+        1,
+        "longest_side",
+        0,
+        "image"
+      ],
+      "color": "#2e3e57",
+      "bgcolor": "#4b5b73"
+    },
+    {
+      "id": 18,
+      "type": "RMBG",
+      "pos": [
+        580.0,
+        1280.0
+      ],
+      "size": [
+        340,
+        352
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "Image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 20
+        },
+        {
+          "localized_name": "Model",
+          "name": "model",
+          "type": "COMBO",
+          "widget": {
+            "name": "model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Sensitivity",
+          "name": "sensitivity",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "sensitivity"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Processing Resolution",
+          "name": "process_res",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "process_res"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Mask Blur",
+          "name": "mask_blur",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "mask_blur"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Mask Offset",
+          "name": "mask_offset",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "mask_offset"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Invert Output",
+          "name": "invert_output",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "invert_output"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Refine Foreground",
+          "name": "refine_foreground",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "refine_foreground"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Background",
+          "name": "background",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "background"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Background Color",
+          "name": "background_color",
+          "shape": 7,
+          "type": "COLORCODE",
+          "widget": {
+            "name": "background_color"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            17
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "localized_name": "MASK IMAGE",
+          "name": "MASK_IMAGE",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RMBG",
+        "cnr_id": "comfyui-rmbg",
+        "ver": "d7402513f23f58db7d56754b02a4f51a148b4941"
+      },
+      "widgets_values": [
+        "RMBG-2.0",
+        1,
+        1024,
+        0,
+        0,
+        false,
+        false,
+        "Alpha",
+        "#222222"
+      ],
+      "color": "#222e40",
+      "bgcolor": "#364254"
+    },
+    {
+      "id": 21,
+      "type": "AILab_ImageCombiner",
+      "pos": [
+        580.0,
+        1680.0
+      ],
+      "size": [
+        300,
+        238
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "Foreground",
+          "name": "foreground",
+          "type": "IMAGE",
+          "link": 17
+        },
+        {
+          "localized_name": "Background",
+          "name": "background",
+          "type": "IMAGE",
+          "link": 21
+        },
+        {
+          "localized_name": "Foreground Mask",
+          "name": "foreground_mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "localized_name": "Mode",
+          "name": "mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Foreground Opacity",
+          "name": "foreground_opacity",
+          "type": "FLOAT",
+          "widget": {
+            "name": "foreground_opacity"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Foreground Scale",
+          "name": "foreground_scale",
+          "type": "FLOAT",
+          "widget": {
+            "name": "foreground_scale"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Position X",
+          "name": "position_x",
+          "type": "INT",
+          "widget": {
+            "name": "position_x"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Position Y",
+          "name": "position_y",
+          "type": "INT",
+          "widget": {
+            "name": "position_y"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            19
+          ]
+        },
+        {
+          "localized_name": "WIDTH",
+          "name": "WIDTH",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "HEIGHT",
+          "name": "HEIGHT",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AILab_ImageCombiner",
+        "cnr_id": "comfyui-rmbg",
+        "ver": "d7402513f23f58db7d56754b02a4f51a148b4941"
+      },
+      "widgets_values": [
+        "normal",
+        1,
+        1,
+        50,
+        50
+      ],
+      "color": "#2e3e57",
+      "bgcolor": "#4b5b73"
+    },
+    {
+      "id": 23,
+      "type": "SaveImage",
+      "pos": [
+        580.0,
+        1960.0
+      ],
+      "size": [
+        644.0833129882812,
+        710.316650390625
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 19
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "imgCombined"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "MarkdownNote",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        302.2833251953125,
+        182.1666717529297
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "👑 Pixaroma - Note - START HERE",
+      "properties": {},
+      "widgets_values": [
+        "\n## 🧩 Nodes Installed from Manager  \n\n- ComfyUI-RMBG\n\n---\n\n## 📚 Resources  \n🎥 **Tutorials:** [Pixaroma YouTube Channel](https://www.youtube.com/@pixaroma)  \n💬 **Community Discord:** [Join Here](https://discord.com/invite/gggpkVgBf3)\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 24,
+      "type": "AILab_LoadImage",
+      "pos": [
+        580.0,
+        80.0
+      ],
+      "size": [
+        384.2166748046875,
+        565.6166381835938
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "Image Path or URL",
+          "name": "image_path_or_URL",
+          "type": "STRING",
+          "widget": {
+            "name": "image_path_or_URL"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Upscale Method",
+          "name": "upscale_method",
+          "type": "COMBO",
+          "widget": {
+            "name": "upscale_method"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "megapixels",
+          "name": "megapixels",
+          "type": "FLOAT",
+          "widget": {
+            "name": "megapixels"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Scale By",
+          "name": "scale_by",
+          "type": "FLOAT",
+          "widget": {
+            "name": "scale_by"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Resize Mode",
+          "name": "resize_mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "resize_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Size",
+          "name": "size",
+          "type": "INT",
+          "widget": {
+            "name": "size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            20
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "localized_name": "WIDTH",
+          "name": "WIDTH",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "HEIGHT",
+          "name": "HEIGHT",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "title": "Load Image (RMBG) 🖼️ (Foreground)",
+      "properties": {
+        "Node name for S&R": "AILab_LoadImage",
+        "cnr_id": "comfyui-rmbg",
+        "ver": "d7402513f23f58db7d56754b02a4f51a148b4941"
+      },
+      "widgets_values": [
+        "",
+        "example.png",
+        "lanczos",
+        0,
+        1,
+        "longest_side",
+        0,
+        "image"
+      ],
+      "color": "#2e3e57",
+      "bgcolor": "#4b5b73"
+    },
+    {
+      "id": 26,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        300.0
+      ],
+      "size": [
+        226,
+        14
+      ],
+      "flags": {
+        "no_title": true
+      },
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "ffcf2f56aa448f2df763b09b70857632792b7805"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 27,
+      "type": "MarkdownNote",
+      "pos": [
+        1380.0,
+        80.0
+      ],
+      "size": [
+        390,
+        950.2999877929688
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Remove Background (RMBG) · Node 18",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 18,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Remove Background (RMBG) · Node 18\n\n**Zweck:** Trennt Vordergrund und Hintergrund und erzeugt dafür Bild, Maske oder Transparenz.\n\n**Einstellbare Werte**\n- `model` = `RMBG-2.0` — Select the background removal model to use (RMBG-2.0, INSPYRENET, BEN). Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `sensitivity` = `1` — Adjust the strength of mask detection (higher values result in more aggressive detection). Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `process_res` = `1024` — Set the processing resolution (higher values require more VRAM and may increase processing time). Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `mask_blur` = `0` — Specify the amount of blur to apply to the mask edges (0 for no blur, higher values for more blur). Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n- `mask_offset` = `0` — Adjust the mask boundary (positive values expand the mask, negative values shrink it). Höher erweitert Maske oder Box nach außen; niedriger bzw. negativ zieht den Bereich enger zusammen.\n- `invert_output` = `False` — Enable to invert both the image and mask output (useful for certain effects). AN kehrt Maske oder Ausgabe um; AUS behält Vordergrund und Hintergrund in der ursprünglichen Zuordnung.\n- `refine_foreground` = `False` — Use Fast Foreground Colour Estimation to optimize transparent background AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `background` = `Alpha` — Choose output type: Alpha (transparent) or Color (custom background color). Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `background_color` = `#222222` — Pick background color (supports alpha, use color picker). Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image` (IMAGE, Link 20): Input image to be processed for background removal.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `MASK_IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 28,
+      "type": "MarkdownNote",
+      "pos": [
+        1380.0,
+        1080.0
+      ],
+      "size": [
+        390,
+        781.2999877929688
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Image Combiner (RMBG) 🖼️ · Node 21",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 21,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Image Combiner (RMBG) 🖼️ · Node 21\n\n**Zweck:** Führt mehrere kompatible Datenströme oder Konditionierungen zu einem Ergebnis zusammen.\n\n**Einstellbare Werte**\n- `mode` = `normal` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `foreground_opacity` = `1` — Steuert diesen Parameter. Höher macht die Ebene sichtbarer/deckender; niedriger lässt den Hintergrund stärker durchscheinen.\n- `foreground_scale` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `position_x` = `50` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `position_y` = `50` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `foreground_mask` = `None` — Steuert diesen Parameter. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `foreground` (IMAGE, Link 17): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `background` (IMAGE, Link 21): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `foreground_mask` (MASK, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `WIDTH` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `HEIGHT` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 29,
+      "type": "MarkdownNote",
+      "pos": [
+        1840.0,
+        80.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Save Image · Node 23",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 23,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Save Image · Node 23\n\n**Zweck:** Saves the input images to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `imgCombined` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `images` (IMAGE, Link 19): The images to save.\n\n**Ausgänge**\n- Keine Ausgänge."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 30,
+      "type": "MarkdownNote",
+      "pos": [
+        1840.0,
+        420.0
+      ],
+      "size": [
+        430.5333251953125,
+        668.2999877929688
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Image (RMBG) 🖼️ (Foreground) · Node 24",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 24,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Image (RMBG) 🖼️ (Foreground) · Node 24\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image_path_or_URL` = `` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `upscale_method` = `lanczos` — Steuert diesen Parameter. Die Auswahl ändert die Skalierungsmethode und damit Schärfe, Kanten und mögliche Artefakte.\n- `megapixels` = `0` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `scale_by` = `1` — Steuert diesen Parameter. Höher vergrößert das Ergebnis proportional und erhöht Pixelzahl, Zeit und VRAM; unter 1 verkleinert es.\n- `resize_mode` = `longest_side` — Steuert diesen Parameter. Die Auswahl ändert die Skalierungsmethode und damit Schärfe, Kanten und mögliche Artefakte.\n- `size` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `WIDTH` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `HEIGHT` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 31,
+      "type": "MarkdownNote",
+      "pos": [
+        2360.0,
+        80.0
+      ],
+      "size": [
+        433.0833435058594,
+        668.2999877929688
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Image (RMBG) 🖼️ (Background) · Node 25",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 25,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Image (RMBG) 🖼️ (Background) · Node 25\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image_path_or_URL` = `` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `upscale_method` = `lanczos` — Steuert diesen Parameter. Die Auswahl ändert die Skalierungsmethode und damit Schärfe, Kanten und mögliche Artefakte.\n- `megapixels` = `0` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `scale_by` = `1` — Steuert diesen Parameter. Höher vergrößert das Ergebnis proportional und erhöht Pixelzahl, Zeit und VRAM; unter 1 verkleinert es.\n- `resize_mode` = `longest_side` — Steuert diesen Parameter. Die Auswahl ändert die Skalierungsmethode und damit Schärfe, Kanten und mögliche Artefakte.\n- `size` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `WIDTH` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `HEIGHT` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 32,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        380.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 33,
+      "type": "MarkdownNote",
+      "pos": [
+        2360.0,
+        780.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 32",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 32,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 32\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      17,
+      18,
+      0,
+      21,
+      0,
+      "IMAGE"
+    ],
+    [
+      19,
+      21,
+      0,
+      23,
+      0,
+      "IMAGE"
+    ],
+    [
+      20,
+      24,
+      0,
+      18,
+      0,
+      "IMAGE"
+    ],
+    [
+      21,
+      25,
+      0,
+      21,
+      1,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        460.0,
+        600.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        540.0,
+        0.0,
+        720.0,
+        2720.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        1340.0,
+        0.0,
+        1500.0,
+        1900.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "workflowRendererVersion": "LG",
+    "ds": {
+      "scale": 0.3558410273836767,
+      "offset": [
+        1308.5539744248663,
+        -434.7803297696375
+      ]
+    },
+    "frontendVersion": "1.39.19",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true,
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 6,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "Image-Combiner",
+      "source": "workflows/Image Utilities/Image-Combiner.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "55a5e21a9d87b3b023df0affb631db5b5ebca693b4d5b3ba98bd01b8fdca6e43",
+      "exceptions": []
+    }
+  },
+  "version": 0.4
+}

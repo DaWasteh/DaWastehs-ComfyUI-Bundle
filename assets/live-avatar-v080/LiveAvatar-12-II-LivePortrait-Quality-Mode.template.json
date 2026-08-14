@@ -1,15 +1,15 @@
 {
   "id": "c0fdabf4-18e3-4ab6-9fcb-6d8d8617db21",
   "revision": 0,
-  "last_node_id": 24,
+  "last_node_id": 26,
   "last_link_id": 18,
   "nodes": [
     {
       "id": 12,
       "type": "PixaromaNote",
       "pos": [
-        40,
-        80
+        40.0,
+        80.0
       ],
       "size": [
         800,
@@ -47,8 +47,8 @@
       "id": 1,
       "type": "LoadImage",
       "pos": [
-        2401.0,
-        376.0
+        1000.0,
+        80.0
       ],
       "size": [
         430,
@@ -111,8 +111,8 @@
       "id": 2,
       "type": "DownloadAndLoadLivePortraitModels",
       "pos": [
-        2401.0,
-        1786.0
+        1600.0,
+        80.0
       ],
       "size": [
         380,
@@ -167,8 +167,8 @@
       "id": 3,
       "type": "LivePortraitLoadFaceAlignmentCropper",
       "pos": [
-        2401.0,
-        2303.0
+        2140.0,
+        80.0
       ],
       "size": [
         380,
@@ -252,8 +252,8 @@
       "id": 4,
       "type": "LivePortraitCropper",
       "pos": [
-        4067.0,
-        376.0
+        2680.0,
+        80.0
       ],
       "size": [
         430,
@@ -381,8 +381,8 @@
       "id": 13,
       "type": "MarkdownNote",
       "pos": [
-        2877.0,
-        376.0
+        3300.0,
+        80.0
       ],
       "size": [
         390,
@@ -410,8 +410,8 @@
       "id": 14,
       "type": "MarkdownNote",
       "pos": [
-        2827.0,
-        1786.0
+        3300.0,
+        440.0
       ],
       "size": [
         390,
@@ -439,8 +439,8 @@
       "id": 15,
       "type": "MarkdownNote",
       "pos": [
-        2827.0,
-        2303.0
+        3760.0,
+        80.0
       ],
       "size": [
         390,
@@ -468,8 +468,8 @@
       "id": 16,
       "type": "MarkdownNote",
       "pos": [
-        4543.0,
-        376.0
+        3760.0,
+        440.0
       ],
       "size": [
         390,
@@ -497,8 +497,8 @@
       "id": 23,
       "type": "DaWastehContinuousLiveAvatar",
       "pos": [
-        9359.0,
-        376.0
+        2680.0,
+        440.0
       ],
       "size": [
         460,
@@ -715,8 +715,8 @@
       "id": 24,
       "type": "MarkdownNote",
       "pos": [
-        9860.0,
-        376.0
+        4240.0,
+        80.0
       ],
       "size": [
         650,
@@ -736,6 +736,85 @@
       },
       "widgets_values": [
         "# Erklärung · Continuous LivePortrait · Node 23\n\n**Zweck:** Startet einen kontinuierlichen Webcam→LivePortrait→RGBA-Spout-Datenstrom ohne ComfyUI-Auto-Queue. Nur Webcam-I/O und Spout senden in Hilfsthreads; alle Torch-/ROCm-Arbeit bleibt im blockierenden ComfyUI-Ausführungsthread.\n\n**Bedienung**\n- Einmal normales **Run** drücken; niemals **Run (Instant)**.\n- Mit **Interrupt** stoppen.\n- `max_frames = 0` läuft bis zum Interrupt; ein positiver Wert begrenzt Testläufe.\n- `delta_multiplier = 0.75` dämpft extreme Mimiken und reduziert Verzerrungen.\n- `crop_offset_x/y` verschiebt den mittigen quadratischen Webcam-Ausschnitt.\n\n**Ausgabe**\n- Spout-Sender `ComfyLiveAvatarQuality`, standardmäßig 30 Wiederholungen des neuesten fertigen RGBA-Frames pro Sekunde.\n- Der Node animiert ausschließlich Gesicht und Kopf; Körper und Hände bleiben statisch. `auto_face_crop` verbessert die Gesichtsauflösung, kann aber keine Körper-/Handanimation hinzufügen.\n\n**Wichtig:** Während des Dauerlaufs blockiert dieser Node andere ComfyUI-Jobs absichtlich."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 25,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1140.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 26,
+      "type": "MarkdownNote",
+      "pos": [
+        4240.0,
+        740.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 25",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 25,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 25\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -799,7 +878,86 @@
       "MASK"
     ]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        880.0,
+        1360.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        960.0,
+        0.0,
+        520.0,
+        620.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1560.0,
+        0.0,
+        460.0,
+        240.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "E1 · ENCODE & CONDITION",
+      "bounding": [
+        2100.0,
+        0.0,
+        460.0,
+        240.0
+      ],
+      "color": "#C68B31",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2640.0,
+        0.0,
+        540.0,
+        1000.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        3260.0,
+        0.0,
+        1660.0,
+        1140.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
   "config": {},
   "extra": {
     "workflowRendererVersion": "LG",
@@ -810,10 +968,56 @@
     "VHS_KeepIntermediate": true,
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 5,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
+      "generated_notes": 6,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "LiveAvatar-12-II-LivePortrait-Quality-Mode",
+      "source": "workflows/Live Avatar/LiveAvatar-12-II-LivePortrait-Quality-Mode.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "70abc9a78957f9b9c5b8b56816cc13e22e433eac6518db71f82f8f292652d7be",
+      "exceptions": []
     }
   },
   "version": 0.4

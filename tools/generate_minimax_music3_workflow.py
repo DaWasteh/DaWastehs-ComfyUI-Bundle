@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the full-quality MiniMax Music 3 single-GPU workflow."""
+"""Generate the full-quality MiniMax Music 3 workflow with optional GPU placement."""
 from __future__ import annotations
 
 import argparse
@@ -16,6 +16,7 @@ try:
         install_run_timer,
         refresh_refinement,
     )
+    from tools.migrate_workflows_v092 import migrate_workflow
 except ModuleNotFoundError:
     from generate_dual_gpu_workflows import (
         WORKFLOW_TEMPLATES,
@@ -23,6 +24,7 @@ except ModuleNotFoundError:
         install_run_timer,
         refresh_refinement,
     )
+    from migrate_workflows_v092 import migrate_workflow
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = WORKFLOW_TEMPLATES / "audio_minimax_music_3.json"
@@ -53,7 +55,7 @@ def build() -> dict:
         },
     }
     refresh_refinement(workflow)
-    return workflow
+    return migrate_workflow(workflow, "Music Generation/MiniMax_Music3_FP32-BF16-Text-to-Music.json")
 
 
 def generate(destination: Path = OUTPUT) -> Path:

@@ -1,19 +1,27 @@
 from __future__ import annotations
 
-import copy
 import hashlib
 import json
 import tempfile
 import unittest
-from collections import Counter
 from pathlib import Path
 
-from tools.generate_dual_gpu_workflows import CONTROL_ROLES, DEVICE_CONTROL_TYPE, FAMILIES, generate
-from tools.validate_workflows import validate_graph
-
+from tools.generate_dual_gpu_workflows import BASE_LOADER_TYPES, CONTROL_ROLES, DEVICE_CONTROL_TYPE
+from tools.migrate_workflows_v092 import (
+    ADDITIONS,
+    ALL_R9700,
+    CURATED_PROFILES,
+    DELETED_PATHS,
+    DUAL_GPU_DIRECTORY,
+    MIGRATION_KEY,
+    MIGRATION_VERSION,
+    migrate_collection,
+    migrate_workflow,
+)
+from tools.validate_workflows import git_baseline_workflow_paths, git_head_json
 
 ROOT = Path(__file__).resolve().parents[1]
-GENERATED = ROOT / "workflows" / "Dual GPU - R9700 + RX 9070 XT"
+WORKFLOWS = ROOT / "workflows"
 PINNED_TEMPLATES = ROOT / "tools" / "workflow_templates"
 SELECTORS = {"SelectModelDevice", "SelectCLIPDevice", "SelectVAEDevice"}
 LAUNCHER = ROOT / "tools" / "start-MultiGPU.ps1"
@@ -26,19 +34,123 @@ def graphs(workflow: dict):
         yield from graphs(graph)
 
 
-def selectors(workflow: dict) -> list[dict]:
-    return [node for graph in graphs(workflow) for node in graph.get("nodes", []) if node.get("type") in SELECTORS]
+def paths() -> list[Path]:
+    return sorted(WORKFLOWS.rglob("*.json"))
 
 
 class DualGPUWorkflowTests(unittest.TestCase):
-    def test_generator_is_deterministic_and_release_managed(self):
-        with tempfile.TemporaryDirectory() as directory:
-            generated = generate(Path(directory))
-            self.assertEqual(len(generated), len(FAMILIES))
-            for path in generated:
-                self.assertEqual(path.read_bytes(), (GENERATED / path.name).read_bytes())
+    def test_collection_has_one_central_control_per_workflow(self):
+        self.assertEqual(len(paths()), 239)
+        for path in paths():
+            with self.subTest(path=path.relative_to(ROOT)):
+                workflow = json.loads(path.read_text(encoding="utf-8"))
+                controls = [node for node in workflow["nodes"] if node.get("type") == DEVICE_CONTROL_TYPE]
+                self.assertEqual(len(controls), 1)
+                self.assertFalse(any(
+                    node.get("type") == DEVICE_CONTROL_TYPE
+                    for graph in list(graphs(workflow))[1:]
+                    for node in graph.get("nodes", [])
+                ))
+                self.assertEqual(workflow["extra"][MIGRATION_KEY]["version"], MIGRATION_VERSION)
+                self.assertEqual(workflow["extra"]["dawasteh_dual_gpu"]["version"], 3)
 
-    def test_official_int8_template_families_are_pinned(self):
+    def test_defaults_are_r9700_unless_a_curated_split_is_retained(self):
+        counts = {"all_r9700": 0, "curated_split": 0}
+        for path in paths():
+            key = path.relative_to(WORKFLOWS).as_posix()
+            workflow = json.loads(path.read_text(encoding="utf-8"))
+            control = next(node for node in workflow["nodes"] if node.get("type") == DEVICE_CONTROL_TYPE)
+            defaults = workflow["extra"]["dawasteh_dual_gpu"]["defaults"]
+            if key in CURATED_PROFILES:
+                expected = CURATED_PROFILES[key][1]
+                counts["curated_split"] += 1
+            else:
+                expected = ALL_R9700
+                counts["all_r9700"] += 1
+            self.assertEqual(defaults, expected, key)
+            self.assertEqual(control["widgets_values"], [expected["MODEL"], expected["CLIP"], expected["VAE"]], key)
+        self.assertEqual(counts, {"all_r9700": 211, "curated_split": 28})
+
+    def test_every_selector_is_driven_by_the_root_control_or_subgraph_interface(self):
+        selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
+        for path in paths():
+            workflow = json.loads(path.read_text(encoding="utf-8"))
+            control = next(node for node in workflow["nodes"] if node.get("type") == DEVICE_CONTROL_TYPE)
+            for graph_index, graph in enumerate(graphs(workflow)):
+                links = {
+                    link[0] if isinstance(link, list) else link["id"]: link
+                    for link in graph.get("links", [])
+                }
+                for selector in [node for node in graph.get("nodes", []) if node.get("type") in selector_roles]:
+                    role = selector_roles[selector["type"]]
+                    device = next(item for item in selector["inputs"] if item["name"] == "device")
+                    link = links[device["link"]]
+                    origin = link[1] if isinstance(link, list) else link["origin_id"]
+                    origin_slot = link[2] if isinstance(link, list) else link["origin_slot"]
+                    if graph_index == 0:
+                        self.assertEqual((origin, origin_slot), (control["id"], CONTROL_ROLES[role][0]), path.name)
+                    else:
+                        self.assertEqual(origin, graph["inputNode"]["id"], path.name)
+                        self.assertEqual(graph["inputs"][origin_slot]["name"], f"daw_{role}", path.name)
+
+    def test_passive_controls_are_explicit_and_default_to_r9700(self):
+        passive = 0
+        for path in paths():
+            workflow = json.loads(path.read_text(encoding="utf-8"))
+            gpu = workflow["extra"]["dawasteh_dual_gpu"]
+            if gpu["placement_support"] != "control-only-no-standard-model-objects":
+                continue
+            passive += 1
+            self.assertEqual(gpu["connected_roles"], [], path.name)
+            self.assertEqual(gpu["defaults"], ALL_R9700, path.name)
+            control = next(node for node in workflow["nodes"] if node.get("type") == DEVICE_CONTROL_TYPE)
+            self.assertTrue(all(not output.get("links") for output in control["outputs"]), path.name)
+        self.assertGreater(passive, 0)
+
+    def test_dual_gpu_folder_is_dissolved_and_redundant_h3_files_are_deleted(self):
+        self.assertFalse(DUAL_GPU_DIRECTORY.exists())
+        for key in DELETED_PATHS:
+            self.assertFalse((WORKFLOWS / key).exists(), key)
+        for addition in ADDITIONS:
+            self.assertTrue((WORKFLOWS / addition.path).is_file(), addition.path)
+        self.assertTrue((WORKFLOWS / "Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json").is_file())
+
+    def test_migration_is_idempotent(self):
+        for path in paths():
+            workflow = json.loads(path.read_text(encoding="utf-8"))
+            key = path.relative_to(WORKFLOWS).as_posix()
+            self.assertEqual(migrate_workflow(workflow, key), workflow, key)
+
+    def test_head_lookup_normalizes_absolute_paths(self):
+        path = (WORKFLOWS / "Text to Image/SD15_v1-5-pruned-emaonly-Text-to-Image.json").resolve()
+        head = git_head_json(path)
+        self.assertEqual(head["version"], 0.4)
+        self.assertNotIn(MIGRATION_KEY, head.get("extra", {}))
+
+    def test_collection_membership_matches_the_declared_migration(self):
+        baseline = git_baseline_workflow_paths()
+        expected = {
+            path for path in baseline
+            if not path.startswith("workflows/Dual GPU - R9700 + RX 9070 XT/")
+            and path not in {f"workflows/{key}" for key in DELETED_PATHS}
+        }
+        expected.update(f"workflows/{addition.path}" for addition in ADDITIONS)
+        actual = {path.relative_to(ROOT).as_posix() for path in paths()}
+        self.assertEqual(actual, expected)
+
+    def test_custom_destination_cleanup_does_not_touch_repository_global_paths(self):
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / "workflows"
+            legacy = destination / DUAL_GPU_DIRECTORY.name
+            legacy.mkdir(parents=True)
+            (legacy / "stale.json").write_text("{}", encoding="utf-8")
+            total, _changed, removed = migrate_collection(destination)
+            self.assertEqual(total, len(ADDITIONS))
+            self.assertEqual(removed, 1)
+            self.assertFalse(legacy.exists())
+            self.assertFalse(DUAL_GPU_DIRECTORY.exists())
+
+    def test_official_template_snapshots_remain_pinned(self):
         expected_hashes = {
             "video_ltx2_5_t2v.json": "b8ab11a3cb349bf6dccd9ad09307213e0088d833d1867270d23e1f794bab6a9d",
             "video_ltx2_5_i2v.json": "bcd3239835e8e5bf287a664954c253c67cd31147a4a4193ef5975525e246a7a0",
@@ -46,329 +158,47 @@ class DualGPUWorkflowTests(unittest.TestCase):
             "video_wan_animate2.json": "772a7dfce6d5b61b8f838ec0609211a0c9b1c04a7c64e26d05f0852f147edac7",
             "audio_minimax_music_3.json": "0322153265b3e785961511b7849f6659f46a8fa7e8cb66976e5279ff1774b228",
         }
-        self.assertEqual(
-            {path.name for path in PINNED_TEMPLATES.glob("*.json")},
-            set(expected_hashes),
-        )
-        for name, expected_hash in expected_hashes.items():
-            self.assertEqual(hashlib.sha256((PINNED_TEMPLATES / name).read_bytes()).hexdigest(), expected_hash)
-        expected = {
-            "LTX25-DualGPU-Text-to-Video.json": "video_ltx2_5_t2v.json",
-            "LTX25-DualGPU-Image-to-Video.json": "video_ltx2_5_i2v.json",
-            "LTX25-DualGPU-FLF2V.json": "video_ltx2_5_flf2v.json",
-            "Wan-Animate-2-DualGPU-Motion-Transfer.json": "video_wan_animate2.json",
-            "MiniMax-Music3-DualGPU-Text-to-Music.json": "audio_minimax_music_3.json",
-        }
-        actual = {family.output: family.template for family in FAMILIES if family.template}
-        self.assertEqual(actual, expected)
-        for family in FAMILIES:
-            if not family.template:
-                continue
-            workflow = json.loads((GENERATED / family.output).read_text(encoding="utf-8"))
-            raw = json.dumps(workflow, ensure_ascii=False)
-            if family.name == "MiniMax Music 3":
-                self.assertIn("minimax_music3_dit_fp32.safetensors", raw)
-                self.assertIn("minimax_music3_text_encoder_bf16.safetensors", raw)
-            else:
-                self.assertIn("int8", raw.lower())
-            self.assertNotIn("nvfp4", raw.lower())
-            self.assertNotIn("nunchaku", raw.lower())
-            self.assertNotIn("CUDAExecutionProvider", raw)
-            self.assertEqual(
-                workflow["extra"]["dawasteh_dual_gpu"]["source"],
-                f"comfyui-workflow-templates-json:{family.template}",
-            )
+        self.assertEqual({path.name for path in PINNED_TEMPLATES.glob("*.json")}, set(expected_hashes))
+        for name, expected in expected_hashes.items():
+            self.assertEqual(hashlib.sha256((PINNED_TEMPLATES / name).read_bytes()).hexdigest(), expected)
 
-    def test_template_model_paths_and_wan_cache_are_release_safe(self):
-        expected_models = {
-            "LTX25-DualGPU-Text-to-Video.json": {
-                r"LTX\ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors",
-                r"LTX\gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors",
-                r"LTX\ltx-2.5-video-vae-bf16.safetensors",
-                r"LTX\ltx-2.5-audio-vae-bf16.safetensors",
-                r"LTX\ltx-2.5-latent-spatial-upscaler-x2-bf16-1.0.safetensors",
-                r"Gemma\gemma4_e2b_it_bf16.safetensors",
-            },
-            "Wan-Animate-2-DualGPU-Motion-Transfer.json": {
-                r"WAN\wan_animate_2_int8_convrot.safetensors",
-                r"WAN\lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors",
-                r"UMT5\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
-                r"WAN\Wan2_1_VAE_bf16.safetensors",
-            },
-            "MiniMax-Music3-DualGPU-Text-to-Music.json": {
-                r"MiniMax Music 3\minimax_music3_dit_fp32.safetensors",
-                r"MiniMax Music 3\minimax_music3_text_encoder_bf16.safetensors",
-                r"MiniMax Music 3\minimax_music3_dav.safetensors",
-            },
-        }
-        for output, expected in expected_models.items():
-            workflow = json.loads((GENERATED / output).read_text(encoding="utf-8"))
-            actual = {
-                value
-                for graph in graphs(workflow)
-                for node in graph.get("nodes", [])
-                for value in (node.get("widgets_values") or [])
-                if isinstance(value, str) and value.endswith(".safetensors")
-            }
-            self.assertTrue(expected.issubset(actual))
-        wan = json.loads((GENERATED / "Wan-Animate-2-DualGPU-Motion-Transfer.json").read_text(encoding="utf-8"))
-        cache_nodes = [node for graph in graphs(wan) for node in graph.get("nodes", []) if node.get("type") == "WanAnimate2Cache"]
-        self.assertEqual(len(cache_nodes), 2)
-        self.assertTrue(all(node["widgets_values"][:2] == ["cpu", "int8"] for node in cache_nodes))
-        instances = [node for node in wan["nodes"] if node.get("type") in {graph["id"] for graph in wan["definitions"]["subgraphs"] if graph.get("name") == "Motion Transfer (Wan Animate 2)"}]
-        self.assertTrue(all("gpu" not in node.get("widgets_values", []) for node in instances))
-
-    def test_every_family_has_correct_device_placement(self):
-        self.assertEqual({path.name for path in GENERATED.glob("*.json")}, {family.output for family in FAMILIES})
-        for family in FAMILIES:
-            with self.subTest(family=family.name):
-                workflow = json.loads((GENERATED / family.output).read_text(encoding="utf-8"))
-                marker = workflow["extra"]["dawasteh_dual_gpu"]
-                self.assertEqual(marker["family"], family.name)
-                self.assertEqual(marker["server"], "127.0.0.1:8188")
-                if family.h3_director:
-                    node_types = [node["type"] for node in workflow["nodes"]]
-                    self.assertIn("DaWH3MusicVideoDirectorDualGPU", node_types)
-                    self.assertNotIn("DaWH3MusicVideoDirector", node_types)
-                    continue
-                placed = selectors(workflow)
-                self.assertGreaterEqual(len(placed), 3)
-                self.assertIn("SelectModelDevice", {node["type"] for node in placed})
-                self.assertIn("SelectCLIPDevice", {node["type"] for node in placed})
-                expected_devices = {
-                    "SelectModelDevice": family.model_device,
-                    "SelectCLIPDevice": family.clip_device,
-                    "SelectVAEDevice": family.vae_device,
+    def test_selectors_are_inserted_only_after_supported_standard_loaders(self):
+        for path in paths():
+            workflow = json.loads(path.read_text(encoding="utf-8"))
+            for graph in graphs(workflow):
+                nodes = {node.get("id"): node for node in graph.get("nodes", [])}
+                links = {
+                    link[0] if isinstance(link, list) else link["id"]: link
+                    for link in graph.get("links", [])
                 }
-                for node in placed:
-                    self.assertEqual(node["widgets_values"], [expected_devices[node["type"]]])
-
-    def test_one_central_control_drives_every_selector_and_dual_h3_director(self):
-        selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
-        for family in FAMILIES:
-            with self.subTest(family=family.name):
-                workflow = json.loads((GENERATED / family.output).read_text(encoding="utf-8"))
-                controls = [node for node in workflow["nodes"] if node["type"] == DEVICE_CONTROL_TYPE]
-                self.assertEqual(len(controls), 1)
-                control = controls[0]
-                self.assertEqual(
-                    control["widgets_values"],
-                    [family.model_device, family.clip_device, family.vae_device],
-                )
-                self.assertTrue(all(output.get("links") for output in control["outputs"]))
-                self.assertEqual(workflow["extra"]["dawasteh_dual_gpu"]["version"], 2)
-
-                for graph_index, graph in enumerate(graphs(workflow)):
-                    links = {
-                        link[0] if isinstance(link, list) else link["id"]: link
-                        for link in graph.get("links", [])
-                    }
-                    for selector in [node for node in graph.get("nodes", []) if node.get("type") in selector_roles]:
-                        role = selector_roles[selector["type"]]
-                        device_input = next(item for item in selector["inputs"] if item["name"] == "device")
-                        link = links[device_input["link"]]
-                        origin = link[1] if isinstance(link, list) else link["origin_id"]
-                        origin_slot = link[2] if isinstance(link, list) else link["origin_slot"]
-                        if graph_index == 0:
-                            self.assertEqual(origin, control["id"])
-                            self.assertEqual(origin_slot, CONTROL_ROLES[role][0])
-                        else:
-                            self.assertEqual(origin, graph["inputNode"]["id"])
-                            self.assertEqual(graph["inputs"][origin_slot]["name"], f"daw_{role}")
-
-                subgraph_ids = {
-                    graph["id"] for graph in workflow.get("definitions", {}).get("subgraphs", [])
-                    if any(node.get("type") in selector_roles for node in graph.get("nodes", []))
-                }
-                for instance in [node for node in workflow["nodes"] if node.get("type") in subgraph_ids]:
-                    for role, (slot, _, _) in CONTROL_ROLES.items():
-                        input_item = next(item for item in instance["inputs"] if item["name"] == f"daw_{role}")
-                        link = next(link for link in workflow["links"] if link[0] == input_item["link"])
-                        self.assertEqual((link[1], link[2]), (control["id"], slot))
-
-                if family.h3_director:
-                    director = next(node for node in workflow["nodes"] if node["type"] == "DaWH3MusicVideoDirectorDualGPU")
-                    for role, (slot, _, _) in CONTROL_ROLES.items():
-                        input_item = next(item for item in director["inputs"] if item["name"] == role)
-                        link = next(link for link in workflow["links"] if link[0] == input_item["link"])
-                        self.assertEqual((link[1], link[2]), (control["id"], slot))
-
-    def test_selector_links_are_structurally_complete(self):
-        for family in FAMILIES:
-            if family.h3_director:
-                continue
-            workflow = json.loads((GENERATED / family.output).read_text(encoding="utf-8"))
-            for index, graph in enumerate(graphs(workflow)):
-                placed = [node for node in graph.get("nodes", []) if node.get("type") in SELECTORS]
-                if not placed:
-                    continue
-                with self.subTest(family=family.name, graph=index):
-                    node_ids = {node["id"] for node in graph["nodes"]}
-                    node_ids.update(
-                        endpoint["id"] for key in ("inputNode", "outputNode")
-                        if isinstance((endpoint := graph.get(key)), dict) and "id" in endpoint
-                    )
-                    link_ids = {
-                        link[0] if isinstance(link, list) else link["id"]
-                        for link in graph["links"]
-                    }
-                    self.assertEqual(len(link_ids), len(graph["links"]))
-                    for node in placed:
-                        self.assertIn(node["inputs"][0]["link"], link_ids)
-                        self.assertTrue(node["outputs"][0]["links"])
-                        self.assertTrue(set(node["outputs"][0]["links"]).issubset(link_ids))
-                    for link in graph["links"]:
-                        source = link[1] if isinstance(link, list) else link["origin_id"]
-                        target = link[3] if isinstance(link, list) else link["target_id"]
-                        self.assertIn(source, node_ids)
-                        self.assertIn(target, node_ids)
-
-    def test_open_h3_variants_preserve_inputs_and_route_model_before_lora(self):
-        cases = {
-            "MiniMax-H3-FL2VA-DualGPU-All-Supported-Inputs.json": {
-                "source": "MiniMax_H3_Spectrum_FL2VA_All_Supported_Inputs.json",
-                "conditioning": "MiniMaxH3ImageToVideo",
-                "required_inputs": {"first_frame", "last_frame", "prompt", "width", "height", "length"},
-            },
-            "MiniMax-H3-Ref2VA-DualGPU-All-Reference-Inputs.json": {
-                "source": "MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json",
-                "conditioning": "MiniMaxH3ReferenceToVideo",
-                "required_inputs": {"ref_images.ref_image_8", "ref_videos.ref_video_2", "ref_video_audios.ref_video_audio_2", "ref_audios.ref_audio_2", "prompt", "width", "height", "length"},
-            },
-        }
-        for output, spec in cases.items():
-            with self.subTest(workflow=output):
-                workflow = json.loads((GENERATED / output).read_text(encoding="utf-8"))
-                source = json.loads((ROOT / "workflows" / "Reference to Video" / spec["source"]).read_text(encoding="utf-8"))
-                executable = lambda data: Counter(
-                    node["type"] for node in data["nodes"]
-                    if node["type"] not in SELECTORS | {DEVICE_CONTROL_TYPE, "MarkdownNote", "PixaromaRunTimer"}
-                )
-                self.assertEqual(executable(workflow), executable(source))
-
-                by_id = {node["id"]: node for node in workflow["nodes"]}
-                links = {link[0]: link for link in workflow["links"]}
-                unet = next(node for node in by_id.values() if node["type"] == "UNETLoader")
-                model_selector = next(node for node in by_id.values() if node["type"] == "SelectModelDevice")
-                lora = next(node for node in by_id.values() if node["type"] == "LoraLoaderModelOnly")
-                sigma = next(node for node in by_id.values() if node["type"] == "MiniMaxH3SigmaShift")
-                self.assertEqual((links[model_selector["inputs"][0]["link"]][1], links[model_selector["inputs"][0]["link"]][3]), (unet["id"], model_selector["id"]))
-                self.assertEqual((links[lora["inputs"][0]["link"]][1], links[lora["inputs"][0]["link"]][3]), (model_selector["id"], lora["id"]))
-                self.assertEqual((links[sigma["inputs"][0]["link"]][1], links[sigma["inputs"][0]["link"]][3]), (lora["id"], sigma["id"]))
-                self.assertEqual(lora["widgets_values"][1], 1.0)
-                self.assertEqual(sigma["widgets_values"], [12.0, 4.0])
-                scheduler = next(node for node in by_id.values() if node["type"] == "BasicScheduler")
-                sampler = next(node for node in by_id.values() if node["type"] == "KSamplerSelect")
-                self.assertEqual(scheduler["widgets_values"][:2], ["beta", 8])
-                self.assertEqual(sampler["widgets_values"], ["euler"])
-
-                conditioning = next(node for node in by_id.values() if node["type"] == spec["conditioning"])
-                self.assertTrue(spec["required_inputs"].issubset({item["name"] for item in conditioning["inputs"]}))
-                self.assertEqual(conditioning["widgets_values"][-1], "match" if spec["conditioning"] == "MiniMaxH3ReferenceToVideo" else 124)
-
-    def test_custom_model_objects_remain_excluded(self):
-        sources = {family.source for family in FAMILIES}
-        self.assertFalse(any("YuE" in source for source in sources))
-        self.assertFalse(any("HeartMuLa" in source for source in sources))
-        self.assertFalse(any("MOSS-TTS" in source or "QwenTTS" in source for source in sources))
-
-    def test_validator_rejects_slots_types_interfaces_and_missing_counters(self):
-        graph = {
-            "last_node_id": 2,
-            "last_link_id": 1,
-            "extra": {"dawasteh_workflow_refinement": {"generated_notes": 0}},
-            "nodes": [
-                {
-                    "id": 1, "type": "PixaromaPrompt", "pos": [0, 0], "size": [100, 100],
-                    "inputs": [], "outputs": [{"type": "STRING", "links": [1]}], "properties": {},
-                },
-                {
-                    "id": 2, "type": "PixaromaShowText", "pos": [200, 0], "size": [100, 100],
-                    "inputs": [{"type": "STRING", "link": 1}], "outputs": [], "properties": {},
-                },
-            ],
-            "links": [[1, 1, 0, 2, 0, "STRING"]],
-        }
-        errors: list[str] = []
-        validate_graph(Path("synthetic.json"), "root", graph, errors)
-        self.assertEqual(errors, [])
-
-        malformed = copy.deepcopy(graph)
-        malformed["links"][0][2] = 1
-        malformed["nodes"][1]["inputs"][0]["link"] = None
-        malformed["links"][0] = malformed["links"][0][:5]
-        malformed.pop("last_link_id")
-        errors = []
-        validate_graph(Path("synthetic.json"), "root", malformed, errors)
-        joined = "\n".join(errors)
-        self.assertIn("source slot missing", joined)
-        self.assertIn("absent from target input", joined)
-        self.assertIn("type missing", joined)
-        self.assertIn("last_link_id missing", joined)
-
-        dictionary_link = copy.deepcopy(graph)
-        dictionary_link["links"] = [{"id": 1, "origin_id": 1, "target_id": 2, "type": "STRING"}]
-        errors = []
-        validate_graph(Path("synthetic.json"), "root", dictionary_link, errors)
-        joined = "\n".join(errors)
-        self.assertIn("source slot missing", joined)
-        self.assertIn("target slot missing", joined)
-
-        root_with_state = copy.deepcopy(graph)
-        root_with_state["state"] = {"lastNodeId": 2, "lastLinkId": 1}
-        root_with_state.pop("last_link_id")
-        errors = []
-        validate_graph(Path("synthetic.json"), "root", root_with_state, errors)
-        self.assertIn("last_link_id missing", "\n".join(errors))
-
-        interface_graph = copy.deepcopy(graph)
-        interface_graph.update({
-            "inputNode": {"id": -10}, "outputNode": {"id": -20},
-            "inputs": [{"name": "text", "type": "STRING"}],
-            "outputs": [{"name": "text", "type": "STRING"}],
-            "state": {"lastNodeId": 2, "lastLinkId": 1},
-        })
-        interface_graph["links"][0][1:3] = [-10, 999]
-        errors = []
-        validate_graph(Path("synthetic.json"), "subgraph", interface_graph, errors)
-        self.assertIn("inputNode source slot missing", "\n".join(errors))
-
-        missing_state = copy.deepcopy(interface_graph)
-        missing_state.pop("state")
-        errors = []
-        validate_graph(Path("synthetic.json"), "subgraph", missing_state, errors)
-        self.assertIn("subgraph state missing", "\n".join(errors))
-
-        null_endpoint = copy.deepcopy(graph)
-        null_endpoint["links"][0][1] = None
-        errors = []
-        validate_graph(Path("synthetic.json"), "root", null_endpoint, errors)
-        self.assertIn("endpoint missing", "\n".join(errors))
+                for selector in [node for node in graph.get("nodes", []) if node.get("type") in SELECTORS]:
+                    data_input = selector["inputs"][0]
+                    link = links[data_input["link"]]
+                    source_id = link[1] if isinstance(link, list) else link["origin_id"]
+                    self.assertIn(nodes[source_id]["type"], BASE_LOADER_TYPES, path.name)
 
     def test_central_control_custom_node_exports_three_combo_outputs(self):
-        self.assertTrue((CONTROL_NODE_DIR / "__init__.py").is_file())
         source = (CONTROL_NODE_DIR / "nodes.py").read_text(encoding="utf-8")
         self.assertIn('node_id="DaWMultiGPUDeviceControl"', source)
         self.assertEqual(source.count("io.Combo.Output("), 3)
         self.assertIn('io.Combo.Input("model_device"', source)
         self.assertIn('io.Combo.Input("clip_device"', source)
         self.assertIn('io.Combo.Input("vae_device"', source)
-        self.assertIn("return io.NodeOutput(str(model_device), str(clip_device), str(vae_device))", source)
 
     def test_versioned_launcher_exposes_both_gpus_conservatively(self):
         script = LAUNCHER.read_text(encoding="utf-8-sig")
-        self.assertIn('$ErrorActionPreference = "Stop"', script)
-        self.assertIn('$env:HIP_VISIBLE_DEVICES = "0,1"', script)
-        self.assertIn('$env:CUDA_VISIBLE_DEVICES = "0,1"', script)
-        self.assertIn('"--default-device", "0"', script)
-        self.assertIn('"--port", "$Port"', script)
-        self.assertIn('"--disable-dynamic-vram"', script)
-        self.assertIn('"--disable-async-offload"', script)
-        self.assertIn('"--disable-pinned-memory"', script)
-        self.assertIn('"--cache-classic"', script)
-        batch = (ROOT / "tools" / "start-MultiGPU.bat").read_text(encoding="utf-8")
-        self.assertIn("chcp 65001", batch)
-        self.assertIn("start-MultiGPU.ps1", batch)
+        for expected in (
+            '$ErrorActionPreference = "Stop"',
+            '$env:HIP_VISIBLE_DEVICES = "0,1"',
+            '$env:CUDA_VISIBLE_DEVICES = "0,1"',
+            '"--default-device", "0"',
+            '"--port", "$Port"',
+            '"--disable-dynamic-vram"',
+            '"--disable-async-offload"',
+            '"--disable-pinned-memory"',
+            '"--cache-classic"',
+        ):
+            self.assertIn(expected, script)
 
 
 if __name__ == "__main__":

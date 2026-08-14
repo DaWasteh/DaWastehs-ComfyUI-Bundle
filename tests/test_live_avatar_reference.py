@@ -11,7 +11,9 @@ class ReferenceWorkflow(unittest.TestCase):
   for token in ('preset 1','preset 2','preset 3','clearly adult','non-explicit','ambiguous age','malformed hands','fused fingers','user interface','watermark'):self.assertIn(token,text)
   nude=next(n for n in graph['nodes'] if n.get('title','').startswith('Prompt-only adult non-explicit nude'))
   links={link[0]:link for link in graph['links']};model_link=links[nude['inputs'][0]['link']]
-  self.assertEqual(nodes[model_link[1]]['type'],'CheckpointLoaderSimple')
+  self.assertEqual(nodes[model_link[1]]['type'],'SelectModelDevice')
+  selector=nodes[model_link[1]];selector_input=links[selector['inputs'][0]['link']]
+  self.assertEqual(nodes[selector_input[1]]['type'],'CheckpointLoaderSimple')
   self.assertNotIn('portrait',nodes[15]['widgets_values'][0].lower())
   self.assertEqual(nodes[19]['mode'],2);self.assertIn('opt-in',nodes[19]['title'].lower())
   start=json.loads(nodes[1]['widgets_values'][0])['content'].lower()

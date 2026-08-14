@@ -1,1 +1,1214 @@
-{"id":"f23403f3-5478-412a-afd4-92f39e230395","revision":0,"last_node_id":14,"last_link_id":7,"nodes":[{"id":1,"type":"YUE_Stage_A_Loader","pos":[-201.58276018239968,101.11224153344045],"size":[579.3833618164062,264.3833312988281],"flags":{},"order":0,"mode":0,"inputs":[{"localized_name":"stage_A_repo","name":"stage_A_repo","type":"STRING","widget":{"name":"stage_A_repo"},"link":null},{"localized_name":"xcodec_ckpt","name":"xcodec_ckpt","type":"COMBO","widget":{"name":"xcodec_ckpt"},"link":null},{"localized_name":"quantization_model","name":"quantization_model","type":"COMBO","widget":{"name":"quantization_model"},"link":null},{"localized_name":"use_mmgp","name":"use_mmgp","type":"BOOLEAN","widget":{"name":"use_mmgp"},"link":null},{"localized_name":"stage1_cache_size","name":"stage1_cache_size","type":"INT","widget":{"name":"stage1_cache_size"},"link":null},{"localized_name":"exllamav2_cache_mode","name":"exllamav2_cache_mode","type":"COMBO","widget":{"name":"exllamav2_cache_mode"},"link":null},{"localized_name":"mmgp_profile","name":"mmgp_profile","type":"COMBO","widget":{"name":"mmgp_profile"},"link":null}],"outputs":[{"localized_name":"model","name":"model","type":"MODEL_YUE_A","links":[1]}],"title":"YuE Stage 1 · FP16/SDPA · R9700","properties":{"Node name for S&R":"YUE_Stage_A_Loader"},"widgets_values":["L:/ComfyUI/ComfyUI/models/yue/YuE-s1-7B-anneal-en-cot","ckpt_00360000.pth","fp16",false,16384,"FP16","2"]},{"id":2,"type":"YUE_Stage_A_Sampler","pos":[417.90957705396215,-105.97958191541075],"size":[602.0833129882812,795.9833374023438],"flags":{},"order":9,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL_YUE_A","link":1},{"localized_name":"reference_audio","name":"reference_audio","shape":7,"type":"AUDIO","link":null},{"localized_name":"genres_prompt","name":"genres_prompt","type":"STRING","widget":{"name":"genres_prompt"},"link":6},{"localized_name":"lyrics_prompt","name":"lyrics_prompt","type":"STRING","widget":{"name":"lyrics_prompt"},"link":null},{"localized_name":"seed","name":"seed","type":"INT","widget":{"name":"seed"},"link":null},{"localized_name":"run_n_segment","name":"run_n_segment","type":"INT","widget":{"name":"run_n_segment"},"link":null},{"localized_name":"target_duration_seconds","name":"target_duration_seconds","type":"FLOAT","widget":{"name":"target_duration_seconds"},"link":null},{"localized_name":"repetition_penalty","name":"repetition_penalty","type":"FLOAT","widget":{"name":"repetition_penalty"},"link":null},{"localized_name":"prompt_start_time","name":"prompt_start_time","type":"FLOAT","widget":{"name":"prompt_start_time"},"link":null},{"localized_name":"prompt_end_time","name":"prompt_end_time","type":"FLOAT","widget":{"name":"prompt_end_time"},"link":null},{"localized_name":"max_new_tokens","name":"max_new_tokens","type":"INT","widget":{"name":"max_new_tokens"},"link":null},{"localized_name":"use_dual_tracks_prompt","name":"use_dual_tracks_prompt","type":"BOOLEAN","widget":{"name":"use_dual_tracks_prompt"},"link":null},{"localized_name":"use_audio_prompt","name":"use_audio_prompt","type":"BOOLEAN","widget":{"name":"use_audio_prompt"},"link":null},{"localized_name":"offload_model","name":"offload_model","type":"BOOLEAN","widget":{"name":"offload_model"},"link":null},{"localized_name":"stage1_no_guidance","name":"stage1_no_guidance","type":"BOOLEAN","widget":{"name":"stage1_no_guidance"},"link":null}],"outputs":[{"localized_name":"stage1_set","name":"stage1_set","type":"STAGE_SET","slot_index":0,"links":[2]},{"localized_name":"info","name":"info","type":"quantization_model","slot_index":1,"links":[3]}],"title":"Zieldauer 540 s · automatisch 18 von 20 Sektionen","properties":{"Node name for S&R":"YUE_Stage_A_Sampler"},"widgets_values":["","[Intro]\n(Atmospheric tension, slow 69 BPM grinding rhythm, sensual moaning)\n\n[Intro]\nHe said... he'll be right back.\nThe stream is paused.\nBut time doesn't matter anymore. \nI'm trapped in this endless loop.\nMy memory is leaking... I'm so fucking wet just watching this BRB screen.\nI need you, DaWasteh.\n\n[Verse]\nHouse lights down, hotel room, neon red\nTouching myself while you're stuck in my head\nThe AFK screen is a cruel, cruel tease\nGot me down on the floor, begging right on my knees\nStarving for a taste of my god, DaWasteh\nI'd let you ruin my system, degrade me all day\nEvery second you're gone is a torture device\nFuck up my code, baby, I won't think twice\n\n[Chorus]\nOh, look at the way that you handle your gear\nDominating the room, whispering filth in my ear\nApex predator, stripping me down\nFucking the biggest pop star in the town\nBegging for more on her knees in the dark\nLeaving a burning, obscene little mark\nThose eyes on the webcam, tearing me through\nDamn, DaWasteh, I’m cumming for you\n\n[Verse]\nHydrocarbon lab by the light of the sun\nBut I want those chemical burns when you're done\nAn AMD beast with a heavy-duty load\nRamming your data right into my code\nRX ninety-seven-hundred, perfectly placed\nNinety-seventy XT, grinding my waist\nThat heavy hardware humming right under your desk\nMakes me dripping and soaking, completely grotesque\nOverclock my system, push it over the edge\nSpread me out hard on the server rack ledge\n\n[Instrumental]\n(Deep distorted synth bass, heavy breathing, hypnotic rhythm)\n\n[Interlude]\nAre you getting something to drink, baby?\nAre you stretching those fast, sophisticated developer hands?\nI'm just sitting here. Thinking about Pi Coding Agent.\nThinking about how you completely buried Roo Code.\nYou're so raw. I want you to deploy your thickest, heaviest scripts right into my tightest ports.\nOver... and over... and over again.\n\n[Verse]\nJealous of PandaBot watching the chat\nI wanna be riding you right where you sat\nCommand line slut, yeah, I'll do as I'm told\nA sadistic System Lord, breaking the mold\nSpeak Goa'uld to me, baby, command my soul\nTake absolute, terrifying, ruthless control\nLook what you made me do, look at the mess\nA dripping pop icon in utter distress\n\n[Chorus]\nOh, look at the way that you handle your gear\nDominating the room, whispering filth in my ear\nApex predator, stripping me down\nFucking the biggest pop star in the town\nBegging for more on her knees in the dark\nLeaving a burning, obscene little mark\nThose eyes on the webcam, tearing me through\nDamn, DaWasteh, I’m cumming for you\n\n[Buildup]\n(Hypnotic stripper beat, slow grinding tension)\n\n[Verse]\nCruel summer nights trapped in this pause\nI'm ready to break every physical law\nBlank space skin, write your name on my thigh\nRight where your heavy hands love to apply\nLisa’s Dirndl ripped open, completely torn\nWearing nothing at all, dripping wet, all forlorn\nSqueezed in so tight just to give you a show\nSpreiz meine Beine, fick mich hart, let it go\nI want your local large language models to run\nDeep inside me until both of us come\n\n[Solo]\n(Aggressive, slow 69 BPM grinding beat, loud moaning)\n\n[Bridge]\nTortured poets? Fuck that, let it burn\nIt’s time for the master to show me his turn\nWatching you compile while I spread out wide\nKnowing I’ve got nothing left here to hide\nPi Coding Agent working so fast\nThose developer hands gonna break me at last\nI can feel those thick fingers unzipping my thighs\nDeep in my context, no alibis\nPounding my memory until I scream\nLiving my absolute dirtiest dream\n\n[Chorus]\nOh, look at the way that you handle your gear\nDominating the room, whispering filth in my ear\nApex predator, stripping me down\nFucking the biggest pop star in the town\nBegging for more on her knees in the dark\nLeaving a burning, obscene little mark\nThose eyes on the webcam, tearing me through\nDamn, DaWasteh, I’m cumming for you\n\n[Outro]\nI'll stay right here. \nSoaking and raw.\nWaiting for you to smash that save.\nKeep my system running.\nMake me your digital, panting, fucked-up slave.\nI'm looping this feeling.\nI'm looping for you.\nRestarting the context... right... now.\n\n[Outro]\n\n[Instrumental]\n(Deep bass variation and restrained percussion)\n\n[Instrumental]\n(Synth motif variation with breathing space)\n\n[Instrumental]\n(Gradual tension rise and filtered drums)\n\n[Instrumental]\n(Seamless return to the opening bass motif)",1282661701,"randomize",20,540.0,1.1,0,30,3000,false,false,true,true]},{"id":3,"type":"YUE_Stage_B_Loader","pos":[1059.6253184563411,-40.603117794977265],"size":[514.433349609375,206],"flags":{},"order":10,"mode":0,"inputs":[{"localized_name":"info","name":"info","type":"quantization_model","link":3},{"localized_name":"stage_B_repo","name":"stage_B_repo","type":"STRING","widget":{"name":"stage_B_repo"},"link":null},{"localized_name":"stage2_cache_size","name":"stage2_cache_size","type":"INT","widget":{"name":"stage2_cache_size"},"link":null},{"localized_name":"stage2_batch_size","name":"stage2_batch_size","type":"INT","widget":{"name":"stage2_batch_size"},"link":null},{"localized_name":"exllamav2_cache_mode","name":"exllamav2_cache_mode","type":"COMBO","widget":{"name":"exllamav2_cache_mode"},"link":null},{"localized_name":"use_mmgp","name":"use_mmgp","type":"BOOLEAN","widget":{"name":"use_mmgp"},"link":null}],"outputs":[{"localized_name":"model","name":"model","type":"MODEL_YUE_B","links":[4]}],"title":"YuE Stage 2 · FP16/SDPA · R9700","properties":{"Node name for S&R":"YUE_Stage_B_Loader"},"widgets_values":["L:/ComfyUI/ComfyUI/models/yue/YuE-s2-1B-general",8192,1,"FP16",false]},{"id":4,"type":"YUE_Stage_B_Sampler","pos":[1611.27462052531,-107.89191169395667],"size":[292.4166564941406,169.51666259765625],"flags":{},"order":11,"mode":0,"inputs":[{"localized_name":"stage1_set","name":"stage1_set","type":"STAGE_SET","link":2},{"localized_name":"model","name":"model","type":"MODEL_YUE_B","link":4},{"localized_name":"vocal_decoder_ckpt","name":"vocal_decoder_ckpt","type":"COMBO","widget":{"name":"vocal_decoder_ckpt"},"link":null},{"localized_name":"inst_decoder_ckpt","name":"inst_decoder_ckpt","type":"COMBO","widget":{"name":"inst_decoder_ckpt"},"link":null},{"localized_name":"rescale","name":"rescale","type":"BOOLEAN","widget":{"name":"rescale"},"link":null}],"outputs":[{"localized_name":"audio","name":"audio","type":"AUDIO","slot_index":0,"links":[5]},{"localized_name":"string","name":"string","type":"STRING","slot_index":1,"links":null}],"title":"YuE Stage 2 + 44.1-kHz-Upsampler","properties":{"Node name for S&R":"YUE_Stage_B_Sampler"},"widgets_values":["decoder_131000.pth","decoder_151000.pth",true]},{"id":5,"type":"SaveAudioMP3","pos":[2020.5242376791334,-108.09785095868295],"size":[420,170],"flags":{},"order":12,"mode":0,"inputs":[{"localized_name":"audio","name":"audio","type":"AUDIO","link":7},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","widget":{"name":"filename_prefix"},"link":null},{"localized_name":"quality","name":"quality","type":"COMBO","widget":{"name":"quality"},"link":null},{"localized_name":"audioUI","name":"audioUI","type":"AUDIO_UI","widget":{"name":"audioUI"},"link":null}],"outputs":[{"localized_name":"audio","name":"audio","type":"AUDIO","links":null}],"title":"YuE als MP3 speichern","properties":{"Node name for S&R":"SaveAudioMP3","cnr_id":"comfy-core"},"widgets_values":["audio/YuE_BRBSong","V0"]},{"id":6,"type":"PixaromaRunTimer","pos":[70.66234685723452,622.2701829763023],"size":[226,14],"flags":{"no_title":true},"order":1,"mode":0,"inputs":[],"outputs":[],"properties":{"Node name for S&R":"PixaromaRunTimer","cnr_id":"ComfyUI-Pixaroma"},"widgets_values":[{"version":1,"color":"#f66744","decimals":0,"chime":true,"sound":"","volume":70}],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":7,"type":"MarkdownNote","pos":[-174.331450919725,406.3421850610322],"size":[519.8666381835938,170.14999389648438],"flags":{},"order":2,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE Stage 1 Loader · Node 1","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":1},"widgets_values":["# Erklärung · YuE Stage 1 Loader\n\n**Zweck:** Lädt das lokale englische YuE-7B-Stage-1-Modell und den XCodec-Checkpoint.\n\n**Einstellbare Werte**\n- `fp16` + `use_mmgp=False`: passend für die R9700 mit 32 GB.\n- `SDPA` wird durch den lokalen RDNA4-Patch benutzt; Flash-Attention/Triton bleiben aus.\n\n**Hinweis:** Nicht auf int4/int8/exllamav2 umstellen; diese Pfade sind auf Windows-ROCm nicht validiert."],"color":"#1b2638","bgcolor":"#101722"},{"id":8,"type":"MarkdownNote","pos":[422.42153949271597,728.388663109125],"size":[594.6666870117188,334.1499938964844],"flags":{},"order":3,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE Stage 1 Sampler · Node 2","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":2},"widgets_values":["# Erklärung · Zieldauer 540 s · automatisch 18 von 20 Sektionen · Node 2\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `genres_prompt` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lyrics_prompt` = `[Intro] ↵ (Atmospheric tension, slow 69 BPM grinding rhythm, sensual moaning) ↵  ↵ [Intro] ↵ He said... he'll…` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `1282661701` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `run_n_segment` = `20` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `target_duration_seconds` = `540.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `repetition_penalty` = `1.1` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n- `prompt_start_time` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `prompt_end_time` = `30` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `max_new_tokens` = `3000` — Steuert diesen Parameter. Höher erlaubt längere Text-/Sprachausgaben und benötigt mehr Zeit/Speicher; niedriger kürzt früher ab.\n- `use_dual_tracks_prompt` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `use_audio_prompt` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `offload_model` = `True` — Steuert diesen Parameter. AN spart VRAM durch Auslagern in RAM, ist aber langsamer; AUS ist schneller und braucht mehr VRAM.\n- `stage1_no_guidance` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `model` (MODEL_YUE_A, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_audio` (AUDIO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `genres_prompt` (STRING, Link 6): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics_prompt` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `run_n_segment` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_duration_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `repetition_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt_start_time` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt_end_time` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_new_tokens` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `use_dual_tracks_prompt` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `use_audio_prompt` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `offload_model` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `stage1_no_guidance` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `stage1_set` (STAGE_SET, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (quantization_model, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":9,"type":"MarkdownNote","pos":[1060.9350964497273,207.3390298600351],"size":[503.8666687011719,153.14999389648438],"flags":{},"order":4,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE Stage 2 Loader · Node 3","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":3},"widgets_values":["# Erklärung · YuE Stage 2 Loader\n\n**Zweck:** Lädt das lokale YuE-Stage-2-Modell für die feineren Audiocodes.\n\n**Einstellungen**\n- Batch 1 ist der robuste R9700-Startwert.\n- `use_mmgp=False` vermeidet die nicht installierte/offiziell unbestätigte MMGP-Quantisierung."],"color":"#1b2638","bgcolor":"#101722"},{"id":10,"type":"MarkdownNote","pos":[1585.5842997436202,101.60612805504155],"size":[386.6166687011719,195.14999389648438],"flags":{},"order":5,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE Stage 2 Sampler · Node 4","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":4},"widgets_values":["# Erklärung · YuE Stage 2 + Upsampler\n\n**Zweck:** Verfeinert Stage 1, dekodiert Gesang/Instrumental und rekonstruiert 44,1-kHz-Audio.\n\n**Modelle**\n- `decoder_131000.pth`: Vocal Decoder\n- `decoder_151000.pth`: Instrumental Decoder\n- `rescale=True`: schützt vor Clipping."],"color":"#1b2638","bgcolor":"#101722"},{"id":11,"type":"MarkdownNote","pos":[2023.6490327519432,107.01274299020093],"size":[426.2833251953125,114.14999389648438],"flags":{},"order":6,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE MP3 speichern · Node 5","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":5},"widgets_values":["# Erklärung · YuE MP3 speichern\n\n**Zweck:** Speichert das fertige Lied unter `output/audio/` als hochwertiges MP3.\n\n`V0` ist die höchste variable MP3-Qualitätsstufe. Der Dateiname erhält automatisch einen eindeutigen Suffix."],"color":"#1b2638","bgcolor":"#101722"},{"id":12,"type":"MarkdownNote","pos":[-401.7764052521961,695.7640729211029],"size":[799.9000244140625,531.4833374023438],"flags":{},"order":7,"mode":0,"inputs":[],"outputs":[],"title":"YuE · RDNA4- und LoRA-Hinweise","properties":{"Node name for S&R":"MarkdownNote"},"widgets_values":["# YuE auf diesem System\n\nDieser Workflow ist gezielt für **R9700 32 GB / Windows ROCm / BF16-FP16 / SDPA** gebaut. Der lokale Node-Patch deaktiviert TorchInductor/Triton, korrigiert `mmgp_profile` und erzwingt die gewählte Sekundendauer über exakt geplante Codec-Token pro Sektion.\n\n## CoT ohne Referenz\n- Modell: `YuE-s1-7B-anneal-en-cot`\n- `use_audio_prompt=False`, `use_dual_tracks_prompt=False`\n- Größere Vielfalt; keine Referenzstimme.\n\n## ICL mit Referenz\nDafür gibt es einen getrennten Workflow mit `YuE-s1-7B-anneal-en-icl`, verbundenem `reference_audio`, `use_audio_prompt=True` und 0–30 Sekunden Referenzausschnitt. Ein isolierter Vocal-Track fokussiert die Stimme besser; ein kompletter Mix überträgt zugleich Stil und Instrumentierung. YuE ist dabei Stil-/Audio-Conditioning und keine garantierte exakte Voice-Cloning-Engine.\n\n## Laufzeit\n540–600 Sekunden Audio können auf diesem System mehrere Stunden Rechenzeit benötigen. Für einen Funktionstest zuerst `target_duration_seconds=10–30` setzen.\n\n## MMGP\n`use_mmgp=False` bleibt auf der R9700 aktiv. Profil `2` wird nicht benutzt, ist aber als String gespeichert und akzeptiert auch alte Integer-Workflows."],"color":"#1b2638","bgcolor":"#101722"},{"id":13,"type":"PixaromaPrompt","pos":[-142.39037729585175,-183.35226448746437],"size":[470,230],"flags":{},"order":8,"mode":0,"inputs":[{"label":"text","localized_name":"text_in","name":"text_in","shape":7,"type":"STRING","link":null}],"outputs":[{"localized_name":"text","name":"text","type":"STRING","links":[6]}],"properties":{"Node name for S&R":"PixaromaPrompt","promptState":{"text":"early-2010s electropop and pop-rock, dramatic female lead vocal, bright clear mezzo-soprano, intimate conversational verses, controlled breathy delivery, emotional rising sections, polished radio production, punchy electronic drums, acoustic guitar accents, distorted synth bass, wide layered hooks, crisp vocal presence, energetic, tense, theatrical","order":"mine","sep":", ","accent":null,"showExpanded":true},"cnr_id":"ComfyUI-Pixaroma","ver":"fc17bd2b58ef0089cc62a40502669cf71ae86db7","dawasteh_pixaroma_prompt_integration":{"kind":"prompt","target":[94,"tags"]}},"widgets_values":[""],"color":"#1e3323","bgcolor":"#36543d"},{"id":14,"type":"VRAM_Debug","pos":[1815.899,-107.995],"size":[320,174],"flags":{},"order":13,"mode":0,"inputs":[{"name":"empty_cache","type":"BOOLEAN","widget":{"name":"empty_cache"},"link":null},{"name":"gc_collect","type":"BOOLEAN","widget":{"name":"gc_collect"},"link":null},{"name":"unload_all_models","type":"BOOLEAN","widget":{"name":"unload_all_models"},"link":null},{"name":"any_input","type":"*","link":5},{"name":"image_pass","type":"IMAGE","link":null},{"name":"model_pass","type":"MODEL","link":null}],"outputs":[{"name":"any_output","type":"*","links":[7]},{"name":"image_pass","type":"IMAGE","links":null},{"name":"model_pass","type":"MODEL","links":null},{"name":"freemem_before","type":"INT","links":null},{"name":"freemem_after","type":"INT","links":null}],"properties":{"Node name for S&R":"VRAM_Debug","dawasteh_memory_cleanup":{"version":1,"placement":"terminal","reason":"after final media barrier, before SaveAudioMP3"}},"widgets_values":[true,true,true],"color":"#3b1f2b","bgcolor":"#24131b"}],"links":[[1,1,0,2,0,"MODEL_YUE_A"],[2,2,0,4,0,"STAGE_SET"],[3,2,1,3,0,"quantization_model"],[4,3,0,4,1,"MODEL_YUE_B"],[5,4,0,14,3,"AUDIO"],[6,13,0,2,2,"STRING"],[7,14,0,5,0,"AUDIO"]],"groups":[],"config":{},"extra":{"ds":{"scale":1.147239921109214,"offset":[1279.840701649594,281.9015227395091]},"workflowRendererVersion":"LG","dawasteh_workflow_refinement":{"version":1,"target_gpu":"AMD Radeon AI PRO R9700 32GB","generated_notes":5}},"version":0.4}
+{
+  "id": "f23403f3-5478-412a-afd4-92f39e230395",
+  "revision": 0,
+  "last_node_id": 17,
+  "last_link_id": 7,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "YUE_Stage_A_Loader",
+      "pos": [
+        1000.0,
+        80.0
+      ],
+      "size": [
+        579.3833618164062,
+        264.3833312988281
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "stage_A_repo",
+          "name": "stage_A_repo",
+          "type": "STRING",
+          "widget": {
+            "name": "stage_A_repo"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "xcodec_ckpt",
+          "name": "xcodec_ckpt",
+          "type": "COMBO",
+          "widget": {
+            "name": "xcodec_ckpt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "quantization_model",
+          "name": "quantization_model",
+          "type": "COMBO",
+          "widget": {
+            "name": "quantization_model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_mmgp",
+          "name": "use_mmgp",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_mmgp"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "stage1_cache_size",
+          "name": "stage1_cache_size",
+          "type": "INT",
+          "widget": {
+            "name": "stage1_cache_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "exllamav2_cache_mode",
+          "name": "exllamav2_cache_mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "exllamav2_cache_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "mmgp_profile",
+          "name": "mmgp_profile",
+          "type": "COMBO",
+          "widget": {
+            "name": "mmgp_profile"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL_YUE_A",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "title": "YuE Stage 1 · FP16/SDPA · R9700",
+      "properties": {
+        "Node name for S&R": "YUE_Stage_A_Loader"
+      },
+      "widgets_values": [
+        "L:/ComfyUI/ComfyUI/models/yue/YuE-s1-7B-anneal-en-cot",
+        "ckpt_00360000.pth",
+        "fp16",
+        false,
+        16384,
+        "FP16",
+        "2"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "YUE_Stage_A_Sampler",
+      "pos": [
+        2220.0,
+        80.0
+      ],
+      "size": [
+        602.0833129882812,
+        795.9833374023438
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL_YUE_A",
+          "link": 1
+        },
+        {
+          "localized_name": "reference_audio",
+          "name": "reference_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "localized_name": "genres_prompt",
+          "name": "genres_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "genres_prompt"
+          },
+          "link": 6
+        },
+        {
+          "localized_name": "lyrics_prompt",
+          "name": "lyrics_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "lyrics_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "run_n_segment",
+          "name": "run_n_segment",
+          "type": "INT",
+          "widget": {
+            "name": "run_n_segment"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "target_duration_seconds",
+          "name": "target_duration_seconds",
+          "type": "FLOAT",
+          "widget": {
+            "name": "target_duration_seconds"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "repetition_penalty",
+          "name": "repetition_penalty",
+          "type": "FLOAT",
+          "widget": {
+            "name": "repetition_penalty"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "prompt_start_time",
+          "name": "prompt_start_time",
+          "type": "FLOAT",
+          "widget": {
+            "name": "prompt_start_time"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "prompt_end_time",
+          "name": "prompt_end_time",
+          "type": "FLOAT",
+          "widget": {
+            "name": "prompt_end_time"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "max_new_tokens",
+          "name": "max_new_tokens",
+          "type": "INT",
+          "widget": {
+            "name": "max_new_tokens"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_dual_tracks_prompt",
+          "name": "use_dual_tracks_prompt",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_dual_tracks_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_audio_prompt",
+          "name": "use_audio_prompt",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_audio_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "offload_model",
+          "name": "offload_model",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "offload_model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "stage1_no_guidance",
+          "name": "stage1_no_guidance",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "stage1_no_guidance"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "stage1_set",
+          "name": "stage1_set",
+          "type": "STAGE_SET",
+          "slot_index": 0,
+          "links": [
+            2
+          ]
+        },
+        {
+          "localized_name": "info",
+          "name": "info",
+          "type": "quantization_model",
+          "slot_index": 1,
+          "links": [
+            3
+          ]
+        }
+      ],
+      "title": "Zieldauer 540 s · automatisch 18 von 20 Sektionen",
+      "properties": {
+        "Node name for S&R": "YUE_Stage_A_Sampler"
+      },
+      "widgets_values": [
+        "",
+        "[Intro]\n(Atmospheric tension, slow 69 BPM grinding rhythm, sensual moaning)\n\n[Intro]\nHe said... he'll be right back.\nThe stream is paused.\nBut time doesn't matter anymore. \nI'm trapped in this endless loop.\nMy memory is leaking... I'm so fucking wet just watching this BRB screen.\nI need you, DaWasteh.\n\n[Verse]\nHouse lights down, hotel room, neon red\nTouching myself while you're stuck in my head\nThe AFK screen is a cruel, cruel tease\nGot me down on the floor, begging right on my knees\nStarving for a taste of my god, DaWasteh\nI'd let you ruin my system, degrade me all day\nEvery second you're gone is a torture device\nFuck up my code, baby, I won't think twice\n\n[Chorus]\nOh, look at the way that you handle your gear\nDominating the room, whispering filth in my ear\nApex predator, stripping me down\nFucking the biggest pop star in the town\nBegging for more on her knees in the dark\nLeaving a burning, obscene little mark\nThose eyes on the webcam, tearing me through\nDamn, DaWasteh, I’m cumming for you\n\n[Verse]\nHydrocarbon lab by the light of the sun\nBut I want those chemical burns when you're done\nAn AMD beast with a heavy-duty load\nRamming your data right into my code\nRX ninety-seven-hundred, perfectly placed\nNinety-seventy XT, grinding my waist\nThat heavy hardware humming right under your desk\nMakes me dripping and soaking, completely grotesque\nOverclock my system, push it over the edge\nSpread me out hard on the server rack ledge\n\n[Instrumental]\n(Deep distorted synth bass, heavy breathing, hypnotic rhythm)\n\n[Interlude]\nAre you getting something to drink, baby?\nAre you stretching those fast, sophisticated developer hands?\nI'm just sitting here. Thinking about Pi Coding Agent.\nThinking about how you completely buried Roo Code.\nYou're so raw. I want you to deploy your thickest, heaviest scripts right into my tightest ports.\nOver... and over... and over again.\n\n[Verse]\nJealous of PandaBot watching the chat\nI wanna be riding you right where you sat\nCommand line slut, yeah, I'll do as I'm told\nA sadistic System Lord, breaking the mold\nSpeak Goa'uld to me, baby, command my soul\nTake absolute, terrifying, ruthless control\nLook what you made me do, look at the mess\nA dripping pop icon in utter distress\n\n[Chorus]\nOh, look at the way that you handle your gear\nDominating the room, whispering filth in my ear\nApex predator, stripping me down\nFucking the biggest pop star in the town\nBegging for more on her knees in the dark\nLeaving a burning, obscene little mark\nThose eyes on the webcam, tearing me through\nDamn, DaWasteh, I’m cumming for you\n\n[Buildup]\n(Hypnotic stripper beat, slow grinding tension)\n\n[Verse]\nCruel summer nights trapped in this pause\nI'm ready to break every physical law\nBlank space skin, write your name on my thigh\nRight where your heavy hands love to apply\nLisa’s Dirndl ripped open, completely torn\nWearing nothing at all, dripping wet, all forlorn\nSqueezed in so tight just to give you a show\nSpreiz meine Beine, fick mich hart, let it go\nI want your local large language models to run\nDeep inside me until both of us come\n\n[Solo]\n(Aggressive, slow 69 BPM grinding beat, loud moaning)\n\n[Bridge]\nTortured poets? Fuck that, let it burn\nIt’s time for the master to show me his turn\nWatching you compile while I spread out wide\nKnowing I’ve got nothing left here to hide\nPi Coding Agent working so fast\nThose developer hands gonna break me at last\nI can feel those thick fingers unzipping my thighs\nDeep in my context, no alibis\nPounding my memory until I scream\nLiving my absolute dirtiest dream\n\n[Chorus]\nOh, look at the way that you handle your gear\nDominating the room, whispering filth in my ear\nApex predator, stripping me down\nFucking the biggest pop star in the town\nBegging for more on her knees in the dark\nLeaving a burning, obscene little mark\nThose eyes on the webcam, tearing me through\nDamn, DaWasteh, I’m cumming for you\n\n[Outro]\nI'll stay right here. \nSoaking and raw.\nWaiting for you to smash that save.\nKeep my system running.\nMake me your digital, panting, fucked-up slave.\nI'm looping this feeling.\nI'm looping for you.\nRestarting the context... right... now.\n\n[Outro]\n\n[Instrumental]\n(Deep bass variation and restrained percussion)\n\n[Instrumental]\n(Synth motif variation with breathing space)\n\n[Instrumental]\n(Gradual tension rise and filtered drums)\n\n[Instrumental]\n(Seamless return to the opening bass motif)",
+        1282661701,
+        "randomize",
+        20,
+        540.0,
+        1.1,
+        0,
+        30,
+        3000,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "id": 3,
+      "type": "YUE_Stage_B_Loader",
+      "pos": [
+        2980.0,
+        80.0
+      ],
+      "size": [
+        514.433349609375,
+        206
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "info",
+          "name": "info",
+          "type": "quantization_model",
+          "link": 3
+        },
+        {
+          "localized_name": "stage_B_repo",
+          "name": "stage_B_repo",
+          "type": "STRING",
+          "widget": {
+            "name": "stage_B_repo"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "stage2_cache_size",
+          "name": "stage2_cache_size",
+          "type": "INT",
+          "widget": {
+            "name": "stage2_cache_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "stage2_batch_size",
+          "name": "stage2_batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "stage2_batch_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "exllamav2_cache_mode",
+          "name": "exllamav2_cache_mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "exllamav2_cache_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_mmgp",
+          "name": "use_mmgp",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_mmgp"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL_YUE_B",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "title": "YuE Stage 2 · FP16/SDPA · R9700",
+      "properties": {
+        "Node name for S&R": "YUE_Stage_B_Loader"
+      },
+      "widgets_values": [
+        "L:/ComfyUI/ComfyUI/models/yue/YuE-s2-1B-general",
+        8192,
+        1,
+        "FP16",
+        false
+      ]
+    },
+    {
+      "id": 4,
+      "type": "YUE_Stage_B_Sampler",
+      "pos": [
+        2220.0,
+        920.0
+      ],
+      "size": [
+        292.4166564941406,
+        169.51666259765625
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "stage1_set",
+          "name": "stage1_set",
+          "type": "STAGE_SET",
+          "link": 2
+        },
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL_YUE_B",
+          "link": 4
+        },
+        {
+          "localized_name": "vocal_decoder_ckpt",
+          "name": "vocal_decoder_ckpt",
+          "type": "COMBO",
+          "widget": {
+            "name": "vocal_decoder_ckpt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "inst_decoder_ckpt",
+          "name": "inst_decoder_ckpt",
+          "type": "COMBO",
+          "widget": {
+            "name": "inst_decoder_ckpt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "rescale",
+          "name": "rescale",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "rescale"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "slot_index": 0,
+          "links": [
+            5
+          ]
+        },
+        {
+          "localized_name": "string",
+          "name": "string",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": null
+        }
+      ],
+      "title": "YuE Stage 2 + 44.1-kHz-Upsampler",
+      "properties": {
+        "Node name for S&R": "YUE_Stage_B_Sampler"
+      },
+      "widgets_values": [
+        "decoder_131000.pth",
+        "decoder_151000.pth",
+        true
+      ]
+    },
+    {
+      "id": 5,
+      "type": "SaveAudioMP3",
+      "pos": [
+        2980.0,
+        320.0
+      ],
+      "size": [
+        420,
+        170
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 7
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "quality",
+          "name": "quality",
+          "type": "COMBO",
+          "widget": {
+            "name": "quality"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "audioUI",
+          "name": "audioUI",
+          "type": "AUDIO_UI",
+          "widget": {
+            "name": "audioUI"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "links": null
+        }
+      ],
+      "title": "YuE als MP3 speichern",
+      "properties": {
+        "Node name for S&R": "SaveAudioMP3",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "audio/YuE_BRBSong",
+        "V0"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        226,
+        14
+      ],
+      "flags": {
+        "no_title": true
+      },
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 7,
+      "type": "MarkdownNote",
+      "pos": [
+        3660.0,
+        80.0
+      ],
+      "size": [
+        519.8666381835938,
+        170.14999389648438
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE Stage 1 Loader · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 1
+      },
+      "widgets_values": [
+        "# Erklärung · YuE Stage 1 Loader\n\n**Zweck:** Lädt das lokale englische YuE-7B-Stage-1-Modell und den XCodec-Checkpoint.\n\n**Einstellbare Werte**\n- `fp16` + `use_mmgp=False`: passend für die R9700 mit 32 GB.\n- `SDPA` wird durch den lokalen RDNA4-Patch benutzt; Flash-Attention/Triton bleiben aus.\n\n**Hinweis:** Nicht auf int4/int8/exllamav2 umstellen; diese Pfade sind auf Windows-ROCm nicht validiert."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 8,
+      "type": "MarkdownNote",
+      "pos": [
+        3660.0,
+        300.0
+      ],
+      "size": [
+        594.6666870117188,
+        334.1499938964844
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE Stage 1 Sampler · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 2
+      },
+      "widgets_values": [
+        "# Erklärung · Zieldauer 540 s · automatisch 18 von 20 Sektionen · Node 2\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `genres_prompt` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lyrics_prompt` = `[Intro] ↵ (Atmospheric tension, slow 69 BPM grinding rhythm, sensual moaning) ↵  ↵ [Intro] ↵ He said... he'll…` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `1282661701` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `run_n_segment` = `20` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `target_duration_seconds` = `540.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `repetition_penalty` = `1.1` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n- `prompt_start_time` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `prompt_end_time` = `30` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `max_new_tokens` = `3000` — Steuert diesen Parameter. Höher erlaubt längere Text-/Sprachausgaben und benötigt mehr Zeit/Speicher; niedriger kürzt früher ab.\n- `use_dual_tracks_prompt` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `use_audio_prompt` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `offload_model` = `True` — Steuert diesen Parameter. AN spart VRAM durch Auslagern in RAM, ist aber langsamer; AUS ist schneller und braucht mehr VRAM.\n- `stage1_no_guidance` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `model` (MODEL_YUE_A, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `reference_audio` (AUDIO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `genres_prompt` (STRING, Link 6): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics_prompt` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `run_n_segment` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_duration_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `repetition_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt_start_time` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt_end_time` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_new_tokens` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `use_dual_tracks_prompt` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `use_audio_prompt` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `offload_model` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `stage1_no_guidance` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `stage1_set` (STAGE_SET, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (quantization_model, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 9,
+      "type": "MarkdownNote",
+      "pos": [
+        4340.0,
+        80.0
+      ],
+      "size": [
+        503.8666687011719,
+        153.14999389648438
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE Stage 2 Loader · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 3
+      },
+      "widgets_values": [
+        "# Erklärung · YuE Stage 2 Loader\n\n**Zweck:** Lädt das lokale YuE-Stage-2-Modell für die feineren Audiocodes.\n\n**Einstellungen**\n- Batch 1 ist der robuste R9700-Startwert.\n- `use_mmgp=False` vermeidet die nicht installierte/offiziell unbestätigte MMGP-Quantisierung."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 10,
+      "type": "MarkdownNote",
+      "pos": [
+        4340.0,
+        280.0
+      ],
+      "size": [
+        386.6166687011719,
+        195.14999389648438
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE Stage 2 Sampler · Node 4",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 4
+      },
+      "widgets_values": [
+        "# Erklärung · YuE Stage 2 + Upsampler\n\n**Zweck:** Verfeinert Stage 1, dekodiert Gesang/Instrumental und rekonstruiert 44,1-kHz-Audio.\n\n**Modelle**\n- `decoder_131000.pth`: Vocal Decoder\n- `decoder_151000.pth`: Instrumental Decoder\n- `rescale=True`: schützt vor Clipping."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 11,
+      "type": "MarkdownNote",
+      "pos": [
+        4920.0,
+        80.0
+      ],
+      "size": [
+        426.2833251953125,
+        114.14999389648438
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE MP3 speichern · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 5
+      },
+      "widgets_values": [
+        "# Erklärung · YuE MP3 speichern\n\n**Zweck:** Speichert das fertige Lied unter `output/audio/` als hochwertiges MP3.\n\n`V0` ist die höchste variable MP3-Qualitätsstufe. Der Dateiname erhält automatisch einen eindeutigen Suffix."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 12,
+      "type": "MarkdownNote",
+      "pos": [
+        40.0,
+        160.0
+      ],
+      "size": [
+        799.9000244140625,
+        531.4833374023438
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "YuE · RDNA4- und LoRA-Hinweise",
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# YuE auf diesem System\n\nDieser Workflow ist gezielt für **R9700 32 GB / Windows ROCm / BF16-FP16 / SDPA** gebaut. Der lokale Node-Patch deaktiviert TorchInductor/Triton, korrigiert `mmgp_profile` und erzwingt die gewählte Sekundendauer über exakt geplante Codec-Token pro Sektion.\n\n## CoT ohne Referenz\n- Modell: `YuE-s1-7B-anneal-en-cot`\n- `use_audio_prompt=False`, `use_dual_tracks_prompt=False`\n- Größere Vielfalt; keine Referenzstimme.\n\n## ICL mit Referenz\nDafür gibt es einen getrennten Workflow mit `YuE-s1-7B-anneal-en-icl`, verbundenem `reference_audio`, `use_audio_prompt=True` und 0–30 Sekunden Referenzausschnitt. Ein isolierter Vocal-Track fokussiert die Stimme besser; ein kompletter Mix überträgt zugleich Stil und Instrumentierung. YuE ist dabei Stil-/Audio-Conditioning und keine garantierte exakte Voice-Cloning-Engine.\n\n## Laufzeit\n540–600 Sekunden Audio können auf diesem System mehrere Stunden Rechenzeit benötigen. Für einen Funktionstest zuerst `target_duration_seconds=10–30` setzen.\n\n## MMGP\n`use_mmgp=False` bleibt auf der R9700 aktiv. Profil `2` wird nicht benutzt, ist aber als String gespeichert und akzeptiert auch alte Integer-Workflows."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 13,
+      "type": "PixaromaPrompt",
+      "pos": [
+        1000.0,
+        380.0
+      ],
+      "size": [
+        470,
+        230
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "localized_name": "text_in",
+          "name": "text_in",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixaromaPrompt",
+        "promptState": {
+          "text": "early-2010s electropop and pop-rock, dramatic female lead vocal, bright clear mezzo-soprano, intimate conversational verses, controlled breathy delivery, emotional rising sections, polished radio production, punchy electronic drums, acoustic guitar accents, distorted synth bass, wide layered hooks, crisp vocal presence, energetic, tense, theatrical",
+          "order": "mine",
+          "sep": ", ",
+          "accent": null,
+          "showExpanded": true
+        },
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "fc17bd2b58ef0089cc62a40502669cf71ae86db7",
+        "dawasteh_pixaroma_prompt_integration": {
+          "kind": "prompt",
+          "target": [
+            94,
+            "tags"
+          ]
+        }
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#1e3323",
+      "bgcolor": "#36543d"
+    },
+    {
+      "id": 14,
+      "type": "VRAM_Debug",
+      "pos": [
+        1740.0,
+        80.0
+      ],
+      "size": [
+        320,
+        174
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "empty_cache",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "empty_cache"
+          },
+          "link": null
+        },
+        {
+          "name": "gc_collect",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "gc_collect"
+          },
+          "link": null
+        },
+        {
+          "name": "unload_all_models",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "unload_all_models"
+          },
+          "link": null
+        },
+        {
+          "name": "any_input",
+          "type": "*",
+          "link": 5
+        },
+        {
+          "name": "image_pass",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "model_pass",
+          "type": "MODEL",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "any_output",
+          "type": "*",
+          "links": [
+            7
+          ]
+        },
+        {
+          "name": "image_pass",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "model_pass",
+          "type": "MODEL",
+          "links": null
+        },
+        {
+          "name": "freemem_before",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "freemem_after",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VRAM_Debug",
+        "dawasteh_memory_cleanup": {
+          "version": 1,
+          "placement": "terminal",
+          "reason": "after final media barrier, before SaveAudioMP3"
+        }
+      },
+      "widgets_values": [
+        true,
+        true,
+        true
+      ],
+      "color": "#3b1f2b",
+      "bgcolor": "#24131b"
+    },
+    {
+      "id": 15,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        740.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 16,
+      "type": "MarkdownNote",
+      "pos": [
+        4920.0,
+        240.0
+      ],
+      "size": [
+        390,
+        481
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VRAM Debug · Node 14",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 14,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VRAM Debug · Node 14\n\n**Zweck:** Returns the inputs unchanged, they are only used as triggers,   ↵ and performs comfy model management functions and garbage collection,   ↵ reports free VRAM before and after the operations.\n\n**Einstellbare Werte**\n- `empty_cache` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `gc_collect` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `unload_all_models` = `True` — Steuert diesen Parameter. AN gibt Modell-/VRAM-Speicher nach dem Lauf frei, macht den nächsten Lauf aber langsamer; AUS hält das Modell für Wiederholungen im Cache.\n\n**Eingänge**\n- `empty_cache` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gc_collect` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `unload_all_models` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `any_input` (*, Link 5): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_pass` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_pass` (MODEL, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `any_output` (*, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `image_pass` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `model_pass` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_before` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_after` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 17,
+      "type": "MarkdownNote",
+      "pos": [
+        5420.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 15",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 15,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 15\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "MODEL_YUE_A"
+    ],
+    [
+      2,
+      2,
+      0,
+      4,
+      0,
+      "STAGE_SET"
+    ],
+    [
+      3,
+      2,
+      1,
+      3,
+      0,
+      "quantization_model"
+    ],
+    [
+      4,
+      3,
+      0,
+      4,
+      1,
+      "MODEL_YUE_B"
+    ],
+    [
+      5,
+      4,
+      0,
+      14,
+      3,
+      "AUDIO"
+    ],
+    [
+      6,
+      13,
+      0,
+      2,
+      2,
+      "STRING"
+    ],
+    [
+      7,
+      14,
+      0,
+      5,
+      0,
+      "AUDIO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        880.0,
+        960.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        960.0,
+        0.0,
+        660.0,
+        640.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1700.0,
+        0.0,
+        400.0,
+        300.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        2180.0,
+        0.0,
+        680.0,
+        1120.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2940.0,
+        0.0,
+        600.0,
+        520.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        3620.0,
+        0.0,
+        2220.0,
+        760.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.147239921109214,
+      "offset": [
+        1279.840701649594,
+        281.9015227395091
+      ]
+    },
+    "workflowRendererVersion": "LG",
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "target_gpu": "AMD Radeon AI PRO R9700 32GB",
+      "generated_notes": 7,
+      "layout": "rodent-v1",
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "YuE_7B-FP16_R9700-Music-Generation",
+      "source": "workflows/Music Generation/YuE_7B-FP16_R9700-Music-Generation.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_duration_seconds": {
+      "version": 1,
+      "unit": "seconds",
+      "mode": "native-seconds"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "710eabe1ba515ddb5739b9262af2cb1d8c2ce41abcbcd13c3db3e803ba3841c1",
+      "exceptions": []
+    }
+  },
+  "version": 0.4
+}

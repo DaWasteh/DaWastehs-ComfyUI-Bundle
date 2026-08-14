@@ -1,1 +1,1385 @@
-{"id":"78224ffd-171f-4565-80ea-bb100e63c26e","revision":0,"last_node_id":44,"last_link_id":26,"nodes":[{"id":11,"type":"LoadImage","pos":[5965.909,871.879],"size":[282.79998779296875,314],"flags":{},"order":0,"mode":2,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"choose file to upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[13]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null}],"properties":{"Node name for S&R":"LoadImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["example.png","image"]},{"id":14,"type":"AILab_ImageCompare","pos":[6725.409,871.879],"size":[300,290],"flags":{},"order":23,"mode":2,"inputs":[{"localized_name":"image1","name":"image1","shape":7,"type":"IMAGE","link":13},{"localized_name":"image2","name":"image2","shape":7,"type":"IMAGE","link":14},{"localized_name":"image3","name":"image3","shape":7,"type":"IMAGE","link":null},{"localized_name":"text1","name":"text1","type":"STRING","widget":{"name":"text1"},"link":null},{"localized_name":"text2","name":"text2","type":"STRING","widget":{"name":"text2"},"link":null},{"localized_name":"text3","name":"text3","type":"STRING","widget":{"name":"text3"},"link":null},{"localized_name":"size_base","name":"size_base","type":"COMBO","widget":{"name":"size_base"},"link":null},{"localized_name":"text_color","name":"text_color","type":"COLORCODE","widget":{"name":"text_color"},"link":null},{"localized_name":"bg_color","name":"bg_color","type":"COLORCODE","widget":{"name":"bg_color"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[15]}],"properties":{"Node name for S&R":"AILab_ImageCompare","cnr_id":"comfyui-rmbg","ver":"d7402513f23f58db7d56754b02a4f51a148b4941"},"widgets_values":["Image 1","Image 2","Image 3","largest","#000000","#FFFFFF"],"color":"#2e3e57","bgcolor":"#4b5b73"},{"id":12,"type":"LoadImage","pos":[5965.909,1764.879],"size":[282.79998779296875,314],"flags":{},"order":1,"mode":2,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"choose file to upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[14]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null}],"properties":{"Node name for S&R":"LoadImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["example.png","image"]},{"id":13,"type":"PreviewImage","pos":[7558.409,871.879],"size":[1086.316650390625,683.3333129882812],"flags":{},"order":26,"mode":2,"inputs":[{"localized_name":"images","name":"images","type":"IMAGE","link":15}],"outputs":[{"localized_name":"images","name":"images","type":"IMAGE","links":null}],"properties":{"Node name for S&R":"PreviewImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":[]},{"id":19,"type":"LoadImage","pos":[1084.324,1742.208],"size":[282.79998779296875,322],"flags":{},"order":2,"mode":0,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"choose file to upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[22]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null}],"properties":{"Node name for S&R":"LoadImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["example.png","image"]},{"id":21,"type":"Image Comparer (rgthree)","pos":[1868.324,849.208],"size":[619.8333129882812,685.8333129882812],"flags":{},"order":24,"mode":0,"inputs":[{"dir":3,"name":"image_a","type":"IMAGE","link":21},{"dir":3,"name":"image_b","type":"IMAGE","link":22}],"outputs":[{"dir":4,"name":"images","shape":3,"type":"IMAGE","links":null}],"properties":{"comparer_mode":"Slide","cnr_id":"rgthree-comfy","ver":"8ff50e4521881eca1fe26aec9615fc9362474931"},"widgets_values":[[{"name":"A","selected":true,"url":"/api/view?filename=rgthree.compare._temp_sizgs_00001_.png&type=temp&subfolder=&rand=0.49688595494690635"},{"name":"B","selected":true,"url":"/api/view?filename=rgthree.compare._temp_sizgs_00002_.png&type=temp&subfolder=&rand=0.35507272246207755"}]]},{"id":17,"type":"LoadImage","pos":[1084.324,849.208],"size":[282.79998779296875,322],"flags":{},"order":3,"mode":0,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"choose file to upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[21]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null}],"properties":{"Node name for S&R":"LoadImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["example.png","image"]},{"id":24,"type":"LoadImage","pos":[3090.8488786627177,850.2079999999996],"size":[282.79998779296875,322],"flags":{},"order":4,"mode":2,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"choose file to upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[25]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null}],"properties":{"Node name for S&R":"LoadImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["example.png","image"]},{"id":22,"type":"LoadImage","pos":[3090.8488786627177,1743.208],"size":[282.79998779296875,322],"flags":{},"order":5,"mode":2,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"choose file to upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[26]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null}],"properties":{"Node name for S&R":"LoadImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["example.png","image"]},{"id":26,"type":"PixaromaCompare","pos":[3869.2728786627176,870.9639999999997],"size":[617.1166381835938,680.4000244140625],"flags":{},"order":25,"mode":2,"inputs":[{"localized_name":"image1","name":"image1","shape":7,"type":"IMAGE","link":25},{"localized_name":"image2","name":"image2","shape":7,"type":"IMAGE","link":26}],"outputs":[],"properties":{"Node name for S&R":"PixaromaCompare","cnr_id":"ComfyUI-Pixaroma"},"widgets_values":[""],"color":"#2a363b","bgcolor":"#2a2a2a"},{"id":4,"type":"MarkdownNote","pos":[667.9331727511237,760.3703177378524],"size":[300.5666809082031,230.16665649414062],"flags":{"collapsed":false},"order":6,"mode":0,"inputs":[],"outputs":[],"title":"👑 Pixaroma - Note - START HERE","properties":{},"widgets_values":["## 🧩 Nodes Installed from Manager  \n\n- ComfyUI-RMBG\n- rgthree-comfy\n- ComfyUI-iTools\n\n---\n\n## 📚 Resources  \n🎥 **Tutorials:** [Pixaroma YouTube Channel](https://www.youtube.com/@pixaroma)  \n💬 **Community Discord:** [Join Here](https://discord.com/invite/gggpkVgBf3)\n"],"color":"#432","bgcolor":"#653"},{"id":30,"type":"Fast Groups Muter (rgthree)","pos":[3348.472415938138,425.5880817481627],"size":[345.04998779296875,130],"flags":{},"order":7,"mode":0,"inputs":[],"outputs":[{"name":"OPT_CONNECTION","type":"*","links":null}],"title":"Enable Image Compare","properties":{"matchColors":"","matchTitle":"","showNav":true,"showAllGraphs":true,"sort":"position","customSortAlphabet":"","toggleRestriction":"always one"},"color":"#432","bgcolor":"#653"},{"id":31,"type":"Fast Groups Muter (rgthree)","pos":[5938.741,342.286],"size":[345.04998779296875,130],"flags":{},"order":8,"mode":0,"inputs":[],"outputs":[{"name":"OPT_CONNECTION","type":"*","links":null}],"title":"Enable Image Compare","properties":{"matchColors":"","matchTitle":"","showNav":true,"showAllGraphs":true,"sort":"position","customSortAlphabet":"","toggleRestriction":"always one"},"color":"#432","bgcolor":"#653"},{"id":29,"type":"Fast Groups Muter (rgthree)","pos":[1039.872,341.661],"size":[345.04998779296875,130],"flags":{},"order":9,"mode":0,"inputs":[],"outputs":[{"name":"OPT_CONNECTION","type":"*","links":null}],"title":"Enable Image Compare","properties":{"matchColors":"","matchTitle":"","showNav":true,"showAllGraphs":true,"sort":"position","customSortAlphabet":"","toggleRestriction":"always one"},"color":"#432","bgcolor":"#653"},{"id":32,"type":"PixaromaRunTimer","pos":[1072.5801609264004,623.3389259616124],"size":[226,14],"flags":{"no_title":true},"order":10,"mode":0,"inputs":[],"outputs":[],"properties":{"Node name for S&R":"PixaromaRunTimer","cnr_id":"ComfyUI-Pixaroma","ver":"ffcf2f56aa448f2df763b09b70857632792b7805"},"widgets_values":[{"version":1,"color":"#f66744","decimals":0,"chime":true,"sound":"","volume":70}],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":33,"type":"MarkdownNote","pos":[6294.708,871.879],"size":[390,311],"flags":{},"order":11,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Load Image · Node 11","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":11,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Load Image · Node 11\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":34,"type":"MarkdownNote","pos":[6294.708,1764.879],"size":[390,311],"flags":{},"order":12,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Load Image · Node 12","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":12,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Load Image · Node 12\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":35,"type":"MarkdownNote","pos":[8690.724,871.879],"size":[390,294],"flags":{},"order":13,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Preview Image · Node 13","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":13,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Preview Image · Node 13\n\n**Zweck:** Preview the images without saving them to the ComfyUI output directory.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `images` (IMAGE, Link 15): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."],"color":"#1b2638","bgcolor":"#101722"},{"id":36,"type":"MarkdownNote","pos":[7071.409,871.879],"size":[426.79998779296875,587.2999877929688],"flags":{},"order":14,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Side By Side Compare (RMBG) 🖼️🖼️ · Node 14","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":14,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Side By Side Compare (RMBG) 🖼️🖼️ · Node 14\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- `text1` = `Image 1` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `text2` = `Image 2` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `text3` = `Image 3` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `size_base` = `largest` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `text_color` = `#000000` — Steuert diesen Parameter. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `bg_color` = `#FFFFFF` — Steuert diesen Parameter. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image1` (IMAGE, Link 13): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image2` (IMAGE, Link 14): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image3` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":37,"type":"MarkdownNote","pos":[1413.123,849.208],"size":[390,311],"flags":{},"order":15,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Load Image · Node 17","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":17,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Load Image · Node 17\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":38,"type":"MarkdownNote","pos":[1413.123,1742.208],"size":[390,311],"flags":{},"order":16,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Load Image · Node 19","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":19,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Load Image · Node 19\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":39,"type":"MarkdownNote","pos":[2534.16,849.208],"size":[390,349.1499938964844],"flags":{},"order":17,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Image Comparer (rgthree) · Node 21","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":21,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Image Comparer (rgthree) · Node 21\n\n**Zweck:** Compares two images with a hover slider, or click from properties.\n\n**Einstellbare Werte**\n- `value` = `[{\"name\":\"A\",\"selected\":true,\"url\":\"/api/view?filename=rgthree.compare._temp_sizgs_00001_.png&type=temp&subfo…` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `image_a` (IMAGE, Link 21): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_b` (IMAGE, Link 22): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."],"color":"#1b2638","bgcolor":"#101722"},{"id":40,"type":"MarkdownNote","pos":[3419.6478786627176,1743.208],"size":[390,311],"flags":{},"order":18,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Load Image · Node 22","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":22,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Load Image · Node 22\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":41,"type":"MarkdownNote","pos":[3419.6478786627176,850.2079999999996],"size":[390,311],"flags":{},"order":19,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Load Image · Node 24","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":24,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Load Image · Node 24\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":42,"type":"MarkdownNote","pos":[1430.929,341.661],"size":[390,294],"flags":{},"order":20,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Enable Image Compare · Node 29","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":29,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Enable Image Compare · Node 29\n\n**Zweck:** Aktiviert oder deaktiviert die zugeordneten Node-Gruppen gemeinsam, um Workflow-Zweige zu schalten.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `OPT_CONNECTION` (*, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":43,"type":"MarkdownNote","pos":[3739.529415938138,425.5880817481627],"size":[390,294],"flags":{},"order":21,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Enable Image Compare · Node 30","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":30,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Enable Image Compare · Node 30\n\n**Zweck:** Aktiviert oder deaktiviert die zugeordneten Node-Gruppen gemeinsam, um Workflow-Zweige zu schalten.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `OPT_CONNECTION` (*, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":44,"type":"MarkdownNote","pos":[6329.798,342.286],"size":[390,294],"flags":{},"order":22,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Enable Image Compare · Node 31","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":31,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Enable Image Compare · Node 31\n\n**Zweck:** Aktiviert oder deaktiviert die zugeordneten Node-Gruppen gemeinsam, um Workflow-Zweige zu schalten.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `OPT_CONNECTION` (*, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"}],"links":[[13,11,0,14,0,"IMAGE"],[14,12,0,14,1,"IMAGE"],[15,14,0,13,0,"IMAGE"],[21,17,0,21,0,"IMAGE"],[22,19,0,21,1,"IMAGE"],[25,24,0,26,0,"IMAGE"],[26,22,0,26,1,"IMAGE"]],"groups":[{"id":2,"title":"Image Compare (rmbg)","bounding":[5937.909,817.879,3170.815,1289],"color":"#3f789e","flags":{}},{"id":3,"title":"Image Compare (rghtree)","bounding":[1056.324,795.208,1895.836,1289],"color":"#3f789e","flags":{}},{"id":4,"title":"Image Comparer (itools)","bounding":[3062.8488786627177,796.2079999999996,1451.544,1289],"color":"#3f789e","flags":{}}],"config":{},"extra":{"workflowRendererVersion":"LG","ds":{"scale":0.2940834937055162,"offset":[788.1518351256094,731.5718645991576]},"frontendVersion":"1.39.19","VHS_latentpreview":false,"VHS_latentpreviewrate":0,"VHS_MetadataImage":true,"VHS_KeepIntermediate":true,"dawasteh_workflow_refinement":{"version":1,"generated_notes":12,"x_scale":2.45,"y_scale":2.35,"gap":34}},"version":0.4}
+{
+  "id": "78224ffd-171f-4565-80ea-bb100e63c26e",
+  "revision": 0,
+  "last_node_id": 46,
+  "last_link_id": 26,
+  "nodes": [
+    {
+      "id": 11,
+      "type": "LoadImage",
+      "pos": [
+        2140.0,
+        80.0
+      ],
+      "size": [
+        282.79998779296875,
+        314
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            13
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "AILab_ImageCompare",
+      "pos": [
+        2140.0,
+        800.0
+      ],
+      "size": [
+        300,
+        290
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 2,
+      "inputs": [
+        {
+          "localized_name": "image1",
+          "name": "image1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 13
+        },
+        {
+          "localized_name": "image2",
+          "name": "image2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 14
+        },
+        {
+          "localized_name": "image3",
+          "name": "image3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "text1",
+          "name": "text1",
+          "type": "STRING",
+          "widget": {
+            "name": "text1"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "text2",
+          "name": "text2",
+          "type": "STRING",
+          "widget": {
+            "name": "text2"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "text3",
+          "name": "text3",
+          "type": "STRING",
+          "widget": {
+            "name": "text3"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "size_base",
+          "name": "size_base",
+          "type": "COMBO",
+          "widget": {
+            "name": "size_base"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "text_color",
+          "name": "text_color",
+          "type": "COLORCODE",
+          "widget": {
+            "name": "text_color"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "bg_color",
+          "name": "bg_color",
+          "type": "COLORCODE",
+          "widget": {
+            "name": "bg_color"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AILab_ImageCompare",
+        "cnr_id": "comfyui-rmbg",
+        "ver": "d7402513f23f58db7d56754b02a4f51a148b4941"
+      },
+      "widgets_values": [
+        "Image 1",
+        "Image 2",
+        "Image 3",
+        "largest",
+        "#000000",
+        "#FFFFFF"
+      ],
+      "color": "#2e3e57",
+      "bgcolor": "#4b5b73"
+    },
+    {
+      "id": 12,
+      "type": "LoadImage",
+      "pos": [
+        2140.0,
+        440.0
+      ],
+      "size": [
+        282.79998779296875,
+        314
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 2,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            14
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "PreviewImage",
+      "pos": [
+        2140.0,
+        1120.0
+      ],
+      "size": [
+        1086.316650390625,
+        683.3333129882812
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 2,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 19,
+      "type": "LoadImage",
+      "pos": [
+        580.0,
+        440.0
+      ],
+      "size": [
+        282.79998779296875,
+        322
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            22
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "Image Comparer (rgthree)",
+      "pos": [
+        580.0,
+        800.0
+      ],
+      "size": [
+        619.8333129882812,
+        685.8333129882812
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "dir": 3,
+          "name": "image_a",
+          "type": "IMAGE",
+          "link": 21
+        },
+        {
+          "dir": 3,
+          "name": "image_b",
+          "type": "IMAGE",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "dir": 4,
+          "name": "images",
+          "shape": 3,
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "comparer_mode": "Slide",
+        "cnr_id": "rgthree-comfy",
+        "ver": "8ff50e4521881eca1fe26aec9615fc9362474931"
+      },
+      "widgets_values": [
+        [
+          {
+            "name": "A",
+            "selected": true,
+            "url": "/api/view?filename=rgthree.compare._temp_sizgs_00001_.png&type=temp&subfolder=&rand=0.49688595494690635"
+          },
+          {
+            "name": "B",
+            "selected": true,
+            "url": "/api/view?filename=rgthree.compare._temp_sizgs_00002_.png&type=temp&subfolder=&rand=0.35507272246207755"
+          }
+        ]
+      ]
+    },
+    {
+      "id": 17,
+      "type": "LoadImage",
+      "pos": [
+        580.0,
+        80.0
+      ],
+      "size": [
+        282.79998779296875,
+        322
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            21
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 24,
+      "type": "LoadImage",
+      "pos": [
+        1360.0,
+        440.0
+      ],
+      "size": [
+        282.79998779296875,
+        322
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 2,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            25
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 22,
+      "type": "LoadImage",
+      "pos": [
+        1360.0,
+        80.0
+      ],
+      "size": [
+        282.79998779296875,
+        322
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 2,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            26
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "PixaromaCompare",
+      "pos": [
+        1360.0,
+        800.0
+      ],
+      "size": [
+        617.1166381835938,
+        680.4000244140625
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 2,
+      "inputs": [
+        {
+          "localized_name": "image1",
+          "name": "image1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 25
+        },
+        {
+          "localized_name": "image2",
+          "name": "image2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 26
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaCompare",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#2a363b",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 4,
+      "type": "MarkdownNote",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        300.5666809082031,
+        230.16665649414062
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "👑 Pixaroma - Note - START HERE",
+      "properties": {},
+      "widgets_values": [
+        "## 🧩 Nodes Installed from Manager  \n\n- ComfyUI-RMBG\n- rgthree-comfy\n- ComfyUI-iTools\n\n---\n\n## 📚 Resources  \n🎥 **Tutorials:** [Pixaroma YouTube Channel](https://www.youtube.com/@pixaroma)  \n💬 **Community Discord:** [Join Here](https://discord.com/invite/gggpkVgBf3)\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 30,
+      "type": "Fast Groups Muter (rgthree)",
+      "pos": [
+        40.0,
+        520.0
+      ],
+      "size": [
+        345.04998779296875,
+        130
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "title": "Enable Image Compare",
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "always one"
+      },
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 31,
+      "type": "Fast Groups Muter (rgthree)",
+      "pos": [
+        40.0,
+        680.0
+      ],
+      "size": [
+        345.04998779296875,
+        130
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "title": "Enable Image Compare",
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "always one"
+      },
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 29,
+      "type": "Fast Groups Muter (rgthree)",
+      "pos": [
+        40.0,
+        360.0
+      ],
+      "size": [
+        345.04998779296875,
+        130
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "title": "Enable Image Compare",
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "always one"
+      },
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 32,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        840.0
+      ],
+      "size": [
+        226,
+        14
+      ],
+      "flags": {
+        "no_title": true
+      },
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "ffcf2f56aa448f2df763b09b70857632792b7805"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 33,
+      "type": "MarkdownNote",
+      "pos": [
+        3380.0,
+        80.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Image · Node 11",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 11,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Image · Node 11\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 34,
+      "type": "MarkdownNote",
+      "pos": [
+        3380.0,
+        440.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Image · Node 12",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 12,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Image · Node 12\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 35,
+      "type": "MarkdownNote",
+      "pos": [
+        3380.0,
+        800.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Preview Image · Node 13",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 13,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Preview Image · Node 13\n\n**Zweck:** Preview the images without saving them to the ComfyUI output directory.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `images` (IMAGE, Link 15): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 36,
+      "type": "MarkdownNote",
+      "pos": [
+        3380.0,
+        1140.0
+      ],
+      "size": [
+        426.79998779296875,
+        587.2999877929688
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Side By Side Compare (RMBG) 🖼️🖼️ · Node 14",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 14,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Side By Side Compare (RMBG) 🖼️🖼️ · Node 14\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- `text1` = `Image 1` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `text2` = `Image 2` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `text3` = `Image 3` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `size_base` = `largest` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `text_color` = `#000000` — Steuert diesen Parameter. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `bg_color` = `#FFFFFF` — Steuert diesen Parameter. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image1` (IMAGE, Link 13): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image2` (IMAGE, Link 14): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image3` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 37,
+      "type": "MarkdownNote",
+      "pos": [
+        3880.0,
+        80.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Image · Node 17",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 17,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Image · Node 17\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 38,
+      "type": "MarkdownNote",
+      "pos": [
+        3880.0,
+        440.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Image · Node 19",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 19,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Image · Node 19\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 39,
+      "type": "MarkdownNote",
+      "pos": [
+        3880.0,
+        800.0
+      ],
+      "size": [
+        390,
+        349.1499938964844
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Image Comparer (rgthree) · Node 21",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 21,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Image Comparer (rgthree) · Node 21\n\n**Zweck:** Compares two images with a hover slider, or click from properties.\n\n**Einstellbare Werte**\n- `value` = `[{\"name\":\"A\",\"selected\":true,\"url\":\"/api/view?filename=rgthree.compare._temp_sizgs_00001_.png&type=temp&subfo…` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `image_a` (IMAGE, Link 21): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_b` (IMAGE, Link 22): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 40,
+      "type": "MarkdownNote",
+      "pos": [
+        3880.0,
+        1180.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Image · Node 22",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 22,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Image · Node 22\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 41,
+      "type": "MarkdownNote",
+      "pos": [
+        4360.0,
+        80.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Image · Node 24",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 24,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Image · Node 24\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 42,
+      "type": "MarkdownNote",
+      "pos": [
+        4360.0,
+        440.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Enable Image Compare · Node 29",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 29,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Enable Image Compare · Node 29\n\n**Zweck:** Aktiviert oder deaktiviert die zugeordneten Node-Gruppen gemeinsam, um Workflow-Zweige zu schalten.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `OPT_CONNECTION` (*, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 43,
+      "type": "MarkdownNote",
+      "pos": [
+        4360.0,
+        780.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Enable Image Compare · Node 30",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 30,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Enable Image Compare · Node 30\n\n**Zweck:** Aktiviert oder deaktiviert die zugeordneten Node-Gruppen gemeinsam, um Workflow-Zweige zu schalten.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `OPT_CONNECTION` (*, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 44,
+      "type": "MarkdownNote",
+      "pos": [
+        4360.0,
+        1120.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Enable Image Compare · Node 31",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 31,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Enable Image Compare · Node 31\n\n**Zweck:** Aktiviert oder deaktiviert die zugeordneten Node-Gruppen gemeinsam, um Workflow-Zweige zu schalten.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `OPT_CONNECTION` (*, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 45,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        920.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 46,
+      "type": "MarkdownNote",
+      "pos": [
+        4840.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 45",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 45,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 45\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      13,
+      11,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      14,
+      12,
+      0,
+      14,
+      1,
+      "IMAGE"
+    ],
+    [
+      15,
+      14,
+      0,
+      13,
+      0,
+      "IMAGE"
+    ],
+    [
+      21,
+      17,
+      0,
+      21,
+      0,
+      "IMAGE"
+    ],
+    [
+      22,
+      19,
+      0,
+      21,
+      1,
+      "IMAGE"
+    ],
+    [
+      25,
+      24,
+      0,
+      26,
+      0,
+      "IMAGE"
+    ],
+    [
+      26,
+      22,
+      0,
+      26,
+      1,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 3,
+      "title": "Image Compare (rghtree)",
+      "bounding": [
+        540.0,
+        0.0,
+        700.0,
+        1520.0
+      ],
+      "color": "#7C5CC4",
+      "flags": {},
+      "font_size": 24
+    },
+    {
+      "id": 4,
+      "title": "Image Comparer (itools)",
+      "bounding": [
+        1320.0,
+        0.0,
+        700.0,
+        1520.0
+      ],
+      "color": "#7C5CC4",
+      "flags": {},
+      "font_size": 24
+    },
+    {
+      "id": 2,
+      "title": "Image Compare (rmbg)",
+      "bounding": [
+        2100.0,
+        0.0,
+        1160.0,
+        1840.0
+      ],
+      "color": "#7C5CC4",
+      "flags": {},
+      "font_size": 24
+    }
+  ],
+  "config": {},
+  "extra": {
+    "workflowRendererVersion": "LG",
+    "ds": {
+      "scale": 0.2940834937055162,
+      "offset": [
+        788.1518351256094,
+        731.5718645991576
+      ]
+    },
+    "frontendVersion": "1.39.19",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true,
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 13,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "Image-Compare",
+      "source": "workflows/Image Utilities/Image-Compare.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "4c5fdbe981761ff473649f33bd21cac443d300b0d9273cb0228ca8313cde8e19",
+      "exceptions": [
+        "rgthree-authored-group-ids-and-titles-preserved"
+      ]
+    }
+  },
+  "version": 0.4
+}

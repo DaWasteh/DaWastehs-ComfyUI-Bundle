@@ -12,13 +12,15 @@ from pathlib import Path
 
 try:
     from tools.generate_dual_gpu_workflows import refresh_refinement
+    from tools.migrate_workflows_v092 import migrate_workflow
 except ModuleNotFoundError:
     from generate_dual_gpu_workflows import refresh_refinement
+    from migrate_workflows_v092 import migrate_workflow
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE_DIR = ROOT / "workflows" / "Reference to Video"
 PROMPT_DIR = ROOT / "workflows" / "Prompt Enhancer"
-TEMPLATE = PROMPT_DIR / "Qwen3VL_8b_fp8_scaled-Krea2-Prompt-Enhancer.json"
+TEMPLATE = ROOT / "assets" / "workflow-bases" / "Qwen3VL_8b_fp8_scaled-Krea2-Prompt-Enhancer.json"
 BASE_GUIDE = REFERENCE_DIR / "VIDEO_PROMPT_WRITING_GUIDE_base_en.md"
 REF_GUIDE = REFERENCE_DIR / "VIDEO_PROMPT_WRITING_GUIDE_ref_en.md"
 MODEL = r"Qwen\qwen3.5_4b_bf16.safetensors"
@@ -156,7 +158,7 @@ def build(enhancer: Enhancer) -> dict:
         "output_contract": "final prompt only",
     }
     refresh_refinement(workflow)
-    return workflow
+    return migrate_workflow(workflow, f"Prompt Enhancer/{enhancer.output}")
 
 
 def generate(destination: Path = PROMPT_DIR) -> list[Path]:

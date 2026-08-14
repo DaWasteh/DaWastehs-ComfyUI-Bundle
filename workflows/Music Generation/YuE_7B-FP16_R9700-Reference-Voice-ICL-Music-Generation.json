@@ -1,1 +1,1249 @@
-{"id":"669ba316-f34c-4ad8-acdd-db84c7b81d64","revision":0,"last_node_id":15,"last_link_id":7,"nodes":[{"id":1,"type":"YUE_Stage_A_Loader","pos":[0,0],"size":[390,262],"flags":{},"order":0,"mode":0,"inputs":[{"localized_name":"stage_A_repo","name":"stage_A_repo","type":"STRING","widget":{"name":"stage_A_repo"},"link":null},{"localized_name":"xcodec_ckpt","name":"xcodec_ckpt","type":"COMBO","widget":{"name":"xcodec_ckpt"},"link":null},{"localized_name":"quantization_model","name":"quantization_model","type":"COMBO","widget":{"name":"quantization_model"},"link":null},{"localized_name":"use_mmgp","name":"use_mmgp","type":"BOOLEAN","widget":{"name":"use_mmgp"},"link":null},{"localized_name":"stage1_cache_size","name":"stage1_cache_size","type":"INT","widget":{"name":"stage1_cache_size"},"link":null},{"localized_name":"exllamav2_cache_mode","name":"exllamav2_cache_mode","type":"COMBO","widget":{"name":"exllamav2_cache_mode"},"link":null},{"localized_name":"mmgp_profile","name":"mmgp_profile","type":"COMBO","widget":{"name":"mmgp_profile"},"link":null}],"outputs":[{"localized_name":"model","name":"model","type":"MODEL_YUE_A","links":[1]}],"title":"YuE Stage 1 ICL · FP16/SDPA · R9700","properties":{"Node name for S&R":"YUE_Stage_A_Loader"},"widgets_values":["L:/ComfyUI/ComfyUI/models/yue/YuE-s1-7B-anneal-en-icl","ckpt_00360000.pth","fp16",false,16384,"FP16","2"]},{"id":2,"type":"YUE_Stage_A_Sampler","pos":[520,0],"size":[500,690],"flags":{},"order":10,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL_YUE_A","link":1},{"localized_name":"reference_audio","name":"reference_audio","shape":7,"type":"AUDIO","link":6},{"localized_name":"genres_prompt","name":"genres_prompt","type":"STRING","widget":{"name":"genres_prompt"},"link":null},{"localized_name":"lyrics_prompt","name":"lyrics_prompt","type":"STRING","widget":{"name":"lyrics_prompt"},"link":null},{"localized_name":"seed","name":"seed","type":"INT","widget":{"name":"seed"},"link":null},{"localized_name":"run_n_segment","name":"run_n_segment","type":"INT","widget":{"name":"run_n_segment"},"link":null},{"localized_name":"target_duration_seconds","name":"target_duration_seconds","type":"FLOAT","widget":{"name":"target_duration_seconds"},"link":null},{"localized_name":"repetition_penalty","name":"repetition_penalty","type":"FLOAT","widget":{"name":"repetition_penalty"},"link":null},{"localized_name":"prompt_start_time","name":"prompt_start_time","type":"FLOAT","widget":{"name":"prompt_start_time"},"link":null},{"localized_name":"prompt_end_time","name":"prompt_end_time","type":"FLOAT","widget":{"name":"prompt_end_time"},"link":null},{"localized_name":"max_new_tokens","name":"max_new_tokens","type":"INT","widget":{"name":"max_new_tokens"},"link":null},{"localized_name":"use_dual_tracks_prompt","name":"use_dual_tracks_prompt","type":"BOOLEAN","widget":{"name":"use_dual_tracks_prompt"},"link":null},{"localized_name":"use_audio_prompt","name":"use_audio_prompt","type":"BOOLEAN","widget":{"name":"use_audio_prompt"},"link":null},{"localized_name":"offload_model","name":"offload_model","type":"BOOLEAN","widget":{"name":"offload_model"},"link":null},{"localized_name":"stage1_no_guidance","name":"stage1_no_guidance","type":"BOOLEAN","widget":{"name":"stage1_no_guidance"},"link":null}],"outputs":[{"localized_name":"stage1_set","name":"stage1_set","type":"STAGE_SET","slot_index":0,"links":[2]},{"localized_name":"info","name":"info","type":"quantization_model","slot_index":1,"links":[3]}],"title":"Referenzgesang + 540 s Ziel → YuE ICL Tokens","properties":{"Node name for S&R":"YUE_Stage_A_Sampler"},"widgets_values":["modern synthpop, female vocal, uplifting, cinematic, bright synthesizers, punchy electronic drums, emotional chorus","[Verse]\nNeon rain is falling on the avenue\nA distant signal wakes the sleeping city\n\n[Verse]\nEvery little frequency is leading back to you\nThrough the static and the midnight blue\nWe keep chasing sparks of light\n\n[Prechorus]\nThe silence turns to sound\nOur feet lift from the ground\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Instrumental]\nBright synthesizer lead and driving electronic drums\n\n[Verse]\nWindows flash like constellations in the rain\nEvery broken heartbeat learns to start again\nSide by side we cross the night\nFollowing the pulse of light\n\n[Prechorus]\nThe shadows fall behind\nYour hand is holding mine\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Bridge]\nIf the signal disappears\nI will sing above the fear\nEvery echo carries through\nAll the roads return to you\n\n[Instrumental]\nExtended cinematic synth solo with rising drums\n\n[Verse]\nMorning waits beyond the towers made of glass\nWe can make this electric moment last\nEvery color starts to show\nIn the river far below\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Breakdown]\nHeartbeat bass and distant vocal echoes\nAfterglow, afterglow\nNever let the signal go\n\n[Bridge]\nTurn the darkness into gold\nWrite a story never told\nWhen the final stars are low\nWe will still be afterglow\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Instrumental]\nLong final synthwave solo and emotional drum build\n\n[Bridge]\nOne more wave is rising through the night\nOne more chance to turn the dark to light\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Outro]\nNeon rain is fading from the avenue\nEvery distant signal still returns to you\n\n[Outro]\nHold the rhythm, soft and slow\nWe are made of afterglow",567946263,"randomize",20,540.0,1.1,0.0,30.0,3000,false,true,true,true]},{"id":3,"type":"YUE_Stage_B_Loader","pos":[1150,0],"size":[390,206],"flags":{},"order":11,"mode":0,"inputs":[{"localized_name":"info","name":"info","type":"quantization_model","link":3},{"localized_name":"stage_B_repo","name":"stage_B_repo","type":"STRING","widget":{"name":"stage_B_repo"},"link":null},{"localized_name":"stage2_cache_size","name":"stage2_cache_size","type":"INT","widget":{"name":"stage2_cache_size"},"link":null},{"localized_name":"stage2_batch_size","name":"stage2_batch_size","type":"INT","widget":{"name":"stage2_batch_size"},"link":null},{"localized_name":"exllamav2_cache_mode","name":"exllamav2_cache_mode","type":"COMBO","widget":{"name":"exllamav2_cache_mode"},"link":null},{"localized_name":"use_mmgp","name":"use_mmgp","type":"BOOLEAN","widget":{"name":"use_mmgp"},"link":null}],"outputs":[{"localized_name":"model","name":"model","type":"MODEL_YUE_B","links":[4]}],"title":"YuE Stage 2 · FP16/SDPA · R9700","properties":{"Node name for S&R":"YUE_Stage_B_Loader"},"widgets_values":["L:/ComfyUI/ComfyUI/models/yue/YuE-s2-1B-general",8192,1,"FP16",false]},{"id":4,"type":"YUE_Stage_B_Sampler","pos":[1660,0],"size":[390,180],"flags":{},"order":12,"mode":0,"inputs":[{"localized_name":"stage1_set","name":"stage1_set","type":"STAGE_SET","link":2},{"localized_name":"model","name":"model","type":"MODEL_YUE_B","link":4},{"localized_name":"vocal_decoder_ckpt","name":"vocal_decoder_ckpt","type":"COMBO","widget":{"name":"vocal_decoder_ckpt"},"link":null},{"localized_name":"inst_decoder_ckpt","name":"inst_decoder_ckpt","type":"COMBO","widget":{"name":"inst_decoder_ckpt"},"link":null},{"localized_name":"rescale","name":"rescale","type":"BOOLEAN","widget":{"name":"rescale"},"link":null}],"outputs":[{"localized_name":"audio","name":"audio","type":"AUDIO","slot_index":0,"links":[5]},{"localized_name":"string","name":"string","type":"STRING","slot_index":1,"links":null}],"title":"YuE Stage 2 + 44.1-kHz-Upsampler","properties":{"Node name for S&R":"YUE_Stage_B_Sampler"},"widgets_values":["decoder_131000.pth","decoder_151000.pth",true]},{"id":5,"type":"SaveAudioMP3","pos":[2180,0],"size":[420,170],"flags":{},"order":13,"mode":0,"inputs":[{"localized_name":"audio","name":"audio","type":"AUDIO","link":7},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","widget":{"name":"filename_prefix"},"link":null},{"localized_name":"quality","name":"quality","type":"COMBO","widget":{"name":"quality"},"link":null},{"localized_name":"audioUI","name":"audioUI","type":"AUDIO_UI","widget":{"name":"audioUI"},"link":null}],"outputs":[{"localized_name":"audio","name":"audio","type":"AUDIO","links":null}],"title":"YuE ICL als MP3 speichern","properties":{"Node name for S&R":"SaveAudioMP3","cnr_id":"comfy-core"},"widgets_values":["audio/YuE_ICL_ReferenceVoice_R9700_","V0"]},{"id":6,"type":"PixaromaRunTimer","pos":[0,810],"size":[226,14],"flags":{"no_title":true},"order":1,"mode":0,"inputs":[],"outputs":[],"properties":{"Node name for S&R":"PixaromaRunTimer","cnr_id":"ComfyUI-Pixaroma"},"widgets_values":[{"version":1,"color":"#f66744","decimals":0,"chime":true,"sound":"","volume":70}],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":7,"type":"MarkdownNote","pos":[0,300],"size":[390,430],"flags":{},"order":2,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE Stage 1 Loader · Node 1","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":1},"widgets_values":["# Erklärung · YuE Stage 1 ICL Loader\n\n**Zweck:** Lädt den separaten `YuE-s1-7B-anneal-en-icl`-Checkpoint. Nur dieser Checkpoint ist für Audio-Referenzen trainiert; der CoT-Checkpoint des normalen Workflows darf dafür nicht verwendet werden.\n\n**R9700:** `fp16`, SDPA, `use_mmgp=False`, kein TorchInductor/Triton. Der lokale Loader prüft zusätzlich, dass bei aktivem Audio-Prompt wirklich ein ICL-Modell geladen wurde."],"color":"#1b2638","bgcolor":"#101722"},{"id":8,"type":"MarkdownNote","pos":[520,750],"size":[500,520],"flags":{},"order":3,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE Stage 1 Sampler · Node 2","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":2},"widgets_values":["# Erklärung · YuE ICL Sampler\n\n**Sekundenwahl:** `target_duration_seconds=540` erzwingt die geplante Codec-Tokenmenge. `run_n_segment=20` stellt genug Lyrics-Blöcke bereit; 540 Sekunden benötigen 18, 600 Sekunden alle 20 Sektionen. `max_new_tokens=3000` entspricht höchstens 30 Sekunden pro Sektion.\n\n**Referenzstimme / Referenzsong:** `use_audio_prompt=True`, `use_dual_tracks_prompt=False` und der Eingang `reference_audio` ist verbunden. `prompt_start_time=0`, `prompt_end_time=30` wählen den empfohlenen 30-Sekunden-Ausschnitt. Ein isolierter Vocal-Track fokussiert Stimme/Timbre; ein kompletter Mix überträgt zusätzlich Arrangement und Instrumentierung. YuE ICL ist Audio-/Stil-Conditioning und garantiert keine identische Voice-Clone-Stimme.\n\n**Ohne Input-Voice:** Nicht nur den Audio-Link entfernen. Stattdessen den separaten CoT-Workflow verwenden (`YuE-s1-7B-anneal-en-cot`, `use_audio_prompt=False`), weil CoT mehr Vielfalt bietet und ICL andere Gewichte/Einstellungen benötigt."],"color":"#1b2638","bgcolor":"#101722"},{"id":9,"type":"MarkdownNote","pos":[1150,260],"size":[390,400],"flags":{},"order":4,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE Stage 2 Loader · Node 3","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":3},"widgets_values":["# Erklärung · YuE Stage 2 Loader\n\n**Zweck:** Lädt das lokale YuE-Stage-2-Modell für die feineren Audiocodes.\n\n**Einstellungen**\n- Batch 1 ist der robuste R9700-Startwert.\n- `use_mmgp=False` vermeidet die nicht installierte/offiziell unbestätigte MMGP-Quantisierung."],"color":"#1b2638","bgcolor":"#101722"},{"id":10,"type":"MarkdownNote","pos":[1660,260],"size":[390,400],"flags":{},"order":5,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE Stage 2 Sampler · Node 4","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":4},"widgets_values":["# Erklärung · YuE Stage 2 + Upsampler\n\n**Zweck:** Verfeinert Stage 1, dekodiert Gesang/Instrumental und rekonstruiert 44,1-kHz-Audio.\n\n**Modelle**\n- `decoder_131000.pth`: Vocal Decoder\n- `decoder_151000.pth`: Instrumental Decoder\n- `rescale=True`: schützt vor Clipping."],"color":"#1b2638","bgcolor":"#101722"},{"id":11,"type":"MarkdownNote","pos":[2180,260],"size":[420,350],"flags":{},"order":6,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · YuE MP3 speichern · Node 5","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":5},"widgets_values":["# Erklärung · YuE MP3 speichern\n\n**Zweck:** Speichert das fertige Lied unter `output/audio/` als hochwertiges MP3.\n\n`V0` ist die höchste variable MP3-Qualitätsstufe. Der Dateiname erhält automatisch einen eindeutigen Suffix."],"color":"#1b2638","bgcolor":"#101722"},{"id":12,"type":"MarkdownNote","pos":[2180,680],"size":[560,500],"flags":{},"order":7,"mode":0,"inputs":[],"outputs":[],"title":"YuE · RDNA4- und LoRA-Hinweise","properties":{"Node name for S&R":"MarkdownNote"},"widgets_values":["# YuE ICL Reference Voice auf diesem System\n\nDieser Workflow ist die Referenz-Audio-Variante für die **R9700 32 GB**. Er verwendet den ICL-Checkpoint, einen verbundenen Core-`LoadAudio`-Node und Single-Track-ICL.\n\n## Mit Referenzstimme\n- `stage_A_repo=...anneal-en-icl`\n- `use_audio_prompt=True`, `use_dual_tracks_prompt=False`\n- `reference_audio` verbunden; idealerweise etwa 30 Sekunden isolierter Gesang/Chorus\n- `prompt_start_time/end_time` schneiden nur die Referenz\n\n## Ohne Referenzstimme\nDen normalen CoT-Workflow verwenden: `...anneal-en-cot`, beide Prompt-Schalter AUS und kein Audio-Link. Nicht bloß den Schalter in diesem ICL-Workflow deaktivieren, wenn freie CoT-Generierung gewünscht ist.\n\n## Dauer\n`target_duration_seconds` ist 5–600 Sekunden. Die Tokenplanung verhindert vorzeitiges EOA; lange Läufe können trotzdem mehrere Stunden dauern."],"color":"#1b2638","bgcolor":"#101722"},{"id":13,"type":"LoadAudio","pos":[520,-330],"size":[500,138],"flags":{},"order":8,"mode":0,"inputs":[{"localized_name":"audio","name":"audio","type":"COMBO","widget":{"name":"audio"},"link":null},{"localized_name":"audioUI","name":"audioUI","type":"AUDIO_UI","widget":{"name":"audioUI"},"link":null},{"localized_name":"choose file to upload","name":"upload","type":"AUDIOUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"AUDIO","name":"AUDIO","type":"AUDIO","links":[6]}],"title":"Optionalen Referenzgesang laden · ca. 30 s","properties":{"Node name for S&R":"LoadAudio","cnr_id":"comfy-core"},"widgets_values":["I Knew You Were Trouble.mp3",null,null],"color":"#004835","bgcolor":"#1d1d1d"},{"id":14,"type":"MarkdownNote","pos":[1050,-350],"size":[560,280],"flags":{},"order":9,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Referenzgesang laden · Node 13","properties":{"Node name for S&R":"MarkdownNote","dawasteh_generated_note":true,"dawasteh_note_for":13},"widgets_values":["# Erklärung · Referenzgesang laden\n\nHier eine eigene Audio-Datei hochladen/auswählen. Für eine möglichst deutliche Stimmreferenz einen sauberen, isolierten Vocal- oder Chorus-Ausschnitt verwenden; für Stil plus Arrangement einen kompletten Mix. YuE empfiehlt ungefähr 30 Sekunden.\n\nDie voreingestellte Datei ist nur ein lokaler Platzhalter und sollte vor dem Lauf ersetzt werden."],"color":"#1b2638","bgcolor":"#101722"},{"id":15,"type":"VRAM_Debug","pos":[1920.0,0.0],"size":[320,174],"flags":{},"order":14,"mode":0,"inputs":[{"name":"empty_cache","type":"BOOLEAN","widget":{"name":"empty_cache"},"link":null},{"name":"gc_collect","type":"BOOLEAN","widget":{"name":"gc_collect"},"link":null},{"name":"unload_all_models","type":"BOOLEAN","widget":{"name":"unload_all_models"},"link":null},{"name":"any_input","type":"*","link":5},{"name":"image_pass","type":"IMAGE","link":null},{"name":"model_pass","type":"MODEL","link":null}],"outputs":[{"name":"any_output","type":"*","links":[7]},{"name":"image_pass","type":"IMAGE","links":null},{"name":"model_pass","type":"MODEL","links":null},{"name":"freemem_before","type":"INT","links":null},{"name":"freemem_after","type":"INT","links":null}],"properties":{"Node name for S&R":"VRAM_Debug","dawasteh_memory_cleanup":{"version":1,"placement":"terminal","reason":"after final media barrier, before SaveAudioMP3"}},"widgets_values":[true,true,true],"color":"#3b1f2b","bgcolor":"#24131b"}],"links":[[1,1,0,2,0,"MODEL_YUE_A"],[2,2,0,4,0,"STAGE_SET"],[3,2,1,3,0,"quantization_model"],[4,3,0,4,1,"MODEL_YUE_B"],[5,4,0,15,3,"AUDIO"],[6,13,0,2,1,"AUDIO"],[7,15,0,5,0,"AUDIO"]],"groups":[],"config":{},"extra":{"ds":{"scale":1.2444850000000018,"offset":[71.91636312798298,226.64187114281876]},"workflowRendererVersion":"LG","dawasteh_workflow_refinement":{"version":1,"target_gpu":"AMD Radeon AI PRO R9700 32GB","generated_notes":6}},"version":0.4}
+{
+  "id": "669ba316-f34c-4ad8-acdd-db84c7b81d64",
+  "revision": 0,
+  "last_node_id": 18,
+  "last_link_id": 7,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "YUE_Stage_A_Loader",
+      "pos": [
+        760.0,
+        80.0
+      ],
+      "size": [
+        390,
+        262
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "stage_A_repo",
+          "name": "stage_A_repo",
+          "type": "STRING",
+          "widget": {
+            "name": "stage_A_repo"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "xcodec_ckpt",
+          "name": "xcodec_ckpt",
+          "type": "COMBO",
+          "widget": {
+            "name": "xcodec_ckpt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "quantization_model",
+          "name": "quantization_model",
+          "type": "COMBO",
+          "widget": {
+            "name": "quantization_model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_mmgp",
+          "name": "use_mmgp",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_mmgp"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "stage1_cache_size",
+          "name": "stage1_cache_size",
+          "type": "INT",
+          "widget": {
+            "name": "stage1_cache_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "exllamav2_cache_mode",
+          "name": "exllamav2_cache_mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "exllamav2_cache_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "mmgp_profile",
+          "name": "mmgp_profile",
+          "type": "COMBO",
+          "widget": {
+            "name": "mmgp_profile"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL_YUE_A",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "title": "YuE Stage 1 ICL · FP16/SDPA · R9700",
+      "properties": {
+        "Node name for S&R": "YUE_Stage_A_Loader"
+      },
+      "widgets_values": [
+        "L:/ComfyUI/ComfyUI/models/yue/YuE-s1-7B-anneal-en-icl",
+        "ckpt_00360000.pth",
+        "fp16",
+        false,
+        16384,
+        "FP16",
+        "2"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "YUE_Stage_A_Sampler",
+      "pos": [
+        1900.0,
+        80.0
+      ],
+      "size": [
+        500,
+        690
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL_YUE_A",
+          "link": 1
+        },
+        {
+          "localized_name": "reference_audio",
+          "name": "reference_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 6
+        },
+        {
+          "localized_name": "genres_prompt",
+          "name": "genres_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "genres_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lyrics_prompt",
+          "name": "lyrics_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "lyrics_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "run_n_segment",
+          "name": "run_n_segment",
+          "type": "INT",
+          "widget": {
+            "name": "run_n_segment"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "target_duration_seconds",
+          "name": "target_duration_seconds",
+          "type": "FLOAT",
+          "widget": {
+            "name": "target_duration_seconds"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "repetition_penalty",
+          "name": "repetition_penalty",
+          "type": "FLOAT",
+          "widget": {
+            "name": "repetition_penalty"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "prompt_start_time",
+          "name": "prompt_start_time",
+          "type": "FLOAT",
+          "widget": {
+            "name": "prompt_start_time"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "prompt_end_time",
+          "name": "prompt_end_time",
+          "type": "FLOAT",
+          "widget": {
+            "name": "prompt_end_time"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "max_new_tokens",
+          "name": "max_new_tokens",
+          "type": "INT",
+          "widget": {
+            "name": "max_new_tokens"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_dual_tracks_prompt",
+          "name": "use_dual_tracks_prompt",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_dual_tracks_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_audio_prompt",
+          "name": "use_audio_prompt",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_audio_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "offload_model",
+          "name": "offload_model",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "offload_model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "stage1_no_guidance",
+          "name": "stage1_no_guidance",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "stage1_no_guidance"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "stage1_set",
+          "name": "stage1_set",
+          "type": "STAGE_SET",
+          "slot_index": 0,
+          "links": [
+            2
+          ]
+        },
+        {
+          "localized_name": "info",
+          "name": "info",
+          "type": "quantization_model",
+          "slot_index": 1,
+          "links": [
+            3
+          ]
+        }
+      ],
+      "title": "Referenzgesang + 540 s Ziel → YuE ICL Tokens",
+      "properties": {
+        "Node name for S&R": "YUE_Stage_A_Sampler"
+      },
+      "widgets_values": [
+        "modern synthpop, female vocal, uplifting, cinematic, bright synthesizers, punchy electronic drums, emotional chorus",
+        "[Verse]\nNeon rain is falling on the avenue\nA distant signal wakes the sleeping city\n\n[Verse]\nEvery little frequency is leading back to you\nThrough the static and the midnight blue\nWe keep chasing sparks of light\n\n[Prechorus]\nThe silence turns to sound\nOur feet lift from the ground\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Instrumental]\nBright synthesizer lead and driving electronic drums\n\n[Verse]\nWindows flash like constellations in the rain\nEvery broken heartbeat learns to start again\nSide by side we cross the night\nFollowing the pulse of light\n\n[Prechorus]\nThe shadows fall behind\nYour hand is holding mine\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Bridge]\nIf the signal disappears\nI will sing above the fear\nEvery echo carries through\nAll the roads return to you\n\n[Instrumental]\nExtended cinematic synth solo with rising drums\n\n[Verse]\nMorning waits beyond the towers made of glass\nWe can make this electric moment last\nEvery color starts to show\nIn the river far below\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Breakdown]\nHeartbeat bass and distant vocal echoes\nAfterglow, afterglow\nNever let the signal go\n\n[Bridge]\nTurn the darkness into gold\nWrite a story never told\nWhen the final stars are low\nWe will still be afterglow\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Instrumental]\nLong final synthwave solo and emotional drum build\n\n[Bridge]\nOne more wave is rising through the night\nOne more chance to turn the dark to light\n\n[Chorus]\nRaise the skyline, let the whole world know\nWe are burning brighter everywhere we go\nHold the rhythm, don't let go\nWe are made of afterglow\n\n[Outro]\nNeon rain is fading from the avenue\nEvery distant signal still returns to you\n\n[Outro]\nHold the rhythm, soft and slow\nWe are made of afterglow",
+        567946263,
+        "randomize",
+        20,
+        540.0,
+        1.1,
+        0.0,
+        30.0,
+        3000,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "id": 3,
+      "type": "YUE_Stage_B_Loader",
+      "pos": [
+        2560.0,
+        80.0
+      ],
+      "size": [
+        390,
+        206
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "info",
+          "name": "info",
+          "type": "quantization_model",
+          "link": 3
+        },
+        {
+          "localized_name": "stage_B_repo",
+          "name": "stage_B_repo",
+          "type": "STRING",
+          "widget": {
+            "name": "stage_B_repo"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "stage2_cache_size",
+          "name": "stage2_cache_size",
+          "type": "INT",
+          "widget": {
+            "name": "stage2_cache_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "stage2_batch_size",
+          "name": "stage2_batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "stage2_batch_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "exllamav2_cache_mode",
+          "name": "exllamav2_cache_mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "exllamav2_cache_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_mmgp",
+          "name": "use_mmgp",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_mmgp"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL_YUE_B",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "title": "YuE Stage 2 · FP16/SDPA · R9700",
+      "properties": {
+        "Node name for S&R": "YUE_Stage_B_Loader"
+      },
+      "widgets_values": [
+        "L:/ComfyUI/ComfyUI/models/yue/YuE-s2-1B-general",
+        8192,
+        1,
+        "FP16",
+        false
+      ]
+    },
+    {
+      "id": 4,
+      "type": "YUE_Stage_B_Sampler",
+      "pos": [
+        1900.0,
+        800.0
+      ],
+      "size": [
+        390,
+        180
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "stage1_set",
+          "name": "stage1_set",
+          "type": "STAGE_SET",
+          "link": 2
+        },
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL_YUE_B",
+          "link": 4
+        },
+        {
+          "localized_name": "vocal_decoder_ckpt",
+          "name": "vocal_decoder_ckpt",
+          "type": "COMBO",
+          "widget": {
+            "name": "vocal_decoder_ckpt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "inst_decoder_ckpt",
+          "name": "inst_decoder_ckpt",
+          "type": "COMBO",
+          "widget": {
+            "name": "inst_decoder_ckpt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "rescale",
+          "name": "rescale",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "rescale"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "slot_index": 0,
+          "links": [
+            5
+          ]
+        },
+        {
+          "localized_name": "string",
+          "name": "string",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": null
+        }
+      ],
+      "title": "YuE Stage 2 + 44.1-kHz-Upsampler",
+      "properties": {
+        "Node name for S&R": "YUE_Stage_B_Sampler"
+      },
+      "widgets_values": [
+        "decoder_131000.pth",
+        "decoder_151000.pth",
+        true
+      ]
+    },
+    {
+      "id": 5,
+      "type": "SaveAudioMP3",
+      "pos": [
+        2560.0,
+        320.0
+      ],
+      "size": [
+        420,
+        170
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 7
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "quality",
+          "name": "quality",
+          "type": "COMBO",
+          "widget": {
+            "name": "quality"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "audioUI",
+          "name": "audioUI",
+          "type": "AUDIO_UI",
+          "widget": {
+            "name": "audioUI"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "links": null
+        }
+      ],
+      "title": "YuE ICL als MP3 speichern",
+      "properties": {
+        "Node name for S&R": "SaveAudioMP3",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "audio/YuE_ICL_ReferenceVoice_R9700_",
+        "V0"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        226,
+        14
+      ],
+      "flags": {
+        "no_title": true
+      },
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 7,
+      "type": "MarkdownNote",
+      "pos": [
+        3140.0,
+        80.0
+      ],
+      "size": [
+        390,
+        430
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE Stage 1 Loader · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 1
+      },
+      "widgets_values": [
+        "# Erklärung · YuE Stage 1 ICL Loader\n\n**Zweck:** Lädt den separaten `YuE-s1-7B-anneal-en-icl`-Checkpoint. Nur dieser Checkpoint ist für Audio-Referenzen trainiert; der CoT-Checkpoint des normalen Workflows darf dafür nicht verwendet werden.\n\n**R9700:** `fp16`, SDPA, `use_mmgp=False`, kein TorchInductor/Triton. Der lokale Loader prüft zusätzlich, dass bei aktivem Audio-Prompt wirklich ein ICL-Modell geladen wurde."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 8,
+      "type": "MarkdownNote",
+      "pos": [
+        3140.0,
+        560.0
+      ],
+      "size": [
+        500,
+        520
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE Stage 1 Sampler · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 2
+      },
+      "widgets_values": [
+        "# Erklärung · YuE ICL Sampler\n\n**Sekundenwahl:** `target_duration_seconds=540` erzwingt die geplante Codec-Tokenmenge. `run_n_segment=20` stellt genug Lyrics-Blöcke bereit; 540 Sekunden benötigen 18, 600 Sekunden alle 20 Sektionen. `max_new_tokens=3000` entspricht höchstens 30 Sekunden pro Sektion.\n\n**Referenzstimme / Referenzsong:** `use_audio_prompt=True`, `use_dual_tracks_prompt=False` und der Eingang `reference_audio` ist verbunden. `prompt_start_time=0`, `prompt_end_time=30` wählen den empfohlenen 30-Sekunden-Ausschnitt. Ein isolierter Vocal-Track fokussiert Stimme/Timbre; ein kompletter Mix überträgt zusätzlich Arrangement und Instrumentierung. YuE ICL ist Audio-/Stil-Conditioning und garantiert keine identische Voice-Clone-Stimme.\n\n**Ohne Input-Voice:** Nicht nur den Audio-Link entfernen. Stattdessen den separaten CoT-Workflow verwenden (`YuE-s1-7B-anneal-en-cot`, `use_audio_prompt=False`), weil CoT mehr Vielfalt bietet und ICL andere Gewichte/Einstellungen benötigt."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 9,
+      "type": "MarkdownNote",
+      "pos": [
+        3720.0,
+        80.0
+      ],
+      "size": [
+        390,
+        400
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE Stage 2 Loader · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 3
+      },
+      "widgets_values": [
+        "# Erklärung · YuE Stage 2 Loader\n\n**Zweck:** Lädt das lokale YuE-Stage-2-Modell für die feineren Audiocodes.\n\n**Einstellungen**\n- Batch 1 ist der robuste R9700-Startwert.\n- `use_mmgp=False` vermeidet die nicht installierte/offiziell unbestätigte MMGP-Quantisierung."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 10,
+      "type": "MarkdownNote",
+      "pos": [
+        3720.0,
+        520.0
+      ],
+      "size": [
+        390,
+        400
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE Stage 2 Sampler · Node 4",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 4
+      },
+      "widgets_values": [
+        "# Erklärung · YuE Stage 2 + Upsampler\n\n**Zweck:** Verfeinert Stage 1, dekodiert Gesang/Instrumental und rekonstruiert 44,1-kHz-Audio.\n\n**Modelle**\n- `decoder_131000.pth`: Vocal Decoder\n- `decoder_151000.pth`: Instrumental Decoder\n- `rescale=True`: schützt vor Clipping."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 11,
+      "type": "MarkdownNote",
+      "pos": [
+        4200.0,
+        80.0
+      ],
+      "size": [
+        420,
+        350
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE MP3 speichern · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 5
+      },
+      "widgets_values": [
+        "# Erklärung · YuE MP3 speichern\n\n**Zweck:** Speichert das fertige Lied unter `output/audio/` als hochwertiges MP3.\n\n`V0` ist die höchste variable MP3-Qualitätsstufe. Der Dateiname erhält automatisch einen eindeutigen Suffix."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 12,
+      "type": "MarkdownNote",
+      "pos": [
+        40.0,
+        160.0
+      ],
+      "size": [
+        560,
+        500
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "YuE · RDNA4- und LoRA-Hinweise",
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# YuE ICL Reference Voice auf diesem System\n\nDieser Workflow ist die Referenz-Audio-Variante für die **R9700 32 GB**. Er verwendet den ICL-Checkpoint, einen verbundenen Core-`LoadAudio`-Node und Single-Track-ICL.\n\n## Mit Referenzstimme\n- `stage_A_repo=...anneal-en-icl`\n- `use_audio_prompt=True`, `use_dual_tracks_prompt=False`\n- `reference_audio` verbunden; idealerweise etwa 30 Sekunden isolierter Gesang/Chorus\n- `prompt_start_time/end_time` schneiden nur die Referenz\n\n## Ohne Referenzstimme\nDen normalen CoT-Workflow verwenden: `...anneal-en-cot`, beide Prompt-Schalter AUS und kein Audio-Link. Nicht bloß den Schalter in diesem ICL-Workflow deaktivieren, wenn freie CoT-Generierung gewünscht ist.\n\n## Dauer\n`target_duration_seconds` ist 5–600 Sekunden. Die Tokenplanung verhindert vorzeitiges EOA; lange Läufe können trotzdem mehrere Stunden dauern."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 13,
+      "type": "LoadAudio",
+      "pos": [
+        760.0,
+        380.0
+      ],
+      "size": [
+        500,
+        138
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "COMBO",
+          "widget": {
+            "name": "audio"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "audioUI",
+          "name": "audioUI",
+          "type": "AUDIO_UI",
+          "widget": {
+            "name": "audioUI"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "AUDIOUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "AUDIO",
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "Optionalen Referenzgesang laden · ca. 30 s",
+      "properties": {
+        "Node name for S&R": "LoadAudio",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "I Knew You Were Trouble.mp3",
+        null,
+        null
+      ],
+      "color": "#004835",
+      "bgcolor": "#1d1d1d"
+    },
+    {
+      "id": 14,
+      "type": "MarkdownNote",
+      "pos": [
+        4200.0,
+        480.0
+      ],
+      "size": [
+        560,
+        280
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Referenzgesang laden · Node 13",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "dawasteh_generated_note": true,
+        "dawasteh_note_for": 13
+      },
+      "widgets_values": [
+        "# Erklärung · Referenzgesang laden\n\nHier eine eigene Audio-Datei hochladen/auswählen. Für eine möglichst deutliche Stimmreferenz einen sauberen, isolierten Vocal- oder Chorus-Ausschnitt verwenden; für Stil plus Arrangement einen kompletten Mix. YuE empfiehlt ungefähr 30 Sekunden.\n\nDie voreingestellte Datei ist nur ein lokaler Platzhalter und sollte vor dem Lauf ersetzt werden."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 15,
+      "type": "VRAM_Debug",
+      "pos": [
+        1420.0,
+        80.0
+      ],
+      "size": [
+        320,
+        174
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "empty_cache",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "empty_cache"
+          },
+          "link": null
+        },
+        {
+          "name": "gc_collect",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "gc_collect"
+          },
+          "link": null
+        },
+        {
+          "name": "unload_all_models",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "unload_all_models"
+          },
+          "link": null
+        },
+        {
+          "name": "any_input",
+          "type": "*",
+          "link": 5
+        },
+        {
+          "name": "image_pass",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "model_pass",
+          "type": "MODEL",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "any_output",
+          "type": "*",
+          "links": [
+            7
+          ]
+        },
+        {
+          "name": "image_pass",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "model_pass",
+          "type": "MODEL",
+          "links": null
+        },
+        {
+          "name": "freemem_before",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "freemem_after",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VRAM_Debug",
+        "dawasteh_memory_cleanup": {
+          "version": 1,
+          "placement": "terminal",
+          "reason": "after final media barrier, before SaveAudioMP3"
+        }
+      },
+      "widgets_values": [
+        true,
+        true,
+        true
+      ],
+      "color": "#3b1f2b",
+      "bgcolor": "#24131b"
+    },
+    {
+      "id": 16,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        700.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 17,
+      "type": "MarkdownNote",
+      "pos": [
+        4840.0,
+        80.0
+      ],
+      "size": [
+        390,
+        481
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VRAM Debug · Node 15",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 15,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VRAM Debug · Node 15\n\n**Zweck:** Returns the inputs unchanged, they are only used as triggers,   ↵ and performs comfy model management functions and garbage collection,   ↵ reports free VRAM before and after the operations.\n\n**Einstellbare Werte**\n- `empty_cache` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `gc_collect` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `unload_all_models` = `True` — Steuert diesen Parameter. AN gibt Modell-/VRAM-Speicher nach dem Lauf frei, macht den nächsten Lauf aber langsamer; AUS hält das Modell für Wiederholungen im Cache.\n\n**Eingänge**\n- `empty_cache` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gc_collect` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `unload_all_models` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `any_input` (*, Link 5): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_pass` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_pass` (MODEL, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `any_output` (*, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `image_pass` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `model_pass` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_before` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_after` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 18,
+      "type": "MarkdownNote",
+      "pos": [
+        4840.0,
+        600.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 16",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 16,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 16\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "MODEL_YUE_A"
+    ],
+    [
+      2,
+      2,
+      0,
+      4,
+      0,
+      "STAGE_SET"
+    ],
+    [
+      3,
+      2,
+      1,
+      3,
+      0,
+      "quantization_model"
+    ],
+    [
+      4,
+      3,
+      0,
+      4,
+      1,
+      "MODEL_YUE_B"
+    ],
+    [
+      5,
+      4,
+      0,
+      15,
+      3,
+      "AUDIO"
+    ],
+    [
+      6,
+      13,
+      0,
+      2,
+      1,
+      "AUDIO"
+    ],
+    [
+      7,
+      15,
+      0,
+      5,
+      0,
+      "AUDIO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        640.0,
+        920.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        720.0,
+        0.0,
+        580.0,
+        560.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1380.0,
+        0.0,
+        400.0,
+        300.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        1860.0,
+        0.0,
+        580.0,
+        1020.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2520.0,
+        0.0,
+        500.0,
+        520.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        3100.0,
+        0.0,
+        2180.0,
+        1120.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.2444850000000018,
+      "offset": [
+        71.91636312798298,
+        226.64187114281876
+      ]
+    },
+    "workflowRendererVersion": "LG",
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "target_gpu": "AMD Radeon AI PRO R9700 32GB",
+      "generated_notes": 8,
+      "layout": "rodent-v1",
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "YuE_7B-FP16_R9700-Reference-Voice-ICL-Music-Generation",
+      "source": "workflows/Music Generation/YuE_7B-FP16_R9700-Reference-Voice-ICL-Music-Generation.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_duration_seconds": {
+      "version": 1,
+      "unit": "seconds",
+      "mode": "native-seconds"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "0c2e2e3cc3b2f3dde7bbe0ffd71d479782e743f02b58f3f6bf30036dbd7e2f0f",
+      "exceptions": []
+    }
+  },
+  "version": 0.4
+}

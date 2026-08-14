@@ -1,15 +1,15 @@
 {
   "id": "loop-pixaroma---carry-two-values",
   "revision": 0,
-  "last_node_id": 28,
+  "last_node_id": 30,
   "last_link_id": 9,
   "nodes": [
     {
       "id": 1,
       "type": "PixaromaLabel",
       "pos": [
-        147.0,
-        84.6
+        580.0,
+        80.0
       ],
       "size": [
         475,
@@ -36,8 +36,8 @@
       "id": 2,
       "type": "PixaromaLabel",
       "pos": [
-        147.0,
-        216.2
+        580.0,
+        180.0
       ],
       "size": [
         591,
@@ -64,8 +64,8 @@
       "id": 20,
       "type": "PixaromaLoopStart",
       "pos": [
-        147.0,
-        846.0
+        1260.0,
+        320.0
       ],
       "size": [
         270,
@@ -165,8 +165,8 @@
       "id": 21,
       "type": "PixaromaCombine",
       "pos": [
-        1151.5,
-        846.0
+        1680.0,
+        80.0
       ],
       "size": [
         165,
@@ -207,8 +207,8 @@
       "id": 22,
       "type": "PixaromaCombine",
       "pos": [
-        1151.5,
-        1198.5
+        1680.0,
+        160.0
       ],
       "size": [
         165,
@@ -249,8 +249,8 @@
       "id": 23,
       "type": "PixaromaLoopEnd",
       "pos": [
-        1984.5,
-        846.0
+        1680.0,
+        240.0
       ],
       "size": [
         168,
@@ -337,8 +337,8 @@
       "id": 24,
       "type": "PixaromaPreview",
       "pos": [
-        2670.5,
-        799.0
+        1680.0,
+        400.0
       ],
       "size": [
         300,
@@ -375,8 +375,8 @@
       "id": 25,
       "type": "PixaromaShowText",
       "pos": [
-        2670.5,
-        1786.0
+        1680.0,
+        820.0
       ],
       "size": [
         260,
@@ -412,8 +412,8 @@
       "id": 26,
       "type": "EmptyImage",
       "pos": [
-        147.0,
-        1428.8
+        1260.0,
+        540.0
       ],
       "size": [
         270,
@@ -447,8 +447,8 @@
       "id": 10,
       "type": "PixaromaLabel",
       "pos": [
-        147.0,
-        493.5
+        580.0,
+        280.0
       ],
       "size": [
         155,
@@ -475,8 +475,8 @@
       "id": 11,
       "type": "PixaromaLabel",
       "pos": [
-        1151.5,
-        540.5
+        580.0,
+        400.0
       ],
       "size": [
         146,
@@ -503,8 +503,8 @@
       "id": 12,
       "type": "PixaromaLabel",
       "pos": [
-        1641.5,
-        1186.75
+        580.0,
+        520.0
       ],
       "size": [
         146,
@@ -531,8 +531,8 @@
       "id": 13,
       "type": "PixaromaLabel",
       "pos": [
-        2670.5,
-        493.5
+        1260.0,
+        80.0
       ],
       "size": [
         178,
@@ -559,8 +559,8 @@
       "id": 14,
       "type": "PixaromaLabel",
       "pos": [
-        857.5,
-        1428.8
+        1260.0,
+        200.0
       ],
       "size": [
         188,
@@ -587,8 +587,8 @@
       "id": 27,
       "type": "PixaromaRunTimer",
       "pos": [
-        147.0,
-        2373.5
+        40.0,
+        80.0
       ],
       "size": [
         226,
@@ -621,8 +621,8 @@
       "id": 28,
       "type": "MarkdownNote",
       "pos": [
-        463.0,
-        1560.8
+        2140.0,
+        80.0
       ],
       "size": [
         390,
@@ -642,6 +642,85 @@
       },
       "widgets_values": [
         "# Erklärung · Empty Image · Node 26\n\n**Zweck:** Erzeugt eine leere Bildfläche mit den vorgegebenen Abmessungen.\n\n**Einstellbare Werte**\n- `width` = `512` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `512` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n- `color` = `16148292` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 29,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        260.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 30,
+      "type": "MarkdownNote",
+      "pos": [
+        2600.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 29",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 29,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 29\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -721,7 +800,60 @@
       "*"
     ]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        460.0,
+        480.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        540.0,
+        0.0,
+        1020.0,
+        720.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        1640.0,
+        0.0,
+        380.0,
+        1040.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        2100.0,
+        0.0,
+        940.0,
+        480.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
   "config": {},
   "extra": {
     "ds": {
@@ -734,10 +866,56 @@
     "frontendVersion": "1.45.15",
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 1,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
+      "generated_notes": 2,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "Pixaroma-Loop-Carry-Two-Values",
+      "source": "workflows/Pixaroma Node Demos/Pixaroma-Loop-Carry-Two-Values.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "276399aa925d91b0f18ac2fa4fb9664c6dd880b37deb053900c3af7bf98fc10e",
+      "exceptions": []
     }
   },
   "version": 0.4

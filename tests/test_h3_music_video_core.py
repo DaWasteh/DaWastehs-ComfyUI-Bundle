@@ -24,10 +24,13 @@ class H3WorkflowSerializationTests(unittest.TestCase):
             / "MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"
         )
         workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
-        director = next(node for node in workflow["nodes"] if node["type"] == "DaWH3MusicVideoDirector")
+        director = next(node for node in workflow["nodes"] if node["type"] == "DaWH3MusicVideoDirectorDualGPU")
         values = director["widgets_values"]
         input_names = [entry["name"] for entry in director["inputs"]]
-        self.assertEqual(input_names[-2:], ["reference_strategy", "force_reference_as_first_frame"])
+        self.assertEqual(
+            input_names[-5:],
+            ["reference_strategy", "force_reference_as_first_frame", "model_device", "clip_device", "vae_device"],
+        )
         self.assertEqual(values[12], 8)
         self.assertEqual(values[13], 314159265358979)
         self.assertEqual(values[14], "fixed")
@@ -35,7 +38,8 @@ class H3WorkflowSerializationTests(unittest.TestCase):
         self.assertIs(values[16], True)
         self.assertEqual(values[17:21], [14.0, 18.0, "medium", "mkv"])
         self.assertEqual(values[31:35], [12.0, 4.0, "euler", "beta"])
-        self.assertEqual(values[-2:], ["identity lock (recommended)", True])
+        self.assertEqual(values[-5:-3], ["identity lock (recommended)", True])
+        self.assertEqual(values[-3:], ["gpu:0", "gpu:1", "gpu:1"])
 
 
 @unittest.skipUnless(HAVE_COMFY_RUNTIME, "requires the ComfyUI runtime's torch and PyAV")

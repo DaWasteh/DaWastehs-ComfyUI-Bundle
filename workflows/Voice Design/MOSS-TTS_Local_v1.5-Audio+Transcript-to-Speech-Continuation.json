@@ -1,15 +1,15 @@
 {
   "id": "0333efe1-37dc-55f9-9331-116438bb2de6",
   "revision": 0,
-  "last_node_id": 10,
+  "last_node_id": 12,
   "last_link_id": 3,
   "nodes": [
     {
       "id": 1,
       "type": "MossTTSModelLoader",
       "pos": [
-        0.0,
-        -188.0
+        1780.0,
+        80.0
       ],
       "size": [
         281.9140625,
@@ -50,8 +50,8 @@
       "id": 2,
       "type": "LoadAudio",
       "pos": [
-        0.0,
-        705.0
+        1300.0,
+        80.0
       ],
       "size": [
         317.5202467558629,
@@ -91,8 +91,8 @@
       "id": 3,
       "type": "MossTTSContinueSpeech",
       "pos": [
-        1470.0,
-        0.0
+        2220.0,
+        80.0
       ],
       "size": [
         400,
@@ -160,8 +160,8 @@
       "id": 4,
       "type": "SaveAudioAdvanced",
       "pos": [
-        3185.0,
-        235.0
+        2220.0,
+        740.0
       ],
       "size": [
         270,
@@ -198,8 +198,8 @@
       "id": 5,
       "type": "PixaromaNote",
       "pos": [
-        -2400,
-        -200
+        40.0,
+        80.0
       ],
       "size": [
         1100,
@@ -226,8 +226,8 @@
       "id": 6,
       "type": "PixaromaRunTimer",
       "pos": [
-        3234.0,
-        1222.0
+        40.0,
+        2220.0
       ],
       "size": [
         210,
@@ -261,8 +261,8 @@
       "id": 7,
       "type": "MarkdownNote",
       "pos": [
-        327.914,
-        -188.0
+        2780.0,
+        80.0
       ],
       "size": [
         390,
@@ -290,8 +290,8 @@
       "id": 8,
       "type": "MarkdownNote",
       "pos": [
-        363.52,
-        705.0
+        2780.0,
+        460.0
       ],
       "size": [
         390,
@@ -319,8 +319,8 @@
       "id": 9,
       "type": "MarkdownNote",
       "pos": [
-        1916.0,
-        0.0
+        3240.0,
+        80.0
       ],
       "size": [
         390,
@@ -348,8 +348,8 @@
       "id": 10,
       "type": "MarkdownNote",
       "pos": [
-        3501.0,
-        235.0
+        3240.0,
+        660.0
       ],
       "size": [
         390,
@@ -369,6 +369,85 @@
       },
       "widgets_values": [
         "# Erklärung · 4 · 48-kHz-Stereo-Audio speichern · Node 4\n\n**Zweck:** Saves the input audio to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `audio/MOSS-TTS-v1.5/continuation` — The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd%. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `format` = `flac` — The file format in which to save the audio. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `audio` (AUDIO, Link 3): The audio to save.\n\n**Ausgänge**\n- Keine Ausgänge."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 11,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        2300.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 12,
+      "type": "MarkdownNote",
+      "pos": [
+        3720.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 11",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 11,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 11\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -400,7 +479,73 @@
       "AUDIO"
     ]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        1180.0,
+        2520.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        1260.0,
+        0.0,
+        400.0,
+        260.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1740.0,
+        0.0,
+        360.0,
+        240.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2180.0,
+        0.0,
+        480.0,
+        920.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        2740.0,
+        0.0,
+        1420.0,
+        1020.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
   "config": {},
   "extra": {
     "workflowRendererVersion": "LG",
@@ -414,10 +559,56 @@
     "frontendVersion": "1.39.19",
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 4,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
+      "generated_notes": 5,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "MOSS-TTS_Local_v1.5-Audio+Transcript-to-Speech-Continuation",
+      "source": "workflows/Voice Design/MOSS-TTS_Local_v1.5-Audio+Transcript-to-Speech-Continuation.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "028041dc89ee58ee9f79f257eec5f0bf2cdadfd7651b3b3c9f396c77b6a9d1fe",
+      "exceptions": []
     }
   },
   "version": 0.4

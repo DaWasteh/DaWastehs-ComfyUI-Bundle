@@ -13,9 +13,7 @@ LORA_NAME = r"MiniMax H3\minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetens
 LORA_SOURCE = "drbaph/MiniMax-H3-Turbo-Lora-ComfyUI"
 LORA_SHA256 = "7098acf3ee75028fd9fcd948f50fcc8d995057fabb76f86bd3ca2c0ffc58e409"
 VISIBLE_WORKFLOWS = (
-    "MiniMax_H3_Spectrum_FL2VA_All_Supported_Inputs.json",
     "MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json",
-    "MiniMax_H3_Spectrum_FL2VA_MAXIMUM_All_Supported_Inputs.json",
     "MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json",
     "MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json",
     "MiniMax_H3_Spectrum_Ref2VA_Picture_and_Video_to_Video_LOCAL.json",
@@ -189,7 +187,10 @@ def integrate_visible(workflow: dict[str, Any], label: str) -> None:
 
 
 def integrate_director(workflow: dict[str, Any]) -> None:
-    directors = [node for node in workflow["nodes"] if node.get("type") == "DaWH3MusicVideoDirector"]
+    directors = [
+        node for node in workflow["nodes"]
+        if node.get("type") in {"DaWH3MusicVideoDirector", "DaWH3MusicVideoDirectorDualGPU"}
+    ]
     if len(directors) != 1:
         raise ValueError(f"{DIRECTOR_WORKFLOW}: expected one Director")
     values = list(directors[0]["widgets_values"])

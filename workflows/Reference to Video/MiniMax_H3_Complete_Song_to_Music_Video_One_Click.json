@@ -1,15 +1,15 @@
 {
   "id": "dawasteh-h3-complete-song-music-video",
   "revision": 0,
-  "last_node_id": 4,
-  "last_link_id": 0,
+  "last_node_id": 6,
+  "last_link_id": 3,
   "nodes": [
     {
       "id": 2,
       "type": "MarkdownNote",
       "pos": [
-        196.0,
-        188.0
+        40.0,
+        80.0
       ],
       "size": [
         610,
@@ -30,10 +30,10 @@
     },
     {
       "id": 1,
-      "type": "DaWH3MusicVideoDirector",
+      "type": "DaWH3MusicVideoDirectorDualGPU",
       "pos": [
-        1886.5,
-        188.0
+        800.0,
+        80.0
       ],
       "size": [
         720,
@@ -457,6 +457,33 @@
             "name": "force_reference_as_first_frame"
           },
           "link": null
+        },
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "widget": {
+            "name": "model_device"
+          },
+          "link": 1
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_device"
+          },
+          "link": 2
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_device"
+          },
+          "link": 3
         }
       ],
       "outputs": [
@@ -480,7 +507,7 @@
         }
       ],
       "properties": {
-        "Node name for S&R": "DaWH3MusicVideoDirector"
+        "Node name for S&R": "DaWH3MusicVideoDirectorDualGPU"
       },
       "widgets_values": [
         "INTRO_SONG.wav",
@@ -529,17 +556,21 @@
         "system_ram",
         false,
         "identity lock (recommended)",
-        true
+        true,
+        "gpu:0",
+        "gpu:1",
+        "gpu:1"
       ],
       "color": "#1d1d1d",
-      "bgcolor": "#2a2a2a"
+      "bgcolor": "#2a2a2a",
+      "title": "H3 Complete-Song Director · central GPU control · 8188"
     },
     {
       "id": 3,
       "type": "PixaromaRunTimer",
       "pos": [
-        2646.0,
-        -822.5
+        40.0,
+        660.0
       ],
       "size": [
         226,
@@ -574,8 +605,8 @@
       "id": 4,
       "type": "MarkdownNote",
       "pos": [
-        2652.5,
-        188.0
+        1680.0,
+        80.0
       ],
       "size": [
         390,
@@ -586,7 +617,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · DaWH3MusicVideoDirector · Node 1",
+      "title": "Erklärung · H3 Complete-Song Director · central GPU control · 8188 · Node 1",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -598,10 +629,160 @@
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
+    },
+    {
+      "id": 5,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        740.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            1
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": [
+            2
+          ]
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:1",
+        "gpu:1"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 6,
+      "type": "MarkdownNote",
+      "pos": [
+        2160.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 5,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 5\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
     }
   ],
-  "links": [],
-  "groups": [],
+  "links": [
+    [
+      1,
+      5,
+      0,
+      1,
+      46,
+      "COMBO"
+    ],
+    [
+      2,
+      5,
+      1,
+      1,
+      47,
+      "COMBO"
+    ],
+    [
+      3,
+      5,
+      2,
+      1,
+      48,
+      "COMBO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        680.0,
+        960.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        760.0,
+        0.0,
+        800.0,
+        1320.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        1640.0,
+        0.0,
+        960.0,
+        660.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
   "config": {},
   "extra": {
     "ds": {
@@ -613,10 +794,11 @@
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 1,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
+      "generated_notes": 2,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
     },
     "dawasteh_h3_turbo_lora": {
       "version": 1,
@@ -631,6 +813,61 @@
         "shift_audio": 4.0
       },
       "ref2va_status": "compatible graph integration; Turbo quality with full-reference conditioning remains community/experimental"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ],
+      "placement_support": "official-selectors",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:1",
+        "vae_device": "gpu:1"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "MiniMax H3",
+      "source": "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": true,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:1",
+        "VAE": "gpu:1"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_duration_seconds": {
+      "version": 1,
+      "unit": "seconds",
+      "mode": "source-media-duration",
+      "behavior": "output duration follows or is trimmed from the loaded audio/video duration"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "36903d093ca8464df2dbb659baa6d6ffae3dc649f4be3897a3e55bcb51d1888d",
+      "exceptions": []
     }
   },
   "version": 0.4

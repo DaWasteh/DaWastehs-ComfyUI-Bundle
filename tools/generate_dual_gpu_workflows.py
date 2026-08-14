@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Generate curated ComfyUI dual-GPU workflows for supported model families.
+"""GPU-control helpers for the canonical ComfyUI workflow collection.
 
-The generated workflows target the Windows ROCm/HIP order used on Pandaking:
+Since v0.9.2 the former dedicated Dual-GPU folder is dissolved. The CLI now
+runs the collection-wide migration while the reusable helpers below install
+selectors and central controls. Workflows target the Windows ROCm/HIP order:
 
 * gpu:0 = AMD Radeon AI PRO R9700 (diffusion/model work)
 * gpu:1 = AMD Radeon RX 9070 XT (CLIP/text encoders and VAEs)
@@ -27,7 +29,7 @@ except ModuleNotFoundError:  # Direct execution: python tools/generate_dual_gpu_
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / "workflows"
-DEFAULT_DESTINATION = WORKFLOWS / "Dual GPU - R9700 + RX 9070 XT"
+LEGACY_DUAL_GPU_DIRECTORY = WORKFLOWS / "Dual GPU - R9700 + RX 9070 XT"
 WORKFLOW_TEMPLATES = ROOT / "tools" / "workflow_templates"
 
 MODEL_DEVICE = "gpu:0"
@@ -116,10 +118,13 @@ BASE_LOADER_TYPES = {
     "CLIPLoader",
     "DualCLIPLoader",
     "TripleCLIPLoader",
+    "ImageOnlyCheckpointLoader",
     "LTXAVTextEncoderLoader",
     "LTXVAudioVAELoader",
     "UNETLoader",
+    "UnetLoaderGGUF",
     "VAELoader",
+    "VAELoaderKJ",
 }
 SELECTOR = {
     "MODEL": ("SelectModelDevice", "Select Model Device", "model", MODEL_DEVICE),
@@ -376,7 +381,9 @@ def _wire_selectors(
         node["title"] = f"{node.get('type', 'Select Device')} · central control"
 
 
-def _prepare_subgraph_control(graph: dict[str, Any], workflow_key: str) -> dict[str, int]:
+def _prepare_subgraph_control(
+    graph: dict[str, Any], workflow_key: str, devices: dict[str, str] | None = None,
+) -> dict[str, int]:
     existing = {item.get("name"): index for index, item in enumerate(graph.get("inputs", []))}
     source_slots: dict[str, int] = {}
     source_link_lists: dict[str, list[int]] = {}
@@ -386,6 +393,8 @@ def _prepare_subgraph_control(graph: dict[str, Any], workflow_key: str) -> dict[
 
     base_y = float((input_node.get("bounding") or [0, 0, 0, 0])[1])
     for offset, (role, (_, default, _)) in enumerate(CONTROL_ROLES.items()):
+        kind = role.removesuffix("_device").upper()
+        selected_default = (devices or {}).get(kind, default)
         name = f"daw_{role}"
         if name in existing:
             index = existing[name]
@@ -399,9 +408,10 @@ def _prepare_subgraph_control(graph: dict[str, Any], workflow_key: str) -> dict[
                 "linkIds": [],
                 "label": f"DaW {role.replace('_', ' ')}",
                 "pos": [float((input_node.get("bounding") or [0, 0])[0]) + 130.0, base_y + index * 20.0],
-                "default": default,
+                "default": selected_default,
             }
             graph["inputs"].append(item)
+        item["default"] = selected_default
         source_slots[role] = index
         source_link_lists[role] = item.setdefault("linkIds", [])
 
@@ -413,21 +423,22 @@ def _prepare_subgraph_control(graph: dict[str, Any], workflow_key: str) -> dict[
     for child in graph.get("definitions", {}).get("subgraphs", []):
         if not _graph_needs_control(child):
             continue
-        _prepare_subgraph_control(child, workflow_key)
+        _prepare_subgraph_control(child, workflow_key, devices)
         for instance in [node for node in graph.get("nodes", []) if node.get("type") == child.get("id")]:
-            _wire_subgraph_instance(graph, instance, input_node["id"], source_slots, source_link_lists)
+            _wire_subgraph_instance(graph, instance, input_node["id"], source_slots, source_link_lists, devices)
     return source_slots
 
 
 def _wire_subgraph_instance(
     graph: dict[str, Any], instance: dict[str, Any], source_id: Any, source_slots: dict[str, int],
-    source_link_lists: dict[str, list[int]],
+    source_link_lists: dict[str, list[int]], devices: dict[str, str] | None = None,
 ) -> None:
     for role, (_, default, _) in CONTROL_ROLES.items():
         _append_control_link(
             graph, source_id, source_slots[role], source_link_lists[role], instance, f"daw_{role}",
         )
-        instance.setdefault("widgets_values", []).append(default)
+        kind = role.removesuffix("_device").upper()
+        instance.setdefault("widgets_values", []).append((devices or {}).get(kind, default))
     if isinstance(instance.get("size"), list) and len(instance["size"]) >= 2:
         instance["size"][1] = float(instance["size"][1]) + 60.0
 
@@ -511,11 +522,12 @@ def install_central_device_control(
     for child in root.get("definitions", {}).get("subgraphs", []):
         if not _graph_needs_control(child):
             continue
-        _prepare_subgraph_control(child, workflow_key)
+        _prepare_subgraph_control(child, workflow_key, devices)
         for instance in [node for node in root.get("nodes", []) if node.get("type") == child.get("id")]:
             for role, (_, default, _) in CONTROL_ROLES.items():
                 _append_control_link(root, node_id, source_slots[role], source_link_lists[role], instance, f"daw_{role}")
-                instance.setdefault("widgets_values", []).append(default)
+                kind = role.removesuffix("_device").upper()
+                instance.setdefault("widgets_values", []).append((devices or {}).get(kind, default))
             if isinstance(instance.get("size"), list) and len(instance["size"]) >= 2:
                 instance["size"][1] = float(instance["size"][1]) + 60.0
 
@@ -523,12 +535,14 @@ def install_central_device_control(
         director = next(node for node in root.get("nodes", []) if node.get("type") == "DaWH3MusicVideoDirectorDualGPU")
         for role, (_, default, _) in CONTROL_ROLES.items():
             _append_control_link(root, node_id, source_slots[role], source_link_lists[role], director, role)
-            director.setdefault("widgets_values", []).append(default)
+            kind = role.removesuffix("_device").upper()
+            director.setdefault("widgets_values", []).append((devices or {}).get(kind, default))
 
-    if not all(source_link_lists[role] for role in CONTROL_ROLES):
-        raise ValueError("Central GPU control has an unconnected device output")
+    connected_roles = [role for role in CONTROL_ROLES if source_link_lists[role]]
     workflow.setdefault("extra", {}).setdefault("dawasteh_dual_gpu", {}).update({
         "central_control": DEVICE_CONTROL_TYPE,
+        "connected_roles": connected_roles,
+        "placement_support": "official-selectors" if connected_roles else "control-only-no-standard-model-objects",
         "manual_device_dropdowns": {
             role: (devices or {}).get(role.removesuffix("_device").upper(), default)
             for role, (_, default, _) in CONTROL_ROLES.items()
@@ -721,7 +735,7 @@ def build_family(family: Family) -> dict[str, Any]:
     return workflow
 
 
-def generate(destination: Path = DEFAULT_DESTINATION) -> list[Path]:
+def generate_legacy_variants(destination: Path) -> list[Path]:
     destination.mkdir(parents=True, exist_ok=True)
     expected = {family.output for family in FAMILIES}
     for stale in destination.glob("*.json"):
@@ -736,12 +750,13 @@ def generate(destination: Path = DEFAULT_DESTINATION) -> list[Path]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--destination", type=Path, default=DEFAULT_DESTINATION)
-    args = parser.parse_args()
-    paths = generate(args.destination)
-    print(f"Generated {len(paths)} dual-GPU workflows in {args.destination}")
-    return 0
+    # Keep the established command as a safe compatibility entry point without
+    # recreating the retired Dual-GPU directory.
+    try:
+        from tools.migrate_workflows_v092 import main as migrate_main
+    except ModuleNotFoundError:
+        from migrate_workflows_v092 import main as migrate_main
+    return migrate_main()
 
 
 if __name__ == "__main__":

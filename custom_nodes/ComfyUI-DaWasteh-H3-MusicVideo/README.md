@@ -21,10 +21,10 @@ Die LoRA stammt aus `drbaph/MiniMax-H3-Turbo-Lora-ComfyUI`, ist die für pruned/
 
 ## Installation
 
-1. Den Ordner `ComfyUI-DaWasteh-H3-MusicVideo` nach `L:\ComfyUI\ComfyUI\custom_nodes\` kopieren; für den Dual-GPU-Workflow zusätzlich `ComfyUI-DaWasteh-MultiGPU-Control` installieren. Alternativ den beiliegenden PowerShell-Installer ausführen.
+1. Die Ordner `ComfyUI-DaWasteh-H3-MusicVideo` und `ComfyUI-DaWasteh-MultiGPU-Control` nach `L:\ComfyUI\ComfyUI\custom_nodes\` kopieren. Alternativ den beiliegenden PowerShell-Installer ausführen.
 2. ComfyUI vollständig neu starten.
 3. Im Browser `Strg+F5` drücken.
-4. `MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` laden; für beide GPUs stattdessen `MiniMax-H3-DualGPU-Complete-Song-Music-Video-One-Click.json` aus dem Dual-GPU-Ordner verwenden.
+4. `MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` laden. Seit v0.9.2 enthält dieser kanonische Workflow selbst die optionale GPU-Steuerung; ein separater Dual-GPU-Klon ist nicht mehr nötig.
 
 Keine zusätzlichen Python-Pakete werden installiert.
 

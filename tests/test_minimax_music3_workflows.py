@@ -12,7 +12,6 @@ from tools.validate_workflows import graph_locator, validate_graph
 
 ROOT = Path(__file__).resolve().parents[1]
 MUSIC = ROOT / "workflows" / "Music Generation" / "MiniMax_Music3_FP32-BF16-Text-to-Music.json"
-DUAL = ROOT / "workflows" / "Dual GPU - R9700 + RX 9070 XT" / "MiniMax-Music3-DualGPU-Text-to-Music.json"
 ENHANCER = ROOT / "workflows" / "Prompt Enhancer" / "MiniMax_Music3-Official-Skill-Caption-Enhancer.json"
 SKILL = ROOT / "prompt-libraries" / "MiniMax-Music3-Official-Skill" / "SKILL.md"
 ROUTER = ROOT / "prompt-libraries" / "MiniMax-Music3-Official-Skill" / "genre-router.md"
@@ -33,7 +32,7 @@ def all_nodes(workflow: dict) -> list[dict]:
 
 
 class MiniMaxMusic3WorkflowTests(unittest.TestCase):
-    def test_single_gpu_workflow_is_deterministic_and_uses_downloaded_full_precision_models(self):
+    def test_canonical_workflow_is_deterministic_and_uses_downloaded_full_precision_models(self):
         workflow = load(MUSIC)
         self.assertEqual(workflow, build_music())
         nodes = all_nodes(workflow)
@@ -60,8 +59,8 @@ class MiniMaxMusic3WorkflowTests(unittest.TestCase):
         self.assertIn("7.988 second", validation["result"])
         self.assertNotIn("CUDAExecutionProvider", json.dumps(workflow))
 
-    def test_dual_gpu_workflow_places_components_by_actual_full_precision_size(self):
-        workflow = load(DUAL)
+    def test_optional_gpu_control_places_components_by_actual_full_precision_size(self):
+        workflow = load(MUSIC)
         control = next(node for node in workflow["nodes"] if node["type"] == "DaWMultiGPUDeviceControl")
         self.assertEqual(control["widgets_values"], ["gpu:1", "gpu:0", "gpu:1"])
         selectors = {node["type"]: node for node in all_nodes(workflow) if node["type"].startswith("Select") and node["type"].endswith("Device")}
@@ -70,10 +69,9 @@ class MiniMaxMusic3WorkflowTests(unittest.TestCase):
         self.assertEqual(selectors["SelectVAEDevice"]["widgets_values"], ["gpu:1"])
         metadata = workflow["extra"]["dawasteh_dual_gpu"]
         self.assertEqual(metadata["family"], "MiniMax Music 3")
-        self.assertIn("R9700 32 GB", metadata["default_clip_device"])
-        self.assertIn("RX 9070 XT 16 GB", metadata["default_vae_device"])
-        self.assertEqual(metadata["validation"]["status"], "live-smoke-passed")
-        self.assertIn("CLIP cuda:0 R9700", metadata["validation"]["observed_placement"])
+        self.assertEqual(metadata["defaults"], {"MODEL": "gpu:1", "CLIP": "gpu:0", "VAE": "gpu:1"})
+        self.assertTrue(metadata["curated_split_default"])
+        self.assertEqual(workflow["extra"]["dawasteh_minimax_music3"]["validation"]["status"], "live-smoke-passed")
 
     def test_prompt_enhancer_is_deterministic_and_pins_the_official_skill(self):
         workflow = load(ENHANCER)
@@ -107,8 +105,8 @@ class MiniMaxMusic3WorkflowTests(unittest.TestCase):
         self.assertEqual(links[7][1:5], [11, 0, 12, 1])
         self.assertEqual(links[2][1:5], [12, 0, 2, 4])
 
-    def test_all_three_new_workflows_are_structurally_valid(self):
-        for path in (MUSIC, DUAL, ENHANCER):
+    def test_both_minimax_music3_workflows_are_structurally_valid(self):
+        for path in (MUSIC, ENHANCER):
             with self.subTest(workflow=path.name):
                 workflow = load(path)
                 errors: list[str] = []

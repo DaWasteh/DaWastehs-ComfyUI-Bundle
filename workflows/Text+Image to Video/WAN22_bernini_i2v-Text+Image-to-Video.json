@@ -1,15 +1,15 @@
 {
   "id": "f6f570a4-2dfb-4dc7-aea2-1f3f7eb0c4e5",
   "revision": 0,
-  "last_node_id": 35,
-  "last_link_id": 20,
+  "last_node_id": 50,
+  "last_link_id": 30,
   "nodes": [
     {
       "id": 1,
       "type": "UNETLoader",
       "pos": [
-        98.0,
-        94.0
+        1200.0,
+        80.0
       ],
       "size": [
         380,
@@ -45,7 +45,7 @@
           "type": "MODEL",
           "slot_index": 0,
           "links": [
-            1
+            21
           ]
         }
       ],
@@ -64,8 +64,8 @@
       "id": 2,
       "type": "ModelSamplingSD3",
       "pos": [
-        98.0,
-        564.0
+        1660.0,
+        320.0
       ],
       "size": [
         380,
@@ -116,8 +116,8 @@
       "id": 3,
       "type": "UNETLoader",
       "pos": [
-        98.0,
-        799.0
+        1200.0,
+        220.0
       ],
       "size": [
         380,
@@ -153,7 +153,7 @@
           "type": "MODEL",
           "slot_index": 0,
           "links": [
-            2
+            22
           ]
         }
       ],
@@ -172,8 +172,8 @@
       "id": 4,
       "type": "ModelSamplingSD3",
       "pos": [
-        98.0,
-        1269.0
+        1660.0,
+        440.0
       ],
       "size": [
         380,
@@ -224,8 +224,8 @@
       "id": 5,
       "type": "CLIPLoader",
       "pos": [
-        98.0,
-        1504.0
+        1200.0,
+        360.0
       ],
       "size": [
         380,
@@ -271,8 +271,7 @@
           "type": "CLIP",
           "slot_index": 0,
           "links": [
-            3,
-            4
+            23
           ]
         }
       ],
@@ -292,8 +291,8 @@
       "id": 6,
       "type": "CLIPTextEncode",
       "pos": [
-        1078.0,
-        94.0
+        2200.0,
+        80.0
       ],
       "size": [
         430,
@@ -347,8 +346,8 @@
       "id": 7,
       "type": "CLIPTextEncode",
       "pos": [
-        1078.0,
-        611.0
+        2200.0,
+        320.0
       ],
       "size": [
         430,
@@ -402,8 +401,8 @@
       "id": 8,
       "type": "LoadImage",
       "pos": [
-        1099.0,
-        1178.357
+        580.0,
+        80.0
       ],
       "size": [
         380,
@@ -465,8 +464,8 @@
       "id": 9,
       "type": "VAELoader",
       "pos": [
-        2170.539,
-        1761.365
+        1200.0,
+        540.0
       ],
       "size": [
         380,
@@ -493,8 +492,7 @@
           "type": "VAE",
           "slot_index": 0,
           "links": [
-            5,
-            16
+            24
           ]
         }
       ],
@@ -512,8 +510,8 @@
       "id": 10,
       "type": "Wan22ImageToVideoLatent",
       "pos": [
-        2156.0,
-        1104.5
+        3300.0,
+        480.0
       ],
       "size": [
         340,
@@ -561,7 +559,7 @@
           "widget": {
             "name": "length"
           },
-          "link": null
+          "link": 30
         },
         {
           "localized_name": "batch_size",
@@ -601,8 +599,8 @@
       "id": 11,
       "type": "KSamplerAdvanced",
       "pos": [
-        2156.0,
-        94.0
+        2800.0,
+        80.0
       ],
       "size": [
         340,
@@ -752,8 +750,8 @@
       "id": 12,
       "type": "KSamplerAdvanced",
       "pos": [
-        3087.0,
-        94.0
+        2800.0,
+        460.0
       ],
       "size": [
         340,
@@ -903,8 +901,8 @@
       "id": 13,
       "type": "VAEDecode",
       "pos": [
-        3969.0,
-        94.0
+        3300.0,
+        720.0
       ],
       "size": [
         225,
@@ -949,8 +947,8 @@
       "id": 14,
       "type": "CreateVideo",
       "pos": [
-        3969.0,
-        329.0
+        3300.0,
+        840.0
       ],
       "size": [
         225,
@@ -1019,8 +1017,8 @@
       "id": 15,
       "type": "SaveVideo",
       "pos": [
-        3969.0,
-        587.5
+        3300.0,
+        1020.0
       ],
       "size": [
         380,
@@ -1088,8 +1086,8 @@
       "id": 16,
       "type": "Note",
       "pos": [
-        4508.0,
-        94.0
+        40.0,
+        80.0
       ],
       "size": [
         380,
@@ -1116,8 +1114,8 @@
       "id": 17,
       "type": "MarkdownNote",
       "pos": [
-        98.0,
-        1786.0
+        40.0,
+        540.0
       ],
       "size": [
         380,
@@ -1144,8 +1142,8 @@
       "id": 18,
       "type": "PixaromaRunTimer",
       "pos": [
-        3224.367,
-        1053.433
+        40.0,
+        880.0
       ],
       "size": [
         226,
@@ -1179,8 +1177,8 @@
       "id": 19,
       "type": "MarkdownNote",
       "pos": [
-        524.0,
-        94.0
+        3840.0,
+        80.0
       ],
       "size": [
         390,
@@ -1208,8 +1206,8 @@
       "id": 20,
       "type": "MarkdownNote",
       "pos": [
-        524.0,
-        564.0
+        3840.0,
+        440.0
       ],
       "size": [
         390,
@@ -1237,8 +1235,8 @@
       "id": 21,
       "type": "MarkdownNote",
       "pos": [
-        524.0,
-        931.0
+        3840.0,
+        800.0
       ],
       "size": [
         390,
@@ -1266,8 +1264,8 @@
       "id": 22,
       "type": "MarkdownNote",
       "pos": [
-        524.0,
-        1313.0
+        3840.0,
+        1160.0
       ],
       "size": [
         390,
@@ -1295,8 +1293,8 @@
       "id": 23,
       "type": "MarkdownNote",
       "pos": [
-        524.0,
-        1680.0
+        3840.0,
+        1520.0
       ],
       "size": [
         390,
@@ -1324,8 +1322,8 @@
       "id": 24,
       "type": "MarkdownNote",
       "pos": [
-        1554.0,
-        94.0
+        3840.0,
+        1920.0
       ],
       "size": [
         390,
@@ -1353,8 +1351,8 @@
       "id": 25,
       "type": "MarkdownNote",
       "pos": [
-        1554.0,
-        611.0
+        4320.0,
+        80.0
       ],
       "size": [
         390,
@@ -1382,8 +1380,8 @@
       "id": 26,
       "type": "MarkdownNote",
       "pos": [
-        1525.0,
-        1178.357
+        4320.0,
+        440.0
       ],
       "size": [
         390,
@@ -1411,8 +1409,8 @@
       "id": 27,
       "type": "MarkdownNote",
       "pos": [
-        2596.539,
-        1761.365
+        4320.0,
+        800.0
       ],
       "size": [
         390,
@@ -1440,8 +1438,8 @@
       "id": 28,
       "type": "MarkdownNote",
       "pos": [
-        2542.0,
-        1104.5
+        4320.0,
+        1140.0
       ],
       "size": [
         390,
@@ -1469,8 +1467,8 @@
       "id": 29,
       "type": "MarkdownNote",
       "pos": [
-        2542.0,
-        94.0
+        4320.0,
+        1600.0
       ],
       "size": [
         390,
@@ -1498,8 +1496,8 @@
       "id": 30,
       "type": "MarkdownNote",
       "pos": [
-        3473.0,
-        94.0
+        4320.0,
+        2180.0
       ],
       "size": [
         390,
@@ -1527,8 +1525,8 @@
       "id": 31,
       "type": "MarkdownNote",
       "pos": [
-        4240.0,
-        -258.0
+        4800.0,
+        80.0
       ],
       "size": [
         390,
@@ -1556,8 +1554,8 @@
       "id": 32,
       "type": "MarkdownNote",
       "pos": [
-        4460.0,
-        549.0
+        4800.0,
+        440.0
       ],
       "size": [
         390,
@@ -1585,8 +1583,8 @@
       "id": 33,
       "type": "MarkdownNote",
       "pos": [
-        4395.0,
-        983.5
+        4800.0,
+        840.0
       ],
       "size": [
         390,
@@ -1615,8 +1613,8 @@
       "type": "PixaromaPrompt",
       "title": "Prompt Pixaroma",
       "pos": [
-        498.0,
-        -286.0
+        580.0,
+        500.0
       ],
       "size": [
         470,
@@ -1672,8 +1670,8 @@
       "id": 35,
       "type": "VRAM_Debug",
       "pos": [
-        3969.0,
-        458.25
+        1660.0,
+        560.0
       ],
       "size": [
         320,
@@ -1767,12 +1765,632 @@
       ],
       "color": "#3b1f2b",
       "bgcolor": "#24131b"
+    },
+    {
+      "id": 36,
+      "type": "SelectModelDevice",
+      "pos": [
+        1200.0,
+        660.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 21
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectModelDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectModelDevice · central control",
+      "color": "#16334a",
+      "bgcolor": "#1d4968"
+    },
+    {
+      "id": 37,
+      "type": "SelectModelDevice",
+      "pos": [
+        1200.0,
+        780.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 22
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 26
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectModelDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectModelDevice · central control",
+      "color": "#16334a",
+      "bgcolor": "#1d4968"
+    },
+    {
+      "id": 38,
+      "type": "SelectCLIPDevice",
+      "pos": [
+        1660.0,
+        80.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 23
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 0,
+          "links": [
+            3,
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectCLIPDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectCLIPDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 39,
+      "type": "SelectVAEDevice",
+      "pos": [
+        1660.0,
+        200.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 24
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            5,
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectVAEDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectVAEDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 40,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1060.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            25,
+            26
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": [
+            27
+          ]
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            28
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 41,
+      "type": "PrimitiveFloat",
+      "pos": [
+        3300.0,
+        80.0
+      ],
+      "size": [
+        300,
+        110
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "value",
+          "name": "value",
+          "type": "FLOAT",
+          "widget": {
+            "name": "value"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FLOAT",
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "slot_index": 0,
+          "links": [
+            29
+          ]
+        }
+      ],
+      "title": "OUTPUT DURATION · SECONDS",
+      "properties": {
+        "Node name for S&R": "PrimitiveFloat",
+        "cnr_id": "comfy-core",
+        "dawasteh_duration_control": true
+      },
+      "widgets_values": [
+        5.0
+      ],
+      "color": "#4b3475",
+      "bgcolor": "#6b4aa0"
+    },
+    {
+      "id": 42,
+      "type": "ComfyMathExpression",
+      "pos": [
+        3300.0,
+        240.0
+      ],
+      "size": [
+        360,
+        190
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "seconds",
+          "localized_name": "values.a",
+          "name": "values.a",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 29
+        },
+        {
+          "localized_name": "expression",
+          "name": "expression",
+          "type": "STRING",
+          "widget": {
+            "name": "expression"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FLOAT",
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "localized_name": "INT",
+          "name": "INT",
+          "type": "INT",
+          "slot_index": 1,
+          "links": [
+            30
+          ]
+        },
+        {
+          "localized_name": "BOOL",
+          "name": "BOOL",
+          "type": "BOOLEAN",
+          "links": null
+        }
+      ],
+      "title": "SECONDS → VALID MODEL FRAME COUNT",
+      "properties": {
+        "Node name for S&R": "ComfyMathExpression",
+        "cnr_id": "comfy-core",
+        "dawasteh_duration_control": true
+      },
+      "widgets_values": [
+        "max(5, round((a * 16 - 1) / 4) * 4 + 1)"
+      ],
+      "color": "#704c1c",
+      "bgcolor": "#956827"
+    },
+    {
+      "id": 43,
+      "type": "MarkdownNote",
+      "pos": [
+        4800.0,
+        1260.0
+      ],
+      "size": [
+        390,
+        481
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VRAM Debug · Node 35",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 35,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VRAM Debug · Node 35\n\n**Zweck:** Returns the inputs unchanged, they are only used as triggers,   ↵ and performs comfy model management functions and garbage collection,   ↵ reports free VRAM before and after the operations.\n\n**Einstellbare Werte**\n- `empty_cache` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `gc_collect` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `unload_all_models` = `True` — Steuert diesen Parameter. AN gibt Modell-/VRAM-Speicher nach dem Lauf frei, macht den nächsten Lauf aber langsamer; AUS hält das Modell für Wiederholungen im Cache.\n\n**Eingänge**\n- `empty_cache` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gc_collect` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `unload_all_models` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `any_input` (*, Link 18): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_pass` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_pass` (MODEL, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `any_output` (*, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `image_pass` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `model_pass` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_before` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_after` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 44,
+      "type": "MarkdownNote",
+      "pos": [
+        4800.0,
+        1780.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 42,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectModelDevice · central control · Node 36",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 36,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectModelDevice · central control · Node 36\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 21): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 25): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 45,
+      "type": "MarkdownNote",
+      "pos": [
+        4800.0,
+        2140.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectModelDevice · central control · Node 37",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 37,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectModelDevice · central control · Node 37\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 22): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 26): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 46,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        80.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectCLIPDevice · central control · Node 38",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 38,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectCLIPDevice · central control · Node 38\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 23): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 27): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 47,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        440.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 45,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectVAEDevice · central control · Node 39",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 39,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectVAEDevice · central control · Node 39\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 24): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 28): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 48,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        800.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 40",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 40,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 40\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 49,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        1200.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 47,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · OUTPUT DURATION · SECONDS · Node 41",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 41,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · OUTPUT DURATION · SECONDS · Node 41\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `5.0` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 50,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        1540.0
+      ],
+      "size": [
+        390,
+        345
+      ],
+      "flags": {},
+      "order": 48,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SECONDS → VALID MODEL FRAME COUNT · Node 42",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 42,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SECONDS → VALID MODEL FRAME COUNT · Node 42\n\n**Zweck:** Berechnet oder konvertiert numerische Werte für nachfolgende Nodes.\n\n**Einstellbare Werte**\n- `expression` = `max(5, round((a * 16 - 1) / 4) * 4 + 1)` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `values.a` (FLOAT,INT,BOOLEAN, Link 29): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `expression` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, nicht verbunden): Ergebnis dieses Nodes\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `BOOL` (BOOLEAN, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
     }
   ],
   "links": [
     [
       1,
-      1,
+      36,
       0,
       2,
       0,
@@ -1780,7 +2398,7 @@
     ],
     [
       2,
-      3,
+      37,
       0,
       4,
       0,
@@ -1788,7 +2406,7 @@
     ],
     [
       3,
-      5,
+      38,
       0,
       6,
       0,
@@ -1796,7 +2414,7 @@
     ],
     [
       4,
-      5,
+      38,
       0,
       7,
       0,
@@ -1804,7 +2422,7 @@
     ],
     [
       5,
-      9,
+      39,
       0,
       10,
       0,
@@ -1892,7 +2510,7 @@
     ],
     [
       16,
-      9,
+      39,
       0,
       13,
       1,
@@ -1929,9 +2547,181 @@
       15,
       0,
       "VIDEO"
+    ],
+    [
+      21,
+      1,
+      0,
+      36,
+      0,
+      "MODEL"
+    ],
+    [
+      22,
+      3,
+      0,
+      37,
+      0,
+      "MODEL"
+    ],
+    [
+      23,
+      5,
+      0,
+      38,
+      0,
+      "CLIP"
+    ],
+    [
+      24,
+      9,
+      0,
+      39,
+      0,
+      "VAE"
+    ],
+    [
+      25,
+      40,
+      0,
+      36,
+      1,
+      "COMBO"
+    ],
+    [
+      26,
+      40,
+      0,
+      37,
+      1,
+      "COMBO"
+    ],
+    [
+      27,
+      40,
+      1,
+      38,
+      1,
+      "COMBO"
+    ],
+    [
+      28,
+      40,
+      2,
+      39,
+      1,
+      "COMBO"
+    ],
+    [
+      29,
+      41,
+      0,
+      42,
+      0,
+      "FLOAT"
+    ],
+    [
+      30,
+      42,
+      1,
+      10,
+      4,
+      "INT"
     ]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        460.0,
+        1280.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        540.0,
+        0.0,
+        540.0,
+        760.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1160.0,
+        0.0,
+        920.0,
+        900.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "E1 · ENCODE & CONDITION",
+      "bounding": [
+        2160.0,
+        0.0,
+        520.0,
+        540.0
+      ],
+      "color": "#C68B31",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        2760.0,
+        0.0,
+        420.0,
+        840.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        3260.0,
+        0.0,
+        460.0,
+        1420.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 7,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        3800.0,
+        0.0,
+        1920.0,
+        2760.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
   "config": {},
   "extra": {
     "ds": {
@@ -1943,10 +2733,70 @@
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 15,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
+      "generated_notes": 23,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ],
+      "placement_support": "official-selectors",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "WAN22_bernini_i2v-Text+Image-to-Video",
+      "source": "workflows/Text+Image to Video/WAN22_bernini_i2v-Text+Image-to-Video.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 4,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_duration_seconds": {
+      "version": 1,
+      "unit": "seconds",
+      "mode": "explicit-seconds-to-model-valid-frames",
+      "fps": 16,
+      "frame_alignment": "4n+1",
+      "targets": [
+        "10.length"
+      ]
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "f88f90d15206903208075c9261070ca3a2641d1506c716cad856edeab29d6934",
+      "exceptions": []
     }
   },
   "version": 0.4

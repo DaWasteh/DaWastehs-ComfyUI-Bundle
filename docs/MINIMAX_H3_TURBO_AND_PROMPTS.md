@@ -37,7 +37,7 @@ if ($LASTEXITCODE -ne 0) { throw "LoRA size/SHA-256 verification failed" }
 
 ## Einheitliches Samplingprofil
 
-Alle neun H3-Workflows verwenden:
+Alle sieben verbleibenden H3-Workflows verwenden:
 
 | Parameter | Wert |
 |---|---:|
@@ -48,7 +48,7 @@ Alle neun H3-Workflows verwenden:
 | Video-Sigma-Shift | `12.0` |
 | Audio-Sigma-Shift | `4.0` |
 
-Die sichtbaren FL2VA-/Ref2VA-Graphen enthalten `LoraLoaderModelOnly` direkt zwischen `UNETLoader` und `MiniMaxH3SigmaShift`.
+Die sichtbaren FL2VA-/Ref2VA-Graphen enthalten die Kette `UNETLoader → SelectModelDevice → LoraLoaderModelOnly → MiniMaxH3SigmaShift`.
 
 Der Complete-Song-Director erzeugt dieselbe Kette intern:
 
@@ -70,18 +70,18 @@ models/diffusion_models/MiniMax H3/minimax_h3_ref2va_pruned_int8_convrot.safeten
 
 Die LoRA-Konvertierung passt strukturell zu beiden pruned Modellen. FL2VA ist der klar dokumentierte Beispielpfad des LoRA-Repositories. Ref2VA lädt und sampelt lokal erfolgreich, seine Referenztreue mit Turbo bleibt jedoch eine Community-/Kompatibilitätskombination. Vor langen Ref2VA-Jobs ist deshalb ein kurzes reales Referenzsegment sinnvoll.
 
-## Offene Dual-GPU-Graphen · v0.8.7
+## Kanonische Graphen mit optionaler GPU-Platzierung · v0.9.2
 
-Zusätzlich zum Complete-Song-Director werden zwei normale, direkt editierbare Multi-GPU-Workflows ausgeliefert:
+Die früher getrennten offenen Dual-GPU-Klone wurden in die kanonischen Graphen integriert:
 
 ```text
-workflows/Dual GPU - R9700 + RX 9070 XT/MiniMax-H3-FL2VA-DualGPU-All-Supported-Inputs.json
-workflows/Dual GPU - R9700 + RX 9070 XT/MiniMax-H3-Ref2VA-DualGPU-All-Reference-Inputs.json
+workflows/Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json
+workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json
 ```
 
-FL2VA stellt First/Last Frame und alle üblichen Generierungsparameter bereit. Ref2VA bewahrt die komplette offene Referenzmatrix des Quellworkflows mit neun Bildern, drei Videos, den zugehörigen Video-Audios und drei eigenständigen Audio-Referenzen.
+FL2VA stellt First/Last Frame, eine Dauerangabe in Sekunden und alle üblichen Generierungsparameter bereit. Ref2VA bewahrt die komplette offene Referenzmatrix mit neun Bildern, drei Videos, den zugehörigen Video-Audios und drei eigenständigen Audio-Referenzen.
 
-Ab v0.8.8 besitzen beide offenen Graphen und der Complete-Song-Workflow einen zentralen `DaW Multi-GPU Device Control`-Node. Seine MODEL-, CLIP- und VAE-Dropdowns sind standardmäßig auf `gpu:0`, `gpu:1` und `gpu:1` gesetzt, können aber vor dem Queue-Lauf frei geändert werden. Beim Complete-Song-Director werden die gewählten Werte in den versteckten Segment-Graph geschrieben; die Reihenfolge `UNET → gewähltes MODEL-Gerät → Turbo-LoRA → Sigma` bleibt erhalten.
+Die redundanten FL2VA-Dateien `MiniMax_H3_Spectrum_FL2VA_All_Supported_Inputs.json` und `MiniMax_H3_Spectrum_FL2VA_MAXIMUM_All_Supported_Inputs.json` wurden entfernt. Alle verbleibenden H3-Graphen besitzen den zentralen `DaW Multi-GPU Device Control`-Node. Beim Complete-Song-Director werden die gewählten Werte in den versteckten Segment-Graph geschrieben; die Reihenfolge `UNET → gewähltes MODEL-Gerät → Turbo-LoRA → Sigma` bleibt erhalten.
 
 ## Live-Prüfung auf beiden AMD-GPUs
 

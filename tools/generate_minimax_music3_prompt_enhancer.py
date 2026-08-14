@@ -11,12 +11,14 @@ from pathlib import Path
 
 try:
     from tools.generate_dual_gpu_workflows import refresh_refinement
+    from tools.migrate_workflows_v092 import migrate_workflow
 except ModuleNotFoundError:
     from generate_dual_gpu_workflows import refresh_refinement
+    from migrate_workflows_v092 import migrate_workflow
 
 ROOT = Path(__file__).resolve().parents[1]
 PROMPT_DIR = ROOT / "workflows" / "Prompt Enhancer"
-TEMPLATE = PROMPT_DIR / "Qwen3VL_8b_fp8_scaled-Krea2-Prompt-Enhancer.json"
+TEMPLATE = ROOT / "assets" / "workflow-bases" / "Qwen3VL_8b_fp8_scaled-Krea2-Prompt-Enhancer.json"
 SKILL_DIR = ROOT / "prompt-libraries" / "MiniMax-Music3-Official-Skill"
 SKILL = SKILL_DIR / "SKILL.md"
 GENRE_ROUTER = SKILL_DIR / "genre-router.md"
@@ -141,7 +143,7 @@ def build() -> dict:
         "output_contract": ["### Global Metadata", "### Vocal Details", "### Arrangement"],
     }
     refresh_refinement(workflow)
-    return workflow
+    return migrate_workflow(workflow, "Prompt Enhancer/MiniMax_Music3-Official-Skill-Caption-Enhancer.json")
 
 
 def generate(destination: Path = OUTPUT) -> Path:

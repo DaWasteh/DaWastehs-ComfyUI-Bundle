@@ -1,15 +1,15 @@
 {
   "id": "loop-pixaroma---build-a-list",
   "revision": 0,
-  "last_node_id": 31,
+  "last_node_id": 33,
   "last_link_id": 5,
   "nodes": [
     {
       "id": 1,
       "type": "PixaromaLabel",
       "pos": [
-        147.0,
-        84.6
+        580.0,
+        80.0
       ],
       "size": [
         383,
@@ -36,8 +36,8 @@
       "id": 2,
       "type": "PixaromaLabel",
       "pos": [
-        147.0,
-        216.2
+        580.0,
+        180.0
       ],
       "size": [
         576,
@@ -64,8 +64,8 @@
       "id": 10,
       "type": "PixaromaLabel",
       "pos": [
-        147.0,
-        439.45
+        580.0,
+        280.0
       ],
       "size": [
         226,
@@ -92,8 +92,8 @@
       "id": 11,
       "type": "PixaromaLabel",
       "pos": [
-        1053.5,
-        439.45
+        580.0,
+        400.0
       ],
       "size": [
         162,
@@ -120,8 +120,8 @@
       "id": 12,
       "type": "PixaromaLabel",
       "pos": [
-        1764.0,
-        439.45
+        580.0,
+        520.0
       ],
       "size": [
         188,
@@ -148,8 +148,8 @@
       "id": 13,
       "type": "PixaromaLabel",
       "pos": [
-        2523.5,
-        439.45
+        580.0,
+        640.0
       ],
       "size": [
         153,
@@ -176,8 +176,8 @@
       "id": 20,
       "type": "PixaromaLoopStart",
       "pos": [
-        147.0,
-        733.2
+        580.0,
+        760.0
       ],
       "size": [
         270,
@@ -275,8 +275,8 @@
       "id": 21,
       "type": "PixaromaCombine",
       "pos": [
-        1053.5,
-        733.2
+        1360.0,
+        80.0
       ],
       "size": [
         165,
@@ -317,8 +317,8 @@
       "id": 22,
       "type": "PixaromaLoopEnd",
       "pos": [
-        1764.0,
-        733.2
+        1360.0,
+        160.0
       ],
       "size": [
         168,
@@ -403,8 +403,8 @@
       "id": 23,
       "type": "PixaromaShowText",
       "pos": [
-        2523.5,
-        733.2
+        1360.0,
+        320.0
       ],
       "size": [
         260,
@@ -440,8 +440,8 @@
       "id": 30,
       "type": "PixaromaLabel",
       "pos": [
-        147.0,
-        1203.2
+        580.0,
+        980.0
       ],
       "size": [
         625,
@@ -468,8 +468,8 @@
       "id": 31,
       "type": "PixaromaRunTimer",
       "pos": [
-        147.0,
-        1567.45
+        40.0,
+        80.0
       ],
       "size": [
         226,
@@ -497,6 +497,85 @@
       ],
       "color": "#1d1d1d",
       "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 32,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        260.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 33,
+      "type": "MarkdownNote",
+      "pos": [
+        1780.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 32",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 32,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 32\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
     }
   ],
   "links": [
@@ -541,7 +620,60 @@
       "*"
     ]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        460.0,
+        480.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        540.0,
+        0.0,
+        700.0,
+        1100.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        1320.0,
+        0.0,
+        340.0,
+        520.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        1740.0,
+        0.0,
+        460.0,
+        480.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
   "config": {},
   "extra": {
     "ds": {
@@ -554,10 +686,56 @@
     "frontendVersion": "1.45.15",
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 0,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
+      "generated_notes": 1,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "Pixaroma-Loop-Build-List",
+      "source": "workflows/Pixaroma Node Demos/Pixaroma-Loop-Build-List.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "327ddc275ad0f9c46461af06b1f7f1c5b4e395a1ddbd497cfc9bb7eb85098c58",
+      "exceptions": []
     }
   },
   "version": 0.4

@@ -1,15 +1,15 @@
 {
   "id": "c80f3abf-7abe-4c24-8663-009ac9c86e3d",
   "revision": 0,
-  "last_node_id": 511,
-  "last_link_id": 1202,
+  "last_node_id": 514,
+  "last_link_id": 1205,
   "nodes": [
     {
       "id": 4,
       "type": "LTXVConcatAVLatent",
       "pos": [
-        10189.085,
-        14551.446
+        2520.0,
+        500.0
       ],
       "size": [
         225,
@@ -62,8 +62,8 @@
       "id": 5,
       "type": "SaveVideo",
       "pos": [
-        11980.5,
-        13982.5
+        2520.0,
+        900.0
       ],
       "size": [
         500,
@@ -132,8 +132,8 @@
       "id": 376,
       "type": "LTXSequencer",
       "pos": [
-        9555.0,
-        13982.5
+        1720.0,
+        80.0
       ],
       "size": [
         225,
@@ -2149,8 +2149,8 @@
       "id": 481,
       "type": "e8ae487a-31b9-46cf-be65-76e634e0bee1",
       "pos": [
-        10192.0,
-        14844.039
+        2520.0,
+        280.0
       ],
       "size": [
         225,
@@ -2219,8 +2219,8 @@
       "id": 1,
       "type": "34d63160-e149-4935-ab1f-892ffe617fec",
       "pos": [
-        11417.0,
-        13982.5
+        2520.0,
+        620.0
       ],
       "size": [
         225,
@@ -2315,8 +2315,8 @@
       "id": 11,
       "type": "360d64f7-96cd-42a6-9b13-6eb0387e17d9",
       "pos": [
-        10780.0,
-        13982.5
+        2100.0,
+        80.0
       ],
       "size": [
         250,
@@ -2410,8 +2410,8 @@
       "id": 7,
       "type": "2979f3eb-1c4c-45ff-8387-f1f4addb72f4",
       "pos": [
-        10159.932,
-        14038.426
+        2520.0,
+        80.0
       ],
       "size": [
         225,
@@ -2493,8 +2493,8 @@
       "id": 381,
       "type": "MultiImageLoader",
       "pos": [
-        8673.0,
-        13982.5
+        600.0,
+        80.0
       ],
       "size": [
         340,
@@ -2603,8 +2603,8 @@
       "id": 418,
       "type": "Note",
       "pos": [
-        6688.5,
-        13677.0
+        40.0,
+        320.0
       ],
       "size": [
         270,
@@ -2627,8 +2627,8 @@
       "id": 499,
       "type": "LoadAudioUI",
       "pos": [
-        7666.509,
-        14017.46
+        600.0,
+        680.0
       ],
       "size": [
         390,
@@ -2732,8 +2732,8 @@
       "id": 15,
       "type": "Note",
       "pos": [
-        9354.109,
-        13389.604
+        40.0,
+        80.0
       ],
       "size": [
         403.0833435058594,
@@ -2756,8 +2756,8 @@
       "id": 439,
       "type": "MarkdownNote",
       "pos": [
-        5733.0,
-        14241.0
+        40.0,
+        460.0
       ],
       "size": [
         350,
@@ -2780,8 +2780,8 @@
       "id": 495,
       "type": "Note",
       "pos": [
-        7674.474,
-        15254.659
+        40.0,
+        1160.0
       ],
       "size": [
         269.1833190917969,
@@ -2804,12 +2804,12 @@
       "id": 10,
       "type": "958b2c7a-1f75-4a30-84a8-892bddb9e426",
       "pos": [
-        6664.0,
-        14006.0
+        1160.0,
+        80.0
       ],
       "size": [
         390,
-        484
+        544.0
       ],
       "flags": {
         "collapsed": false
@@ -2843,6 +2843,33 @@
             "name": "value_2"
           },
           "link": null
+        },
+        {
+          "localized_name": "daw_model_device",
+          "name": "daw_model_device",
+          "type": "COMBO",
+          "widget": {
+            "name": "daw_model_device"
+          },
+          "link": 1203
+        },
+        {
+          "localized_name": "daw_clip_device",
+          "name": "daw_clip_device",
+          "type": "COMBO",
+          "widget": {
+            "name": "daw_clip_device"
+          },
+          "link": 1204
+        },
+        {
+          "localized_name": "daw_vae_device",
+          "name": "daw_vae_device",
+          "type": "COMBO",
+          "widget": {
+            "name": "daw_vae_device"
+          },
+          "link": 1205
         }
       ],
       "outputs": [
@@ -2962,7 +2989,11 @@
         "cnr_id": "comfy-core",
         "ver": "0.17.2"
       },
-      "widgets_values": [],
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
       "color": "#222",
       "bgcolor": "#000"
     },
@@ -2970,8 +3001,8 @@
       "id": 500,
       "type": "PixaromaRunTimer",
       "pos": [
-        5733.0,
-        15973.89
+        40.0,
+        1340.0
       ],
       "size": [
         226,
@@ -3004,8 +3035,8 @@
       "id": 501,
       "type": "MarkdownNote",
       "pos": [
-        11380.0,
-        14290.5
+        3180.0,
+        80.0
       ],
       "size": [
         390,
@@ -3033,8 +3064,8 @@
       "id": 502,
       "type": "MarkdownNote",
       "pos": [
-        10460.085,
-        14551.446
+        3180.0,
+        520.0
       ],
       "size": [
         390,
@@ -3062,8 +3093,8 @@
       "id": 503,
       "type": "MarkdownNote",
       "pos": [
-        12526.5,
-        13982.5
+        3180.0,
+        880.0
       ],
       "size": [
         390,
@@ -3091,8 +3122,8 @@
       "id": 504,
       "type": "MarkdownNote",
       "pos": [
-        10034.932,
-        13642.426
+        3640.0,
+        80.0
       ],
       "size": [
         390,
@@ -3120,8 +3151,8 @@
       "id": 505,
       "type": "MarkdownNote",
       "pos": [
-        7100.0,
-        14006.0
+        3640.0,
+        480.0
       ],
       "size": [
         390,
@@ -3149,8 +3180,8 @@
       "id": 506,
       "type": "MarkdownNote",
       "pos": [
-        11076.0,
-        13498.5
+        3640.0,
+        1000.0
       ],
       "size": [
         390,
@@ -3178,8 +3209,8 @@
       "id": 507,
       "type": "MarkdownNote",
       "pos": [
-        9474.0,
-        14334.5
+        4120.0,
+        80.0
       ],
       "size": [
         390,
@@ -3207,8 +3238,8 @@
       "id": 508,
       "type": "MarkdownNote",
       "pos": [
-        9059.0,
-        13762.5
+        4120.0,
+        660.0
       ],
       "size": [
         390,
@@ -3236,8 +3267,8 @@
       "id": 509,
       "type": "MarkdownNote",
       "pos": [
-        10463.0,
-        14932.039
+        4120.0,
+        1200.0
       ],
       "size": [
         390,
@@ -3265,8 +3296,8 @@
       "id": 510,
       "type": "MarkdownNote",
       "pos": [
-        8102.509,
-        14017.46
+        4600.0,
+        80.0
       ],
       "size": [
         390,
@@ -3294,8 +3325,8 @@
       "id": 511,
       "type": "VRAM_Debug",
       "pos": [
-        11698.75,
-        13982.5
+        1160.0,
+        660.0
       ],
       "size": [
         320,
@@ -3389,6 +3420,120 @@
       ],
       "color": "#3b1f2b",
       "bgcolor": "#24131b"
+    },
+    {
+      "id": 512,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1520.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            1203
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": [
+            1204
+          ]
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            1205
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 513,
+      "type": "MarkdownNote",
+      "pos": [
+        4600.0,
+        560.0
+      ],
+      "size": [
+        390,
+        481
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VRAM Debug · Node 511",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 511,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VRAM Debug · Node 511\n\n**Zweck:** Returns the inputs unchanged, they are only used as triggers,   ↵ and performs comfy model management functions and garbage collection,   ↵ reports free VRAM before and after the operations.\n\n**Einstellbare Werte**\n- `empty_cache` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `gc_collect` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `unload_all_models` = `True` — Steuert diesen Parameter. AN gibt Modell-/VRAM-Speicher nach dem Lauf frei, macht den nächsten Lauf aber langsamer; AUS hält das Modell für Wiederholungen im Cache.\n\n**Eingänge**\n- `empty_cache` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gc_collect` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `unload_all_models` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `any_input` (*, Link 13): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_pass` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_pass` (MODEL, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `any_output` (*, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `image_pass` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `model_pass` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_before` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_after` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 514,
+      "type": "MarkdownNote",
+      "pos": [
+        4600.0,
+        1080.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 512",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 512,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 512\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
     }
   ],
   "links": [
@@ -3663,9 +3808,125 @@
       5,
       0,
       "VIDEO"
+    ],
+    [
+      1203,
+      512,
+      0,
+      10,
+      3,
+      "COMBO"
+    ],
+    [
+      1204,
+      512,
+      1,
+      10,
+      4,
+      "COMBO"
+    ],
+    [
+      1205,
+      512,
+      2,
+      10,
+      5,
+      "COMBO"
     ]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        480.0,
+        1720.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        560.0,
+        0.0,
+        480.0,
+        1100.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1120.0,
+        0.0,
+        480.0,
+        880.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "E1 · ENCODE & CONDITION",
+      "bounding": [
+        1680.0,
+        0.0,
+        300.0,
+        420.0
+      ],
+      "color": "#C68B31",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        2060.0,
+        0.0,
+        340.0,
+        480.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2480.0,
+        0.0,
+        580.0,
+        1320.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 7,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        3140.0,
+        0.0,
+        1900.0,
+        1600.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
   "definitions": {
     "subgraphs": [
       {
@@ -3683,8 +3944,8 @@
         "inputNode": {
           "id": -10,
           "bounding": [
-            1610,
-            7190,
+            -200.0,
+            80.0,
             140.259765625,
             180
           ]
@@ -3692,8 +3953,8 @@
         "outputNode": {
           "id": -20,
           "bounding": [
-            2970,
-            7320,
+            2320.0,
+            80.0,
             120,
             60
           ]
@@ -3707,8 +3968,8 @@
               692
             ],
             "pos": [
-              1730.259765625,
-              7210
+              -80.0,
+              120.0
             ]
           },
           {
@@ -3719,8 +3980,8 @@
               693
             ],
             "pos": [
-              1730.259765625,
-              7230
+              -80.0,
+              140.0
             ]
           },
           {
@@ -3733,8 +3994,8 @@
             ],
             "label": "video_vae",
             "pos": [
-              1730.259765625,
-              7250
+              -80.0,
+              160.0
             ]
           },
           {
@@ -3746,8 +4007,8 @@
             ],
             "label": "frame_rate",
             "pos": [
-              1730.259765625,
-              7270
+              -80.0,
+              180.0
             ]
           },
           {
@@ -3759,8 +4020,8 @@
             ],
             "label": "custom audio",
             "pos": [
-              1730.259765625,
-              7290
+              -80.0,
+              200.0
             ]
           },
           {
@@ -3772,8 +4033,8 @@
             ],
             "label": "use custom audio",
             "pos": [
-              1730.259765625,
-              7310
+              -80.0,
+              220.0
             ]
           },
           {
@@ -3785,8 +4046,8 @@
             ],
             "label": "use tiled vae",
             "pos": [
-              1730.259765625,
-              7330
+              -80.0,
+              240.0
             ]
           }
         ],
@@ -3799,8 +4060,8 @@
               704
             ],
             "pos": [
-              2990,
-              7340
+              2440.0,
+              120.0
             ]
           }
         ],
@@ -3810,8 +4071,8 @@
             "id": 334,
             "type": "LTXVSeparateAVLatent",
             "pos": [
-              4459.0,
-              16896.5
+              440.0,
+              80.0
             ],
             "size": [
               240,
@@ -3867,8 +4128,8 @@
             "id": 340,
             "type": "VAEDecode",
             "pos": [
-              5169.5,
-              16896.5
+              440.0,
+              360.0
             ],
             "size": [
               150,
@@ -3914,8 +4175,8 @@
             "id": 336,
             "type": "CreateVideo",
             "pos": [
-              6713.0,
-              17249.0
+              440.0,
+              880.0
             ],
             "size": [
               210,
@@ -3980,8 +4241,8 @@
             "id": 468,
             "type": "CM_IntToFloat",
             "pos": [
-              4459.0,
-              17343.0
+              440.0,
+              160.0
             ],
             "size": [
               240,
@@ -4027,8 +4288,8 @@
             "id": 432,
             "type": "VAEDecodeTiled",
             "pos": [
-              5169.5,
-              17202.0
+              440.0,
+              440.0
             ],
             "size": [
               270,
@@ -4115,8 +4376,8 @@
             "id": 337,
             "type": "LazySwitchKJ",
             "pos": [
-              6002.5,
-              17249.0
+              440.0,
+              640.0
             ],
             "size": [
               270,
@@ -4173,8 +4434,8 @@
             "id": 487,
             "type": "LazySwitchKJ",
             "pos": [
-              5169.5,
-              17672.0
+              440.0,
+              760.0
             ],
             "size": [
               270,
@@ -4231,8 +4492,8 @@
             "id": 341,
             "type": "PrimitiveBoolean",
             "pos": [
-              6002.5,
-              16990.5
+              40.0,
+              80.0
             ],
             "size": [
               230,
@@ -4279,8 +4540,8 @@
             "id": 330,
             "type": "LTXVAudioVAEDecode",
             "pos": [
-              4459.0,
-              17108.0
+              440.0,
+              260.0
             ],
             "size": [
               240,
@@ -4334,8 +4595,8 @@
             "id": 488,
             "type": "MarkdownNote",
             "pos": [
-              4745.0,
-              17108.0
+              880.0,
+              80.0
             ],
             "size": [
               390,
@@ -4363,8 +4624,8 @@
             "id": 489,
             "type": "MarkdownNote",
             "pos": [
-              4745.0,
-              16720.5
+              880.0,
+              440.0
             ],
             "size": [
               390,
@@ -4392,8 +4653,8 @@
             "id": 490,
             "type": "MarkdownNote",
             "pos": [
-              6969.0,
-              17249.0
+              880.0,
+              800.0
             ],
             "size": [
               390,
@@ -4421,8 +4682,8 @@
             "id": 491,
             "type": "MarkdownNote",
             "pos": [
-              6318.5,
-              17381.0
+              1360.0,
+              80.0
             ],
             "size": [
               390,
@@ -4450,8 +4711,8 @@
             "id": 492,
             "type": "MarkdownNote",
             "pos": [
-              5365.5,
-              16852.5
+              1360.0,
+              440.0
             ],
             "size": [
               390,
@@ -4479,8 +4740,8 @@
             "id": 493,
             "type": "MarkdownNote",
             "pos": [
-              6278.5,
-              16902.5
+              1360.0,
+              800.0
             ],
             "size": [
               390,
@@ -4508,8 +4769,8 @@
             "id": 494,
             "type": "MarkdownNote",
             "pos": [
-              5485.5,
-              17202.0
+              1840.0,
+              80.0
             ],
             "size": [
               390,
@@ -4537,8 +4798,8 @@
             "id": 495,
             "type": "MarkdownNote",
             "pos": [
-              4745.0,
-              17475.0
+              1840.0,
+              560.0
             ],
             "size": [
               390,
@@ -4566,8 +4827,8 @@
             "id": 496,
             "type": "MarkdownNote",
             "pos": [
-              5485.5,
-              17672.0
+              1840.0,
+              900.0
             ],
             "size": [
               390,
@@ -4592,7 +4853,47 @@
             "bgcolor": "#101722"
           }
         ],
-        "groups": [],
+        "groups": [
+          {
+            "id": 1,
+            "title": "O1 · ORIGIN INPUTS",
+            "bounding": [
+              0.0,
+              0.0,
+              320.0,
+              180.0
+            ],
+            "color": "#7C5CC4",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 2,
+            "title": "T1 · TRANSFORM & TERMINAL",
+            "bounding": [
+              400.0,
+              0.0,
+              360.0,
+              1000.0
+            ],
+            "color": "#3F9E6D",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 3,
+            "title": "R9 · PARAMETER REFERENCE",
+            "bounding": [
+              840.0,
+              0.0,
+              1440.0,
+              1260.0
+            ],
+            "color": "#5B6472",
+            "font_size": 24,
+            "flags": {}
+          }
+        ],
         "links": [
           {
             "id": 687,
@@ -4752,9 +5053,24 @@
           "dawasteh_workflow_refinement": {
             "version": 1,
             "generated_notes": 9,
-            "x_scale": 2.45,
-            "y_scale": 2.35,
-            "gap": 34.0
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "gap": 40.0,
+            "layout": "rodent-v1"
+          },
+          "dawasteh_rodent_layout": {
+            "version": 1,
+            "method": "RODENT Method",
+            "credit": "Nerdy Rodent",
+            "algorithm": "rodent-v1",
+            "grid": 20,
+            "node_gap": [
+              80,
+              40
+            ],
+            "stage_gap": 120,
+            "topology_sha256": "42c1a8bc0caf563e2d3e97488c71a2586aa07ec96ee699e147f51c4c8864c668",
+            "exceptions": []
           }
         },
         "last_node_id": 496
@@ -4774,8 +5090,8 @@
         "inputNode": {
           "id": -10,
           "bounding": [
-            280,
-            7113,
+            -200.0,
+            80.0,
             120,
             140
           ]
@@ -4783,8 +5099,8 @@
         "outputNode": {
           "id": -20,
           "bounding": [
-            1150,
-            6970,
+            2200.0,
+            80.0,
             120,
             80
           ]
@@ -4799,8 +5115,8 @@
               686
             ],
             "pos": [
-              380,
-              7133
+              -80.0,
+              120.0
             ]
           },
           {
@@ -4811,8 +5127,8 @@
               786
             ],
             "pos": [
-              380,
-              7153
+              -80.0,
+              140.0
             ]
           },
           {
@@ -4823,8 +5139,8 @@
               787
             ],
             "pos": [
-              380,
-              7173
+              -80.0,
+              160.0
             ]
           },
           {
@@ -4835,8 +5151,8 @@
               687
             ],
             "pos": [
-              380,
-              7193
+              -80.0,
+              180.0
             ]
           },
           {
@@ -4847,8 +5163,8 @@
               688
             ],
             "pos": [
-              380,
-              7213
+              -80.0,
+              200.0
             ]
           }
         ],
@@ -4861,8 +5177,8 @@
               689
             ],
             "pos": [
-              1170,
-              6990
+              2320.0,
+              120.0
             ]
           },
           {
@@ -4873,8 +5189,8 @@
               690
             ],
             "pos": [
-              1170,
-              7010
+              2320.0,
+              140.0
             ]
           }
         ],
@@ -4884,8 +5200,8 @@
             "id": 325,
             "type": "KSamplerSelect",
             "pos": [
-              1127.0,
-              16732.0
+              40.0,
+              220.0
             ],
             "size": [
               210,
@@ -4937,8 +5253,8 @@
             "id": 326,
             "type": "BasicScheduler",
             "pos": [
-              1127.0,
-              16967.0
+              40.0,
+              320.0
             ],
             "size": [
               210,
@@ -5009,8 +5325,8 @@
             "id": 322,
             "type": "SamplerCustomAdvanced",
             "pos": [
-              1690.5,
-              16403.0
+              40.0,
+              480.0
             ],
             "size": [
               220,
@@ -5087,8 +5403,8 @@
             "id": 323,
             "type": "LTXVSeparateAVLatent",
             "pos": [
-              2254.0,
-              16403.0
+              420.0,
+              80.0
             ],
             "size": [
               200,
@@ -5143,8 +5459,8 @@
             "id": 324,
             "type": "CFGGuider",
             "pos": [
-              1127.0,
-              16426.5
+              40.0,
+              80.0
             ],
             "size": [
               210,
@@ -5214,8 +5530,8 @@
             "id": 327,
             "type": "MarkdownNote",
             "pos": [
-              1956.5,
-              16491.0
+              780.0,
+              80.0
             ],
             "size": [
               390,
@@ -5243,8 +5559,8 @@
             "id": 328,
             "type": "MarkdownNote",
             "pos": [
-              2500.0,
-              16403.0
+              780.0,
+              500.0
             ],
             "size": [
               390,
@@ -5272,8 +5588,8 @@
             "id": 329,
             "type": "MarkdownNote",
             "pos": [
-              987.0,
-              16030.5
+              1240.0,
+              80.0
             ],
             "size": [
               390,
@@ -5301,8 +5617,8 @@
             "id": 330,
             "type": "MarkdownNote",
             "pos": [
-              1383.0,
-              16864.0
+              1240.0,
+              460.0
             ],
             "size": [
               390,
@@ -5330,8 +5646,8 @@
             "id": 331,
             "type": "MarkdownNote",
             "pos": [
-              1383.0,
-              17231.0
+              1720.0,
+              80.0
             ],
             "size": [
               390,
@@ -5356,7 +5672,47 @@
             "bgcolor": "#101722"
           }
         ],
-        "groups": [],
+        "groups": [
+          {
+            "id": 1,
+            "title": "N1 · NEURAL EXECUTION",
+            "bounding": [
+              0.0,
+              0.0,
+              300.0,
+              940.0
+            ],
+            "color": "#B85C5C",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 2,
+            "title": "T1 · TRANSFORM & TERMINAL",
+            "bounding": [
+              380.0,
+              0.0,
+              280.0,
+              160.0
+            ],
+            "color": "#3F9E6D",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 3,
+            "title": "R9 · PARAMETER REFERENCE",
+            "bounding": [
+              740.0,
+              0.0,
+              1420.0,
+              860.0
+            ],
+            "color": "#5B6472",
+            "font_size": 24,
+            "flags": {}
+          }
+        ],
         "links": [
           {
             "id": 679,
@@ -5460,9 +5816,24 @@
           "dawasteh_workflow_refinement": {
             "version": 1,
             "generated_notes": 5,
-            "x_scale": 2.45,
-            "y_scale": 2.35,
-            "gap": 34.0
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "gap": 40.0,
+            "layout": "rodent-v1"
+          },
+          "dawasteh_rodent_layout": {
+            "version": 1,
+            "method": "RODENT Method",
+            "credit": "Nerdy Rodent",
+            "algorithm": "rodent-v1",
+            "grid": 20,
+            "node_gap": [
+              80,
+              40
+            ],
+            "stage_gap": 120,
+            "topology_sha256": "55332b337fd1e9335ea786b770759d3fb3db343bfd2cf92b19163e9ed7ded1fd",
+            "exceptions": []
           }
         },
         "last_node_id": 331
@@ -5482,8 +5853,8 @@
         "inputNode": {
           "id": -10,
           "bounding": [
-            280,
-            7113,
+            -200.0,
+            80.0,
             125.224609375,
             260
           ]
@@ -5491,8 +5862,8 @@
         "outputNode": {
           "id": -20,
           "bounding": [
-            1820,
-            7130,
+            2680.0,
+            80.0,
             120,
             120
           ]
@@ -5507,8 +5878,8 @@
               686
             ],
             "pos": [
-              385.224609375,
-              7133
+              -80.0,
+              120.0
             ]
           },
           {
@@ -5519,8 +5890,8 @@
               703
             ],
             "pos": [
-              385.224609375,
-              7153
+              -80.0,
+              140.0
             ]
           },
           {
@@ -5531,8 +5902,8 @@
               704
             ],
             "pos": [
-              385.224609375,
-              7173
+              -80.0,
+              160.0
             ]
           },
           {
@@ -5543,8 +5914,8 @@
               688
             ],
             "pos": [
-              385.224609375,
-              7193
+              -80.0,
+              180.0
             ]
           },
           {
@@ -5557,8 +5928,8 @@
             ],
             "label": "video_vae",
             "pos": [
-              385.224609375,
-              7213
+              -80.0,
+              200.0
             ]
           },
           {
@@ -5567,8 +5938,8 @@
             "type": "IMAGE",
             "linkIds": [],
             "pos": [
-              385.224609375,
-              7233
+              -80.0,
+              220.0
             ]
           },
           {
@@ -5580,8 +5951,8 @@
             ],
             "label": "video_latent",
             "pos": [
-              385.224609375,
-              7253
+              -80.0,
+              240.0
             ]
           },
           {
@@ -5592,8 +5963,8 @@
               700
             ],
             "pos": [
-              385.224609375,
-              7273
+              -80.0,
+              260.0
             ]
           },
           {
@@ -5604,8 +5975,8 @@
               1004
             ],
             "pos": [
-              385.224609375,
-              7293
+              -80.0,
+              280.0
             ]
           },
           {
@@ -5616,8 +5987,8 @@
               1035
             ],
             "pos": [
-              385.224609375,
-              7313
+              -80.0,
+              300.0
             ]
           },
           {
@@ -5628,8 +5999,8 @@
               1125
             ],
             "pos": [
-              385.224609375,
-              7333
+              -80.0,
+              320.0
             ]
           }
         ],
@@ -5642,8 +6013,8 @@
               843
             ],
             "pos": [
-              1840,
-              7150
+              2800.0,
+              120.0
             ]
           },
           {
@@ -5654,8 +6025,8 @@
               690
             ],
             "pos": [
-              1840,
-              7170
+              2800.0,
+              140.0
             ]
           },
           {
@@ -5666,8 +6037,8 @@
               985
             ],
             "pos": [
-              1840,
-              7190
+              2800.0,
+              160.0
             ]
           },
           {
@@ -5678,8 +6049,8 @@
               986
             ],
             "pos": [
-              1840,
-              7210
+              2800.0,
+              180.0
             ]
           }
         ],
@@ -5689,8 +6060,8 @@
             "id": 445,
             "type": "KSamplerSelect",
             "pos": [
-              1176.0,
-              16708.5
+              400.0,
+              240.0
             ],
             "size": [
               210,
@@ -5742,8 +6113,8 @@
             "id": 331,
             "type": "LTXVCropGuides",
             "pos": [
-              1200.5,
-              16450.0
+              40.0,
+              80.0
             ],
             "size": [
               160,
@@ -5811,8 +6182,8 @@
             "id": 328,
             "type": "LTXVLatentUpsampler",
             "pos": [
-              1176.0,
-              17319.5
+              400.0,
+              340.0
             ],
             "size": [
               320,
@@ -5871,8 +6242,8 @@
             "id": 409,
             "type": "LTXSequencer",
             "pos": [
-              2082.5,
-              16779.0
+              40.0,
+              200.0
             ],
             "size": [
               210,
@@ -7890,8 +8261,8 @@
             "id": 444,
             "type": "BasicScheduler",
             "pos": [
-              1176.0,
-              16943.5
+              400.0,
+              80.0
             ],
             "size": [
               210,
@@ -7962,8 +8333,8 @@
             "id": 448,
             "type": "CFGGuider",
             "pos": [
-              2670.5,
-              16755.5
+              400.0,
+              440.0
             ],
             "size": [
               210,
@@ -8033,8 +8404,8 @@
             "id": 329,
             "type": "LTXVConcatAVLatent",
             "pos": [
-              2670.5,
-              17084.5
+              880.0,
+              80.0
             ],
             "size": [
               190,
@@ -8087,8 +8458,8 @@
             "id": 446,
             "type": "SamplerCustomAdvanced",
             "pos": [
-              3258.5,
-              16755.5
+              400.0,
+              580.0
             ],
             "size": [
               220,
@@ -8165,8 +8536,8 @@
             "id": 447,
             "type": "LTXVSeparateAVLatent",
             "pos": [
-              3846.5,
-              16755.5
+              880.0,
+              180.0
             ],
             "size": [
               200,
@@ -8221,8 +8592,8 @@
             "id": 449,
             "type": "MarkdownNote",
             "pos": [
-              1542.0,
-              17319.5
+              1240.0,
+              80.0
             ],
             "size": [
               390,
@@ -8250,8 +8621,8 @@
             "id": 450,
             "type": "MarkdownNote",
             "pos": [
-              2906.5,
-              17216.5
+              1240.0,
+              440.0
             ],
             "size": [
               390,
@@ -8279,8 +8650,8 @@
             "id": 451,
             "type": "MarkdownNote",
             "pos": [
-              1450.5,
-              16450.0
+              1240.0,
+              800.0
             ],
             "size": [
               390,
@@ -8308,8 +8679,8 @@
             "id": 452,
             "type": "MarkdownNote",
             "pos": [
-              2074.5,
-              17043.0
+              1720.0,
+              80.0
             ],
             "size": [
               390,
@@ -8337,8 +8708,8 @@
             "id": 453,
             "type": "MarkdownNote",
             "pos": [
-              1432.0,
-              16899.5
+              1720.0,
+              660.0
             ],
             "size": [
               390,
@@ -8366,8 +8737,8 @@
             "id": 454,
             "type": "MarkdownNote",
             "pos": [
-              1916.0,
-              16224.5
+              1720.0,
+              1080.0
             ],
             "size": [
               390,
@@ -8395,8 +8766,8 @@
             "id": 455,
             "type": "MarkdownNote",
             "pos": [
-              3524.5,
-              16843.5
+              2200.0,
+              80.0
             ],
             "size": [
               390,
@@ -8424,8 +8795,8 @@
             "id": 456,
             "type": "MarkdownNote",
             "pos": [
-              4092.5,
-              16755.5
+              2200.0,
+              500.0
             ],
             "size": [
               390,
@@ -8453,8 +8824,8 @@
             "id": 457,
             "type": "MarkdownNote",
             "pos": [
-              2926.5,
-              16359.5
+              2200.0,
+              860.0
             ],
             "size": [
               390,
@@ -8479,7 +8850,60 @@
             "bgcolor": "#101722"
           }
         ],
-        "groups": [],
+        "groups": [
+          {
+            "id": 1,
+            "title": "E1 · ENCODE & CONDITION",
+            "bounding": [
+              0.0,
+              0.0,
+              280.0,
+              440.0
+            ],
+            "color": "#C68B31",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 2,
+            "title": "N1 · NEURAL EXECUTION",
+            "bounding": [
+              360.0,
+              0.0,
+              400.0,
+              1040.0
+            ],
+            "color": "#B85C5C",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 3,
+            "title": "T1 · TRANSFORM & TERMINAL",
+            "bounding": [
+              840.0,
+              0.0,
+              280.0,
+              280.0
+            ],
+            "color": "#3F9E6D",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 4,
+            "title": "R9 · PARAMETER REFERENCE",
+            "bounding": [
+              1200.0,
+              0.0,
+              1440.0,
+              1420.0
+            ],
+            "color": "#5B6472",
+            "font_size": 24,
+            "flags": {}
+          }
+        ],
         "links": [
           {
             "id": 679,
@@ -8711,9 +9135,24 @@
           "dawasteh_workflow_refinement": {
             "version": 1,
             "generated_notes": 9,
-            "x_scale": 2.45,
-            "y_scale": 2.35,
-            "gap": 34.0
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "gap": 40.0,
+            "layout": "rodent-v1"
+          },
+          "dawasteh_rodent_layout": {
+            "version": 1,
+            "method": "RODENT Method",
+            "credit": "Nerdy Rodent",
+            "algorithm": "rodent-v1",
+            "grid": 20,
+            "node_gap": [
+              80,
+              40
+            ],
+            "stage_gap": 120,
+            "topology_sha256": "6a489414a0f114475d8f541a8ed2702d8854ba1befed41b7d3cbc48cba2484a4",
+            "exceptions": []
           }
         },
         "last_node_id": 457
@@ -8733,8 +9172,8 @@
         "inputNode": {
           "id": -10,
           "bounding": [
-            2630,
-            6303,
+            -200.0,
+            80.0,
             128.998046875,
             120
           ]
@@ -8742,8 +9181,8 @@
         "outputNode": {
           "id": -20,
           "bounding": [
-            3500,
-            6303,
+            2680.0,
+            80.0,
             120,
             80
           ]
@@ -8758,8 +9197,8 @@
             ],
             "localized_name": "image",
             "pos": [
-              2738.998046875,
-              6323
+              -80.0,
+              120.0
             ]
           },
           {
@@ -8773,8 +9212,8 @@
             "localized_name": "length",
             "label": "length_seconds",
             "pos": [
-              2738.998046875,
-              6343
+              -80.0,
+              140.0
             ]
           },
           {
@@ -8785,8 +9224,8 @@
               714
             ],
             "pos": [
-              2738.998046875,
-              6363
+              -80.0,
+              160.0
             ]
           },
           {
@@ -8797,8 +9236,8 @@
               1135
             ],
             "pos": [
-              2738.998046875,
-              6383
+              -80.0,
+              180.0
             ]
           }
         ],
@@ -8813,8 +9252,8 @@
             "localized_name": "LATENT",
             "label": "video_latent",
             "pos": [
-              3520,
-              6323
+              2800.0,
+              120.0
             ]
           },
           {
@@ -8827,8 +9266,8 @@
             "localized_name": "Latent",
             "label": "audio_latent",
             "pos": [
-              3520,
-              6343
+              2800.0,
+              140.0
             ]
           }
         ],
@@ -8838,8 +9277,8 @@
             "id": 356,
             "type": "GetImageSize",
             "pos": [
-              7423.5,
-              14593.5
+              400.0,
+              200.0
             ],
             "size": [
               170,
@@ -8900,8 +9339,8 @@
             "id": 352,
             "type": "EmptyLTXVLatentVideo",
             "pos": [
-              7864.5,
-              14593.5
+              400.0,
+              320.0
             ],
             "size": [
               210,
@@ -8983,8 +9422,8 @@
             "id": 357,
             "type": "ImageScaleBy",
             "pos": [
-              6884.5,
-              14593.5
+              400.0,
+              80.0
             ],
             "size": [
               210,
@@ -9056,8 +9495,8 @@
             "id": 353,
             "type": "LTXVEmptyLatentAudio",
             "pos": [
-              7889.0,
-              14993.0
+              40.0,
+              80.0
             ],
             "size": [
               210,
@@ -9136,8 +9575,8 @@
             "id": 358,
             "type": "MarkdownNote",
             "pos": [
-              8164.5,
-              14593.5
+              760.0,
+              80.0
             ],
             "size": [
               390,
@@ -9165,8 +9604,8 @@
             "id": 359,
             "type": "MarkdownNote",
             "pos": [
-              8145.0,
-              15037.0
+              1240.0,
+              80.0
             ],
             "size": [
               390,
@@ -9194,8 +9633,8 @@
             "id": 360,
             "type": "MarkdownNote",
             "pos": [
-              7463.5,
-              14769.5
+              1720.0,
+              80.0
             ],
             "size": [
               390,
@@ -9223,8 +9662,8 @@
             "id": 361,
             "type": "MarkdownNote",
             "pos": [
-              7008.5,
-              14725.5
+              2200.0,
+              80.0
             ],
             "size": [
               390,
@@ -9249,7 +9688,47 @@
             "bgcolor": "#101722"
           }
         ],
-        "groups": [],
+        "groups": [
+          {
+            "id": 1,
+            "title": "O1 · ORIGIN INPUTS",
+            "bounding": [
+              0.0,
+              0.0,
+              280.0,
+              240.0
+            ],
+            "color": "#7C5CC4",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 2,
+            "title": "T1 · TRANSFORM & TERMINAL",
+            "bounding": [
+              360.0,
+              0.0,
+              280.0,
+              480.0
+            ],
+            "color": "#3F9E6D",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 3,
+            "title": "R9 · PARAMETER REFERENCE",
+            "bounding": [
+              720.0,
+              0.0,
+              1920.0,
+              520.0
+            ],
+            "color": "#5B6472",
+            "font_size": 24,
+            "flags": {}
+          }
+        ],
         "links": [
           {
             "id": 711,
@@ -9337,9 +9816,24 @@
           "dawasteh_workflow_refinement": {
             "version": 1,
             "generated_notes": 4,
-            "x_scale": 2.45,
-            "y_scale": 2.35,
-            "gap": 34.0
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "gap": 40.0,
+            "layout": "rodent-v1"
+          },
+          "dawasteh_rodent_layout": {
+            "version": 1,
+            "method": "RODENT Method",
+            "credit": "Nerdy Rodent",
+            "algorithm": "rodent-v1",
+            "grid": 20,
+            "node_gap": [
+              80,
+              40
+            ],
+            "stage_gap": 120,
+            "topology_sha256": "79a60693e9c163a02d896ee253eda49d4b9535f70ba68b7e9fa32a83172ba054",
+            "exceptions": []
           }
         },
         "last_node_id": 361
@@ -9349,8 +9843,8 @@
         "version": 1,
         "state": {
           "lastGroupId": 33,
-          "lastNodeId": 499,
-          "lastLinkId": 1201,
+          "lastNodeId": 523,
+          "lastLinkId": 1211,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -9359,17 +9853,17 @@
         "inputNode": {
           "id": -10,
           "bounding": [
-            2340,
-            6060,
+            -200.0,
+            80.0,
             148.3000030517578,
-            108
+            160.0
           ]
         },
         "outputNode": {
           "id": -20,
           "bounding": [
-            3570,
-            5660,
+            5880.0,
+            80.0,
             195.03334045410156,
             248
           ]
@@ -9384,8 +9878,8 @@
             ],
             "label": "use custom audio",
             "pos": [
-              2464.300003051758,
-              6084
+              -80.0,
+              120.0
             ]
           },
           {
@@ -9397,8 +9891,8 @@
             ],
             "label": "frame_rate",
             "pos": [
-              2464.300003051758,
-              6104
+              -80.0,
+              140.0
             ]
           },
           {
@@ -9410,9 +9904,53 @@
             ],
             "label": "length (seconds)",
             "pos": [
-              2464.300003051758,
-              6124
+              -80.0,
+              160.0
             ]
+          },
+          {
+            "id": "24127f62-e24e-54c9-919a-1263aedc2f87",
+            "name": "daw_model_device",
+            "type": "COMBO",
+            "linkIds": [
+              1207
+            ],
+            "label": "DaW model device",
+            "pos": [
+              -80.0,
+              180.0
+            ],
+            "default": "gpu:0"
+          },
+          {
+            "id": "a501bada-5ae3-51f5-9b7b-e2c598156a20",
+            "name": "daw_clip_device",
+            "type": "COMBO",
+            "linkIds": [
+              1211
+            ],
+            "label": "DaW clip device",
+            "pos": [
+              -80.0,
+              200.0
+            ],
+            "default": "gpu:0"
+          },
+          {
+            "id": "783a50f6-c05f-5902-ad21-3dd241984277",
+            "name": "daw_vae_device",
+            "type": "COMBO",
+            "linkIds": [
+              1208,
+              1209,
+              1210
+            ],
+            "label": "DaW vae device",
+            "pos": [
+              -80.0,
+              220.0
+            ],
+            "default": "gpu:0"
           }
         ],
         "outputs": [
@@ -9424,8 +9962,8 @@
               1067
             ],
             "pos": [
-              3594,
-              5684
+              6000.0,
+              120.0
             ]
           },
           {
@@ -9437,8 +9975,8 @@
             ],
             "label": "video_vae",
             "pos": [
-              3594,
-              5704
+              6000.0,
+              140.0
             ]
           },
           {
@@ -9450,8 +9988,8 @@
             ],
             "label": "audio_vae",
             "pos": [
-              3594,
-              5724
+              6000.0,
+              160.0
             ]
           },
           {
@@ -9462,8 +10000,8 @@
               726
             ],
             "pos": [
-              3594,
-              5744
+              6000.0,
+              180.0
             ]
           },
           {
@@ -9474,8 +10012,8 @@
               727
             ],
             "pos": [
-              3594,
-              5764
+              6000.0,
+              200.0
             ]
           },
           {
@@ -9487,8 +10025,8 @@
             ],
             "label": "length_seconds",
             "pos": [
-              3594,
-              5784
+              6000.0,
+              220.0
             ]
           },
           {
@@ -9500,8 +10038,8 @@
             ],
             "label": "noise",
             "pos": [
-              3594,
-              5804
+              6000.0,
+              240.0
             ]
           },
           {
@@ -9513,8 +10051,8 @@
             ],
             "label": "2x_spatial_upscale_model",
             "pos": [
-              3594,
-              5824
+              6000.0,
+              260.0
             ]
           },
           {
@@ -9526,8 +10064,8 @@
             ],
             "label": "frame_rate",
             "pos": [
-              3594,
-              5844
+              6000.0,
+              280.0
             ]
           },
           {
@@ -9539,8 +10077,8 @@
             ],
             "label": "use custom audio",
             "pos": [
-              3594,
-              5864
+              6000.0,
+              300.0
             ]
           }
         ],
@@ -9550,8 +10088,8 @@
             "id": 442,
             "type": "LTX2SamplingPreviewOverride",
             "pos": [
-              7014.563,
-              12779.537
+              3520.0,
+              400.0
             ],
             "size": [
               270,
@@ -9616,8 +10154,8 @@
             "id": 426,
             "type": "CheckpointLoaderSimple",
             "pos": [
-              5829.857,
-              12116.882
+              1000.0,
+              400.0
             ],
             "size": [
               449.1499938964844,
@@ -9643,7 +10181,7 @@
                 "name": "MODEL",
                 "type": "MODEL",
                 "links": [
-                  1185
+                  1202
                 ]
               },
               {
@@ -9674,8 +10212,8 @@
             "id": 484,
             "type": "PrimitiveBoolean",
             "pos": [
-              6295.266,
-              15030.687
+              560.0,
+              360.0
             ],
             "size": [
               230,
@@ -9722,8 +10260,8 @@
             "id": 364,
             "type": "RandomNoise",
             "pos": [
-              7018.57,
-              13666.086
+              3140.0,
+              80.0
             ],
             "size": [
               225,
@@ -9777,8 +10315,8 @@
             "id": 470,
             "type": "CM_IntToFloat",
             "pos": [
-              7686.274,
-              13671.234
+              3520.0,
+              260.0
             ],
             "size": [
               225,
@@ -9824,8 +10362,8 @@
             "id": 467,
             "type": "PrimitiveInt",
             "pos": [
-              7040.613,
-              13325.118
+              560.0,
+              240.0
             ],
             "size": [
               225,
@@ -9874,8 +10412,8 @@
             "id": 365,
             "type": "07609e03-45f4-49c7-a233-a933ebf95094",
             "pos": [
-              7715.879,
-              13254.0
+              3520.0,
+              80.0
             ],
             "size": [
               225,
@@ -9936,8 +10474,8 @@
             "id": 464,
             "type": "PrimitiveStringMultiline",
             "pos": [
-              6257.269,
-              14032.089
+              560.0,
+              80.0
             ],
             "size": [
               270,
@@ -9983,8 +10521,8 @@
             "id": 419,
             "type": "LatentUpscaleModelLoader",
             "pos": [
-              5819.759,
-              14647.467
+              1000.0,
+              280.0
             ],
             "size": [
               458.3666687011719,
@@ -10029,8 +10567,8 @@
             "id": 430,
             "type": "CLIPTextEncode",
             "pos": [
-              7031.687,
-              14473.827
+              2440.0,
+              260.0
             ],
             "size": [
               280,
@@ -10084,8 +10622,8 @@
             "id": 361,
             "type": "ConditioningZeroOut",
             "pos": [
-              7029.865,
-              14836.991
+              2440.0,
+              420.0
             ],
             "size": [
               225,
@@ -10132,8 +10670,8 @@
             "id": 363,
             "type": "LTXVConditioning",
             "pos": [
-              7976.911,
-              14510.648
+              2440.0,
+              500.0
             ],
             "size": [
               225,
@@ -10205,8 +10743,8 @@
             "id": 429,
             "type": "LoraLoaderModelOnly",
             "pos": [
-              7765.141,
-              12779.972
+              1540.0,
+              560.0
             ],
             "size": [
               748.1166381835938,
@@ -10281,8 +10819,8 @@
             "id": 496,
             "type": "MarkdownNote",
             "pos": [
-              4643.899,
-              12954.691
+              40.0,
+              80.0
             ],
             "size": [
               350,
@@ -10305,8 +10843,8 @@
             "id": 443,
             "type": "VAELoaderKJ",
             "pos": [
-              5813.721,
-              12538.75
+              1000.0,
+              580.0
             ],
             "size": [
               453.1000061035156,
@@ -10350,7 +10888,7 @@
                 "name": "VAE",
                 "type": "VAE",
                 "links": [
-                  1072
+                  1203
                 ]
               }
             ],
@@ -10372,8 +10910,8 @@
             "id": 457,
             "type": "VAELoaderKJ",
             "pos": [
-              5826.63,
-              13047.86
+              1000.0,
+              780.0
             ],
             "size": [
               451.7833251953125,
@@ -10417,7 +10955,7 @@
                 "name": "VAE",
                 "type": "VAE",
                 "links": [
-                  721
+                  1204
                 ]
               }
             ],
@@ -10439,8 +10977,8 @@
             "id": 338,
             "type": "VAELoaderKJ",
             "pos": [
-              5823.403,
-              13530.375
+              1000.0,
+              80.0
             ],
             "size": [
               451.7833251953125,
@@ -10484,7 +11022,7 @@
                 "name": "VAE",
                 "type": "VAE",
                 "links": [
-                  722
+                  1205
                 ]
               }
             ],
@@ -10506,8 +11044,8 @@
             "id": 413,
             "type": "LTXAVTextEncoderLoader",
             "pos": [
-              6974.031,
-              14014.741
+              2440.0,
+              80.0
             ],
             "size": [
               535.933349609375,
@@ -10551,7 +11089,7 @@
                 "name": "CLIP",
                 "type": "CLIP",
                 "links": [
-                  1187
+                  1206
                 ]
               }
             ],
@@ -10572,8 +11110,8 @@
             "id": 497,
             "type": "MarkdownNote",
             "pos": [
-              6321.186,
-              13530.375
+              3960.0,
+              80.0
             ],
             "size": [
               390,
@@ -10601,8 +11139,8 @@
             "id": 498,
             "type": "MarkdownNote",
             "pos": [
-              7300.865,
-              14836.991
+              3960.0,
+              480.0
             ],
             "size": [
               390,
@@ -10630,8 +11168,8 @@
             "id": 499,
             "type": "MarkdownNote",
             "pos": [
-              8247.911,
-              14510.648
+              3960.0,
+              820.0
             ],
             "size": [
               390,
@@ -10659,8 +11197,8 @@
             "id": 500,
             "type": "MarkdownNote",
             "pos": [
-              7553.57,
-              13930.086
+              3960.0,
+              1200.0
             ],
             "size": [
               390,
@@ -10688,8 +11226,8 @@
             "id": 501,
             "type": "MarkdownNote",
             "pos": [
-              7986.879,
-              13254.0
+              3960.0,
+              1560.0
             ],
             "size": [
               390,
@@ -10717,8 +11255,8 @@
             "id": 502,
             "type": "MarkdownNote",
             "pos": [
-              7995.964,
-              14014.741
+              3960.0,
+              1920.0
             ],
             "size": [
               390,
@@ -10746,8 +11284,8 @@
             "id": 503,
             "type": "MarkdownNote",
             "pos": [
-              6324.126,
-              14647.467
+              4440.0,
+              80.0
             ],
             "size": [
               390,
@@ -10775,8 +11313,8 @@
             "id": 504,
             "type": "MarkdownNote",
             "pos": [
-              6325.007,
-              12116.882
+              4440.0,
+              420.0
             ],
             "size": [
               390,
@@ -10804,8 +11342,8 @@
             "id": 505,
             "type": "MarkdownNote",
             "pos": [
-              8559.258,
-              12779.972
+              4440.0,
+              780.0
             ],
             "size": [
               390,
@@ -10833,8 +11371,8 @@
             "id": 506,
             "type": "MarkdownNote",
             "pos": [
-              7357.687,
-              14473.827
+              4440.0,
+              1160.0
             ],
             "size": [
               390,
@@ -10862,8 +11400,8 @@
             "id": 507,
             "type": "MarkdownNote",
             "pos": [
-              7330.563,
-              12779.537
+              4440.0,
+              1520.0
             ],
             "size": [
               390,
@@ -10891,8 +11429,8 @@
             "id": 508,
             "type": "MarkdownNote",
             "pos": [
-              6312.821,
-              12538.75
+              4440.0,
+              1900.0
             ],
             "size": [
               390,
@@ -10920,8 +11458,8 @@
             "id": 509,
             "type": "MarkdownNote",
             "pos": [
-              6324.413,
-              13047.86
+              4920.0,
+              80.0
             ],
             "size": [
               390,
@@ -10949,8 +11487,8 @@
             "id": 510,
             "type": "MarkdownNote",
             "pos": [
-              6573.269,
-              14208.089
+              4920.0,
+              480.0
             ],
             "size": [
               390,
@@ -10978,8 +11516,8 @@
             "id": 511,
             "type": "MarkdownNote",
             "pos": [
-              7311.613,
-              12401.118
+              4920.0,
+              820.0
             ],
             "size": [
               390,
@@ -11007,8 +11545,8 @@
             "id": 512,
             "type": "MarkdownNote",
             "pos": [
-              8001.274,
-              13671.234
+              4920.0,
+              1180.0
             ],
             "size": [
               390,
@@ -11036,8 +11574,8 @@
             "id": 513,
             "type": "MarkdownNote",
             "pos": [
-              6571.266,
-              15030.687
+              4920.0,
+              1520.0
             ],
             "size": [
               390,
@@ -11060,13 +11598,515 @@
             ],
             "color": "#1b2638",
             "bgcolor": "#101722"
+          },
+          {
+            "id": 514,
+            "type": "SelectModelDevice",
+            "pos": [
+              1000.0,
+              980.0
+            ],
+            "size": [
+              300,
+              82
+            ],
+            "flags": {},
+            "order": 35,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "model",
+                "name": "model",
+                "type": "MODEL",
+                "link": 1202
+              },
+              {
+                "localized_name": "device",
+                "name": "device",
+                "type": "COMBO",
+                "widget": {
+                  "name": "device"
+                },
+                "link": 1207
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "MODEL",
+                "name": "MODEL",
+                "type": "MODEL",
+                "slot_index": 0,
+                "links": [
+                  1185
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "SelectModelDevice",
+              "cnr_id": "comfy-core"
+            },
+            "widgets_values": [
+              "gpu:0"
+            ],
+            "title": "SelectModelDevice · central control",
+            "color": "#16334a",
+            "bgcolor": "#1d4968"
+          },
+          {
+            "id": 515,
+            "type": "SelectVAEDevice",
+            "pos": [
+              1540.0,
+              80.0
+            ],
+            "size": [
+              300,
+              82
+            ],
+            "flags": {},
+            "order": 36,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "vae",
+                "name": "vae",
+                "type": "VAE",
+                "link": 1203
+              },
+              {
+                "localized_name": "device",
+                "name": "device",
+                "type": "COMBO",
+                "widget": {
+                  "name": "device"
+                },
+                "link": 1208
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "VAE",
+                "name": "VAE",
+                "type": "VAE",
+                "slot_index": 0,
+                "links": [
+                  1072
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "SelectVAEDevice",
+              "cnr_id": "comfy-core"
+            },
+            "widgets_values": [
+              "gpu:0"
+            ],
+            "title": "SelectVAEDevice · central control",
+            "color": "#3b2d18",
+            "bgcolor": "#5a4322"
+          },
+          {
+            "id": 516,
+            "type": "SelectVAEDevice",
+            "pos": [
+              1540.0,
+              200.0
+            ],
+            "size": [
+              300,
+              82
+            ],
+            "flags": {},
+            "order": 37,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "vae",
+                "name": "vae",
+                "type": "VAE",
+                "link": 1204
+              },
+              {
+                "localized_name": "device",
+                "name": "device",
+                "type": "COMBO",
+                "widget": {
+                  "name": "device"
+                },
+                "link": 1209
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "VAE",
+                "name": "VAE",
+                "type": "VAE",
+                "slot_index": 0,
+                "links": [
+                  721
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "SelectVAEDevice",
+              "cnr_id": "comfy-core"
+            },
+            "widgets_values": [
+              "gpu:0"
+            ],
+            "title": "SelectVAEDevice · central control",
+            "color": "#3b2d18",
+            "bgcolor": "#5a4322"
+          },
+          {
+            "id": 517,
+            "type": "SelectVAEDevice",
+            "pos": [
+              1540.0,
+              320.0
+            ],
+            "size": [
+              300,
+              82
+            ],
+            "flags": {},
+            "order": 38,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "vae",
+                "name": "vae",
+                "type": "VAE",
+                "link": 1205
+              },
+              {
+                "localized_name": "device",
+                "name": "device",
+                "type": "COMBO",
+                "widget": {
+                  "name": "device"
+                },
+                "link": 1210
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "VAE",
+                "name": "VAE",
+                "type": "VAE",
+                "slot_index": 0,
+                "links": [
+                  722
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "SelectVAEDevice",
+              "cnr_id": "comfy-core"
+            },
+            "widgets_values": [
+              "gpu:0"
+            ],
+            "title": "SelectVAEDevice · central control",
+            "color": "#3b2d18",
+            "bgcolor": "#5a4322"
+          },
+          {
+            "id": 518,
+            "type": "SelectCLIPDevice",
+            "pos": [
+              1540.0,
+              440.0
+            ],
+            "size": [
+              300,
+              82
+            ],
+            "flags": {},
+            "order": 39,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "clip",
+                "name": "clip",
+                "type": "CLIP",
+                "link": 1206
+              },
+              {
+                "localized_name": "device",
+                "name": "device",
+                "type": "COMBO",
+                "widget": {
+                  "name": "device"
+                },
+                "link": 1211
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "CLIP",
+                "name": "CLIP",
+                "type": "CLIP",
+                "slot_index": 0,
+                "links": [
+                  1187
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "SelectCLIPDevice",
+              "cnr_id": "comfy-core"
+            },
+            "widgets_values": [
+              "gpu:0"
+            ],
+            "title": "SelectCLIPDevice · central control",
+            "color": "#3b2d18",
+            "bgcolor": "#5a4322"
+          },
+          {
+            "id": 519,
+            "type": "MarkdownNote",
+            "pos": [
+              4920.0,
+              1860.0
+            ],
+            "size": [
+              390,
+              311
+            ],
+            "flags": {},
+            "order": 40,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "title": "Erklärung · SelectModelDevice · central control · Node 514",
+            "properties": {
+              "Node name for S&R": "MarkdownNote",
+              "cnr_id": "comfy-core",
+              "dawasteh_note_for": 514,
+              "dawasteh_generated_note": true
+            },
+            "widgets_values": [
+              "# Erklärung · SelectModelDevice · central control · Node 514\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 1202): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1207): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+            ],
+            "color": "#1b2638",
+            "bgcolor": "#101722"
+          },
+          {
+            "id": 520,
+            "type": "MarkdownNote",
+            "pos": [
+              5400.0,
+              80.0
+            ],
+            "size": [
+              390,
+              311
+            ],
+            "flags": {},
+            "order": 41,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "title": "Erklärung · SelectVAEDevice · central control · Node 515",
+            "properties": {
+              "Node name for S&R": "MarkdownNote",
+              "cnr_id": "comfy-core",
+              "dawasteh_note_for": 515,
+              "dawasteh_generated_note": true
+            },
+            "widgets_values": [
+              "# Erklärung · SelectVAEDevice · central control · Node 515\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 1203): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1208): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+            ],
+            "color": "#1b2638",
+            "bgcolor": "#101722"
+          },
+          {
+            "id": 521,
+            "type": "MarkdownNote",
+            "pos": [
+              5400.0,
+              440.0
+            ],
+            "size": [
+              390,
+              311
+            ],
+            "flags": {},
+            "order": 42,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "title": "Erklärung · SelectVAEDevice · central control · Node 516",
+            "properties": {
+              "Node name for S&R": "MarkdownNote",
+              "cnr_id": "comfy-core",
+              "dawasteh_note_for": 516,
+              "dawasteh_generated_note": true
+            },
+            "widgets_values": [
+              "# Erklärung · SelectVAEDevice · central control · Node 516\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 1204): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1209): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+            ],
+            "color": "#1b2638",
+            "bgcolor": "#101722"
+          },
+          {
+            "id": 522,
+            "type": "MarkdownNote",
+            "pos": [
+              5400.0,
+              800.0
+            ],
+            "size": [
+              390,
+              311
+            ],
+            "flags": {},
+            "order": 43,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "title": "Erklärung · SelectVAEDevice · central control · Node 517",
+            "properties": {
+              "Node name for S&R": "MarkdownNote",
+              "cnr_id": "comfy-core",
+              "dawasteh_note_for": 517,
+              "dawasteh_generated_note": true
+            },
+            "widgets_values": [
+              "# Erklärung · SelectVAEDevice · central control · Node 517\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 1205): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1210): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+            ],
+            "color": "#1b2638",
+            "bgcolor": "#101722"
+          },
+          {
+            "id": 523,
+            "type": "MarkdownNote",
+            "pos": [
+              5400.0,
+              1160.0
+            ],
+            "size": [
+              390,
+              311
+            ],
+            "flags": {},
+            "order": 44,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "title": "Erklärung · SelectCLIPDevice · central control · Node 518",
+            "properties": {
+              "Node name for S&R": "MarkdownNote",
+              "cnr_id": "comfy-core",
+              "dawasteh_note_for": 518,
+              "dawasteh_generated_note": true
+            },
+            "widgets_values": [
+              "# Erklärung · SelectCLIPDevice · central control · Node 518\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 1206): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1211): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+            ],
+            "color": "#1b2638",
+            "bgcolor": "#101722"
           }
         ],
-        "groups": [],
+        "groups": [
+          {
+            "id": 1,
+            "title": "R1 · README & RUNTIME",
+            "bounding": [
+              0.0,
+              0.0,
+              440.0,
+              780.0
+            ],
+            "color": "#5B6472",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 2,
+            "title": "O1 · ORIGIN INPUTS",
+            "bounding": [
+              520.0,
+              0.0,
+              360.0,
+              480.0
+            ],
+            "color": "#7C5CC4",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 3,
+            "title": "D1 · DEPENDENCIES",
+            "bounding": [
+              960.0,
+              0.0,
+              1360.0,
+              1100.0
+            ],
+            "color": "#3F789E",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 4,
+            "title": "E1 · ENCODE & CONDITION",
+            "bounding": [
+              2400.0,
+              0.0,
+              620.0,
+              640.0
+            ],
+            "color": "#C68B31",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 5,
+            "title": "N1 · NEURAL EXECUTION",
+            "bounding": [
+              3100.0,
+              0.0,
+              300.0,
+              200.0
+            ],
+            "color": "#B85C5C",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 6,
+            "title": "T1 · TRANSFORM & TERMINAL",
+            "bounding": [
+              3480.0,
+              0.0,
+              360.0,
+              600.0
+            ],
+            "color": "#3F9E6D",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 7,
+            "title": "R9 · PARAMETER REFERENCE",
+            "bounding": [
+              3920.0,
+              0.0,
+              1920.0,
+              2320.0
+            ],
+            "color": "#5B6472",
+            "font_size": 24,
+            "flags": {}
+          }
+        ],
         "links": [
           {
             "id": 721,
-            "origin_id": 457,
+            "origin_id": 516,
             "origin_slot": 0,
             "target_id": -20,
             "target_slot": 1,
@@ -11074,7 +12114,7 @@
           },
           {
             "id": 722,
-            "origin_id": 338,
+            "origin_id": 517,
             "origin_slot": 0,
             "target_id": -20,
             "target_slot": 2,
@@ -11138,7 +12178,7 @@
           },
           {
             "id": 1072,
-            "origin_id": 443,
+            "origin_id": 515,
             "origin_slot": 0,
             "target_id": 442,
             "target_slot": 2,
@@ -11226,7 +12266,7 @@
           },
           {
             "id": 1185,
-            "origin_id": 426,
+            "origin_id": 514,
             "origin_slot": 0,
             "target_id": 442,
             "target_slot": 0,
@@ -11242,7 +12282,7 @@
           },
           {
             "id": 1187,
-            "origin_id": 413,
+            "origin_id": 518,
             "origin_slot": 0,
             "target_id": 430,
             "target_slot": 0,
@@ -11255,19 +12295,114 @@
             "target_id": 363,
             "target_slot": 0,
             "type": "CONDITIONING"
+          },
+          {
+            "id": 1202,
+            "origin_id": 426,
+            "origin_slot": 0,
+            "target_id": 514,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 1203,
+            "origin_id": 443,
+            "origin_slot": 0,
+            "target_id": 515,
+            "target_slot": 0,
+            "type": "VAE"
+          },
+          {
+            "id": 1204,
+            "origin_id": 457,
+            "origin_slot": 0,
+            "target_id": 516,
+            "target_slot": 0,
+            "type": "VAE"
+          },
+          {
+            "id": 1205,
+            "origin_id": 338,
+            "origin_slot": 0,
+            "target_id": 517,
+            "target_slot": 0,
+            "type": "VAE"
+          },
+          {
+            "id": 1206,
+            "origin_id": 413,
+            "origin_slot": 0,
+            "target_id": 518,
+            "target_slot": 0,
+            "type": "CLIP"
+          },
+          {
+            "id": 1207,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 514,
+            "target_slot": 1,
+            "type": "COMBO"
+          },
+          {
+            "id": 1208,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 515,
+            "target_slot": 1,
+            "type": "COMBO"
+          },
+          {
+            "id": 1209,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 516,
+            "target_slot": 1,
+            "type": "COMBO"
+          },
+          {
+            "id": 1210,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 517,
+            "target_slot": 1,
+            "type": "COMBO"
+          },
+          {
+            "id": 1211,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 518,
+            "target_slot": 1,
+            "type": "COMBO"
           }
         ],
         "extra": {
           "workflowRendererVersion": "LG",
           "dawasteh_workflow_refinement": {
             "version": 1,
-            "generated_notes": 17,
-            "x_scale": 2.45,
-            "y_scale": 2.35,
-            "gap": 34.0
+            "generated_notes": 22,
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "gap": 40.0,
+            "layout": "rodent-v1"
+          },
+          "dawasteh_rodent_layout": {
+            "version": 1,
+            "method": "RODENT Method",
+            "credit": "Nerdy Rodent",
+            "algorithm": "rodent-v1",
+            "grid": 20,
+            "node_gap": [
+              80,
+              40
+            ],
+            "stage_gap": 120,
+            "topology_sha256": "4d9e340fbff3a74fdcc5df2edac33b62ee57577985c4ba3edd5b05d4966d9832",
+            "exceptions": []
           }
         },
-        "last_node_id": 513
+        "last_node_id": 523
       },
       {
         "id": "07609e03-45f4-49c7-a233-a933ebf95094",
@@ -11284,8 +12419,8 @@
         "inputNode": {
           "id": -10,
           "bounding": [
-            -662.1270448096031,
-            4310.82566166648,
+            -200.0,
+            80.0,
             120,
             80
           ]
@@ -11293,8 +12428,8 @@
         "outputNode": {
           "id": -20,
           "bounding": [
-            255.79328565979654,
-            4300.82566166648,
+            2200.0,
+            80.0,
             120,
             60
           ]
@@ -11309,8 +12444,8 @@
             ],
             "label": "seconds",
             "pos": [
-              -562.1270448096031,
-              4330.82566166648
+              -80.0,
+              120.0
             ]
           },
           {
@@ -11322,8 +12457,8 @@
             ],
             "label": "frame_rate",
             "pos": [
-              -562.1270448096031,
-              4350.82566166648
+              -80.0,
+              140.0
             ]
           }
         ],
@@ -11337,8 +12472,8 @@
             ],
             "localized_name": "INT",
             "pos": [
-              275.79328565979654,
-              4320.82566166648
+              2320.0,
+              120.0
             ]
           }
         ],
@@ -11348,8 +12483,8 @@
             "id": 137,
             "type": "easy mathInt",
             "pos": [
-              -588.0,
-              10105.0
+              400.0,
+              80.0
             ],
             "size": [
               210,
@@ -11414,8 +12549,8 @@
             "id": 139,
             "type": "PrimitiveInt",
             "pos": [
-              -1176.0,
-              10128.5
+              40.0,
+              80.0
             ],
             "size": [
               210,
@@ -11462,8 +12597,8 @@
             "id": 138,
             "type": "easy mathInt",
             "pos": [
-              -24.5,
-              10105.0
+              400.0,
+              240.0
             ],
             "size": [
               210,
@@ -11528,8 +12663,8 @@
             "id": 140,
             "type": "MarkdownNote",
             "pos": [
-              -332.0,
-              10281.0
+              760.0,
+              80.0
             ],
             "size": [
               390,
@@ -11557,8 +12692,8 @@
             "id": 141,
             "type": "MarkdownNote",
             "pos": [
-              231.5,
-              10105.0
+              1240.0,
+              80.0
             ],
             "size": [
               390,
@@ -11586,8 +12721,8 @@
             "id": 142,
             "type": "MarkdownNote",
             "pos": [
-              -920.0,
-              10260.5
+              1720.0,
+              80.0
             ],
             "size": [
               390,
@@ -11612,7 +12747,47 @@
             "bgcolor": "#101722"
           }
         ],
-        "groups": [],
+        "groups": [
+          {
+            "id": 1,
+            "title": "O1 · ORIGIN INPUTS",
+            "bounding": [
+              0.0,
+              0.0,
+              280.0,
+              200.0
+            ],
+            "color": "#7C5CC4",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 2,
+            "title": "T1 · TRANSFORM & TERMINAL",
+            "bounding": [
+              360.0,
+              0.0,
+              280.0,
+              400.0
+            ],
+            "color": "#3F9E6D",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 3,
+            "title": "R9 · PARAMETER REFERENCE",
+            "bounding": [
+              720.0,
+              0.0,
+              1440.0,
+              480.0
+            ],
+            "color": "#5B6472",
+            "font_size": 24,
+            "flags": {}
+          }
+        ],
         "links": [
           {
             "id": 360,
@@ -11660,9 +12835,24 @@
           "dawasteh_workflow_refinement": {
             "version": 1,
             "generated_notes": 3,
-            "x_scale": 2.45,
-            "y_scale": 2.35,
-            "gap": 34.0
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "gap": 40.0,
+            "layout": "rodent-v1"
+          },
+          "dawasteh_rodent_layout": {
+            "version": 1,
+            "method": "RODENT Method",
+            "credit": "Nerdy Rodent",
+            "algorithm": "rodent-v1",
+            "grid": 20,
+            "node_gap": [
+              80,
+              40
+            ],
+            "stage_gap": 120,
+            "topology_sha256": "35a52bc97ca40a0da5e5324fad02aaeee1cad406e7e2e8aaa621f99729b8b5b4",
+            "exceptions": []
           }
         },
         "last_node_id": 142
@@ -11682,8 +12872,8 @@
         "inputNode": {
           "id": -10,
           "bounding": [
-            4300,
-            5930,
+            -200.0,
+            80.0,
             187.052734375,
             240
           ]
@@ -11691,8 +12881,8 @@
         "outputNode": {
           "id": -20,
           "bounding": [
-            5470,
-            5960,
+            3080.0,
+            80.0,
             120,
             60
           ]
@@ -11707,8 +12897,8 @@
               14
             ],
             "pos": [
-              4467.052734375,
-              5950
+              -80.0,
+              120.0
             ]
           },
           {
@@ -11721,8 +12911,8 @@
               871
             ],
             "pos": [
-              4467.052734375,
-              5970
+              -80.0,
+              140.0
             ]
           },
           {
@@ -11735,8 +12925,8 @@
               872
             ],
             "pos": [
-              4467.052734375,
-              5990
+              -80.0,
+              160.0
             ]
           },
           {
@@ -11747,8 +12937,8 @@
               6
             ],
             "pos": [
-              4467.052734375,
-              6010
+              -80.0,
+              180.0
             ]
           },
           {
@@ -11760,8 +12950,8 @@
               17
             ],
             "pos": [
-              4467.052734375,
-              6030
+              -80.0,
+              200.0
             ]
           },
           {
@@ -11773,8 +12963,8 @@
             ],
             "label": "video_vae",
             "pos": [
-              4467.052734375,
-              6050
+              -80.0,
+              220.0
             ]
           },
           {
@@ -11785,8 +12975,8 @@
               29
             ],
             "pos": [
-              4467.052734375,
-              6070
+              -80.0,
+              240.0
             ]
           },
           {
@@ -11797,8 +12987,8 @@
               1006
             ],
             "pos": [
-              4467.052734375,
-              6090
+              -80.0,
+              260.0
             ]
           },
           {
@@ -11809,8 +12999,8 @@
               1198
             ],
             "pos": [
-              4467.052734375,
-              6110
+              -80.0,
+              280.0
             ]
           },
           {
@@ -11822,8 +13012,8 @@
             ],
             "label": "2x_spatial_upscale_model",
             "pos": [
-              4467.052734375,
-              6130
+              -80.0,
+              300.0
             ]
           }
         ],
@@ -11837,8 +13027,8 @@
             ],
             "label": "av_output",
             "pos": [
-              5490,
-              5980
+              3200.0,
+              120.0
             ]
           }
         ],
@@ -11848,8 +13038,8 @@
             "id": 371,
             "type": "LTXVConcatAVLatent",
             "pos": [
-              12862.5,
-              14029.5
+              800.0,
+              80.0
             ],
             "size": [
               190,
@@ -11895,8 +13085,8 @@
             "id": 2,
             "type": "afa29944-eb58-40a5-8e76-484f2503fa0c",
             "pos": [
-              11098.5,
-              13982.5
+              460.0,
+              80.0
             ],
             "size": [
               190,
@@ -11961,8 +13151,8 @@
             "id": 383,
             "type": "LTXVCropGuides",
             "pos": [
-              12176.5,
-              13982.5
+              40.0,
+              400.0
             ],
             "size": [
               260,
@@ -12026,8 +13216,8 @@
             "id": 6,
             "type": "ce8f7842-cb03-41b4-9b1e-8d032b2a4e72",
             "pos": [
-              11613.0,
-              13982.5
+              40.0,
+              80.0
             ],
             "size": [
               210,
@@ -12142,8 +13332,8 @@
             "id": 384,
             "type": "MarkdownNote",
             "pos": [
-              11334.5,
-              14334.5
+              1160.0,
+              80.0
             ],
             "size": [
               390,
@@ -12171,8 +13361,8 @@
             "id": 385,
             "type": "MarkdownNote",
             "pos": [
-              11869.0,
-              14114.5
+              1640.0,
+              80.0
             ],
             "size": [
               390,
@@ -12200,8 +13390,8 @@
             "id": 386,
             "type": "MarkdownNote",
             "pos": [
-              13098.5,
-              14029.5
+              2120.0,
+              80.0
             ],
             "size": [
               390,
@@ -12229,8 +13419,8 @@
             "id": 387,
             "type": "MarkdownNote",
             "pos": [
-              12482.5,
-              14114.5
+              2600.0,
+              80.0
             ],
             "size": [
               390,
@@ -12255,7 +13445,60 @@
             "bgcolor": "#101722"
           }
         ],
-        "groups": [],
+        "groups": [
+          {
+            "id": 1,
+            "title": "E1 · ENCODE & CONDITION",
+            "bounding": [
+              0.0,
+              0.0,
+              340.0,
+              520.0
+            ],
+            "color": "#C68B31",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 2,
+            "title": "N1 · NEURAL EXECUTION",
+            "bounding": [
+              420.0,
+              0.0,
+              260.0,
+              400.0
+            ],
+            "color": "#B85C5C",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 3,
+            "title": "T1 · TRANSFORM & TERMINAL",
+            "bounding": [
+              760.0,
+              0.0,
+              280.0,
+              160.0
+            ],
+            "color": "#3F9E6D",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 4,
+            "title": "R9 · PARAMETER REFERENCE",
+            "bounding": [
+              1120.0,
+              0.0,
+              1920.0,
+              640.0
+            ],
+            "color": "#5B6472",
+            "font_size": 24,
+            "flags": {}
+          }
+        ],
         "links": [
           {
             "id": 3,
@@ -12439,9 +13682,24 @@
           "dawasteh_workflow_refinement": {
             "version": 1,
             "generated_notes": 4,
-            "x_scale": 2.45,
-            "y_scale": 2.35,
-            "gap": 34.0
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "gap": 40.0,
+            "layout": "rodent-v1"
+          },
+          "dawasteh_rodent_layout": {
+            "version": 1,
+            "method": "RODENT Method",
+            "credit": "Nerdy Rodent",
+            "algorithm": "rodent-v1",
+            "grid": 20,
+            "node_gap": [
+              80,
+              40
+            ],
+            "stage_gap": 120,
+            "topology_sha256": "bde5241aa902e8730b46c19384f2bbaa9a11ef64048ebf6e5816a3083f227415",
+            "exceptions": []
           }
         },
         "last_node_id": 387
@@ -12461,8 +13719,8 @@
         "inputNode": {
           "id": -10,
           "bounding": [
-            3590,
-            6700,
+            -200.0,
+            80.0,
             145.544921875,
             140
           ]
@@ -12470,8 +13728,8 @@
         "outputNode": {
           "id": -20,
           "bounding": [
-            4760,
-            6685,
+            3080.0,
+            80.0,
             120,
             60
           ]
@@ -12485,8 +13743,8 @@
               1154
             ],
             "pos": [
-              3715.544921875,
-              6720
+              -80.0,
+              120.0
             ]
           },
           {
@@ -12497,8 +13755,8 @@
               1155
             ],
             "pos": [
-              3715.544921875,
-              6740
+              -80.0,
+              140.0
             ]
           },
           {
@@ -12509,8 +13767,8 @@
               1156
             ],
             "pos": [
-              3715.544921875,
-              6760
+              -80.0,
+              160.0
             ]
           },
           {
@@ -12522,8 +13780,8 @@
             ],
             "label": "Use Custom Audio",
             "pos": [
-              3715.544921875,
-              6780
+              -80.0,
+              180.0
             ]
           },
           {
@@ -12535,8 +13793,8 @@
             ],
             "label": "audio_latent",
             "pos": [
-              3715.544921875,
-              6800
+              -80.0,
+              200.0
             ]
           }
         ],
@@ -12550,8 +13808,8 @@
             ],
             "localized_name": "*",
             "pos": [
-              4780,
-              6705
+              3200.0,
+              120.0
             ]
           }
         ],
@@ -12561,8 +13819,8 @@
             "id": 471,
             "type": "SetLatentNoiseMask",
             "pos": [
-              10388.0,
-              15721.5
+              840.0,
+              80.0
             ],
             "size": [
               210,
@@ -12620,8 +13878,8 @@
             "id": 472,
             "type": "SolidMask",
             "pos": [
-              9726.5,
-              15886.0
+              1200.0,
+              200.0
             ],
             "size": [
               240,
@@ -12703,8 +13961,8 @@
             "id": 473,
             "type": "LTXVAudioVAEEncode",
             "pos": [
-              9702.0,
-              15651.0
+              440.0,
+              80.0
             ],
             "size": [
               250,
@@ -12758,8 +14016,8 @@
             "id": 474,
             "type": "GetImageSize",
             "pos": [
-              9236.5,
-              15909.5
+              1200.0,
+              80.0
             ],
             "size": [
               180,
@@ -12813,8 +14071,8 @@
             "id": 482,
             "type": "PrimitiveBoolean",
             "pos": [
-              10951.5,
-              15463.0
+              40.0,
+              80.0
             ],
             "size": [
               230,
@@ -12860,8 +14118,8 @@
             "id": 478,
             "type": "LazySwitchKJ",
             "pos": [
-              10951.5,
-              15721.5
+              1200.0,
+              360.0
             ],
             "size": [
               270,
@@ -12918,8 +14176,8 @@
             "id": 483,
             "type": "MarkdownNote",
             "pos": [
-              10644.0,
-              15853.5
+              1640.0,
+              80.0
             ],
             "size": [
               390,
@@ -12947,8 +14205,8 @@
             "id": 484,
             "type": "MarkdownNote",
             "pos": [
-              10012.5,
-              15886.0
+              1640.0,
+              440.0
             ],
             "size": [
               390,
@@ -12976,8 +14234,8 @@
             "id": 485,
             "type": "MarkdownNote",
             "pos": [
-              9998.0,
-              15343.0
+              2120.0,
+              80.0
             ],
             "size": [
               390,
@@ -13005,8 +14263,8 @@
             "id": 486,
             "type": "MarkdownNote",
             "pos": [
-              9462.5,
-              16041.5
+              2120.0,
+              440.0
             ],
             "size": [
               390,
@@ -13034,8 +14292,8 @@
             "id": 487,
             "type": "MarkdownNote",
             "pos": [
-              11267.5,
-              15721.5
+              2600.0,
+              80.0
             ],
             "size": [
               390,
@@ -13063,8 +14321,8 @@
             "id": 488,
             "type": "MarkdownNote",
             "pos": [
-              11227.5,
-              15375.0
+              2600.0,
+              440.0
             ],
             "size": [
               390,
@@ -13089,7 +14347,73 @@
             "bgcolor": "#101722"
           }
         ],
-        "groups": [],
+        "groups": [
+          {
+            "id": 1,
+            "title": "O1 · ORIGIN INPUTS",
+            "bounding": [
+              0.0,
+              0.0,
+              320.0,
+              180.0
+            ],
+            "color": "#7C5CC4",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 2,
+            "title": "E1 · ENCODE & CONDITION",
+            "bounding": [
+              400.0,
+              0.0,
+              320.0,
+              160.0
+            ],
+            "color": "#C68B31",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 3,
+            "title": "N1 · NEURAL EXECUTION",
+            "bounding": [
+              800.0,
+              0.0,
+              280.0,
+              180.0
+            ],
+            "color": "#B85C5C",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 4,
+            "title": "T1 · TRANSFORM & TERMINAL",
+            "bounding": [
+              1160.0,
+              0.0,
+              360.0,
+              480.0
+            ],
+            "color": "#3F9E6D",
+            "font_size": 24,
+            "flags": {}
+          },
+          {
+            "id": 5,
+            "title": "R9 · PARAMETER REFERENCE",
+            "bounding": [
+              1600.0,
+              0.0,
+              1440.0,
+              840.0
+            ],
+            "color": "#5B6472",
+            "font_size": 24,
+            "flags": {}
+          }
+        ],
         "links": [
           {
             "id": 1136,
@@ -13192,9 +14516,24 @@
           "dawasteh_workflow_refinement": {
             "version": 1,
             "generated_notes": 6,
-            "x_scale": 2.45,
-            "y_scale": 2.35,
-            "gap": 34.0
+            "x_scale": 1.0,
+            "y_scale": 1.0,
+            "gap": 40.0,
+            "layout": "rodent-v1"
+          },
+          "dawasteh_rodent_layout": {
+            "version": 1,
+            "method": "RODENT Method",
+            "credit": "Nerdy Rodent",
+            "algorithm": "rodent-v1",
+            "grid": 20,
+            "node_gap": [
+              80,
+              40
+            ],
+            "stage_gap": 120,
+            "topology_sha256": "78dcdb8b9455fe40b784f8cbb261937d645f8f35de4d6543a642de75f270ce7c",
+            "exceptions": []
           }
         },
         "last_node_id": 488
@@ -13218,10 +14557,65 @@
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 10,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
+      "generated_notes": 12,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ],
+      "placement_support": "official-selectors",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "LTX23_First+Last-Frame-Custom-Audio",
+      "source": "workflows/Text+Image to Video/LTX23_First+Last-Frame-Custom-Audio.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 5,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_duration_seconds": {
+      "version": 1,
+      "unit": "seconds",
+      "mode": "native-seconds"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "3949e2fcee92df5e7cd1cab202a2101f87a6ff0f6466239595ada91ad28f29c5",
+      "exceptions": []
     }
   },
   "version": 0.4

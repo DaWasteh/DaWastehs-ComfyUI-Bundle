@@ -1,1 +1,856 @@
-{"id":"78224ffd-171f-4565-80ea-bb100e63c26e","revision":0,"last_node_id":23,"last_link_id":14,"nodes":[{"id":18,"type":"RMBG","pos":[1993.031,625.154],"size":[340,350],"flags":{},"order":7,"mode":0,"inputs":[{"localized_name":"Image","name":"image","type":"IMAGE","link":12},{"localized_name":"Model","name":"model","type":"COMBO","widget":{"name":"model"},"link":null},{"localized_name":"Sensitivity","name":"sensitivity","shape":7,"type":"FLOAT","widget":{"name":"sensitivity"},"link":null},{"localized_name":"Processing Resolution","name":"process_res","shape":7,"type":"INT","widget":{"name":"process_res"},"link":null},{"localized_name":"Mask Blur","name":"mask_blur","shape":7,"type":"INT","widget":{"name":"mask_blur"},"link":null},{"localized_name":"Mask Offset","name":"mask_offset","shape":7,"type":"INT","widget":{"name":"mask_offset"},"link":null},{"localized_name":"Invert Output","name":"invert_output","shape":7,"type":"BOOLEAN","widget":{"name":"invert_output"},"link":null},{"localized_name":"Refine Foreground","name":"refine_foreground","shape":7,"type":"BOOLEAN","widget":{"name":"refine_foreground"},"link":null},{"localized_name":"Background","name":"background","shape":7,"type":"COMBO","widget":{"name":"background"},"link":null},{"localized_name":"Background Color","name":"background_color","shape":7,"type":"COLORCODE","widget":{"name":"background_color"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[14]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null},{"localized_name":"MASK IMAGE","name":"MASK_IMAGE","type":"IMAGE","links":null}],"properties":{"Node name for S&R":"RMBG","cnr_id":"comfyui-rmbg","ver":"d7402513f23f58db7d56754b02a4f51a148b4941"},"widgets_values":["RMBG-2.0",1,1024,0,0,false,false,"Alpha","#222222"],"color":"#222e40","bgcolor":"#364254"},{"id":4,"type":"MarkdownNote","pos":[261.324,625.154],"size":[301.3333435058594,273.1666564941406],"flags":{"collapsed":false},"order":0,"mode":0,"inputs":[],"outputs":[],"title":"👑 Pixaroma - Note - START HERE","properties":{},"widgets_values":["The first time you use the workflow, the **SDMatte.safetensors** model is downloaded automatically and saved to ..ComfyUI\\models\\RMBG\\SDMatte\n\n---\n\n## 🧩 Nodes Installed from Manager  \n\n- ComfyUI-RMBG\n\n---\n\n## 📚 Resources  \n🎥 **Tutorials:** [Pixaroma YouTube Channel](https://www.youtube.com/@pixaroma)  \n💬 **Community Discord:** [Join Here](https://discord.com/invite/gggpkVgBf3)\n"],"color":"#432","bgcolor":"#653"},{"id":3,"type":"SaveImage","pos":[3670.53,625.154],"size":[422.2833251953125,421.6000061035156],"flags":{},"order":9,"mode":0,"inputs":[{"localized_name":"images","name":"images","type":"IMAGE","link":11},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","widget":{"name":"filename_prefix"},"link":null}],"outputs":[{"localized_name":"images","name":"images","type":"IMAGE","links":null}],"properties":{"Node name for S&R":"SaveImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["PNG"],"color":"#323","bgcolor":"#535"},{"id":1,"type":"LoadImage","pos":[1054.325,625.154],"size":[360.79998779296875,446.6666564941406],"flags":{},"order":1,"mode":0,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"choose file to upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[12]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null}],"properties":{"Node name for S&R":"LoadImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["example.png","image"]},{"id":16,"type":"AILab_SDMatte","pos":[2880.781,625.154],"size":[300,406],"flags":{},"order":8,"mode":0,"inputs":[{"localized_name":"Image","name":"image","type":"IMAGE","link":14},{"localized_name":"Mask","name":"mask","shape":7,"type":"MASK","link":null},{"localized_name":"model","name":"model","type":"COMBO","widget":{"name":"model"},"link":null},{"localized_name":"Device","name":"device","type":"COMBO","widget":{"name":"device"},"link":null},{"localized_name":"Processing Resolution","name":"process_res","type":"INT","widget":{"name":"process_res"},"link":null},{"localized_name":"Transparent Object","name":"transparent_object","shape":7,"type":"BOOLEAN","widget":{"name":"transparent_object"},"link":null},{"localized_name":"Mask Refine","name":"mask_refine","shape":7,"type":"BOOLEAN","widget":{"name":"mask_refine"},"link":null},{"localized_name":"Sensitivity","name":"sensitivity","shape":7,"type":"FLOAT","widget":{"name":"sensitivity"},"link":null},{"localized_name":"Mask Blur","name":"mask_blur","shape":7,"type":"INT","widget":{"name":"mask_blur"},"link":null},{"localized_name":"Mask Offset","name":"mask_offset","shape":7,"type":"INT","widget":{"name":"mask_offset"},"link":null},{"localized_name":"Invert Output","name":"invert_output","shape":7,"type":"BOOLEAN","widget":{"name":"invert_output"},"link":null},{"localized_name":"Background","name":"background","shape":7,"type":"COMBO","widget":{"name":"background"},"link":null},{"localized_name":"Background Color","name":"background_color","shape":7,"type":"COLORCODE","widget":{"name":"background_color"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[11]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null},{"localized_name":"MASK_IMAGE","name":"MASK_IMAGE","type":"IMAGE","links":null}],"properties":{"Node name for S&R":"AILab_SDMatte","cnr_id":"comfyui-rmbg","ver":"d7402513f23f58db7d56754b02a4f51a148b4941"},"widgets_values":["SDMatte","Auto",1024,true,true,0.9,0,0,false,"Alpha","#222222"],"color":"#2e3e57","bgcolor":"#4b5b73"},{"id":19,"type":"PixaromaRunTimer","pos":[261.324,1862.82],"size":[226,14],"flags":{"no_title":true},"order":2,"mode":0,"inputs":[],"outputs":[],"properties":{"Node name for S&R":"PixaromaRunTimer","cnr_id":"ComfyUI-Pixaroma","ver":"ffcf2f56aa448f2df763b09b70857632792b7805"},"widgets_values":[{"version":1,"color":"#f66744","decimals":0,"chime":true,"sound":"","volume":70}],"color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":20,"type":"MarkdownNote","pos":[1461.124,625.154],"size":[390,311],"flags":{},"order":3,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Load Image · Node 1","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":1,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Load Image · Node 1\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":21,"type":"MarkdownNote","pos":[4138.815,625.154],"size":[390,294],"flags":{},"order":4,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Save Image · Node 3","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":3,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Save Image · Node 3\n\n**Zweck:** Saves the input images to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `PNG` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `images` (IMAGE, Link 11): The images to save.\n\n**Ausgänge**\n- Keine Ausgänge."],"color":"#1b2638","bgcolor":"#101722"},{"id":22,"type":"MarkdownNote","pos":[3226.781,625.154],"size":[390,968.1500244140625],"flags":{},"order":5,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · SDMatte Matting (RMBG) · Node 16","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":16,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · SDMatte Matting (RMBG) · Node 16\n\n**Zweck:** Trennt Vordergrund und Hintergrund und erzeugt dafür Bild, Maske oder Transparenz.\n\n**Einstellbare Werte**\n- `model` = `SDMatte` — SDMatte model variant: Standard or Plus version Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `device` = `Auto` — Auto: smart detection, CPU: force CPU, GPU: force GPU Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `process_res` = `1024` — Processing resolution: higher = better quality but slower Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `transparent_object` = `True` — Whether input image contains transparent objects AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `mask_refine` = `True` — Enable mask refinement using mask constraints AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `sensitivity` = `0.9` — Sensitivity for mask constraint (0.1-1.0): higher = more strict Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `mask_blur` = `0` — Blur mask edges (0 = disabled) Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n- `mask_offset` = `0` — Expand/shrink mask (positive = expand) Höher erweitert Maske oder Box nach außen; niedriger bzw. negativ zieht den Bereich enger zusammen.\n- `invert_output` = `False` — Invert the mask output AN kehrt Maske oder Ausgabe um; AUS behält Vordergrund und Hintergrund in der ursprünglichen Zuordnung.\n- `background` = `Alpha` — Background type for output Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `background_color` = `#222222` — Background color (when not Alpha) Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image` (IMAGE, Link 14): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `mask` (MASK, nicht verbunden): Mask: White=foreground, Black=background. If omitted and image has alpha, alpha will be used.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `MASK_IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":23,"type":"MarkdownNote","pos":[2379.031,625.154],"size":[390,950.2999877929688],"flags":{},"order":6,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Remove Background (RMBG) · Node 18","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":18,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Remove Background (RMBG) · Node 18\n\n**Zweck:** Trennt Vordergrund und Hintergrund und erzeugt dafür Bild, Maske oder Transparenz.\n\n**Einstellbare Werte**\n- `model` = `RMBG-2.0` — Select the background removal model to use (RMBG-2.0, INSPYRENET, BEN). Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `sensitivity` = `1` — Adjust the strength of mask detection (higher values result in more aggressive detection). Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `process_res` = `1024` — Set the processing resolution (higher values require more VRAM and may increase processing time). Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `mask_blur` = `0` — Specify the amount of blur to apply to the mask edges (0 for no blur, higher values for more blur). Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n- `mask_offset` = `0` — Adjust the mask boundary (positive values expand the mask, negative values shrink it). Höher erweitert Maske oder Box nach außen; niedriger bzw. negativ zieht den Bereich enger zusammen.\n- `invert_output` = `False` — Enable to invert both the image and mask output (useful for certain effects). AN kehrt Maske oder Ausgabe um; AUS behält Vordergrund und Hintergrund in der ursprünglichen Zuordnung.\n- `refine_foreground` = `False` — Use Fast Foreground Colour Estimation to optimize transparent background AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `background` = `Alpha` — Choose output type: Alpha (transparent) or Color (custom background color). Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `background_color` = `#222222` — Pick background color (supports alpha, use color picker). Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image` (IMAGE, Link 12): Input image to be processed for background removal.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `MASK_IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"}],"links":[[11,16,0,3,0,"IMAGE"],[12,1,0,18,0,"IMAGE"],[14,18,0,16,0,"IMAGE"]],"groups":[],"config":{},"extra":{"workflowRendererVersion":"LG","ds":{"scale":1.1167815779424852,"offset":[37.35847862144231,-46.19265263603591]},"frontendVersion":"1.39.19","VHS_latentpreview":false,"VHS_latentpreviewrate":0,"VHS_MetadataImage":true,"VHS_KeepIntermediate":true,"dawasteh_workflow_refinement":{"version":1,"generated_notes":4,"x_scale":2.45,"y_scale":2.35,"gap":34}},"version":0.4}
+{
+  "id": "78224ffd-171f-4565-80ea-bb100e63c26e",
+  "revision": 0,
+  "last_node_id": 25,
+  "last_link_id": 14,
+  "nodes": [
+    {
+      "id": 18,
+      "type": "RMBG",
+      "pos": [
+        1100.0,
+        80.0
+      ],
+      "size": [
+        340,
+        350
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "Image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 12
+        },
+        {
+          "localized_name": "Model",
+          "name": "model",
+          "type": "COMBO",
+          "widget": {
+            "name": "model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Sensitivity",
+          "name": "sensitivity",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "sensitivity"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Processing Resolution",
+          "name": "process_res",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "process_res"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Mask Blur",
+          "name": "mask_blur",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "mask_blur"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Mask Offset",
+          "name": "mask_offset",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "mask_offset"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Invert Output",
+          "name": "invert_output",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "invert_output"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Refine Foreground",
+          "name": "refine_foreground",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "refine_foreground"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Background",
+          "name": "background",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "background"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Background Color",
+          "name": "background_color",
+          "shape": 7,
+          "type": "COLORCODE",
+          "widget": {
+            "name": "background_color"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            14
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "localized_name": "MASK IMAGE",
+          "name": "MASK_IMAGE",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RMBG",
+        "cnr_id": "comfyui-rmbg",
+        "ver": "d7402513f23f58db7d56754b02a4f51a148b4941"
+      },
+      "widgets_values": [
+        "RMBG-2.0",
+        1,
+        1024,
+        0,
+        0,
+        false,
+        false,
+        "Alpha",
+        "#222222"
+      ],
+      "color": "#222e40",
+      "bgcolor": "#364254"
+    },
+    {
+      "id": 4,
+      "type": "MarkdownNote",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        301.3333435058594,
+        273.1666564941406
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "👑 Pixaroma - Note - START HERE",
+      "properties": {},
+      "widgets_values": [
+        "The first time you use the workflow, the **SDMatte.safetensors** model is downloaded automatically and saved to ..ComfyUI\\models\\RMBG\\SDMatte\n\n---\n\n## 🧩 Nodes Installed from Manager  \n\n- ComfyUI-RMBG\n\n---\n\n## 📚 Resources  \n🎥 **Tutorials:** [Pixaroma YouTube Channel](https://www.youtube.com/@pixaroma)  \n💬 **Community Discord:** [Join Here](https://discord.com/invite/gggpkVgBf3)\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 3,
+      "type": "SaveImage",
+      "pos": [
+        1100.0,
+        920.0
+      ],
+      "size": [
+        422.2833251953125,
+        421.6000061035156
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 11
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "PNG"
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        580.0,
+        80.0
+      ],
+      "size": [
+        360.79998779296875,
+        446.6666564941406
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            12
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "AILab_SDMatte",
+      "pos": [
+        1100.0,
+        480.0
+      ],
+      "size": [
+        300,
+        406
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "Image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 14
+        },
+        {
+          "localized_name": "Mask",
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "COMBO",
+          "widget": {
+            "name": "model"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Processing Resolution",
+          "name": "process_res",
+          "type": "INT",
+          "widget": {
+            "name": "process_res"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Transparent Object",
+          "name": "transparent_object",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "transparent_object"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Mask Refine",
+          "name": "mask_refine",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "mask_refine"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Sensitivity",
+          "name": "sensitivity",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "sensitivity"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Mask Blur",
+          "name": "mask_blur",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "mask_blur"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Mask Offset",
+          "name": "mask_offset",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "mask_offset"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Invert Output",
+          "name": "invert_output",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "invert_output"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Background",
+          "name": "background",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "background"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "Background Color",
+          "name": "background_color",
+          "shape": 7,
+          "type": "COLORCODE",
+          "widget": {
+            "name": "background_color"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            11
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "localized_name": "MASK_IMAGE",
+          "name": "MASK_IMAGE",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AILab_SDMatte",
+        "cnr_id": "comfyui-rmbg",
+        "ver": "d7402513f23f58db7d56754b02a4f51a148b4941"
+      },
+      "widgets_values": [
+        "SDMatte",
+        "Auto",
+        1024,
+        true,
+        true,
+        0.9,
+        0,
+        0,
+        false,
+        "Alpha",
+        "#222222"
+      ],
+      "color": "#2e3e57",
+      "bgcolor": "#4b5b73"
+    },
+    {
+      "id": 19,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        400.0
+      ],
+      "size": [
+        226,
+        14
+      ],
+      "flags": {
+        "no_title": true
+      },
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "ffcf2f56aa448f2df763b09b70857632792b7805"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 20,
+      "type": "MarkdownNote",
+      "pos": [
+        1680.0,
+        80.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Image · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 1,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Image · Node 1\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 21,
+      "type": "MarkdownNote",
+      "pos": [
+        1680.0,
+        440.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Save Image · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 3,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Save Image · Node 3\n\n**Zweck:** Saves the input images to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `PNG` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `images` (IMAGE, Link 11): The images to save.\n\n**Ausgänge**\n- Keine Ausgänge."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 22,
+      "type": "MarkdownNote",
+      "pos": [
+        2160.0,
+        80.0
+      ],
+      "size": [
+        390,
+        968.1500244140625
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SDMatte Matting (RMBG) · Node 16",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 16,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SDMatte Matting (RMBG) · Node 16\n\n**Zweck:** Trennt Vordergrund und Hintergrund und erzeugt dafür Bild, Maske oder Transparenz.\n\n**Einstellbare Werte**\n- `model` = `SDMatte` — SDMatte model variant: Standard or Plus version Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `device` = `Auto` — Auto: smart detection, CPU: force CPU, GPU: force GPU Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `process_res` = `1024` — Processing resolution: higher = better quality but slower Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `transparent_object` = `True` — Whether input image contains transparent objects AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `mask_refine` = `True` — Enable mask refinement using mask constraints AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `sensitivity` = `0.9` — Sensitivity for mask constraint (0.1-1.0): higher = more strict Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `mask_blur` = `0` — Blur mask edges (0 = disabled) Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n- `mask_offset` = `0` — Expand/shrink mask (positive = expand) Höher erweitert Maske oder Box nach außen; niedriger bzw. negativ zieht den Bereich enger zusammen.\n- `invert_output` = `False` — Invert the mask output AN kehrt Maske oder Ausgabe um; AUS behält Vordergrund und Hintergrund in der ursprünglichen Zuordnung.\n- `background` = `Alpha` — Background type for output Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `background_color` = `#222222` — Background color (when not Alpha) Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image` (IMAGE, Link 14): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `mask` (MASK, nicht verbunden): Mask: White=foreground, Black=background. If omitted and image has alpha, alpha will be used.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `MASK_IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 23,
+      "type": "MarkdownNote",
+      "pos": [
+        2160.0,
+        1080.0
+      ],
+      "size": [
+        390,
+        950.2999877929688
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Remove Background (RMBG) · Node 18",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 18,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Remove Background (RMBG) · Node 18\n\n**Zweck:** Trennt Vordergrund und Hintergrund und erzeugt dafür Bild, Maske oder Transparenz.\n\n**Einstellbare Werte**\n- `model` = `RMBG-2.0` — Select the background removal model to use (RMBG-2.0, INSPYRENET, BEN). Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `sensitivity` = `1` — Adjust the strength of mask detection (higher values result in more aggressive detection). Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `process_res` = `1024` — Set the processing resolution (higher values require more VRAM and may increase processing time). Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `mask_blur` = `0` — Specify the amount of blur to apply to the mask edges (0 for no blur, higher values for more blur). Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n- `mask_offset` = `0` — Adjust the mask boundary (positive values expand the mask, negative values shrink it). Höher erweitert Maske oder Box nach außen; niedriger bzw. negativ zieht den Bereich enger zusammen.\n- `invert_output` = `False` — Enable to invert both the image and mask output (useful for certain effects). AN kehrt Maske oder Ausgabe um; AUS behält Vordergrund und Hintergrund in der ursprünglichen Zuordnung.\n- `refine_foreground` = `False` — Use Fast Foreground Colour Estimation to optimize transparent background AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `background` = `Alpha` — Choose output type: Alpha (transparent) or Color (custom background color). Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `background_color` = `#222222` — Pick background color (supports alpha, use color picker). Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image` (IMAGE, Link 12): Input image to be processed for background removal.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `MASK_IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 24,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        480.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 25,
+      "type": "MarkdownNote",
+      "pos": [
+        2640.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 24",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 24,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 24\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      11,
+      16,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      12,
+      1,
+      0,
+      18,
+      0,
+      "IMAGE"
+    ],
+    [
+      14,
+      18,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        460.0,
+        680.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        540.0,
+        0.0,
+        440.0,
+        560.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        1060.0,
+        0.0,
+        500.0,
+        1380.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        1640.0,
+        0.0,
+        1440.0,
+        2080.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "workflowRendererVersion": "LG",
+    "ds": {
+      "scale": 1.1167815779424852,
+      "offset": [
+        37.35847862144231,
+        -46.19265263603591
+      ]
+    },
+    "frontendVersion": "1.39.19",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true,
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 5,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "Remove-Background-Transparent-Items",
+      "source": "workflows/Image Utilities/Remove-Background-Transparent-Items.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "ed61f7775b32adc449be9feece744ad2c50a89c2abe4db304b9200390c321428",
+      "exceptions": []
+    }
+  },
+  "version": 0.4
+}

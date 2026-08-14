@@ -11,7 +11,12 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-from refine_workflows import build_note_text, refine_workflow
+try:
+    from tools.migrate_workflows_v092 import migrate_workflow
+    from tools.refine_workflows import build_note_text, refine_workflow
+except ModuleNotFoundError:
+    from migrate_workflows_v092 import migrate_workflow
+    from refine_workflows import build_note_text, refine_workflow
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 TIMER_VALUE = {
@@ -322,7 +327,7 @@ def generated_note(
 
 
 def live_avatar_workflow(object_info: dict[str, Any]) -> dict[str, Any]:
-    source_path = REPO_ROOT / "workflows" / "Live Avatar" / "LiveAvatar-03-LivePortrait-Webcam-Spout-OBS.json"
+    source_path = REPO_ROOT / "assets" / "live-avatar-v072" / "workflow-03.base.json"
     data = copy.deepcopy(json.loads(source_path.read_text(encoding="utf-8")))
     data["id"] = "live-avatar-04-liveportrait-spout-qwen3tts-lora"
     data["revision"] = 0
@@ -426,7 +431,8 @@ def main() -> int:
     ]
     for path, data in generated:
         refine_workflow(data, object_info)
-        write_workflow(path, data)
+        key = path.relative_to(REPO_ROOT / "workflows").as_posix()
+        write_workflow(path, migrate_workflow(data, key))
     return 0
 
 

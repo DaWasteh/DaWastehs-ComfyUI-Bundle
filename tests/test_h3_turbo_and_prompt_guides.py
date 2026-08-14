@@ -48,14 +48,18 @@ class H3TurboWorkflowTests(unittest.TestCase):
             unet = next(node for node in nodes.values() if node["type"] == "UNETLoader" and "minimax_h3_" in node["widgets_values"][0])
             lora = next(node for node in nodes.values() if node.get("properties", {}).get("dawasteh_h3_turbo"))
             sigma = next(node for node in nodes.values() if node["type"] == "MiniMaxH3SigmaShift")
-            unet_link = links[lora["inputs"][0]["link"]]
+            selector_link = links[lora["inputs"][0]["link"]]
+            selector = nodes[selector_link[1]]
+            unet_link = links[selector["inputs"][0]["link"]]
             sigma_link = links[sigma["inputs"][0]["link"]]
-            self.assertEqual((unet_link[1], unet_link[3]), (unet["id"], lora["id"]))
+            self.assertEqual(selector["type"], "SelectModelDevice")
+            self.assertEqual((unet_link[1], unet_link[3]), (unet["id"], selector["id"]))
+            self.assertEqual((selector_link[1], selector_link[3]), (selector["id"], lora["id"]))
             self.assertEqual((sigma_link[1], sigma_link[3]), (lora["id"], sigma["id"]))
 
     def test_complete_song_director_serializes_quality_turbo_defaults(self):
         workflow = json.loads((H3_DIR / DIRECTOR_WORKFLOW).read_text(encoding="utf-8"))
-        director = next(node for node in workflow["nodes"] if node["type"] == "DaWH3MusicVideoDirector")
+        director = next(node for node in workflow["nodes"] if node["type"] == "DaWH3MusicVideoDirectorDualGPU")
         values = director["widgets_values"]
         self.assertEqual(values[12], 8)
         self.assertEqual(values[31:35], [12.0, 4.0, "euler", "beta"])

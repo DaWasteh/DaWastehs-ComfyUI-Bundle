@@ -1,1 +1,602 @@
-{"id":"f29549f4-3fd0-4c15-bba4-56b42bb943de","revision":0,"last_node_id":8,"last_link_id":2,"nodes":[{"id":5,"type":"PixaromaNote","pos":[40,80],"size":[800,736],"flags":{},"order":4,"mode":0,"inputs":[{"localized_name":"note_json","name":"note_json","type":"STRING","link":null,"widget":{"name":"note_json"}}],"outputs":[],"properties":{"Node name for S&R":"PixaromaNote","cnr_id":"ComfyUI-Pixaroma","ver":"ffcf2f56aa448f2df763b09b70857632792b7805"},"widgets_values":["{\"version\":1,\"content\":\"<h1>Live Avatar · 02 · Transparenz vorbereiten</h1><p>Entfernt einmalig den Hintergrund des in Workflow 01 erzeugten Avatars. RMBG liefert Bild und Maske; die Bildausgabe enthält bei <code>background = Alpha</code> einen echten Alphakanal.</p><h2>Bedienung</h2><ol><li>Im Load-Image-Node das beste PNG aus <code>output/LiveAvatar/</code> auswählen oder hochladen.</li><li><code>RMBG-2.0</code>, <code>process_res = 1024</code> und <code>background = Alpha</code> beibehalten.</li><li>Workflow starten. Das transparente PNG landet unter <code>output/LiveAvatar/02_Avatar_Transparent</code>.</li><li>Das Ergebnis auf saubere Haare, Kleidungskanten und Hände prüfen und danach in Workflow 03 laden.</li></ol><p><b>RDNA4:</b> Der Node verwendet das von ComfyUI bereitgestellte AMD-Torch-Gerät. Die Modellgewichte liegen bereits lokal.</p><h2>Modell</h2><p><a href=\\\"https://huggingface.co/1038lab/RMBG-2.0\\\" target=\\\"_blank\\\" rel=\\\"noopener noreferrer\\\">RMBG-2.0</a></p><div>ComfyUI/models/RMBG/RMBG-2.0/</div><h2>Nodes</h2><ul><li>ComfyUI-RMBG</li><li>ComfyUI Core</li><li>ComfyUI-Pixaroma</li></ul>\",\"buttonColor\":\"#f66744\",\"lineColor\":\"#f66744\",\"width\":800,\"height\":700,\"backgroundColor\":\"#2a2a2a\"}",""],"title":"START HIER · Hintergrund entfernen","color":"#1d1d1d","bgcolor":"#2a2a2a"},{"id":1,"type":"LoadImage","pos":[2401.0,282.0],"size":[430,480],"flags":{},"order":0,"mode":0,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","link":null,"widget":{"name":"image"}},{"localized_name":"upload","name":"upload","type":"IMAGEUPLOAD","link":null,"widget":{"name":"upload"}}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[1]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null}],"properties":{"Node name for S&R":"LoadImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["example.png","image"],"title":"Avatar aus Workflow 01 laden"},{"id":2,"type":"RMBG","pos":[4116.0,282.0],"size":[390,390],"flags":{},"order":1,"mode":0,"inputs":[{"localized_name":"image","name":"image","type":"IMAGE","link":1},{"localized_name":"model","name":"model","type":"COMBO","link":null,"widget":{"name":"model"}},{"localized_name":"sensitivity","name":"sensitivity","type":"FLOAT","link":null,"widget":{"name":"sensitivity"}},{"localized_name":"process_res","name":"process_res","type":"INT","link":null,"widget":{"name":"process_res"}},{"localized_name":"mask_blur","name":"mask_blur","type":"INT","link":null,"widget":{"name":"mask_blur"}},{"localized_name":"mask_offset","name":"mask_offset","type":"INT","link":null,"widget":{"name":"mask_offset"}},{"localized_name":"invert_output","name":"invert_output","type":"BOOLEAN","link":null,"widget":{"name":"invert_output"}},{"localized_name":"refine_foreground","name":"refine_foreground","type":"BOOLEAN","link":null,"widget":{"name":"refine_foreground"}},{"localized_name":"background","name":"background","type":"COMBO","link":null,"widget":{"name":"background"}},{"localized_name":"background_color","name":"background_color","type":"COLORCODE","link":null,"widget":{"name":"background_color"}}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[2]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null},{"localized_name":"MASK_IMAGE","name":"MASK_IMAGE","type":"IMAGE","links":null}],"properties":{"Node name for S&R":"RMBG","cnr_id":"comfyui-rmbg"},"widgets_values":["RMBG-2.0",1.0,1024,0,0,false,true,"Alpha","#222222"],"title":"RMBG-2.0 · Alpha erzeugen","color":"#222e40","bgcolor":"#364254"},{"id":3,"type":"SaveImage","pos":[5757.5,282.0],"size":[500,520],"flags":{},"order":2,"mode":0,"inputs":[{"localized_name":"images","name":"images","type":"IMAGE","link":2},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","link":null,"widget":{"name":"filename_prefix"}}],"outputs":[{"localized_name":"images","name":"images","type":"IMAGE","links":null}],"properties":{"Node name for S&R":"SaveImage","cnr_id":"comfy-core","ver":"0.16.4"},"widgets_values":["LiveAvatar/02_Avatar_Transparent"],"title":"Transparentes PNG speichern"},{"id":6,"type":"MarkdownNote","pos":[2877.0,282.0],"size":[390,328],"flags":{},"order":5,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Avatar aus Workflow 01 laden · Node 1","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":1,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Avatar aus Workflow 01 laden · Node 1\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `image` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `upload` (IMAGEUPLOAD, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":7,"type":"MarkdownNote","pos":[4552.0,282.0],"size":[390,540],"flags":{},"order":6,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · RMBG-2.0 · Alpha erzeugen · Node 2","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":2,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · RMBG-2.0 · Alpha erzeugen · Node 2\n\n**Zweck:** Trennt Vordergrund und Hintergrund und erzeugt dafür Bild, Maske oder Transparenz.\n\n**Einstellbare Werte**\n- `model` = `RMBG-2.0` — Select the background removal model to use (RMBG-2.0, INSPYRENET, BEN). Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `sensitivity` = `1.0` — Adjust the strength of mask detection (higher values result in more aggressive detection). Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `process_res` = `1024` — Set the processing resolution (higher values require more VRAM and may increase processing time). Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `mask_blur` = `0` — Specify the amount of blur to apply to the mask edges (0 for no blur, higher values for more blur). Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n- `mask_offset` = `0` — Adjust the mask boundary (positive values expand the mask, negative values shrink it). Höher erweitert Maske oder Box nach außen; niedriger bzw. negativ zieht den Bereich enger zusammen.\n- `invert_output` = `False` — Enable to invert both the image and mask output (useful for certain effects). AN kehrt Maske oder Ausgabe um; AUS behält Vordergrund und Hintergrund in der ursprünglichen Zuordnung.\n- `refine_foreground` = `True` — Use Fast Foreground Colour Estimation to optimize transparent background AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `background` = `Alpha` — Choose output type: Alpha (transparent) or Color (custom background color). Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `background_color` = `#222222` — Pick background color (supports alpha, use color picker). Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image` (IMAGE, Link 1): Input image to be processed for background removal.\n- `model` (COMBO, nicht verbunden): Select the background removal model to use (RMBG-2.0, INSPYRENET, BEN).\n- `sensitivity` (FLOAT, nicht verbunden): Adjust the strength of mask detection (higher values result in more aggressive detection).\n- `process_res` (INT, nicht verbunden): Set the processing resolution (higher values require more VRAM and may increase processing time).\n- `mask_blur` (INT, nicht verbunden): Specify the amount of blur to apply to the mask edges (0 for no blur, higher values for more blur).\n- `mask_offset` (INT, nicht verbunden): Adjust the mask boundary (positive values expand the mask, negative values shrink it).\n- `invert_output` (BOOLEAN, nicht verbunden): Enable to invert both the image and mask output (useful for certain effects).\n- `refine_foreground` (BOOLEAN, nicht verbunden): Use Fast Foreground Colour Estimation to optimize transparent background\n- `background` (COMBO, nicht verbunden): Choose output type: Alpha (transparent) or Color (custom background color).\n- `background_color` (COLORCODE, nicht verbunden): Pick background color (supports alpha, use color picker).\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `MASK_IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"},{"id":8,"type":"MarkdownNote","pos":[6303.5,282.0],"size":[390,311],"flags":{},"order":7,"mode":0,"inputs":[],"outputs":[],"title":"Erklärung · Transparentes PNG speichern · Node 3","properties":{"Node name for S&R":"MarkdownNote","cnr_id":"comfy-core","dawasteh_note_for":3,"dawasteh_generated_note":true},"widgets_values":["# Erklärung · Transparentes PNG speichern · Node 3\n\n**Zweck:** Saves the input images to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `LiveAvatar/02_Avatar_Transparent` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `images` (IMAGE, Link 2): The images to save.\n- `filename_prefix` (STRING, nicht verbunden): The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values fr…\n\n**Ausgänge**\n- `images` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"],"color":"#1b2638","bgcolor":"#101722"}],"links":[[1,1,0,2,0,"IMAGE"],[2,2,0,3,0,"IMAGE"]],"groups":[],"config":{},"extra":{"workflowRendererVersion":"LG","frontendVersion":"1.47.11","VHS_latentpreview":false,"VHS_latentpreviewrate":0,"VHS_MetadataImage":true,"VHS_KeepIntermediate":true,"dawasteh_workflow_refinement":{"version":1,"generated_notes":3,"x_scale":2.45,"y_scale":2.35,"gap":34.0}},"version":0.4}
+{
+  "id": "f29549f4-3fd0-4c15-bba4-56b42bb943de",
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 2,
+  "nodes": [
+    {
+      "id": 5,
+      "type": "PixaromaNote",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        800,
+        736
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "note_json",
+          "name": "note_json",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "note_json"
+          }
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaNote",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "ffcf2f56aa448f2df763b09b70857632792b7805"
+      },
+      "widgets_values": [
+        "{\"version\":1,\"content\":\"<h1>Live Avatar · 02 · Transparenz vorbereiten</h1><p>Entfernt einmalig den Hintergrund des in Workflow 01 erzeugten Avatars. RMBG liefert Bild und Maske; die Bildausgabe enthält bei <code>background = Alpha</code> einen echten Alphakanal.</p><h2>Bedienung</h2><ol><li>Im Load-Image-Node das beste PNG aus <code>output/LiveAvatar/</code> auswählen oder hochladen.</li><li><code>RMBG-2.0</code>, <code>process_res = 1024</code> und <code>background = Alpha</code> beibehalten.</li><li>Workflow starten. Das transparente PNG landet unter <code>output/LiveAvatar/02_Avatar_Transparent</code>.</li><li>Das Ergebnis auf saubere Haare, Kleidungskanten und Hände prüfen und danach in Workflow 03 laden.</li></ol><p><b>RDNA4:</b> Der Node verwendet das von ComfyUI bereitgestellte AMD-Torch-Gerät. Die Modellgewichte liegen bereits lokal.</p><h2>Modell</h2><p><a href=\\\"https://huggingface.co/1038lab/RMBG-2.0\\\" target=\\\"_blank\\\" rel=\\\"noopener noreferrer\\\">RMBG-2.0</a></p><div>ComfyUI/models/RMBG/RMBG-2.0/</div><h2>Nodes</h2><ul><li>ComfyUI-RMBG</li><li>ComfyUI Core</li><li>ComfyUI-Pixaroma</li></ul>\",\"buttonColor\":\"#f66744\",\"lineColor\":\"#f66744\",\"width\":800,\"height\":700,\"backgroundColor\":\"#2a2a2a\"}",
+        ""
+      ],
+      "title": "START HIER · Hintergrund entfernen",
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        1000.0,
+        80.0
+      ],
+      "size": [
+        430,
+        480
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "localized_name": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "link": null,
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ],
+      "title": "Avatar aus Workflow 01 laden"
+    },
+    {
+      "id": 2,
+      "type": "RMBG",
+      "pos": [
+        1600.0,
+        80.0
+      ],
+      "size": [
+        390,
+        390
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        },
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "model"
+          }
+        },
+        {
+          "localized_name": "sensitivity",
+          "name": "sensitivity",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "sensitivity"
+          }
+        },
+        {
+          "localized_name": "process_res",
+          "name": "process_res",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "process_res"
+          }
+        },
+        {
+          "localized_name": "mask_blur",
+          "name": "mask_blur",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "mask_blur"
+          }
+        },
+        {
+          "localized_name": "mask_offset",
+          "name": "mask_offset",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "mask_offset"
+          }
+        },
+        {
+          "localized_name": "invert_output",
+          "name": "invert_output",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "invert_output"
+          }
+        },
+        {
+          "localized_name": "refine_foreground",
+          "name": "refine_foreground",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "refine_foreground"
+          }
+        },
+        {
+          "localized_name": "background",
+          "name": "background",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "background"
+          }
+        },
+        {
+          "localized_name": "background_color",
+          "name": "background_color",
+          "type": "COLORCODE",
+          "link": null,
+          "widget": {
+            "name": "background_color"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "localized_name": "MASK_IMAGE",
+          "name": "MASK_IMAGE",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RMBG",
+        "cnr_id": "comfyui-rmbg"
+      },
+      "widgets_values": [
+        "RMBG-2.0",
+        1.0,
+        1024,
+        0,
+        0,
+        false,
+        true,
+        "Alpha",
+        "#222222"
+      ],
+      "title": "RMBG-2.0 · Alpha erzeugen",
+      "color": "#222e40",
+      "bgcolor": "#364254"
+    },
+    {
+      "id": 3,
+      "type": "SaveImage",
+      "pos": [
+        1600.0,
+        520.0
+      ],
+      "size": [
+        500,
+        520
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 2
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "filename_prefix"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.16.4"
+      },
+      "widgets_values": [
+        "LiveAvatar/02_Avatar_Transparent"
+      ],
+      "title": "Transparentes PNG speichern"
+    },
+    {
+      "id": 6,
+      "type": "MarkdownNote",
+      "pos": [
+        2260.0,
+        80.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Avatar aus Workflow 01 laden · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 1,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Avatar aus Workflow 01 laden · Node 1\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `image` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `upload` (IMAGEUPLOAD, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 7,
+      "type": "MarkdownNote",
+      "pos": [
+        2720.0,
+        80.0
+      ],
+      "size": [
+        390,
+        540
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · RMBG-2.0 · Alpha erzeugen · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · RMBG-2.0 · Alpha erzeugen · Node 2\n\n**Zweck:** Trennt Vordergrund und Hintergrund und erzeugt dafür Bild, Maske oder Transparenz.\n\n**Einstellbare Werte**\n- `model` = `RMBG-2.0` — Select the background removal model to use (RMBG-2.0, INSPYRENET, BEN). Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `sensitivity` = `1.0` — Adjust the strength of mask detection (higher values result in more aggressive detection). Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `process_res` = `1024` — Set the processing resolution (higher values require more VRAM and may increase processing time). Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `mask_blur` = `0` — Specify the amount of blur to apply to the mask edges (0 for no blur, higher values for more blur). Höher verbreitert Übergänge/Überlappung und reduziert harte Nähte, kostet aber mehr Verarbeitung und kann Details weicher machen.\n- `mask_offset` = `0` — Adjust the mask boundary (positive values expand the mask, negative values shrink it). Höher erweitert Maske oder Box nach außen; niedriger bzw. negativ zieht den Bereich enger zusammen.\n- `invert_output` = `False` — Enable to invert both the image and mask output (useful for certain effects). AN kehrt Maske oder Ausgabe um; AUS behält Vordergrund und Hintergrund in der ursprünglichen Zuordnung.\n- `refine_foreground` = `True` — Use Fast Foreground Colour Estimation to optimize transparent background AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `background` = `Alpha` — Choose output type: Alpha (transparent) or Color (custom background color). Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `background_color` = `#222222` — Pick background color (supports alpha, use color picker). Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `image` (IMAGE, Link 1): Input image to be processed for background removal.\n- `model` (COMBO, nicht verbunden): Select the background removal model to use (RMBG-2.0, INSPYRENET, BEN).\n- `sensitivity` (FLOAT, nicht verbunden): Adjust the strength of mask detection (higher values result in more aggressive detection).\n- `process_res` (INT, nicht verbunden): Set the processing resolution (higher values require more VRAM and may increase processing time).\n- `mask_blur` (INT, nicht verbunden): Specify the amount of blur to apply to the mask edges (0 for no blur, higher values for more blur).\n- `mask_offset` (INT, nicht verbunden): Adjust the mask boundary (positive values expand the mask, negative values shrink it).\n- `invert_output` (BOOLEAN, nicht verbunden): Enable to invert both the image and mask output (useful for certain effects).\n- `refine_foreground` (BOOLEAN, nicht verbunden): Use Fast Foreground Colour Estimation to optimize transparent background\n- `background` (COMBO, nicht verbunden): Choose output type: Alpha (transparent) or Color (custom background color).\n- `background_color` (COLORCODE, nicht verbunden): Pick background color (supports alpha, use color picker).\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n- `MASK_IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 8,
+      "type": "MarkdownNote",
+      "pos": [
+        3200.0,
+        80.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Transparentes PNG speichern · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 3,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Transparentes PNG speichern · Node 3\n\n**Zweck:** Saves the input images to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `LiveAvatar/02_Avatar_Transparent` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `images` (IMAGE, Link 2): The images to save.\n- `filename_prefix` (STRING, nicht verbunden): The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values fr…\n\n**Ausgänge**\n- `images` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 9,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        860.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 10,
+      "type": "MarkdownNote",
+      "pos": [
+        3680.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 9",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 9,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 9\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        880.0,
+        1080.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        960.0,
+        0.0,
+        520.0,
+        600.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        1560.0,
+        0.0,
+        580.0,
+        1080.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        2220.0,
+        0.0,
+        1900.0,
+        660.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "workflowRendererVersion": "LG",
+    "frontendVersion": "1.47.11",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true,
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 4,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "LiveAvatar-02-RMBG-Transparency",
+      "source": "workflows/Live Avatar/LiveAvatar-02-RMBG-Transparency.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "ee16c4e72a96237a4bf0401dcb46045073eb1f1f3dd1faa68ae8940be3e279bb",
+      "exceptions": []
+    }
+  },
+  "version": 0.4
+}

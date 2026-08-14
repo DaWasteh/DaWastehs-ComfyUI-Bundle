@@ -1,15 +1,15 @@
 {
   "id": "d5b95f6e-92bb-4d65-a3fd-2caa701e5039",
   "revision": 0,
-  "last_node_id": 19,
+  "last_node_id": 21,
   "last_link_id": 8,
   "nodes": [
     {
       "id": 1,
       "type": "MelBandRoFormerModelLoader",
       "pos": [
-        1862.0,
-        1433.5
+        1320.0,
+        80.0
       ],
       "size": [
         430,
@@ -51,8 +51,8 @@
       "id": 2,
       "type": "LoadAudio",
       "pos": [
-        1930.056,
-        1846.056
+        840.0,
+        80.0
       ],
       "size": [
         320,
@@ -114,8 +114,8 @@
       "id": 3,
       "type": "MelBandRoFormerSampler",
       "pos": [
-        3160.5,
-        1621.5
+        1920.0,
+        80.0
       ],
       "size": [
         260,
@@ -168,8 +168,8 @@
       "id": 4,
       "type": "PreviewAudio",
       "pos": [
-        4140.5,
-        1269.0
+        2340.0,
+        80.0
       ],
       "size": [
         370,
@@ -214,8 +214,8 @@
       "id": 6,
       "type": "PreviewAudio",
       "pos": [
-        4140.5,
-        1997.5
+        2340.0,
+        220.0
       ],
       "size": [
         370,
@@ -260,8 +260,8 @@
       "id": 8,
       "type": "MarkdownNote",
       "pos": [
-        1764.0,
-        728.5
+        40.0,
+        80.0
       ],
       "size": [
         620,
@@ -283,8 +283,8 @@
       "id": 9,
       "type": "MarkdownNote",
       "pos": [
-        3405.5,
-        728.5
+        40.0,
+        340.0
       ],
       "size": [
         640,
@@ -306,8 +306,8 @@
       "id": 10,
       "type": "SaveAudioAdvanced",
       "pos": [
-        4055.599,
-        1588.83
+        2340.0,
+        360.0
       ],
       "size": [
         429,
@@ -371,8 +371,8 @@
       "id": 11,
       "type": "SaveAudioAdvanced",
       "pos": [
-        4114.399,
-        2331.43
+        2340.0,
+        560.0
       ],
       "size": [
         417,
@@ -436,8 +436,8 @@
       "id": 12,
       "type": "PixaromaRunTimer",
       "pos": [
-        1764.0,
-        2909.53
+        40.0,
+        600.0
       ],
       "size": [
         226,
@@ -470,8 +470,8 @@
       "id": 13,
       "type": "MarkdownNote",
       "pos": [
-        2338.0,
-        1433.5
+        2920.0,
+        80.0
       ],
       "size": [
         390,
@@ -499,8 +499,8 @@
       "id": 14,
       "type": "MarkdownNote",
       "pos": [
-        2296.056,
-        1846.056
+        2920.0,
+        420.0
       ],
       "size": [
         390,
@@ -528,8 +528,8 @@
       "id": 15,
       "type": "MarkdownNote",
       "pos": [
-        3466.5,
-        1621.5
+        3400.0,
+        80.0
       ],
       "size": [
         390,
@@ -557,8 +557,8 @@
       "id": 16,
       "type": "MarkdownNote",
       "pos": [
-        4556.5,
-        1269.0
+        3400.0,
+        440.0
       ],
       "size": [
         390,
@@ -586,8 +586,8 @@
       "id": 17,
       "type": "MarkdownNote",
       "pos": [
-        4600.5,
-        1997.5
+        3880.0,
+        80.0
       ],
       "size": [
         390,
@@ -615,8 +615,8 @@
       "id": 18,
       "type": "MarkdownNote",
       "pos": [
-        5014.599,
-        1588.83
+        3880.0,
+        440.0
       ],
       "size": [
         390,
@@ -644,8 +644,8 @@
       "id": 19,
       "type": "MarkdownNote",
       "pos": [
-        4577.399,
-        2375.43
+        4360.0,
+        80.0
       ],
       "size": [
         390,
@@ -665,6 +665,85 @@
       },
       "widgets_values": [
         "# Erklärung · Save Audio (Advanced) · Node 11\n\n**Zweck:** Saves the input audio to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `audio_separation/Instrumentals` — The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd%. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `format` = `flac` — The file format in which to save the audio. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `audio` (AUDIO, Link 8): The audio to save.\n- `filename_prefix` (STRING, nicht verbunden): The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd%.\n- `format` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): The file format in which to save the audio.\n- `audioUI` (AUDIO_UI, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `audio` (AUDIO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 20,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        780.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 21,
+      "type": "MarkdownNote",
+      "pos": [
+        4360.0,
+        480.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 20",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 20,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 20\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -723,38 +802,80 @@
   "groups": [
     {
       "id": 1,
-      "title": "1 – Modell und Song",
+      "title": "R1 · README & RUNTIME",
       "bounding": [
-        1834.0,
-        1379.5,
-        922.0,
-        822.556
+        0.0,
+        0.0,
+        720.0,
+        1000.0
       ],
-      "color": "#3f789e",
+      "color": "#5B6472",
+      "font_size": 24,
       "flags": {}
     },
     {
       "id": 2,
-      "title": "2 – Lokale Separation",
+      "title": "O1 · ORIGIN INPUTS",
       "bounding": [
-        3132.5,
-        1567.5,
-        752.0,
-        410.0
+        800.0,
+        0.0,
+        400.0,
+        280.0
       ],
-      "color": "#6b5b95",
+      "color": "#7C5CC4",
+      "font_size": 24,
       "flags": {}
     },
     {
       "id": 3,
-      "title": "3 – Ergebnisse",
+      "title": "D1 · DEPENDENCIES",
       "bounding": [
-        4027.599,
-        1215.0,
-        1405.0,
-        1550.43
+        1280.0,
+        0.0,
+        520.0,
+        200.0
       ],
-      "color": "#477a5b",
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        1880.0,
+        0.0,
+        340.0,
+        200.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2300.0,
+        0.0,
+        500.0,
+        760.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        2880.0,
+        0.0,
+        1920.0,
+        880.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
       "flags": {}
     }
   ],
@@ -774,10 +895,56 @@
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 7,
-      "x_scale": 2.45,
-      "y_scale": 2.35,
-      "gap": 34.0
+      "generated_notes": 8,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "Local_Vocal_Remover_MelBandRoFormer",
+      "source": "workflows/Vocal Separation/Local_Vocal_Remover_MelBandRoFormer.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "f23a5e5576a9bbcd8cc5d22b26c4ebd73fc445c34c5453fbafe49a1cacd252df",
+      "exceptions": []
     }
   },
   "version": 0.4

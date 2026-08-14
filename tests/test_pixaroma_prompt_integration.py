@@ -44,8 +44,11 @@ class PixaromaIntegrationTests(unittest.TestCase):
         self.assertTrue(set(manifest_paths) <= paths)
         generated_unmanaged = {
             path for path in paths
-            if path.startswith("workflows/Dual GPU - R9700 + RX 9070 XT/")
-            or path in {
+            if path in {
+                "workflows/Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json",
+                "workflows/Text to Video/LTX25_INT8_ConvRot-Text-to-Video.json",
+                "workflows/Text+Image to Video/LTX25_INT8_ConvRot-First+Last-Frame-to-Video.json",
+                "workflows/Text+Image to Video/LTX25_INT8_ConvRot-Image-to-Video.json",
                 "workflows/Prompt Enhancer/MiniMax_H3_Base_FL2VA-Official-Guide-Prompt-Enhancer.json",
                 "workflows/Prompt Enhancer/MiniMax_H3_Ref2VA-Official-Guide-Prompt-Enhancer.json",
                 "workflows/Prompt Enhancer/MiniMax_Music3-Official-Skill-Caption-Enhancer.json",
@@ -75,9 +78,7 @@ class PixaromaIntegrationTests(unittest.TestCase):
                 "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-POP-120-Cmajor.json",
                 "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-RUSH-138-Dmajor.json",
                 "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
-                "workflows/Reference to Video/MiniMax_H3_Spectrum_FL2VA_All_Supported_Inputs.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json",
-                "workflows/Reference to Video/MiniMax_H3_Spectrum_FL2VA_MAXIMUM_All_Supported_Inputs.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_Picture_and_Video_to_Video_LOCAL.json",
@@ -181,11 +182,7 @@ class PixaromaIntegrationTests(unittest.TestCase):
             for path in (ROOT / "workflows").rglob("*.json")
             for node in load(path)["nodes"]
         )
-        dual_marked_prompts = sum(
-            node.get("properties", {}).get(MARK, {}).get("kind") == "prompt"
-            for path in (ROOT / "workflows" / "Dual GPU - R9700 + RX 9070 XT").glob("*.json")
-            for node in load(path)["nodes"]
-        )
+        dual_marked_prompts = 0
         minimax_enhancer_marked_prompts = sum(
             node.get("properties", {}).get(MARK, {}).get("kind") == "prompt"
             for pattern in (
@@ -195,9 +192,9 @@ class PixaromaIntegrationTests(unittest.TestCase):
             for path in (ROOT / "workflows" / "Prompt Enhancer").glob(pattern)
             for node in load(path)["nodes"]
         )
-        self.assertEqual(dual_marked_prompts, 18)
+        self.assertEqual(dual_marked_prompts, 0)
         self.assertEqual(minimax_enhancer_marked_prompts, 4)
-        self.assertEqual(total_marked_prompts, 146 + dual_marked_prompts + minimax_enhancer_marked_prompts)
+        self.assertEqual(total_marked_prompts, 146 + minimax_enhancer_marked_prompts)
 
     def test_pause_gates_are_reciprocal_and_have_textgenerate_ancestry(self):
         pause_count = 0
@@ -257,8 +254,12 @@ class PixaromaIntegrationTests(unittest.TestCase):
     def test_validator_rejects_old_node_corruption_and_disconnected_pause(self):
         rel = "workflows/Text to Image/Krea2_turbo-2K-Text-to-Image.json"
         before = head_json(ROOT / rel)
-        after = load(ROOT / rel)
         entry = self.entries[rel]
+        with tempfile.TemporaryDirectory() as temp_dir:
+            migrated = Path(temp_dir) / "workflow.json"
+            migrated.write_text(json.dumps(before, ensure_ascii=False), encoding="utf-8")
+            apply(migrated, entry, False)
+            after = load(migrated)
         errors = []
         validate_integration_delta(Path(rel), before, after, entry, errors)
         self.assertEqual(errors, [])
