@@ -1,8 +1,8 @@
 {
-  "id": "206c9dfb-c65f-49dd-95ef-33126059567c",
+  "id": "87f78972-0f79-5c6e-9a1e-2ad407990f5f",
   "revision": 0,
-  "last_node_id": 186,
-  "last_link_id": 308,
+  "last_node_id": 190,
+  "last_link_id": 312,
   "nodes": [
     {
       "id": 104,
@@ -172,7 +172,7 @@
       "type": "EmptyAceStep1.5LatentAudio",
       "pos": [
         4160.0,
-        80.0
+        540.0
       ],
       "size": [
         271.01666259765625,
@@ -481,7 +481,7 @@
           "widget": {
             "name": "bpm"
           },
-          "link": null
+          "link": 309
         },
         {
           "localized_name": "duration",
@@ -508,7 +508,7 @@
           "widget": {
             "name": "language"
           },
-          "link": null
+          "link": 311
         },
         {
           "localized_name": "keyscale",
@@ -517,7 +517,7 @@
           "widget": {
             "name": "keyscale"
           },
-          "link": null
+          "link": 310
         },
         {
           "localized_name": "generate_audio_codes",
@@ -602,11 +602,11 @@
         "",
         0,
         "fixed",
-        96,
+        120,
         180,
         "4",
         "en",
-        "G major",
+        "C major",
         true,
         2,
         0.85,
@@ -746,8 +746,8 @@
       "id": 18,
       "type": "VAEDecodeAudio",
       "pos": [
-        4880.0,
-        1100.0
+        4860.0,
+        1700.0
       ],
       "size": [
         230,
@@ -798,8 +798,8 @@
       "id": 107,
       "type": "SaveAudioMP3",
       "pos": [
-        4880.0,
-        1220.0
+        4860.0,
+        1820.0
       ],
       "size": [
         700,
@@ -822,7 +822,7 @@
           "widget": {
             "name": "filename_prefix"
           },
-          "link": null
+          "link": 312
         },
         {
           "localized_name": "quality",
@@ -864,7 +864,7 @@
         "ver": "0.11.1"
       },
       "widgets_values": [
-        "audio/ACE_Album/GLOW_Track",
+        "audio/ACE_Album/POP_Track",
         "V0"
       ]
     },
@@ -1330,7 +1330,7 @@
         "cnr_id": "ComfyUI-Pixaroma",
         "ver": "fc17bd2b58ef0089cc62a40502669cf71ae86db7",
         "promptState": {
-          "text": "Working title: \"Light On, World Off\". Closing the studio door means leaving daytime roles behind and building a small honest world under LEDs.",
+          "text": "Working title: \"Signal Found\". A lone late-night broadcaster sends into static until anonymous replies turn the noise into a real community.",
           "order": "mine",
           "sep": ", ",
           "accent": null,
@@ -1352,63 +1352,96 @@
     },
     {
       "id": 138,
-      "type": "PixaromaPrompt",
-      "title": "2 · MUSICAL DIRECTION — EDIT THIS",
+      "type": "DaWAutoSongwriterGenreSelector",
+      "title": "2 · GENRE / PRESET — SELECT OR CUSTOMIZE",
       "pos": [
-        820.0,
-        600.0
+        4160.0,
+        80.0
       ],
       "size": [
         620,
-        330
+        420
       ],
       "flags": {},
       "order": 1,
       "mode": 0,
       "inputs": [
         {
-          "label": "text",
-          "localized_name": "text_in",
-          "name": "text_in",
-          "shape": 7,
+          "name": "profile",
+          "type": "COMBO",
+          "link": null
+        },
+        {
+          "name": "custom_genre_or_direction",
           "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "custom_bpm",
+          "type": "INT",
+          "link": null
+        },
+        {
+          "name": "custom_key",
+          "type": "COMBO",
+          "link": null
+        },
+        {
+          "name": "lyrics_language",
+          "type": "COMBO",
           "link": null
         }
       ],
       "outputs": [
         {
-          "localized_name": "text",
-          "name": "text",
+          "name": "music_direction",
           "type": "STRING",
           "links": [
             285
           ]
+        },
+        {
+          "name": "bpm",
+          "type": "INT",
+          "links": [
+            309
+          ]
+        },
+        {
+          "name": "keyscale",
+          "type": "COMBO",
+          "links": [
+            310
+          ]
+        },
+        {
+          "name": "language",
+          "type": "COMBO",
+          "links": [
+            311
+          ]
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "links": [
+            312
+          ]
         }
       ],
       "properties": {
-        "Node name for S&R": "PixaromaPrompt",
-        "cnr_id": "ComfyUI-Pixaroma",
-        "ver": "fc17bd2b58ef0089cc62a40502669cf71ae86db7",
-        "promptState": {
-          "text": "Warm dream-pop and folktronica, fingerpicked acoustic guitar, soft analog pads, brushed electronic drums, intimate full narrative lyrics, a gentle chorus lift, and an airy natural mix.",
-          "order": "mine",
-          "sep": ", ",
-          "accent": null,
-          "showExpanded": true
-        },
-        "dawasteh_pixaroma_prompt_integration": {
-          "kind": "prompt",
-          "target": [
-            140,
-            "string_b"
-          ]
-        }
+        "Node name for S&R": "DaWAutoSongwriterGenreSelector",
+        "cnr_id": "ComfyUI-DaWasteh-AutoSongwriter"
       },
       "widgets_values": [
-        ""
+        "POP · 120 BPM · C major",
+        "",
+        120,
+        "C major",
+        "en"
       ],
-      "color": "#1e3323",
-      "bgcolor": "#36543d"
+      "color": "#1f7a4c",
+      "bgcolor": "#123d2b"
     },
     {
       "id": 139,
@@ -1481,7 +1514,7 @@
       "type": "StringConcatenate",
       "pos": [
         4160.0,
-        240.0
+        700.0
       ],
       "size": [
         610,
@@ -1549,7 +1582,7 @@
       "type": "StringConcatenate",
       "pos": [
         4160.0,
-        640.0
+        1100.0
       ],
       "size": [
         610,
@@ -1604,7 +1637,7 @@
         "ver": "0.20.1"
       },
       "widgets_values": [
-        "You are a professional English-language songwriter preparing lyrics for ACE-Step 1.5.\n\nTurn the supplied SONG IDEA and MUSICAL DIRECTION into one original, singable song for a target duration of about 180 seconds. This preset renders at 96 BPM, G major, 4/4. Match the pacing to that metadata, but never print BPM, key, time signature, or technical settings.\n\nOUTPUT RULES:\n- Output only the lyrics. No preamble, explanation, title heading, Markdown fence, analysis, <think> block, or notes outside the song.\n- Write in natural contemporary English. Never copy or closely paraphrase an existing song, quote recognizable lyrics, or name an artist.\n- Use structural labels such as [Intro], [Verse 1], [Pre-Chorus], [Chorus], [Verse 2], [Bridge], [Final Chorus], [Outro]. Section labels may include short performance or arrangement cues after a dash.\n- Include at least one [Instrumental Break], [Solo], or clearly marked instrumental passage so the vocal is not continuous under a livestream.\n- Keep most lines short and rhythmically singable. Prefer concrete images, actions, and details over abstract slogans.\n- Build a clear emotional or narrative development. The chorus needs a memorable hook that is not merely the working title repeated.\n- Avoid generic AI-song clichés, including endless fire, wings, destiny, neon hearts, breaking chains, touching the sky, being infinite, and vague darkness-versus-light language unless the specific story truly requires it.\n- Do not force rhymes. Do not turn the lyrics into prose.\n- Use the requested lyric density: full narrative usually 170-240 words; hook-forward usually 115-180 words; sparse usually 60-110 words.\n- Keep the complete output under 3,500 characters so it remains comfortably within ACE-Step's lyric input.\n\nThe first block below is the SONG IDEA. The second block begins after MUSICAL DIRECTION.",
+        "You are a professional songwriter preparing lyrics for ACE-Step 1.5.\n\nTurn the supplied SONG IDEA and MUSICAL DIRECTION into one original, singable song for a target duration of about 180 seconds. The MUSICAL DIRECTION block contains the selected profile, requested lyrics language, and exact BPM, key, and time-signature metadata. Write the lyrics in that requested language and match the pacing to the metadata, but never print BPM, key, time signature, language code, or technical settings.\n\nOUTPUT RULES:\n- Output only the lyrics. No preamble, explanation, title heading, Markdown fence, analysis, <think> block, or notes outside the song.\n- Write naturally and idiomatically in the requested language. Never copy or closely paraphrase an existing song, quote recognizable lyrics, or name an artist.\n- Use structural labels such as [Intro], [Verse 1], [Pre-Chorus], [Chorus], [Verse 2], [Bridge], [Final Chorus], [Outro]. Section labels may include short performance or arrangement cues after a dash.\n- Include at least one [Instrumental Break], [Solo], or clearly marked instrumental passage so the vocal is not continuous under a livestream.\n- Keep most lines short and rhythmically singable. Prefer concrete images, actions, and details over abstract slogans.\n- Build a clear emotional or narrative development. The chorus needs a memorable hook that is not merely the working title repeated.\n- Avoid generic AI-song clichés, including endless fire, wings, destiny, neon hearts, breaking chains, touching the sky, being infinite, and vague darkness-versus-light language unless the specific story truly requires it.\n- Do not force rhymes. Do not turn the lyrics into prose.\n- Use the requested lyric density: full narrative usually 170-240 words; hook-forward usually 115-180 words; sparse usually 60-110 words.\n- Keep the complete output under 3,500 characters so it remains comfortably within ACE-Step's lyric input.\n\nThe first block below is the SONG IDEA. The second block begins after MUSICAL DIRECTION.",
         "",
         "\n\nSONG IDEA AND DIRECTION:\n"
       ],
@@ -1616,7 +1649,7 @@
       "type": "TextGenerate",
       "pos": [
         4160.0,
-        1440.0
+        1900.0
       ],
       "size": [
         590,
@@ -1802,8 +1835,8 @@
       "id": 143,
       "type": "PreviewAny",
       "pos": [
-        4160.0,
-        2020.0
+        4860.0,
+        80.0
       ],
       "size": [
         650,
@@ -1845,7 +1878,7 @@
       "type": "StringConcatenate",
       "pos": [
         820.0,
-        960.0
+        600.0
       ],
       "size": [
         610,
@@ -1912,7 +1945,7 @@
       "type": "StringConcatenate",
       "pos": [
         820.0,
-        1640.0
+        1280.0
       ],
       "size": [
         590,
@@ -1978,8 +2011,8 @@
       "id": 146,
       "type": "TextGenerate",
       "pos": [
-        4880.0,
-        80.0
+        4860.0,
+        680.0
       ],
       "size": [
         590,
@@ -2164,8 +2197,8 @@
       "id": 147,
       "type": "PreviewAny",
       "pos": [
-        4880.0,
-        660.0
+        4860.0,
+        1260.0
       ],
       "size": [
         600,
@@ -2319,13 +2352,13 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "STREAM USE · ONLY TWO GREEN FIELDS",
+      "title": "AUTO-SONGWRITER · IDEA + GENRE SELECTOR",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core"
       },
       "widgets_values": [
-        "# ACE Album Auto-Songwriter · GLOW\n\n**Only edit the two green nodes above:**\n1. `SONG IDEA`\n2. `MUSICAL DIRECTION`\n\nThen queue the workflow. It automatically:\n- writes structured English lyrics,\n- derives a matching ACE-Step music caption,\n- unloads the songwriter LLM,\n- generates a 180-second song,\n- saves it under `output/audio/ACE_Album/`.\n\n**Preset metadata:** 96 BPM · G major · 4/4\n\nWarm and spacious: dream-pop, folktronica, chill indie pop and intimate songs.\n\nQwen 3.5 4B is used for higher lyric quality. The workflow unloads it after the caption is generated, before ACE-Step runs.\n\nThe Voice LoRA from your original workflow is preserved. Select another LoRA or bypass that node when needed. The seed is randomized; set it to fixed to reproduce the complete lyrics + music result."
+        "# ACE Album Auto-Songwriter · one workflow per LLM\n\nEdit the green **SONG IDEA** field, then choose one genre profile in the green **GENRE / PRESET** node.\n\nBundled choices: POP, GLOW, DRIVE, CLUB, NIGHT, RUSH, plus CUSTOM for any new genre. The selector sends its curated direction, exact BPM/key metadata, lyrics language, and profile-specific filename to the connected nodes.\n\nFor CUSTOM, enter the new genre or detailed musical direction and set custom BPM/key. With a bundled profile, that text is appended as optional extra direction. The language dropdown applies to every profile.\n\nThen queue the workflow. It writes structured lyrics in the requested language, derives the English ACE-Step caption, unloads the songwriter LLM, generates a 180-second song, and saves it under `output/audio/ACE_Album/`.\n\n**LLM:** Qwen 3.5 4B BF16 (quality). The Voice LoRA is preserved; choose another LoRA or bypass it when needed. The seed is randomized; set it to fixed to reproduce a complete result."
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2346,13 +2379,13 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Why six preset workflows?",
+      "title": "Genre selector · preset metadata and custom mode",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core"
       },
       "widgets_values": [
-        "# Fixed ACE metadata\n\nComfyUI's built-in ACE-Step 1.5 encoder requires concrete BPM, key and time-signature values. This file therefore uses:\n\n- **96 BPM**\n- **G major**\n- **4/4**\n- **180 seconds**\n- **English vocals**\n\nUse the matching preset listed beside each of the 72 song prompts. This keeps the stream workflow to two editable text fields without forcing all 72 tracks into one tempo and key."
+        "# Six curated profiles plus your own genre\n\nThe former per-genre files differed mainly in musical direction, BPM, key, filename, and explanatory text. This selector now keeps those settings together:\n\n- POP · 120 BPM · C major\n- GLOW · 96 BPM · G major\n- DRIVE · 108 BPM · A minor\n- CLUB · 126 BPM · F# minor\n- NIGHT · 84 BPM · E minor\n- RUSH · 138 BPM · D major\n- CUSTOM · your text, BPM, and key\n\nACE-Step receives concrete linked BPM, key, and language values. Save Audio receives the profile-specific prefix (`POP_Track`, `GLOW_Track`, and so on; `CUSTOM_Track` for a new genre). CUSTOM replaces the former generic Idea-to-Lyrics workflow while keeping the newer two-stage lyrics-and-caption pipeline."
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2631,7 +2664,7 @@
       "id": 156,
       "type": "MarkdownNote",
       "pos": [
-        5740.0,
+        5720.0,
         80.0
       ],
       "size": [
@@ -2660,7 +2693,7 @@
       "id": 157,
       "type": "MarkdownNote",
       "pos": [
-        5740.0,
+        5720.0,
         440.0
       ],
       "size": [
@@ -2689,7 +2722,7 @@
       "id": 158,
       "type": "MarkdownNote",
       "pos": [
-        5740.0,
+        5720.0,
         880.0
       ],
       "size": [
@@ -2715,40 +2748,11 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 159,
-      "type": "MarkdownNote",
-      "pos": [
-        5740.0,
-        1220.0
-      ],
-      "size": [
-        390,
-        362
-      ],
-      "flags": {},
-      "order": 39,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Erklärung · Save Audio (MP3) (DEPRECATED) · Node 107",
-      "properties": {
-        "Node name for S&R": "MarkdownNote",
-        "cnr_id": "comfy-core",
-        "dawasteh_note_for": 107,
-        "dawasteh_generated_note": true
-      },
-      "widgets_values": [
-        "# Erklärung · Save Audio (MP3) (DEPRECATED) · Node 107\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `filename_prefix` = `audio/ACE_Album/GLOW_Track` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `quality` = `V0` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `audio` (AUDIO, Link 283): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `quality` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audioUI` (AUDIO_UI, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `audio` (AUDIO, nicht verbunden): Ergebnis dieses Nodes"
-      ],
-      "color": "#1b2638",
-      "bgcolor": "#101722"
-    },
-    {
       "id": 160,
       "type": "MarkdownNote",
       "pos": [
-        5740.0,
-        1620.0
+        5720.0,
+        1220.0
       ],
       "size": [
         390,
@@ -2776,8 +2780,8 @@
       "id": 161,
       "type": "MarkdownNote",
       "pos": [
-        5740.0,
-        1980.0
+        5720.0,
+        1580.0
       ],
       "size": [
         390,
@@ -2805,8 +2809,8 @@
       "id": 162,
       "type": "MarkdownNote",
       "pos": [
-        5740.0,
-        2400.0
+        5720.0,
+        2000.0
       ],
       "size": [
         390,
@@ -2834,8 +2838,8 @@
       "id": 163,
       "type": "MarkdownNote",
       "pos": [
-        5740.0,
-        2780.0
+        5720.0,
+        2380.0
       ],
       "size": [
         390,
@@ -2863,8 +2867,8 @@
       "id": 164,
       "type": "MarkdownNote",
       "pos": [
-        6200.0,
-        80.0
+        5720.0,
+        2900.0
       ],
       "size": [
         390,
@@ -2893,7 +2897,7 @@
       "type": "MarkdownNote",
       "pos": [
         6200.0,
-        600.0
+        80.0
       ],
       "size": [
         390,
@@ -2922,7 +2926,7 @@
       "type": "MarkdownNote",
       "pos": [
         6200.0,
-        1000.0
+        480.0
       ],
       "size": [
         390,
@@ -2947,40 +2951,11 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 167,
-      "type": "MarkdownNote",
-      "pos": [
-        6200.0,
-        1400.0
-      ],
-      "size": [
-        390,
-        362
-      ],
-      "flags": {},
-      "order": 47,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Erklärung · Songwriter instructions + creative brief · Node 141",
-      "properties": {
-        "Node name for S&R": "MarkdownNote",
-        "cnr_id": "comfy-core",
-        "dawasteh_note_for": 141,
-        "dawasteh_generated_note": true
-      },
-      "widgets_values": [
-        "# Erklärung · Songwriter instructions + creative brief · Node 141\n\n**Zweck:** Erzeugt, kombiniert, ersetzt oder extrahiert Text für nachfolgende Workflow-Schritte.\n\n**Einstellbare Werte**\n- `string_a` = `You are a professional English-language songwriter preparing lyrics for ACE-Step 1.5. ↵  ↵ Turn the supplied …` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `string_b` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `delimiter` = ` ↵  ↵ SONG IDEA AND DIRECTION: ↵ ` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `string_a` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `string_b` (STRING, Link 286): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `delimiter` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
-      ],
-      "color": "#1b2638",
-      "bgcolor": "#101722"
-    },
-    {
       "id": 168,
       "type": "MarkdownNote",
       "pos": [
         6200.0,
-        1800.0
+        880.0
       ],
       "size": [
         390,
@@ -3009,7 +2984,7 @@
       "type": "MarkdownNote",
       "pos": [
         6200.0,
-        2380.0
+        1460.0
       ],
       "size": [
         390,
@@ -3038,7 +3013,7 @@
       "type": "MarkdownNote",
       "pos": [
         6200.0,
-        2720.0
+        1800.0
       ],
       "size": [
         390,
@@ -3067,7 +3042,7 @@
       "type": "MarkdownNote",
       "pos": [
         6200.0,
-        3120.0
+        2200.0
       ],
       "size": [
         390,
@@ -3095,8 +3070,8 @@
       "id": 172,
       "type": "MarkdownNote",
       "pos": [
-        6680.0,
-        80.0
+        6200.0,
+        2600.0
       ],
       "size": [
         390,
@@ -3124,8 +3099,8 @@
       "id": 173,
       "type": "MarkdownNote",
       "pos": [
-        6680.0,
-        660.0
+        6200.0,
+        3180.0
       ],
       "size": [
         390,
@@ -3154,7 +3129,7 @@
       "type": "MarkdownNote",
       "pos": [
         6680.0,
-        1000.0
+        80.0
       ],
       "size": [
         390,
@@ -3183,7 +3158,7 @@
       "type": "MarkdownNote",
       "pos": [
         6680.0,
-        1520.0
+        600.0
       ],
       "size": [
         390,
@@ -3212,7 +3187,7 @@
       "type": "MarkdownNote",
       "pos": [
         6680.0,
-        1880.0
+        960.0
       ],
       "size": [
         390,
@@ -3241,7 +3216,7 @@
       "type": "MarkdownNote",
       "pos": [
         6680.0,
-        2240.0
+        1320.0
       ],
       "size": [
         390,
@@ -3270,7 +3245,7 @@
       "type": "MarkdownNote",
       "pos": [
         6680.0,
-        2600.0
+        1680.0
       ],
       "size": [
         390,
@@ -3299,7 +3274,7 @@
       "type": "MarkdownNote",
       "pos": [
         6680.0,
-        2960.0
+        2040.0
       ],
       "size": [
         390,
@@ -3327,8 +3302,8 @@
       "id": 180,
       "type": "MarkdownNote",
       "pos": [
-        7160.0,
-        80.0
+        6680.0,
+        2440.0
       ],
       "size": [
         390,
@@ -3356,8 +3331,8 @@
       "id": 181,
       "type": "MarkdownNote",
       "pos": [
-        7160.0,
-        440.0
+        6680.0,
+        2800.0
       ],
       "size": [
         390,
@@ -3386,7 +3361,7 @@
       "type": "MarkdownNote",
       "pos": [
         7160.0,
-        1020.0
+        80.0
       ],
       "size": [
         390,
@@ -3415,7 +3390,7 @@
       "type": "MarkdownNote",
       "pos": [
         7160.0,
-        1360.0
+        420.0
       ],
       "size": [
         390,
@@ -3440,40 +3415,11 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 184,
-      "type": "MarkdownNote",
-      "pos": [
-        7160.0,
-        1720.0
-      ],
-      "size": [
-        390,
-        540
-      ],
-      "flags": {},
-      "order": 64,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Erklärung · TextEncodeAceStepAudio1.5 · Node 94",
-      "properties": {
-        "Node name for S&R": "MarkdownNote",
-        "cnr_id": "comfy-core",
-        "dawasteh_note_for": 94,
-        "dawasteh_generated_note": true
-      },
-      "widgets_values": [
-        "# Erklärung · TextEncodeAceStepAudio1.5 · Node 94\n\n**Zweck:** Kodiert Text bzw. Prompts mit CLIP in eine Konditionierung für das generative Modell.\n\n**Einstellbare Werte**\n- `tags` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lyrics` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `bpm` = `96` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `duration` = `180` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `timesignature` = `4` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `language` = `en` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `keyscale` = `G major` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `generate_audio_codes` = `True` — Enable the LLM that generates audio codes. This can be slow but will increase the quality of the generated audio. Turn this off if you are giving the model an audio reference. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `cfg_scale` = `2` — Steuert diesen Parameter. Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `temperature` = `0.85` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `top_p` = `0.9` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `top_k` = `0` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `min_p` = `0` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n\n**Eingänge**\n- `clip` (CLIP, Link 261): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `tags` (STRING, Link 299): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics` (STRING, Link 300): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, Link 264): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `bpm` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `duration` (FLOAT, Link 251): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `timesignature` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `language` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `keyscale` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `generate_audio_codes` (BOOLEAN, nicht verbunden): Enable the LLM that generates audio codes. This can be slow but will increase the quality of the generated audio. Turn this off if you are giving the…\n- `cfg_scale` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_k` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `min_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): Ergebnis dieses Nodes"
-      ],
-      "color": "#1b2638",
-      "bgcolor": "#101722"
-    },
-    {
       "id": 185,
       "type": "MarkdownNote",
       "pos": [
         7160.0,
-        2300.0
+        780.0
       ],
       "size": [
         390,
@@ -3502,7 +3448,7 @@
       "type": "MarkdownNote",
       "pos": [
         7160.0,
-        2660.0
+        1140.0
       ],
       "size": [
         390,
@@ -3522,6 +3468,122 @@
       },
       "widgets_values": [
         "# Erklärung · Song Duration · Node 99\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `180` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 187,
+      "type": "MarkdownNote",
+      "pos": [
+        7160.0,
+        1500.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 67,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Save Audio (MP3) (DEPRECATED) · Node 107",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 107,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Save Audio (MP3) (DEPRECATED) · Node 107\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `filename_prefix` = `audio/ACE_Album/POP_Track` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `quality` = `V0` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `audio` (AUDIO, Link 283): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `filename_prefix` (STRING, Link 312): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `quality` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audioUI` (AUDIO_UI, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `audio` (AUDIO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 188,
+      "type": "MarkdownNote",
+      "pos": [
+        7160.0,
+        1900.0
+      ],
+      "size": [
+        390,
+        498
+      ],
+      "flags": {},
+      "order": 68,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · 2 · GENRE / PRESET — SELECT OR CUSTOMIZE · Node 138",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 138,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · 2 · GENRE / PRESET — SELECT OR CUSTOMIZE · Node 138\n\n**Zweck:** Selects one of six curated genre profiles or a new custom genre and emits the matching music direction, BPM, ACE-Step key/language, and output filename prefix.\n\n**Einstellbare Werte**\n- `profile` = `POP · 120 BPM · C major` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `custom_genre_or_direction` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `custom_bpm` = `120` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `custom_key` = `C major` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `lyrics_language` = `en` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `profile` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `custom_genre_or_direction` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `custom_bpm` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `custom_key` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics_language` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `music_direction` (STRING, 1 Verbindung(en)): Structured direction and selected metadata for the songwriter LLM.\n- `bpm` (INT, 1 Verbindung(en)): BPM for the ACE-Step encoder.\n- `keyscale` (COMBO, 1 Verbindung(en)): Key scale for the ACE-Step encoder.\n- `language` (COMBO, 1 Verbindung(en)): Lyrics language for the ACE-Step encoder.\n- `filename_prefix` (STRING, 1 Verbindung(en)): Profile-specific Save Audio prefix."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 189,
+      "type": "MarkdownNote",
+      "pos": [
+        7160.0,
+        2440.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 69,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Songwriter instructions + creative brief · Node 141",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 141,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Songwriter instructions + creative brief · Node 141\n\n**Zweck:** Erzeugt, kombiniert, ersetzt oder extrahiert Text für nachfolgende Workflow-Schritte.\n\n**Einstellbare Werte**\n- `string_a` = `You are a professional songwriter preparing lyrics for ACE-Step 1.5. ↵  ↵ Turn the supplied SONG IDEA and MUS…` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `string_b` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `delimiter` = ` ↵  ↵ SONG IDEA AND DIRECTION: ↵ ` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `string_a` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `string_b` (STRING, Link 286): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `delimiter` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 190,
+      "type": "MarkdownNote",
+      "pos": [
+        7160.0,
+        2840.0
+      ],
+      "size": [
+        390,
+        540
+      ],
+      "flags": {},
+      "order": 70,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · TextEncodeAceStepAudio1.5 · Node 94",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 94,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · TextEncodeAceStepAudio1.5 · Node 94\n\n**Zweck:** Kodiert Text bzw. Prompts mit CLIP in eine Konditionierung für das generative Modell.\n\n**Einstellbare Werte**\n- `tags` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lyrics` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `bpm` = `120` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `duration` = `180` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `timesignature` = `4` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `language` = `en` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `keyscale` = `C major` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `generate_audio_codes` = `True` — Enable the LLM that generates audio codes. This can be slow but will increase the quality of the generated audio. Turn this off if you are giving the model an audio reference. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `cfg_scale` = `2` — Steuert diesen Parameter. Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `temperature` = `0.85` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `top_p` = `0.9` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `top_k` = `0` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `min_p` = `0` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n\n**Eingänge**\n- `clip` (CLIP, Link 261): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `tags` (STRING, Link 299): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics` (STRING, Link 300): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, Link 264): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `bpm` (INT, Link 309): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `duration` (FLOAT, Link 251): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `timesignature` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `language` (COMBO, Link 311): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `keyscale` (COMBO, Link 310): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `generate_audio_codes` (BOOLEAN, nicht verbunden): Enable the LLM that generates audio codes. This can be slow but will increase the quality of the generated audio. Turn this off if you are giving the…\n- `cfg_scale` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_k` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `min_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -3871,6 +3933,38 @@
       154,
       1,
       "COMBO"
+    ],
+    [
+      309,
+      138,
+      1,
+      94,
+      4,
+      "INT"
+    ],
+    [
+      310,
+      138,
+      2,
+      94,
+      8,
+      "COMBO"
+    ],
+    [
+      311,
+      138,
+      3,
+      94,
+      7,
+      "COMBO"
+    ],
+    [
+      312,
+      138,
+      4,
+      107,
+      1,
+      "STRING"
     ]
   ],
   "groups": [
@@ -3894,7 +3988,7 @@
         780.0,
         0.0,
         700.0,
-        2120.0
+        1760.0
       ],
       "color": "#7C5CC4",
       "font_size": 24,
@@ -3945,8 +4039,8 @@
       "bounding": [
         4120.0,
         0.0,
-        1500.0,
-        2620.0
+        1480.0,
+        2480.0
       ],
       "color": "#3F9E6D",
       "font_size": 24,
@@ -3956,9 +4050,9 @@
       "id": 7,
       "title": "R9 · PARAMETER REFERENCE",
       "bounding": [
-        5700.0,
+        5680.0,
         0.0,
-        1900.0,
+        1920.0,
         3520.0
       ],
       "color": "#5B6472",
@@ -3982,11 +4076,11 @@
     "VHS_MetadataImage": true,
     "VHS_KeepIntermediate": true,
     "dawasteh_workflow_refinement": {
-      "version": 2,
-      "purpose": "ACE-Step 1.5 album auto-songwriter",
+      "version": 3,
+      "purpose": "ACE-Step 1.5 consolidated auto-songwriter",
       "prompt_model": "Qwen3.5-4B",
-      "preset": "GLOW-96-Gmajor",
-      "generated_notes": 31,
+      "preset": "genre-selector",
+      "generated_notes": 32,
       "layout": "rodent-v1",
       "x_scale": 1.0,
       "y_scale": 1.0,
@@ -4007,8 +4101,8 @@
       },
       "version": 3,
       "scope": "collection-wide optional GPU placement",
-      "family": "ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-GLOW-96-Gmajor",
-      "source": "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-GLOW-96-Gmajor.json",
+      "family": "ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-Genre-Selector",
+      "source": "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-Genre-Selector.json",
       "server": "127.0.0.1:8188",
       "backend": "ROCm/HIP",
       "selector_count": 4,
@@ -4043,8 +4137,17 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "741fb23a9e3d5237e574e32f67690c6f33efb1f0ddce6ebadc87c768bfd889ce",
+      "topology_sha256": "8ba1df449062e7d41da0e5b9007d04341129185ae4fb72353e110497f85f82de",
       "exceptions": []
+    },
+    "dawasteh_v093_autosongwriter": {
+      "version": 2,
+      "release": "v0.9.3",
+      "source_workflows": 7,
+      "bundled_profiles": 6,
+      "custom_profile": true,
+      "selector_node": "DaWAutoSongwriterGenreSelector",
+      "integrity_sha256": "12e61b0942d8bea4b76f40641cc637443b4a6a00cd9cd009bc4357a7467a6d94"
     }
   },
   "version": 0.4

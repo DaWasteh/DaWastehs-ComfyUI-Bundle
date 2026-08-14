@@ -58,25 +58,13 @@ class PixaromaIntegrationTests(unittest.TestCase):
         self.assertEqual(
             paths - set(manifest_paths),
             {
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-Idea-to-Lyrics-to-Music.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-Idea-to-Lyrics-to-Music.json",
+                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-Genre-Selector.json",
+                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-Genre-Selector.json",
                 "workflows/Music Generation/HeartMuLa_HappyNewYear_3B_Gemma4_e4B-Idea-to-Lyrics-to-Music.json",
                 "workflows/Music Generation/HeartMuLa_HappyNewYear_3B_Qwen3_5_4B-Idea-to-Lyrics-to-Music.json",
                 "workflows/Music Generation/ACE-Step1_5_XL_SFT_INT8_ConvRot-Music-Generation.json",
                 "workflows/Music Generation/StableAudio3_Medium_INT8_ConvRot-Audio-Generation.json",
                 "workflows/Music Generation/YuE_7B-INT8_R9700-Music-Generation.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-CLUB-126-Fsharpminor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-DRIVE-108-Aminor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-GLOW-96-Gmajor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-NIGHT-84-Eminor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-POP-120-Cmajor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-RUSH-138-Dmajor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-CLUB-126-Fsharpminor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-DRIVE-108-Aminor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-GLOW-96-Gmajor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-NIGHT-84-Eminor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-POP-120-Cmajor.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-RUSH-138-Dmajor.json",
                 "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json",
@@ -194,7 +182,7 @@ class PixaromaIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(dual_marked_prompts, 0)
         self.assertEqual(minimax_enhancer_marked_prompts, 4)
-        self.assertEqual(total_marked_prompts, 146 + minimax_enhancer_marked_prompts)
+        self.assertEqual(total_marked_prompts, 120 + minimax_enhancer_marked_prompts)
 
     def test_pause_gates_are_reciprocal_and_have_textgenerate_ancestry(self):
         pause_count = 0

@@ -18,6 +18,10 @@ from tools.migrate_workflows_v092 import (
     migrate_collection,
     migrate_workflow,
 )
+from tools.consolidate_ace_autosongwriters_v093 import (
+    SOURCE_WORKFLOWS as V093_SOURCE_WORKFLOWS,
+    TARGET_WORKFLOWS as V093_TARGET_WORKFLOWS,
+)
 from tools.validate_workflows import git_baseline_workflow_paths, git_head_json
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,7 +44,7 @@ def paths() -> list[Path]:
 
 class DualGPUWorkflowTests(unittest.TestCase):
     def test_collection_has_one_central_control_per_workflow(self):
-        self.assertEqual(len(paths()), 239)
+        self.assertEqual(len(paths()), 227)
         for path in paths():
             with self.subTest(path=path.relative_to(ROOT)):
                 workflow = json.loads(path.read_text(encoding="utf-8"))
@@ -69,7 +73,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 counts["all_r9700"] += 1
             self.assertEqual(defaults, expected, key)
             self.assertEqual(control["widgets_values"], [expected["MODEL"], expected["CLIP"], expected["VAE"]], key)
-        self.assertEqual(counts, {"all_r9700": 211, "curated_split": 28})
+        self.assertEqual(counts, {"all_r9700": 199, "curated_split": 28})
 
     def test_every_selector_is_driven_by_the_root_control_or_subgraph_interface(self):
         selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
@@ -125,7 +129,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
         path = (WORKFLOWS / "Text to Image/SD15_v1-5-pruned-emaonly-Text-to-Image.json").resolve()
         head = git_head_json(path)
         self.assertEqual(head["version"], 0.4)
-        self.assertNotIn(MIGRATION_KEY, head.get("extra", {}))
+        self.assertEqual(head["extra"][MIGRATION_KEY]["release"], "v0.9.2")
 
     def test_collection_membership_matches_the_declared_migration(self):
         baseline = git_baseline_workflow_paths()
@@ -133,8 +137,10 @@ class DualGPUWorkflowTests(unittest.TestCase):
             path for path in baseline
             if not path.startswith("workflows/Dual GPU - R9700 + RX 9070 XT/")
             and path not in {f"workflows/{key}" for key in DELETED_PATHS}
+            and path not in {f"workflows/{key}" for key in V093_SOURCE_WORKFLOWS}
         }
         expected.update(f"workflows/{addition.path}" for addition in ADDITIONS)
+        expected.update(f"workflows/{target.path}" for target in V093_TARGET_WORKFLOWS)
         actual = {path.relative_to(ROOT).as_posix() for path in paths()}
         self.assertEqual(actual, expected)
 

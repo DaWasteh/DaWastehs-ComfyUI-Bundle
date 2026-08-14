@@ -172,7 +172,7 @@ class WidgetMappingTests(unittest.TestCase):
 
     def test_song_idea_workflows_route_generated_lyrics(self):
         paths = sorted((Path("workflows") / "Music Generation").glob("*Idea-to-Lyrics-to-Music.json"))
-        self.assertEqual(len(paths), 4)
+        self.assertEqual(len(paths), 2)
         for path in paths:
             workflow = json.loads(path.read_text(encoding="utf-8"))
             nodes = {node["id"]: node for node in workflow["nodes"]}

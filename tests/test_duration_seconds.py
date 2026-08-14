@@ -31,9 +31,9 @@ class DurationSecondsTests(unittest.TestCase):
             self.assertEqual(marker.get("version"), DURATION_VERSION, path.name)
             self.assertEqual(marker.get("unit"), "seconds", path.name)
             modes[marker["mode"]] = modes.get(marker["mode"], 0) + 1
-        self.assertEqual(checked, 66)
+        self.assertEqual(checked, 54)
         self.assertEqual(modes, {
-            "native-seconds": 44,
+            "native-seconds": 32,
             "explicit-seconds-to-model-valid-frames": 12,
             "source-media-duration": 10,
         })

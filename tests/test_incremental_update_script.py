@@ -62,6 +62,7 @@ class IncrementalUpdateScriptTests(unittest.TestCase):
 
     def test_all_owned_node_packs_are_updated(self) -> None:
         for name in (
+            "ComfyUI-DaWasteh-AutoSongwriter",
             "ComfyUI-DaWasteh-H3-AutoLength",
             "ComfyUI-DaWasteh-H3-MusicVideo",
             "ComfyUI-DaWasteh-LiveAvatar",

@@ -23,6 +23,11 @@ try:
         build_addition,
         migrate_workflow,
     )
+    from tools.consolidate_ace_autosongwriters_v093 import (
+        SOURCE_WORKFLOWS as V093_SOURCE_WORKFLOWS,
+        TARGET_WORKFLOWS as V093_TARGET_WORKFLOWS,
+        consolidate_workflow as consolidate_v093_autosongwriter,
+    )
 except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows.py
     from refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
     from integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
@@ -34,6 +39,11 @@ except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows
         MIGRATION_VERSION,
         build_addition,
         migrate_workflow,
+    )
+    from consolidate_ace_autosongwriters_v093 import (
+        SOURCE_WORKFLOWS as V093_SOURCE_WORKFLOWS,
+        TARGET_WORKFLOWS as V093_TARGET_WORKFLOWS,
+        consolidate_workflow as consolidate_v093_autosongwriter,
     )
 
 BLACKLIST = ("cudaexecutionprovider", "nunchaku", "svdq", "nvfp4", "tensorrt", "xformers", "flash_attn")
@@ -172,12 +182,16 @@ def overlaps(a, b) -> bool:
     return a[0] < b[2] and a[2] > b[0] and a[1] < b[3] and a[3] > b[1]
 
 
-def git_head_json(path: Path) -> dict[str, Any]:
+def git_ref_json(path_key: str) -> dict[str, Any]:
     raw = subprocess.check_output(
-        ["git", "show", f"{BASELINE_REF}:{_path_key(path)}"], text=True, encoding="utf-8",
+        ["git", "show", f"{BASELINE_REF}:{path_key}"], text=True, encoding="utf-8",
         stderr=subprocess.DEVNULL,
     )
     return json.loads(raw)
+
+
+def git_head_json(path: Path) -> dict[str, Any]:
+    return git_ref_json(_path_key(path))
 
 
 def git_baseline_workflow_paths() -> set[str]:
@@ -672,7 +686,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--workflows", type=Path, default=Path("workflows"))
     parser.add_argument("--against-head", action="store_true")
-    parser.add_argument("--baseline-ref", default="HEAD", help="Git ref used by --against-head (for example v0.9.1 after committing v0.9.2)")
+    parser.add_argument("--baseline-ref", default="HEAD", help="Git ref used by --against-head (for example v0.9.2 after committing v0.9.3)")
     parser.add_argument("--skip-collection-totals", action="store_true", help="Validate a focused subset without repository-wide count invariants")
     args = parser.parse_args()
     global BASELINE_REF
@@ -685,12 +699,14 @@ def main() -> int:
             path for path in baseline_paths
             if not path.startswith("workflows/Dual GPU - R9700 + RX 9070 XT/")
             and path not in {f"workflows/{key}" for key in DELETED_PATHS}
+            and path not in {f"workflows/{key}" for key in V093_SOURCE_WORKFLOWS}
         }
         expected_paths.update(f"workflows/{addition.path}" for addition in ADDITIONS)
+        expected_paths.update(f"workflows/{target.path}" for target in V093_TARGET_WORKFLOWS)
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
-                "collection membership differs from deterministic v0.9.2 migration "
+                "collection membership differs from deterministic v0.9.3 migration "
                 f"(missing={sorted(expected_paths-current_paths)}, extra={sorted(current_paths-expected_paths)})"
             )
     totals = {"graphs": 0, "nodes": 0, "notes": 0, "links": 0, "timers": 0, "old_nodes": 0, "old_links": 0}
@@ -739,21 +755,30 @@ def main() -> int:
                 old_nodes, old_links = compare_head(path, workflow, errors)
                 totals["old_nodes"] += old_nodes; totals["old_links"] += old_links
             except subprocess.CalledProcessError:
-                # Only the four pinned template additions are authorized to be
-                # absent from the v0.9.1 baseline.
                 key = _path_key(path).removeprefix("workflows/")
                 addition = next((item for item in ADDITIONS if item.path == key), None)
-                if addition is None:
-                    errors.append(f"{path}: unexpected workflow absent from {BASELINE_REF}")
-                    errors.extend(path_errors)
-                else:
+                autosongwriter = next((item for item in V093_TARGET_WORKFLOWS if item.path == key), None)
+                if addition is not None:
                     expected = migrate_workflow(build_addition(addition), key)
                     if expected != workflow:
                         errors.append(f"{path}: differs from deterministic pinned-template addition")
-                    errors.extend(path_errors)
+                elif autosongwriter is not None:
+                    source = git_ref_json(f"workflows/{autosongwriter.source}")
+                    expected = consolidate_v093_autosongwriter(source, autosongwriter)
+                    if expected != workflow:
+                        errors.append(f"{path}: differs from deterministic v0.9.3 AutoSongwriter consolidation")
+                    totals["old_nodes"] += sum(
+                        len(graph.get("nodes", [])) for _, graph in graph_locator(source)
+                    )
+                    totals["old_links"] += sum(
+                        len(graph.get("links", []) or []) for _, graph in graph_locator(source)
+                    )
+                else:
+                    errors.append(f"{path}: unexpected workflow absent from {BASELINE_REF}")
+                errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    expected = {"files": 239, "graphs": 292, "nodes": 10798, "notes": 4910, "links": 7411, "timers": 222}
+    expected = {"files": 227, "graphs": 280, "nodes": 10028, "notes": 4556, "links": 6927, "timers": 210}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

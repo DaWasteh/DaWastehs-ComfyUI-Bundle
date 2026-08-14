@@ -1,6 +1,6 @@
-# Optionale GPU-Platzierung · R9700 + RX 9070 XT · v0.9.2
+# Optionale GPU-Platzierung · R9700 + RX 9070 XT · v0.9.3
 
-Seit v0.9.2 gibt es keinen getrennten Ordner `Dual GPU - R9700 + RX 9070 XT` mehr. Die GPU-Steuerung ist direkt in **allen 239 kanonischen Workflows** enthalten. Dadurch existiert pro Aufgabe nur noch ein Workflow, dessen Gerätebelegung vor dem Queue-Lauf geändert werden kann.
+Seit v0.9.2 gibt es keinen getrennten Ordner `Dual GPU - R9700 + RX 9070 XT` mehr. Die GPU-Steuerung ist direkt in **allen 227 kanonischen Workflows** enthalten. Dadurch existiert pro Aufgabe nur noch ein Workflow, dessen Gerätebelegung vor dem Queue-Lauf geändert werden kann.
 
 ## Gerätezuordnung
 
@@ -22,7 +22,7 @@ DaW Multi-GPU Device Control
 Seine Dropdowns `model_device`, `clip_device` und `vae_device` steuern alle kompatiblen offiziellen `Select Model Device`, `Select CLIP Device` und `Select VAE Device`-Nodes, auch innerhalb eingebetteter Subgraphs.
 
 - **28 bereits kuratierte Profile** behalten ihre bewährte Geräteaufteilung.
-- **211 übrige Workflows** starten mit MODEL, CLIP und VAE vollständig auf `gpu:0`, der R9700.
+- **199 übrige Workflows** starten mit MODEL, CLIP und VAE vollständig auf `gpu:0`, der R9700.
 - Reine Utility-Graphen und proprietäre Modellobjekte besitzen den zentralen Control-Node ebenfalls, aber ohne vorgetäuschte Verbindungen zu inkompatiblen Objekten.
 
 YuE, HeartMuLa, MOSS-TTS und Qwen-TTS geben keine standardisierten ComfyUI-Objekte vom Typ MODEL, CLIP oder VAE aus. Offizielle Selector-Nodes können diese Objekte nicht zuverlässig umplatzieren. Der Control-Node bleibt dort bewusst passiv; standardisierte Modell-/LLM-Loader im selben Workflow dürfen trotzdem korrekt angebunden sein.
@@ -90,10 +90,11 @@ Die v0.9.0-Abnahmeläufe für LTX-2.5 T2V/I2V/FLF2V und Wan Animate 2 endeten je
 
 ```powershell
 python tools/migrate_workflows_v092.py --check
-python -m unittest tests.test_dual_gpu_workflows tests.test_rodent_layout tests.test_duration_seconds
+python tools/consolidate_ace_autosongwriters_v093.py --check
+python -m unittest tests.test_dual_gpu_workflows tests.test_rodent_layout tests.test_duration_seconds tests.test_ace_autosongwriter_consolidation
 python tools/validate_workflows.py --against-head
-# Nach dem v0.9.2-Commit denselben Migrationsvergleich gegen den vorherigen Release behalten:
-python tools/validate_workflows.py --against-head --baseline-ref v0.9.1
+# Nach dem v0.9.3-Commit die Konsolidierung gegen den vorherigen Release reproduzieren:
+python tools/validate_workflows.py --against-head --baseline-ref v0.9.2
 ```
 
-Der Validator rekonstruiert GPU-Controls, Sekundensteuerung und RODENT-Layout deterministisch aus dem gewählten Basis-Ref und prüft zusätzlich die erwarteten Löschungen und vier gepinnten Template-Neuzugänge. Statische Tests bestätigen Topologie und Geräteverbindungen, ersetzen aber keinen Windows-ROCm-Lauf mit den realen Modellgewichten.
+Der Validator rekonstruiert GPU-Controls, Sekundensteuerung, RODENT-Layout und die v0.9.3-AutoSongwriter-Konsolidierung deterministisch aus dem gewählten Basis-Ref und prüft zusätzlich die erwarteten Löschungen, zwei Genre-Selector-Ziele und vier gepinnten Template-Neuzugänge. Statische Tests bestätigen Topologie und Geräteverbindungen, ersetzen aber keinen Windows-ROCm-Lauf mit den realen Modellgewichten.
