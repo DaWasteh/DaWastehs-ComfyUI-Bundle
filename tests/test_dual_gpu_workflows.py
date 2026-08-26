@@ -22,6 +22,7 @@ from tools.consolidate_ace_autosongwriters_v093 import (
     SOURCE_WORKFLOWS as V093_SOURCE_WORKFLOWS,
     TARGET_WORKFLOWS as V093_TARGET_WORKFLOWS,
 )
+from tools.upgrade_v095 import addition_sources as v095_addition_sources
 from tools.validate_workflows import git_baseline_workflow_paths, git_head_json
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,7 +45,7 @@ def paths() -> list[Path]:
 
 class DualGPUWorkflowTests(unittest.TestCase):
     def test_collection_has_one_central_control_per_workflow(self):
-        self.assertEqual(len(paths()), 227)
+        self.assertEqual(len(paths()), 230)
         for path in paths():
             with self.subTest(path=path.relative_to(ROOT)):
                 workflow = json.loads(path.read_text(encoding="utf-8"))
@@ -73,7 +74,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 counts["all_r9700"] += 1
             self.assertEqual(defaults, expected, key)
             self.assertEqual(control["widgets_values"], [expected["MODEL"], expected["CLIP"], expected["VAE"]], key)
-        self.assertEqual(counts, {"all_r9700": 199, "curated_split": 28})
+        self.assertEqual(counts, {"all_r9700": 202, "curated_split": 28})
 
     def test_every_selector_is_driven_by_the_root_control_or_subgraph_interface(self):
         selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
@@ -141,6 +142,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
         }
         expected.update(f"workflows/{addition.path}" for addition in ADDITIONS)
         expected.update(f"workflows/{target.path}" for target in V093_TARGET_WORKFLOWS)
+        expected.update(f"workflows/{target}" for target in v095_addition_sources())
         actual = {path.relative_to(ROOT).as_posix() for path in paths()}
         self.assertEqual(actual, expected)
 

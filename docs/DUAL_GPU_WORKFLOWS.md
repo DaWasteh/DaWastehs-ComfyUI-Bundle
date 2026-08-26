@@ -93,8 +93,8 @@ python tools/migrate_workflows_v092.py --check
 python tools/consolidate_ace_autosongwriters_v093.py --check
 python -m unittest tests.test_dual_gpu_workflows tests.test_rodent_layout tests.test_duration_seconds tests.test_ace_autosongwriter_consolidation
 python tools/validate_workflows.py --against-head
-# Nach dem v0.9.4-Commit die Änderungen gegen den vorherigen Release reproduzieren:
-python tools/validate_workflows.py --against-head --baseline-ref v0.9.3
+# Nach dem v0.9.5-Commit die Änderungen gegen den vorherigen Release reproduzieren:
+python tools/validate_workflows.py --against-head --baseline-ref v0.9.4
 ```
 
-Der Validator rekonstruiert GPU-Controls, Sekundensteuerung, RODENT-Layout, die v0.9.3-AutoSongwriter-Konsolidierung und den v0.9.4-Wan-Animate-2-Umbau deterministisch aus dem gewählten Basis-Ref und prüft zusätzlich die erwarteten Löschungen, zwei Genre-Selector-Ziele und vier gepinnten Template-Neuzugänge. Statische Tests bestätigen Topologie und Geräteverbindungen, ersetzen aber keinen Windows-ROCm-Lauf mit den realen Modellgewichten.
+Der Validator rekonstruiert GPU-Controls, Sekundensteuerung, RODENT-Layout, die v0.9.3-AutoSongwriter-Konsolidierung, den v0.9.4-Wan-Animate-2-Umbau und die drei aus v0.9.4-Quellen abgeleiteten v0.9.5-Godot-/Live-Voice-Workflows deterministisch aus dem gewählten Basis-Ref. Er prüft zusätzlich die erwarteten Löschungen, zwei Genre-Selector-Ziele und vier gepinnten Template-Neuzugänge. Statische Tests bestätigen Topologie und Geräteverbindungen, ersetzen aber keinen Windows-ROCm-Lauf mit den realen Modellgewichten.

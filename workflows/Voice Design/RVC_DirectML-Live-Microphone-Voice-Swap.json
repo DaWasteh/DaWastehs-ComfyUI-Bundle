@@ -1,0 +1,360 @@
+{
+  "id": "14aa5510-20a5-5947-a7a4-ee6d0c77610b",
+  "revision": 0,
+  "last_node_id": 7,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "PixaromaNote",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        380,
+        160
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaNote",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        "{\"version\":1,\"content\":\"<h1>Live-Mikrofon-Voice-Swap · DirectML RVC</h1><p><b>Ein normaler Run</b> verifiziert den gepinnten b2332-Runtime vollständig, startet nur dessen exakte EXE und öffnet die lokale UI auf <code>127.0.0.1:18888</code>. Live-Audio läuft danach außerhalb der ComfyUI-Queue weiter.</p><ol><li><code>start / open UI</code> wählen und einmal Run drücken.</li><li>In der RVC-UI ausschließlich ein eigenes oder ausdrücklich lizenziertes Modell importieren. Kein Stimmenmodell wird im Git-Bundle verteilt.</li><li>RX 9070 XT DirectML, <code>rmvpe_onnx</code>, 48 kHz und zunächst 100-ms-Chunks wählen.</li><li>Physisches Mikrofon als Eingang, virtuelles Audiokabel als Ausgang wählen. In OBS nur das Kabel aufnehmen und das Originalmikrofon stummschalten. Auf diesem Rechner ist derzeit kein virtuelles Kabel vorinstalliert; für die lokale Vorführung Kopfhörer als Ausgang nutzen und Lautsprecher-Feedback vermeiden.</li><li>Zum Beenden <code>stop verified service</code> wählen und erneut Run drücken.</li></ol><p><b>Demo-Modell:</b> Die offizielle Seite <a href='https://amitaro.net/synth/rvc/'>Amitaro's Voice Material Studio</a> bietet klar lizenzierte RVC-Modelle. Nutzung erfordert Credit <code>RVC Model: Amitaro's Voice Material Studio (https://amitaro.net/)</code>; keine Weiterverteilung, kein Vortäuschen der echten Stimme und weitere dortige Inhaltsgrenzen beachten.</p><p><b>OmniVoice wurde bewusst nicht verwendet:</b> Es ist Zero-shot-TTS aus Text und 3–10 s Referenzaudio, kein echtes inkrementelles Speech-to-Speech-Streaming; die offiziellen Gewichte sind zudem CC-BY-NC. Details: <code>docs/OMNIVOICE_LIVE_SWAP_EVALUATION.md</code>.</p><p><b>Verantwortung:</b> Nur Stimmen mit nachweisbarer Einwilligung/Lizenz nutzen. Keine Täuschung, Belästigung, Betrugsanrufe oder Identitätsvortäuschung.</p>\",\"buttonColor\":\"#32c48d\",\"lineColor\":\"#32c48d\",\"width\":940,\"height\":980,\"backgroundColor\":\"#2a2a2a\"}",
+        ""
+      ],
+      "title": "START HIER · Live Voice Swap + Audio-Routing"
+    },
+    {
+      "id": 2,
+      "type": "DaWastehLiveVoiceSwapLauncher",
+      "pos": [
+        580.0,
+        80.0
+      ],
+      "size": [
+        610,
+        230
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "action",
+          "name": "action",
+          "type": "COMBO",
+          "widget": {
+            "name": "action"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "install_path",
+          "name": "install_path",
+          "type": "STRING",
+          "widget": {
+            "name": "install_path"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "open_browser",
+          "name": "open_browser",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "open_browser"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "status",
+          "name": "status",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "ui_url",
+          "name": "ui_url",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "process_id",
+          "name": "process_id",
+          "type": "INT",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWastehLiveVoiceSwapLauncher"
+      },
+      "widgets_values": [
+        "start / open UI",
+        "L:/ComfyUI/voice-changer-dml-b2332",
+        true
+      ],
+      "title": "LIVE VOICE · DirectML RVC starten / prüfen / stoppen"
+    },
+    {
+      "id": 4,
+      "type": "MarkdownNote",
+      "pos": [
+        1360.0,
+        80.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LIVE VOICE · DirectML RVC starten / prüfen / stoppen · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LIVE VOICE · DirectML RVC starten / prüfen / stoppen · Node 2\n\n**Zweck:** Starts, inspects, or stops only the hash-verified local DirectML RVC b2332 service. Voice models and audio routing remain explicit user-controlled resources.\n\n**Einstellbare Werte**\n- `action` = `start / open UI` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `install_path` = `L:/ComfyUI/voice-changer-dml-b2332` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `open_browser` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `action` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `install_path` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `open_browser` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `ui_url` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `process_id` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 5,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        280.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 6,
+      "type": "MarkdownNote",
+      "pos": [
+        1840.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 5,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 5\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 7,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        480.0
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ]
+    }
+  ],
+  "links": [],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        460.0,
+        620.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        540.0,
+        0.0,
+        700.0,
+        360.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        1320.0,
+        0.0,
+        960.0,
+        480.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "workflowRendererVersion": "LG",
+    "frontendVersion": "1.47.11",
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 2,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "DirectML RVC Live Microphone Voice Swap",
+      "source": "workflows/Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "0ee942e50e1c7f002a15e53410e5237451158135b5e4e44eb7435736f065bac4",
+      "exceptions": []
+    },
+    "dawasteh_v095_live_voice": {
+      "version": 1,
+      "release": "v0.9.5",
+      "runtime": "deiteris/voice-changer b2332 DirectML",
+      "runtime_downloads": 0,
+      "voice_model_bundled": false,
+      "live_audio_outside_comfy_queue": true,
+      "fixed_loopback_url": "http://127.0.0.1:18888/",
+      "omnivoice_decision": "not suitable for true live speech-to-speech swapping"
+    }
+  },
+  "version": 0.4
+}

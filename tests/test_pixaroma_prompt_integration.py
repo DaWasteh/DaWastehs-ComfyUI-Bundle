@@ -53,6 +53,9 @@ class PixaromaIntegrationTests(unittest.TestCase):
                 "workflows/Prompt Enhancer/MiniMax_H3_Ref2VA-Official-Guide-Prompt-Enhancer.json",
                 "workflows/Prompt Enhancer/MiniMax_Music3-Official-Skill-Caption-Enhancer.json",
                 "workflows/Music Generation/MiniMax_Music3_FP32-BF16-Text-to-Music.json",
+                "workflows/Game Development/FLUX2_Klein_4B-PS1-Texture-Concept.json",
+                "workflows/Game Development/Hunyuan3D_v2_1-Low-Poly-Static-Mesh-for-Godot.json",
+                "workflows/Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json",
             }
         }
         self.assertEqual(
@@ -182,7 +185,7 @@ class PixaromaIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(dual_marked_prompts, 0)
         self.assertEqual(minimax_enhancer_marked_prompts, 4)
-        self.assertEqual(total_marked_prompts, 120 + minimax_enhancer_marked_prompts)
+        self.assertEqual(total_marked_prompts, 121 + minimax_enhancer_marked_prompts)
 
     def test_pause_gates_are_reciprocal_and_have_textgenerate_ancestry(self):
         pause_count = 0

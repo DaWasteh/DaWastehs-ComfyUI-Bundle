@@ -28,6 +28,7 @@ try:
         TARGET_WORKFLOWS as V093_TARGET_WORKFLOWS,
         consolidate_workflow as consolidate_v093_autosongwriter,
     )
+    from tools.upgrade_v095 import addition_sources as v095_addition_sources
 except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows.py
     from refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
     from integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
@@ -45,6 +46,7 @@ except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows
         TARGET_WORKFLOWS as V093_TARGET_WORKFLOWS,
         consolidate_workflow as consolidate_v093_autosongwriter,
     )
+    from upgrade_v095 import addition_sources as v095_addition_sources
 
 BLACKLIST = ("cudaexecutionprovider", "nunchaku", "svdq", "nvfp4", "tensorrt", "xformers", "flash_attn")
 BASELINE_REF = "HEAD"
@@ -703,10 +705,11 @@ def main() -> int:
         }
         expected_paths.update(f"workflows/{addition.path}" for addition in ADDITIONS)
         expected_paths.update(f"workflows/{target.path}" for target in V093_TARGET_WORKFLOWS)
+        expected_paths.update(f"workflows/{target}" for target in v095_addition_sources())
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
-                "collection membership differs from deterministic v0.9.3 migration "
+                "collection membership differs from deterministic release migration "
                 f"(missing={sorted(expected_paths-current_paths)}, extra={sorted(current_paths-expected_paths)})"
             )
     totals = {"graphs": 0, "nodes": 0, "notes": 0, "links": 0, "timers": 0, "old_nodes": 0, "old_links": 0}
@@ -774,11 +777,24 @@ def main() -> int:
                         len(graph.get("links", []) or []) for _, graph in graph_locator(source)
                     )
                 else:
-                    errors.append(f"{path}: unexpected workflow absent from {BASELINE_REF}")
+                    v095_source = v095_addition_sources().get(key)
+                    if v095_source is not None:
+                        source = git_ref_json(f"workflows/{v095_source}")
+                        expected = migrate_workflow(source, key)
+                        if expected != workflow:
+                            errors.append(f"{path}: differs from deterministic v0.9.5 canonical-source addition")
+                        totals["old_nodes"] += sum(
+                            len(graph.get("nodes", [])) for _, graph in graph_locator(source)
+                        )
+                        totals["old_links"] += sum(
+                            len(graph.get("links", []) or []) for _, graph in graph_locator(source)
+                        )
+                    else:
+                        errors.append(f"{path}: unexpected workflow absent from {BASELINE_REF}")
                 errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    expected = {"files": 227, "graphs": 280, "nodes": 10032, "notes": 4558, "links": 6934, "timers": 210}
+    expected = {"files": 230, "graphs": 283, "nodes": 10117, "notes": 4596, "links": 6976, "timers": 213}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

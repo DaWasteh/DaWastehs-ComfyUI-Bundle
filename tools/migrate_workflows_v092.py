@@ -40,6 +40,11 @@ try:
     )
     from tools.rodent_layout import RODENT_KEY, apply_rodent_layout
     from tools.upgrade_v094 import ADAPTIVE_OBJECT_INFO, upgrade_workflow as upgrade_v094_workflow
+    from tools.upgrade_v095 import (
+        V095_OBJECT_INFO,
+        addition_sources as v095_addition_sources,
+        upgrade_workflow as upgrade_v095_workflow,
+    )
 except ModuleNotFoundError:  # Direct execution
     from generate_dual_gpu_workflows import (
         DEVICE_CONTROL_TYPE,
@@ -63,6 +68,11 @@ except ModuleNotFoundError:  # Direct execution
     )
     from rodent_layout import RODENT_KEY, apply_rodent_layout
     from upgrade_v094 import ADAPTIVE_OBJECT_INFO, upgrade_workflow as upgrade_v094_workflow
+    from upgrade_v095 import (
+        V095_OBJECT_INFO,
+        addition_sources as v095_addition_sources,
+        upgrade_workflow as upgrade_v095_workflow,
+    )
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / "workflows"
@@ -118,6 +128,7 @@ def _load_object_info() -> dict[str, Any]:
     info = json.loads(path.read_text(encoding="utf-8"))
     info.update(SELECTOR_OBJECT_INFO)
     info.update(ADAPTIVE_OBJECT_INFO)
+    info.update(V095_OBJECT_INFO)
     return info
 
 
@@ -272,7 +283,8 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
     if marker.get("version") == MIGRATION_VERSION:
         migrated, duration_changed = integrate_duration_seconds(migrated, path_key)
         migrated, v094_changed = upgrade_v094_workflow(migrated, path_key)
-        if duration_changed or v094_changed:
+        migrated, v095_changed = upgrade_v095_workflow(migrated, path_key)
+        if duration_changed or v094_changed or v095_changed:
             _rebuild_presentation(migrated, path_key)
         else:
             apply_rodent_layout(migrated, path_key)
@@ -329,6 +341,7 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
 
     migrated, _ = integrate_duration_seconds(migrated, path_key)
     migrated, _ = upgrade_v094_workflow(migrated, path_key)
+    migrated, _ = upgrade_v095_workflow(migrated, path_key)
     # Rebuild one generated parameter note per executable node, including the
     # newly inserted selectors, GPU control, and duration controls.
     _rebuild_presentation(migrated, path_key)
@@ -359,6 +372,14 @@ def desired_workflows(source_root: Path = WORKFLOWS) -> dict[str, dict[str, Any]
         desired[key] = json.loads(path.read_text(encoding="utf-8-sig"))
     for addition in ADDITIONS:
         desired.setdefault(addition.path, build_addition(addition))
+    for target, source in sorted(v095_addition_sources().items()):
+        if target in desired:
+            continue
+        if source not in desired:
+            if source_root.resolve() == WORKFLOWS.resolve():
+                raise ValueError(f"v0.9.5 addition source is missing: {source}")
+            continue
+        desired[target] = copy.deepcopy(desired[source])
     return desired
 
 
