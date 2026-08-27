@@ -1,8 +1,8 @@
 {
   "id": "02aad8d3-e4d6-5801-a74b-ce26511938d3",
   "revision": 0,
-  "last_node_id": 35,
-  "last_link_id": 19,
+  "last_node_id": 69,
+  "last_link_id": 36,
   "nodes": [
     {
       "id": 1,
@@ -520,7 +520,10 @@
           "type": "VOXEL",
           "slot_index": 0,
           "links": [
-            11
+            11,
+            22,
+            27,
+            32
           ]
         }
       ],
@@ -586,7 +589,7 @@
           ]
         }
       ],
-      "title": "Voxel -> Mesh",
+      "title": "LOD0 HERO · Voxel-Mesh · threshold 0.60",
       "properties": {
         "Node name for S&R": "VoxelToMesh",
         "cnr_id": "comfy-core",
@@ -601,8 +604,8 @@
       "id": 10,
       "type": "SaveGLB",
       "pos": [
-        2680.0,
-        600.0
+        3560.0,
+        1940.0
       ],
       "size": [
         621.9000244140625,
@@ -616,7 +619,7 @@
           "localized_name": "mesh",
           "name": "mesh",
           "type": "MESH,FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_OBJ,FILE_3D_FBX,FILE_3D_STL,FILE_3D_USDZ,FILE_3D_PLY,FILE_3D_SPLAT,FILE_3D_SPZ,FILE_3D_KSPLAT,FILE_3D_SPLAT_ANY,FILE_3D_POINT_CLOUD_ANY,FILE_3D",
-          "link": 19
+          "link": 21
         },
         {
           "localized_name": "filename_prefix",
@@ -638,7 +641,7 @@
         }
       ],
       "outputs": [],
-      "title": "GODOT · Low-Poly-GLB speichern (statisch)",
+      "title": "GODOT · LOD0 HERO · UV-GLB speichern",
       "properties": {
         "Node name for S&R": "SaveGLB",
         "cnr_id": "comfy-core",
@@ -705,7 +708,7 @@
         }
       },
       "widgets_values": [
-        "GameDev/Hunyuan3D_LowPoly/hunyuan3d_lowpoly_static",
+        "GameDev/Hunyuan3D_LowPoly/lod0_hero_5000",
         ""
       ]
     },
@@ -725,14 +728,14 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "START HIER · Bild → Low-Poly-GLB für Godot",
+      "title": "START HIER · Bild → echte Low-Poly-LOD-GLBs für Godot",
       "properties": {
         "Node name for S&R": "Note",
         "cnr_id": "comfy-core",
         "ver": "0.3.68"
       },
       "widgets_values": [
-        "=== HUNYUAN3D 2.1 -> LOW-POLY-GLB -> GODOT ===\n\n1) Ein einzelnes, zentriertes Objektbild mit sauberem oder transparentem Hintergrund wählen.\n2) Der bewährte Core-Pfad nutzt ModelSamplingAuraFlow shift 1, 40 Schritte und den bereits installierten Hunyuan3D-2.1-Checkpoint.\n3) Decimate Mesh reduziert auf maximal 5.000 Faces. 'midpoint' schützt dünne Details besser. 800 Faces nur als aggressives fernes LOD testen.\n4) SaveGLB schreibt nach output/GameDev/Hunyuan3D_LowPoly/.\n\nWICHTIG: Ergebnis ist ein STATISCHES, UNTEXTURIERTES und UNGERIGGTES Zwischenmesh. Vor einem Character-Einsatz in Blender Maßstab/Achsen, Normalen, Silhouette, UVs, Material, Rig, Skinning, Animationen und LODs prüfen. In Godot eignet es sich direkt nur als MeshInstance3D/Prop; Collision bewusst separat erzeugen."
+        "=== HUNYUAN3D 2.1 -> 2000er-LOW-POLY-LODs -> GODOT ===\n\n1) Ein einzelnes, zentriertes Objektbild mit sauberem oder transparentem Hintergrund wählen.\n2) Hunyuan3D läuft einmal mit shift 1 und 40 Schritten. Danach entstehen vier UNABHÄNGIGE Voxel-Meshes statt vier mutierender Decimate-Abzweige.\n3) LOD0/1 sind die eigentlichen Spielmodelle. LOD2 ist für Entfernung; LOD3 ist die aggressive Silhouette. Niedrigere Voxel-Schwellen verdicken dünne Teile kontrolliert, bevor midpoint reduziert.\n4) Jedes GLB erhält ein echtes 256px-UV-Layout und 60-Grad-Crease-Normalen. Gespeichert werden lod0_hero_5000, lod1_game_2500, lod2_distant_1200 und lod3_ultra_0600.\n\n50 Dreiecke sind für ein beliebiges erkennbares 3D-Objekt kein brauchbares Ziel. Dafür Billboard, Impostor oder bewusst prozedurale Primitive verwenden. Godot erzeugt aus einem GLB außerdem automatische bildschirmgrößenabhängige Mesh-LODs.\n\nWICHTIG: Die GLBs sind STATISCH, UV-ENTFALTET, ABER UNTEXTURIERT und UNGERIGGT. Vor Produktion in Blender Maßstab/Achsen, Silhouette, Material, Rig/Animation und Collision prüfen."
       ],
       "color": "#653",
       "bgcolor": "#432"
@@ -760,7 +763,7 @@
         "ver": "0.3.68"
       },
       "widgets_values": [
-        "**Vorhandene lokale Ressourcen**\n\n- `models/checkpoints/Hunyuan3D/hunyuan_3d_v2.1.safetensors`\n- ComfyUI 0.34 Core: `DecimateMesh` / `SaveGLB`\n\nKeine neuen Modellgewichte und kein zusätzlicher Mesh-Custom-Node nötig. Der 5.000-Face-Wert ist ein sicherer Startpunkt, kein universelles Budget. Silhouette und dünne Teile immer visuell prüfen."
+        "**Modellentscheidung**\n\n- Vorhanden: `models/checkpoints/Hunyuan3D/hunyuan_3d_v2.1.safetensors`\n- Verwendet: ComfyUI 0.34 Core `VoxelToMesh`, `DecimateMesh`, `UnwrapMesh`, `MeshSmoothNormals` und `SaveGLB`\n\nKein neues Modell wurde benötigt. MeshAnything V2 wurde bewusst nicht installiert: maximal 1.600 Faces, keine offiziell unterstützte ComfyUI-/Windows-ROCm-Laufzeit und S-Lab-Lizenz nur für nichtkommerzielle Nutzung. Der Core-`qem`-Modus nutzt außerdem einen auf dieser Windows-ROCm-Installation fehlschlagenden `torch.linalg.solve`-Pfad; `midpoint` ist hier der live geprüfte Pfad."
       ],
       "color": "#222",
       "bgcolor": "#111"
@@ -806,7 +809,7 @@
       "id": 14,
       "type": "MarkdownNote",
       "pos": [
-        3460.0,
+        4340.0,
         80.0
       ],
       "size": [
@@ -835,7 +838,7 @@
       "id": 15,
       "type": "MarkdownNote",
       "pos": [
-        3460.0,
+        4340.0,
         480.0
       ],
       "size": [
@@ -864,7 +867,7 @@
       "id": 16,
       "type": "MarkdownNote",
       "pos": [
-        3460.0,
+        4340.0,
         880.0
       ],
       "size": [
@@ -893,7 +896,7 @@
       "id": 17,
       "type": "MarkdownNote",
       "pos": [
-        3460.0,
+        4340.0,
         1260.0
       ],
       "size": [
@@ -922,8 +925,8 @@
       "id": 18,
       "type": "MarkdownNote",
       "pos": [
-        3920.0,
-        80.0
+        4340.0,
+        1680.0
       ],
       "size": [
         390,
@@ -951,8 +954,8 @@
       "id": 19,
       "type": "MarkdownNote",
       "pos": [
-        3920.0,
-        500.0
+        4340.0,
+        2100.0
       ],
       "size": [
         390,
@@ -980,8 +983,8 @@
       "id": 20,
       "type": "MarkdownNote",
       "pos": [
-        3920.0,
-        880.0
+        4340.0,
+        2480.0
       ],
       "size": [
         390,
@@ -1009,8 +1012,8 @@
       "id": 21,
       "type": "MarkdownNote",
       "pos": [
-        3920.0,
-        2040.0
+        4340.0,
+        3640.0
       ],
       "size": [
         390,
@@ -1038,8 +1041,8 @@
       "id": 22,
       "type": "MarkdownNote",
       "pos": [
-        4400.0,
-        80.0
+        4340.0,
+        4160.0
       ],
       "size": [
         390,
@@ -1050,7 +1053,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · Voxel -> Mesh · Node 9",
+      "title": "Erklärung · LOD0 HERO · Voxel-Mesh · threshold 0.60 · Node 9",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1058,7 +1061,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Voxel -> Mesh · Node 9\n\n**Zweck:** Converts a voxel grid to a mesh.\n\n**Einstellbare Werte**\n- `algorithm` = `surface net` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `threshold` = `0.6` — Steuert diesen Parameter. Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n\n**Eingänge**\n- `voxel` (VOXEL, Link 11): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `algorithm` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `threshold` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MESH` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · LOD0 HERO · Voxel-Mesh · threshold 0.60 · Node 9\n\n**Zweck:** Converts a voxel grid to a mesh.\n\n**Einstellbare Werte**\n- `algorithm` = `surface net` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `threshold` = `0.6` — Steuert diesen Parameter. Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n\n**Eingänge**\n- `voxel` (VOXEL, Link 11): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `algorithm` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `threshold` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MESH` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1067,8 +1070,8 @@
       "id": 23,
       "type": "MarkdownNote",
       "pos": [
-        4400.0,
-        560.0
+        4800.0,
+        80.0
       ],
       "size": [
         390,
@@ -1079,7 +1082,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · GODOT · Low-Poly-GLB speichern (statisch) · Node 10",
+      "title": "Erklärung · GODOT · LOD0 HERO · UV-GLB speichern · Node 10",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1087,7 +1090,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · GODOT · Low-Poly-GLB speichern (statisch) · Node 10\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `filename_prefix` = `GameDev/Hunyuan3D_LowPoly/hunyuan3d_lowpoly_static` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `mesh` (MESH,FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_OBJ,FILE_3D_FBX,FILE_3D_STL,FILE_3D_USDZ,FILE_3D_PLY,FILE_3D_SPLAT,FILE_3D_SPZ,FILE_3D_KSPLAT,FILE_3D_SPLAT_ANY,FILE_3D_POINT_CLOUD_ANY,FILE_3D, Link 19): Mesh or 3D file to save\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (PREVIEW_3D, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."
+        "# Erklärung · GODOT · LOD0 HERO · UV-GLB speichern · Node 10\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `filename_prefix` = `GameDev/Hunyuan3D_LowPoly/lod0_hero_5000` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `mesh` (MESH,FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_OBJ,FILE_3D_FBX,FILE_3D_STL,FILE_3D_USDZ,FILE_3D_PLY,FILE_3D_SPLAT,FILE_3D_SPZ,FILE_3D_KSPLAT,FILE_3D_SPLAT_ANY,FILE_3D_POINT_CLOUD_ANY,FILE_3D, Link 21): Mesh or 3D file to save\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (PREVIEW_3D, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1456,8 +1459,8 @@
       "id": 29,
       "type": "MarkdownNote",
       "pos": [
-        4400.0,
-        1020.0
+        4800.0,
+        540.0
       ],
       "size": [
         390,
@@ -1485,8 +1488,8 @@
       "id": 30,
       "type": "MarkdownNote",
       "pos": [
-        4400.0,
-        1540.0
+        4800.0,
+        1060.0
       ],
       "size": [
         390,
@@ -1514,8 +1517,8 @@
       "id": 31,
       "type": "MarkdownNote",
       "pos": [
-        4880.0,
-        80.0
+        4800.0,
+        1580.0
       ],
       "size": [
         390,
@@ -1543,8 +1546,8 @@
       "id": 32,
       "type": "MarkdownNote",
       "pos": [
-        4880.0,
-        440.0
+        4800.0,
+        1940.0
       ],
       "size": [
         390,
@@ -1572,8 +1575,8 @@
       "id": 33,
       "type": "MarkdownNote",
       "pos": [
-        4880.0,
-        800.0
+        4800.0,
+        2300.0
       ],
       "size": [
         390,
@@ -1601,8 +1604,8 @@
       "id": 34,
       "type": "DecimateMesh",
       "pos": [
-        2680.0,
-        400.0
+        3120.0,
+        280.0
       ],
       "size": [
         360,
@@ -1648,7 +1651,7 @@
           ]
         }
       ],
-      "title": "LOW-POLY · Ziel maximal 5.000 Faces",
+      "title": "LOD0 HERO · maximal 5.000 Dreiecke · midpoint",
       "properties": {
         "Node name for S&R": "DecimateMesh",
         "cnr_id": "comfy-core",
@@ -1661,21 +1664,1259 @@
     },
     {
       "id": 35,
+      "type": "UnwrapMesh",
+      "pos": [
+        3120.0,
+        1200.0
+      ],
+      "size": [
+        360,
+        190
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 19
+        },
+        {
+          "localized_name": "segmenter",
+          "name": "segmenter",
+          "type": "COMBO",
+          "widget": {
+            "name": "segmenter"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "resolution",
+          "name": "resolution",
+          "type": "INT",
+          "widget": {
+            "name": "resolution"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "padding",
+          "name": "padding",
+          "type": "INT",
+          "widget": {
+            "name": "padding"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weld_distance",
+          "name": "weld_distance",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weld_distance"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            20
+          ]
+        }
+      ],
+      "title": "LOD0 HERO · UV 256px · 2px Padding",
+      "properties": {
+        "Node name for S&R": "UnwrapMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        "pec",
+        256,
+        2,
+        0.0
+      ]
+    },
+    {
+      "id": 36,
+      "type": "MeshSmoothNormals",
+      "pos": [
+        3560.0,
+        400.0
+      ],
+      "size": [
+        340,
+        110
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 20
+        },
+        {
+          "localized_name": "crease_angle",
+          "name": "crease_angle",
+          "type": "FLOAT",
+          "widget": {
+            "name": "crease_angle"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            21
+          ]
+        }
+      ],
+      "title": "LOD0 HERO · 60° Crease-Normalen",
+      "properties": {
+        "Node name for S&R": "MeshSmoothNormals",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        60.0
+      ]
+    },
+    {
+      "id": 37,
+      "type": "VoxelToMesh",
+      "pos": [
+        2680.0,
+        400.0
+      ],
+      "size": [
+        330,
+        112
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "voxel",
+          "name": "voxel",
+          "type": "VOXEL",
+          "link": 22
+        },
+        {
+          "localized_name": "algorithm",
+          "name": "algorithm",
+          "type": "COMBO",
+          "widget": {
+            "name": "algorithm"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "threshold",
+          "name": "threshold",
+          "type": "FLOAT",
+          "widget": {
+            "name": "threshold"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MESH",
+          "name": "MESH",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            23
+          ]
+        }
+      ],
+      "title": "LOD1 GAME · Voxel-Mesh · threshold 0.58",
+      "properties": {
+        "Node name for S&R": "VoxelToMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        "surface net",
+        0.58
+      ]
+    },
+    {
+      "id": 38,
+      "type": "DecimateMesh",
+      "pos": [
+        2680.0,
+        880.0
+      ],
+      "size": [
+        360,
+        150
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 23
+        },
+        {
+          "localized_name": "target_face_count",
+          "name": "target_face_count",
+          "type": "INT",
+          "widget": {
+            "name": "target_face_count"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "placement_mode",
+          "name": "placement_mode",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "placement_mode"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            24
+          ]
+        }
+      ],
+      "title": "LOD1 GAME · maximal 2.500 Dreiecke · midpoint",
+      "properties": {
+        "Node name for S&R": "DecimateMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        2500,
+        "midpoint"
+      ]
+    },
+    {
+      "id": 39,
+      "type": "UnwrapMesh",
+      "pos": [
+        3120.0,
+        480.0
+      ],
+      "size": [
+        360,
+        190
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 24
+        },
+        {
+          "localized_name": "segmenter",
+          "name": "segmenter",
+          "type": "COMBO",
+          "widget": {
+            "name": "segmenter"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "resolution",
+          "name": "resolution",
+          "type": "INT",
+          "widget": {
+            "name": "resolution"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "padding",
+          "name": "padding",
+          "type": "INT",
+          "widget": {
+            "name": "padding"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weld_distance",
+          "name": "weld_distance",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weld_distance"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            25
+          ]
+        }
+      ],
+      "title": "LOD1 GAME · UV 256px · 2px Padding",
+      "properties": {
+        "Node name for S&R": "UnwrapMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        "pec",
+        256,
+        2,
+        0.0
+      ]
+    },
+    {
+      "id": 40,
+      "type": "MeshSmoothNormals",
+      "pos": [
+        3120.0,
+        1440.0
+      ],
+      "size": [
+        340,
+        110
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 25
+        },
+        {
+          "localized_name": "crease_angle",
+          "name": "crease_angle",
+          "type": "FLOAT",
+          "widget": {
+            "name": "crease_angle"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            26
+          ]
+        }
+      ],
+      "title": "LOD1 GAME · 60° Crease-Normalen",
+      "properties": {
+        "Node name for S&R": "MeshSmoothNormals",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        60.0
+      ]
+    },
+    {
+      "id": 41,
+      "type": "SaveGLB",
+      "pos": [
+        3560.0,
+        560.0
+      ],
+      "size": [
+        621.9000244140625,
+        413.5833435058594
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH,FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_OBJ,FILE_3D_FBX,FILE_3D_STL,FILE_3D_USDZ,FILE_3D_PLY,FILE_3D_SPLAT,FILE_3D_SPZ,FILE_3D_KSPLAT,FILE_3D_SPLAT_ANY,FILE_3D_POINT_CLOUD_ANY,FILE_3D",
+          "link": 26
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "PREVIEW_3D",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [],
+      "title": "GODOT · LOD1 GAME · UV-GLB speichern",
+      "properties": {
+        "Node name for S&R": "SaveGLB",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68",
+        "Scene Config": {
+          "showGrid": true,
+          "backgroundColor": "#282828",
+          "backgroundImage": "",
+          "backgroundRenderMode": "tiled",
+          "models": []
+        },
+        "Camera Config": {
+          "cameraType": "perspective",
+          "fov": 35,
+          "state": {
+            "position": {
+              "x": 0.810548741356855,
+              "y": 1.1405581135718643,
+              "z": 3.8497469066734733
+            },
+            "target": {
+              "x": 0.003712266683578491,
+              "y": 0.003852754831314087,
+              "z": 0.00394633412361145
+            },
+            "zoom": 1,
+            "cameraType": "perspective"
+          }
+        },
+        "Light Config": {
+          "intensity": 3,
+          "hdri": {
+            "enabled": false,
+            "hdriPath": "",
+            "showAsBackground": false,
+            "intensity": 1
+          }
+        },
+        "Model Config": {
+          "upDirection": "original",
+          "materialMode": "original",
+          "showSkeleton": false,
+          "gizmo": {
+            "enabled": false,
+            "mode": "translate",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          }
+        }
+      },
+      "widgets_values": [
+        "GameDev/Hunyuan3D_LowPoly/lod1_game_2500",
+        ""
+      ]
+    },
+    {
+      "id": 42,
+      "type": "VoxelToMesh",
+      "pos": [
+        2680.0,
+        560.0
+      ],
+      "size": [
+        330,
+        112
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "voxel",
+          "name": "voxel",
+          "type": "VOXEL",
+          "link": 27
+        },
+        {
+          "localized_name": "algorithm",
+          "name": "algorithm",
+          "type": "COMBO",
+          "widget": {
+            "name": "algorithm"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "threshold",
+          "name": "threshold",
+          "type": "FLOAT",
+          "widget": {
+            "name": "threshold"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MESH",
+          "name": "MESH",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            28
+          ]
+        }
+      ],
+      "title": "LOD2 DISTANT · Voxel-Mesh · threshold 0.55",
+      "properties": {
+        "Node name for S&R": "VoxelToMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        "surface net",
+        0.55
+      ]
+    },
+    {
+      "id": 43,
+      "type": "DecimateMesh",
+      "pos": [
+        2680.0,
+        1080.0
+      ],
+      "size": [
+        360,
+        150
+      ],
+      "flags": {},
+      "order": 42,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 28
+        },
+        {
+          "localized_name": "target_face_count",
+          "name": "target_face_count",
+          "type": "INT",
+          "widget": {
+            "name": "target_face_count"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "placement_mode",
+          "name": "placement_mode",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "placement_mode"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            29
+          ]
+        }
+      ],
+      "title": "LOD2 DISTANT · maximal 1.200 Dreiecke · midpoint",
+      "properties": {
+        "Node name for S&R": "DecimateMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        1200,
+        "midpoint"
+      ]
+    },
+    {
+      "id": 44,
+      "type": "UnwrapMesh",
+      "pos": [
+        3120.0,
+        720.0
+      ],
+      "size": [
+        360,
+        190
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 29
+        },
+        {
+          "localized_name": "segmenter",
+          "name": "segmenter",
+          "type": "COMBO",
+          "widget": {
+            "name": "segmenter"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "resolution",
+          "name": "resolution",
+          "type": "INT",
+          "widget": {
+            "name": "resolution"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "padding",
+          "name": "padding",
+          "type": "INT",
+          "widget": {
+            "name": "padding"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weld_distance",
+          "name": "weld_distance",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weld_distance"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            30
+          ]
+        }
+      ],
+      "title": "LOD2 DISTANT · UV 256px · 2px Padding",
+      "properties": {
+        "Node name for S&R": "UnwrapMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        "pec",
+        256,
+        2,
+        0.0
+      ]
+    },
+    {
+      "id": 45,
+      "type": "MeshSmoothNormals",
+      "pos": [
+        3560.0,
+        80.0
+      ],
+      "size": [
+        340,
+        110
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 30
+        },
+        {
+          "localized_name": "crease_angle",
+          "name": "crease_angle",
+          "type": "FLOAT",
+          "widget": {
+            "name": "crease_angle"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            31
+          ]
+        }
+      ],
+      "title": "LOD2 DISTANT · 60° Crease-Normalen",
+      "properties": {
+        "Node name for S&R": "MeshSmoothNormals",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        60.0
+      ]
+    },
+    {
+      "id": 46,
+      "type": "SaveGLB",
+      "pos": [
+        3560.0,
+        1020.0
+      ],
+      "size": [
+        621.9000244140625,
+        413.5833435058594
+      ],
+      "flags": {},
+      "order": 45,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH,FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_OBJ,FILE_3D_FBX,FILE_3D_STL,FILE_3D_USDZ,FILE_3D_PLY,FILE_3D_SPLAT,FILE_3D_SPZ,FILE_3D_KSPLAT,FILE_3D_SPLAT_ANY,FILE_3D_POINT_CLOUD_ANY,FILE_3D",
+          "link": 31
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "PREVIEW_3D",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [],
+      "title": "GODOT · LOD2 DISTANT · UV-GLB speichern",
+      "properties": {
+        "Node name for S&R": "SaveGLB",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68",
+        "Scene Config": {
+          "showGrid": true,
+          "backgroundColor": "#282828",
+          "backgroundImage": "",
+          "backgroundRenderMode": "tiled",
+          "models": []
+        },
+        "Camera Config": {
+          "cameraType": "perspective",
+          "fov": 35,
+          "state": {
+            "position": {
+              "x": 0.810548741356855,
+              "y": 1.1405581135718643,
+              "z": 3.8497469066734733
+            },
+            "target": {
+              "x": 0.003712266683578491,
+              "y": 0.003852754831314087,
+              "z": 0.00394633412361145
+            },
+            "zoom": 1,
+            "cameraType": "perspective"
+          }
+        },
+        "Light Config": {
+          "intensity": 3,
+          "hdri": {
+            "enabled": false,
+            "hdriPath": "",
+            "showAsBackground": false,
+            "intensity": 1
+          }
+        },
+        "Model Config": {
+          "upDirection": "original",
+          "materialMode": "original",
+          "showSkeleton": false,
+          "gizmo": {
+            "enabled": false,
+            "mode": "translate",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          }
+        }
+      },
+      "widgets_values": [
+        "GameDev/Hunyuan3D_LowPoly/lod2_distant_1200",
+        ""
+      ]
+    },
+    {
+      "id": 47,
+      "type": "VoxelToMesh",
+      "pos": [
+        2680.0,
+        720.0
+      ],
+      "size": [
+        330,
+        112
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "voxel",
+          "name": "voxel",
+          "type": "VOXEL",
+          "link": 32
+        },
+        {
+          "localized_name": "algorithm",
+          "name": "algorithm",
+          "type": "COMBO",
+          "widget": {
+            "name": "algorithm"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "threshold",
+          "name": "threshold",
+          "type": "FLOAT",
+          "widget": {
+            "name": "threshold"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MESH",
+          "name": "MESH",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            33
+          ]
+        }
+      ],
+      "title": "LOD3 ULTRA · Voxel-Mesh · threshold 0.52",
+      "properties": {
+        "Node name for S&R": "VoxelToMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68"
+      },
+      "widgets_values": [
+        "surface net",
+        0.52
+      ]
+    },
+    {
+      "id": 48,
+      "type": "DecimateMesh",
+      "pos": [
+        3120.0,
+        80.0
+      ],
+      "size": [
+        360,
+        150
+      ],
+      "flags": {},
+      "order": 47,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 33
+        },
+        {
+          "localized_name": "target_face_count",
+          "name": "target_face_count",
+          "type": "INT",
+          "widget": {
+            "name": "target_face_count"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "placement_mode",
+          "name": "placement_mode",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "placement_mode"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            34
+          ]
+        }
+      ],
+      "title": "LOD3 ULTRA · maximal 600 Dreiecke · midpoint",
+      "properties": {
+        "Node name for S&R": "DecimateMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        600,
+        "midpoint"
+      ]
+    },
+    {
+      "id": 49,
+      "type": "UnwrapMesh",
+      "pos": [
+        3120.0,
+        960.0
+      ],
+      "size": [
+        360,
+        190
+      ],
+      "flags": {},
+      "order": 48,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 34
+        },
+        {
+          "localized_name": "segmenter",
+          "name": "segmenter",
+          "type": "COMBO",
+          "widget": {
+            "name": "segmenter"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "resolution",
+          "name": "resolution",
+          "type": "INT",
+          "widget": {
+            "name": "resolution"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "padding",
+          "name": "padding",
+          "type": "INT",
+          "widget": {
+            "name": "padding"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weld_distance",
+          "name": "weld_distance",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weld_distance"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            35
+          ]
+        }
+      ],
+      "title": "LOD3 ULTRA · UV 256px · 2px Padding",
+      "properties": {
+        "Node name for S&R": "UnwrapMesh",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        "pec",
+        256,
+        2,
+        0.0
+      ]
+    },
+    {
+      "id": 50,
+      "type": "MeshSmoothNormals",
+      "pos": [
+        3560.0,
+        240.0
+      ],
+      "size": [
+        340,
+        110
+      ],
+      "flags": {},
+      "order": 49,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "link": 35
+        },
+        {
+          "localized_name": "crease_angle",
+          "name": "crease_angle",
+          "type": "FLOAT",
+          "widget": {
+            "name": "crease_angle"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH",
+          "slot_index": 0,
+          "links": [
+            36
+          ]
+        }
+      ],
+      "title": "LOD3 ULTRA · 60° Crease-Normalen",
+      "properties": {
+        "Node name for S&R": "MeshSmoothNormals",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        60.0
+      ]
+    },
+    {
+      "id": 51,
+      "type": "SaveGLB",
+      "pos": [
+        3560.0,
+        1480.0
+      ],
+      "size": [
+        621.9000244140625,
+        413.5833435058594
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "mesh",
+          "name": "mesh",
+          "type": "MESH,FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_OBJ,FILE_3D_FBX,FILE_3D_STL,FILE_3D_USDZ,FILE_3D_PLY,FILE_3D_SPLAT,FILE_3D_SPZ,FILE_3D_KSPLAT,FILE_3D_SPLAT_ANY,FILE_3D_POINT_CLOUD_ANY,FILE_3D",
+          "link": 36
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "PREVIEW_3D",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [],
+      "title": "GODOT · LOD3 ULTRA · UV-GLB speichern",
+      "properties": {
+        "Node name for S&R": "SaveGLB",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.68",
+        "Scene Config": {
+          "showGrid": true,
+          "backgroundColor": "#282828",
+          "backgroundImage": "",
+          "backgroundRenderMode": "tiled",
+          "models": []
+        },
+        "Camera Config": {
+          "cameraType": "perspective",
+          "fov": 35,
+          "state": {
+            "position": {
+              "x": 0.810548741356855,
+              "y": 1.1405581135718643,
+              "z": 3.8497469066734733
+            },
+            "target": {
+              "x": 0.003712266683578491,
+              "y": 0.003852754831314087,
+              "z": 0.00394633412361145
+            },
+            "zoom": 1,
+            "cameraType": "perspective"
+          }
+        },
+        "Light Config": {
+          "intensity": 3,
+          "hdri": {
+            "enabled": false,
+            "hdriPath": "",
+            "showAsBackground": false,
+            "intensity": 1
+          }
+        },
+        "Model Config": {
+          "upDirection": "original",
+          "materialMode": "original",
+          "showSkeleton": false,
+          "gizmo": {
+            "enabled": false,
+            "mode": "translate",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          }
+        }
+      },
+      "widgets_values": [
+        "GameDev/Hunyuan3D_LowPoly/lod3_ultra_0600",
+        ""
+      ]
+    },
+    {
+      "id": 52,
       "type": "MarkdownNote",
       "pos": [
-        4880.0,
-        1200.0
+        4800.0,
+        2700.0
       ],
       "size": [
         390,
         345
       ],
       "flags": {},
-      "order": 34,
+      "order": 51,
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · LOW-POLY · Ziel maximal 5.000 Faces · Node 34",
+      "title": "Erklärung · LOD0 HERO · maximal 5.000 Dreiecke · midpoint · Node 34",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1683,7 +2924,500 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · LOW-POLY · Ziel maximal 5.000 Faces · Node 34\n\n**Zweck:** Simplifies a mesh to a target face count using QEM. The midpoint preset preserves thin features and returns a welded mesh.\n\n**Einstellbare Werte**\n- `target_face_count` = `5000` — Target max faces. 0 disables. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `placement_mode` = `midpoint` — placement_mode Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `mesh` (MESH, Link 14): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_face_count` (INT, nicht verbunden): Target max faces. 0 disables.\n- `placement_mode` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · LOD0 HERO · maximal 5.000 Dreiecke · midpoint · Node 34\n\n**Zweck:** Simplifies a mesh to a target face count using QEM. The midpoint preset preserves thin features and returns a welded mesh.\n\n**Einstellbare Werte**\n- `target_face_count` = `5000` — Target max faces. 0 disables. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `placement_mode` = `midpoint` — placement_mode Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `mesh` (MESH, Link 14): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_face_count` (INT, nicht verbunden): Target max faces. 0 disables.\n- `placement_mode` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 53,
+      "type": "MarkdownNote",
+      "pos": [
+        4800.0,
+        3080.0
+      ],
+      "size": [
+        390,
+        413
+      ],
+      "flags": {},
+      "order": 52,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD0 HERO · UV 256px · 2px Padding · Node 35",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 35,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD0 HERO · UV 256px · 2px Padding · Node 35\n\n**Zweck:** Generates and packs a UV atlas after mesh simplification. UV seams duplicate vertices without changing the triangle count.\n\n**Einstellbare Werte**\n- `segmenter` = `pec` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `resolution` = `256` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `padding` = `2` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `weld_distance` = `0.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `mesh` (MESH, Link 19): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `segmenter` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resolution` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `padding` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weld_distance` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 54,
+      "type": "MarkdownNote",
+      "pos": [
+        4800.0,
+        3540.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 53,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD0 HERO · 60° Crease-Normalen · Node 36",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 36,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD0 HERO · 60° Crease-Normalen · Node 36\n\n**Zweck:** Adds per-vertex normals and keeps edges above the crease angle hard. Triangle count stays unchanged; split normals may increase vertex count.\n\n**Einstellbare Werte**\n- `crease_angle` = `60.0` — Steuert diesen Parameter. Ein höherer Wert dreht weiter in die positive Richtung; ein niedriger/negativer Wert dreht entgegengesetzt.\n\n**Eingänge**\n- `mesh` (MESH, Link 20): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `crease_angle` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 55,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        80.0
+      ],
+      "size": [
+        390,
+        345
+      ],
+      "flags": {},
+      "order": 54,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD1 GAME · Voxel-Mesh · threshold 0.58 · Node 37",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 37,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD1 GAME · Voxel-Mesh · threshold 0.58 · Node 37\n\n**Zweck:** Converts a voxel grid to a mesh.\n\n**Einstellbare Werte**\n- `algorithm` = `surface net` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `threshold` = `0.58` — Steuert diesen Parameter. Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n\n**Eingänge**\n- `voxel` (VOXEL, Link 22): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `algorithm` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `threshold` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MESH` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 56,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        460.0
+      ],
+      "size": [
+        390,
+        345
+      ],
+      "flags": {},
+      "order": 55,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD1 GAME · maximal 2.500 Dreiecke · midpoint · Node 38",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 38,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD1 GAME · maximal 2.500 Dreiecke · midpoint · Node 38\n\n**Zweck:** Simplifies a mesh to a target face count using QEM. The midpoint preset preserves thin features and returns a welded mesh.\n\n**Einstellbare Werte**\n- `target_face_count` = `2500` — Target max faces. 0 disables. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `placement_mode` = `midpoint` — placement_mode Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `mesh` (MESH, Link 23): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_face_count` (INT, nicht verbunden): Target max faces. 0 disables.\n- `placement_mode` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 57,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        840.0
+      ],
+      "size": [
+        390,
+        413
+      ],
+      "flags": {},
+      "order": 56,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD1 GAME · UV 256px · 2px Padding · Node 39",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 39,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD1 GAME · UV 256px · 2px Padding · Node 39\n\n**Zweck:** Generates and packs a UV atlas after mesh simplification. UV seams duplicate vertices without changing the triangle count.\n\n**Einstellbare Werte**\n- `segmenter` = `pec` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `resolution` = `256` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `padding` = `2` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `weld_distance` = `0.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `mesh` (MESH, Link 24): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `segmenter` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resolution` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `padding` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weld_distance` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 58,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        1300.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 57,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD1 GAME · 60° Crease-Normalen · Node 40",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 40,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD1 GAME · 60° Crease-Normalen · Node 40\n\n**Zweck:** Adds per-vertex normals and keeps edges above the crease angle hard. Triangle count stays unchanged; split normals may increase vertex count.\n\n**Einstellbare Werte**\n- `crease_angle` = `60.0` — Steuert diesen Parameter. Ein höherer Wert dreht weiter in die positive Richtung; ein niedriger/negativer Wert dreht entgegengesetzt.\n\n**Eingänge**\n- `mesh` (MESH, Link 25): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `crease_angle` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 59,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        1660.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 58,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · GODOT · LOD1 GAME · UV-GLB speichern · Node 41",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 41,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · GODOT · LOD1 GAME · UV-GLB speichern · Node 41\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `filename_prefix` = `GameDev/Hunyuan3D_LowPoly/lod1_game_2500` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `mesh` (MESH,FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_OBJ,FILE_3D_FBX,FILE_3D_STL,FILE_3D_USDZ,FILE_3D_PLY,FILE_3D_SPLAT,FILE_3D_SPZ,FILE_3D_KSPLAT,FILE_3D_SPLAT_ANY,FILE_3D_POINT_CLOUD_ANY,FILE_3D, Link 26): Mesh or 3D file to save\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (PREVIEW_3D, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 60,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        2020.0
+      ],
+      "size": [
+        390,
+        345
+      ],
+      "flags": {},
+      "order": 59,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD2 DISTANT · Voxel-Mesh · threshold 0.55 · Node 42",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 42,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD2 DISTANT · Voxel-Mesh · threshold 0.55 · Node 42\n\n**Zweck:** Converts a voxel grid to a mesh.\n\n**Einstellbare Werte**\n- `algorithm` = `surface net` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `threshold` = `0.55` — Steuert diesen Parameter. Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n\n**Eingänge**\n- `voxel` (VOXEL, Link 27): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `algorithm` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `threshold` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MESH` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 61,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        2400.0
+      ],
+      "size": [
+        390,
+        345
+      ],
+      "flags": {},
+      "order": 60,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD2 DISTANT · maximal 1.200 Dreiecke · midpoint · Node 43",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 43,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD2 DISTANT · maximal 1.200 Dreiecke · midpoint · Node 43\n\n**Zweck:** Simplifies a mesh to a target face count using QEM. The midpoint preset preserves thin features and returns a welded mesh.\n\n**Einstellbare Werte**\n- `target_face_count` = `1200` — Target max faces. 0 disables. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `placement_mode` = `midpoint` — placement_mode Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `mesh` (MESH, Link 28): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_face_count` (INT, nicht verbunden): Target max faces. 0 disables.\n- `placement_mode` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 62,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        2780.0
+      ],
+      "size": [
+        390,
+        413
+      ],
+      "flags": {},
+      "order": 61,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD2 DISTANT · UV 256px · 2px Padding · Node 44",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 44,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD2 DISTANT · UV 256px · 2px Padding · Node 44\n\n**Zweck:** Generates and packs a UV atlas after mesh simplification. UV seams duplicate vertices without changing the triangle count.\n\n**Einstellbare Werte**\n- `segmenter` = `pec` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `resolution` = `256` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `padding` = `2` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `weld_distance` = `0.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `mesh` (MESH, Link 29): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `segmenter` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resolution` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `padding` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weld_distance` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 63,
+      "type": "MarkdownNote",
+      "pos": [
+        5280.0,
+        3240.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 62,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD2 DISTANT · 60° Crease-Normalen · Node 45",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 45,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD2 DISTANT · 60° Crease-Normalen · Node 45\n\n**Zweck:** Adds per-vertex normals and keeps edges above the crease angle hard. Triangle count stays unchanged; split normals may increase vertex count.\n\n**Einstellbare Werte**\n- `crease_angle` = `60.0` — Steuert diesen Parameter. Ein höherer Wert dreht weiter in die positive Richtung; ein niedriger/negativer Wert dreht entgegengesetzt.\n\n**Eingänge**\n- `mesh` (MESH, Link 30): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `crease_angle` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 64,
+      "type": "MarkdownNote",
+      "pos": [
+        5760.0,
+        80.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 63,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · GODOT · LOD2 DISTANT · UV-GLB speichern · Node 46",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 46,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · GODOT · LOD2 DISTANT · UV-GLB speichern · Node 46\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `filename_prefix` = `GameDev/Hunyuan3D_LowPoly/lod2_distant_1200` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `mesh` (MESH,FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_OBJ,FILE_3D_FBX,FILE_3D_STL,FILE_3D_USDZ,FILE_3D_PLY,FILE_3D_SPLAT,FILE_3D_SPZ,FILE_3D_KSPLAT,FILE_3D_SPLAT_ANY,FILE_3D_POINT_CLOUD_ANY,FILE_3D, Link 31): Mesh or 3D file to save\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (PREVIEW_3D, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 65,
+      "type": "MarkdownNote",
+      "pos": [
+        5760.0,
+        440.0
+      ],
+      "size": [
+        390,
+        345
+      ],
+      "flags": {},
+      "order": 64,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD3 ULTRA · Voxel-Mesh · threshold 0.52 · Node 47",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 47,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD3 ULTRA · Voxel-Mesh · threshold 0.52 · Node 47\n\n**Zweck:** Converts a voxel grid to a mesh.\n\n**Einstellbare Werte**\n- `algorithm` = `surface net` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `threshold` = `0.52` — Steuert diesen Parameter. Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n\n**Eingänge**\n- `voxel` (VOXEL, Link 32): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `algorithm` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `threshold` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MESH` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 66,
+      "type": "MarkdownNote",
+      "pos": [
+        5760.0,
+        820.0
+      ],
+      "size": [
+        390,
+        345
+      ],
+      "flags": {},
+      "order": 65,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD3 ULTRA · maximal 600 Dreiecke · midpoint · Node 48",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 48,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD3 ULTRA · maximal 600 Dreiecke · midpoint · Node 48\n\n**Zweck:** Simplifies a mesh to a target face count using QEM. The midpoint preset preserves thin features and returns a welded mesh.\n\n**Einstellbare Werte**\n- `target_face_count` = `600` — Target max faces. 0 disables. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `placement_mode` = `midpoint` — placement_mode Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `mesh` (MESH, Link 33): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_face_count` (INT, nicht verbunden): Target max faces. 0 disables.\n- `placement_mode` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 67,
+      "type": "MarkdownNote",
+      "pos": [
+        5760.0,
+        1200.0
+      ],
+      "size": [
+        390,
+        413
+      ],
+      "flags": {},
+      "order": 66,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD3 ULTRA · UV 256px · 2px Padding · Node 49",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 49,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD3 ULTRA · UV 256px · 2px Padding · Node 49\n\n**Zweck:** Generates and packs a UV atlas after mesh simplification. UV seams duplicate vertices without changing the triangle count.\n\n**Einstellbare Werte**\n- `segmenter` = `pec` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `resolution` = `256` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `padding` = `2` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `weld_distance` = `0.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `mesh` (MESH, Link 34): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `segmenter` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resolution` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `padding` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weld_distance` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 68,
+      "type": "MarkdownNote",
+      "pos": [
+        5760.0,
+        1660.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 67,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOD3 ULTRA · 60° Crease-Normalen · Node 50",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 50,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOD3 ULTRA · 60° Crease-Normalen · Node 50\n\n**Zweck:** Adds per-vertex normals and keeps edges above the crease angle hard. Triangle count stays unchanged; split normals may increase vertex count.\n\n**Einstellbare Werte**\n- `crease_angle` = `60.0` — Steuert diesen Parameter. Ein höherer Wert dreht weiter in die positive Richtung; ein niedriger/negativer Wert dreht entgegengesetzt.\n\n**Eingänge**\n- `mesh` (MESH, Link 35): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `crease_angle` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `mesh` (MESH, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 69,
+      "type": "MarkdownNote",
+      "pos": [
+        5760.0,
+        2020.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 68,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · GODOT · LOD3 ULTRA · UV-GLB speichern · Node 51",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 51,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · GODOT · LOD3 ULTRA · UV-GLB speichern · Node 51\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `filename_prefix` = `GameDev/Hunyuan3D_LowPoly/lod3_ultra_0600` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `mesh` (MESH,FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_OBJ,FILE_3D_FBX,FILE_3D_STL,FILE_3D_USDZ,FILE_3D_PLY,FILE_3D_SPLAT,FILE_3D_SPZ,FILE_3D_KSPLAT,FILE_3D_SPLAT_ANY,FILE_3D_POINT_CLOUD_ANY,FILE_3D, Link 36): Mesh or 3D file to save\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (PREVIEW_3D, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1838,7 +3572,143 @@
       19,
       34,
       0,
+      35,
+      0,
+      "MESH"
+    ],
+    [
+      20,
+      35,
+      0,
+      36,
+      0,
+      "MESH"
+    ],
+    [
+      21,
+      36,
+      0,
       10,
+      0,
+      "MESH"
+    ],
+    [
+      22,
+      8,
+      0,
+      37,
+      0,
+      "VOXEL"
+    ],
+    [
+      23,
+      37,
+      0,
+      38,
+      0,
+      "MESH"
+    ],
+    [
+      24,
+      38,
+      0,
+      39,
+      0,
+      "MESH"
+    ],
+    [
+      25,
+      39,
+      0,
+      40,
+      0,
+      "MESH"
+    ],
+    [
+      26,
+      40,
+      0,
+      41,
+      0,
+      "MESH"
+    ],
+    [
+      27,
+      8,
+      0,
+      42,
+      0,
+      "VOXEL"
+    ],
+    [
+      28,
+      42,
+      0,
+      43,
+      0,
+      "MESH"
+    ],
+    [
+      29,
+      43,
+      0,
+      44,
+      0,
+      "MESH"
+    ],
+    [
+      30,
+      44,
+      0,
+      45,
+      0,
+      "MESH"
+    ],
+    [
+      31,
+      45,
+      0,
+      46,
+      0,
+      "MESH"
+    ],
+    [
+      32,
+      8,
+      0,
+      47,
+      0,
+      "VOXEL"
+    ],
+    [
+      33,
+      47,
+      0,
+      48,
+      0,
+      "MESH"
+    ],
+    [
+      34,
+      48,
+      0,
+      49,
+      0,
+      "MESH"
+    ],
+    [
+      35,
+      49,
+      0,
+      50,
+      0,
+      "MESH"
+    ],
+    [
+      36,
+      50,
+      0,
+      51,
       0,
       "MESH"
     ]
@@ -1915,8 +3785,8 @@
       "bounding": [
         2640.0,
         0.0,
-        700.0,
-        1060.0
+        1580.0,
+        2400.0
       ],
       "color": "#3F9E6D",
       "font_size": 24,
@@ -1926,10 +3796,10 @@
       "id": 7,
       "title": "R9 · PARAMETER REFERENCE",
       "bounding": [
-        3420.0,
+        4300.0,
         0.0,
         1900.0,
-        2560.0
+        4640.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -1947,7 +3817,7 @@
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 16,
+      "generated_notes": 33,
       "x_scale": 1.0,
       "y_scale": 1.0,
       "gap": 40.0,
@@ -1967,7 +3837,7 @@
       },
       "version": 3,
       "scope": "collection-wide optional GPU placement",
-      "family": "Hunyuan3D 2.1 Low-Poly Static Mesh for Godot",
+      "family": "Hunyuan3D 2.1 Low-Poly LOD Set for Godot",
       "source": "workflows/Game Development/Hunyuan3D_v2_1-Low-Poly-Static-Mesh-for-Godot.json",
       "server": "127.0.0.1:8188",
       "backend": "ROCm/HIP",
@@ -1998,7 +3868,7 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "a5e1b7dd7a7829617219a24be7e06476075daba2552b55751b18dd3b0a8a26f3",
+      "topology_sha256": "4493a233056e1816ce2f9268cf5811c50f49a2798fbac27b191d84cada21e829",
       "exceptions": []
     },
     "dawasteh_v095_game_dev": {
@@ -2010,6 +3880,36 @@
       "decimator": "ComfyUI 0.34 core DecimateMesh",
       "target_face_count": 5000,
       "truthful_output": "static, untextured, unrigged GLB intermediate"
+    },
+    "dawasteh_v096_game_dev": {
+      "version": 1,
+      "release": "v0.9.6",
+      "source_requirement": "Hunyuan3D + robust low-poly LOD pipeline",
+      "model_downloads": 0,
+      "installed_checkpoint": "Hunyuan3D/hunyuan_3d_v2.1.safetensors",
+      "decimator": "ComfyUI 0.34 core DecimateMesh midpoint",
+      "target_face_counts": [
+        5000,
+        2500,
+        1200,
+        600
+      ],
+      "voxel_thresholds": [
+        0.6,
+        0.58,
+        0.55,
+        0.52
+      ],
+      "uv_resolution": 256,
+      "crease_angle_degrees": 60,
+      "outputs": [
+        "GameDev/Hunyuan3D_LowPoly/lod0_hero_5000",
+        "GameDev/Hunyuan3D_LowPoly/lod1_game_2500",
+        "GameDev/Hunyuan3D_LowPoly/lod2_distant_1200",
+        "GameDev/Hunyuan3D_LowPoly/lod3_ultra_0600"
+      ],
+      "model_decision": "no additional model; MeshAnything V2 unsupported here and non-commercial",
+      "truthful_output": "four static, UV-unwrapped, untextured, unrigged GLB LOD intermediates"
     }
   },
   "version": 0.4

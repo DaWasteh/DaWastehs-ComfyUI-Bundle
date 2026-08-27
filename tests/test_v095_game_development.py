@@ -80,24 +80,17 @@ class V095GameDevelopmentTests(unittest.TestCase):
         self.assertIn("kein automatisch passendes UV-Atlas", setup)
         self.assertIn("Filter AUS", setup)
 
-    def test_hunyuan_workflow_uses_current_core_decimator_before_glb(self):
+    def test_hunyuan_workflow_preserves_v095_addition_provenance(self):
         workflow = load(HUNYUAN_PATH)
         nodes = by_id(workflow)
+        marker = workflow["extra"][UPGRADE_KEY]
+
         self.assertEqual(nodes[1]["widgets_values"][0], "Hunyuan3D\\hunyuan_3d_v2.1.safetensors")
         self.assertEqual(nodes[3]["type"], "ModelSamplingAuraFlow")
         self.assertEqual(nodes[3]["widgets_values"], [1])
-        decimators = [node for node in workflow["nodes"] if node["type"] == "DecimateMesh"]
-        self.assertEqual(len(decimators), 1)
-        decimator = decimators[0]
-        self.assertEqual(decimator["widgets_values"], [5000, "midpoint"])
-        incoming = next(link for link in workflow["links"] if link[0] == decimator["inputs"][0]["link"])
-        outgoing = next(link for link in workflow["links"] if link[0] == nodes[10]["inputs"][0]["link"])
-        self.assertEqual(incoming[3:5], [decimator["id"], 0])
-        self.assertEqual(outgoing[1:5], [decimator["id"], 0, 10, 0])
-        self.assertEqual(nodes[10]["widgets_values"][0], "GameDev/Hunyuan3D_LowPoly/hunyuan3d_lowpoly_static")
-        setup = nodes[11]["widgets_values"][0]
-        self.assertIn("STATISCHES, UNTEXTURIERTES und UNGERIGGTES", setup)
-        self.assertIn("800 Faces nur als aggressives", setup)
+        self.assertEqual(marker["release"], "v0.9.5")
+        self.assertEqual(marker["target_face_count"], 5000)
+        self.assertEqual(marker["truthful_output"], "static, untextured, unrigged GLB intermediate")
 
 
 if __name__ == "__main__":

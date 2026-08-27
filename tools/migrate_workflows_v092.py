@@ -45,6 +45,7 @@ try:
         addition_sources as v095_addition_sources,
         upgrade_workflow as upgrade_v095_workflow,
     )
+    from tools.upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
 except ModuleNotFoundError:  # Direct execution
     from generate_dual_gpu_workflows import (
         DEVICE_CONTROL_TYPE,
@@ -73,6 +74,7 @@ except ModuleNotFoundError:  # Direct execution
         addition_sources as v095_addition_sources,
         upgrade_workflow as upgrade_v095_workflow,
     )
+    from upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / "workflows"
@@ -129,6 +131,7 @@ def _load_object_info() -> dict[str, Any]:
     info.update(SELECTOR_OBJECT_INFO)
     info.update(ADAPTIVE_OBJECT_INFO)
     info.update(V095_OBJECT_INFO)
+    info.update(V096_OBJECT_INFO)
     return info
 
 
@@ -284,7 +287,8 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
         migrated, duration_changed = integrate_duration_seconds(migrated, path_key)
         migrated, v094_changed = upgrade_v094_workflow(migrated, path_key)
         migrated, v095_changed = upgrade_v095_workflow(migrated, path_key)
-        if duration_changed or v094_changed or v095_changed:
+        migrated, v096_changed = upgrade_v096_workflow(migrated, path_key)
+        if duration_changed or v094_changed or v095_changed or v096_changed:
             _rebuild_presentation(migrated, path_key)
         else:
             apply_rodent_layout(migrated, path_key)
@@ -342,6 +346,7 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
     migrated, _ = integrate_duration_seconds(migrated, path_key)
     migrated, _ = upgrade_v094_workflow(migrated, path_key)
     migrated, _ = upgrade_v095_workflow(migrated, path_key)
+    migrated, _ = upgrade_v096_workflow(migrated, path_key)
     # Rebuild one generated parameter note per executable node, including the
     # newly inserted selectors, GPU control, and duration controls.
     _rebuild_presentation(migrated, path_key)

@@ -782,7 +782,7 @@ def main() -> int:
                         source = git_ref_json(f"workflows/{v095_source}")
                         expected = migrate_workflow(source, key)
                         if expected != workflow:
-                            errors.append(f"{path}: differs from deterministic v0.9.5 canonical-source addition")
+                            errors.append(f"{path}: differs from deterministic canonical-source/release migration")
                         totals["old_nodes"] += sum(
                             len(graph.get("nodes", [])) for _, graph in graph_locator(source)
                         )
@@ -794,7 +794,7 @@ def main() -> int:
                 errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    expected = {"files": 230, "graphs": 283, "nodes": 10117, "notes": 4596, "links": 6976, "timers": 213}
+    expected = {"files": 230, "graphs": 283, "nodes": 10151, "notes": 4613, "links": 6993, "timers": 213}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():
