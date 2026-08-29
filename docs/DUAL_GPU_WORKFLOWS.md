@@ -1,6 +1,6 @@
-# Optionale GPU-Platzierung · R9700 + RX 9070 XT · v0.9.3
+# Optionale GPU-Platzierung · R9700 + RX 9070 XT · v0.9.7
 
-Seit v0.9.2 gibt es keinen getrennten Ordner `Dual GPU - R9700 + RX 9070 XT` mehr. Die GPU-Steuerung ist direkt in **allen 227 kanonischen Workflows** enthalten. Dadurch existiert pro Aufgabe nur noch ein Workflow, dessen Gerätebelegung vor dem Queue-Lauf geändert werden kann.
+Seit v0.9.2 gibt es keinen getrennten Ordner `Dual GPU - R9700 + RX 9070 XT` mehr. Die GPU-Steuerung ist direkt in **allen 232 kanonischen Workflows** enthalten. Dadurch existiert pro Aufgabe nur noch ein Workflow, dessen Gerätebelegung vor dem Queue-Lauf geändert werden kann.
 
 ## Gerätezuordnung
 
@@ -21,8 +21,8 @@ DaW Multi-GPU Device Control
 
 Seine Dropdowns `model_device`, `clip_device` und `vae_device` steuern alle kompatiblen offiziellen `Select Model Device`, `Select CLIP Device` und `Select VAE Device`-Nodes, auch innerhalb eingebetteter Subgraphs.
 
-- **28 bereits kuratierte Profile** behalten ihre bewährte Geräteaufteilung.
-- **199 übrige Workflows** starten mit MODEL, CLIP und VAE vollständig auf `gpu:0`, der R9700.
+- **30 explizit kuratierte Profile** einschließlich der beiden Pixal3D-Graphen behalten ihre festgelegte Geräteaufteilung.
+- **202 übrige Workflows** starten mit MODEL, CLIP und VAE vollständig auf `gpu:0`, der R9700.
 - Reine Utility-Graphen und proprietäre Modellobjekte besitzen den zentralen Control-Node ebenfalls, aber ohne vorgetäuschte Verbindungen zu inkompatiblen Objekten.
 
 YuE, HeartMuLa, MOSS-TTS und Qwen-TTS geben keine standardisierten ComfyUI-Objekte vom Typ MODEL, CLIP oder VAE aus. Offizielle Selector-Nodes können diese Objekte nicht zuverlässig umplatzieren. Der Control-Node bleibt dort bewusst passiv; standardisierte Modell-/LLM-Loader im selben Workflow dürfen trotzdem korrekt angebunden sein.
@@ -76,13 +76,14 @@ gpu:1 = AMD Radeon RX 9070 XT
 
 Während eines schweren Jobs sollte kein weiterer GPU-intensiver Server gleichzeitig um die RX 9070 XT konkurrieren.
 
-## LTX-2.5, Wan Animate 2 und MiniMax Music 3
+## LTX-2.5, Wan Animate 2, MiniMax Music 3 und Pixal3D
 
 Die offiziellen Quelltemplates sind bytegenau unter `tools/workflow_templates/` gepinnt; Paketversionen, Upstream und SHA-256-Werte stehen in `tools/workflow_templates/README.md`.
 
 - LTX-2.5 nutzt INT8-ConvRot-DiT und -Textencoder sowie die lokalisierten Modellunterordner.
 - Wan Animate 2 nutzt den speichersicheren CPU-/INT8-Pose-Cache; CLIP-Vision bleibt mangels kompatiblem CLIP-Ausgang unverändert.
 - MiniMax Music 3 nutzt den vorhandenen FP32-DiT, BF16-Textencoder und DAV.
+- Pixal3D nutzt das offizielle kombinierte Pixal3D-/TRELLIS.2-Template als SHA-256-gepinnte Quelle; die beiden Game-Development-Graphen reduzieren es deterministisch auf den Pixal3D-INT8-Pfad und starten wegen der 32-GB-Anforderung vollständig auf `gpu:0`.
 
 Die v0.9.0-Abnahmeläufe für LTX-2.5 T2V/I2V/FLF2V und Wan Animate 2 endeten jeweils mit `execution_success` und nichtleeren MP4-Dateien. Der v0.9.1-MiniMax-Music-3-Test bestätigte sowohl vollständige R9700-Belegung als auch die kuratierte verteilte Belegung bis zu einer nichtleeren 7,988-Sekunden-Stereo-FLAC. Diese historischen Smoke-Nachweise gelten weiterhin für die unveränderte Rechentopologie; v0.9.2 konsolidiert Ablage, Steuerung und Layout.
 
@@ -93,8 +94,8 @@ python tools/migrate_workflows_v092.py --check
 python tools/consolidate_ace_autosongwriters_v093.py --check
 python -m unittest tests.test_dual_gpu_workflows tests.test_rodent_layout tests.test_duration_seconds tests.test_ace_autosongwriter_consolidation
 python tools/validate_workflows.py --against-head
-# Nach dem v0.9.6-Commit die Änderungen gegen den vorherigen Release reproduzieren:
-python tools/validate_workflows.py --against-head --baseline-ref v0.9.5
+# Nach dem v0.9.7-Commit die Änderungen gegen den vorherigen Release reproduzieren:
+python tools/validate_workflows.py --against-head --baseline-ref v0.9.6
 ```
 
-Der Validator rekonstruiert GPU-Controls, Sekundensteuerung, RODENT-Layout, die v0.9.3-AutoSongwriter-Konsolidierung, den v0.9.4-Wan-Animate-2-Umbau, die drei aus v0.9.4-Quellen abgeleiteten v0.9.5-Godot-/Live-Voice-Workflows und die v0.9.6-Low-Poly-LOD-Kette deterministisch aus dem gewählten Basis-Ref. Er prüft zusätzlich die erwarteten Löschungen, zwei Genre-Selector-Ziele und vier gepinnten Template-Neuzugänge. Statische Tests bestätigen Topologie und Geräteverbindungen, ersetzen aber keinen Windows-ROCm-Lauf mit den realen Modellgewichten.
+Der Validator rekonstruiert GPU-Controls, Sekundensteuerung, RODENT-Layout, die v0.9.3-AutoSongwriter-Konsolidierung, den v0.9.4-Wan-Animate-2-Umbau, die drei aus v0.9.4-Quellen abgeleiteten v0.9.5-Godot-/Live-Voice-Workflows, die v0.9.6-Low-Poly-LOD-Kette sowie beide v0.9.7-Pixal3D-Additionen deterministisch aus dem gewählten Basis-Ref. Er prüft zusätzlich die erwarteten Löschungen, zwei Genre-Selector-Ziele und sechs gepinnte Template-Neuzugänge. Statische Tests sichern Topologie und Geräteverbindungen; beide Pixal3D-Profile wurden darüber hinaus real auf Windows-ROCm bis zum in Blender und Godot importierten PBR-GLB ausgeführt.

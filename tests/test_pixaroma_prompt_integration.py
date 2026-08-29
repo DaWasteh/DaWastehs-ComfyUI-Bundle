@@ -55,6 +55,8 @@ class PixaromaIntegrationTests(unittest.TestCase):
                 "workflows/Music Generation/MiniMax_Music3_FP32-BF16-Text-to-Music.json",
                 "workflows/Game Development/FLUX2_Klein_4B-PS1-Texture-Concept.json",
                 "workflows/Game Development/Hunyuan3D_v2_1-Low-Poly-Static-Mesh-for-Godot.json",
+                "workflows/Game Development/Pixal3D_INT8-Buildings-and-Environment-PBR-for-Godot.json",
+                "workflows/Game Development/Pixal3D_INT8-Humanoids-and-Animals-PBR-for-Godot.json",
                 "workflows/Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json",
             }
         }

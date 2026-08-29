@@ -1,13 +1,19 @@
-# Godot Game-Asset Startworkflows · v0.9.6
+# Godot Game-Asset Startworkflows · v0.9.7
 
-Die beiden Workflows unter `workflows/Game Development/` sind funktionsfähige,
-lokal geprüfte Nachfolger der Gemini-Testentwürfe aus
-`L:/LAB/ComfyUI Testworkflows`. Die Entwürfe wurden nicht unverändert übernommen:
-einer war ungültiges JSON, referenzierte ein fehlendes Modell und versprach ein
-UV-Atlas ohne UV-Eingabe; der andere verwendete einen nicht existierenden
-`MeshDecimate`-Node und ließ den für Hunyuan3D benötigten Sampling-Shift aus.
+Unter `workflows/Game Development/` liegen jetzt vier kuratierte Pfade. Die
+beiden v0.9.5-/v0.9.6-Workflows sind funktionsfähige, lokal geprüfte Nachfolger
+der Gemini-Testentwürfe aus `L:/LAB/ComfyUI Testworkflows`. Die Entwürfe wurden
+nicht unverändert übernommen: einer war ungültiges JSON, referenzierte ein
+fehlendes Modell und versprach ein UV-Atlas ohne UV-Eingabe; der andere
+verwendete einen nicht existierenden `MeshDecimate`-Node und ließ den für
+Hunyuan3D benötigten Sampling-Shift aus. Für diese beiden Nachfolger wurden
+**keine neuen Modellgewichte heruntergeladen**.
 
-Für diese beiden Nachfolger wurden **keine neuen Modellgewichte heruntergeladen**.
+v0.9.7 ergänzt zwei aktuelle Pixal3D-INT8-Core-Workflows für PBR-texturierte
+Gebäude-/Umgebungsassets und statische Humanoide/Tiere. Dafür wurden sechs
+SHA-256-geprüfte Dateien mit insgesamt 9,27 GiB installiert. Vollständiger
+Modellvergleich, Checksums, Budgets und Lizenzhinweise:
+[PIXAL3D_GAME_ASSETS_V097.md](PIXAL3D_GAME_ASSETS_V097.md).
 
 ## 1. FLUX.2 Klein 4B → PS1-Texturkonzept
 
@@ -157,13 +163,40 @@ Primärquellen: [Blender Decimate](https://docs.blender.org/manual/en/5.2/modeli
 [Godot GPU-Optimierung](https://docs.godotengine.org/en/4.7/tutorials/performance/gpu_optimization.html)
 und [MeshAnything V2 samt Lizenz](https://github.com/buaacyw/MeshAnythingV2).
 
+## 3. Pixal3D INT8 → Gebäude und Umgebung mit PBR
+
+Workflow:
+
+`workflows/Game Development/Pixal3D_INT8-Buildings-and-Environment-PBR-for-Godot.json`
+
+Der Standard erzeugt bei 1024³ ein einzelnes PBR-GLB mit maximal 12.000
+Dreiecken, 1024px-Atlas, vier Pixeln UV-Padding und 45°-Crease-Normalen. Das ist
+ein nah sichtbarer Startwert für ein Gebäudemodul oder Environment-Prop, nicht
+für eine komplette Straße. Ausgabe:
+`output/GameDev/Pixal3D_Environment/`.
+
+## 4. Pixal3D INT8 → Humanoide und Tiere mit PBR
+
+Workflow:
+
+`workflows/Game Development/Pixal3D_INT8-Humanoids-and-Animals-PBR-for-Godot.json`
+
+Der Standard erzeugt bei 1024³ ein einzelnes PBR-GLB mit maximal 24.000
+Dreiecken, 2048px-Atlas, acht Pixeln UV-Padding und weichen organischen
+Normalen. Vollständige neutrale Pose und getrennte Gliedmaßen sind wesentlich.
+Das Ergebnis ist statisch und besitzt **kein** Skeleton, keine Skin-Weights und
+keine deformationstaugliche Retopologie. Ausgabe:
+`output/GameDev/Pixal3D_Creatures/`.
+
 ## Empfohlene Demo-Reihenfolge
 
 1. Texturworkflow mit dem Startprompt laufen lassen und die drei PNG-Stufen
    nebeneinander zeigen.
 2. Im Prompt nur drei bis neun Materialien des geplanten Spiels einsetzen.
-3. Hunyuan-Workflow mit einem klaren Prop-Bild (Kiste, Fels, Fass, Waffe)
-   demonstrieren; ein Character verlangt deutlich mehr Nacharbeit.
-4. Alle vier GLBs in Blender oder Godot nebeneinander zeigen: LOD0/1 als
-   Spielmodelle, LOD2/3 nur auf Distanz. Danach Godots automatische Mesh-LODs
-   und die weiterhin fehlenden Textur-/Rig-/Collision-Stufen benennen.
+3. Hunyuan-Workflow mit einem klaren Prop-Bild demonstrieren und die vier sehr
+   kleinen untexturierten LODs als schnellen Fallback vergleichen.
+4. Pixal3D-Environment mit einem einzelnen Dreiviertel-Prop ausführen und das
+   12k-/1k-PBR-Ergebnis samt von Godot erzeugten Import-LODs prüfen.
+5. Pixal3D-Creature nur mit neutraler Ganzkörperpose demonstrieren. Danach
+   ausdrücklich Rückseite, Gelenke und die weiterhin notwendige
+   Retopologie/Rigging-Stufe in Blender zeigen.

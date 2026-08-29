@@ -46,6 +46,13 @@ try:
         upgrade_workflow as upgrade_v095_workflow,
     )
     from tools.upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
+    from tools.upgrade_v097 import (
+        CREATURE_PATH as V097_CREATURE_PATH,
+        ENVIRONMENT_PATH as V097_ENVIRONMENT_PATH,
+        SOURCE_TEMPLATE as V097_SOURCE_TEMPLATE,
+        V097_OBJECT_INFO,
+        specialize_game_asset_template,
+    )
 except ModuleNotFoundError:  # Direct execution
     from generate_dual_gpu_workflows import (
         DEVICE_CONTROL_TYPE,
@@ -75,6 +82,13 @@ except ModuleNotFoundError:  # Direct execution
         upgrade_workflow as upgrade_v095_workflow,
     )
     from upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
+    from upgrade_v097 import (
+        CREATURE_PATH as V097_CREATURE_PATH,
+        ENVIRONMENT_PATH as V097_ENVIRONMENT_PATH,
+        SOURCE_TEMPLATE as V097_SOURCE_TEMPLATE,
+        V097_OBJECT_INFO,
+        specialize_game_asset_template,
+    )
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / "workflows"
@@ -122,6 +136,18 @@ ADDITIONS = (
         "Wan Animate 2 Motion Transfer",
         {"MODEL": "gpu:0", "CLIP": "gpu:1", "VAE": "gpu:1"},
     ),
+    Addition(
+        V097_ENVIRONMENT_PATH,
+        V097_SOURCE_TEMPLATE,
+        "Pixal3D INT8 Buildings and Environment PBR for Godot",
+        {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
+    ),
+    Addition(
+        V097_CREATURE_PATH,
+        V097_SOURCE_TEMPLATE,
+        "Pixal3D INT8 Humanoids and Animals PBR for Godot",
+        {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
+    ),
 )
 
 
@@ -132,6 +158,7 @@ def _load_object_info() -> dict[str, Any]:
     info.update(ADAPTIVE_OBJECT_INFO)
     info.update(V095_OBJECT_INFO)
     info.update(V096_OBJECT_INFO)
+    info.update(V097_OBJECT_INFO)
     return info
 
 
@@ -355,6 +382,7 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
 
 def build_addition(addition: Addition) -> dict[str, Any]:
     workflow = json.loads(_workflow_template_path(addition.template).read_text(encoding="utf-8-sig"))
+    workflow = specialize_game_asset_template(workflow, addition.path)
     _localize_model_paths(workflow)
     install_run_timer(workflow)
     workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-v092:{addition.path}"))
