@@ -1,4 +1,4 @@
-# Live-Avatar-Anleitung · v0.9.9
+# Live-Avatar-Anleitung · v1.0.0
 
 Diese Anleitung beschreibt die lokalen Live-Avatar-Wege dieses Repositories auf dem Windows-RDNA4-System. Alle Kamera- und Referenzbilder bleiben bei den lokalen Wegen auf dem Rechner.
 
@@ -19,7 +19,8 @@ Diese Anleitung beschreibt die lokalen Live-Avatar-Wege dieses Repositories auf 
 | Zuverlässiger geriggter Modus | 12-III | Chrome-Fensteraufnahme |
 | Korrigierte Full-Body-/Turnaround-Referenzansichten erzeugen | 13 | keine Live-Ausgabe |
 | Aus vier Ansichten echte lokale 3D-Geometrie erzeugen | 14 | statisches GLB unter `output/LiveAvatar/` |
-| **Echtes Kamerabild mit getauschter Gesichtsidentität (Live-Deepfake)** | **16** | Spout2 `ComfyLiveFaceSwap` |
+| **Echtes Kamerabild mit getauschter Gesichtsidentität (Live-Deepfake, realistisch)** | **16** | Spout2 `ComfyLiveFaceSwap` |
+| **Getauschtes Gesicht + Körper auf leerem Raum, wer rausgeht ist weg, plus RVC-Stimme** | **17** | Spout2 `ComfyLivePersonSwap` |
 
 ## Voraussetzungen
 
@@ -265,16 +266,20 @@ Workflow 12-II schreibt getrennte AI-/Spout-/Duplikat-/Latenzmetriken nach `L:/C
 Workflow 13 liefert sechs korrigierte Full-Body-/Turnaround-Ansichten und zwei Ausdrucksreferenzen. Workflow 14 konditioniert Hunyuan3D wirklich mit Front/Links/Hinten/Rechts und erzeugt neue GLB-Geometrie. Das GLB ist statisch, untexturiert und ungeriggt; automatisches lokales AMD-Rigging ist mit den aktuell installierten Komponenten nicht verfügbar.
 
 
-## Workflow 16 · Live Face Swap über DirectML · v0.9.9
+## Workflow 16 und 17 · Live Face Swap und Live Person Swap über DirectML · v1.0.0
 
-Workflow 16 ist der erste Pfad dieser Sammlung, der das **echte Kamerabild** behält und nur die Gesichtsidentität austauscht: BRIO (DirectShow-Index 2, 1280×720) → SCRFD-Erkennung → `inswapper_128` oder `hyperswap_1a_256` → optional GPEN-BFR-256 / GFPGAN 1.4 → Spout2-Sender `ComfyLiveFaceSwap`. Mimik, Kopfhaltung, Hände, Kleidung und Hintergrund stammen weiter von der Kamera; deshalb wirkt das Ergebnis nicht wie die SD1.5-Mirror-Graphen 07/11 und nicht wie ein LivePortrait-Standbild.
+Workflow 16 behält das **echte Kamerabild** und tauscht nur die Gesichtsidentität: BRIO (DirectShow-Index 2, 1280×720) → SCRFD → `hyperswap_1c_256` auf einem 0,8×-Crop → xseg_3-Occluder (Hände und Brillengestell bleiben echt) ∧ bisenet-Regionsmaske (Mundinneres bleibt echt) → digitale Rasur der Bartzone → LAB-Farbabgleich → GPEN-BFR-256 → Spout2 `ComfyLiveFaceSwap`. Workflow 17 legt das Ergebnis samt deinem Körper per MODNet-Matting auf eine leere Hintergrundplatte (Spout2 `ComfyLivePersonSwap`) und startet den DirectML-RVC-Stimmdienst mit.
 
-1. Quellfoto der freigegebenen Zielidentität im Node **Quellidentität** wählen (frontal, gut beleuchtet, keine Brille; zwei bis drei Fotos als Batch stabilisieren).
-2. **Run**: Der Vorschau-Zweig tauscht das Testbild und zeigt die Millisekunden je Stufe.
-3. Live-Node **Bypass** aufheben, in OBS die Spout2-Quelle `ComfyLiveFaceSwap` anlegen, **Run**. Beenden nur mit **Interrupt**, nie Run (Instant).
-4. Metriken: `L:/ComfyUI/logs/live-face-swap/metrics.json`.
+**Zielidentität, mehrere Fotos:** Der Node **Face Swap Identity from Images** hat vier IMAGE-Eingänge (`source_images`, `more_images`, `more_images_2`, `more_images_3`); drei LoadImage-Nodes (frontal, Dreiviertel links/rechts) sind vorverdrahtet. Für 5–20 Fotos den Node **Face Swap Identity from Folder** nehmen: Fotos nach `L:/ComfyUI/ComfyUI/input/face-swap-identity/` legen und den Ordner wählen. Frontal, lächelnd, Mund offen und Dreiviertelansichten stabilisieren; das Ziel möglichst ohne Brille.
 
-DirectML-Gerät 1 ist auf diesem Rechner die R9700 (gleiche GPU wie Spout/OBS), Gerät 0 die RX 9070 XT. Alle Modelle, Hashes, Lizenzen und Grenzen: [docs/LIVE_FACE_SWAP_V099.md](docs/LIVE_FACE_SWAP_V099.md). Die Stimme läuft weiterhin getrennt über den DirectML-RVC-Begleiter (Abschnitt „Audio“).
+**Testbild:** ein Bild von **dir**, wie die Kamera dich sieht. Der Node **Webcam Snapshot** nimmt es beim ersten Run nach 3 s auf und behält es (`retake` ändern für ein neues). Die Vorschau zeigt darauf den Swap mit allen Reglern und die Millisekunden je Stufe.
+
+1. **Run**: Identität, Testbild und Vorschau. Regler bei Bedarf: `crop_scale` 0,8 (0,7 gegen Bartreste), `color_match` 0,5, `keep_mouth` an, `shave` skin (none, wenn das Ziel selbst Bart trägt).
+2. Workflow 17: Beim ersten Run wartet der obere Snapshot-Node 8 s, in denen du **aus dem Bild gehst** (Clean Plate, gecacht; `retake` erhöhen nach Licht- oder Kamerawechsel).
+3. Live-Node **Bypass** aufheben, in OBS die Spout2-Quelle `ComfyLiveFaceSwap` bzw. `ComfyLivePersonSwap` anlegen, **Run**. Beenden nur mit **Interrupt**, nie Run (Instant).
+4. Metriken: `L:/ComfyUI/logs/live-face-swap/metrics.json`. Bildrate unter Kamerarate: `parser_every` 2 (Standard in 17), `enhancer_every` 2.
+
+DirectML-Gerät 1 ist die R9700 (Swapper, Enhancer, gleiche GPU wie Spout/OBS), Gerät 0 die RX 9070 XT (Occluder, Parser, Matting im Worker-Thread; dort läuft auch der RVC-Dienst). Gemessen: Workflow 16 hält die Kamerarate (22,9 KI-Bilder/s), die Engine allein schafft 42 Bilder/s ohne und 29 mit Matting. Ein Ganzkörpertausch (andere Statur, Kleidung, Frisur) ist auf dieser Hardware in Echtzeit nicht flimmerfrei möglich; Workflow 17 ist deshalb Gesicht + Hintergrund + Stimme. Alle Modelle, Hashes, Lizenzen, Messreihen und Regler: [docs/LIVE_PERSON_SWAP_V100.md](docs/LIVE_PERSON_SWAP_V100.md); die DirectML-Grundlagen aus v0.9.9: [docs/LIVE_FACE_SWAP_V099.md](docs/LIVE_FACE_SWAP_V099.md).
 
 ## Workflow 15 · lokaler High-Realism-GLB→VRM-Pfad
 

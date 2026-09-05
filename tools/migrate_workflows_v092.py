@@ -47,10 +47,13 @@ try:
     )
     from tools.upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
     from tools.upgrade_v098 import upgrade_workflow as upgrade_v098_workflow
-    from tools.upgrade_v099 import (
-        FACE_SWAP_PATH as V099_FACE_SWAP_PATH,
-        SOURCE_TEMPLATE as V099_SOURCE_TEMPLATE,
-        V099_OBJECT_INFO,
+    from tools.upgrade_v099 import V099_OBJECT_INFO
+    from tools.upgrade_v100 import (
+        FACE_SWAP_PATH as V100_FACE_SWAP_PATH,
+        FACE_SWAP_TEMPLATE as V100_FACE_SWAP_TEMPLATE,
+        PERSON_SWAP_PATH as V100_PERSON_SWAP_PATH,
+        PERSON_SWAP_TEMPLATE as V100_PERSON_SWAP_TEMPLATE,
+        V100_OBJECT_INFO,
     )
     from tools.upgrade_v097 import (
         CREATURE_PATH as V097_CREATURE_PATH,
@@ -89,10 +92,13 @@ except ModuleNotFoundError:  # Direct execution
     )
     from upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
     from upgrade_v098 import upgrade_workflow as upgrade_v098_workflow
-    from upgrade_v099 import (
-        FACE_SWAP_PATH as V099_FACE_SWAP_PATH,
-        SOURCE_TEMPLATE as V099_SOURCE_TEMPLATE,
-        V099_OBJECT_INFO,
+    from upgrade_v099 import V099_OBJECT_INFO
+    from upgrade_v100 import (
+        FACE_SWAP_PATH as V100_FACE_SWAP_PATH,
+        FACE_SWAP_TEMPLATE as V100_FACE_SWAP_TEMPLATE,
+        PERSON_SWAP_PATH as V100_PERSON_SWAP_PATH,
+        PERSON_SWAP_TEMPLATE as V100_PERSON_SWAP_TEMPLATE,
+        V100_OBJECT_INFO,
     )
     from upgrade_v097 import (
         CREATURE_PATH as V097_CREATURE_PATH,
@@ -161,9 +167,15 @@ ADDITIONS = (
         {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
     ),
     Addition(
-        V099_FACE_SWAP_PATH,
-        V099_SOURCE_TEMPLATE,
+        V100_FACE_SWAP_PATH,
+        V100_FACE_SWAP_TEMPLATE,
         "Live Face Swap DirectML Spout OBS",
+        {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
+    ),
+    Addition(
+        V100_PERSON_SWAP_PATH,
+        V100_PERSON_SWAP_TEMPLATE,
+        "Live Person Swap Matting Voice DirectML Spout OBS",
         {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
     ),
 )
@@ -178,6 +190,7 @@ def _load_object_info() -> dict[str, Any]:
     info.update(V096_OBJECT_INFO)
     info.update(V097_OBJECT_INFO)
     info.update(V099_OBJECT_INFO)
+    info.update(V100_OBJECT_INFO)
     return info
 
 

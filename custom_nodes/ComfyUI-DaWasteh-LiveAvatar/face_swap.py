@@ -17,10 +17,12 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import json
 import logging
 import sys
 import threading
 import time
+from concurrent.futures import Future, ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -58,11 +60,21 @@ WARP_TEMPLATES: dict[str, np.ndarray] = {
 @dataclass(frozen=True)
 class SwapperSpec:
     file_name: str
-    kind: str  # "inswapper" | "hyperswap"
+    kind: str  # "inswapper" | "hyperswap" | "alphaface" | "uniface"
     template: str
     size: int
     mean: float
     std: float
+    licence: str
+    sha256: str
+    source_kind: str = "embedding"  # "embedding" (ArcFace vector) | "image" (aligned source crop)
+    denormalize_output: bool = False
+
+
+@dataclass(frozen=True)
+class MaskModelSpec:
+    file_name: str
+    size: int
     licence: str
     sha256: str
 
@@ -86,30 +98,93 @@ SWAPPERS: dict[str, SwapperSpec] = {
         "hyperswap_1a_256.onnx", "hyperswap", "arcface_128", 256, 0.5, 0.5,
         "FaceFusion ResearchRAIL",
         "c0e98a8a03a238f461ed3d2570e426b49f46745ee400854a60dceeb70c246add",
+        denormalize_output=True,
+    ),
+    "hyperswap_1c_256": SwapperSpec(
+        "hyperswap_1c_256.onnx", "hyperswap", "arcface_128", 256, 0.5, 0.5,
+        "FaceFusion ResearchRAIL",
+        "5528c2d76fe9986c99d829278987ef9f3a630cb606db7628d02b57b330f406a5",
+        denormalize_output=True,
+    ),
+    "alphaface_256": SwapperSpec(
+        "alphaface_256.onnx", "alphaface", "arcface_128", 256, 0.0, 1.0,
+        "AlphaFace non-commercial",
+        "efcca3ffa1c28b75a007f689b39f7d4716c02810e7fa72d892e175f0b058a2e2",
+    ),
+    "uniface_256": SwapperSpec(
+        "uniface_256.onnx", "uniface", "ffhq_512", 256, 0.5, 0.5,
+        "UniFace (xc-csc101), licence unknown",
+        "eb5ce2af024cddf88ecb93b24e29a6eb44e354aba7d3319e84d29dcd868820f3",
+        source_kind="image",
+        denormalize_output=True,
     ),
 }
+
+# Face occluder (hands/hair/objects in front of the face) and face parser
+# (CelebAMask-HQ regions) from FaceFusion; both run on the aligned crop.
+OCCLUDERS: dict[str, MaskModelSpec] = {
+    # xseg_3 keeps beard, mouth interior and eyes behind glasses as face (only
+    # hands/objects and the glasses frames are cut out); xseg_1 removes them all.
+    "xseg_3": MaskModelSpec("xseg_3.onnx", 256, "DeepFaceLab GPL-3.0", "48ccd7e8541e159a5a754ec9e62df2f12065f7df8f9af842c1750342c6533559"),
+    "xseg_2": MaskModelSpec("xseg_2.onnx", 256, "DeepFaceLab GPL-3.0", "cd9a0879eaf43841d765472cf1f8c330dbf9dcb03da0eace93e95f3bcc399042"),
+    "xseg_1": MaskModelSpec("xseg_1.onnx", 256, "DeepFaceLab GPL-3.0", "c4d1498b8a03b5fe2a3a5d2ef2a0402ab03bd51edaf5b2d8d5fb764702a97dd3"),
+}
+PARSERS: dict[str, MaskModelSpec] = {
+    "bisenet_resnet_34": MaskModelSpec("bisenet_resnet_34.onnx", 512, "yakhyo MIT", "4a0b8c958a3c938913bd06a8365dbb3c8761afba6ecbf0d14b3b1f77eb230c96"),
+}
+# Portrait matting for the person/background split of Workflow 17.
+MATTERS: dict[str, MaskModelSpec] = {
+    "modnet": MaskModelSpec("modnet.onnx", 512, "MODNet Apache-2.0", "a9edce4b47653992aacd1bee48126e65a415ed54e2ecbe51bdca25a8cab0c0d3"),
+}
+
+# CelebAMask-HQ class ids used by bisenet (FaceFusion face_mask_region_set)
+FACE_REGIONS: dict[str, int] = {
+    "skin": 1, "left-eyebrow": 2, "right-eyebrow": 3, "left-eye": 4, "right-eye": 5,
+    "glasses": 6, "nose": 10, "mouth": 11, "upper-lip": 12, "lower-lip": 13,
+}
+DEFAULT_REGIONS: tuple[str, ...] = tuple(FACE_REGIONS)
 
 ENHANCERS: dict[str, EnhancerSpec] = {
     "gpen_bfr_256": EnhancerSpec("gpen_bfr_256.onnx", "arcface_128", 256, "GPEN non-commercial", "bad8bf0426873828df2dbf4e3b3d9ababba9da7965b8b72426569486f7ae5c25"),
     "gfpgan_1.4": EnhancerSpec("gfpgan_1.4.onnx", "ffhq_512", 512, "GFPGAN Apache-2.0", "accc4757b26bdb89b32b4d3500d4f79c9dff97c1dd7c7104bf9dcb95e3311385"),
+    "gpen_bfr_512": EnhancerSpec("gpen_bfr_512.onnx", "ffhq_512", 512, "GPEN non-commercial", "d5f066b9068a8b74217f9712e28e875a6144629b108a6f7355acbdb3a2832c54"),
 }
 
 DETECTOR_PACK = "buffalo_l"
 DETECTOR_FILES = ("det_10g.onnx", "w600k_r50.onnx")
 SWAPPER_SUBDIR = "insightface"
 ENHANCER_SUBDIR = "facerestore_models"
+MASK_SUBDIR = "face_parsing"
+MATTING_SUBDIR = "background_removal"
 
 
 # --------------------------------------------------------------------------- #
 # Pure geometry / image helpers (unit-tested without any model)
 # --------------------------------------------------------------------------- #
-def estimate_affine(landmarks_5: np.ndarray, template: str, size: int) -> np.ndarray:
+def scaled_template(template: str, crop_scale: float = 1.0) -> np.ndarray:
+    """Template points shrunk towards their centre; ``crop_scale`` < 1 widens the crop.
+
+    A wider crop lets the swapper regenerate chin, beard and jaw line that the
+    tight FaceFusion templates leave untouched (visible as a double chin when
+    the mouth opens). The model still sees a face, only somewhat smaller.
+    """
+    points = WARP_TEMPLATES[template]
+    scale = float(np.clip(crop_scale, 0.5, 1.5))
+    if scale == 1.0:
+        return points
+    centre = points.mean(axis=0, keepdims=True)
+    # No vertical shift: hyperswap/inswapper lose identity quickly when the face
+    # sits off the trained template centre (measured: beard returns at 0.06).
+    return ((points - centre) * scale + centre).astype(np.float32)
+
+
+def estimate_affine(landmarks_5: np.ndarray, template: str, size: int, crop_scale: float = 1.0) -> np.ndarray:
     """Affine matrix mapping five landmarks onto ``template`` scaled to ``size``."""
     import cv2
 
     if landmarks_5.shape != (5, 2):
         raise ValueError("five (x, y) landmarks are required")
-    target = WARP_TEMPLATES[template] * float(size)
+    target = scaled_template(template, crop_scale) * float(size)
     matrix = cv2.estimateAffinePartial2D(
         landmarks_5.astype(np.float32), target, method=cv2.RANSAC, ransacReprojThreshold=100
     )[0]
@@ -118,10 +193,10 @@ def estimate_affine(landmarks_5: np.ndarray, template: str, size: int) -> np.nda
     return matrix
 
 
-def warp_face(frame: np.ndarray, landmarks_5: np.ndarray, template: str, size: int) -> tuple[np.ndarray, np.ndarray]:
+def warp_face(frame: np.ndarray, landmarks_5: np.ndarray, template: str, size: int, crop_scale: float = 1.0) -> tuple[np.ndarray, np.ndarray]:
     import cv2
 
-    matrix = estimate_affine(landmarks_5, template, size)
+    matrix = estimate_affine(landmarks_5, template, size, crop_scale)
     crop = cv2.warpAffine(frame, matrix, (size, size), borderMode=cv2.BORDER_REPLICATE, flags=cv2.INTER_AREA)
     return crop, matrix
 
@@ -159,12 +234,11 @@ def paste_back(frame: np.ndarray, crop: np.ndarray, mask: np.ndarray, matrix: np
     shifted = inverse.copy()
     shifted[:, 2] -= (x1, y1)
     region_size = (int(x2 - x1), int(y2 - y1))
-    inverse_mask = cv2.warpAffine(mask, shifted, region_size).clip(0, 1)[..., None]
+    inverse_mask = np.clip(cv2.warpAffine(mask, shifted, region_size), 0.0, 1.0).astype(np.float32)
     inverse_crop = cv2.warpAffine(crop, shifted, region_size, borderMode=cv2.BORDER_REPLICATE)
     result = frame.copy()
-    region = result[y1:y2, x1:x2].astype(np.float32)
-    region = region * (1.0 - inverse_mask) + inverse_crop.astype(np.float32) * inverse_mask
-    result[y1:y2, x1:x2] = np.clip(region, 0, 255).astype(frame.dtype)
+    region = np.ascontiguousarray(result[y1:y2, x1:x2])
+    result[y1:y2, x1:x2] = cv2.blendLinear(inverse_crop, region, inverse_mask, 1.0 - inverse_mask)
     return result
 
 
@@ -178,7 +252,7 @@ def prepare_swapper_input(crop_bgr: np.ndarray, spec: SwapperSpec) -> np.ndarray
 def normalize_swapper_output(output_chw: np.ndarray, spec: SwapperSpec) -> np.ndarray:
     """Model CHW output → BGR uint8 crop."""
     rgb = output_chw.transpose(1, 2, 0)
-    if spec.kind == "hyperswap":
+    if spec.denormalize_output:
         rgb = rgb * spec.std + spec.mean
     rgb = np.clip(rgb, 0.0, 1.0)
     return np.ascontiguousarray((rgb[:, :, ::-1] * 255.0).round().astype(np.uint8))
@@ -206,7 +280,205 @@ def source_embedding_for(spec: SwapperSpec, embedding: np.ndarray, emap: np.ndar
         if emap is None:
             raise ValueError("inswapper needs the model's emap initializer")
         return np.ascontiguousarray((embedding @ emap) / norm, dtype=np.float32)
+    if spec.kind == "alphaface":  # FaceFusion feeds the raw (un-normalised) ArcFace vector
+        return np.ascontiguousarray(embedding, dtype=np.float32)
     return np.ascontiguousarray(embedding / norm, dtype=np.float32)
+
+
+def prepare_source_image(crop_bgr: np.ndarray) -> np.ndarray:
+    """Aligned source crop → NCHW RGB float32 in 0..1 (uniface/blendswap ``source``)."""
+    rgb = crop_bgr[:, :, ::-1].astype(np.float32) / 255.0
+    return np.ascontiguousarray(rgb.transpose(2, 0, 1)[None], dtype=np.float32)
+
+
+def sharpen_mask(mask: np.ndarray, sigma: float = 5.0) -> np.ndarray:
+    """FaceFusion's mask post-processing: blur, then stretch 0.5..1 to 0..1."""
+    import cv2
+
+    blurred = cv2.GaussianBlur(np.clip(mask, 0.0, 1.0).astype(np.float32), (0, 0), sigma)
+    return ((np.clip(blurred, 0.5, 1.0) - 0.5) * 2.0).astype(np.float32)
+
+
+def prepare_occluder_input(crop_bgr: np.ndarray, size: int) -> np.ndarray:
+    """xseg expects NHWC BGR float32 in 0..1."""
+    import cv2
+
+    resized = cv2.resize(crop_bgr, (size, size))
+    return np.ascontiguousarray(resized[None].astype(np.float32) / 255.0)
+
+
+_IMAGENET_MEAN_255 = (0.485 * 255.0, 0.456 * 255.0, 0.406 * 255.0)
+_IMAGENET_INV_STD = np.array([1.0 / 0.229, 1.0 / 0.224, 1.0 / 0.225], dtype=np.float32).reshape(1, 3, 1, 1)
+
+
+def prepare_parser_input(crop_bgr: np.ndarray, size: int) -> np.ndarray:
+    """bisenet expects NCHW RGB float32 normalised with ImageNet statistics."""
+    import cv2
+
+    blob = cv2.dnn.blobFromImage(crop_bgr, 1.0 / 255.0, (size, size), _IMAGENET_MEAN_255, swapRB=True)
+    blob *= _IMAGENET_INV_STD
+    return np.ascontiguousarray(blob, dtype=np.float32)
+
+
+def region_mask_from_classes(class_map: np.ndarray, regions: tuple[str, ...], size: int, extra: np.ndarray | None = None) -> np.ndarray:
+    import cv2
+
+    wanted = [FACE_REGIONS[name] for name in regions if name in FACE_REGIONS]
+    mask = np.isin(class_map, wanted).astype(np.float32)
+    if extra is not None:
+        mask = np.maximum(mask, extra.astype(np.float32))
+    if mask.shape[0] != size:
+        mask = cv2.resize(mask, (size, size))
+    return sharpen_mask(mask)
+
+
+HAIR_CLASS = 17
+MOUTH_CLASS = FACE_REGIONS["mouth"]
+
+
+def beard_mask_from_classes(
+    class_map: np.ndarray,
+    template_points: np.ndarray,
+    size: int,
+    crop_bgr: np.ndarray | None = None,
+    extent: float = 1.0,
+) -> np.ndarray:
+    """Beard/moustache zone on the aligned crop (float 0/1 at class-map size).
+
+    bisenet labels beards as *skin*, so the zone is geometric: skin and neck of
+    the lower face from just below the nose tip downwards, minus nose, lips and
+    mouth. ``extent`` 0 disables, 1 covers moustache and chin, 0.6 chin only.
+    The whole zone is smoothed (no texture test): that is temporally stable and
+    hyperswap/inswapper then render bare skin there.
+    """
+    import cv2
+
+    map_size = class_map.shape[0]
+    if extent <= 0.0:
+        return np.zeros((map_size, map_size), dtype=np.float32)
+    scale = map_size / float(size)
+    nose_y = float(template_points[2, 1]) * scale
+    mouth_y = float((template_points[3, 1] + template_points[4, 1]) * 0.5) * scale
+    eye_span = float(np.linalg.norm(template_points[1] - template_points[0])) * scale
+    skin = np.isin(class_map, [FACE_REGIONS["skin"], 14])  # skin + neck
+    keep = np.isin(class_map, [FACE_REGIONS["upper-lip"], FACE_REGIONS["lower-lip"], MOUTH_CLASS, FACE_REGIONS["nose"]])
+    top_full = int(nose_y + eye_span * 0.15)
+    top_chin = int(mouth_y + eye_span * 0.10)
+    blend = float(np.clip((extent - 0.6) / 0.4, 0.0, 1.0))
+    top = int(round(top_chin + (top_full - top_chin) * blend))
+    mask = np.zeros((map_size, map_size), dtype=np.uint8)
+    mask[top:, :] = 1
+    mask &= skin.astype(np.uint8)
+    if mask.any():
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, int(eye_span * 0.16)),) * 2)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+        mask[keep] = 0
+    return mask.astype(np.float32)
+
+
+def extend_occlusion_downward(occlusion: np.ndarray, beard_zone: np.ndarray, size: int) -> np.ndarray:
+    """Let the xseg face mask grow downward inside the beard zone.
+
+    xseg outlines the face oval and stops at the chin line, so a goatee hanging
+    below the chin would keep showing through. Inside the (parser-derived) beard
+    zone the mask is dilated downward by ~10 % of the crop; hands elsewhere stay
+    excluded.
+    """
+    import cv2
+
+    zone = beard_zone
+    if zone.shape[0] != size:
+        zone = cv2.resize(zone, (size, size), interpolation=cv2.INTER_NEAREST)
+    reach = max(3, int(size * 0.15))
+    kernel = np.ones((reach, 1), dtype=np.uint8)
+    grown = cv2.dilate(occlusion, kernel, anchor=(0, reach - 1))
+    return np.maximum(occlusion, grown * (zone > 0.5)).astype(np.float32)
+
+
+def cheek_color(crop_bgr: np.ndarray, class_map: np.ndarray, template_points: np.ndarray, size: int) -> np.ndarray | None:
+    """Median BGR of the cheek skin between eye and nose level."""
+    import cv2
+
+    map_size = class_map.shape[0]
+    scale = map_size / float(size)
+    nose_y = float(template_points[2, 1]) * scale
+    eye_span = float(np.linalg.norm(template_points[1] - template_points[0])) * scale
+    zone = np.zeros((map_size, map_size), dtype=bool)
+    zone[int(max(0, nose_y - eye_span * 0.35)):int(nose_y + eye_span * 0.05), :] = True
+    zone &= (class_map == FACE_REGIONS["skin"])
+    if zone.sum() < 32:
+        return None
+    small = crop_bgr if crop_bgr.shape[0] == map_size else cv2.resize(crop_bgr, (map_size, map_size), interpolation=cv2.INTER_AREA)
+    return np.median(small[zone].reshape(-1, 3), axis=0).astype(np.float32)
+
+
+def shave_crop(crop_bgr: np.ndarray, beard_mask: np.ndarray, mode: str = "skin", skin_color: np.ndarray | None = None) -> np.ndarray:
+    """Replace the beard zone with smooth skin so the swapper regenerates a bare chin.
+
+    ``skin`` paints the zone in the cheek colour and blurs it at quarter
+    resolution (~1 ms); ``inpaint`` uses OpenCV Telea inpainting (slower).
+    """
+    import cv2
+
+    if beard_mask is None or not beard_mask.any():
+        return crop_bgr
+    size = crop_bgr.shape[0]
+    binary = (beard_mask > 0.5).astype(np.uint8)
+    if binary.shape[0] != size:
+        binary = cv2.resize(binary, (size, size), interpolation=cv2.INTER_NEAREST)
+    if mode == "inpaint":
+        return cv2.inpaint(crop_bgr, binary, 3, cv2.INPAINT_TELEA)
+    low = max(32, size // 4)
+    small = cv2.resize(crop_bgr, (low, low), interpolation=cv2.INTER_AREA).astype(np.float32)
+    small_mask = cv2.resize(binary, (low, low), interpolation=cv2.INTER_AREA).astype(np.float32)
+    if skin_color is None:
+        skin_color = small[small_mask < 0.5].reshape(-1, 3).mean(axis=0) if (small_mask < 0.5).any() else small.mean(axis=(0, 1))
+    painted = small * (1.0 - small_mask[..., None]) + skin_color.reshape(1, 1, 3) * small_mask[..., None]
+    painted = cv2.GaussianBlur(painted, (0, 0), low * 0.06)
+    fill = cv2.resize(painted, (size, size), interpolation=cv2.INTER_LINEAR)
+    soft = cv2.resize(cv2.GaussianBlur(small_mask, (0, 0), low * 0.04), (size, size), interpolation=cv2.INTER_LINEAR)[..., None]
+    shaved = crop_bgr.astype(np.float32) * (1.0 - soft) + fill * soft
+    return np.clip(shaved, 0, 255).astype(np.uint8)
+
+
+def prepare_matting_input(frame_bgr: np.ndarray, size: int) -> np.ndarray:
+    """MODNet expects NCHW RGB float32 normalised to -1..1."""
+    import cv2
+
+    resized = cv2.resize(frame_bgr, (size, size), interpolation=cv2.INTER_AREA)
+    return np.ascontiguousarray(cv2.dnn.blobFromImage(resized, 1.0 / 127.5, (size, size), (127.5, 127.5, 127.5), swapRB=True), dtype=np.float32)
+
+
+def match_color(swapped: np.ndarray, reference: np.ndarray, mask: np.ndarray, strength: float) -> np.ndarray:
+    """Move the swapped crop's LAB statistics towards the live crop inside ``mask``."""
+    import cv2
+
+    weight = float(np.clip(strength, 0.0, 1.0))
+    if weight <= 0.0:
+        return swapped
+    region = mask > 0.5
+    if region.sum() < 64:
+        return swapped
+    swapped_lab = cv2.cvtColor(swapped, cv2.COLOR_BGR2LAB).astype(np.float32)
+    reference_lab = cv2.cvtColor(reference, cv2.COLOR_BGR2LAB).astype(np.float32)
+    matched = swapped_lab.copy()
+    for channel in range(3):
+        src = swapped_lab[..., channel][region]
+        ref = reference_lab[..., channel][region]
+        src_std = max(float(src.std()), 1.0)
+        target_mean = float(src.mean()) * (1.0 - weight) + float(ref.mean()) * weight
+        target_std = src_std * (1.0 - weight) + max(float(ref.std()), 1.0) * weight
+        matched[..., channel] = (swapped_lab[..., channel] - float(src.mean())) * (target_std / src_std) + target_mean
+    matched = np.clip(matched, 0, 255).astype(np.uint8)
+    return cv2.cvtColor(matched, cv2.COLOR_LAB2BGR)
+
+
+def composite_background(frame_bgr: np.ndarray, alpha: np.ndarray, background_bgr: np.ndarray) -> np.ndarray:
+    """Alpha-blend the person over a background of the same size (OpenCV, ~2 ms at 720p)."""
+    import cv2
+
+    weight = np.ascontiguousarray(alpha, dtype=np.float32)
+    return cv2.blendLinear(frame_bgr, background_bgr, weight, 1.0 - weight)
 
 
 def blend_identity(source: np.ndarray, target: np.ndarray | None, strength: float) -> np.ndarray:
@@ -400,6 +672,11 @@ def available_enhancers(root: Path | None = None) -> list[str]:
     return [name for name, spec in ENHANCERS.items() if (root / ENHANCER_SUBDIR / spec.file_name).is_file()]
 
 
+def available_mask_models(specs: dict[str, MaskModelSpec], subdir: str, root: Path | None = None) -> list[str]:
+    root = models_root() if root is None else root
+    return [name for name, spec in specs.items() if (root / subdir / spec.file_name).is_file()]
+
+
 def detector_ready(root: Path | None = None) -> bool:
     root = models_root() if root is None else root
     pack = root / SWAPPER_SUBDIR / "models" / DETECTOR_PACK
@@ -557,15 +834,33 @@ class FaceIdentity:
     embedding: np.ndarray
     source_count: int
     fingerprint: str
+    source_crop: np.ndarray | None = None  # aligned ffhq_512/256 crop for image-conditioned swappers
 
 
 @dataclass
 class SwapTimings:
     detect_ms: float = 0.0
     swap_ms: float = 0.0
+    mask_ms: float = 0.0
     enhance_ms: float = 0.0
+    matte_ms: float = 0.0
     total_ms: float = 0.0
     face_found: bool = False
+
+
+@dataclass
+class MaskBranch:
+    """Everything the mask worker computes for one frame (runs beside the swapper)."""
+
+    classes: np.ndarray | None = None
+    beard: np.ndarray | None = None
+    cheek: np.ndarray | None = None
+    occlusion: np.ndarray | None = None
+    alpha: np.ndarray | None = None
+    ms: float = 0.0
+    parse_ms: float = 0.0
+    occlusion_ms: float = 0.0
+    matte_ms: float = 0.0
 
 
 class FaceSwapEngine:
@@ -582,12 +877,34 @@ class FaceSwapEngine:
         session_factory: Any = None,
         detector_factory: Any = None,
         embedder_factory: Any = None,
+        occluder: str | None = None,
+        parser: str | None = None,
+        matter: str | None = None,
+        mask_device_id: int | None = None,
+        parallel_masks: bool = True,
     ) -> None:
         self.root = Path(root)
+        self.mask_device_id = int(dml_device_id if mask_device_id is None else mask_device_id)
+        # DirectML sessions of two threads must not share one adapter (ORT raises
+        # opaque device errors), so the worker only exists on a second adapter.
+        self.parallel_masks = bool(parallel_masks) and self.mask_device_id != int(dml_device_id)
+        self._pool: ThreadPoolExecutor | None = None
+        self._previous_branch: MaskBranch | None = None
+        self.last_alpha: np.ndarray | None = None
         self.swapper_name = swapper
         self.spec = SWAPPERS[swapper]
         self.enhancer_name = enhancer if enhancer and enhancer != "none" else None
         self.enhancer_spec = ENHANCERS[self.enhancer_name] if self.enhancer_name else None
+        self.occluder_name = occluder if occluder and occluder != "none" else None
+        self.occluder_spec = OCCLUDERS[self.occluder_name] if self.occluder_name else None
+        self.parser_name = parser if parser and parser != "none" else None
+        self.parser_spec = PARSERS[self.parser_name] if self.parser_name else None
+        self.matter_name = matter if matter and matter != "none" else None
+        self.matter_spec = MATTERS[self.matter_name] if self.matter_name else None
+        self.occluder: Any = None
+        self.parser: Any = None
+        self.matter: Any = None
+        self._matter_input = ""
         self.dml_device_id = int(dml_device_id)
         self.det_size = int(det_size)
         self.det_threshold = float(det_threshold)
@@ -608,10 +925,10 @@ class FaceSwapEngine:
         self._frame_index = 0
 
     # -- loading ------------------------------------------------------------
-    def _create_session(self, path: Path, fixed_dims: int | None = None) -> Any:
+    def _create_session(self, path: Path, fixed_dims: int | None = None, device_id: int | None = None) -> Any:
         import onnxruntime
 
-        providers, options = directml_providers(self.dml_device_id)
+        providers, options = directml_providers(self.dml_device_id if device_id is None else device_id)
         available = onnxruntime.get_available_providers()
         if "DmlExecutionProvider" not in available:
             raise RuntimeError(
@@ -664,7 +981,28 @@ class FaceSwapEngine:
                 raise RuntimeError(f"enhancer model is missing: {enhancer_path}")
             self.enhancer = self._session_factory(enhancer_path)
             self._enhancer_inputs = self._map_inputs(self.enhancer)
+        if self.occluder_spec is not None:  # runs on the swapper thread/adapter, beside the swap
+            self.occluder = self._session_factory(self._require(self.root / MASK_SUBDIR / self.occluder_spec.file_name, "occluder"))
+        if self.parser_spec is not None:
+            self.parser = self._mask_session(self._require(self.root / MASK_SUBDIR / self.parser_spec.file_name, "face parser"))
+        if self.matter_spec is not None:
+            self.matter = self._mask_session(self._require(self.root / MATTING_SUBDIR / self.matter_spec.file_name, "matting"))
+            self._matter_input = self.matter.get_inputs()[0].name
+        if self.parallel_masks and self._pool is None and (self.parser is not None or self.matter is not None):
+            self._pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="DaWastehFaceSwapMasks")
         return self
+
+    def _mask_session(self, path: Path) -> Any:
+        """Occluder/parser/matting sessions live on ``mask_device_id`` (default: the other GPU)."""
+        if self._custom_session_factory:
+            return self._session_factory(path)
+        return self._create_session(path, device_id=self.mask_device_id)
+
+    @staticmethod
+    def _require(path: Path, label: str) -> Path:
+        if not path.is_file():
+            raise RuntimeError(f"{label} model is missing: {path}")
+        return path
 
     @staticmethod
     def _map_inputs(session: Any) -> dict[str, str]:
@@ -703,24 +1041,54 @@ class FaceSwapEngine:
     def identity_from_images(self, images_bgr: list[np.ndarray]) -> FaceIdentity:
         self.load()
         embeddings: list[np.ndarray] = []
+        source_crop: np.ndarray | None = None
         for image in images_bgr:
             bboxes, kpss = self.detector.detect(image)
             index = largest_face(bboxes, kpss, None)
             if index is None:
                 continue
-            embeddings.append(self.embedder.embed(image, np.asarray(kpss[index], dtype=np.float32)))
+            landmarks = np.asarray(kpss[index], dtype=np.float32)
+            embeddings.append(self.embedder.embed(image, landmarks))
+            if source_crop is None and self.spec.source_kind == "image":
+                source_crop, _ = warp_face(image, landmarks, self.spec.template, self.spec.size)
         if not embeddings:
             raise RuntimeError("no face was detected in the source image(s)")
         raw = average_embedding(embeddings)
         prepared = source_embedding_for(self.spec, raw, self.emap)
         fingerprint = hashlib.sha256(prepared.tobytes()).hexdigest()[:16]
-        return FaceIdentity(prepared, len(embeddings), fingerprint)
+        return FaceIdentity(prepared, len(embeddings), fingerprint, source_crop)
 
     # -- per frame ----------------------------------------------------------
     def reset_tracking(self) -> None:
         self._previous_center = None
         self._previous_landmarks = None
+        self._previous_branch = None
+        self.last_alpha = None
         self._frame_index = 0
+
+    def _mask_branch(self, frame_bgr: np.ndarray | None, crop: np.ndarray | None, template_points: np.ndarray | None,
+                     regions: tuple[str, ...], shave: str, shave_extent: float, matte: bool,
+                     reuse: MaskBranch | None = None) -> MaskBranch:
+        """Parser and matting for one frame; safe to run in the worker thread."""
+        started = time.perf_counter()
+        branch = MaskBranch()
+        if crop is not None and template_points is not None:
+            size = crop.shape[0]
+            if reuse is not None and reuse.classes is not None:
+                branch.classes, branch.beard, branch.cheek = reuse.classes, reuse.beard, reuse.cheek
+            elif self.parser is not None and (regions or shave != "none"):
+                stage = time.perf_counter()
+                branch.classes = self._parse_crop(crop)
+                if shave != "none":
+                    branch.beard = beard_mask_from_classes(branch.classes, template_points, size, crop, shave_extent)
+                    branch.cheek = cheek_color(crop, branch.classes, template_points, size)
+                branch.parse_ms = (time.perf_counter() - stage) * 1000.0
+        if matte and self.matter is not None and frame_bgr is not None:
+            stage = time.perf_counter()
+            branch.alpha = self.matte(frame_bgr)
+            branch.matte_ms = (time.perf_counter() - stage) * 1000.0
+        branch.ms = (time.perf_counter() - started) * 1000.0
+        return branch
 
     def swap_frame(
         self,
@@ -732,9 +1100,24 @@ class FaceSwapEngine:
         landmark_smoothing: float = 0.5,
         enhancer_blend: float = 0.8,
         enhancer_every: int = 1,
+        crop_scale: float = 1.0,
+        color_match: float = 0.0,
+        regions: tuple[str, ...] = DEFAULT_REGIONS,
+        shave: str = "none",
+        shave_extent: float = 1.0,
+        matte: bool = False,
+        parser_every: int = 1,
         timings: SwapTimings | None = None,
     ) -> np.ndarray:
-        """Return a swapped BGR frame; the untouched frame when no face is present."""
+        """Return a swapped BGR frame; the untouched frame when no face is present.
+
+        ``parser_every`` > 1 reuses the previous frame's class map (crop space is
+        face-aligned, so the regions barely move) and only re-parses every n-th
+        frame; the matte is still computed for every frame.
+
+        With ``matte`` the person alpha of this frame is left in ``last_alpha``
+        (computed on the mask worker while the swapper runs).
+        """
         self.load()
         timings = timings if timings is not None else SwapTimings()
         started = time.perf_counter()
@@ -745,6 +1128,12 @@ class FaceSwapEngine:
             self._previous_center = None
             self._previous_landmarks = None
             timings.face_found = False
+            if matte and self.matter is not None:
+                matte_started = time.perf_counter()
+                self.last_alpha = self.matte(frame_bgr)
+                timings.matte_ms = (time.perf_counter() - matte_started) * 1000.0
+            else:
+                self.last_alpha = None
             timings.total_ms = (time.perf_counter() - started) * 1000.0
             return frame_bgr
         bbox = bboxes[index]
@@ -753,16 +1142,69 @@ class FaceSwapEngine:
         self._previous_landmarks = landmarks
         timings.face_found = True
 
+        crop, matrix = warp_face(frame_bgr, landmarks, self.spec.template, self.spec.size, crop_scale)
+        template_points = scaled_template(self.spec.template, crop_scale) * self.spec.size
+        want_masks = self.parser is not None or (matte and self.matter is not None)
+        future: Future | None = None
+        branch: MaskBranch | None = None
+        reuse = self._previous_branch if (parser_every > 1 and self._frame_index % int(parser_every) != 0) else None
+        if want_masks:
+            if self._pool is not None:
+                future = self._pool.submit(self._mask_branch, frame_bgr, crop, template_points, regions, shave, shave_extent, matte, reuse)
+            else:
+                branch = self._mask_branch(frame_bgr, crop, template_points, regions, shave, shave_extent, matte, reuse)
+
+        # Shave with the previous frame's beard zone so the parser is off the
+        # critical path (crop space is face-aligned, the zone barely moves).
         swap_started = time.perf_counter()
-        crop, matrix = warp_face(frame_bgr, landmarks, self.spec.template, self.spec.size)
-        feeds = {self._swapper_inputs["target"]: prepare_swapper_input(crop, self.spec)}
+        swap_input = crop
+        if shave != "none" and self.parser is not None:
+            shave_branch = branch or self._previous_branch
+            if shave_branch is None and future is not None:
+                branch = future.result()
+                future = None
+                shave_branch = branch
+            if shave_branch is not None and shave_branch.beard is not None:
+                swap_input = shave_crop(crop, shave_branch.beard, shave, shave_branch.cheek)
+        feeds = {self._swapper_inputs["target"]: prepare_swapper_input(swap_input, self.spec)}
         if "source" in self._swapper_inputs:
-            feeds[self._swapper_inputs["source"]] = identity.embedding
+            if self.spec.source_kind == "image":
+                if identity.source_crop is None:
+                    raise RuntimeError(f"{self.swapper_name} needs an identity extracted with the same swapper (source crop missing)")
+                feeds[self._swapper_inputs["source"]] = prepare_source_image(identity.source_crop)
+            else:
+                feeds[self._swapper_inputs["source"]] = identity.embedding
         output = self.swapper.run(None, feeds)[0][0]
         swapped_crop = normalize_swapper_output(output, self.spec)
-        mask = create_box_mask(self.spec.size, mask_blur, mask_padding)
-        result = paste_back(frame_bgr, swapped_crop, mask, matrix)
         timings.swap_ms = (time.perf_counter() - swap_started) * 1000.0
+
+        mask_started = time.perf_counter()
+        occlusion = self._occlusion_mask(crop) if self.occluder is not None else None
+        if future is not None:
+            branch = future.result()
+        if branch is not None:
+            self._previous_branch = branch
+            self.last_alpha = branch.alpha
+        else:
+            self.last_alpha = None
+        classes = branch.classes if branch is not None else None
+        beard = branch.beard if branch is not None else None
+        # With a parser the region mask already fades skin/hair/neck edges, so the
+        # box fade only has to hide the crop border (the chin sits close to it).
+        box_blur = mask_blur * 0.5 if classes is not None else mask_blur
+        masks = [create_box_mask(self.spec.size, box_blur, mask_padding)]
+        if occlusion is not None:
+            if beard is not None:
+                occlusion = extend_occlusion_downward(occlusion, beard, self.spec.size)
+            masks.append(occlusion)
+        if classes is not None and regions:
+            masks.append(region_mask_from_classes(classes, regions, self.spec.size, beard))
+        mask = np.minimum.reduce(masks).clip(0.0, 1.0) if len(masks) > 1 else masks[0]
+        if color_match > 0.0:
+            swapped_crop = match_color(swapped_crop, swap_input, mask, color_match)
+        result = paste_back(frame_bgr, swapped_crop, mask, matrix)
+        timings.mask_ms = (time.perf_counter() - mask_started) * 1000.0 + (branch.ms if branch is not None else 0.0)
+        timings.matte_ms = 0.0
 
         self._frame_index += 1
         if self.enhancer is not None and enhancer_blend > 0.0 and (self._frame_index % max(1, int(enhancer_every))) == 0:
@@ -771,6 +1213,39 @@ class FaceSwapEngine:
             timings.enhance_ms = (time.perf_counter() - enhance_started) * 1000.0
         timings.total_ms = (time.perf_counter() - started) * 1000.0
         return result
+
+    def _occlusion_mask(self, crop_bgr: np.ndarray) -> np.ndarray:
+        import cv2
+
+        spec = self.occluder_spec
+        assert spec is not None
+        feed = {self.occluder.get_inputs()[0].name: prepare_occluder_input(crop_bgr, spec.size)}
+        raw = self.occluder.run(None, feed)[0][0]
+        mask = np.clip(np.squeeze(raw), 0.0, 1.0).astype(np.float32)
+        if mask.shape[0] != crop_bgr.shape[0]:
+            mask = cv2.resize(mask, crop_bgr.shape[:2][::-1])
+        return sharpen_mask(mask)
+
+    def _parse_crop(self, crop_bgr: np.ndarray) -> np.ndarray:
+        """CelebAMask-HQ class map of the crop at half parser resolution (fast argmax)."""
+        spec = self.parser_spec
+        assert spec is not None
+        feed = {self.parser.get_inputs()[0].name: prepare_parser_input(crop_bgr, spec.size)}
+        logits = self.parser.run([self.parser.get_outputs()[0].name], feed)[0][0]
+        step = max(1, spec.size // max(crop_bgr.shape[0], 1))
+        return logits[:, ::step, ::step].argmax(0).astype(np.int16)
+
+    def matte(self, frame_bgr: np.ndarray) -> np.ndarray:
+        """Person alpha (H x W float32 0..1) from the matting model; 1 = person."""
+        import cv2
+
+        if self.matter is None:
+            raise RuntimeError("no matting model is loaded")
+        spec = self.matter_spec
+        assert spec is not None
+        raw = self.matter.run(None, {self._matter_input: prepare_matting_input(frame_bgr, spec.size)})[0]
+        alpha = np.clip(np.squeeze(raw), 0.0, 1.0).astype(np.float32)
+        return cv2.resize(alpha, frame_bgr.shape[:2][::-1], interpolation=cv2.INTER_LINEAR)
 
     def _enhance(self, frame_bgr: np.ndarray, landmarks: np.ndarray, blend: float, mask_blur: float) -> np.ndarray:
         spec = self.enhancer_spec
@@ -781,24 +1256,34 @@ class FaceSwapEngine:
             feeds[self._enhancer_inputs["weight"]] = np.array([1.0], dtype=np.float64)
         output = self.enhancer.run(None, feeds)[0][0]
         enhanced_crop = normalize_enhancer_output(output)
-        mask = create_box_mask(spec.size, mask_blur, (0, 0, 0, 0))
-        pasted = paste_back(frame_bgr, enhanced_crop, mask, matrix)
         weight = float(np.clip(blend, 0.0, 1.0))
-        if weight >= 1.0:
-            return pasted
-        return np.clip(frame_bgr.astype(np.float32) * (1.0 - weight) + pasted.astype(np.float32) * weight, 0, 255).astype(np.uint8)
+        if weight < 1.0:  # blend inside the crop, not over the whole frame
+            enhanced_crop = np.clip(crop.astype(np.float32) * (1.0 - weight) + enhanced_crop.astype(np.float32) * weight, 0, 255).astype(np.uint8)
+        mask = create_box_mask(spec.size, mask_blur, (0, 0, 0, 0))
+        return paste_back(frame_bgr, enhanced_crop, mask, matrix)
 
 
 _ENGINES: dict[tuple[Any, ...], FaceSwapEngine] = {}
 _ENGINES_LOCK = threading.Lock()
 
 
-def shared_engine(root: Path, swapper: str, enhancer: str | None, dml_device_id: int, det_size: int) -> FaceSwapEngine:
-    key = (str(root), swapper, enhancer or "none", int(dml_device_id), int(det_size))
+def shared_engine(
+    root: Path,
+    swapper: str,
+    enhancer: str | None,
+    dml_device_id: int,
+    det_size: int,
+    occluder: str | None = None,
+    parser: str | None = None,
+    matter: str | None = None,
+    mask_device_id: int | None = None,
+) -> FaceSwapEngine:
+    mask_device = int(dml_device_id if mask_device_id is None else mask_device_id)
+    key = (str(root), swapper, enhancer or "none", int(dml_device_id), int(det_size), occluder or "none", parser or "none", matter or "none", mask_device)
     with _ENGINES_LOCK:
         engine = _ENGINES.get(key)
         if engine is None:
-            engine = FaceSwapEngine(root, swapper, enhancer, dml_device_id, det_size)
+            engine = FaceSwapEngine(root, swapper, enhancer, dml_device_id, det_size, occluder=occluder, parser=parser, matter=matter, mask_device_id=mask_device)
             _ENGINES[key] = engine
     return engine
 
@@ -845,8 +1330,47 @@ def _live_nodes() -> Any:
 # --------------------------------------------------------------------------- #
 # Nodes
 # --------------------------------------------------------------------------- #
+SHAVE_MODES = ["none", "skin", "inpaint"]
+BACKGROUND_MODES = ["off", "image", "green", "blur"]
+SWAP_TUNING_INPUTS = {
+    "mask_blur": ("FLOAT", {"default": 0.3, "min": 0.0, "max": 1.0, "step": 0.05}),
+    "crop_scale": ("FLOAT", {"default": 0.8, "min": 0.6, "max": 1.2, "step": 0.05, "tooltip": "<1 widens the aligned crop so chin, beard and jaw are regenerated (0.8 measured best)"}),
+    "color_match": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.05, "tooltip": "LAB colour transfer from the live face to the swapped face"}),
+    "keep_mouth": ("BOOLEAN", {"default": True, "tooltip": "keep the real mouth interior (teeth, tongue) - Deep-Live-Cam style mouth mask"}),
+    "shave": (SHAVE_MODES, {"default": "skin", "tooltip": "smooth the beard area before swapping so the swapper renders bare skin"}),
+    "shave_extent": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.1, "tooltip": "1 = moustache and chin, 0.6 = chin only"}),
+    "enhancer_blend": ("FLOAT", {"default": 0.8, "min": 0.0, "max": 1.0, "step": 0.05}),
+}
+
+
+def _regions_for(keep_mouth: bool) -> tuple[str, ...]:
+    return tuple(name for name in DEFAULT_REGIONS if not (keep_mouth and name == "mouth"))
+
+
+def _default_choice(available: list[str], preferred: str) -> str:
+    return preferred if preferred in available else available[0]
+
+
+def _resize_background(background: np.ndarray | None, frame: np.ndarray, mode: str) -> np.ndarray:
+    """Background plate for the matting composite in frame size (BGR uint8)."""
+    import cv2
+
+    height, width = frame.shape[:2]
+    if mode == "image":
+        if background is None:
+            raise RuntimeError("background_mode 'image' needs a background image (a clean plate without you in it)")
+        if background.shape[:2] != (height, width):
+            background = cv2.resize(background, (width, height), interpolation=cv2.INTER_AREA)
+        return background
+    if mode == "green":
+        return np.full_like(frame, (0, 255, 0))
+    if mode == "blur":
+        return cv2.GaussianBlur(frame, (0, 0), max(4.0, width / 40.0))
+    return frame
+
+
 class DaWastehFaceSwapModelLoader:
-    """Load detector, swapper and optional enhancer on one DirectML adapter."""
+    """Load detector, swapper, enhancer, occluder, parser and matting on one DirectML adapter."""
 
     CATEGORY = "DaWasteh/Live Avatar"
     RETURN_TYPES = ("DAW_FACESWAP",)
@@ -857,18 +1381,25 @@ class DaWastehFaceSwapModelLoader:
     def INPUT_TYPES(cls):
         swappers = available_swappers() or list(SWAPPERS)
         enhancers = ["none", *(available_enhancers() or list(ENHANCERS))]
+        occluders = ["none", *(available_mask_models(OCCLUDERS, MASK_SUBDIR) or list(OCCLUDERS))]
+        parsers = ["none", *(available_mask_models(PARSERS, MASK_SUBDIR) or list(PARSERS))]
+        matters = ["none", *(available_mask_models(MATTERS, MATTING_SUBDIR) or list(MATTERS))]
         return {
             "required": {
-                "swapper": (swappers, {"default": swappers[0]}),
-                "enhancer": (enhancers, {"default": "none"}),
-                "dml_device_id": ("INT", {"default": 1, "min": 0, "max": 7, "tooltip": "DirectML adapter index; on this host 1 = R9700, 0 = RX 9070 XT"}),
+                "swapper": (swappers, {"default": _default_choice(swappers, "hyperswap_1c_256")}),
+                "enhancer": (enhancers, {"default": _default_choice(enhancers, "gpen_bfr_256")}),
+                "occluder": (occluders, {"default": _default_choice(occluders, "xseg_3"), "tooltip": "hands/objects in front of the face stay visible; xseg_3 keeps beard, mouth and glasses lenses as face"}),
+                "parser": (parsers, {"default": _default_choice(parsers, "bisenet_resnet_34"), "tooltip": "face regions for the paste mask, the mouth mask and the beard shave"}),
+                "matting": (matters, {"default": "none", "tooltip": "person matting for Workflow 17 (background replacement)"}),
+                "dml_device_id": ("INT", {"default": 1, "min": 0, "max": 7, "tooltip": "DirectML adapter for detector, swapper and enhancer; on this host 1 = R9700, 0 = RX 9070 XT"}),
+                "mask_device_id": ("INT", {"default": 0, "min": 0, "max": 7, "tooltip": "DirectML adapter for occluder, parser and matting; they run on a worker thread beside the swapper, so the other GPU is the fastest choice"}),
                 "det_size": ([320, 480, 640], {"default": 320}),
                 "det_threshold": ("FLOAT", {"default": 0.5, "min": 0.1, "max": 0.95, "step": 0.05}),
             }
         }
 
-    def load(self, swapper: str, enhancer: str, dml_device_id: int, det_size: int, det_threshold: float):
-        engine = shared_engine(models_root(), swapper, enhancer, dml_device_id, int(det_size))
+    def load(self, swapper: str, enhancer: str, occluder: str, parser: str, matting: str, dml_device_id: int, mask_device_id: int, det_size: int, det_threshold: float):
+        engine = shared_engine(models_root(), swapper, enhancer, dml_device_id, int(det_size), occluder=occluder, parser=parser, matter=matting, mask_device_id=mask_device_id)
         engine.det_threshold = float(det_threshold)
         engine.load()
         return (engine,)
@@ -884,14 +1415,147 @@ class DaWastehFaceSwapIdentity:
 
     @classmethod
     def INPUT_TYPES(cls):
-        return {"required": {"face_swap": ("DAW_FACESWAP",), "source_images": ("IMAGE",)}}
+        return {
+            "required": {"face_swap": ("DAW_FACESWAP",), "source_images": ("IMAGE",)},
+            "optional": {
+                "more_images": ("IMAGE",),
+                "more_images_2": ("IMAGE",),
+                "more_images_3": ("IMAGE",),
+            },
+        }
 
-    def extract(self, face_swap: FaceSwapEngine, source_images: Any):
+    def extract(self, face_swap: FaceSwapEngine, source_images: Any, more_images: Any = None, more_images_2: Any = None, more_images_3: Any = None):
         frames = image_tensor_to_bgr_list(source_images)
+        for extra in (more_images, more_images_2, more_images_3):
+            if extra is not None:
+                frames.extend(image_tensor_to_bgr_list(extra))
         with face_swap.lock:
             identity = face_swap.identity_from_images(frames)
         summary = f"{identity.source_count}/{len(frames)} source faces averaged · {face_swap.swapper_name} · id {identity.fingerprint}"
         return (identity, summary)
+
+
+def list_identity_folders() -> list[str]:
+    """Sub-folders of ComfyUI/input that hold identity photos."""
+    try:
+        import folder_paths
+
+        root = Path(folder_paths.get_input_directory())
+    except Exception:
+        return []
+    folders = sorted(item.name for item in root.iterdir() if item.is_dir() and not item.name.startswith("."))
+    return folders
+
+
+def load_folder_images(folder: Path) -> list[np.ndarray]:
+    import cv2
+
+    frames: list[np.ndarray] = []
+    for path in sorted(folder.iterdir()):
+        if path.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp", ".bmp"}:
+            continue
+        image = cv2.imread(str(path), cv2.IMREAD_COLOR)
+        if image is not None:
+            frames.append(image)
+    return frames
+
+
+class DaWastehFaceSwapIdentityFromFolder:
+    """Average the identity over every photo in an input sub-folder (drop 5-20 photos there)."""
+
+    CATEGORY = "DaWasteh/Live Avatar"
+    RETURN_TYPES = ("DAW_FACE_IDENTITY", "STRING")
+    RETURN_NAMES = ("identity", "summary")
+    FUNCTION = "extract"
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        folders = list_identity_folders() or ["face-swap-identity"]
+        return {
+            "required": {
+                "face_swap": ("DAW_FACESWAP",),
+                "folder": (folders, {"default": _default_choice(folders, "face-swap-identity"), "tooltip": "sub-folder of ComfyUI/input with photos of the target person (front, 3/4, smile, mouth open)"}),
+            }
+        }
+
+    @classmethod
+    def IS_CHANGED(cls, face_swap: Any, folder: str) -> str:
+        import folder_paths
+
+        root = Path(folder_paths.get_input_directory()) / folder
+        if not root.is_dir():
+            return "missing"
+        return ";".join(f"{item.name}:{item.stat().st_mtime_ns}" for item in sorted(root.iterdir()))
+
+    def extract(self, face_swap: FaceSwapEngine, folder: str):
+        import folder_paths
+
+        root = Path(folder_paths.get_input_directory()) / folder
+        frames = load_folder_images(root) if root.is_dir() else []
+        if not frames:
+            raise RuntimeError(f"no images found in {root}; create the folder under ComfyUI/input and drop photos there")
+        with face_swap.lock:
+            identity = face_swap.identity_from_images(frames)
+        summary = f"{identity.source_count}/{len(frames)} faces from {folder} · {face_swap.swapper_name} · id {identity.fingerprint}"
+        return (identity, summary)
+
+
+class DaWastehWebcamSnapshot:
+    """Grab frames from the webcam (test images of yourself, or a clean background plate)."""
+
+    CATEGORY = "DaWasteh/Live Avatar"
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("image",)
+    FUNCTION = "grab"
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "cam_index": ("INT", {"default": 2, "min": 0, "max": 255}),
+                "capture_backend": (["auto", "DirectShow", "Media Foundation"], {"default": "DirectShow"}),
+                "capture_width": ("INT", {"default": 1280, "min": 320, "max": 4096}),
+                "capture_height": ("INT", {"default": 720, "min": 240, "max": 4096}),
+                "mirror": ("BOOLEAN", {"default": True}),
+                "delay_seconds": ("FLOAT", {"default": 3.0, "min": 0.0, "max": 30.0, "step": 0.5, "tooltip": "time to step out of the frame for a clean plate, or to pose"}),
+                "frames": ("INT", {"default": 1, "min": 1, "max": 16}),
+                "frame_interval_seconds": ("FLOAT", {"default": 1.0, "min": 0.1, "max": 10.0, "step": 0.1}),
+                "retake": ("INT", {"default": 0, "min": 0, "max": 1000000, "tooltip": "change the value to capture again; otherwise the last capture stays cached"}),
+            }
+        }
+
+    @classmethod
+    def IS_CHANGED(cls, **kwargs: Any) -> str:
+        # Deterministic on purpose: the capture is cached until a widget (e.g. retake) changes.
+        return json.dumps(kwargs, sort_keys=True, default=str)
+
+    def grab(self, cam_index: int, capture_backend: str, capture_width: int, capture_height: int, mirror: bool, delay_seconds: float, frames: int, frame_interval_seconds: float, retake: int = 0):
+        live = _live_nodes()
+        slot = live.LatestFrameSlot()
+        capture = live.CaptureWorker(slot, cam_index, capture_width, capture_height, False, 0, 0, mirror, capture_backend, output_size=None)
+        grabbed: list[np.ndarray] = []
+        try:
+            capture.start()
+            deadline = time.monotonic() + float(delay_seconds)
+            sequence = 0
+            while time.monotonic() < deadline:
+                slot.raise_if_error()
+                item = slot.get_after(sequence, 0.5)
+                if item is not None:
+                    sequence = item[1]
+            while len(grabbed) < int(frames):
+                slot.raise_if_error()
+                item = slot.get_after(sequence, 2.0)
+                if item is None:
+                    continue
+                captured, sequence = item
+                image = captured.image if isinstance(captured, live.TimedFrame) else captured
+                grabbed.append(np.ascontiguousarray(image))
+                if len(grabbed) < int(frames):
+                    time.sleep(float(frame_interval_seconds))
+        finally:
+            capture.stop()
+        return (bgr_list_to_image_tensor(grabbed),)
 
 
 class DaWastehFaceSwapImage:
@@ -909,42 +1573,68 @@ class DaWastehFaceSwapImage:
                 "face_swap": ("DAW_FACESWAP",),
                 "identity": ("DAW_FACE_IDENTITY",),
                 "image": ("IMAGE",),
-                "mask_blur": ("FLOAT", {"default": 0.3, "min": 0.0, "max": 1.0, "step": 0.05}),
-                "enhancer_blend": ("FLOAT", {"default": 0.8, "min": 0.0, "max": 1.0, "step": 0.05}),
-            }
+                **SWAP_TUNING_INPUTS,
+                "background_mode": (BACKGROUND_MODES, {"default": "off", "tooltip": "needs a matting model in the loader"}),
+            },
+            "optional": {"background": ("IMAGE",)},
         }
 
-    def swap(self, face_swap: FaceSwapEngine, identity: FaceIdentity, image: Any, mask_blur: float, enhancer_blend: float):
+    def swap(
+        self,
+        face_swap: FaceSwapEngine,
+        identity: FaceIdentity,
+        image: Any,
+        mask_blur: float,
+        crop_scale: float,
+        color_match: float,
+        keep_mouth: bool,
+        shave: str,
+        shave_extent: float,
+        enhancer_blend: float,
+        background_mode: str,
+        background: Any = None,
+    ):
         frames = image_tensor_to_bgr_list(image)
+        plate = image_tensor_to_bgr_list(background)[0] if background is not None else None
         outputs = []
         timings: list[SwapTimings] = []
+        regions = _regions_for(keep_mouth)
         with face_swap.lock:
             face_swap.reset_tracking()
+            if background_mode != "off" and face_swap.matter is None:
+                raise RuntimeError("background_mode needs a matting model selected in the loader")
             for frame in frames:
                 timing = SwapTimings()
-                outputs.append(face_swap.swap_frame(frame, identity, mask_blur=mask_blur, landmark_smoothing=0.0, enhancer_blend=enhancer_blend, timings=timing))
+                result = face_swap.swap_frame(
+                    frame, identity, mask_blur=mask_blur, landmark_smoothing=0.0, enhancer_blend=enhancer_blend,
+                    crop_scale=crop_scale, color_match=color_match, regions=regions, shave=shave, shave_extent=shave_extent,
+                    matte=background_mode != "off", timings=timing,
+                )
+                if background_mode != "off" and face_swap.last_alpha is not None:
+                    result = composite_background(result, face_swap.last_alpha, _resize_background(plate, frame, background_mode))
+                outputs.append(result)
                 timings.append(timing)
         found = sum(1 for item in timings if item.face_found)
-        mean_total = sum(item.total_ms for item in timings) / max(1, len(timings))
-        mean_detect = sum(item.detect_ms for item in timings) / max(1, len(timings))
-        mean_swap = sum(item.swap_ms for item in timings) / max(1, len(timings))
-        mean_enh = sum(item.enhance_ms for item in timings) / max(1, len(timings))
+        count = max(1, len(timings))
         text = (
-            f"{found}/{len(frames)} faces swapped · mean {mean_total:.1f} ms "
-            f"(detect {mean_detect:.1f}, swap {mean_swap:.1f}, enhance {mean_enh:.1f})"
+            f"{found}/{len(frames)} faces swapped · mean {sum(t.total_ms for t in timings) / count:.1f} ms "
+            f"(detect {sum(t.detect_ms for t in timings) / count:.1f}, swap {sum(t.swap_ms for t in timings) / count:.1f}, "
+            f"mask {sum(t.mask_ms for t in timings) / count:.1f}, enhance {sum(t.enhance_ms for t in timings) / count:.1f}, "
+            f"matte {sum(t.matte_ms for t in timings) / count:.1f})"
         )
         return (bgr_list_to_image_tensor(outputs), text)
 
 
 class DaWastehLiveFaceSwap:
-    """Webcam → face swap → Spout, blocking until Interrupt (never Run (Instant))."""
+    """Webcam → face swap (→ matting) → Spout, blocking until Interrupt (never Run (Instant))."""
 
     OUTPUT_NODE = True
     RETURN_TYPES = ()
     FUNCTION = "run"
     CATEGORY = "DaWasteh/Live Avatar"
     DESCRIPTION = (
-        "Continuous DirectML face swap of the webcam feed into a Spout sender for OBS. "
+        "Continuous DirectML face swap of the webcam feed into a Spout sender for OBS, optionally "
+        "with person matting onto a clean background plate (Workflow 17). "
         "Run once normally and stop with Interrupt; it blocks other ComfyUI jobs while active."
     )
 
@@ -961,13 +1651,15 @@ class DaWastehLiveFaceSwap:
                 "capture_width": ("INT", {"default": 1280, "min": 320, "max": 4096}),
                 "capture_height": ("INT", {"default": 720, "min": 240, "max": 4096}),
                 "mirror": ("BOOLEAN", {"default": True}),
-                "mask_blur": ("FLOAT", {"default": 0.3, "min": 0.0, "max": 1.0, "step": 0.05}),
+                **SWAP_TUNING_INPUTS,
                 "landmark_smoothing": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 0.95, "step": 0.05}),
-                "enhancer_blend": ("FLOAT", {"default": 0.8, "min": 0.0, "max": 1.0, "step": 0.05}),
                 "enhancer_every": ("INT", {"default": 1, "min": 1, "max": 10}),
+                "parser_every": ("INT", {"default": 1, "min": 1, "max": 4, "tooltip": "re-parse the face regions only every n-th frame (2 lifts the frame rate when matting or the RVC voice service share the mask GPU)"}),
+                "background_mode": (BACKGROUND_MODES, {"default": "off", "tooltip": "image = composite onto the clean plate (needs matting in the loader)"}),
                 "max_frames": ("INT", {"default": 0, "min": 0, "max": 1000000}),
                 "metrics_json_path": ("STRING", {"default": "live-face-swap/metrics.json"}),
-            }
+            },
+            "optional": {"background": ("IMAGE",)},
         }
 
     @classmethod
@@ -986,11 +1678,19 @@ class DaWastehLiveFaceSwap:
         capture_height: int,
         mirror: bool,
         mask_blur: float,
-        landmark_smoothing: float,
+        crop_scale: float,
+        color_match: float,
+        keep_mouth: bool,
+        shave: str,
+        shave_extent: float,
         enhancer_blend: float,
+        landmark_smoothing: float,
         enhancer_every: int,
+        parser_every: int,
+        background_mode: str,
         max_frames: int,
         metrics_json_path: str = "",
+        background: Any = None,
     ) -> tuple[()]:
         if not sys.platform.startswith("win"):
             raise RuntimeError("Spout output is supported on Windows only")
@@ -1008,9 +1708,14 @@ class DaWastehLiveFaceSwap:
         spout = live.SpoutWorker(output_slot, sender_name, sender_fps, metrics)
         last_publish = time.monotonic()
         swap_ms: list[float] = []
+        regions = _regions_for(keep_mouth)
+        plate = image_tensor_to_bgr_list(background)[0] if background is not None else None
+        plate_cache: np.ndarray | None = None
         try:
             with face_swap.lock:
                 face_swap.load()
+                if background_mode != "off" and face_swap.matter is None:
+                    raise RuntimeError("background_mode needs a matting model selected in the loader")
                 face_swap.reset_tracking()
                 capture.start()
                 spout.start()
@@ -1033,8 +1738,18 @@ class DaWastehLiveFaceSwap:
                     swapped = face_swap.swap_frame(
                         bgr, identity,
                         mask_blur=mask_blur, landmark_smoothing=landmark_smoothing,
-                        enhancer_blend=enhancer_blend, enhancer_every=enhancer_every, timings=timing,
+                        enhancer_blend=enhancer_blend, enhancer_every=enhancer_every,
+                        crop_scale=crop_scale, color_match=color_match, regions=regions,
+                        shave=shave, shave_extent=shave_extent, matte=background_mode != "off",
+                        parser_every=parser_every, timings=timing,
                     )
+                    if background_mode != "off" and face_swap.last_alpha is not None:
+                        composite_started = time.perf_counter()
+                        if plate_cache is None or plate_cache.shape != bgr.shape or background_mode == "blur":
+                            plate_cache = _resize_background(plate, bgr, background_mode)
+                        swapped = composite_background(swapped, face_swap.last_alpha, plate_cache)
+                        timing.matte_ms = (time.perf_counter() - composite_started) * 1000.0
+                        timing.total_ms += timing.matte_ms
                     swap_ms.append(timing.total_ms)
                     if len(swap_ms) > 600:
                         del swap_ms[:-600]
@@ -1070,6 +1785,10 @@ class DaWastehLiveFaceSwap:
                 "swap_ms_mean": float(np.mean(swap_ms)) if swap_ms else None,
                 "swap_ms_p95": float(np.percentile(swap_ms, 95)) if swap_ms else None,
                 "last_face_found": bool(timing.face_found) if timing else None,
+                "last_stage_ms": {
+                    "detect": timing.detect_ms, "swap": timing.swap_ms, "mask": timing.mask_ms,
+                    "enhance": timing.enhance_ms, "matte": timing.matte_ms,
+                } if timing else None,
             }
             metrics.publish_json(destination, extra)
         except Exception as error:  # telemetry must never stop the transport
@@ -1079,12 +1798,16 @@ class DaWastehLiveFaceSwap:
 NODE_CLASS_MAPPINGS = {
     "DaWastehFaceSwapModelLoader": DaWastehFaceSwapModelLoader,
     "DaWastehFaceSwapIdentity": DaWastehFaceSwapIdentity,
+    "DaWastehFaceSwapIdentityFromFolder": DaWastehFaceSwapIdentityFromFolder,
+    "DaWastehWebcamSnapshot": DaWastehWebcamSnapshot,
     "DaWastehFaceSwapImage": DaWastehFaceSwapImage,
     "DaWastehLiveFaceSwap": DaWastehLiveFaceSwap,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
     "DaWastehFaceSwapModelLoader": "Face Swap Models · DirectML (DaWasteh)",
     "DaWastehFaceSwapIdentity": "Face Swap Identity from Images (DaWasteh)",
+    "DaWastehFaceSwapIdentityFromFolder": "Face Swap Identity from Folder (DaWasteh)",
+    "DaWastehWebcamSnapshot": "Webcam Snapshot / Clean Plate (DaWasteh)",
     "DaWastehFaceSwapImage": "Face Swap Image Preview (DaWasteh)",
     "DaWastehLiveFaceSwap": "Live Face Swap Webcam → Spout (DaWasteh)",
 }

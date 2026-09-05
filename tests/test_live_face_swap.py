@@ -192,17 +192,119 @@ class TrackingTests(unittest.TestCase):
 
 
 class FakeSession:
-    def __init__(self, input_names, output_shape_from_target=True):
+    def __init__(self, input_names, output_shape_from_target=True, mode="echo"):
         self._inputs = [types.SimpleNamespace(name=name) for name in input_names]
+        self._outputs = [types.SimpleNamespace(name="output")]
         self.calls = 0
+        self.mode = mode
+        self.threads: set[str] = set()
 
     def get_inputs(self):
         return self._inputs
 
+    def get_outputs(self):
+        return self._outputs
+
     def run(self, _outputs, feeds):
+        import threading
+
         self.calls += 1
+        self.threads.add(threading.current_thread().name)
         image = [value for key, value in feeds.items() if key in ("target", "input")][0]
+        if self.mode == "parser":  # NCHW -> 19 class logits, everything "skin" except the top rows (hair)
+            size = image.shape[2]
+            logits = np.zeros((1, 19, size, size), dtype=np.float32)
+            logits[0, 1] = 1.0
+            logits[0, 17, : size // 4] = 2.0
+            return [logits]
+        if self.mode == "occluder":  # NHWC -> face everywhere except the left quarter (a "hand")
+            size = image.shape[1]
+            mask = np.ones((1, size, size, 1), dtype=np.float32)
+            mask[:, :, : size // 4] = 0.0
+            return [mask]
+        if self.mode == "matting":  # person = right half
+            size = image.shape[2]
+            alpha = np.zeros((1, 1, size, size), dtype=np.float32)
+            alpha[:, :, :, size // 2 :] = 1.0
+            return [alpha]
         return [np.clip(image, -1, 1)]
+
+
+@unittest.skipUnless(HAS_CV2, "OpenCV is only installed in the ComfyUI venv")
+class MaskHelperTests(unittest.TestCase):
+    def test_scaled_template_widens_the_crop_without_moving_its_centre(self):
+        base = face_swap.WARP_TEMPLATES["arcface_128"]
+        wide = face_swap.scaled_template("arcface_128", 0.8)
+        self.assertTrue(np.allclose(wide.mean(axis=0), base.mean(axis=0)))
+        self.assertLess(float(np.linalg.norm(wide[1] - wide[0])), float(np.linalg.norm(base[1] - base[0])))
+        self.assertTrue(np.array_equal(face_swap.scaled_template("arcface_128", 1.0), base))
+
+    def test_region_and_beard_masks_from_a_class_map(self):
+        size = 64
+        classes = np.full((size, size), 1, dtype=np.int16)  # skin
+        classes[:8] = 17  # hair on top
+        classes[40:44, 28:36] = 11  # mouth interior
+        template = face_swap.scaled_template("arcface_128", 1.0) * size
+        region = face_swap.region_mask_from_classes(classes, face_swap.DEFAULT_REGIONS, size)
+        self.assertEqual(region.shape, (size, size))
+        self.assertLess(float(region[2, 32]), 0.5)
+        self.assertGreater(float(region[32, 32]), 0.9)
+        without_mouth = face_swap.region_mask_from_classes(classes, tuple(r for r in face_swap.DEFAULT_REGIONS if r != "mouth"), size)
+        self.assertLess(float(without_mouth[42, 32]), float(region[42, 32]))
+        beard = face_swap.beard_mask_from_classes(classes, template, size, None, 1.0)
+        self.assertEqual(beard.shape, (size, size))
+        self.assertEqual(float(beard[10, 32]), 0.0)  # forehead is never beard
+        self.assertEqual(float(beard[60, 32]), 1.0)  # chin zone is
+        self.assertEqual(float(beard[42, 32]), 0.0)  # mouth interior is kept
+        self.assertFalse(face_swap.beard_mask_from_classes(classes, template, size, None, 0.0).any())
+        chin_only = face_swap.beard_mask_from_classes(classes, template, size, None, 0.6)
+        self.assertLessEqual(float(chin_only.sum()), float(beard.sum()))
+
+    def test_shave_and_colour_match_keep_shape_and_change_only_the_zone(self):
+        rng = np.random.default_rng(3)
+        crop = rng.integers(0, 256, size=(64, 64, 3), dtype=np.uint8)
+        zone = np.zeros((64, 64), dtype=np.float32)
+        zone[48:, 16:48] = 1.0
+        shaved = face_swap.shave_crop(crop, zone, "skin", np.array([120.0, 140.0, 180.0], dtype=np.float32))
+        self.assertEqual(shaved.shape, crop.shape)
+        self.assertTrue(np.array_equal(shaved[:32], crop[:32]))
+        self.assertGreater(float(np.abs(shaved[56, 32].astype(int) - crop[56, 32].astype(int)).sum()), 0.0)
+        self.assertIs(face_swap.shave_crop(crop, np.zeros((64, 64), dtype=np.float32), "skin"), crop)
+        reference = np.full((64, 64, 3), 200, dtype=np.uint8)
+        matched = face_swap.match_color(crop, reference, np.ones((64, 64), dtype=np.float32), 1.0)
+        self.assertGreater(float(matched.mean()), float(crop.mean()))
+        self.assertIs(face_swap.match_color(crop, reference, np.ones((64, 64), dtype=np.float32), 0.0), crop)
+
+    def test_occlusion_extension_and_background_composite(self):
+        size = 64
+        occlusion = np.zeros((size, size), dtype=np.float32)
+        occlusion[:40] = 1.0  # face oval ends at row 40
+        zone = np.zeros((size, size), dtype=np.float32)
+        zone[36:56] = 1.0  # beard zone below the chin
+        grown = face_swap.extend_occlusion_downward(occlusion, zone, size)
+        self.assertEqual(float(grown[44, 32]), 1.0)
+        self.assertEqual(float(grown[62, 32]), 0.0)
+        frame = np.full((8, 8, 3), 200, dtype=np.uint8)
+        background = np.zeros((8, 8, 3), dtype=np.uint8)
+        alpha = np.zeros((8, 8), dtype=np.float32)
+        alpha[:, 4:] = 1.0
+        mixed = face_swap.composite_background(frame, alpha, background)
+        self.assertEqual(int(mixed[0, 0, 0]), 0)
+        self.assertEqual(int(mixed[0, 7, 0]), 200)
+        self.assertEqual(face_swap._resize_background(None, frame, "green").tolist()[0][0], [0, 255, 0])
+        with self.assertRaises(RuntimeError):
+            face_swap._resize_background(None, frame, "image")
+
+    def test_parser_and_matting_preprocessing(self):
+        crop = np.full((32, 32, 3), 128, dtype=np.uint8)
+        blob = face_swap.prepare_parser_input(crop, 64)
+        self.assertEqual(blob.shape, (1, 3, 64, 64))
+        self.assertAlmostEqual(float(blob[0, 0, 0, 0]), (128 / 255 - 0.485) / 0.229, places=4)
+        matte = face_swap.prepare_matting_input(crop, 16)
+        self.assertEqual(matte.shape, (1, 3, 16, 16))
+        self.assertAlmostEqual(float(matte[0, 1, 0, 0]), (128 - 127.5) / 127.5, places=4)
+        occ = face_swap.prepare_occluder_input(crop, 16)
+        self.assertEqual(occ.shape, (1, 16, 16, 3))
 
 
 class FakeDetector:
@@ -235,21 +337,70 @@ class EngineTests(unittest.TestCase):
             (tmp / "facerestore_models" / "gpen_bfr_256.onnx").write_bytes(b"x")
         return tmp
 
-    def _engine(self, root, boxes, kpss, enhancer="gpen_bfr_256"):
+    def _engine(self, root, boxes, kpss, enhancer="gpen_bfr_256", **extra):
         detector = FakeDetector(boxes, kpss)
         embedder = FakeEmbedder(np.linspace(0.1, 1.0, 512, dtype=np.float32))
         sessions = {}
 
         def factory(path):
             names = ("target", "source") if "hyperswap" in path.name else ("input",)
-            sessions[path.name] = FakeSession(names)
+            mode = "parser" if "bisenet" in path.name else "occluder" if "xseg" in path.name else "matting" if "modnet" in path.name else "echo"
+            sessions[path.name] = FakeSession(names, mode=mode)
             return sessions[path.name]
 
         engine = face_swap.FaceSwapEngine(
             root, "hyperswap_1a_256", enhancer, 1, 320,
-            session_factory=factory, detector_factory=lambda: detector, embedder_factory=lambda: embedder,
+            session_factory=factory, detector_factory=lambda: detector, embedder_factory=lambda: embedder, **extra,
         )
         return engine, sessions
+
+    def _root_with_masks(self, tmp: Path):
+        root = self._root(tmp)
+        (root / "face_parsing").mkdir()
+        (root / "face_parsing" / "xseg_3.onnx").write_bytes(b"x")
+        (root / "face_parsing" / "bisenet_resnet_34.onnx").write_bytes(b"x")
+        (root / "background_removal").mkdir()
+        (root / "background_removal" / "modnet.onnx").write_bytes(b"x")
+        return root
+
+    @unittest.skipUnless(HAS_CV2, "OpenCV is only installed in the ComfyUI venv")
+    def test_v100_pipeline_runs_masks_on_the_worker_and_keeps_the_alpha(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._root_with_masks(Path(tmp))
+            self.assertEqual(face_swap.available_mask_models(face_swap.OCCLUDERS, face_swap.MASK_SUBDIR, root), ["xseg_3"])
+            self.assertEqual(face_swap.available_mask_models(face_swap.MATTERS, face_swap.MATTING_SUBDIR, root), ["modnet"])
+            frame = np.full((480, 640, 3), 90, dtype=np.uint8)
+            boxes = np.array([[270, 190, 370, 290, 0.95]], dtype=np.float32)
+            engine, sessions = self._engine(root, boxes, five_points()[None], occluder="xseg_3", parser="bisenet_resnet_34", matter="modnet", mask_device_id=0)
+            identity = face_swap.FaceIdentity(np.ones((1, 512), dtype=np.float32) / np.sqrt(512), 1, "abc")
+            regions = face_swap._regions_for(True)
+            timing = face_swap.SwapTimings()
+            out = engine.swap_frame(frame, identity, crop_scale=0.8, color_match=0.5, regions=regions, shave="skin", matte=True, timings=timing)
+            out2 = engine.swap_frame(frame, identity, crop_scale=0.8, color_match=0.5, regions=regions, shave="skin", matte=True, timings=timing)
+            self.assertEqual(out.shape, frame.shape)
+            self.assertEqual(out2.shape, frame.shape)
+            self.assertTrue(timing.face_found)
+            self.assertEqual(sessions["bisenet_resnet_34.onnx"].calls, 2)
+            self.assertEqual(sessions["xseg_3.onnx"].calls, 2)
+            self.assertEqual(sessions["modnet.onnx"].calls, 2)
+            self.assertIsNotNone(engine.last_alpha)
+            self.assertEqual(engine.last_alpha.shape, frame.shape[:2])
+            self.assertTrue(engine.parallel_masks)
+            self.assertTrue(any(name.startswith("DaWastehFaceSwapMasks") for name in sessions["bisenet_resnet_34.onnx"].threads))
+            self.assertEqual(sessions["xseg_3.onnx"].threads, {"MainThread"})
+            self.assertIsNotNone(engine._previous_branch.beard)
+            # without a face the matte is still produced (person may be turned away)
+            engine_none, _ = self._engine(root, np.zeros((0, 5), dtype=np.float32), None, occluder="xseg_3", parser="bisenet_resnet_34", matter="modnet", mask_device_id=0)
+            self.assertIs(engine_none.swap_frame(frame, identity, matte=True), frame)
+            self.assertIsNotNone(engine_none.last_alpha)
+            # same adapter for masks and swapper -> no worker thread (DirectML is not thread-safe per adapter)
+            engine_same, _ = self._engine(root, boxes, five_points()[None], occluder="xseg_3", parser="bisenet_resnet_34", mask_device_id=1)
+            engine_same.load()
+            self.assertFalse(engine_same.parallel_masks)
+            self.assertIsNone(engine_same._pool)
+            engine_same.swap_frame(frame, identity, regions=regions, shave="skin")
 
     def test_discovery_reports_installed_models_only(self):
         import tempfile
@@ -302,13 +453,34 @@ class EngineTests(unittest.TestCase):
     def test_node_registration_and_tensor_helpers(self):
         self.assertEqual(
             set(face_swap.NODE_CLASS_MAPPINGS),
-            {"DaWastehFaceSwapModelLoader", "DaWastehFaceSwapIdentity", "DaWastehFaceSwapImage", "DaWastehLiveFaceSwap"},
+            {
+                "DaWastehFaceSwapModelLoader", "DaWastehFaceSwapIdentity", "DaWastehFaceSwapIdentityFromFolder",
+                "DaWastehWebcamSnapshot", "DaWastehFaceSwapImage", "DaWastehLiveFaceSwap",
+            },
         )
         self.assertEqual(set(face_swap.NODE_DISPLAY_NAME_MAPPINGS), set(face_swap.NODE_CLASS_MAPPINGS))
         live_inputs = face_swap.DaWastehLiveFaceSwap.INPUT_TYPES()["required"]
         self.assertEqual(live_inputs["cam_index"][1]["default"], 2)
         self.assertEqual(live_inputs["capture_backend"][1]["default"], "DirectShow")
+        self.assertEqual(live_inputs["crop_scale"][1]["default"], 0.8)
+        self.assertEqual(live_inputs["shave"][1]["default"], "skin")
+        self.assertTrue(live_inputs["keep_mouth"][1]["default"])
+        self.assertEqual(live_inputs["background_mode"][0], face_swap.BACKGROUND_MODES)
+        self.assertIn("background", face_swap.DaWastehLiveFaceSwap.INPUT_TYPES()["optional"])
         self.assertTrue(face_swap.DaWastehLiveFaceSwap.OUTPUT_NODE)
+        from unittest import mock
+
+        with mock.patch.object(face_swap, "models_root", return_value=Path("does-not-exist")):
+            loader_inputs = face_swap.DaWastehFaceSwapModelLoader.INPUT_TYPES()["required"]
+        self.assertEqual(loader_inputs["mask_device_id"][1]["default"], 0)
+        self.assertEqual(loader_inputs["swapper"][1]["default"], "hyperswap_1c_256")  # falls back to the full list when nothing is installed
+        self.assertEqual(loader_inputs["occluder"][0][0], "none")
+        # the webcam snapshot caches until a widget such as ``retake`` changes
+        first = face_swap.DaWastehWebcamSnapshot.IS_CHANGED(cam_index=2, retake=0)
+        self.assertEqual(first, face_swap.DaWastehWebcamSnapshot.IS_CHANGED(retake=0, cam_index=2))
+        self.assertNotEqual(first, face_swap.DaWastehWebcamSnapshot.IS_CHANGED(cam_index=2, retake=1))
+        self.assertEqual(face_swap._regions_for(True), tuple(r for r in face_swap.DEFAULT_REGIONS if r != "mouth"))
+        self.assertEqual(face_swap._regions_for(False), face_swap.DEFAULT_REGIONS)
         rgba = face_swap.bgr_to_rgba(np.zeros((4, 4, 3), dtype=np.uint8))
         self.assertEqual(rgba.shape, (4, 4, 4))
         self.assertEqual(int(rgba[0, 0, 3]), 255)

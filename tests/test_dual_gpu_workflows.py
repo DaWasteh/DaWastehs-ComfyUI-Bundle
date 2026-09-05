@@ -45,7 +45,7 @@ def paths() -> list[Path]:
 
 class DualGPUWorkflowTests(unittest.TestCase):
     def test_collection_has_one_central_control_per_workflow(self):
-        self.assertEqual(len(paths()), 233)
+        self.assertEqual(len(paths()), 234)
         for path in paths():
             with self.subTest(path=path.relative_to(ROOT)):
                 workflow = json.loads(path.read_text(encoding="utf-8"))
@@ -74,7 +74,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 counts["all_r9700"] += 1
             self.assertEqual(defaults, expected, key)
             self.assertEqual(control["widgets_values"], [expected["MODEL"], expected["CLIP"], expected["VAE"]], key)
-        self.assertEqual(counts, {"all_r9700": 202, "curated_split": 31})
+        self.assertEqual(counts, {"all_r9700": 202, "curated_split": 32})
 
     def test_every_selector_is_driven_by_the_root_control_or_subgraph_interface(self):
         selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
@@ -167,6 +167,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
             "audio_minimax_music_3.json": "0322153265b3e785961511b7849f6659f46a8fa7e8cb66976e5279ff1774b228",
             "3d_pixal3d_trellis2_image_to_model.json": "594295ae20490b4ed990655686f2d0c15ba06732df5553bc22bda98966c40a97",
             "live_face_swap_directml.json": "b0a81c21bde4ba374c569b52135dc5db21dfd7fd7f69b7d704d7e9ae9e37bbda",
+            "live_face_swap_directml_v100.json": "15775ccce5c264100dfbefe6ee8a130c50fae4979e3c71679f2062a489362c54",
+            "live_person_swap_directml_v100.json": "0768c62731dd39fa18b8221ae44db86ee4eaed70f3adac1581572aaf5848beb3",
         }
         self.assertEqual({path.name for path in PINNED_TEMPLATES.glob("*.json")}, set(expected_hashes))
         for name, expected in expected_hashes.items():

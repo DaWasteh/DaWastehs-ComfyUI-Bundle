@@ -1,5 +1,7 @@
 # Live Face Swap · Workflow 16 · v0.9.9
 
+> **v1.0.0:** Masken, Rasur, Farbabgleich, Worker-Thread, Matting und Workflow 17 stehen in [LIVE_PERSON_SWAP_V100.md](LIVE_PERSON_SWAP_V100.md). Dieses Dokument beschreibt die DirectML-Grundlagen und die v0.9.9-Messwerte.
+
 Workflow:
 
 `workflows/Live Avatar/LiveAvatar-16-Live-Face-Swap-DirectML-Spout-OBS.json`

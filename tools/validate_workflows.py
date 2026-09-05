@@ -594,8 +594,17 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
             sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head)),
             sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
         )
+    key = _path_key(path).removeprefix("workflows/")
+    addition = next((item for item in ADDITIONS if item.path == key), None)
+    if addition is not None and migrate_workflow(build_addition(addition), key) == current:
+        # A pinned-template addition that was rebuilt from a newer template
+        # (e.g. Workflow 16 in v1.0.0) is reproducible from the template alone.
+        return (
+            sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head)),
+            sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
+        )
     if current.get("extra", {}).get(MIGRATION_KEY, {}).get("version") == MIGRATION_VERSION:
-        expected = migrate_workflow(head, _path_key(path).removeprefix("workflows/"))
+        expected = migrate_workflow(head, key)
         if expected != current:
             errors.append(f"{path}: differs from deterministic v0.9.2 collection migration")
         return (
@@ -794,7 +803,7 @@ def main() -> int:
                 errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    expected = {"files": 233, "graphs": 286, "nodes": 10420, "notes": 4743, "links": 7189, "timers": 215}
+    expected = {"files": 234, "graphs": 287, "nodes": 10453, "notes": 4759, "links": 7205, "timers": 215}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():
