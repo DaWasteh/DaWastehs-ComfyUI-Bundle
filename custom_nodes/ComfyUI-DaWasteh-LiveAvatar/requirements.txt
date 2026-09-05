@@ -1,0 +1,6 @@
+# Live face swap runs on ONNX Runtime DirectML only (no insightface package: its
+# onnx import collides with the protobuf 3.19 pin of the installed audio packs).
+# On Windows/RDNA4 the CPU/CUDA "onnxruntime" wheels install the same module path
+# and would hide DmlExecutionProvider; the updater re-installs the DirectML build
+# last (tools/update-comfyui-rdna4.ps1, "DirectML ONNX Runtime").
+onnxruntime-directml>=1.24.4

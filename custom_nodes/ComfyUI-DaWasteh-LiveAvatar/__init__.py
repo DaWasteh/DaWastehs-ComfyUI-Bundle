@@ -1,6 +1,7 @@
 """Continuous LivePortrait, cached AI Mirror, and local VRM nodes for ComfyUI."""
 from .nodes import DaWastehCachedOpenPose, DaWastehContinuousLiveAvatar, DaWastehLatestLiveAvatarOutput, DaWastehPersistentSpout, DaWastehVRMLiveAvatarLauncher, DaWastehWorkflow12Preflight
 from .voice_swap import DaWastehLiveVoiceSwapLauncher
+from .face_swap import NODE_CLASS_MAPPINGS as FACE_SWAP_NODES, NODE_DISPLAY_NAME_MAPPINGS as FACE_SWAP_NAMES
 from .vrm_tools import DaWastehRiggedGLBToVRM0, DaWastehVRMTextureSource, DaWastehVRMTextureVariant
 from .vrm_server import register_routes
 
@@ -17,6 +18,7 @@ NODE_CLASS_MAPPINGS = {
     "DaWastehVRMTextureVariant": DaWastehVRMTextureVariant,
     "DaWastehRiggedGLBToVRM0": DaWastehRiggedGLBToVRM0,
 }
+NODE_CLASS_MAPPINGS.update(FACE_SWAP_NODES)
 NODE_DISPLAY_NAME_MAPPINGS = {
     "DaWastehCachedOpenPose": "Cached OpenPose (DaWasteh, webcam optimized)",
     "DaWastehContinuousLiveAvatar": "LivePortrait Continuous Spout (DaWasteh, experimental)",
@@ -29,5 +31,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "DaWastehVRMTextureVariant": "Save VRM Texture Variant (DaWasteh, local)",
     "DaWastehRiggedGLBToVRM0": "Rigged GLB to VRM0 Candidate (DaWasteh, strict)",
 }
+NODE_DISPLAY_NAME_MAPPINGS.update(FACE_SWAP_NAMES)
 WEB_DIRECTORY = "web"
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS", "WEB_DIRECTORY"]

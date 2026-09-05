@@ -1,4 +1,4 @@
-# Live-Avatar-Anleitung · v0.8.5
+# Live-Avatar-Anleitung · v0.9.9
 
 Diese Anleitung beschreibt die lokalen Live-Avatar-Wege dieses Repositories auf dem Windows-RDNA4-System. Alle Kamera- und Referenzbilder bleiben bei den lokalen Wegen auf dem Rechner.
 
@@ -19,6 +19,7 @@ Diese Anleitung beschreibt die lokalen Live-Avatar-Wege dieses Repositories auf 
 | Zuverlässiger geriggter Modus | 12-III | Chrome-Fensteraufnahme |
 | Korrigierte Full-Body-/Turnaround-Referenzansichten erzeugen | 13 | keine Live-Ausgabe |
 | Aus vier Ansichten echte lokale 3D-Geometrie erzeugen | 14 | statisches GLB unter `output/LiveAvatar/` |
+| **Echtes Kamerabild mit getauschter Gesichtsidentität (Live-Deepfake)** | **16** | Spout2 `ComfyLiveFaceSwap` |
 
 ## Voraussetzungen
 
@@ -263,6 +264,17 @@ Workflow 12-II schreibt getrennte AI-/Spout-/Duplikat-/Latenzmetriken nach `L:/C
 
 Workflow 13 liefert sechs korrigierte Full-Body-/Turnaround-Ansichten und zwei Ausdrucksreferenzen. Workflow 14 konditioniert Hunyuan3D wirklich mit Front/Links/Hinten/Rechts und erzeugt neue GLB-Geometrie. Das GLB ist statisch, untexturiert und ungeriggt; automatisches lokales AMD-Rigging ist mit den aktuell installierten Komponenten nicht verfügbar.
 
+
+## Workflow 16 · Live Face Swap über DirectML · v0.9.9
+
+Workflow 16 ist der erste Pfad dieser Sammlung, der das **echte Kamerabild** behält und nur die Gesichtsidentität austauscht: BRIO (DirectShow-Index 2, 1280×720) → SCRFD-Erkennung → `inswapper_128` oder `hyperswap_1a_256` → optional GPEN-BFR-256 / GFPGAN 1.4 → Spout2-Sender `ComfyLiveFaceSwap`. Mimik, Kopfhaltung, Hände, Kleidung und Hintergrund stammen weiter von der Kamera; deshalb wirkt das Ergebnis nicht wie die SD1.5-Mirror-Graphen 07/11 und nicht wie ein LivePortrait-Standbild.
+
+1. Quellfoto der freigegebenen Zielidentität im Node **Quellidentität** wählen (frontal, gut beleuchtet, keine Brille; zwei bis drei Fotos als Batch stabilisieren).
+2. **Run**: Der Vorschau-Zweig tauscht das Testbild und zeigt die Millisekunden je Stufe.
+3. Live-Node **Bypass** aufheben, in OBS die Spout2-Quelle `ComfyLiveFaceSwap` anlegen, **Run**. Beenden nur mit **Interrupt**, nie Run (Instant).
+4. Metriken: `L:/ComfyUI/logs/live-face-swap/metrics.json`.
+
+DirectML-Gerät 1 ist auf diesem Rechner die R9700 (gleiche GPU wie Spout/OBS), Gerät 0 die RX 9070 XT. Alle Modelle, Hashes, Lizenzen und Grenzen: [docs/LIVE_FACE_SWAP_V099.md](docs/LIVE_FACE_SWAP_V099.md). Die Stimme läuft weiterhin getrennt über den DirectML-RVC-Begleiter (Abschnitt „Audio“).
 
 ## Workflow 15 · lokaler High-Realism-GLB→VRM-Pfad
 

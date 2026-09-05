@@ -794,7 +794,7 @@ def main() -> int:
                 errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    expected = {"files": 232, "graphs": 285, "nodes": 10399, "notes": 4733, "links": 7179, "timers": 215}
+    expected = {"files": 233, "graphs": 286, "nodes": 10420, "notes": 4743, "links": 7189, "timers": 215}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

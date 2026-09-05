@@ -244,6 +244,7 @@ class WidgetMappingTests(unittest.TestCase):
                 "LiveAvatar-13-Synthetic-Character-Sheet.json",
                 "LiveAvatar-14-Local-Hunyuan3D-Multiview-Mesh-Unrigged.json",
                 "LiveAvatar-15-Local-High-Realism-VRM.json",
+                "LiveAvatar-16-Live-Face-Swap-DirectML-Spout-OBS.json",
             ],
         )
         workflows = [json.loads(path.read_text(encoding="utf-8")) for path in paths]

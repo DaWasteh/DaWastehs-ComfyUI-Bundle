@@ -58,6 +58,7 @@ class PixaromaIntegrationTests(unittest.TestCase):
                 "workflows/Game Development/Pixal3D_INT8-Buildings-and-Environment-PBR-for-Godot.json",
                 "workflows/Game Development/Pixal3D_INT8-Humanoids-and-Animals-PBR-for-Godot.json",
                 "workflows/Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json",
+                "workflows/Live Avatar/LiveAvatar-16-Live-Face-Swap-DirectML-Spout-OBS.json",
             }
         }
         self.assertEqual(

@@ -672,6 +672,28 @@ if (Test-Path -LiteralPath $QwenTtsConstraints) {
     Invoke-NativeCommand $PythonExe "-m" "pip" "install" "-r" $QwenTtsConstraints
 }
 
+# DirectML must own the "onnxruntime" import: insightface/other packs pull the
+# CPU or CUDA wheel, which installs the same module path and silently removes
+# DmlExecutionProvider. Re-install the DirectML build last, without deps.
+Write-Host "Apply DirectML ONNX Runtime pin (last writer wins)" -ForegroundColor Cyan
+Invoke-NativeCommand $PythonExe "-m" "pip" "uninstall" "-y" "onnxruntime-gpu"
+Invoke-NativeCommand $PythonExe "-m" "pip" "install" "--force-reinstall" "--no-deps" "onnxruntime-directml>=1.24.4"
+$DirectMlCheck = @'
+import onnxruntime
+providers = onnxruntime.get_available_providers()
+print("onnxruntime", onnxruntime.__version__, providers)
+if "DmlExecutionProvider" not in providers:
+    raise SystemExit("DmlExecutionProvider missing after onnxruntime-directml install")
+'@
+$DirectMlFile = Join-Path $env:TEMP ("comfyui-directml-check-{0}.py" -f ([guid]::NewGuid().ToString("N")))
+try {
+    Set-Content -Path $DirectMlFile -Value $DirectMlCheck -Encoding UTF8
+    Invoke-NativeCommand $PythonExe $DirectMlFile
+}
+finally {
+    Remove-Item $DirectMlFile -Force -ErrorAction SilentlyContinue
+}
+
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor DarkCyan
 Write-Host "Validierung" -ForegroundColor Cyan

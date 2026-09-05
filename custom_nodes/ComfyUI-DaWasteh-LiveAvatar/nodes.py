@@ -153,7 +153,7 @@ class LiveAvatarMetrics:
         with self._lock:
             now=time.monotonic() if now is None else now; elapsed=max(0,(now-(self._started if self._started is not None else now)))
             return {"ai_frames":self.ai_frames,"presented_frames":self.presented_frames,"unique_presentations":self.unique_presentations,"duplicate_presentations":self.duplicate_presentations,"dropped_capture_frames":self.dropped_capture_frames,"elapsed_seconds":elapsed,"ai_fps":self.ai_frames/elapsed if elapsed else 0,"presentation_fps":self.presented_frames/elapsed if elapsed else 0,"capture_to_spout_ms":{x:self._percentile(self.capture_to_spout_ms,p) for x,p in (("p50",.5),("p95",.95),("p99",.99))},"unique_frame_interval_ms":{x:self._percentile(self.unique_intervals_ms,p) for x,p in (("p50",.5),("p95",.95),("p99",.99))}}
-    def publish_json(self,destination):
+    def publish_json(self,destination,extra=None):
         configured_root = os.environ.get("DAWASTEH_LIVE_AVATAR_LOG_ROOT")
         if configured_root:
             root = Path(configured_root).resolve()
@@ -168,7 +168,9 @@ class LiveAvatarMetrics:
         if dest.suffix.lower() != ".json" or (dest != root and root not in dest.parents):
             raise ValueError(f"metrics_json_path must be a JSON file under {root}")
         dest.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(dir=dest.parent,prefix='.metrics-',suffix='.tmp')
-        with os.fdopen(fd,'w',encoding='utf-8') as f:json.dump(self.snapshot(),f);f.flush();os.fsync(f.fileno())
+        payload = self.snapshot()
+        if extra: payload.update(extra)
+        with os.fdopen(fd,'w',encoding='utf-8') as f:json.dump(payload,f);f.flush();os.fsync(f.fileno())
         os.replace(tmp,dest)
 
 
@@ -374,8 +376,10 @@ class CaptureWorker:
         auto_face_crop: bool = False,
         face_crop_scale: float = 2.0,
         face_crop_smoothing: float = 0.72,
+        output_size: tuple[int, int] | None = (256, 256),
     ) -> None:
         self.slot = slot
+        self.output_size = output_size
         self.cam_index = cam_index
         self.width = width
         self.height = height
@@ -493,7 +497,8 @@ class CaptureWorker:
                     frame = square_roi(frame, self.offset_x, self.offset_y)
                 if self.mirror:
                     frame = cv2.flip(frame, 1)
-                frame = cv2.resize(frame, (256, 256), interpolation=cv2.INTER_AREA)
+                if self.output_size is not None:
+                    frame = cv2.resize(frame, self.output_size, interpolation=cv2.INTER_AREA)
                 self.slot.publish(TimedFrame(frame, capture_time=time.monotonic()))
         except BaseException as error:
             if not self.stop_event.is_set():

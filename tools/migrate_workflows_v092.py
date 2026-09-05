@@ -47,6 +47,11 @@ try:
     )
     from tools.upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
     from tools.upgrade_v098 import upgrade_workflow as upgrade_v098_workflow
+    from tools.upgrade_v099 import (
+        FACE_SWAP_PATH as V099_FACE_SWAP_PATH,
+        SOURCE_TEMPLATE as V099_SOURCE_TEMPLATE,
+        V099_OBJECT_INFO,
+    )
     from tools.upgrade_v097 import (
         CREATURE_PATH as V097_CREATURE_PATH,
         ENVIRONMENT_PATH as V097_ENVIRONMENT_PATH,
@@ -84,6 +89,11 @@ except ModuleNotFoundError:  # Direct execution
     )
     from upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
     from upgrade_v098 import upgrade_workflow as upgrade_v098_workflow
+    from upgrade_v099 import (
+        FACE_SWAP_PATH as V099_FACE_SWAP_PATH,
+        SOURCE_TEMPLATE as V099_SOURCE_TEMPLATE,
+        V099_OBJECT_INFO,
+    )
     from upgrade_v097 import (
         CREATURE_PATH as V097_CREATURE_PATH,
         ENVIRONMENT_PATH as V097_ENVIRONMENT_PATH,
@@ -150,6 +160,12 @@ ADDITIONS = (
         "Pixal3D INT8 Humanoids and Animals PBR for Godot",
         {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
     ),
+    Addition(
+        V099_FACE_SWAP_PATH,
+        V099_SOURCE_TEMPLATE,
+        "Live Face Swap DirectML Spout OBS",
+        {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
+    ),
 )
 
 
@@ -161,6 +177,7 @@ def _load_object_info() -> dict[str, Any]:
     info.update(V095_OBJECT_INFO)
     info.update(V096_OBJECT_INFO)
     info.update(V097_OBJECT_INFO)
+    info.update(V099_OBJECT_INFO)
     return info
 
 
@@ -388,7 +405,9 @@ def build_addition(addition: Addition) -> dict[str, Any]:
     workflow = json.loads(_workflow_template_path(addition.template).read_text(encoding="utf-8-sig"))
     workflow = specialize_game_asset_template(workflow, addition.path)
     _localize_model_paths(workflow)
-    install_run_timer(workflow)
+    if not addition.path.startswith("Live Avatar/"):
+        # Live Avatar roots stay timer-free by explicit user decision.
+        install_run_timer(workflow)
     workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-v092:{addition.path}"))
     workflow["revision"] = 0
     workflow.setdefault("extra", {})["dawasteh_template_source"] = {

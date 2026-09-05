@@ -1,0 +1,751 @@
+{
+  "id": "b3e4a0f4-8c0b-4d6b-9f6a-16f1a7c1e099",
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 10,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "PixaromaNote",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        800,
+        900
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "note_json",
+          "name": "note_json",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "note_json"
+          }
+        }
+      ],
+      "outputs": [],
+      "title": "Workflow 16 · Live Face Swap · Bedienung und Grenzen",
+      "properties": {
+        "Node name for S&R": "PixaromaNote",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        "{\"version\": 1, \"content\": \"<h1>Workflow 16 · Live Face Swap (DirectML) → Spout → OBS</h1><p>Echter Echtzeit-Identitätstausch statt LivePortrait-Reenactment oder SD1.5-Diffusion: Die BRIO liefert 1280×720 über DirectShow (Index 2), InsightFace SCRFD findet das Gesicht, <code>inswapper_128</code> oder <code>hyperswap_1a_256</code> tauscht die Identität aus dem Quellfoto ein, optional glättet GPEN-BFR-256 / GFPGAN 1.4 das Ergebnis, und der Spout-Sender <code>ComfyLiveFaceSwap</code> zeigt es in OBS. Mimik, Kopfhaltung, Hände und Hintergrund bleiben dein Kamerabild; nur die Gesichtsidentität wird ersetzt.</p><h2>Bedienung</h2><ol><li>Quellfoto der Zielidentität laden (frontal, gut beleuchtet, keine Brille). Mehrere Fotos als Batch erhöhen die Stabilität.</li><li>Vorschau-Zweig mit einem Testbild ausführen (<b>Run</b>); Timing-Text prüft Erkennung/Swap/Enhancer in Millisekunden.</li><li>Den Live-Node <b>Bypass</b> aufheben, OBS-Spout-Quelle <code>ComfyLiveFaceSwap</code> anlegen, einmal <b>Run</b>. Beenden ausschließlich mit <b>Interrupt</b>; nie Run (Instant).</li></ol><h2>Hardware</h2><p>DirectML-Gerät 1 = R9700 (gleiche GPU wie Spout/OBS), 0 = RX 9070 XT. Die ROCm-Torch-Geräte sind hier nicht beteiligt. Für die Stimme läuft getrennt der DirectML-RVC-Begleiter (Workflow <code>Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json</code>) auf der RX 9070 XT.</p><h2>Lizenzen &amp; Einwilligung</h2><p>inswapper_128 und buffalo_l: nicht-kommerzielle InsightFace-Lizenz; hyperswap_1a_256: FaceFusion ResearchRAIL; GPEN: nicht-kommerziell; GFPGAN: Apache-2.0. Nur eigene oder ausdrücklich freigegebene Gesichter verwenden und die Synthese im Stream sichtbar kennzeichnen.</p>\"}",
+        ""
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [
+        1000.0,
+        80.0
+      ],
+      "size": [
+        430,
+        500
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "localized_name": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "link": null,
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            2
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "slot_index": 1,
+          "links": []
+        }
+      ],
+      "title": "Quellidentität · freigegebenes Foto (Batch erlaubt)",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "13_smile_closeup_img00031_00001_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "DaWastehFaceSwapModelLoader",
+      "pos": [
+        1000.0,
+        640.0
+      ],
+      "size": [
+        430,
+        200
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "swapper",
+          "name": "swapper",
+          "type": "COMBO",
+          "widget": {
+            "name": "swapper"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "enhancer",
+          "name": "enhancer",
+          "type": "COMBO",
+          "widget": {
+            "name": "enhancer"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "dml_device_id",
+          "name": "dml_device_id",
+          "type": "INT",
+          "widget": {
+            "name": "dml_device_id"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "det_size",
+          "name": "det_size",
+          "type": "COMBO",
+          "widget": {
+            "name": "det_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "det_threshold",
+          "name": "det_threshold",
+          "type": "FLOAT",
+          "widget": {
+            "name": "det_threshold"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "face_swap",
+          "name": "face_swap",
+          "type": "DAW_FACESWAP",
+          "slot_index": 0,
+          "links": [
+            1,
+            4,
+            9
+          ]
+        }
+      ],
+      "title": "Face-Swap-Modelle · DirectML 1 = R9700",
+      "properties": {
+        "Node name for S&R": "DaWastehFaceSwapModelLoader",
+        "cnr_id": "ComfyUI-DaWasteh-LiveAvatar"
+      },
+      "widgets_values": [
+        "inswapper_128",
+        "gpen_bfr_256",
+        1,
+        320,
+        0.5
+      ]
+    },
+    {
+      "id": 4,
+      "type": "DaWastehFaceSwapIdentity",
+      "pos": [
+        1520.0,
+        80.0
+      ],
+      "size": [
+        380,
+        120
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "face_swap",
+          "name": "face_swap",
+          "type": "DAW_FACESWAP",
+          "link": 1
+        },
+        {
+          "localized_name": "source_images",
+          "name": "source_images",
+          "type": "IMAGE",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "identity",
+          "name": "identity",
+          "type": "DAW_FACE_IDENTITY",
+          "slot_index": 0,
+          "links": [
+            5,
+            10
+          ]
+        },
+        {
+          "localized_name": "summary",
+          "name": "summary",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": [
+            3
+          ]
+        }
+      ],
+      "title": "Identität aus Quellfoto(s)",
+      "properties": {
+        "Node name for S&R": "DaWastehFaceSwapIdentity",
+        "cnr_id": "ComfyUI-DaWasteh-LiveAvatar"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 5,
+      "type": "PreviewAny",
+      "pos": [
+        1520.0,
+        260.0
+      ],
+      "size": [
+        380,
+        120
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "source",
+          "name": "source",
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "title": "Identitäts-Zusammenfassung",
+      "properties": {
+        "Node name for S&R": "PreviewAny",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "LoadImage",
+      "pos": [
+        1000.0,
+        900.0
+      ],
+      "size": [
+        430,
+        500
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "localized_name": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "link": null,
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            6
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "slot_index": 1,
+          "links": []
+        }
+      ],
+      "title": "Testbild für die Offline-Vorschau",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "13_three_quarter_left_00001_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "DaWastehFaceSwapImage",
+      "pos": [
+        1520.0,
+        460.0
+      ],
+      "size": [
+        420,
+        180
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "face_swap",
+          "name": "face_swap",
+          "type": "DAW_FACESWAP",
+          "link": 4
+        },
+        {
+          "localized_name": "identity",
+          "name": "identity",
+          "type": "DAW_FACE_IDENTITY",
+          "link": 5
+        },
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 6
+        },
+        {
+          "localized_name": "mask_blur",
+          "name": "mask_blur",
+          "type": "FLOAT",
+          "widget": {
+            "name": "mask_blur"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "enhancer_blend",
+          "name": "enhancer_blend",
+          "type": "FLOAT",
+          "widget": {
+            "name": "enhancer_blend"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            7
+          ]
+        },
+        {
+          "localized_name": "timing",
+          "name": "timing",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": [
+            8
+          ]
+        }
+      ],
+      "title": "Vorschau-Swap · Einstellungen prüfen",
+      "properties": {
+        "Node name for S&R": "DaWastehFaceSwapImage",
+        "cnr_id": "ComfyUI-DaWasteh-LiveAvatar"
+      },
+      "widgets_values": [
+        0.3,
+        0.8
+      ]
+    },
+    {
+      "id": 8,
+      "type": "PreviewImage",
+      "pos": [
+        2020.0,
+        80.0
+      ],
+      "size": [
+        500,
+        560
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 7
+        }
+      ],
+      "outputs": [],
+      "title": "Vorschau · getauschtes Gesicht",
+      "properties": {
+        "Node name for S&R": "PreviewImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 9,
+      "type": "PreviewAny",
+      "pos": [
+        2020.0,
+        700.0
+      ],
+      "size": [
+        500,
+        120
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "source",
+          "name": "source",
+          "type": "*",
+          "link": 8
+        }
+      ],
+      "outputs": [],
+      "title": "Millisekunden · Erkennung / Swap / Enhancer",
+      "properties": {
+        "Node name for S&R": "PreviewAny",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 10,
+      "type": "DaWastehLiveFaceSwap",
+      "pos": [
+        2600.0,
+        80.0
+      ],
+      "size": [
+        480,
+        560
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 4,
+      "inputs": [
+        {
+          "localized_name": "face_swap",
+          "name": "face_swap",
+          "type": "DAW_FACESWAP",
+          "link": 9
+        },
+        {
+          "localized_name": "identity",
+          "name": "identity",
+          "type": "DAW_FACE_IDENTITY",
+          "link": 10
+        },
+        {
+          "localized_name": "sender_name",
+          "name": "sender_name",
+          "type": "STRING",
+          "widget": {
+            "name": "sender_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sender_fps",
+          "name": "sender_fps",
+          "type": "INT",
+          "widget": {
+            "name": "sender_fps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "cam_index",
+          "name": "cam_index",
+          "type": "INT",
+          "widget": {
+            "name": "cam_index"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "capture_backend",
+          "name": "capture_backend",
+          "type": "COMBO",
+          "widget": {
+            "name": "capture_backend"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "capture_width",
+          "name": "capture_width",
+          "type": "INT",
+          "widget": {
+            "name": "capture_width"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "capture_height",
+          "name": "capture_height",
+          "type": "INT",
+          "widget": {
+            "name": "capture_height"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "mirror",
+          "name": "mirror",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "mirror"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "mask_blur",
+          "name": "mask_blur",
+          "type": "FLOAT",
+          "widget": {
+            "name": "mask_blur"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "landmark_smoothing",
+          "name": "landmark_smoothing",
+          "type": "FLOAT",
+          "widget": {
+            "name": "landmark_smoothing"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "enhancer_blend",
+          "name": "enhancer_blend",
+          "type": "FLOAT",
+          "widget": {
+            "name": "enhancer_blend"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "enhancer_every",
+          "name": "enhancer_every",
+          "type": "INT",
+          "widget": {
+            "name": "enhancer_every"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "max_frames",
+          "name": "max_frames",
+          "type": "INT",
+          "widget": {
+            "name": "max_frames"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "metrics_json_path",
+          "name": "metrics_json_path",
+          "type": "STRING",
+          "widget": {
+            "name": "metrics_json_path"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [],
+      "title": "LIVE · BRIO → Face Swap → Spout ComfyLiveFaceSwap (Bypass aufheben)",
+      "properties": {
+        "Node name for S&R": "DaWastehLiveFaceSwap",
+        "cnr_id": "ComfyUI-DaWasteh-LiveAvatar"
+      },
+      "widgets_values": [
+        "ComfyLiveFaceSwap",
+        30,
+        2,
+        "DirectShow",
+        1280,
+        720,
+        true,
+        0.3,
+        0.5,
+        0.8,
+        1,
+        0,
+        "live-face-swap/metrics.json"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      3,
+      0,
+      4,
+      0,
+      "DAW_FACESWAP"
+    ],
+    [
+      2,
+      2,
+      0,
+      4,
+      1,
+      "IMAGE"
+    ],
+    [
+      3,
+      4,
+      1,
+      5,
+      0,
+      "STRING"
+    ],
+    [
+      4,
+      3,
+      0,
+      7,
+      0,
+      "DAW_FACESWAP"
+    ],
+    [
+      5,
+      4,
+      0,
+      7,
+      1,
+      "DAW_FACE_IDENTITY"
+    ],
+    [
+      6,
+      6,
+      0,
+      7,
+      2,
+      "IMAGE"
+    ],
+    [
+      7,
+      7,
+      0,
+      8,
+      0,
+      "IMAGE"
+    ],
+    [
+      8,
+      7,
+      1,
+      9,
+      0,
+      "STRING"
+    ],
+    [
+      9,
+      3,
+      0,
+      10,
+      0,
+      "DAW_FACESWAP"
+    ],
+    [
+      10,
+      4,
+      0,
+      10,
+      1,
+      "DAW_FACE_IDENTITY"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.5,
+      "offset": [
+        0,
+        0
+      ]
+    },
+    "frontendVersion": "1.51.9",
+    "dawasteh_v099_live_face_swap": {
+      "version": 1,
+      "release": "v0.9.9"
+    }
+  },
+  "version": 0.4
+}
