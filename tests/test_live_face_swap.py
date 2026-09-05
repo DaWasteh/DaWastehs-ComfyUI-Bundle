@@ -295,6 +295,53 @@ class MaskHelperTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             face_swap._resize_background(None, frame, "image")
 
+    def test_v110_identity_boost_temporal_blend_lookahead_and_dfm_helpers(self):
+        source = np.ones((1, 4), dtype=np.float32)
+        live = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float32)
+        boosted = face_swap.boost_identity(source, live, 1.0)
+        self.assertAlmostEqual(float(boosted[0, 0]), 1.0, places=5)
+        self.assertAlmostEqual(float(boosted[0, 1]), 1.35, places=5)
+        self.assertIs(face_swap.boost_identity(source, live, 0.0), source)
+        previous = np.zeros((4, 4, 3), dtype=np.uint8)
+        current = np.full((4, 4, 3), 200, dtype=np.uint8)
+        self.assertEqual(int(face_swap.temporal_blend(previous, current, 0.5)[0, 0, 0]), 100)
+        self.assertIs(face_swap.temporal_blend(None, current, 0.5), current)
+        buffer = face_swap.LookaheadBuffer(2)
+        base = five_points()
+        self.assertIsNone(buffer.push("a", 1, base))
+        self.assertIsNone(buffer.push("b", 2, base + 1.0))
+        captured, frame, landmarks = buffer.push("c", 3, base + 2.0)
+        self.assertEqual((captured, frame), ("a", 1))
+        self.assertTrue(np.allclose(landmarks, base + 1.0))
+        jump = buffer.push("d", 4, base + 500.0)  # frame b with a far-away future frame: ignored
+        self.assertEqual(jump[0], "b")
+        self.assertTrue(np.allclose(jump[2], base + 1.5))
+        passthrough = face_swap.LookaheadBuffer(0).push("x", 9, None)
+        self.assertEqual(passthrough, ("x", 9, None))
+        crop = np.full((16, 16, 3), 120, dtype=np.uint8)
+        blob = face_swap.prepare_dfm_input(crop)
+        self.assertEqual(blob.shape, (1, 16, 16, 3))
+        inner = np.pad(np.ones((8, 8), dtype=np.float32), 4)
+        mask = face_swap.dfm_mask(inner.reshape(16, 16, 1), inner.reshape(1, 16, 16), 16)
+        self.assertEqual(mask.shape, (16, 16))
+        self.assertLess(float(mask[0, 0]), float(mask[8, 8]))
+        classes = np.full((32, 32), 1, dtype=np.int16)
+        classes[20:24] = 12  # upper lip
+        classes[24:28] = 11  # mouth interior
+        band = face_swap.moustache_band(classes)
+        self.assertEqual(float(band[21, 5]), 1.0)
+        self.assertEqual(float(band[25, 5]), 0.0)
+        zone = np.zeros((16, 16), dtype=np.float32)
+        zone[8:] = 1.0
+        fixed = face_swap.fix_zone_color(np.full((16, 16, 3), 60, dtype=np.uint8), np.full((16, 16, 3), 160, dtype=np.uint8), zone, 1.0)
+        self.assertGreater(int(fixed[12, 8, 0]), 60)
+        self.assertEqual(face_swap.resolve_swapper("dfm/anything").kind, "dfm")
+        self.assertEqual(face_swap.dfm_spec("dfm/anything").file_name, "anything.dfm")
+        inputs = face_swap.DaWastehLiveFaceSwap.INPUT_TYPES()["required"]
+        self.assertEqual(inputs["lookahead_frames"][1]["default"], 2)
+        self.assertEqual(inputs["identity_strength"][1]["default"], 0.85)
+        self.assertEqual(inputs["glasses"][0], face_swap.GLASSES_MODES)
+
     def test_parser_and_matting_preprocessing(self):
         crop = np.full((32, 32, 3), 128, dtype=np.uint8)
         blob = face_swap.prepare_parser_input(crop, 64)

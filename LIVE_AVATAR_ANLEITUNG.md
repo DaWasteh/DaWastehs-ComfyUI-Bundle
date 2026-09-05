@@ -1,4 +1,4 @@
-# Live-Avatar-Anleitung · v1.0.0
+# Live-Avatar-Anleitung · v1.1.0
 
 Diese Anleitung beschreibt die lokalen Live-Avatar-Wege dieses Repositories auf dem Windows-RDNA4-System. Alle Kamera- und Referenzbilder bleiben bei den lokalen Wegen auf dem Rechner.
 
@@ -277,7 +277,8 @@ Workflow 16 behält das **echte Kamerabild** und tauscht nur die Gesichtsidentit
 1. **Run**: Identität, Testbild und Vorschau. Regler bei Bedarf: `crop_scale` 0,8 (0,7 gegen Bartreste), `color_match` 0,5, `keep_mouth` an, `shave` skin (none, wenn das Ziel selbst Bart trägt).
 2. Workflow 17: Beim ersten Run wartet der obere Snapshot-Node 8 s, in denen du **aus dem Bild gehst** (Clean Plate, gecacht; `retake` erhöhen nach Licht- oder Kamerawechsel).
 3. Live-Node **Bypass** aufheben, in OBS die Spout2-Quelle `ComfyLiveFaceSwap` bzw. `ComfyLivePersonSwap` anlegen, **Run**. Beenden nur mit **Interrupt**, nie Run (Instant).
-4. Metriken: `L:/ComfyUI/logs/live-face-swap/metrics.json`. Bildrate unter Kamerarate: `parser_every` 2 (Standard in 17), `enhancer_every` 2.
+4. Metriken: `L:/ComfyUI/logs/live-face-swap/metrics.json`. Bildrate unter Kamerarate: `parser_every` 2 (Standard in 17), `enhancer_every` 2. Bei Abendlicht senkt die BRIO die Bildrate selbst auf rund 15 Bilder/s; mehr Licht oder feste Belichtung hilft.
+5. v1.1.0-Regler gegen Flackern und schwache Identität: `identity_strength` 0,85, `temporal_smoothing` 0,3, `mask_feather` 3, `lookahead_frames` 2 (Ausgabe zwei Kamerabilder verzögert, dafür zentriert geglättet), `glasses` swap/keep/remove. Ein Ganzgesicht-Modell (`dfm/<name>` aus `models/deepfacelive/`) ist der Weg zu einem abkaufbaren Ergebnis; der Trainingsweg für den eigenen Avatar steht in [docs/LIVE_PERSON_SWAP_V100.md](docs/LIVE_PERSON_SWAP_V100.md).
 
 DirectML-Gerät 1 ist die R9700 (Swapper, Enhancer, gleiche GPU wie Spout/OBS), Gerät 0 die RX 9070 XT (Occluder, Parser, Matting im Worker-Thread; dort läuft auch der RVC-Dienst). Gemessen: Workflow 16 hält die Kamerarate (22,9 KI-Bilder/s), die Engine allein schafft 42 Bilder/s ohne und 29 mit Matting. Ein Ganzkörpertausch (andere Statur, Kleidung, Frisur) ist auf dieser Hardware in Echtzeit nicht flimmerfrei möglich; Workflow 17 ist deshalb Gesicht + Hintergrund + Stimme. Alle Modelle, Hashes, Lizenzen, Messreihen und Regler: [docs/LIVE_PERSON_SWAP_V100.md](docs/LIVE_PERSON_SWAP_V100.md); die DirectML-Grundlagen aus v0.9.9: [docs/LIVE_FACE_SWAP_V099.md](docs/LIVE_FACE_SWAP_V099.md).
 

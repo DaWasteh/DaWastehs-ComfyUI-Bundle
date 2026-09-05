@@ -28,10 +28,10 @@ UPGRADE_KEY = "dawasteh_v100_live_person_swap"
 UPGRADE_VERSION = 1
 FACE_SWAP_PATH = "Live Avatar/LiveAvatar-16-Live-Face-Swap-DirectML-Spout-OBS.json"
 FACE_SWAP_TEMPLATE = "live_face_swap_directml_v100.json"
-FACE_SWAP_TEMPLATE_SHA256 = "15775ccce5c264100dfbefe6ee8a130c50fae4979e3c71679f2062a489362c54"
+FACE_SWAP_TEMPLATE_SHA256 = "70b33b989c6c9e23b1bedffea2ba63eb1616d914da826eda6686b4c558c4d8e9"
 PERSON_SWAP_PATH = "Live Avatar/LiveAvatar-17-Live-Person-Swap-Matting-Voice-DirectML-Spout-OBS.json"
 PERSON_SWAP_TEMPLATE = "live_person_swap_directml_v100.json"
-PERSON_SWAP_TEMPLATE_SHA256 = "0768c62731dd39fa18b8221ae44db86ee4eaed70f3adac1581572aaf5848beb3"
+PERSON_SWAP_TEMPLATE_SHA256 = "151dae536505077d77d63a3c988cb0c40d133bcd8e0cfe49cfc9e3c9bdb4f312"
 
 SOURCE_IMAGES = [SOURCE_IMAGE, PREVIEW_IMAGE, "13_three_quarter_right_00001_.png"]
 PERSON_SENDER_NAME = "ComfyLivePersonSwap"
@@ -50,12 +50,13 @@ MODEL_FILES = [
     {"repo": "facefusion/models-3.0.0", "path": "facerestore_models/gpen_bfr_512.onnx", "size": 284_340_240, "sha256": "d5f066b9068a8b74217f9712e28e875a6144629b108a6f7355acbdb3a2832c54", "licence": "GPEN non-commercial"},
 ]
 
-SWAPPER_CHOICES = ["inswapper_128", "hyperswap_1a_256", "hyperswap_1c_256", "alphaface_256", "uniface_256"]
+SWAPPER_CHOICES = ["inswapper_128", "hyperswap_1a_256", "hyperswap_1c_256", "alphaface_256", "uniface_256"]  # plus dfm/<name> for every models/deepfacelive/*.dfm
 ENHANCER_CHOICES = ["none", "gpen_bfr_256", "gfpgan_1.4", "gpen_bfr_512"]
 OCCLUDER_CHOICES = ["none", "xseg_3", "xseg_2", "xseg_1"]
 PARSER_CHOICES = ["none", "bisenet_resnet_34"]
 MATTING_CHOICES = ["none", "modnet"]
 SHAVE_CHOICES = ["none", "skin", "inpaint"]
+GLASSES_CHOICES = ["swap", "keep", "remove"]
 BACKGROUND_CHOICES = ["off", "image", "green", "blur"]
 CAPTURE_BACKENDS = ["auto", "DirectShow", "Media Foundation"]
 VOICE_ACTIONS = ["start / open UI", "status / open UI", "stop verified service"]
@@ -68,9 +69,13 @@ _TUNING_INPUTS: dict[str, Any] = {
     "shave": [SHAVE_CHOICES, {"default": "skin", "tooltip": "Bartzone vor dem Swap glätten (skin ≈ 1 ms), damit der Swapper nackte Haut rendert; none für Bartträger als Ziel."}],
     "shave_extent": ["FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.1, "tooltip": "1 = Schnurrbart und Kinn, 0.6 = nur Kinn."}],
     "enhancer_blend": ["FLOAT", {"default": 0.8, "min": 0.0, "max": 1.0, "step": 0.05, "tooltip": "Anteil des Enhancer-Ergebnisses; 0 deaktiviert den Enhancer."}],
+    "identity_strength": ["FLOAT", {"default": 0.85, "min": 0.0, "max": 1.0, "step": 0.05, "tooltip": "Schiebt die Zielidentität vom eigenen Gesicht weg (FaceFusion swapper weight); 0 = reines Embedding. Bei DFM-Modellen ohne Wirkung."}],
+    "temporal_smoothing": ["FLOAT", {"default": 0.3, "min": 0.0, "max": 0.8, "step": 0.05, "tooltip": "Maske, getauschtes Gesicht und Farbstatistik mit dem Vorbild mischen, solange sich der Kopf langsam bewegt (gegen Flackern)."}],
+    "mask_feather": ["FLOAT", {"default": 3.0, "min": 0.0, "max": 12.0, "step": 0.5, "tooltip": "Zusätzliche weiche Kante (Gauß-Sigma in Crop-Pixeln) auf der Endmaske."}],
+    "glasses": [GLASSES_CHOICES, {"default": "swap", "tooltip": "swap: Swapper rendert die Brille; keep: echte Brille und Augen bleiben; remove: Gestell vor dem Swap wegretuschieren, nur das echte Gestell bleibt sichtbar."}],
 }
 _TUNING_ORDER = list(_TUNING_INPUTS)
-_TUNING_DEFAULTS = [0.3, 0.8, 0.5, True, "skin", 1.0, 0.8]
+_TUNING_DEFAULTS = [0.3, 0.8, 0.5, True, "skin", 1.0, 0.8, 0.85, 0.3, 3.0, "swap"]
 
 _CAMERA_INPUTS: dict[str, Any] = {
     "cam_index": ["INT", {"default": 2, "min": 0, "max": 255, "tooltip": "OpenCV-Kameraindex; BRIO über DirectShow ist auf diesem Rechner Index 2."}],
@@ -85,7 +90,7 @@ V100_OBJECT_INFO: dict[str, Any] = {
         "display_name": "Face Swap Models · DirectML (DaWasteh)",
         "description": "Lädt SCRFD-Erkennung, ArcFace, Swapper, Enhancer, Occluder (xseg), Face-Parser (bisenet) und optional MODNet-Matting als ONNX-Runtime-DirectML-Sitzungen. Swapper und Enhancer laufen auf dml_device_id, Occluder/Parser/Matting parallel im Worker-Thread auf mask_device_id (Standard: die jeweils andere GPU).",
         "input": {"required": {
-            "swapper": [SWAPPER_CHOICES, {"default": "hyperswap_1c_256", "tooltip": "hyperswap_1c_256: 4 ms, folgt der Mimik am besten (Standard). inswapper_128: schnell, 128 px. alphaface_256: sehr gut, aber 47 ms. uniface_256: ffhq-Crop, bildkonditioniert."}],
+            "swapper": [SWAPPER_CHOICES, {"default": "hyperswap_1c_256", "tooltip": "hyperswap_1c_256: 4 ms, folgt der Mimik am besten (Standard). inswapper_128: schnell, 128 px. alphaface_256: sehr gut, aber 47 ms. uniface_256: ffhq-Crop, bildkonditioniert. dfm/<name>: DeepFaceLive-Modell aus models/deepfacelive (trainierte Identität, ganzes Gesicht, 7 ms)."}],
             "enhancer": [ENHANCER_CHOICES, {"default": "gpen_bfr_256", "tooltip": "gpen_bfr_256 (2,5 ms) ist der Live-Standard; gfpgan_1.4 (18 ms) und gpen_bfr_512 (30 ms) sind schärfer, aber langsamer."}],
             "occluder": [OCCLUDER_CHOICES, {"default": "xseg_3", "tooltip": "Hände und Gegenstände vor dem Gesicht bleiben sichtbar. xseg_3 behält Bart, Mundinneres und Brillengläser als Gesicht; xseg_1 schneidet sie aus."}],
             "parser": [PARSER_CHOICES, {"default": "bisenet_resnet_34", "tooltip": "Gesichtsregionen für Einblendmaske, Mundmaske und Rasur (8 ms)."}],
@@ -166,6 +171,7 @@ V100_OBJECT_INFO: dict[str, Any] = {
                 "landmark_smoothing": ["FLOAT", {"default": 0.5, "min": 0.0, "max": 0.95, "step": 0.05, "tooltip": "Zeitliche Glättung der fünf Landmarken gegen Zittern; setzt sich bei schnellen Kopfbewegungen zurück."}],
                 "enhancer_every": ["INT", {"default": 1, "min": 1, "max": 10, "tooltip": "Enhancer nur jedes n-te Bild ausführen, wenn die Bildrate sonst nicht reicht."}],
                 "parser_every": ["INT", {"default": 1, "min": 1, "max": 4, "tooltip": "Gesichtsregionen nur jedes n-te Bild neu parsen (2 hebt die Bildrate, wenn Matting oder der RVC-Dienst die Masken-GPU teilen)."}],
+                "lookahead_frames": ["INT", {"default": 2, "min": 0, "max": 6, "tooltip": "Ausgabe um n Kamerabilder verzögern und die Landmarken mit den Bildern voraus zentriert glätten (kein Nachziehen); ca. 40 ms je Bild."}],
                 "background_mode": [BACKGROUND_CHOICES, {"default": "off", "tooltip": "image = auf die Hintergrundplatte legen (Matting im Loader nötig); wer aus dem Bild geht, verschwindet."}],
                 "max_frames": ["INT", {"default": 0, "min": 0, "max": 1000000, "tooltip": "0 = bis Interrupt; sonst Testlauf mit fester Bildzahl."}],
                 "metrics_json_path": ["STRING", {"default": "live-face-swap/metrics.json", "tooltip": "Metrik-JSON relativ zu L:/ComfyUI/logs."}],
@@ -174,7 +180,7 @@ V100_OBJECT_INFO: dict[str, Any] = {
         },
         "input_order": {"required": [
             "face_swap", "identity", "sender_name", "sender_fps", *_CAMERA_INPUTS, *_TUNING_ORDER,
-            "landmark_smoothing", "enhancer_every", "parser_every", "background_mode", "max_frames", "metrics_json_path",
+            "landmark_smoothing", "enhancer_every", "parser_every", "lookahead_frames", "background_mode", "max_frames", "metrics_json_path",
         ], "optional": ["background"]},
         "output": [],
         "output_name": [],
@@ -269,7 +275,7 @@ def _snapshot_widgets(delay: float) -> list[Any]:
 
 
 def _live_widgets(sender: str, background_mode: str, parser_every: int = 1) -> list[Any]:
-    return [sender, 30, 2, "DirectShow", 1280, 720, True, *_TUNING_DEFAULTS, 0.5, 1, parser_every, background_mode, 0, "live-face-swap/metrics.json"]
+    return [sender, 30, 2, "DirectShow", 1280, 720, True, *_TUNING_DEFAULTS, 0.5, 1, parser_every, 2, background_mode, 0, "live-face-swap/metrics.json"]
 
 
 def build_face_swap_template() -> dict[str, Any]:
@@ -396,7 +402,7 @@ def build_person_swap_template() -> dict[str, Any]:
         [11, 6, 0, 14, 1, "DAW_FACE_IDENTITY"],
         [12, 10, 1, 12, 0, "STRING"],
         [13, 8, 0, 10, 3 + len(_TUNING_ORDER) + 1, "IMAGE"],  # background sits after the widget inputs
-        [14, 8, 0, 14, 2 + len(_CAMERA_INPUTS) + 2 + len(_TUNING_ORDER) + 6, "IMAGE"],
+        [14, 8, 0, 14, 2 + len(_CAMERA_INPUTS) + 2 + len(_TUNING_ORDER) + 7, "IMAGE"],
     ]
     return _graph("d8a2e3b1-5c7f-4d1b-8e4f-27a2b8d2f117", nodes, links, 14, 14)
 

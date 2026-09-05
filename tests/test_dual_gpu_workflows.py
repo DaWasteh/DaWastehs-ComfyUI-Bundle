@@ -167,8 +167,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
             "audio_minimax_music_3.json": "0322153265b3e785961511b7849f6659f46a8fa7e8cb66976e5279ff1774b228",
             "3d_pixal3d_trellis2_image_to_model.json": "594295ae20490b4ed990655686f2d0c15ba06732df5553bc22bda98966c40a97",
             "live_face_swap_directml.json": "b0a81c21bde4ba374c569b52135dc5db21dfd7fd7f69b7d704d7e9ae9e37bbda",
-            "live_face_swap_directml_v100.json": "15775ccce5c264100dfbefe6ee8a130c50fae4979e3c71679f2062a489362c54",
-            "live_person_swap_directml_v100.json": "0768c62731dd39fa18b8221ae44db86ee4eaed70f3adac1581572aaf5848beb3",
+            "live_face_swap_directml_v100.json": "70b33b989c6c9e23b1bedffea2ba63eb1616d914da826eda6686b4c558c4d8e9",
+            "live_person_swap_directml_v100.json": "151dae536505077d77d63a3c988cb0c40d133bcd8e0cfe49cfc9e3c9bdb4f312",
         }
         self.assertEqual({path.name for path in PINNED_TEMPLATES.glob("*.json")}, set(expected_hashes))
         for name, expected in expected_hashes.items():

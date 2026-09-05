@@ -1,4 +1,4 @@
-# Live Face Swap und Live Person Swap · Workflow 16 und 17 · v1.0.0
+# Live Face Swap und Live Person Swap · Workflow 16 und 17 · v1.0.0 / v1.1.0
 
 Workflows:
 
@@ -84,6 +84,64 @@ Die BRIO liefert bei 720p rund 24–30 Bilder/s. Workflow 17 teilt sich die
 RX 9070 XT mit dem RVC-Stimmdienst; `parser_every` 2 (Standard in Workflow 17)
 halbiert die Parser-Last, weil die Regionen im gesichtsausgerichteten Crop
 zwischen zwei Bildern kaum wandern.
+
+## v1.1.0 · Qualität und Ruhe im Livebild
+
+Rückmeldung nach dem ersten Live-Einsatz: Identität zu schwach, unscharf,
+Flackern, sichtbare Kanten, rosa „schwammige“ Rasurzone, Brille irritiert.
+Alle Änderungen wurden auf einem zweiten 20-s-Clip (398 Bilder, Abendlicht,
+Brille, Kopf geneigt, Hand am Kinn) und den 150 Tagesframes geprüft.
+
+| Änderung | Regler | Wirkung |
+|---|---|---|
+| Identitätsverstärkung: Ziel-Embedding wird vom eigenen Live-Embedding weg extrapoliert (FaceFusion `face_swapper_weight`), Live-Embedding alle 10 Bilder | `identity_strength` 0,85 | sichtbar femininere, konsistentere Züge; 1,0 beginnt zu übersättigen |
+| Rasurzone: Füllung per normalisierter Faltung nur aus *Haut*-Pixeln (Wangen/Stirn), Schnurrbartband (bisenet zählt Schnurrbart zur Lippe) mit dazu, nach dem Swap lokale LAB-Farbkorrektur der Zone zum Hautton | `shave` skin, `shave_extent` 1,0 | kein rosa/graues Feld mehr, Schnurrbart-Schatten weg |
+| Zeitliche Glättung in Crop-Koordinaten: Maske, getauschtes Gesicht und Farbstatistik als EMA, nur bei langsamer Kopfbewegung (Sprung < 8 % Augenabstand) | `temporal_smoothing` 0,3 | weniger Wabern und Farbflackern, kein Nachziehen bei schnellen Bewegungen |
+| Weichere Endkante | `mask_feather` 3 px | Kinn/Haaransatz weniger hart |
+| Brillenmodus | `glasses` swap/keep/remove | keep = echte Brille und Augen bleiben; remove = Gestell wird vor dem Swap wegretuschiert, danach nur das echte Gestell |
+| Lookahead im Live-Node: Erkennung sofort, Swap auf dem n-ten vorherigen Bild mit zentriert gemittelten Landmarken der Bilder voraus | `lookahead_frames` 2 | Zittern der Ausrichtung weg, ohne Nachziehen; Latenz + 2 Kamerabilder |
+| DeepFaceLive-Modelle (`.dfm`) als Swapper-Typ `dfm/<name>` aus `models/deepfacelive/` | Loader-Auswahl | ganzes Gesicht inkl. Kinn in 7 ms, Maske vom Modell, Identität hält auch bei geneigtem Kopf |
+
+Bildraten (Engine, 150 Frames): v1.1-Standard 38 Bilder/s (26 ms), mit
+Matting und `parser_every` 2 29 Bilder/s, DFM 32 Bilder/s. Live hängt die Rate
+jetzt an der Kamera: Bei Abendlicht senkt die BRIO die Bildrate auf rund
+15 Bilder/s (Auto-Belichtung), tagsüber liefert sie 24–30. Mehr Licht oder
+feste Belichtung in der Logitech-Software hilft mehr als jede Optimierung.
+
+### Ehrliche Einordnung
+
+Ein 2D-One-Shot-Swapper (InSwapper, HyperSwap, AlphaFace) tauscht Züge und
+Textur im inneren Gesicht; Kopfform, Kiefer, Haare und Bart bleiben deine.
+Mit Vollbart als Quelle ist das immer ein Kompromiss: Die Rasurzone ist eine
+Retusche, kein echtes Kinn. Bei frontalem Blick und gutem Licht ist das
+Ergebnis stimmig, bei geneigtem Kopf, Gegenlicht oder Hand am Kinn kippt es.
+Der Weg zu „abkaufbar“ heißt deshalb **trainiertes Modell**:
+
+1. **DeepFaceLive-DFM des eigenen Avatars trainieren.** DeepFaceLab gibt es
+   als DirectX12-Build für AMD (`DeepFaceLab_DirectX12`); die RX 9070 XT
+   trainiert ein SAEHD/whole-face-Modell (res 224–320) in etwa 1–3 Tagen.
+   `data_src` = 2.000–5.000 Bilder des Avatars (Workflow 13 Character Sheet mit
+   Blickrichtungen, Mimik, Mundöffnungen; das Modell braucht die Zielperson in
+   allen Posen), `data_dst` = ein 10-min-Video von dir mit Bart, Brille,
+   Sprechen. Export als `.dfm`, nach `models/deepfacelive/` legen, im Loader
+   `dfm/<name>` wählen. Das Modell lernt dein Gesicht samt Bart und rendert die
+   Avatarin vollständig; genau das fehlt den One-Shot-Swappern.
+2. **Vortrainierte DFMs** (FaceFusion verteilt DeepFaceLive-Community-Modelle
+   unter `facefusion/deepfacelive-models-*`) sind ausschließlich reale Personen.
+   Zwei davon liegen zur technischen Prüfung unter `models/deepfacelive/`.
+   Als Stream-Persona sind sie Persönlichkeitsrechts-Verletzungen und werden
+   hier nicht empfohlen; sie zeigen nur, was ein trainiertes Modell leistet.
+3. **Bart abnehmen** bleibt der einfachste Hebel für den One-Shot-Pfad.
+
+### Regler bei Symptomen (v1.1)
+
+| Symptom | Regler |
+|---|---|
+| noch zu sehr „ich“ | `identity_strength` 1,0, andere Zielfotos (frontal, neutral, ohne Brille) |
+| Wabern/Flackern | `temporal_smoothing` 0,5, `lookahead_frames` 3, `landmark_smoothing` 0,6 |
+| Brille wirkt falsch | `glasses` keep (echte Brille, eigene Augen) oder remove |
+| Kinnzone fleckig | `shave_extent` 0,6 (nur Kinn), `crop_scale` 0,75, `color_match` 0,7 |
+| Latenz zu hoch | `lookahead_frames` 0, `temporal_smoothing` 0 |
 
 ## Modelle (neu in v1.0.0)
 

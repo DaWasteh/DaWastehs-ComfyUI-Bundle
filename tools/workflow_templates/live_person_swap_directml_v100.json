@@ -807,6 +807,42 @@
           "link": null
         },
         {
+          "localized_name": "identity_strength",
+          "name": "identity_strength",
+          "type": "FLOAT",
+          "widget": {
+            "name": "identity_strength"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "temporal_smoothing",
+          "name": "temporal_smoothing",
+          "type": "FLOAT",
+          "widget": {
+            "name": "temporal_smoothing"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "mask_feather",
+          "name": "mask_feather",
+          "type": "FLOAT",
+          "widget": {
+            "name": "mask_feather"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "glasses",
+          "name": "glasses",
+          "type": "COMBO",
+          "widget": {
+            "name": "glasses"
+          },
+          "link": null
+        },
+        {
           "localized_name": "background_mode",
           "name": "background_mode",
           "type": "COMBO",
@@ -855,6 +891,10 @@
         "skin",
         1.0,
         0.8,
+        0.85,
+        0.3,
+        3.0,
+        "swap",
         "image"
       ]
     },
@@ -1149,6 +1189,42 @@
           "link": null
         },
         {
+          "localized_name": "identity_strength",
+          "name": "identity_strength",
+          "type": "FLOAT",
+          "widget": {
+            "name": "identity_strength"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "temporal_smoothing",
+          "name": "temporal_smoothing",
+          "type": "FLOAT",
+          "widget": {
+            "name": "temporal_smoothing"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "mask_feather",
+          "name": "mask_feather",
+          "type": "FLOAT",
+          "widget": {
+            "name": "mask_feather"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "glasses",
+          "name": "glasses",
+          "type": "COMBO",
+          "widget": {
+            "name": "glasses"
+          },
+          "link": null
+        },
+        {
           "localized_name": "landmark_smoothing",
           "name": "landmark_smoothing",
           "type": "FLOAT",
@@ -1172,6 +1248,15 @@
           "type": "INT",
           "widget": {
             "name": "parser_every"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lookahead_frames",
+          "name": "lookahead_frames",
+          "type": "INT",
+          "widget": {
+            "name": "lookahead_frames"
           },
           "link": null
         },
@@ -1230,8 +1315,13 @@
         "skin",
         1.0,
         0.8,
+        0.85,
+        0.3,
+        3.0,
+        "swap",
         0.5,
         1,
+        2,
         2,
         "image",
         0,
@@ -1341,7 +1431,7 @@
       8,
       0,
       10,
-      11,
+      15,
       "IMAGE"
     ],
     [
@@ -1349,7 +1439,7 @@
       8,
       0,
       14,
-      22,
+      27,
       "IMAGE"
     ]
   ],
