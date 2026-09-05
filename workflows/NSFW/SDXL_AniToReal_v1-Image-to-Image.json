@@ -9,7 +9,7 @@
       "type": "VAEDecode",
       "pos": [
         2980.0,
-        1140.0
+        900.0
       ],
       "size": [
         225,
@@ -60,7 +60,7 @@
       "id": 62,
       "type": "ImageScaleToTotalPixels",
       "pos": [
-        3460.0,
+        3340.0,
         80.0
       ],
       "size": [
@@ -520,7 +520,7 @@
       "id": 42,
       "type": "SaveImage",
       "pos": [
-        3460.0,
+        3340.0,
         300.0
       ],
       "size": [
@@ -632,9 +632,9 @@
     },
     {
       "id": 47,
-      "type": "String Literal (Image Saver)",
+      "type": "PrimitiveStringMultiline",
       "pos": [
-        2980.0,
+        580.0,
         80.0
       ],
       "size": [
@@ -646,11 +646,11 @@
       "mode": 0,
       "inputs": [
         {
-          "localized_name": "string",
-          "name": "string",
+          "localized_name": "value",
+          "name": "value",
           "type": "STRING",
           "widget": {
-            "name": "string"
+            "name": "value"
           },
           "link": null
         }
@@ -667,14 +667,9 @@
         }
       ],
       "properties": {
-        "Node name for S&R": "String Literal (Image Saver)",
-        "cnr_id": "comfyui-image-saver",
-        "ver": "f8520bcfe5339ba7b4bb64ba96f6ed03da87fb89",
-        "ue_properties": {
-          "version": "7.8",
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        }
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
       },
       "widgets_values": [
         "absurdres, masterpiece, best quality, good quality, detailed face, woman posing, nude, sexual poses, long hair, 1girl, completely naked, boobs, tits, one girl,   hair like input-image, face like input-image, body like input-image, submissive, no cloth, full body"
@@ -855,7 +850,7 @@
       "type": "ConditioningCombine",
       "pos": [
         2980.0,
-        320.0
+        80.0
       ],
       "size": [
         282.9666748046875,
@@ -905,7 +900,7 @@
       "type": "ImpactCombineConditionings",
       "pos": [
         2980.0,
-        720.0
+        480.0
       ],
       "size": [
         225,
@@ -1322,7 +1317,7 @@
       "id": 89,
       "type": "VAEDecode",
       "pos": [
-        3460.0,
+        3340.0,
         1340.0
       ],
       "size": [
@@ -1372,7 +1367,7 @@
       "id": 90,
       "type": "SaveImage",
       "pos": [
-        3460.0,
+        3340.0,
         1680.0
       ],
       "size": [
@@ -1419,7 +1414,7 @@
       "id": 91,
       "type": "ImageScaleToTotalPixels",
       "pos": [
-        3460.0,
+        3340.0,
         1460.0
       ],
       "size": [
@@ -1497,7 +1492,7 @@
       "type": "ImpactCombineConditionings",
       "pos": [
         2980.0,
-        900.0
+        660.0
       ],
       "size": [
         225,
@@ -1566,7 +1561,7 @@
       "type": "ImpactCombineConditionings",
       "pos": [
         2980.0,
-        440.0
+        200.0
       ],
       "size": [
         225,
@@ -1647,7 +1642,7 @@
       "type": "EmptyLatentImage",
       "pos": [
         580.0,
-        80.0
+        320.0
       ],
       "size": [
         270,
@@ -1716,7 +1711,7 @@
       "type": "ImpactInt",
       "pos": [
         580.0,
-        260.0
+        500.0
       ],
       "size": [
         270,
@@ -1765,7 +1760,7 @@
       "type": "Seed (rgthree)",
       "pos": [
         580.0,
-        400.0
+        640.0
       ],
       "size": [
         315,
@@ -1809,7 +1804,7 @@
       "type": "PrimitiveFloat",
       "pos": [
         580.0,
-        620.0
+        860.0
       ],
       "size": [
         270,
@@ -1885,7 +1880,7 @@
       "id": 132,
       "type": "MarkdownNote",
       "pos": [
-        4300.0,
+        4180.0,
         80.0
       ],
       "size": [
@@ -1914,7 +1909,7 @@
       "id": 133,
       "type": "MarkdownNote",
       "pos": [
-        4300.0,
+        4180.0,
         440.0
       ],
       "size": [
@@ -1943,7 +1938,7 @@
       "id": 134,
       "type": "MarkdownNote",
       "pos": [
-        4300.0,
+        4180.0,
         800.0
       ],
       "size": [
@@ -1972,7 +1967,7 @@
       "id": 135,
       "type": "MarkdownNote",
       "pos": [
-        4300.0,
+        4180.0,
         1160.0
       ],
       "size": [
@@ -1984,7 +1979,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · String Literal (Image Saver) · Node 47",
+      "title": "Erklärung · Text (Multiline) · Node 47",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1992,7 +1987,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · String Literal (Image Saver) · Node 47\n\n**Zweck:** Provides a string\n\n**Einstellbare Werte**\n- `string` = `absurdres, masterpiece, best quality, good quality, detailed face, woman posing, nude, sexual poses, long hai…` — string Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `string` (STRING, nicht verbunden): string\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): string (STRING)"
+        "# Erklärung · Text (Multiline) · Node 47\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `absurdres, masterpiece, best quality, good quality, detailed face, woman posing, nude, sexual poses, long hai…` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2001,7 +1996,7 @@
       "id": 136,
       "type": "MarkdownNote",
       "pos": [
-        4300.0,
+        4180.0,
         1500.0
       ],
       "size": [
@@ -2030,7 +2025,7 @@
       "id": 137,
       "type": "MarkdownNote",
       "pos": [
-        4300.0,
+        4180.0,
         1920.0
       ],
       "size": [
@@ -2059,7 +2054,7 @@
       "id": 138,
       "type": "MarkdownNote",
       "pos": [
-        4300.0,
+        4180.0,
         2340.0
       ],
       "size": [
@@ -2088,7 +2083,7 @@
       "id": 139,
       "type": "MarkdownNote",
       "pos": [
-        4300.0,
+        4180.0,
         2920.0
       ],
       "size": [
@@ -2117,7 +2112,7 @@
       "id": 140,
       "type": "MarkdownNote",
       "pos": [
-        4300.0,
+        4180.0,
         3280.0
       ],
       "size": [
@@ -2146,7 +2141,7 @@
       "id": 141,
       "type": "MarkdownNote",
       "pos": [
-        4760.0,
+        4640.0,
         80.0
       ],
       "size": [
@@ -2175,7 +2170,7 @@
       "id": 142,
       "type": "MarkdownNote",
       "pos": [
-        4760.0,
+        4640.0,
         420.0
       ],
       "size": [
@@ -2204,7 +2199,7 @@
       "id": 143,
       "type": "MarkdownNote",
       "pos": [
-        4760.0,
+        4640.0,
         780.0
       ],
       "size": [
@@ -2233,7 +2228,7 @@
       "id": 144,
       "type": "MarkdownNote",
       "pos": [
-        4760.0,
+        4640.0,
         1320.0
       ],
       "size": [
@@ -2262,7 +2257,7 @@
       "id": 145,
       "type": "MarkdownNote",
       "pos": [
-        4760.0,
+        4640.0,
         1680.0
       ],
       "size": [
@@ -2291,7 +2286,7 @@
       "id": 146,
       "type": "MarkdownNote",
       "pos": [
-        4760.0,
+        4640.0,
         2060.0
       ],
       "size": [
@@ -2320,7 +2315,7 @@
       "id": 147,
       "type": "MarkdownNote",
       "pos": [
-        4760.0,
+        4640.0,
         2420.0
       ],
       "size": [
@@ -2349,7 +2344,7 @@
       "id": 148,
       "type": "MarkdownNote",
       "pos": [
-        4760.0,
+        4640.0,
         2780.0
       ],
       "size": [
@@ -2378,7 +2373,7 @@
       "id": 149,
       "type": "MarkdownNote",
       "pos": [
-        4760.0,
+        4640.0,
         3140.0
       ],
       "size": [
@@ -2407,7 +2402,7 @@
       "id": 150,
       "type": "MarkdownNote",
       "pos": [
-        5240.0,
+        5120.0,
         80.0
       ],
       "size": [
@@ -2436,7 +2431,7 @@
       "id": 151,
       "type": "MarkdownNote",
       "pos": [
-        5240.0,
+        5120.0,
         660.0
       ],
       "size": [
@@ -2465,7 +2460,7 @@
       "id": 152,
       "type": "MarkdownNote",
       "pos": [
-        5240.0,
+        5120.0,
         1020.0
       ],
       "size": [
@@ -2494,7 +2489,7 @@
       "id": 153,
       "type": "MarkdownNote",
       "pos": [
-        5240.0,
+        5120.0,
         1380.0
       ],
       "size": [
@@ -2523,7 +2518,7 @@
       "id": 154,
       "type": "MarkdownNote",
       "pos": [
-        5240.0,
+        5120.0,
         1800.0
       ],
       "size": [
@@ -2552,7 +2547,7 @@
       "id": 155,
       "type": "MarkdownNote",
       "pos": [
-        5240.0,
+        5120.0,
         2220.0
       ],
       "size": [
@@ -2581,7 +2576,7 @@
       "id": 156,
       "type": "MarkdownNote",
       "pos": [
-        5240.0,
+        5120.0,
         2680.0
       ],
       "size": [
@@ -2610,7 +2605,7 @@
       "id": 157,
       "type": "MarkdownNote",
       "pos": [
-        5240.0,
+        5120.0,
         3080.0
       ],
       "size": [
@@ -2639,7 +2634,7 @@
       "id": 158,
       "type": "MarkdownNote",
       "pos": [
-        5240.0,
+        5120.0,
         3420.0
       ],
       "size": [
@@ -2668,7 +2663,7 @@
       "id": 159,
       "type": "MarkdownNote",
       "pos": [
-        5720.0,
+        5600.0,
         80.0
       ],
       "size": [
@@ -2699,7 +2694,7 @@
       "title": "Prompt Pixaroma",
       "pos": [
         580.0,
-        740.0
+        980.0
       ],
       "size": [
         470,
@@ -2757,7 +2752,7 @@
       "title": "Prompt Pixaroma",
       "pos": [
         580.0,
-        1000.0
+        1240.0
       ],
       "size": [
         470,
@@ -3195,7 +3190,7 @@
       "id": 169,
       "type": "MarkdownNote",
       "pos": [
-        5720.0,
+        5600.0,
         420.0
       ],
       "size": [
@@ -3224,7 +3219,7 @@
       "id": 170,
       "type": "MarkdownNote",
       "pos": [
-        5720.0,
+        5600.0,
         780.0
       ],
       "size": [
@@ -3253,7 +3248,7 @@
       "id": 171,
       "type": "MarkdownNote",
       "pos": [
-        5720.0,
+        5600.0,
         1140.0
       ],
       "size": [
@@ -3282,7 +3277,7 @@
       "id": 172,
       "type": "MarkdownNote",
       "pos": [
-        5720.0,
+        5600.0,
         1500.0
       ],
       "size": [
@@ -3311,7 +3306,7 @@
       "id": 173,
       "type": "MarkdownNote",
       "pos": [
-        5720.0,
+        5600.0,
         1860.0
       ],
       "size": [
@@ -3340,7 +3335,7 @@
       "id": 174,
       "type": "MarkdownNote",
       "pos": [
-        5720.0,
+        5600.0,
         2220.0
       ],
       "size": [
@@ -3369,7 +3364,7 @@
       "id": 175,
       "type": "MarkdownNote",
       "pos": [
-        5720.0,
+        5600.0,
         2580.0
       ],
       "size": [
@@ -3874,7 +3869,7 @@
         540.0,
         0.0,
         540.0,
-        1280.0
+        1520.0
       ],
       "color": "#7C5CC4",
       "font_size": 24,
@@ -3925,7 +3920,7 @@
       "bounding": [
         2940.0,
         0.0,
-        1240.0,
+        1120.0,
         2720.0
       ],
       "color": "#3F9E6D",
@@ -3936,7 +3931,7 @@
       "id": 7,
       "title": "R9 · PARAMETER REFERENCE",
       "bounding": [
-        4260.0,
+        4140.0,
         0.0,
         1900.0,
         3760.0
@@ -4016,8 +4011,20 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "9b5edead5fc6f916bc8f560e2750cf13bdb3e94d4dd2710e06a27872b1c109ea",
+      "topology_sha256": "566235b877faa3fce4b72edf982a352d1370c70add2a7dcf4fb69495d1c547b8",
       "exceptions": []
+    },
+    "dawasteh_v098_core_primitives": {
+      "version": 1,
+      "release": "v0.9.8",
+      "removed_pack": "comfyui-image-saver",
+      "replaced": [
+        {
+          "id": 47,
+          "from": "String Literal (Image Saver)",
+          "to": "PrimitiveStringMultiline"
+        }
+      ]
     }
   },
   "version": 0.4

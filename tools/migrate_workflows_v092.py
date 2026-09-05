@@ -46,6 +46,7 @@ try:
         upgrade_workflow as upgrade_v095_workflow,
     )
     from tools.upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
+    from tools.upgrade_v098 import upgrade_workflow as upgrade_v098_workflow
     from tools.upgrade_v097 import (
         CREATURE_PATH as V097_CREATURE_PATH,
         ENVIRONMENT_PATH as V097_ENVIRONMENT_PATH,
@@ -82,6 +83,7 @@ except ModuleNotFoundError:  # Direct execution
         upgrade_workflow as upgrade_v095_workflow,
     )
     from upgrade_v096 import V096_OBJECT_INFO, upgrade_workflow as upgrade_v096_workflow
+    from upgrade_v098 import upgrade_workflow as upgrade_v098_workflow
     from upgrade_v097 import (
         CREATURE_PATH as V097_CREATURE_PATH,
         ENVIRONMENT_PATH as V097_ENVIRONMENT_PATH,
@@ -315,7 +317,8 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
         migrated, v094_changed = upgrade_v094_workflow(migrated, path_key)
         migrated, v095_changed = upgrade_v095_workflow(migrated, path_key)
         migrated, v096_changed = upgrade_v096_workflow(migrated, path_key)
-        if duration_changed or v094_changed or v095_changed or v096_changed:
+        migrated, v098_changed = upgrade_v098_workflow(migrated, path_key)
+        if duration_changed or v094_changed or v095_changed or v096_changed or v098_changed:
             _rebuild_presentation(migrated, path_key)
         else:
             apply_rodent_layout(migrated, path_key)
@@ -374,6 +377,7 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
     migrated, _ = upgrade_v094_workflow(migrated, path_key)
     migrated, _ = upgrade_v095_workflow(migrated, path_key)
     migrated, _ = upgrade_v096_workflow(migrated, path_key)
+    migrated, _ = upgrade_v098_workflow(migrated, path_key)
     # Rebuild one generated parameter note per executable node, including the
     # newly inserted selectors, GPU control, and duration controls.
     _rebuild_presentation(migrated, path_key)

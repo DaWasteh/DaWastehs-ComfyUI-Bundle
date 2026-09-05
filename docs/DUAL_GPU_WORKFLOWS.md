@@ -58,14 +58,19 @@ Die versionierten Starter liegen unter:
 - `tools/start-MultiGPU.ps1`
 - `tools/start-MultiGPU.bat`
 
-Für die lokale Installation werden sie nach `L:\ComfyUI\` kopiert. Das Profil verwendet:
+Für die lokale Installation werden sie nach `L:\ComfyUI\` kopiert. Das Profil v0.9.8 verwendet:
 
 - `HIP_VISIBLE_DEVICES=0,1`
-- `CUDA_VISIBLE_DEVICES=0,1` als PyTorch-ROCm-Kompatibilitätsvariable
+- `CUDA_VISIBLE_DEVICES=0,1` als PyTorch-ROCm-Kompatibilitätsvariable; seit ComfyUI 0.34 erzwingt `main.py` unter Windows sonst eine einzelne GPU
 - `--default-device 0`
 - Port `8188`
 - `user/comfyui-multigpu.db`
-- `--disable-dynamic-vram`, `--disable-async-offload`, `--disable-pinned-memory` und `--cache-classic`
+- `TORCH_BLAS_PREFER_HIPBLASLT=1`: auf gfx1201 gemessen 100–122 TFLOPS bei Transformer-GEMMs statt 60–95 TFLOPS mit klassischem hipBLAS; die früheren `HIPBLAS_STATUS_NOT_SUPPORTED`-Warnfluten für YuE-/HeartCodec-Conv1d-Formen treten mit PyTorch 2.13 nicht mehr auf
+- Pinned Memory bleibt aus (`$DisablePinnedMemory = $true`): gemessen zwar 26 GiB/s Host→GPU statt 16 GiB/s pageable, aber ComfyUI pinnt bis zu 40 % des Host-RAM (19 GB von 48 GB); mit einem parallel residenten 27B-llama-server (31 GB Commit) swappte der Host und Wan 2.2 14B fiel auf 765 s pro Schritt. Nur bei freiem Host-RAM einschalten
+- DynamicVRAM (comfy-aimdo 0.5.2) blieb auf der R9700 trotz 27 GB nutzbarem VRAM über acht Minuten ohne GPU-Last in „Model Initializing“ hängen, während der statische Loader denselben Z-Image-Graphen in 84 s beendete; `$EnableDynamicVram` bleibt deshalb aus und wird nach jedem ComfyUI-/aimdo-Update neu geprüft, weil ComfyUI `--disable-dynamic-vram` entfernen will
+- `--cache-ram` statt `--cache-classic`: der RAM-druckabhängige Standard-Cache vermeidet die in v0.9.7 dokumentierte Host-RAM-Erschöpfung bei mehreren großen Pixal3D-Läufen
+- `--disable-dynamic-vram` und `--disable-async-offload` bleiben als Schalter im Skript (`$EnableDynamicVram`, `$AsyncOffloadStreams`); die gemessenen Standardwerte stehen im Skriptkopf
+- Opt-in-Schalter: `$UseComfyKitchenAttention` (`--use-ck-attention`, INT8-QK-Attention der comfy-kitchen-HIP-Kernel) und `$FastFp8MatrixMult` (`--fast fp8_matrix_mult`, `torch._scaled_mm` mit 117 TFLOPS gemessen); beide bleiben wegen des Qualitäts-Trade-offs standardmäßig aus
 
 Vor dem Start prüft das Skript die erwartete Reihenfolge:
 

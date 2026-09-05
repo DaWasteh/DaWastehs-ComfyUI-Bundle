@@ -9,7 +9,7 @@
       "type": "VAEDecode",
       "pos": [
         2940.0,
-        620.0
+        380.0
       ],
       "size": [
         225,
@@ -57,7 +57,7 @@
       "type": "ImageScaleToTotalPixels",
       "pos": [
         2940.0,
-        740.0
+        500.0
       ],
       "size": [
         268.1166687011719,
@@ -491,8 +491,8 @@
       "id": 42,
       "type": "SaveImage",
       "pos": [
-        3420.0,
-        80.0
+        2940.0,
+        720.0
       ],
       "size": [
         671.4833374023438,
@@ -602,9 +602,9 @@
     },
     {
       "id": 47,
-      "type": "String Literal (Image Saver)",
+      "type": "PrimitiveStringMultiline",
       "pos": [
-        2940.0,
+        580.0,
         80.0
       ],
       "size": [
@@ -616,11 +616,11 @@
       "mode": 0,
       "inputs": [
         {
-          "localized_name": "string",
-          "name": "string",
+          "localized_name": "value",
+          "name": "value",
           "type": "STRING",
           "widget": {
-            "name": "string"
+            "name": "value"
           },
           "link": null
         }
@@ -637,10 +637,9 @@
         }
       ],
       "properties": {
-        "Node name for S&R": "String Literal (Image Saver)",
-        "cnr_id": "comfyui-image-saver",
-        "ver": "f8520bcfe5339ba7b4bb64ba96f6ed03da87fb89",
-        "widget_ue_connectable": {}
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
       },
       "widgets_values": [
         "absurdres, masterpiece, best quality, good quality, detailed face, woman posing, nude, sexual poses, long hair, 1girl, completely naked, boobs, tits, one girl,   hair like input-image, face like input-image, body like input-image,"
@@ -813,7 +812,7 @@
       "type": "ConditioningCombine",
       "pos": [
         2940.0,
-        320.0
+        80.0
       ],
       "size": [
         282.9666748046875,
@@ -858,7 +857,7 @@
       "type": "ImpactCombineConditionings",
       "pos": [
         2940.0,
-        440.0
+        200.0
       ],
       "size": [
         225,
@@ -1237,8 +1236,8 @@
       "id": 89,
       "type": "VAEDecode",
       "pos": [
-        3420.0,
-        1320.0
+        3700.0,
+        280.0
       ],
       "size": [
         225,
@@ -1282,8 +1281,8 @@
       "id": 90,
       "type": "SaveImage",
       "pos": [
-        3420.0,
-        1660.0
+        3700.0,
+        620.0
       ],
       "size": [
         661.0999755859375,
@@ -1330,8 +1329,8 @@
       "id": 91,
       "type": "ImageScaleToTotalPixels",
       "pos": [
-        3420.0,
-        1440.0
+        3700.0,
+        400.0
       ],
       "size": [
         268.1166687011719,
@@ -1404,7 +1403,7 @@
       "type": "LoadImage",
       "pos": [
         580.0,
-        80.0
+        320.0
       ],
       "size": [
         461.3166809082031,
@@ -1509,8 +1508,8 @@
       "id": 114,
       "type": "LatentComposite",
       "pos": [
-        3420.0,
-        1120.0
+        3700.0,
+        80.0
       ],
       "size": [
         270,
@@ -1621,7 +1620,7 @@
       "id": 116,
       "type": "MarkdownNote",
       "pos": [
-        4260.0,
+        4520.0,
         80.0
       ],
       "size": [
@@ -1650,7 +1649,7 @@
       "id": 117,
       "type": "MarkdownNote",
       "pos": [
-        4260.0,
+        4520.0,
         520.0
       ],
       "size": [
@@ -1679,7 +1678,7 @@
       "id": 118,
       "type": "MarkdownNote",
       "pos": [
-        4260.0,
+        4520.0,
         880.0
       ],
       "size": [
@@ -1708,7 +1707,7 @@
       "id": 119,
       "type": "MarkdownNote",
       "pos": [
-        4260.0,
+        4520.0,
         1260.0
       ],
       "size": [
@@ -1720,7 +1719,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · String Literal (Image Saver) · Node 47",
+      "title": "Erklärung · Text (Multiline) · Node 47",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1728,7 +1727,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · String Literal (Image Saver) · Node 47\n\n**Zweck:** Provides a string\n\n**Einstellbare Werte**\n- `string` = `absurdres, masterpiece, best quality, good quality, detailed face, woman posing, nude, sexual poses, long hai…` — string Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `string` (STRING, nicht verbunden): string\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): string (STRING)"
+        "# Erklärung · Text (Multiline) · Node 47\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `absurdres, masterpiece, best quality, good quality, detailed face, woman posing, nude, sexual poses, long hai…` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1737,7 +1736,7 @@
       "id": 120,
       "type": "MarkdownNote",
       "pos": [
-        4260.0,
+        4520.0,
         1600.0
       ],
       "size": [
@@ -1766,7 +1765,7 @@
       "id": 121,
       "type": "MarkdownNote",
       "pos": [
-        4260.0,
+        4520.0,
         2160.0
       ],
       "size": [
@@ -1795,7 +1794,7 @@
       "id": 122,
       "type": "MarkdownNote",
       "pos": [
-        4260.0,
+        4520.0,
         2740.0
       ],
       "size": [
@@ -1824,7 +1823,7 @@
       "id": 123,
       "type": "MarkdownNote",
       "pos": [
-        4260.0,
+        4520.0,
         4140.0
       ],
       "size": [
@@ -1853,7 +1852,7 @@
       "id": 124,
       "type": "MarkdownNote",
       "pos": [
-        4720.0,
+        5000.0,
         80.0
       ],
       "size": [
@@ -1882,7 +1881,7 @@
       "id": 125,
       "type": "MarkdownNote",
       "pos": [
-        4720.0,
+        5000.0,
         460.0
       ],
       "size": [
@@ -1911,7 +1910,7 @@
       "id": 126,
       "type": "MarkdownNote",
       "pos": [
-        4720.0,
+        5000.0,
         800.0
       ],
       "size": [
@@ -1940,7 +1939,7 @@
       "id": 127,
       "type": "MarkdownNote",
       "pos": [
-        4720.0,
+        5000.0,
         1220.0
       ],
       "size": [
@@ -1969,7 +1968,7 @@
       "id": 128,
       "type": "MarkdownNote",
       "pos": [
-        4720.0,
+        5000.0,
         2100.0
       ],
       "size": [
@@ -1998,7 +1997,7 @@
       "id": 129,
       "type": "MarkdownNote",
       "pos": [
-        4720.0,
+        5000.0,
         2480.0
       ],
       "size": [
@@ -2027,7 +2026,7 @@
       "id": 130,
       "type": "MarkdownNote",
       "pos": [
-        4720.0,
+        5000.0,
         2940.0
       ],
       "size": [
@@ -2056,7 +2055,7 @@
       "id": 131,
       "type": "MarkdownNote",
       "pos": [
-        4720.0,
+        5000.0,
         3300.0
       ],
       "size": [
@@ -2085,7 +2084,7 @@
       "id": 132,
       "type": "MarkdownNote",
       "pos": [
-        5200.0,
+        5480.0,
         80.0
       ],
       "size": [
@@ -2114,7 +2113,7 @@
       "id": 133,
       "type": "MarkdownNote",
       "pos": [
-        5200.0,
+        5480.0,
         500.0
       ],
       "size": [
@@ -2143,7 +2142,7 @@
       "id": 134,
       "type": "MarkdownNote",
       "pos": [
-        5200.0,
+        5480.0,
         920.0
       ],
       "size": [
@@ -2172,7 +2171,7 @@
       "id": 135,
       "type": "MarkdownNote",
       "pos": [
-        5200.0,
+        5480.0,
         2080.0
       ],
       "size": [
@@ -2201,7 +2200,7 @@
       "id": 136,
       "type": "MarkdownNote",
       "pos": [
-        5200.0,
+        5480.0,
         2440.0
       ],
       "size": [
@@ -2230,7 +2229,7 @@
       "id": 137,
       "type": "MarkdownNote",
       "pos": [
-        5200.0,
+        5480.0,
         2820.0
       ],
       "size": [
@@ -2259,7 +2258,7 @@
       "id": 138,
       "type": "MarkdownNote",
       "pos": [
-        5200.0,
+        5480.0,
         3380.0
       ],
       "size": [
@@ -2288,7 +2287,7 @@
       "id": 139,
       "type": "MarkdownNote",
       "pos": [
-        5200.0,
+        5480.0,
         3780.0
       ],
       "size": [
@@ -2317,7 +2316,7 @@
       "id": 140,
       "type": "MarkdownNote",
       "pos": [
-        5680.0,
+        5960.0,
         80.0
       ],
       "size": [
@@ -2348,7 +2347,7 @@
       "title": "Prompt Pixaroma",
       "pos": [
         580.0,
-        940.0
+        1180.0
       ],
       "size": [
         470,
@@ -2406,7 +2405,7 @@
       "title": "Prompt Pixaroma",
       "pos": [
         580.0,
-        1200.0
+        1440.0
       ],
       "size": [
         470,
@@ -2845,7 +2844,7 @@
       "id": 150,
       "type": "MarkdownNote",
       "pos": [
-        5680.0,
+        5960.0,
         680.0
       ],
       "size": [
@@ -2874,7 +2873,7 @@
       "id": 151,
       "type": "MarkdownNote",
       "pos": [
-        5680.0,
+        5960.0,
         1040.0
       ],
       "size": [
@@ -2903,7 +2902,7 @@
       "id": 152,
       "type": "MarkdownNote",
       "pos": [
-        5680.0,
+        5960.0,
         1400.0
       ],
       "size": [
@@ -2932,7 +2931,7 @@
       "id": 153,
       "type": "MarkdownNote",
       "pos": [
-        5680.0,
+        5960.0,
         1760.0
       ],
       "size": [
@@ -2961,7 +2960,7 @@
       "id": 154,
       "type": "MarkdownNote",
       "pos": [
-        5680.0,
+        5960.0,
         2120.0
       ],
       "size": [
@@ -2990,7 +2989,7 @@
       "id": 155,
       "type": "MarkdownNote",
       "pos": [
-        5680.0,
+        5960.0,
         2480.0
       ],
       "size": [
@@ -3019,7 +3018,7 @@
       "id": 156,
       "type": "MarkdownNote",
       "pos": [
-        5680.0,
+        5960.0,
         2840.0
       ],
       "size": [
@@ -3476,7 +3475,7 @@
         540.0,
         0.0,
         540.0,
-        1480.0
+        1720.0
       ],
       "color": "#7C5CC4",
       "font_size": 24,
@@ -3527,8 +3526,8 @@
       "bounding": [
         2900.0,
         0.0,
-        1240.0,
-        2700.0
+        1500.0,
+        1760.0
       ],
       "color": "#3F9E6D",
       "font_size": 24,
@@ -3538,9 +3537,9 @@
       "id": 7,
       "title": "R9 · PARAMETER REFERENCE",
       "bounding": [
-        4220.0,
+        4480.0,
         0.0,
-        1900.0,
+        1920.0,
         4560.0
       ],
       "color": "#5B6472",
@@ -3618,8 +3617,20 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "289cec3d2726e92ac945670f4f81be877066024c949d75fc208ab16fe6f0b6b6",
+      "topology_sha256": "1ef29c8e650a627275a1a3cce7b7ec02191357ae963c87b0948bf5fd402352e2",
       "exceptions": []
+    },
+    "dawasteh_v098_core_primitives": {
+      "version": 1,
+      "release": "v0.9.8",
+      "removed_pack": "comfyui-image-saver",
+      "replaced": [
+        {
+          "id": 47,
+          "from": "String Literal (Image Saver)",
+          "to": "PrimitiveStringMultiline"
+        }
+      ]
     }
   },
   "version": 0.4

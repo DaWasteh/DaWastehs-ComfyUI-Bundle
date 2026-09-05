@@ -39,7 +39,15 @@ $CustomNodeNames = @(
 
 $PixaromaNodeName = "ComfyUI-Pixaroma"
 $PixaromaRepoUrl = "https://github.com/pixaroma/ComfyUI-Pixaroma.git"
-$PixaromaTarget = Join-Path $Repo ("custom_nodes\\{0}" -f $PixaromaNodeName)
+
+# Third-party node packs that are tracked directly from GitHub (fast-forward
+# only). Spectrum MiniMax H3 v0.1.x breaks on ComfyUI >= 0.34 (PDD FinalLayer
+# contract); v0.2.21+ restores forecast execution, so the pack must move with
+# the ComfyUI core instead of staying pinned to a Manager snapshot.
+$GitTrackedNodes = @(
+    @{ Name = $PixaromaNodeName; Url = $PixaromaRepoUrl },
+    @{ Name = "comfyui-spectrum-minimax-h3"; Url = "https://github.com/xmarre/ComfyUI-Spectrum-MiniMax-H3.git" }
+)
 
 $BackupRoot = Join-Path $Root ("_update_backups\{0}" -f (Get-Date -Format "yyyyMMdd-HHmmss"))
 $BackupCreated = $false
@@ -125,7 +133,7 @@ function Ensure-GitDirectory {
             return
         }
 
-        throw "Pixaroma-Ziel existiert, ist aber kein Git-Repository und wird nicht automatisch geloescht: $Path"
+        throw "Node-Ziel existiert, ist aber kein Git-Repository und wird nicht automatisch geloescht: $Path"
     }
 
     Invoke-NativeCommand "git" "clone" $RepositoryUrl $Path
@@ -577,10 +585,14 @@ Update-GitRepository $Repo
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "Update Pixaroma direkt von GitHub" -ForegroundColor Cyan
+Write-Host "Update Pixaroma und Spectrum MiniMax H3 direkt von GitHub" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor DarkCyan
 Warn-PixaromaManagerCopies
-Ensure-GitDirectory -Path $PixaromaTarget -RepositoryUrl $PixaromaRepoUrl
+foreach ($trackedNode in $GitTrackedNodes) {
+    $trackedTarget = Join-Path (Join-Path $Repo "custom_nodes") $trackedNode.Name
+    Write-Host "GitHub-Node: $($trackedNode.Name)" -ForegroundColor DarkCyan
+    Ensure-GitDirectory -Path $trackedTarget -RepositoryUrl $trackedNode.Url
+}
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor DarkCyan
@@ -773,4 +785,4 @@ finally {
 }
 
 Write-Host ""
-Write-Host "Update fertig. Nur geaenderte Workflows und eigene Custom Nodes wurden aus $OwnRepo synchronisiert; Pixaroma wurde direkt von GitHub aktualisiert." -ForegroundColor Green
+Write-Host "Update fertig. Nur geaenderte Workflows und eigene Custom Nodes wurden aus $OwnRepo synchronisiert; Pixaroma und Spectrum MiniMax H3 wurden direkt von GitHub aktualisiert." -ForegroundColor Green

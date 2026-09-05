@@ -9,7 +9,7 @@
       "type": "VAEDecode",
       "pos": [
         3080.0,
-        260.0
+        80.0
       ],
       "size": [
         225,
@@ -61,7 +61,7 @@
       "type": "ImageScaleToTotalPixels",
       "pos": [
         3080.0,
-        380.0
+        200.0
       ],
       "size": [
         268.1166687011719,
@@ -928,8 +928,8 @@
       "id": 89,
       "type": "VAEDecode",
       "pos": [
-        4220.0,
-        80.0
+        3080.0,
+        1900.0
       ],
       "size": [
         225,
@@ -978,8 +978,8 @@
       "id": 91,
       "type": "ImageScaleToTotalPixels",
       "pos": [
-        4220.0,
-        200.0
+        3080.0,
+        2020.0
       ],
       "size": [
         268.1166687011719,
@@ -1123,10 +1123,10 @@
     },
     {
       "id": 131,
-      "type": "Seed Generator (Image Saver)",
+      "type": "PrimitiveInt",
       "pos": [
-        3080.0,
-        80.0
+        600.0,
+        260.0
       ],
       "size": [
         300.3999938964844,
@@ -1137,20 +1137,11 @@
       "mode": 0,
       "inputs": [
         {
-          "localized_name": "seed",
-          "name": "seed",
+          "localized_name": "value",
+          "name": "value",
           "type": "INT",
           "widget": {
-            "name": "seed"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "increment",
-          "name": "increment",
-          "type": "INT",
-          "widget": {
-            "name": "increment"
+            "name": "value"
           },
           "link": null
         }
@@ -1167,12 +1158,13 @@
         }
       ],
       "properties": {
-        "Node name for S&R": "Seed Generator (Image Saver)"
+        "Node name for S&R": "PrimitiveInt",
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
       },
       "widgets_values": [
         877443622797899,
-        "randomize",
-        1
+        "randomize"
       ]
     },
     {
@@ -1565,7 +1557,7 @@
       "type": "PixaromaPreview",
       "pos": [
         3080.0,
-        600.0
+        420.0
       ],
       "size": [
         1058.4000244140625,
@@ -1633,8 +1625,8 @@
       "id": 141,
       "type": "PixaromaPreview",
       "pos": [
-        4220.0,
-        420.0
+        3080.0,
+        2240.0
       ],
       "size": [
         1194.9166259765625,
@@ -1702,8 +1694,8 @@
       "id": 142,
       "type": "PreviewImage",
       "pos": [
-        4220.0,
-        1780.0
+        3080.0,
+        3600.0
       ],
       "size": [
         225,
@@ -1731,7 +1723,7 @@
       "type": "PreviewImage",
       "pos": [
         3080.0,
-        1760.0
+        1580.0
       ],
       "size": [
         225,
@@ -1815,7 +1807,7 @@
       "id": 146,
       "type": "MarkdownNote",
       "pos": [
-        5580.0,
+        4440.0,
         80.0
       ],
       "size": [
@@ -1844,7 +1836,7 @@
       "id": 147,
       "type": "MarkdownNote",
       "pos": [
-        5580.0,
+        4440.0,
         440.0
       ],
       "size": [
@@ -1873,7 +1865,7 @@
       "id": 148,
       "type": "MarkdownNote",
       "pos": [
-        5580.0,
+        4440.0,
         800.0
       ],
       "size": [
@@ -1902,7 +1894,7 @@
       "id": 149,
       "type": "MarkdownNote",
       "pos": [
-        5580.0,
+        4440.0,
         1220.0
       ],
       "size": [
@@ -1931,7 +1923,7 @@
       "id": 150,
       "type": "MarkdownNote",
       "pos": [
-        5580.0,
+        4440.0,
         1640.0
       ],
       "size": [
@@ -1960,7 +1952,7 @@
       "id": 151,
       "type": "MarkdownNote",
       "pos": [
-        5580.0,
+        4440.0,
         2220.0
       ],
       "size": [
@@ -1989,7 +1981,7 @@
       "id": 152,
       "type": "MarkdownNote",
       "pos": [
-        5580.0,
+        4440.0,
         2580.0
       ],
       "size": [
@@ -2018,7 +2010,7 @@
       "id": 153,
       "type": "MarkdownNote",
       "pos": [
-        5580.0,
+        4440.0,
         2920.0
       ],
       "size": [
@@ -2047,7 +2039,7 @@
       "id": 154,
       "type": "MarkdownNote",
       "pos": [
-        6040.0,
+        4920.0,
         80.0
       ],
       "size": [
@@ -2076,7 +2068,7 @@
       "id": 155,
       "type": "MarkdownNote",
       "pos": [
-        6040.0,
+        4920.0,
         620.0
       ],
       "size": [
@@ -2105,7 +2097,7 @@
       "id": 156,
       "type": "MarkdownNote",
       "pos": [
-        6040.0,
+        4920.0,
         980.0
       ],
       "size": [
@@ -2134,7 +2126,7 @@
       "id": 157,
       "type": "MarkdownNote",
       "pos": [
-        6040.0,
+        4920.0,
         1340.0
       ],
       "size": [
@@ -2163,7 +2155,7 @@
       "id": 158,
       "type": "MarkdownNote",
       "pos": [
-        6040.0,
+        4920.0,
         1700.0
       ],
       "size": [
@@ -2192,7 +2184,7 @@
       "id": 159,
       "type": "MarkdownNote",
       "pos": [
-        6040.0,
+        4920.0,
         2060.0
       ],
       "size": [
@@ -2221,7 +2213,7 @@
       "id": 160,
       "type": "MarkdownNote",
       "pos": [
-        6040.0,
+        4920.0,
         2420.0
       ],
       "size": [
@@ -2250,7 +2242,7 @@
       "id": 161,
       "type": "MarkdownNote",
       "pos": [
-        6040.0,
+        4920.0,
         2840.0
       ],
       "size": [
@@ -2279,7 +2271,7 @@
       "id": 162,
       "type": "MarkdownNote",
       "pos": [
-        6520.0,
+        5400.0,
         80.0
       ],
       "size": [
@@ -2291,7 +2283,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · Seed Generator (Image Saver) · Node 131",
+      "title": "Erklärung · Int · Node 131",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -2299,7 +2291,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Seed Generator (Image Saver) · Node 131\n\n**Zweck:** Provides seed as integer\n\n**Einstellbare Werte**\n- `seed` = `877443622797899` — The random seed used for creating the noise. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `increment` = `1` — number to add to the final seed value Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `seed` (INT, nicht verbunden): The random seed used for creating the noise.\n- `increment` (INT, nicht verbunden): number to add to the final seed value\n\n**Ausgänge**\n- `INT` (INT, 2 Verbindung(en)): seed (INT)"
+        "# Erklärung · Int · Node 131\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `877443622797899` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2308,7 +2300,7 @@
       "id": 163,
       "type": "MarkdownNote",
       "pos": [
-        6520.0,
+        5400.0,
         460.0
       ],
       "size": [
@@ -2337,7 +2329,7 @@
       "id": 164,
       "type": "MarkdownNote",
       "pos": [
-        6520.0,
+        5400.0,
         800.0
       ],
       "size": [
@@ -2366,7 +2358,7 @@
       "id": 165,
       "type": "MarkdownNote",
       "pos": [
-        6520.0,
+        5400.0,
         1380.0
       ],
       "size": [
@@ -2395,7 +2387,7 @@
       "id": 166,
       "type": "MarkdownNote",
       "pos": [
-        6520.0,
+        5400.0,
         1920.0
       ],
       "size": [
@@ -2424,7 +2416,7 @@
       "id": 167,
       "type": "MarkdownNote",
       "pos": [
-        6520.0,
+        5400.0,
         2340.0
       ],
       "size": [
@@ -2453,7 +2445,7 @@
       "id": 168,
       "type": "MarkdownNote",
       "pos": [
-        6520.0,
+        5400.0,
         2680.0
       ],
       "size": [
@@ -2484,7 +2476,7 @@
       "title": "Prompt Pixaroma",
       "pos": [
         600.0,
-        260.0
+        440.0
       ],
       "size": [
         470,
@@ -2542,7 +2534,7 @@
       "title": "Prompt Pixaroma",
       "pos": [
         600.0,
-        520.0
+        720.0
       ],
       "size": [
         470,
@@ -2980,7 +2972,7 @@
       "id": 178,
       "type": "MarkdownNote",
       "pos": [
-        6520.0,
+        5400.0,
         3020.0
       ],
       "size": [
@@ -3009,7 +3001,7 @@
       "id": 179,
       "type": "MarkdownNote",
       "pos": [
-        7000.0,
+        5880.0,
         80.0
       ],
       "size": [
@@ -3038,7 +3030,7 @@
       "id": 180,
       "type": "MarkdownNote",
       "pos": [
-        7000.0,
+        5880.0,
         440.0
       ],
       "size": [
@@ -3067,7 +3059,7 @@
       "id": 181,
       "type": "MarkdownNote",
       "pos": [
-        7000.0,
+        5880.0,
         800.0
       ],
       "size": [
@@ -3096,7 +3088,7 @@
       "id": 182,
       "type": "MarkdownNote",
       "pos": [
-        7000.0,
+        5880.0,
         1160.0
       ],
       "size": [
@@ -3125,7 +3117,7 @@
       "id": 183,
       "type": "MarkdownNote",
       "pos": [
-        7000.0,
+        5880.0,
         1520.0
       ],
       "size": [
@@ -3154,7 +3146,7 @@
       "id": 184,
       "type": "MarkdownNote",
       "pos": [
-        7000.0,
+        5880.0,
         1880.0
       ],
       "size": [
@@ -3587,7 +3579,7 @@
         560.0,
         0.0,
         560.0,
-        800.0
+        1000.0
       ],
       "color": "#7C5CC4",
       "font_size": 24,
@@ -3638,8 +3630,8 @@
       "bounding": [
         3040.0,
         0.0,
-        2420.0,
-        2100.0
+        1280.0,
+        3920.0
       ],
       "color": "#3F9E6D",
       "font_size": 24,
@@ -3649,9 +3641,9 @@
       "id": 7,
       "title": "R9 · PARAMETER REFERENCE",
       "bounding": [
-        5540.0,
+        4400.0,
         0.0,
-        1900.0,
+        1920.0,
         3380.0
       ],
       "color": "#5B6472",
@@ -3729,8 +3721,20 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "26194e2d183c27df59a052d76e451beb684c42bfa20162b316ef293fef16bb4b",
+      "topology_sha256": "aa0b8d4bd21bc5d8042e1b1478a4f7c9e21f9a8c64be2bdb368014421d092ba9",
       "exceptions": []
+    },
+    "dawasteh_v098_core_primitives": {
+      "version": 1,
+      "release": "v0.9.8",
+      "removed_pack": "comfyui-image-saver",
+      "replaced": [
+        {
+          "id": 131,
+          "from": "Seed Generator (Image Saver)",
+          "to": "PrimitiveInt"
+        }
+      ]
     }
   },
   "version": 0.4

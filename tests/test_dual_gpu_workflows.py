@@ -194,7 +194,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
         self.assertIn('io.Combo.Input("clip_device"', source)
         self.assertIn('io.Combo.Input("vae_device"', source)
 
-    def test_versioned_launcher_exposes_both_gpus_conservatively(self):
+    def test_versioned_launcher_exposes_both_gpus_with_the_v098_profile(self):
         script = LAUNCHER.read_text(encoding="utf-8-sig")
         for expected in (
             '$ErrorActionPreference = "Stop"',
@@ -202,12 +202,28 @@ class DualGPUWorkflowTests(unittest.TestCase):
             '$env:CUDA_VISIBLE_DEVICES = "0,1"',
             '"--default-device", "0"',
             '"--port", "$Port"',
+            '"--reserve-vram", "$ReserveVramGb"',
+            # v0.9.8 measured defaults on the R9700 + RX 9070 XT host
+            "$DisablePinnedMemory = $true",
+            '$CacheMode = "ram"',
+            "$PreferHipBlasLt = $true",
+            "$UseComfyKitchenAttention = $false",
+            "$FastFp8MatrixMult = $false",
+            '$env:TORCH_BLAS_PREFER_HIPBLASLT = "1"',
+            '"--cache-ram"',
+            '"--use-ck-attention"',
+            '"--fast", "fp8_matrix_mult"',
+            # every profile switch keeps an explicit opposite branch
+            '"--enable-dynamic-vram"',
             '"--disable-dynamic-vram"',
+            '"--async-offload", "$AsyncOffloadStreams"',
             '"--disable-async-offload"',
             '"--disable-pinned-memory"',
             '"--cache-classic"',
         ):
             self.assertIn(expected, script)
+        # The Windows single-GPU default of ComfyUI >= 0.34 must stay overridden.
+        self.assertLess(script.index('$env:CUDA_VISIBLE_DEVICES = "0,1"'), script.index("$ComfyArgs = @("))
 
 
 if __name__ == "__main__":
