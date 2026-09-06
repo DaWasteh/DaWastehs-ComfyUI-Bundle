@@ -30,6 +30,7 @@ from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from transformers import AutoConfig
 
+from .peft_compat import disable_incompatible_torchao_dispatcher
 from .adapter_utils import (
     accumulation_group_size,
     adapter_signature,
@@ -150,21 +151,8 @@ def _clear_gpu_cache() -> None:
 
 
 def _disable_incompatible_torchao_dispatcher() -> None:
-    """Keep PEFT 0.19 from rejecting ComfyUI's older, unused torchao build.
-
-    This node only targets ordinary torch.nn.Linear layers. PEFT nevertheless
-    probes its torchao dispatcher first and raises for torchao <0.16 instead of
-    returning False. Disabling only that dispatcher preserves the shared
-    ComfyUI torchao package and lets PEFT continue to its standard dispatcher.
-    """
-    try:
-        import torchao
-        from packaging.version import Version
-        if Version(torchao.__version__) < Version("0.16.0"):
-            import peft.tuners.lora.torchao as peft_torchao
-            peft_torchao.is_torchao_available = lambda: False
-    except (ImportError, AttributeError):
-        return
+    """Delegate to peft_compat (process-wide, idempotent); kept as the historical call site."""
+    disable_incompatible_torchao_dispatcher()
 
 
 def _prepare_entries(audio_folder: Path, prepared_dir: Path, language: str, tokenizer: Any) -> list[dict[str, Any]]:

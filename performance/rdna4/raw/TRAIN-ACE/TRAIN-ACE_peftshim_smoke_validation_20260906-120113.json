@@ -1,0 +1,234 @@
+{
+ "run_id": "TRAIN-ACE_peftshim_smoke_validation_20260906-120113",
+ "test_id": "TRAIN-ACE",
+ "variant": "peftshim_smoke",
+ "run_type": "validation",
+ "hypothesis": "FL AceStep voice LoRA trainer works once PEFT ignores torchao 0.9.0 (repo peft_compat shim)",
+ "workload": "3 bench MP3s (60 s), auto-label acestep-5Hz-lm-1.7B, rank 16 alpha 32, 10 epochs (node minimum) x 1 step, batch 1, acc 4",
+ "seed": null,
+ "sets": [
+  "6.directory=\"L:/ComfyUI/ComfyUI/input/lora_training/_rdna4_bench_audio\"",
+  "6.custom_tag=\"rdna4_bench\"",
+  "8.output_dir=\"L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/raw/ACE-TRAIN/dataset\"",
+  "9.max_epochs=10",
+  "9.save_every_n_epochs=5",
+  "9.warmup_steps=0",
+  "9.output_dir=\"L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/raw/ACE-TRAIN/loras\"",
+  "10.lora_name=\"rdna4_bench\""
+ ],
+ "prompt_file": "api/TRAIN_ACE_voice.json",
+ "prompt_id": "d780f41e-1f3b-4fad-8c46-22171b4b2130",
+ "status": "success",
+ "client_wall_s": 113.69483542442322,
+ "server_exec_s": 113.03309559822083,
+ "queue_delay_s": 0.01985001564025879,
+ "cached_nodes": [],
+ "node_times": [
+  {
+   "node": "9",
+   "display_node": "9",
+   "start": 1788688874.2442982,
+   "dur": 0.0012707710266113281,
+   "class_type": "FL_AceStep_TrainingConfig"
+  },
+  {
+   "node": "3",
+   "display_node": "3",
+   "start": 1788688874.245569,
+   "dur": 0.39719152450561523,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "34",
+   "display_node": "34",
+   "start": 1788688874.6427605,
+   "dur": 0.0005042552947998047,
+   "class_type": "DaWMultiGPUDeviceControl"
+  },
+  {
+   "node": "32",
+   "display_node": "32",
+   "start": 1788688874.6432648,
+   "dur": 0.0017786026000976562,
+   "class_type": "SelectVAEDevice"
+  },
+  {
+   "node": "2",
+   "display_node": "2",
+   "start": 1788688874.6450434,
+   "dur": 6.403144836425781,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "31",
+   "display_node": "31",
+   "start": 1788688881.0481882,
+   "dur": 0.0033864974975585938,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "5",
+   "display_node": "5",
+   "start": 1788688881.0515747,
+   "dur": 15.7804594039917,
+   "class_type": "FL_AceStep_LLMLoader"
+  },
+  {
+   "node": "6",
+   "display_node": "6",
+   "start": 1788688896.832034,
+   "dur": 0.01125478744506836,
+   "class_type": "FL_AceStep_ScanDirectory"
+  },
+  {
+   "node": "7",
+   "display_node": "7",
+   "start": 1788688896.843289,
+   "dur": 12.533773422241211,
+   "class_type": "FL_AceStep_LabelSamples"
+  },
+  {
+   "node": "4",
+   "display_node": "4",
+   "start": 1788688909.3770623,
+   "dur": 11.972654819488525,
+   "class_type": "DualCLIPLoader"
+  },
+  {
+   "node": "33",
+   "display_node": "33",
+   "start": 1788688921.3497171,
+   "dur": 0.0004482269287109375,
+   "class_type": "SelectCLIPDevice"
+  },
+  {
+   "node": "8",
+   "display_node": "8",
+   "start": 1788688921.3501654,
+   "dur": 40.60673475265503,
+   "class_type": "FL_AceStep_PreprocessDataset"
+  },
+  {
+   "node": "10",
+   "display_node": "10",
+   "start": 1788688961.9569001,
+   "dur": 25.318569898605347,
+   "class_type": "FL_AceStep_Train"
+  }
+ ],
+ "step_stats": {
+  "5": {
+   "steps_observed": 2,
+   "max": 2,
+   "span_s": 0.004916667938232422,
+   "s_per_step": 0.004916667938232422,
+   "first_step_t": 1788688881.0517993,
+   "last_step_t": 1788688881.056716,
+   "class_type": "FL_AceStep_LLMLoader"
+  },
+  "6": {
+   "steps_observed": 2,
+   "max": 3,
+   "span_s": 0.009647130966186523,
+   "s_per_step": 0.0032157103220621743,
+   "first_step_t": 1788688896.833017,
+   "last_step_t": 1788688896.8426642,
+   "class_type": "FL_AceStep_ScanDirectory"
+  },
+  "7": {
+   "steps_observed": 3,
+   "max": 3,
+   "span_s": 5.00789999961853,
+   "s_per_step": 2.503949999809265,
+   "first_step_t": 1788688904.368213,
+   "last_step_t": 1788688909.376113,
+   "class_type": "FL_AceStep_LabelSamples"
+  },
+  "8": {
+   "steps_observed": 353,
+   "max": 3,
+   "span_s": 39.11333751678467,
+   "s_per_step": 13.037779172261557,
+   "first_step_t": 1788688922.8414657,
+   "last_step_t": 1788688961.9548032,
+   "class_type": "FL_AceStep_PreprocessDataset"
+  },
+  "10": {
+   "steps_observed": 10,
+   "max": 10,
+   "span_s": 8.473715543746948,
+   "s_per_step": 0.9415239493052164,
+   "first_step_t": 1788688978.0800421,
+   "last_step_t": 1788688986.5537577,
+   "class_type": "FL_AceStep_Train"
+  }
+ },
+ "gpu0_peak_alloc": 29611110400,
+ "gpu0_peak_reserved": 29741809664,
+ "gpu1_peak_alloc": 0,
+ "gpu1_peak_reserved": 0,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x00016780_phys_0": 161624064.0,
+  "0x00000000_0x0001914D_phys_0": 32620699648.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 38267858944,
+  "swap_used": 1611972608,
+  "process_rss": 1190965248
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 34947530752,
+  "swap_used": 1381281792,
+  "process_rss": 3134717952
+ },
+ "outputs": [],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_vramguard_peftshim_120057\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_vramguard_peftshim_120057\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+  "DISABLE_ADDMM_CUDA_LT": null,
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788688874.2221026,
+ "t_done": 1788688987.916938
+}

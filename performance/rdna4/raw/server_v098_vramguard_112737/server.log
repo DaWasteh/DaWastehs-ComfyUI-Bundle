@@ -1,0 +1,424 @@
+[32m[INFO][0m setup plugin alembic.autogenerate.schemas
+[32m[INFO][0m setup plugin alembic.autogenerate.tables
+[32m[INFO][0m setup plugin alembic.autogenerate.types
+[32m[INFO][0m setup plugin alembic.autogenerate.constraints
+[32m[INFO][0m setup plugin alembic.autogenerate.defaults
+[32m[INFO][0m setup plugin alembic.autogenerate.comments
+[32m[INFO][0m Adding extra search path custom_nodes L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\bench\custom_nodes
+[32m[INFO][0m Setting output directory to: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_vramguard_112737\output
+[32m[INFO][0m Found comfy_kitchen backend eager: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_embedding', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_mxfp8', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'int8_linear', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_mxfp8', 'scaled_mm_nvfp4', 'scaled_mm_svdquant_w4a4', 'sol_attn', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Found comfy_kitchen backend triton: {'available': False, 'disabled': True, 'unavailable_reason': "ImportError: No module named 'triton'", 'capabilities': []}
+[32m[INFO][0m Found comfy_kitchen backend cuda: {'available': True, 'disabled': True, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_svdquant_w4a4', 'sol_attn', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Found comfy_kitchen backend hip: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_simple_dtype', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'int8_linear', 'na3d', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'scaled_mm_svdquant_w4a4', 'sol_attn', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Checkpoint files will always be loaded safely.
+[32m[INFO][0m Total VRAM 32624 MB, total RAM 48504 MB
+[32m[INFO][0m pytorch version: 2.13.0+rocm10.1.0a20260822
+[32m[INFO][0m Set: torch.backends.cudnn.enabled = False for better AMD performance.
+[32m[INFO][0m AMD arch: gfx1201
+[32m[INFO][0m ROCm version: (7, 16)
+[32m[INFO][0m Set vram state to: NORMAL_VRAM
+[32m[INFO][0m Device: cuda:0 AMD Radeon AI PRO R9700 : native
+[32m[INFO][0m Device: cuda:1 AMD Radeon RX 9070 XT : native
+[32m[INFO][0m Using pytorch attention
+[32m[INFO][0m Python version: 3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]
+[32m[INFO][0m ComfyUI version: 0.34.0
+[32m[INFO][0m comfy-aimdo version: 0.5.2
+[32m[INFO][0m comfy-kitchen version: 0.2.33
+[1m[33m[WARNING][0m Dynamic vram disabled with argument. If you have any issues with dynamic vram enabled please give us a detailed reports as this argument will be removed soon. If you use gguf we recommend keeping dynamic vram enabled and using native ComfyUI model formats instead. ComfyUI native formats like fp8, int8 and w4a8 will be faster even if they are larger than your memory.
+[32m[INFO][0m Setting temp directory to: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_vramguard_112737\temp\temp
+[32m[INFO][0m comfyui-frontend-package version: 1.51.9
+[32m[INFO][0m comfyui-workflow-templates version: 0.11.55
+[32m[INFO][0m comfyui-embedded-docs version: 0.5.11
+[32m[INFO][0m comfy-kitchen version: 0.2.33
+[32m[INFO][0m comfy-aimdo version: 0.5.2
+[32m[INFO][0m [Prompt Server] web root: L:\ComfyUI\.venv\Lib\site-packages\comfyui_frontend_package\static
+[32m[INFO][0m Asset seeder disabled
+[32m[INFO][0m No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[1m[33m[WARNING][0m No prebuilt binary for ROCm 7.16, loading ROCm 7.14 instead. Set BNB_ROCM_VERSION to override.
+W0906 11:27:50.678000 16904 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+[32m[INFO][0m ComfyUI-GGUF: Allowing full torch compile
+[32m[INFO][0m ### Loading: ComfyUI-Impact-Pack (V8.28.3)
+[32m[INFO][0m [Impact Pack] Wildcard total size (0.00 MB) is within cache limit (50.00 MB). Using full cache mode.
+[32m[INFO][0m [Impact Pack] Wildcards loading done.
+[32m[INFO][0m ### Loading: ComfyUI-Impact-Subpack (V1.3.5)
+[32m[INFO][0m [Impact Pack/Subpack] Using folder_paths to determine whitelist path: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[32m[INFO][0m [Impact Pack/Subpack] Ensured whitelist directory exists: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack
+[32m[INFO][0m [Impact Pack/Subpack] Loaded 0 model(s) from whitelist: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[32m[INFO][0m [Impact Subpack] ultralytics_bbox: L:\ComfyUI\ComfyUI\models\ultralytics\bbox
+[32m[INFO][0m [Impact Subpack] ultralytics_segm: L:\ComfyUI\ComfyUI\models\ultralytics\segm
+[1m[33m[WARNING][0m KJNodes: PatchTritonVAE node could not be imported. PatchTritonVAE will be unavailable.
+Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\nodes\triton_vae.py", line 10, in <module>
+    import triton
+ModuleNotFoundError: No module named 'triton'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\__init__.py", line 382, in <module>
+    from .nodes.triton_vae import PatchTritonVAE
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\nodes\triton_vae.py", line 13, in <module>
+    raise ImportError("PatchTritonVAE requires triton (pip install triton, or triton-windows)") from e
+ImportError: PatchTritonVAE requires triton (pip install triton, or triton-windows)
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ckpts path: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux\ckpts[0m
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using symlinks: False[0m
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ort providers: ['CUDAExecutionProvider', 'DmlExecutionProvider', 'DirectMLExecutionProvider', 'OpenVINOExecutionProvider', 'ROCMExecutionProvider', 'CPUExecutionProvider', 'CoreMLExecutionProvider'][0m
+[FL AceStep] Registered JS extension directory: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training\js
+[32m[INFO][0m Registered JS extension directory: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training\js
+[FL AceStep] ACEStep models directory: L:\ComfyUI\ComfyUI\models\acestep
+[32m[INFO][0m ACEStep models directory: L:\ComfyUI\ComfyUI\models\acestep
+[FL AceStep] Loaded 6 nodes successfully
+[32m[INFO][0m Loaded 6 nodes successfully
+2026-09-06 11:27:53.720 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+import error: No module named 'triton'
+[34m[ComfyUI-Easy-Use] server: [0mv1.3.6 [92mLoaded[0m
+[34m[ComfyUI-Easy-Use] web root: [0mL:\ComfyUI\ComfyUI\custom_nodes\comfyui-easy-use\web_version/v2 [92mLoaded[0m
+[38;2;246;103;68m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+  [1;37mPixaroma[0m v1.4.143  |  [38;2;246;103;68m80 nodes[0m Loaded
+  [0;37mComfyUI Tutorials: https://www.youtube.com/@pixaroma[0m
+  [0;37mThis is a notice, not an error. All [38;2;246;103;68mPixaroma[0;37m nodes work in both Classic and Nodes 2.0 mode.[0m
+  [0;37mIf something looks off right after switching the Node UI mode, hard-refresh the page (Ctrl+Shift+R).[0m
+[38;2;246;103;68m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+[34m[ComfyUI-RMBG][0m v[93m3.1.0[0m | [93m42 nodes[0m [92mLoaded[0m
+DWPose: Onnxruntime with acceleration providers detected
+
+[32mInitializing ControlAltAI Nodes[0m
+[35m
+     _    ____ _____   ____  _
+    / \  / ___| ____|_/ ___|| |_ ___ _ __
+   / _ \| |   |  _| |_\___ \| __/ _ \ '_ \
+  / ___ \ |___| |___ _ ___) | ||  __/ |_) |
+ /_/   \_\____|_____|_|____/ \__\___| .__/
+                                    |_|    Training
+[0m
+FL AceStep Training Custom Nodes Loaded - Version 1.1.0
+2026-09-06 11:27:53.720 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+2026-09-06 11:27:53.720 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+2026-09-06 11:27:53.720 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+[Moss_TTS-ComfyUI] Registered 5 node(s).
+[32m[INFO][0m Using pytorch attention
+[32m[INFO][0m [DaWasteh VRAM guard] cuda:0 AMD Radeon AI PRO R9700: allocator capped at 28.71 GiB of 31.86 GiB (fraction 0.901, 31.71 GiB free at start, 3.0 GiB reserve)
+[32m[INFO][0m [DaWasteh VRAM guard] cuda:1 AMD Radeon RX 9070 XT: allocator capped at 12.77 GiB of 15.92 GiB (fraction 0.802, 15.77 GiB free at start, 3.0 GiB reserve)
+[32m[INFO][0m rdna4_bench_probe: repo VRAM guard applied: [{'device': 0, 'name': 'AMD Radeon AI PRO R9700', 'total_gib': 31.86, 'free_gib': 31.71, 'fraction': 0.9012, 'allowed_gib': 28.71, 'reserve_gib': 3.0}, {'device': 1, 'name': 'AMD Radeon RX 9070 XT', 'total_gib': 15.92, 'free_gib': 15.77, 'fraction': 0.8023, 'allowed_gib': 12.77, 'reserve_gib': 3.0}]
+[32m[INFO][0m rdna4_bench_probe: routes registered
+[32m[INFO][0m 
+Import times for custom nodes:
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\websocket_image_save.py
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-H3-AutoLength
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-AutoSongwriter
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-MelBandRoFormer
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-GGUF
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-TiledDiffusion
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-HeartMuLa
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\krea_training_safety
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_ipadapter_plus
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-MultiGPU-Control
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\mikey_nodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\Moss_TTS-ComfyUI
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-Krea2T-Enhancer
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\WhatDreamsCost-ComfyUI
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyMath
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-LiveAvatar
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\controlaltai-nodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-QwenTTS
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\rgthree-comfy
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-H3-MusicVideo
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-videohelpersuite
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-spectrum-minimax-h3
+[32m[INFO][0m    0.1 seconds: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\bench\custom_nodes\rdna4_bench_probe
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-Pixaroma
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\qwen3-tts-comfyui
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_layerstyle
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-impact-pack
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\Jovi_Spout
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI_YuE
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\RES4LYF
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-LivePortraitKJ
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-mmaudio-suite
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-impact-subpack
+[32m[INFO][0m    0.4 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-detail-daemon
+[32m[INFO][0m    0.4 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-hunyuan3dwrapper
+[32m[INFO][0m    1.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-Qwen3TTS-LoRA
+[32m[INFO][0m    3.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-easy-use
+[32m[INFO][0m 
+[32m[INFO][0m Context impl SQLiteImpl.
+[32m[INFO][0m Will assume non-transactional DDL.
+[32m[INFO][0m Using RAM pressure cache.
+[32m[INFO][0m got prompt
+[32m[INFO][0m Loading images from folder: lora_training/_rdna4_bench
+[32m[INFO][0m Loaded 3 images from L:\ComfyUI\ComfyUI\input\lora_training\_rdna4_bench.
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[1m[33m[WARNING][0m clip missing: ['text_projection.weight']
+[32m[INFO][0m Requested to load FluxClipModel_
+[32m[INFO][0m loaded completely;  4777.54 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Encoding 3 images with VAE...
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m loaded completely; 13932.83 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m Encoding 3 texts with CLIP...
+[32m[INFO][0m Requested to load FluxClipModel_
+[32m[INFO][0m Created dataset with 3 latents and 3 conditioning.
+[32m[INFO][0m Resolution bucket (128x128): 3 samples
+[32m[INFO][0m Created 1 resolution buckets from 3 samples
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: asym_w4a8_int8, convrot_w4a4, int8_tensorwise, float8_e4m3fn, float8_e5m2 , emulated ops: mxfp8, nvfp4
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: torch.bfloat16
+[32m[INFO][0m model_type FLUX
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: asym_w4a8_int8, convrot_w4a4, int8_tensorwise, float8_e4m3fn, float8_e5m2 , emulated ops: mxfp8, nvfp4
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: torch.bfloat16
+[32m[INFO][0m model_type FLUX
+[32m[INFO][0m Gradient checkpointing: patching 64 modules at depth 2
+[32m[INFO][0m Requested to load Flux
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m loaded completely; 12864.18 MB usable, 11762.03 MB loaded, full load: True
+[32m[INFO][0m 0 models unloaded.
+
+********
+Warning: flash-attn is not installed. Will only run the manual PyTorch version. Please install flash-attn for faster inference.
+********
+ 
+✅ ComfyUI-Qwen-TTS v1.0.7 loaded
+(RES4LYF) Init
+(RES4LYF) Importing beta samplers.
+(RES4LYF) Importing legacy samplers.
+
+[92m[rgthree-comfy] Loaded 48 magnificent nodes. 🎉[0m
+
+[33m[rgthree-comfy] ComfyUI's new Node 2.0 rendering may be incompatible with some rgthree-comfy nodes and features, breaking some rendering as well as losing the ability to access a node's properties (a vital part of many nodes). It also appears to run MUCH more slowly spiking CPU usage and causing jankiness and unresponsiveness, especially with large workflows. Personally I am not planning to use the new Nodes 2.0 and, unfortunately, am not able to invest the time to investigate and overhaul rgthree-comfy where needed. If you have issues when Nodes 2.0 is enabled, I'd urge you to switch it off as well and join me in hoping ComfyUI is not planning to deprecate the existing, stable canvas rendering all together.
+[0m
+Training LoRA:   0%|          | 0/8 [00:00<?, ?it/s]Training LoRA:   0%|          | 0/8 [00:01<?, ?it/s]
+[1m[31m[ERROR][0m !!! Exception during processing !!! CUDA out of memory. Tried to allocate 144.00 MiB. GPU 0 has a total capacity of 31.86 GiB of which 2.34 GiB is free. 28.71 GiB allowed; Of the allocated memory 28.31 GiB is allocated by PyTorch, and 407.79 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+[1m[31m[ERROR][0m Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\execution.py", line 545, in execute
+    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 344, in get_output_data
+    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 312, in _async_map_node_over_list
+    await process_inputs(input_data_all, 0, input_is_list=input_is_list)
+  File "L:\ComfyUI\ComfyUI\execution.py", line 306, in process_inputs
+    result = f(**inputs)
+  File "L:\ComfyUI\ComfyUI\comfy_api\internal\__init__.py", line 149, in wrapped_func
+    return method(locked_class, **inputs)
+  File "L:\ComfyUI\ComfyUI\comfy_api\latest\_io.py", line 2046, in EXECUTE_NORMALIZED
+    to_return = cls.execute(*args, **kwargs)
+  File "L:\ComfyUI\ComfyUI\comfy_extras\nodes_train.py", line 1280, in execute
+    _run_training_loop(
+    ~~~~~~~~~~~~~~~~~~^
+        guider,
+        ^^^^^^^
+    ...<5 lines>...
+        multi_res,
+        ^^^^^^^^^^
+    )
+    ^
+  File "L:\ComfyUI\ComfyUI\comfy_extras\nodes_train.py", line 928, in _run_training_loop
+    guider.sample(
+    ~~~~~~~~~~~~~^
+        noise.generate_noise({"samples": dummy_latent}),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        seed=noise.seed,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1337, in sample
+    output = executor.execute(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
+  File "L:\ComfyUI\ComfyUI\comfy\patcher_extension.py", line 113, in execute
+    return self.original(*args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy_extras\nodes_train.py", line 77, in outer_sample
+    output = self.inner_sample(
+        noise,
+    ...<8 lines>...
+        latent_shapes=latent_shapes,
+    )
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1239, in inner_sample
+    samples = executor.execute(self, sigmas, extra_args, callback, noise, latent_image, denoise_mask, disable_pbar)
+  File "L:\ComfyUI\ComfyUI\comfy\patcher_extension.py", line 113, in execute
+    return self.original(*args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy_extras\nodes_train.py", line 360, in sample
+    self._train_step_bucket_mode(model_wrap, cond, extra_args, noisegen, latent_image, pbar)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy_extras\nodes_train.py", line 256, in _train_step_bucket_mode
+    loss = self.fwd_bwd(
+        model_wrap,
+    ...<7 lines>...
+        bwd=True,
+    )
+  File "L:\ComfyUI\ComfyUI\comfy_extras\nodes_train.py", line 223, in fwd_bwd
+    bwd_loss.backward()
+    ~~~~~~~~~~~~~~~~~^^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_tensor.py", line 623, in backward
+    torch.autograd.backward(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        self, gradient, retain_graph, create_graph, inputs=inputs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\autograd\__init__.py", line 395, in backward
+    _engine_run_backward(
+    ~~~~~~~~~~~~~~~~~~~~^
+        tensors,
+        ^^^^^^^^
+    ...<5 lines>...
+        accumulate_grad=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\autograd\graph.py", line 979, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        t_outputs, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )  # Calls into the C++ engine to run the backward pass
+    ^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\utils\checkpoint.py", line 1183, in unpack_hook
+    _run_fn_with_dynamo_disabled(frame.recompute_fn, *args)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_compile.py", line 54, in inner
+    return disable_fn(*args, **kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_dynamo\eval_frame.py", line 1446, in _fn
+    return fn(*args, **kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\utils\checkpoint.py", line 1150, in _run_fn_with_dynamo_disabled
+    return fn(*args, **kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\utils\checkpoint.py", line 1688, in recompute_fn
+    fn(*args, **kwargs)
+    ~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy_extras\nodes_train.py", line 524, in fwd
+    return org_forward(*args, **kwargs)
+  File "L:\ComfyUI\ComfyUI\comfy\ldm\flux\layers.py", line 248, in forward
+    img += apply_mod(self.img_mlp(apply_mod(self.img_norm2(img), (1 + img_mod2.scale), img_mod2.shift, modulation_dims_img)), img_mod2.gate, None, modulation_dims_img)
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\nn\modules\container.py", line 253, in forward
+    input = module(input)
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "L:\ComfyUI\ComfyUI\comfy\weight_adapter\bypass.py", line 173, in _bypass_forward
+    base_out = self.original_forward(x, *args, **kwargs)
+  File "L:\ComfyUI\ComfyUI\comfy\ops.py", line 1414, in forward
+    output = self.forward_comfy_cast_weights(
+        input,
+    ...<2 lines>...
+        weight_only_quant=weight_only_quant,
+    )
+  File "L:\ComfyUI\ComfyUI\comfy\ops.py", line 1338, in forward_comfy_cast_weights
+    with CastBiasWeightContext(
+         ~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<3 lines>...
+        want_requant=want_requant,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as (weight, bias):
+    ^
+  File "L:\ComfyUI\ComfyUI\comfy\ops.py", line 466, in __init__
+    self.state = (None, None) if self.slf is None else cast_bias_weight(*args, **kwargs)
+                                                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\ops.py", line 434, in cast_bias_weight
+    weight = weight.dequantize()
+  File "L:\ComfyUI\.venv\Lib\site-packages\comfy_kitchen\tensor\base.py", line 291, in dequantize
+    full = self.layout_cls.dequantize(qdata, self._params)
+  File "L:\ComfyUI\.venv\Lib\site-packages\comfy_kitchen\tensor\fp8.py", line 71, in dequantize
+    return ck.dequantize_per_tensor_fp8(qdata, params.scale, params.orig_dtype)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\.venv\Lib\site-packages\comfy_kitchen\__init__.py", line 362, in dequantize_per_tensor_fp8
+    return torch.ops.comfy_kitchen.dequantize_fp8(x, scale, dtype_code)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_ops.py", line 1279, in __call__
+    return self._op(*args, **kwargs)
+           ~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_library\autograd.py", line 123, in autograd_impl
+    result = forward_no_grad(*args, Metadata(keyset, keyword_only_args))
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_library\autograd.py", line 41, in forward_no_grad
+    result = op.redispatch(keyset & _C._after_autograd_keyset, *args, **kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_ops.py", line 882, in redispatch
+    return self._handle.redispatch_boxed(keyset, *args, **kwargs)  # type: ignore[return-value]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_library\custom_ops.py", line 441, in backend_impl
+    result = self._backend_fns[device_type](*args, **kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_compile.py", line 54, in inner
+    return disable_fn(*args, **kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_dynamo\eval_frame.py", line 1446, in _fn
+    return fn(*args, **kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\torch\_library\custom_ops.py", line 502, in wrapped_fn
+    return fn(*args, **kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\comfy_kitchen\backends\eager\quantization.py", line 461, in _op_dequantize_fp8
+    return impl(**kwargs)
+  File "L:\ComfyUI\.venv\Lib\site-packages\comfy_kitchen\backends\hip\__init__.py", line 322, in dequantize_per_tensor_fp8
+    out = torch.empty(x.shape, dtype=output_type, device=x.device)
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 144.00 MiB. GPU 0 has a total capacity of 31.86 GiB of which 2.34 GiB is free. 28.71 GiB allowed; Of the allocated memory 28.31 GiB is allocated by PyTorch, and 407.79 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+
+[32m[INFO][0m Memory summary:
+|===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 0                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 1            |        cudaMalloc retries: 1         |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      |  28962 MiB |  28988 MiB | 702007 MiB | 673044 MiB |
+|       from large pool |  28637 MiB |  28663 MiB | 700969 MiB | 672331 MiB |
+|       from small pool |    324 MiB |    324 MiB |   1037 MiB |    713 MiB |
+|---------------------------------------------------------------------------|
+| Active memory         |  28962 MiB |  28988 MiB | 702007 MiB | 673044 MiB |
+|       from large pool |  28637 MiB |  28663 MiB | 700969 MiB | 672331 MiB |
+|       from small pool |    324 MiB |    324 MiB |   1037 MiB |    713 MiB |
+|---------------------------------------------------------------------------|
+| Requested memory      |  28797 MiB |  28823 MiB | 701583 MiB | 672785 MiB |
+|       from large pool |  28473 MiB |  28499 MiB | 700548 MiB | 672074 MiB |
+|       from small pool |    323 MiB |    324 MiB |   1034 MiB |    711 MiB |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |  29396 MiB |  29396 MiB |  37496 MiB |   8100 MiB |
+|       from large pool |  29070 MiB |  29070 MiB |  37152 MiB |   8082 MiB |
+|       from small pool |    326 MiB |    326 MiB |    344 MiB |     18 MiB |
+|---------------------------------------------------------------------------|
+| Non-releasable memory | 444402 KiB |   2301 MiB | 463635 MiB | 463201 MiB |
+|       from large pool | 442728 KiB |   2300 MiB | 462569 MiB | 462137 MiB |
+|       from small pool |   1674 KiB |      7 MiB |   1065 MiB |   1063 MiB |
+|---------------------------------------------------------------------------|
+| Allocations           |    5010    |    5015    |   30973    |   25963    |
+|       from large pool |     796    |     798    |   13912    |   13116    |
+|       from small pool |    4214    |    4218    |   17061    |   12847    |
+|---------------------------------------------------------------------------|
+| Active allocs         |    5010    |    5015    |   30973    |   25963    |
+|       from large pool |     796    |     798    |   13912    |   13116    |
+|       from small pool |    4214    |    4218    |   17061    |   12847    |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |     598    |     598    |     799    |     201    |
+|       from large pool |     435    |     435    |     627    |     192    |
+|       from small pool |     163    |     163    |     172    |       9    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |     103    |     145    |   13046    |   12943    |
+|       from large pool |      38    |      40    |    7440    |    7402    |
+|       from small pool |      65    |     131    |    5606    |    5541    |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+
+[1m[31m[ERROR][0m Got an OOM, unloading all loaded models.

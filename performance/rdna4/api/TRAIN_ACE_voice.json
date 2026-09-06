@@ -1,0 +1,2111 @@
+{
+ "output": {
+  "10": {
+   "_meta": {
+    "title": "LoRA Training starten (Widgets ggf. pruefen!)"
+   },
+   "class_type": "FL_AceStep_Train",
+   "inputs": {
+    "config": [
+     "9",
+     0
+    ],
+    "lora_name": "tailor_voice",
+    "model": [
+     "31",
+     0
+    ],
+    "resume_from": "",
+    "tensor_dir": [
+     "8",
+     0
+    ]
+   }
+  },
+  "11": {
+   "_meta": {
+    "title": "Run Timer Pixaroma"
+   },
+   "class_type": "PixaromaRunTimer",
+   "inputs": {}
+  },
+  "2": {
+   "_meta": {
+    "title": "Load Diffusion Model"
+   },
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "ACE\\acestep_v1.5_xl_sft_bf16.safetensors",
+    "weight_dtype": "default"
+   }
+  },
+  "3": {
+   "_meta": {
+    "title": "Load VAE"
+   },
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "ACE\\ace_1.5_vae.safetensors"
+   }
+  },
+  "31": {
+   "_meta": {
+    "title": "SelectModelDevice · central control"
+   },
+   "class_type": "SelectModelDevice",
+   "inputs": {
+    "device": [
+     "34",
+     0
+    ],
+    "model": [
+     "2",
+     0
+    ]
+   }
+  },
+  "32": {
+   "_meta": {
+    "title": "SelectVAEDevice · central control"
+   },
+   "class_type": "SelectVAEDevice",
+   "inputs": {
+    "device": [
+     "34",
+     2
+    ],
+    "vae": [
+     "3",
+     0
+    ]
+   }
+  },
+  "33": {
+   "_meta": {
+    "title": "SelectCLIPDevice · central control"
+   },
+   "class_type": "SelectCLIPDevice",
+   "inputs": {
+    "clip": [
+     "4",
+     0
+    ],
+    "device": [
+     "34",
+     1
+    ]
+   }
+  },
+  "34": {
+   "_meta": {
+    "title": "Central GPU Control · MODEL / CLIP / VAE"
+   },
+   "class_type": "DaWMultiGPUDeviceControl",
+   "inputs": {
+    "clip_device": "gpu:0",
+    "model_device": "gpu:0",
+    "vae_device": "gpu:0"
+   }
+  },
+  "4": {
+   "_meta": {
+    "title": "Load CLIP (Dual)"
+   },
+   "class_type": "DualCLIPLoader",
+   "inputs": {
+    "clip_name1": "ACE\\qwen_0.6b_ace15.safetensors",
+    "clip_name2": "ACE\\qwen_4b_ace15.safetensors",
+    "device": "default",
+    "type": "ace"
+   }
+  },
+  "5": {
+   "_meta": {
+    "title": "LLM fuers Auto-Labeling"
+   },
+   "class_type": "FL_AceStep_LLMLoader",
+   "inputs": {
+    "backend": "pt",
+    "checkpoint_path": "",
+    "device": "auto",
+    "model_name": "acestep-5Hz-lm-1.7B"
+   }
+  },
+  "6": {
+   "_meta": {
+    "title": "Deine Voice-Samples scannen"
+   },
+   "class_type": "FL_AceStep_ScanDirectory",
+   "inputs": {
+    "all_instrumental": false,
+    "custom_tag": "tailor_swift_v2",
+    "directory": "L:\\ComfyUI\\ComfyUI\\input\\audio\\Taylor",
+    "tag_position": "prepend"
+   }
+  },
+  "7": {
+   "_meta": {
+    "title": "Auto-Label (Tags/BPM/Lyrics)"
+   },
+   "class_type": "FL_AceStep_LabelSamples",
+   "inputs": {
+    "dataset": [
+     "6",
+     0
+    ],
+    "format_lyrics": false,
+    "llm": [
+     "5",
+     0
+    ],
+    "model": [
+     "31",
+     0
+    ],
+    "only_unlabeled": false,
+    "skip_metas": false,
+    "transcribe_lyrics": false,
+    "vae": [
+     "32",
+     0
+    ]
+   }
+  },
+  "8": {
+   "_meta": {
+    "title": "Preprocessing (VAE+CLIP Encode)"
+   },
+   "class_type": "FL_AceStep_PreprocessDataset",
+   "inputs": {
+    "clip": [
+     "33",
+     0
+    ],
+    "dataset": [
+     "7",
+     0
+    ],
+    "genre_ratio": 0,
+    "max_duration": 120,
+    "model": [
+     "31",
+     0
+    ],
+    "output_dir": "I:\\models\\ACE-Voice-Training\\dataset",
+    "vae": [
+     "32",
+     0
+    ]
+   }
+  },
+  "9": {
+   "_meta": {
+    "title": "Trainings-Hyperparameter"
+   },
+   "class_type": "FL_AceStep_TrainingConfig",
+   "inputs": {
+    "batch_size": 1,
+    "gradient_accumulation": 4,
+    "learning_rate": 0.0001,
+    "lora_alpha": 32,
+    "lora_dropout": 0.1,
+    "lora_rank": 16,
+    "max_epochs": 100,
+    "max_grad_norm": 1,
+    "output_dir": "./output/acestep/loras",
+    "save_every_n_epochs": 10,
+    "seed": 173489082,
+    "target_modules": "q_proj,k_proj,v_proj,o_proj",
+    "warmup_steps": 100,
+    "weight_decay": 0.01
+   }
+  }
+ },
+ "workflow": {
+  "config": {},
+  "definitions": null,
+  "extra": {
+   "VHS_KeepIntermediate": true,
+   "VHS_MetadataImage": true,
+   "VHS_latentpreview": false,
+   "VHS_latentpreviewrate": 0,
+   "dawasteh_dual_gpu": {
+    "backend": "ROCm/HIP",
+    "central_control": "DaWMultiGPUDeviceControl",
+    "connected_roles": [
+     "model_device",
+     "clip_device",
+     "vae_device"
+    ],
+    "curated_split_default": false,
+    "defaults": {
+     "CLIP": "gpu:0",
+     "MODEL": "gpu:0",
+     "VAE": "gpu:0"
+    },
+    "execution": "device placement only; ComfyUI graph stages remain sequential",
+    "family": "ACE-Step1_5_XL-Voice-LoRA-Training",
+    "manual_device_dropdowns": {
+     "clip_device": "gpu:0",
+     "model_device": "gpu:0",
+     "vae_device": "gpu:0"
+    },
+    "placement_support": "official-selectors",
+    "scope": "collection-wide optional GPU placement",
+    "selector_count": 3,
+    "server": "127.0.0.1:8188",
+    "source": "workflows/LoRA Generation/ACE-Step1_5_XL-Voice-LoRA-Training.json",
+    "version": 3
+   },
+   "dawasteh_rodent_layout": {
+    "algorithm": "rodent-v1",
+    "credit": "Nerdy Rodent",
+    "exceptions": [],
+    "grid": 20,
+    "method": "RODENT Method",
+    "node_gap": [
+     80,
+     40
+    ],
+    "stage_gap": 120,
+    "topology_sha256": "0c4c039666b31de16ad5bd050ea0d1482df4f558214a205d2616bd000e566b5c",
+    "version": 1
+   },
+   "dawasteh_v092_collection": {
+    "dual_gpu_folder_dissolved": true,
+    "release": "v0.9.2",
+    "rodent_credit": "Nerdy Rodent",
+    "rodent_method": true,
+    "version": 1
+   },
+   "dawasteh_workflow_refinement": {
+    "gap": 40,
+    "generated_notes": 13,
+    "layout": "rodent-v1",
+    "version": 1,
+    "x_scale": 1,
+    "y_scale": 1
+   },
+   "ds": {
+    "offset": [
+     1497.1971895882023,
+     678.7643794625727
+    ],
+    "scale": 0.9090909090909091
+   },
+   "frontendVersion": "1.51.9",
+   "reroutes": null
+  },
+  "floatingLinks": null,
+  "groups": [
+   {
+    "bounding": [
+     0,
+     0,
+     900,
+     1160
+    ],
+    "color": "#5B6472",
+    "flags": {},
+    "id": 1,
+    "title": "R1 · README & RUNTIME"
+   },
+   {
+    "bounding": [
+     980,
+     0,
+     380,
+     300
+    ],
+    "color": "#7C5CC4",
+    "flags": {},
+    "id": 2,
+    "title": "O1 · ORIGIN INPUTS"
+   },
+   {
+    "bounding": [
+     1440,
+     0,
+     380,
+     940
+    ],
+    "color": "#3F789E",
+    "flags": {},
+    "id": 3,
+    "title": "D1 · DEPENDENCIES"
+   },
+   {
+    "bounding": [
+     1900,
+     0,
+     480,
+     2000
+    ],
+    "color": "#B85C5C",
+    "flags": {},
+    "id": 4,
+    "title": "N1 · NEURAL EXECUTION"
+   },
+   {
+    "bounding": [
+     2460,
+     0,
+     1900,
+     2180
+    ],
+    "color": "#5B6472",
+    "flags": {},
+    "id": 5,
+    "title": "R9 · PARAMETER REFERENCE"
+   }
+  ],
+  "id": "acestep-voice-lora-training",
+  "last_link_id": 1017,
+  "last_node_id": 38,
+  "links": [
+   [
+    1001,
+    6,
+    0,
+    7,
+    0,
+    "ACESTEP_DATASET"
+   ],
+   [
+    1002,
+    31,
+    0,
+    7,
+    1,
+    "MODEL"
+   ],
+   [
+    1003,
+    32,
+    0,
+    7,
+    2,
+    "VAE"
+   ],
+   [
+    1004,
+    5,
+    0,
+    7,
+    3,
+    "ACESTEP_LLM"
+   ],
+   [
+    1005,
+    7,
+    0,
+    8,
+    0,
+    "ACESTEP_DATASET"
+   ],
+   [
+    1006,
+    31,
+    0,
+    8,
+    1,
+    "MODEL"
+   ],
+   [
+    1007,
+    32,
+    0,
+    8,
+    2,
+    "VAE"
+   ],
+   [
+    1008,
+    33,
+    0,
+    8,
+    3,
+    "CLIP"
+   ],
+   [
+    1009,
+    31,
+    0,
+    10,
+    0,
+    "MODEL"
+   ],
+   [
+    1010,
+    9,
+    0,
+    10,
+    1,
+    "ACESTEP_TRAINING_CONFIG"
+   ],
+   [
+    1011,
+    8,
+    0,
+    10,
+    2,
+    "STRING"
+   ],
+   [
+    1012,
+    2,
+    0,
+    31,
+    0,
+    "MODEL"
+   ],
+   [
+    1013,
+    3,
+    0,
+    32,
+    0,
+    "VAE"
+   ],
+   [
+    1014,
+    4,
+    0,
+    33,
+    0,
+    "CLIP"
+   ],
+   [
+    1015,
+    34,
+    0,
+    31,
+    1,
+    "COMBO"
+   ],
+   [
+    1016,
+    34,
+    2,
+    32,
+    1,
+    "COMBO"
+   ],
+   [
+    1017,
+    34,
+    1,
+    33,
+    1,
+    "COMBO"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1012
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     1480,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "UNETLoader"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     120
+    ],
+    "type": "UNETLoader",
+    "widgets_values": [
+     "ACE\\acestep_v1.5_xl_sft_bf16.safetensors",
+     "default"
+    ],
+    "widgets_values_named": {
+     "unet_name": "ACE\\acestep_v1.5_xl_sft_bf16.safetensors",
+     "weight_dtype": "default"
+    }
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1013
+      ],
+      "locked": null,
+      "name": "VAE",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     1480,
+     240
+    ],
+    "properties": {
+     "Node name for S&R": "VAELoader"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     120
+    ],
+    "type": "VAELoader",
+    "widgets_values": [
+     "ACE\\ace_1.5_vae.safetensors"
+    ],
+    "widgets_values_named": {
+     "vae_name": "ACE\\ace_1.5_vae.safetensors"
+    }
+   },
+   {
+    "flags": {},
+    "id": 4,
+    "inputs": [],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1014
+      ],
+      "locked": null,
+      "name": "CLIP",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "CLIP"
+     }
+    ],
+    "pos": [
+     1480,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "DualCLIPLoader"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     142
+    ],
+    "type": "DualCLIPLoader",
+    "widgets_values": [
+     "ACE\\qwen_0.6b_ace15.safetensors",
+     "ACE\\qwen_4b_ace15.safetensors",
+     "ace",
+     "default"
+    ],
+    "widgets_values_named": {
+     "clip_name1": "ACE\\qwen_0.6b_ace15.safetensors",
+     "clip_name2": "ACE\\qwen_4b_ace15.safetensors",
+     "device": "default",
+     "type": "ace"
+    }
+   },
+   {
+    "bgcolor": "#4F0074",
+    "color": "#16727c",
+    "flags": {},
+    "id": 5,
+    "inputs": [],
+    "mode": 0,
+    "order": 3,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1004
+      ],
+      "locked": null,
+      "name": "llm",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "ACESTEP_LLM"
+     }
+    ],
+    "pos": [
+     1020,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "FL_AceStep_LLMLoader"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     178
+    ],
+    "title": "LLM fuers Auto-Labeling",
+    "type": "FL_AceStep_LLMLoader",
+    "widgets_values": [
+     "acestep-5Hz-lm-1.7B",
+     "auto",
+     "pt",
+     ""
+    ],
+    "widgets_values_named": {
+     "backend": "pt",
+     "checkpoint_path": "",
+     "device": "auto",
+     "model_name": "acestep-5Hz-lm-1.7B"
+    }
+   },
+   {
+    "bgcolor": "#4F0074",
+    "color": "#16727c",
+    "flags": {},
+    "id": 6,
+    "inputs": [],
+    "mode": 0,
+    "order": 4,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1001
+      ],
+      "locked": null,
+      "name": "dataset",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "ACESTEP_DATASET"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "sample_count",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "status",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     1940,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "FL_AceStep_ScanDirectory"
+    },
+    "showAdvanced": null,
+    "size": [
+     395.765625,
+     226
+    ],
+    "title": "Deine Voice-Samples scannen",
+    "type": "FL_AceStep_ScanDirectory",
+    "widgets_values": [
+     "L:\\ComfyUI\\ComfyUI\\input\\audio\\Taylor",
+     false,
+     "tailor_swift_v2",
+     "prepend"
+    ],
+    "widgets_values_named": {
+     "all_instrumental": false,
+     "custom_tag": "tailor_swift_v2",
+     "directory": "L:\\ComfyUI\\ComfyUI\\input\\audio\\Taylor",
+     "tag_position": "prepend"
+    }
+   },
+   {
+    "bgcolor": "#4F0074",
+    "color": "#16727c",
+    "flags": {},
+    "id": 7,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1001,
+      "locked": null,
+      "name": "dataset",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "ACESTEP_DATASET"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1002,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1003,
+      "locked": null,
+      "name": "vae",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "VAE"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1004,
+      "locked": null,
+      "name": "llm",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "ACESTEP_LLM"
+     }
+    ],
+    "mode": 0,
+    "order": 25,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1005
+      ],
+      "locked": null,
+      "name": "dataset",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "ACESTEP_DATASET"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "labeled_count",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "status",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     1940,
+     840
+    ],
+    "properties": {
+     "Node name for S&R": "FL_AceStep_LabelSamples"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     230
+    ],
+    "title": "Auto-Label (Tags/BPM/Lyrics)",
+    "type": "FL_AceStep_LabelSamples",
+    "widgets_values": [
+     false,
+     false,
+     false,
+     false
+    ],
+    "widgets_values_named": {
+     "format_lyrics": false,
+     "only_unlabeled": false,
+     "skip_metas": false,
+     "transcribe_lyrics": false
+    }
+   },
+   {
+    "bgcolor": "#4F0074",
+    "color": "#16727c",
+    "flags": {},
+    "id": 8,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1005,
+      "locked": null,
+      "name": "dataset",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "ACESTEP_DATASET"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1006,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1007,
+      "locked": null,
+      "name": "vae",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "VAE"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1008,
+      "locked": null,
+      "name": "clip",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 26,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1011
+      ],
+      "locked": null,
+      "name": "output_path",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "STRING"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "sample_count",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "status",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     1940,
+     1120
+    ],
+    "properties": {
+     "Node name for S&R": "FL_AceStep_PreprocessDataset"
+    },
+    "showAdvanced": null,
+    "size": [
+     366.359375,
+     210
+    ],
+    "title": "Preprocessing (VAE+CLIP Encode)",
+    "type": "FL_AceStep_PreprocessDataset",
+    "widgets_values": [
+     "I:\\models\\ACE-Voice-Training\\dataset",
+     120,
+     0
+    ],
+    "widgets_values_named": {
+     "genre_ratio": 0,
+     "max_duration": 120,
+     "output_dir": "I:\\models\\ACE-Voice-Training\\dataset"
+    }
+   },
+   {
+    "bgcolor": "#4F0074",
+    "color": "#16727c",
+    "flags": {},
+    "id": 9,
+    "inputs": [],
+    "mode": 0,
+    "order": 5,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1010
+      ],
+      "locked": null,
+      "name": "config",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "ACESTEP_TRAINING_CONFIG"
+     }
+    ],
+    "pos": [
+     1940,
+     340
+    ],
+    "properties": {
+     "Node name for S&R": "FL_AceStep_TrainingConfig"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     466
+    ],
+    "title": "Trainings-Hyperparameter",
+    "type": "FL_AceStep_TrainingConfig",
+    "widgets_values": [
+     16,
+     32,
+     0.1,
+     0.0001,
+     100,
+     1,
+     4,
+     10,
+     "./output/acestep/loras",
+     173489082,
+     "randomize",
+     100,
+     0.01,
+     1,
+     "q_proj,k_proj,v_proj,o_proj"
+    ],
+    "widgets_values_named": {
+     "batch_size": 1,
+     "control_after_generate": "randomize",
+     "gradient_accumulation": 4,
+     "learning_rate": 0.0001,
+     "lora_alpha": 32,
+     "lora_dropout": 0.1,
+     "lora_rank": 16,
+     "max_epochs": 100,
+     "max_grad_norm": 1,
+     "output_dir": "./output/acestep/loras",
+     "save_every_n_epochs": 10,
+     "seed": 173489082,
+     "target_modules": "q_proj,k_proj,v_proj,o_proj",
+     "warmup_steps": 100,
+     "weight_decay": 0.01
+    }
+   },
+   {
+    "bgcolor": "#4F0074",
+    "color": "#16727c",
+    "flags": {},
+    "id": 10,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1009,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1010,
+      "locked": null,
+      "name": "config",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "ACESTEP_TRAINING_CONFIG"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1011,
+      "locked": null,
+      "name": "tensor_dir",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "STRING",
+      "widget": {
+       "name": "tensor_dir"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 27,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "final_lora_path",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "STRING"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "status",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     1940,
+     1360
+    ],
+    "properties": {
+     "Node name for S&R": "FL_AceStep_Train"
+    },
+    "showAdvanced": null,
+    "size": [
+     339.765625,
+     590
+    ],
+    "title": "LoRA Training starten (Widgets ggf. pruefen!)",
+    "type": "FL_AceStep_Train",
+    "widgets_values": [
+     "",
+     "tailor_voice",
+     "",
+     ""
+    ],
+    "widgets_values_named": {
+     "lora_name": "tailor_voice",
+     "resume_from": "",
+     "tensor_dir": "",
+     "training_ui": ""
+    }
+   },
+   {
+    "bgcolor": "#2a2a2a",
+    "color": "#1d1d1d",
+    "flags": {
+     "no_title": true
+    },
+    "id": 11,
+    "inputs": [],
+    "mode": 0,
+    "order": 6,
+    "outputs": [],
+    "pos": [
+     40,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "PixaromaRunTimer",
+     "cnr_id": "ComfyUI-Pixaroma",
+     "ver": "ffcf2f56aa448f2df763b09b70857632792b7805"
+    },
+    "showAdvanced": null,
+    "size": [
+     226,
+     39.296875
+    ],
+    "type": "PixaromaRunTimer",
+    "widgets_values": [
+     {
+      "chime": false,
+      "color": "#f66744",
+      "decimals": 0,
+      "font": "",
+      "sound": "",
+      "version": 1,
+      "volume": 70
+     }
+    ],
+    "widgets_values_named": {
+     "run_timer_ui": {
+      "chime": false,
+      "color": "#f66744",
+      "decimals": 0,
+      "font": "",
+      "sound": "",
+      "version": 1,
+      "volume": 70
+     }
+    }
+   },
+   {
+    "bgcolor": "#21170b",
+    "color": "#4b3412",
+    "flags": {},
+    "id": 21,
+    "inputs": [],
+    "mode": 0,
+    "order": 7,
+    "outputs": [],
+    "pos": [
+     40,
+     160
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_rank_guide": true
+    },
+    "showAdvanced": null,
+    "size": [
+     820,
+     760
+    ],
+    "title": "LoRA-Rank-Guide · 16 / 32 / 64 / 128",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# ACE-Step 1.5 · LoRA-Rank richtig wählen\n\n**Grundregel:** `lora_alpha` auf **2 × Rank** setzen. Rank erhöht die Kapazität des Adapters, aber auch Dateigröße, VRAM-Bedarf und Overfitting-Risiko.\n\n| Rank | Alpha | Geeignet für | Wirkung |\n|---:|---:|---|---|\n| **16** | **32** | Stimme, ein klarer Stil, kleine Datensätze, schneller Start | Kleinster und schnellster Adapter; kann feine Nuancen unterlernen. |\n| **32** | **64** | Stimme + Ausdruck oder mittlere Stilvielfalt | Guter Allround-Kompromiss aus Detail und Speicher. |\n| **64** | **128** | komplexe Stimmen, Genres, Instrumentierung, größere Datensätze | Mehr Kapazität und größere Datei; braucht länger und kann kleine Datensätze überlernen. |\n| **128** | **256** | sehr vielfältige, große und sauber beschriftete Datensätze | Maximale Kapazität; höchster Speicher-/Zeitbedarf, nur nutzen wenn Rank 64 sichtbar zu wenig lernt. |\n\n## Einstellungen, die nicht automatisch mit dem Rank steigen\n\n- **learning_rate:** zunächst bei `1e-4` lassen. Bei springendem Loss, NaN oder hörbaren Artefakten auf `5e-5` senken. Nicht erhöhen, nur weil der Rank höher ist.\n- **max_epochs:** `100` ist ein Startpunkt. Den besten gespeicherten Checkpoint nach Hörvergleich wählen; höhere Ranks benötigen nicht automatisch mehr Epochen.\n- **lora_dropout:** `0.1` als Standard. Bei sehr kleinem Datensatz und Overfitting auf `0.2–0.3` erhöhen; bei Unterlernen eher senken.\n- **batch_size / gradient_accumulation:** auf RDNA4 mit `batch_size=1` starten. `gradient_accumulation=4` ergibt effektive Batchgröße 4; bei Bedarf 8 nutzen, ohne den VRAM-Peak eines größeren echten Batches.\n- **target_modules:** `q_proj,k_proj,v_proj,o_proj` für alle vier Ranks beibehalten.\n- **warmup_steps / weight_decay / max_grad_norm:** `100 / 0.01 / 1.0` sind robuste Startwerte und müssen nur bei instabilem Loss geändert werden.\n\n## RDNA4-Hinweise\n\n- Auf der **R9700 32 GB** zuerst Rank 16 oder 32 testen; Rank 64/128 erst nach einem kurzen Probe-Training.\n- Bei OOM: Rank senken, `batch_size=1` beibehalten, maximale Audio-Dauer reduzieren und keine zweite GPU-Aufgabe parallel laufen lassen.\n- Der Trainer arbeitet in **BF16**. CUDA-only Attention-/Triton-Optionen nicht ergänzen.\n- LoRA-Namen immer mit Rank versehen, z. B. `meine_stimme_rank32`, damit Checkpoints eindeutig bleiben.\n\nQuelle der ACE-Step-Grundwerte: offizieller ACE-Step-1.5 Settings Wizard (`Rank 64`, `Alpha 128`, Alpha üblicherweise 2 × Rank)."
+    ],
+    "widgets_values_named": {
+     "text": "# ACE-Step 1.5 · LoRA-Rank richtig wählen\n\n**Grundregel:** `lora_alpha` auf **2 × Rank** setzen. Rank erhöht die Kapazität des Adapters, aber auch Dateigröße, VRAM-Bedarf und Overfitting-Risiko.\n\n| Rank | Alpha | Geeignet für | Wirkung |\n|---:|---:|---|---|\n| **16** | **32** | Stimme, ein klarer Stil, kleine Datensätze, schneller Start | Kleinster und schnellster Adapter; kann feine Nuancen unterlernen. |\n| **32** | **64** | Stimme + Ausdruck oder mittlere Stilvielfalt | Guter Allround-Kompromiss aus Detail und Speicher. |\n| **64** | **128** | komplexe Stimmen, Genres, Instrumentierung, größere Datensätze | Mehr Kapazität und größere Datei; braucht länger und kann kleine Datensätze überlernen. |\n| **128** | **256** | sehr vielfältige, große und sauber beschriftete Datensätze | Maximale Kapazität; höchster Speicher-/Zeitbedarf, nur nutzen wenn Rank 64 sichtbar zu wenig lernt. |\n\n## Einstellungen, die nicht automatisch mit dem Rank steigen\n\n- **learning_rate:** zunächst bei `1e-4` lassen. Bei springendem Loss, NaN oder hörbaren Artefakten auf `5e-5` senken. Nicht erhöhen, nur weil der Rank höher ist.\n- **max_epochs:** `100` ist ein Startpunkt. Den besten gespeicherten Checkpoint nach Hörvergleich wählen; höhere Ranks benötigen nicht automatisch mehr Epochen.\n- **lora_dropout:** `0.1` als Standard. Bei sehr kleinem Datensatz und Overfitting auf `0.2–0.3` erhöhen; bei Unterlernen eher senken.\n- **batch_size / gradient_accumulation:** auf RDNA4 mit `batch_size=1` starten. `gradient_accumulation=4` ergibt effektive Batchgröße 4; bei Bedarf 8 nutzen, ohne den VRAM-Peak eines größeren echten Batches.\n- **target_modules:** `q_proj,k_proj,v_proj,o_proj` für alle vier Ranks beibehalten.\n- **warmup_steps / weight_decay / max_grad_norm:** `100 / 0.01 / 1.0` sind robuste Startwerte und müssen nur bei instabilem Loss geändert werden.\n\n## RDNA4-Hinweise\n\n- Auf der **R9700 32 GB** zuerst Rank 16 oder 32 testen; Rank 64/128 erst nach einem kurzen Probe-Training.\n- Bei OOM: Rank senken, `batch_size=1` beibehalten, maximale Audio-Dauer reduzieren und keine zweite GPU-Aufgabe parallel laufen lassen.\n- Der Trainer arbeitet in **BF16**. CUDA-only Attention-/Triton-Optionen nicht ergänzen.\n- LoRA-Namen immer mit Rank versehen, z. B. `meine_stimme_rank32`, damit Checkpoints eindeutig bleiben.\n\nQuelle der ACE-Step-Grundwerte: offizieller ACE-Step-1.5 Settings Wizard (`Rank 64`, `Alpha 128`, Alpha üblicherweise 2 × Rank)."
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 22,
+    "inputs": [],
+    "mode": 0,
+    "order": 8,
+    "outputs": [],
+    "pos": [
+     2500,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 2
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     328
+    ],
+    "title": "Erklärung · Load Diffusion Model · Node 2",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Load Diffusion Model · Node 2\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `ACE\\acestep_v1.5_xl_sft_bf16.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 3 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Load Diffusion Model · Node 2\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `ACE\\acestep_v1.5_xl_sft_bf16.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 3 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 23,
+    "inputs": [],
+    "mode": 0,
+    "order": 9,
+    "outputs": [],
+    "pos": [
+     2500,
+     440
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 3
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     294
+    ],
+    "title": "Erklärung · Load VAE · Node 3",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Load VAE · Node 3\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `vae_name` = `ACE\\ace_1.5_vae.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `vae_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Load VAE · Node 3\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `vae_name` = `ACE\\ace_1.5_vae.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `vae_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 24,
+    "inputs": [],
+    "mode": 0,
+    "order": 10,
+    "outputs": [],
+    "pos": [
+     2500,
+     780
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 4
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     396
+    ],
+    "title": "Erklärung · Load CLIP (Dual) · Node 4",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Load CLIP (Dual) · Node 4\n\n**Zweck:** Recipes: ↵ sdxl: clip-l, clip-g ↵ sd3: clip-l, clip-g / clip-l, t5 / clip-g, t5 ↵ flux: clip-l, t5 ↵ hidream: at least one of t5 or llama, recommended t5 and llama ↵ hunyuan_image: qwen2.5vl 7b and byt5 small ↵ newbie: gemma-3-4b-it, jina clip v2\n\n**Einstellbare Werte**\n- `clip_name1` = `ACE\\qwen_0.6b_ace15.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_name2` = `ACE\\qwen_4b_ace15.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `ace` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name1` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `clip_name2` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Load CLIP (Dual) · Node 4\n\n**Zweck:** Recipes: ↵ sdxl: clip-l, clip-g ↵ sd3: clip-l, clip-g / clip-l, t5 / clip-g, t5 ↵ flux: clip-l, t5 ↵ hidream: at least one of t5 or llama, recommended t5 and llama ↵ hunyuan_image: qwen2.5vl 7b and byt5 small ↵ newbie: gemma-3-4b-it, jina clip v2\n\n**Einstellbare Werte**\n- `clip_name1` = `ACE\\qwen_0.6b_ace15.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_name2` = `ACE\\qwen_4b_ace15.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `ace` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name1` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `clip_name2` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 25,
+    "inputs": [],
+    "mode": 0,
+    "order": 11,
+    "outputs": [],
+    "pos": [
+     2500,
+     1220
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 5
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     396
+    ],
+    "title": "Erklärung · LLM fuers Auto-Labeling · Node 5",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · LLM fuers Auto-Labeling · Node 5\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `FL_AceStep_LLMLoader` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `model_name` = `acestep-5Hz-lm-1.7B` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `device` = `auto` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `backend` = `pt` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `checkpoint_path` = `` — Steuert diesen Parameter. Ein anderer kompatibler Eintrag wechselt Modell/Adapter und verändert Stil, Qualität und Speicherbedarf.\n\n**Eingänge**\n- `model_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `backend` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `checkpoint_path` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `llm` (ACESTEP_LLM, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · LLM fuers Auto-Labeling · Node 5\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `FL_AceStep_LLMLoader` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `model_name` = `acestep-5Hz-lm-1.7B` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `device` = `auto` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `backend` = `pt` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n- `checkpoint_path` = `` — Steuert diesen Parameter. Ein anderer kompatibler Eintrag wechselt Modell/Adapter und verändert Stil, Qualität und Speicherbedarf.\n\n**Eingänge**\n- `model_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `backend` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `checkpoint_path` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `llm` (ACESTEP_LLM, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 26,
+    "inputs": [],
+    "mode": 0,
+    "order": 12,
+    "outputs": [],
+    "pos": [
+     2960,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 6
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     430
+    ],
+    "title": "Erklärung · Deine Voice-Samples scannen · Node 6",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Deine Voice-Samples scannen · Node 6\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `FL_AceStep_ScanDirectory` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `directory` = `L:\\ComfyUI\\ComfyUI\\input\\audio\\Taylor` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `all_instrumental` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `custom_tag` = `tailor_swift_v2` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `tag_position` = `prepend` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `directory` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `all_instrumental` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `custom_tag` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `tag_position` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `dataset` (ACESTEP_DATASET, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `sample_count` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Deine Voice-Samples scannen · Node 6\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `FL_AceStep_ScanDirectory` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `directory` = `L:\\ComfyUI\\ComfyUI\\input\\audio\\Taylor` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `all_instrumental` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `custom_tag` = `tailor_swift_v2` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `tag_position` = `prepend` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `directory` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `all_instrumental` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `custom_tag` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `tag_position` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `dataset` (ACESTEP_DATASET, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `sample_count` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 27,
+    "inputs": [],
+    "mode": 0,
+    "order": 13,
+    "outputs": [],
+    "pos": [
+     2960,
+     560
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 7
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     498
+    ],
+    "title": "Erklärung · Auto-Label (Tags/BPM/Lyrics) · Node 7",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Auto-Label (Tags/BPM/Lyrics) · Node 7\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `FL_AceStep_LabelSamples` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `skip_metas` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `only_unlabeled` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `format_lyrics` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `transcribe_lyrics` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `dataset` (ACESTEP_DATASET, Link 1001): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model` (MODEL, Link 1002): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 1003): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `llm` (ACESTEP_LLM, Link 1004): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `skip_metas` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `only_unlabeled` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `format_lyrics` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `transcribe_lyrics` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `dataset` (ACESTEP_DATASET, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `labeled_count` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Auto-Label (Tags/BPM/Lyrics) · Node 7\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `FL_AceStep_LabelSamples` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `skip_metas` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `only_unlabeled` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `format_lyrics` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `transcribe_lyrics` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `dataset` (ACESTEP_DATASET, Link 1001): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model` (MODEL, Link 1002): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 1003): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `llm` (ACESTEP_LLM, Link 1004): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `skip_metas` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `only_unlabeled` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `format_lyrics` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `transcribe_lyrics` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `dataset` (ACESTEP_DATASET, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `labeled_count` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 28,
+    "inputs": [],
+    "mode": 0,
+    "order": 14,
+    "outputs": [],
+    "pos": [
+     2960,
+     1100
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 8
+    },
+    "showAdvanced": null,
+    "size": [
+     405.1875,
+     464
+    ],
+    "title": "Erklärung · Preprocessing (VAE+CLIP Encode) · Node 8",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Preprocessing (VAE+CLIP Encode) · Node 8\n\n**Zweck:** Lädt, filtert oder bereitet Trainingsdaten für die weitere Verarbeitung auf.\n\n**Einstellbare Werte**\n- `output_dir` = `I:\\models\\ACE-Voice-Training\\dataset` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `max_duration` = `120` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `genre_ratio` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `dataset` (ACESTEP_DATASET, Link 1005): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model` (MODEL, Link 1006): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 1007): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `clip` (CLIP, Link 1008): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output_dir` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_duration` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `genre_ratio` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output_path` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `sample_count` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Preprocessing (VAE+CLIP Encode) · Node 8\n\n**Zweck:** Lädt, filtert oder bereitet Trainingsdaten für die weitere Verarbeitung auf.\n\n**Einstellbare Werte**\n- `output_dir` = `I:\\models\\ACE-Voice-Training\\dataset` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `max_duration` = `120` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `genre_ratio` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `dataset` (ACESTEP_DATASET, Link 1005): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model` (MODEL, Link 1006): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 1007): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `clip` (CLIP, Link 1008): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output_dir` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_duration` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `genre_ratio` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output_path` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `sample_count` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 29,
+    "inputs": [],
+    "mode": 0,
+    "order": 15,
+    "outputs": [],
+    "pos": [
+     2960,
+     1600
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 9
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     540
+    ],
+    "title": "Erklärung · Trainings-Hyperparameter · Node 9",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Trainings-Hyperparameter · Node 9\n\n**Zweck:** Konfiguriert oder führt einen Trainingsschritt mit den bereitgestellten Daten und Modellen aus.\n\n**Einstellbare Werte**\n- `lora_rank` = `16` — Steuert diesen Parameter. Höher erhöht Kapazität, Dateigröße und Speicherbedarf; niedriger ist kompakter, kann Details unterlernen.\n- `lora_alpha` = `32` — Steuert diesen Parameter. Höher skaliert den Adapter stärker; niedriger wirkt sanfter. Häufig wird Alpha passend zum Rank gewählt.\n- `lora_dropout` = `0.1` — Steuert diesen Parameter. Höher regularisiert stärker gegen Overfitting; niedriger passt sich enger an die Trainingsdaten an.\n- `learning_rate` = `0.0001` — Steuert diesen Parameter. Höher lernt schneller, kann aber instabil werden/übersteuern; niedriger ist stabiler, benötigt mehr Schritte.\n- `max_epochs` = `100` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n- `gradient_accumulation` = `4` — Steuert diesen Parameter. Höher vergrößert die effektive Batchgröße bei ähnlichem VRAM, verlängert aber jeden Optimizer-Schritt.\n- `save_every_n_epochs` = `10` — Steuert diesen Parameter. Höher speichert seltener und spart Speicherplatz/I/O; niedriger erzeugt häufiger Zwischenstände.\n- `output_dir` = `./output/acestep/loras` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `173489082` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `warmup_steps` = `100` — Steuert diesen Parameter. Höher fährt die Lernrate länger sanft hoch und stabilisiert den Start, verkürzt aber die volle Lernphase; niedriger erreicht die Ziel-Lernrate früher.\n- `weight_decay` = `0.01` — Steuert diesen Parameter. Höher regularisiert Gewichte stärker gegen Overfitting; zu hoch kann Details unterlernen.\n- `max_grad_norm` = `1` — Steuert diesen Parameter. Niedriger begrenzt Gradientenspitzen stärker; höher greift seltener ein, kann aber Instabilität zulassen.\n- `target_modules` = `q_proj,k_proj,v_proj,o_proj` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `lora_rank` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_alpha` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_dropout` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `learning_rate` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_epochs` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `batch_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gradient_accumulation` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `save_every_n_epochs` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output_dir` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `warmup_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_decay` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_grad_norm` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_modules` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `config` (ACESTEP_TRAINING_CONFIG, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Trainings-Hyperparameter · Node 9\n\n**Zweck:** Konfiguriert oder führt einen Trainingsschritt mit den bereitgestellten Daten und Modellen aus.\n\n**Einstellbare Werte**\n- `lora_rank` = `16` — Steuert diesen Parameter. Höher erhöht Kapazität, Dateigröße und Speicherbedarf; niedriger ist kompakter, kann Details unterlernen.\n- `lora_alpha` = `32` — Steuert diesen Parameter. Höher skaliert den Adapter stärker; niedriger wirkt sanfter. Häufig wird Alpha passend zum Rank gewählt.\n- `lora_dropout` = `0.1` — Steuert diesen Parameter. Höher regularisiert stärker gegen Overfitting; niedriger passt sich enger an die Trainingsdaten an.\n- `learning_rate` = `0.0001` — Steuert diesen Parameter. Höher lernt schneller, kann aber instabil werden/übersteuern; niedriger ist stabiler, benötigt mehr Schritte.\n- `max_epochs` = `100` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n- `gradient_accumulation` = `4` — Steuert diesen Parameter. Höher vergrößert die effektive Batchgröße bei ähnlichem VRAM, verlängert aber jeden Optimizer-Schritt.\n- `save_every_n_epochs` = `10` — Steuert diesen Parameter. Höher speichert seltener und spart Speicherplatz/I/O; niedriger erzeugt häufiger Zwischenstände.\n- `output_dir` = `./output/acestep/loras` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `173489082` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `warmup_steps` = `100` — Steuert diesen Parameter. Höher fährt die Lernrate länger sanft hoch und stabilisiert den Start, verkürzt aber die volle Lernphase; niedriger erreicht die Ziel-Lernrate früher.\n- `weight_decay` = `0.01` — Steuert diesen Parameter. Höher regularisiert Gewichte stärker gegen Overfitting; zu hoch kann Details unterlernen.\n- `max_grad_norm` = `1` — Steuert diesen Parameter. Niedriger begrenzt Gradientenspitzen stärker; höher greift seltener ein, kann aber Instabilität zulassen.\n- `target_modules` = `q_proj,k_proj,v_proj,o_proj` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `lora_rank` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_alpha` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_dropout` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `learning_rate` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_epochs` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `batch_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gradient_accumulation` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `save_every_n_epochs` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output_dir` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `warmup_steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_decay` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_grad_norm` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `target_modules` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `config` (ACESTEP_TRAINING_CONFIG, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 30,
+    "inputs": [],
+    "mode": 0,
+    "order": 16,
+    "outputs": [],
+    "pos": [
+     3440,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 10
+    },
+    "showAdvanced": null,
+    "size": [
+     480.96875,
+     430
+    ],
+    "title": "Erklärung · LoRA Training starten (Widgets ggf. pruefen!) · Node 10",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · LoRA Training starten (Widgets ggf. pruefen!) · Node 10\n\n**Zweck:** Konfiguriert oder führt einen Trainingsschritt mit den bereitgestellten Daten und Modellen aus.\n\n**Einstellbare Werte**\n- `tensor_dir` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lora_name` = `tailor_voice` — Steuert diesen Parameter. Ein anderer kompatibler Eintrag wechselt Modell/Adapter und verändert Stil, Qualität und Speicherbedarf.\n- `resume_from` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `model` (MODEL, Link 1009): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `config` (ACESTEP_TRAINING_CONFIG, Link 1010): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `tensor_dir` (STRING, Link 1011): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_name` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resume_from` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `model` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `final_lora_path` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · LoRA Training starten (Widgets ggf. pruefen!) · Node 10\n\n**Zweck:** Konfiguriert oder führt einen Trainingsschritt mit den bereitgestellten Daten und Modellen aus.\n\n**Einstellbare Werte**\n- `tensor_dir` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lora_name` = `tailor_voice` — Steuert diesen Parameter. Ein anderer kompatibler Eintrag wechselt Modell/Adapter und verändert Stil, Qualität und Speicherbedarf.\n- `resume_from` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `model` (MODEL, Link 1009): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `config` (ACESTEP_TRAINING_CONFIG, Link 1010): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `tensor_dir` (STRING, Link 1011): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_name` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resume_from` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `model` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `final_lora_path` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `status` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#1d4968",
+    "color": "#16334a",
+    "flags": {},
+    "id": 31,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1012,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1015,
+      "locked": null,
+      "name": "device",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "COMBO",
+      "widget": {
+       "name": "device"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 22,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1002,
+       1006,
+       1009
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     1480,
+     580
+    ],
+    "properties": {
+     "Node name for S&R": "SelectModelDevice",
+     "cnr_id": "comfy-core"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     82
+    ],
+    "title": "SelectModelDevice · central control",
+    "type": "SelectModelDevice",
+    "widgets_values": [
+     "gpu:0"
+    ],
+    "widgets_values_named": {
+     "device": "gpu:0"
+    }
+   },
+   {
+    "bgcolor": "#5a4322",
+    "color": "#3b2d18",
+    "flags": {},
+    "id": 32,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1013,
+      "locked": null,
+      "name": "vae",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "VAE"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1016,
+      "locked": null,
+      "name": "device",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "COMBO",
+      "widget": {
+       "name": "device"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 24,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1003,
+       1007
+      ],
+      "locked": null,
+      "name": "VAE",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     1480,
+     700
+    ],
+    "properties": {
+     "Node name for S&R": "SelectVAEDevice",
+     "cnr_id": "comfy-core"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     82
+    ],
+    "title": "SelectVAEDevice · central control",
+    "type": "SelectVAEDevice",
+    "widgets_values": [
+     "gpu:0"
+    ],
+    "widgets_values_named": {
+     "device": "gpu:0"
+    }
+   },
+   {
+    "bgcolor": "#5a4322",
+    "color": "#3b2d18",
+    "flags": {},
+    "id": 33,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1014,
+      "locked": null,
+      "name": "clip",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "CLIP"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 1017,
+      "locked": null,
+      "name": "device",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "COMBO",
+      "widget": {
+       "name": "device"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 23,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1008
+      ],
+      "locked": null,
+      "name": "CLIP",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "CLIP"
+     }
+    ],
+    "pos": [
+     1480,
+     820
+    ],
+    "properties": {
+     "Node name for S&R": "SelectCLIPDevice",
+     "cnr_id": "comfy-core"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     82
+    ],
+    "title": "SelectCLIPDevice · central control",
+    "type": "SelectCLIPDevice",
+    "widgets_values": [
+     "gpu:0"
+    ],
+    "widgets_values_named": {
+     "device": "gpu:0"
+    }
+   },
+   {
+    "bgcolor": "#205845",
+    "color": "#173f32",
+    "flags": {},
+    "id": 34,
+    "inputs": [],
+    "mode": 0,
+    "order": 17,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1015
+      ],
+      "locked": null,
+      "name": "model_device",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "COMBO"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1017
+      ],
+      "locked": null,
+      "name": "clip_device",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 1,
+      "type": "COMBO"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       1016
+      ],
+      "locked": null,
+      "name": "vae_device",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 2,
+      "type": "COMBO"
+     }
+    ],
+    "pos": [
+     40,
+     960
+    ],
+    "properties": {
+     "Node name for S&R": "DaWMultiGPUDeviceControl"
+    },
+    "showAdvanced": null,
+    "size": [
+     380,
+     182
+    ],
+    "title": "Central GPU Control · MODEL / CLIP / VAE",
+    "type": "DaWMultiGPUDeviceControl",
+    "widgets_values": [
+     "gpu:0",
+     "gpu:0",
+     "gpu:0"
+    ],
+    "widgets_values_named": {
+     "clip_device": "gpu:0",
+     "model_device": "gpu:0",
+     "vae_device": "gpu:0"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 35,
+    "inputs": [],
+    "mode": 0,
+    "order": 18,
+    "outputs": [],
+    "pos": [
+     3440,
+     560
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 31
+    },
+    "showAdvanced": null,
+    "size": [
+     416.203125,
+     311
+    ],
+    "title": "Erklärung · SelectModelDevice · central control · Node 31",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · SelectModelDevice · central control · Node 31\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 1012): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1015): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 3 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · SelectModelDevice · central control · Node 31\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 1012): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1015): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 3 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 36,
+    "inputs": [],
+    "mode": 0,
+    "order": 19,
+    "outputs": [],
+    "pos": [
+     3440,
+     920
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 32
+    },
+    "showAdvanced": null,
+    "size": [
+     404.53125,
+     311
+    ],
+    "title": "Erklärung · SelectVAEDevice · central control · Node 32",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · SelectVAEDevice · central control · Node 32\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 1013): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1016): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · SelectVAEDevice · central control · Node 32\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 1013): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1016): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 37,
+    "inputs": [],
+    "mode": 0,
+    "order": 20,
+    "outputs": [],
+    "pos": [
+     3440,
+     1280
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 33
+    },
+    "showAdvanced": null,
+    "size": [
+     408.84375,
+     311
+    ],
+    "title": "Erklärung · SelectCLIPDevice · central control · Node 33",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · SelectCLIPDevice · central control · Node 33\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 1014): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1017): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · SelectCLIPDevice · central control · Node 33\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 1014): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 1017): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 38,
+    "inputs": [],
+    "mode": 0,
+    "order": 21,
+    "outputs": [],
+    "pos": [
+     3920,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 34
+    },
+    "showAdvanced": null,
+    "size": [
+     463.15625,
+     362
+    ],
+    "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 34",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 34\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 34\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   }
+  ],
+  "revision": 0,
+  "version": 0.4
+ }
+}

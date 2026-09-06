@@ -1,0 +1,5908 @@
+{
+ "output": {
+  "162": {
+   "_meta": {
+    "title": "Load CLIP"
+   },
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "UMT5\\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+    "device": "default",
+    "type": "wan"
+   }
+  },
+  "163": {
+   "_meta": {
+    "title": "Load VAE"
+   },
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "WAN\\wan_2.1_vae.safetensors"
+   }
+  },
+  "164": {
+   "_meta": {
+    "title": "Load Diffusion Model"
+   },
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "WAN\\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+    "weight_dtype": "default"
+   }
+  },
+  "165": {
+   "_meta": {
+    "title": "Load Diffusion Model"
+   },
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "WAN\\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+    "weight_dtype": "default"
+   }
+  },
+  "166": {
+   "_meta": {
+    "title": "Load LoRA"
+   },
+   "class_type": "LoraLoaderModelOnly",
+   "inputs": {
+    "lora_name": "WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
+    "model": [
+     "229",
+     0
+    ],
+    "strength_model": 1.0000000000000002
+   }
+  },
+  "167": {
+   "_meta": {
+    "title": "Load LoRA"
+   },
+   "class_type": "LoraLoaderModelOnly",
+   "inputs": {
+    "lora_name": "WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors",
+    "model": [
+     "228",
+     0
+    ],
+    "strength_model": 1.0000000000000002
+   }
+  },
+  "168": {
+   "_meta": {
+    "title": "ModelSamplingSD3"
+   },
+   "class_type": "ModelSamplingSD3",
+   "inputs": {
+    "model": [
+     "184",
+     0
+    ],
+    "shift": 5.000000000000001
+   }
+  },
+  "169": {
+   "_meta": {
+    "title": "ModelSamplingSD3"
+   },
+   "class_type": "ModelSamplingSD3",
+   "inputs": {
+    "model": [
+     "183",
+     0
+    ],
+    "shift": 5.000000000000001
+   }
+  },
+  "170": {
+   "_meta": {
+    "title": "CLIP Text Encode (Positive Prompt)"
+   },
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "clip": [
+     "226",
+     0
+    ],
+    "text": [
+     "224",
+     0
+    ]
+   }
+  },
+  "171": {
+   "_meta": {
+    "title": "KSampler (Advanced)"
+   },
+   "class_type": "KSamplerAdvanced",
+   "inputs": {
+    "add_noise": "enable",
+    "cfg": [
+     "187",
+     0
+    ],
+    "end_at_step": [
+     "186",
+     0
+    ],
+    "latent_image": [
+     "175",
+     0
+    ],
+    "model": [
+     "169",
+     0
+    ],
+    "negative": [
+     "174",
+     0
+    ],
+    "noise_seed": 551887565404607,
+    "positive": [
+     "170",
+     0
+    ],
+    "return_with_leftover_noise": "enable",
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "start_at_step": 0,
+    "steps": [
+     "185",
+     0
+    ]
+   }
+  },
+  "172": {
+   "_meta": {
+    "title": "Create Video"
+   },
+   "class_type": "CreateVideo",
+   "inputs": {
+    "bit_depth": "auto",
+    "color_space": "sRGB",
+    "fps": [
+     "188",
+     0
+    ],
+    "images": [
+     "173",
+     0
+    ]
+   }
+  },
+  "173": {
+   "_meta": {
+    "title": "VAE Decode"
+   },
+   "class_type": "VAEDecode",
+   "inputs": {
+    "samples": [
+     "176",
+     0
+    ],
+    "vae": [
+     "227",
+     0
+    ]
+   }
+  },
+  "174": {
+   "_meta": {
+    "title": "CLIP Text Encode (Negative Prompt)"
+   },
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "clip": [
+     "226",
+     0
+    ],
+    "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，"
+   }
+  },
+  "175": {
+   "_meta": {
+    "title": "Empty HunyuanVideo 1.0 Latent"
+   },
+   "class_type": "EmptyHunyuanLatentVideo",
+   "inputs": {
+    "batch_size": 1,
+    "height": 512,
+    "length": [
+     "191",
+     1
+    ],
+    "width": 768
+   }
+  },
+  "176": {
+   "_meta": {
+    "title": "KSampler (Advanced)"
+   },
+   "class_type": "KSamplerAdvanced",
+   "inputs": {
+    "add_noise": "disable",
+    "cfg": [
+     "187",
+     0
+    ],
+    "end_at_step": [
+     "185",
+     0
+    ],
+    "latent_image": [
+     "171",
+     0
+    ],
+    "model": [
+     "168",
+     0
+    ],
+    "negative": [
+     "174",
+     0
+    ],
+    "noise_seed": 0,
+    "positive": [
+     "170",
+     0
+    ],
+    "return_with_leftover_noise": "disable",
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "start_at_step": [
+     "186",
+     0
+    ],
+    "steps": [
+     "185",
+     0
+    ]
+   }
+  },
+  "177": {
+   "_meta": {
+    "title": "Int (Steps)"
+   },
+   "class_type": "PrimitiveInt",
+   "inputs": {
+    "value": 20
+   }
+  },
+  "178": {
+   "_meta": {
+    "title": "Int (Split Steps)"
+   },
+   "class_type": "PrimitiveInt",
+   "inputs": {
+    "value": 10
+   }
+  },
+  "179": {
+   "_meta": {
+    "title": "Int (Steps)"
+   },
+   "class_type": "PrimitiveInt",
+   "inputs": {
+    "value": 4
+   }
+  },
+  "180": {
+   "_meta": {
+    "title": "Int (Split Steps)"
+   },
+   "class_type": "PrimitiveInt",
+   "inputs": {
+    "value": 2
+   }
+  },
+  "181": {
+   "_meta": {
+    "title": "Float(CFG)"
+   },
+   "class_type": "PrimitiveFloat",
+   "inputs": {
+    "value": 1
+   }
+  },
+  "182": {
+   "_meta": {
+    "title": "Float(CFG)"
+   },
+   "class_type": "PrimitiveFloat",
+   "inputs": {
+    "value": 3.5
+   }
+  },
+  "183": {
+   "_meta": {
+    "title": "Switch(high noise model)"
+   },
+   "class_type": "ComfySwitchNode",
+   "inputs": {
+    "on_false": [
+     "229",
+     0
+    ],
+    "on_true": [
+     "166",
+     0
+    ],
+    "switch": [
+     "190",
+     0
+    ]
+   }
+  },
+  "184": {
+   "_meta": {
+    "title": "Switch(low noise model)"
+   },
+   "class_type": "ComfySwitchNode",
+   "inputs": {
+    "on_false": [
+     "228",
+     0
+    ],
+    "on_true": [
+     "167",
+     0
+    ],
+    "switch": [
+     "190",
+     0
+    ]
+   }
+  },
+  "185": {
+   "_meta": {
+    "title": "Switch(steps)"
+   },
+   "class_type": "ComfySwitchNode",
+   "inputs": {
+    "on_false": [
+     "177",
+     0
+    ],
+    "on_true": [
+     "179",
+     0
+    ],
+    "switch": [
+     "190",
+     0
+    ]
+   }
+  },
+  "186": {
+   "_meta": {
+    "title": "Switch(split steps)"
+   },
+   "class_type": "ComfySwitchNode",
+   "inputs": {
+    "on_false": [
+     "178",
+     0
+    ],
+    "on_true": [
+     "180",
+     0
+    ],
+    "switch": [
+     "190",
+     0
+    ]
+   }
+  },
+  "187": {
+   "_meta": {
+    "title": "Switch(CFG)"
+   },
+   "class_type": "ComfySwitchNode",
+   "inputs": {
+    "on_false": [
+     "182",
+     0
+    ],
+    "on_true": [
+     "181",
+     0
+    ],
+    "switch": [
+     "190",
+     0
+    ]
+   }
+  },
+  "188": {
+   "_meta": {
+    "title": "Float (FPS)"
+   },
+   "class_type": "PrimitiveFloat",
+   "inputs": {
+    "value": 16
+   }
+  },
+  "189": {
+   "_meta": {
+    "title": "Float (Duration)"
+   },
+   "class_type": "PrimitiveFloat",
+   "inputs": {
+    "value": 10
+   }
+  },
+  "190": {
+   "_meta": {
+    "title": "Enable Lightning LoRA"
+   },
+   "class_type": "PrimitiveBoolean",
+   "inputs": {
+    "value": false
+   }
+  },
+  "191": {
+   "_meta": {
+    "title": "Math Expression"
+   },
+   "class_type": "ComfyMathExpression",
+   "inputs": {
+    "expression": "floor(a * b) + 1",
+    "values.a": [
+     "189",
+     0
+    ],
+    "values.b": [
+     "188",
+     0
+    ]
+   }
+  },
+  "192": {
+   "_meta": {
+    "title": "Run Timer Pixaroma"
+   },
+   "class_type": "PixaromaRunTimer",
+   "inputs": {}
+  },
+  "224": {
+   "_meta": {
+    "title": "Prompt Pixaroma"
+   },
+   "class_type": "PixaromaPrompt",
+   "inputs": {
+    "PromptState": "{\"text\":\"Explicit NSFW video, close-up and medium shots. A long-haired blonde woman in her mid-20s and a long-haired blonde man in his mid-30s having vigorous sex. Detailed depiction of genitals and penetration with realistic sliding motion and skin-on-skin contact. The woman's long blonde hair is splayed across the white bedsheets. Intense expressions of pleasure, rhythmic thrusting, and natural body weight distribution. High resolution, 8k, highly detailed anatomy, realistic physics, soft interior lighting.\",\"order\":\"mine\",\"sep\":\", \"}"
+   }
+  },
+  "225": {
+   "_meta": {
+    "title": "VRAM Debug"
+   },
+   "class_type": "VRAM_Debug",
+   "inputs": {
+    "any_input": [
+     "172",
+     0
+    ],
+    "empty_cache": true,
+    "gc_collect": true,
+    "unload_all_models": true
+   }
+  },
+  "226": {
+   "_meta": {
+    "title": "SelectCLIPDevice · central control"
+   },
+   "class_type": "SelectCLIPDevice",
+   "inputs": {
+    "clip": [
+     "162",
+     0
+    ],
+    "device": [
+     "230",
+     1
+    ]
+   }
+  },
+  "227": {
+   "_meta": {
+    "title": "SelectVAEDevice · central control"
+   },
+   "class_type": "SelectVAEDevice",
+   "inputs": {
+    "device": [
+     "230",
+     2
+    ],
+    "vae": [
+     "163",
+     0
+    ]
+   }
+  },
+  "228": {
+   "_meta": {
+    "title": "SelectModelDevice · central control"
+   },
+   "class_type": "SelectModelDevice",
+   "inputs": {
+    "device": [
+     "230",
+     0
+    ],
+    "model": [
+     "164",
+     0
+    ]
+   }
+  },
+  "229": {
+   "_meta": {
+    "title": "SelectModelDevice · central control"
+   },
+   "class_type": "SelectModelDevice",
+   "inputs": {
+    "device": [
+     "230",
+     0
+    ],
+    "model": [
+     "165",
+     0
+    ]
+   }
+  },
+  "230": {
+   "_meta": {
+    "title": "Central GPU Control · MODEL / CLIP / VAE"
+   },
+   "class_type": "DaWMultiGPUDeviceControl",
+   "inputs": {
+    "clip_device": "gpu:1",
+    "model_device": "gpu:0",
+    "vae_device": "gpu:1"
+   }
+  },
+  "80": {
+   "_meta": {
+    "title": "Save Video"
+   },
+   "class_type": "SaveVideo",
+   "inputs": {
+    "codec": "auto",
+    "filename_prefix": "video/ComfyUI",
+    "format": "auto",
+    "format.codec": "auto",
+    "video": [
+     "225",
+     0
+    ]
+   }
+  }
+ },
+ "workflow": {
+  "config": {},
+  "definitions": null,
+  "extra": {
+   "VHS_KeepIntermediate": true,
+   "VHS_MetadataImage": true,
+   "VHS_latentpreview": false,
+   "VHS_latentpreviewrate": 0,
+   "dawasteh_dual_gpu": {
+    "backend": "ROCm/HIP",
+    "central_control": "DaWMultiGPUDeviceControl",
+    "connected_roles": [
+     "model_device",
+     "clip_device",
+     "vae_device"
+    ],
+    "curated_split_default": true,
+    "defaults": {
+     "CLIP": "gpu:1",
+     "MODEL": "gpu:0",
+     "VAE": "gpu:1"
+    },
+    "execution": "device placement only; ComfyUI graph stages remain sequential",
+    "family": "WAN 2.2",
+    "manual_device_dropdowns": {
+     "clip_device": "gpu:1",
+     "model_device": "gpu:0",
+     "vae_device": "gpu:1"
+    },
+    "placement_support": "official-selectors",
+    "scope": "collection-wide optional GPU placement",
+    "selector_count": 4,
+    "server": "127.0.0.1:8188",
+    "source": "workflows/Text to Video/WAN22_14B_fp8_lightx2v-Text-to-Video.json",
+    "version": 3
+   },
+   "dawasteh_duration_seconds": {
+    "mode": "native-seconds",
+    "unit": "seconds",
+    "version": 1
+   },
+   "dawasteh_rodent_layout": {
+    "algorithm": "rodent-v1",
+    "credit": "Nerdy Rodent",
+    "exceptions": [],
+    "grid": 20,
+    "method": "RODENT Method",
+    "node_gap": [
+     80,
+     40
+    ],
+    "stage_gap": 120,
+    "topology_sha256": "7597660e0872a86dae5e7d5761864dbeb7d1bb388695f08a6b05c70d42cf2cc9",
+    "version": 1
+   },
+   "dawasteh_v092_collection": {
+    "dual_gpu_folder_dissolved": true,
+    "release": "v0.9.2",
+    "rodent_credit": "Nerdy Rodent",
+    "rodent_method": true,
+    "version": 1
+   },
+   "dawasteh_workflow_refinement": {
+    "gap": 40,
+    "generated_notes": 37,
+    "layout": "rodent-v1",
+    "version": 1,
+    "x_scale": 1,
+    "y_scale": 1
+   },
+   "ds": {
+    "offset": [
+     1625.6846091942089,
+     966.0719405750531
+    ],
+    "scale": 0.43194059185331735
+   },
+   "frontendVersion": "1.51.9",
+   "links_added_by_ue": [],
+   "reroutes": null,
+   "ue_links": []
+  },
+  "floatingLinks": null,
+  "groups": [
+   {
+    "bounding": [
+     0,
+     0,
+     760,
+     1960
+    ],
+    "color": "#5B6472",
+    "flags": {},
+    "id": 1,
+    "title": "R1 · README & RUNTIME"
+   },
+   {
+    "bounding": [
+     840,
+     0,
+     1360,
+     960
+    ],
+    "color": "#7C5CC4",
+    "flags": {},
+    "id": 2,
+    "title": "O1 · ORIGIN INPUTS"
+   },
+   {
+    "bounding": [
+     2280,
+     0,
+     1120,
+     1120
+    ],
+    "color": "#3F789E",
+    "flags": {},
+    "id": 3,
+    "title": "D1 · DEPENDENCIES"
+   },
+   {
+    "bounding": [
+     3480,
+     0,
+     620,
+     920
+    ],
+    "color": "#C68B31",
+    "flags": {},
+    "id": 4,
+    "title": "E1 · ENCODE & CONDITION"
+   },
+   {
+    "bounding": [
+     4180,
+     0,
+     380,
+     1600
+    ],
+    "color": "#B85C5C",
+    "flags": {},
+    "id": 5,
+    "title": "N1 · NEURAL EXECUTION"
+   },
+   {
+    "bounding": [
+     4640,
+     0,
+     640,
+     2160
+    ],
+    "color": "#3F9E6D",
+    "flags": {},
+    "id": 6,
+    "title": "T1 · TRANSFORM & TERMINAL"
+   },
+   {
+    "bounding": [
+     5360,
+     0,
+     1920,
+     4220
+    ],
+    "color": "#5B6472",
+    "flags": {},
+    "id": 7,
+    "title": "R9 · PARAMETER REFERENCE"
+   }
+  ],
+  "id": "ec7da562-7e21-4dac-a0d2-f4441e1efd3b",
+  "last_link_id": 284,
+  "last_node_id": 236,
+  "links": [
+   [
+    231,
+    229,
+    0,
+    166,
+    0,
+    "MODEL"
+   ],
+   [
+    232,
+    228,
+    0,
+    167,
+    0,
+    "MODEL"
+   ],
+   [
+    233,
+    184,
+    0,
+    168,
+    0,
+    "MODEL"
+   ],
+   [
+    234,
+    183,
+    0,
+    169,
+    0,
+    "MODEL"
+   ],
+   [
+    235,
+    226,
+    0,
+    170,
+    0,
+    "CLIP"
+   ],
+   [
+    236,
+    169,
+    0,
+    171,
+    0,
+    "MODEL"
+   ],
+   [
+    237,
+    170,
+    0,
+    171,
+    1,
+    "CONDITIONING"
+   ],
+   [
+    238,
+    174,
+    0,
+    171,
+    2,
+    "CONDITIONING"
+   ],
+   [
+    239,
+    175,
+    0,
+    171,
+    3,
+    "LATENT"
+   ],
+   [
+    240,
+    185,
+    0,
+    171,
+    4,
+    "INT"
+   ],
+   [
+    241,
+    187,
+    0,
+    171,
+    5,
+    "FLOAT"
+   ],
+   [
+    242,
+    186,
+    0,
+    171,
+    6,
+    "INT"
+   ],
+   [
+    243,
+    173,
+    0,
+    172,
+    0,
+    "IMAGE"
+   ],
+   [
+    244,
+    188,
+    0,
+    172,
+    2,
+    "FLOAT"
+   ],
+   [
+    245,
+    176,
+    0,
+    173,
+    0,
+    "LATENT"
+   ],
+   [
+    246,
+    227,
+    0,
+    173,
+    1,
+    "VAE"
+   ],
+   [
+    247,
+    226,
+    0,
+    174,
+    0,
+    "CLIP"
+   ],
+   [
+    248,
+    191,
+    1,
+    175,
+    0,
+    "INT"
+   ],
+   [
+    249,
+    168,
+    0,
+    176,
+    0,
+    "MODEL"
+   ],
+   [
+    250,
+    170,
+    0,
+    176,
+    1,
+    "CONDITIONING"
+   ],
+   [
+    251,
+    174,
+    0,
+    176,
+    2,
+    "CONDITIONING"
+   ],
+   [
+    252,
+    171,
+    0,
+    176,
+    3,
+    "LATENT"
+   ],
+   [
+    253,
+    185,
+    0,
+    176,
+    4,
+    "INT"
+   ],
+   [
+    254,
+    187,
+    0,
+    176,
+    5,
+    "FLOAT"
+   ],
+   [
+    255,
+    186,
+    0,
+    176,
+    6,
+    "INT"
+   ],
+   [
+    256,
+    185,
+    0,
+    176,
+    7,
+    "INT"
+   ],
+   [
+    257,
+    229,
+    0,
+    183,
+    0,
+    "MODEL"
+   ],
+   [
+    258,
+    166,
+    0,
+    183,
+    1,
+    "MODEL"
+   ],
+   [
+    259,
+    228,
+    0,
+    184,
+    0,
+    "MODEL"
+   ],
+   [
+    260,
+    167,
+    0,
+    184,
+    1,
+    "MODEL"
+   ],
+   [
+    261,
+    177,
+    0,
+    185,
+    0,
+    "INT"
+   ],
+   [
+    262,
+    179,
+    0,
+    185,
+    1,
+    "INT"
+   ],
+   [
+    263,
+    178,
+    0,
+    186,
+    0,
+    "INT"
+   ],
+   [
+    264,
+    180,
+    0,
+    186,
+    1,
+    "INT"
+   ],
+   [
+    265,
+    182,
+    0,
+    187,
+    0,
+    "FLOAT"
+   ],
+   [
+    266,
+    181,
+    0,
+    187,
+    1,
+    "FLOAT"
+   ],
+   [
+    267,
+    189,
+    0,
+    191,
+    0,
+    "FLOAT"
+   ],
+   [
+    268,
+    188,
+    0,
+    191,
+    1,
+    "FLOAT"
+   ],
+   [
+    269,
+    172,
+    0,
+    225,
+    0,
+    "VIDEO"
+   ],
+   [
+    270,
+    190,
+    0,
+    183,
+    2,
+    "BOOLEAN"
+   ],
+   [
+    271,
+    190,
+    0,
+    184,
+    2,
+    "BOOLEAN"
+   ],
+   [
+    272,
+    190,
+    0,
+    185,
+    2,
+    "BOOLEAN"
+   ],
+   [
+    273,
+    190,
+    0,
+    187,
+    2,
+    "BOOLEAN"
+   ],
+   [
+    274,
+    190,
+    0,
+    186,
+    2,
+    "BOOLEAN"
+   ],
+   [
+    275,
+    224,
+    0,
+    170,
+    1,
+    "STRING"
+   ],
+   [
+    276,
+    225,
+    0,
+    80,
+    0,
+    "VIDEO"
+   ],
+   [
+    277,
+    162,
+    0,
+    226,
+    0,
+    "CLIP"
+   ],
+   [
+    278,
+    163,
+    0,
+    227,
+    0,
+    "VAE"
+   ],
+   [
+    279,
+    164,
+    0,
+    228,
+    0,
+    "MODEL"
+   ],
+   [
+    280,
+    165,
+    0,
+    229,
+    0,
+    "MODEL"
+   ],
+   [
+    281,
+    230,
+    1,
+    226,
+    1,
+    "COMBO"
+   ],
+   [
+    282,
+    230,
+    2,
+    227,
+    1,
+    "COMBO"
+   ],
+   [
+    283,
+    230,
+    0,
+    228,
+    1,
+    "COMBO"
+   ],
+   [
+    284,
+    230,
+    0,
+    229,
+    1,
+    "COMBO"
+   ]
+  ],
+  "nodes": [
+   {
+    "bgcolor": "#000",
+    "color": "#222",
+    "flags": {},
+    "id": 62,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [],
+    "pos": [
+     40,
+     80
+    ],
+    "properties": {
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     }
+    },
+    "showAdvanced": null,
+    "size": [
+     480,
+     760
+    ],
+    "title": "Model Links",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "[Tutorial](https://docs.comfy.org/tutorials/video/wan/wan2_2\n) | [教程](https://docs.comfy.org/zh-CN/tutorials/video/wan/wan2_2\n)\n\n**Diffusion Model**       \n- [wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors)\n- [wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors)\n\n**LoRA**\n\n- [wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors)\n- [wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors)\n\n**VAE**\n- [wan_2.1_vae.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors)\n\n**Text Encoder**   \n- [umt5_xxl_fp8_e4m3fn_scaled.safetensors](https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors)\n\n\nFile save location\n\n```\nComfyUI/\n├───📂 models/\n│   ├───📂 diffusion_models/\n│   │   ├─── wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors\n│   │   └─── wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors\n│   ├───📂 loras/\n│   │   ├───wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors\n│   │   └───wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors\n│   ├───📂 text_encoders/\n│   │   └─── umt5_xxl_fp8_e4m3fn_scaled.safetensors \n│   └───📂 vae/\n│       └── wan_2.1_vae.safetensors\n```\n"
+    ],
+    "widgets_values_named": {
+     "text": "[Tutorial](https://docs.comfy.org/tutorials/video/wan/wan2_2\n) | [教程](https://docs.comfy.org/zh-CN/tutorials/video/wan/wan2_2\n)\n\n**Diffusion Model**       \n- [wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors)\n- [wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors)\n\n**LoRA**\n\n- [wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors)\n- [wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors)\n\n**VAE**\n- [wan_2.1_vae.safetensors](https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors)\n\n**Text Encoder**   \n- [umt5_xxl_fp8_e4m3fn_scaled.safetensors](https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors)\n\n\nFile save location\n\n```\nComfyUI/\n├───📂 models/\n│   ├───📂 diffusion_models/\n│   │   ├─── wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors\n│   │   └─── wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors\n│   ├───📂 loras/\n│   │   ├───wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors\n│   │   └───wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors\n│   ├───📂 text_encoders/\n│   │   └─── umt5_xxl_fp8_e4m3fn_scaled.safetensors \n│   └───📂 vae/\n│       └── wan_2.1_vae.safetensors\n```\n"
+    }
+   },
+   {
+    "bgcolor": "#000",
+    "color": "#222",
+    "flags": {
+     "collapsed": false
+    },
+    "id": 64,
+    "inputs": [],
+    "mode": 0,
+    "order": 1,
+    "outputs": [],
+    "pos": [
+     40,
+     880
+    ],
+    "properties": {
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     }
+    },
+    "showAdvanced": null,
+    "size": [
+     490,
+     260
+    ],
+    "title": "VRAM Usage",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "## GPU:RTX4090D 24GB\n\n| Model            | Size |VRAM Usage | 1st Generation | 2nd Generation |\n|---------------------|-------|-----------|---------------|-----------------|\n| fp8_scaled               |640*640| 84%               | ≈  536s              | ≈ 513s                   |\n| fp8_scaled +  4steps LoRA  | 640*640  | 89%                | ≈ 108s               | ≈ 71s                   |"
+    ],
+    "widgets_values_named": {
+     "text": "## GPU:RTX4090D 24GB\n\n| Model            | Size |VRAM Usage | 1st Generation | 2nd Generation |\n|---------------------|-------|-----------|---------------|-----------------|\n| fp8_scaled               |640*640| 84%               | ≈  536s              | ≈ 513s                   |\n| fp8_scaled +  4steps LoRA  | 640*640  | 89%                | ≈ 108s               | ≈ 71s                   |"
+    }
+   },
+   {
+    "flags": {},
+    "id": 80,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 276,
+      "locked": null,
+      "name": "video",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "VIDEO"
+     }
+    ],
+    "mode": 0,
+    "order": 78,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "video",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "VIDEO"
+     }
+    ],
+    "pos": [
+     4680,
+     1360
+    ],
+    "properties": {
+     "Node name for S&R": "SaveVideo",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     550,
+     126
+    ],
+    "type": "SaveVideo",
+    "widgets_values": [
+     "video/ComfyUI",
+     "auto",
+     "auto",
+     "auto"
+    ],
+    "widgets_values_named": {
+     "codec": "auto",
+     "filename_prefix": "video/ComfyUI",
+     "format": "auto",
+     "format.codec": "auto"
+    }
+   },
+   {
+    "bgcolor": "#653",
+    "color": "#432",
+    "flags": {},
+    "id": 161,
+    "inputs": [],
+    "mode": 0,
+    "order": 2,
+    "outputs": [],
+    "pos": [
+     40,
+     1180
+    ],
+    "properties": {},
+    "showAdvanced": null,
+    "size": [
+     686.765625,
+     341.125
+    ],
+    "type": "Note",
+    "widgets_values": [
+     "LTX-Video 2.3\n\nPerfekt für Raumzeit-Konsistenz und physikalisch korrekte Bewegungen.\n\n    Latent Space: 768 x 512 Pixel bei 161 Frames.\n\n    Sampler & Scheduler: euler / normal.\n\n    Steps: 50 Steps.\n\n    CFG Scale: 1.0 (für die destillierte Variante) oder 5.0 (für volle Dev-Variante).\n\n    Spezial-Einstellungen: decode_timestep=0.05 und decode_noise=0.025.\n\n    Text Encoder: gemma-3-12b-it-abliterated... (über LTX Loaders)."
+    ],
+    "widgets_values_named": {
+     "text": "LTX-Video 2.3\n\nPerfekt für Raumzeit-Konsistenz und physikalisch korrekte Bewegungen.\n\n    Latent Space: 768 x 512 Pixel bei 161 Frames.\n\n    Sampler & Scheduler: euler / normal.\n\n    Steps: 50 Steps.\n\n    CFG Scale: 1.0 (für die destillierte Variante) oder 5.0 (für volle Dev-Variante).\n\n    Spezial-Einstellungen: decode_timestep=0.05 und decode_noise=0.025.\n\n    Text Encoder: gemma-3-12b-it-abliterated... (über LTX Loaders)."
+    }
+   },
+   {
+    "flags": {},
+    "id": 162,
+    "inputs": [],
+    "mode": 0,
+    "order": 3,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       277
+      ],
+      "locked": null,
+      "name": "CLIP",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "CLIP"
+     }
+    ],
+    "pos": [
+     2320,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPLoader",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "models": [
+      {
+       "directory": "text_encoders",
+       "name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+       "url": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+      }
+     ],
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     350,
+     150
+    ],
+    "type": "CLIPLoader",
+    "widgets_values": [
+     "UMT5\\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+     "wan",
+     "default"
+    ],
+    "widgets_values_named": {
+     "clip_name": "UMT5\\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+     "device": "default",
+     "type": "wan"
+    }
+   },
+   {
+    "flags": {},
+    "id": 163,
+    "inputs": [],
+    "mode": 0,
+    "order": 4,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       278
+      ],
+      "locked": null,
+      "name": "VAE",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     2320,
+     280
+    ],
+    "properties": {
+     "Node name for S&R": "VAELoader",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "models": [
+      {
+       "directory": "vae",
+       "name": "wan_2.1_vae.safetensors",
+       "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors"
+      }
+     ],
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     350,
+     110
+    ],
+    "type": "VAELoader",
+    "widgets_values": [
+     "WAN\\wan_2.1_vae.safetensors"
+    ],
+    "widgets_values_named": {
+     "vae_name": "WAN\\wan_2.1_vae.safetensors"
+    }
+   },
+   {
+    "flags": {},
+    "id": 164,
+    "inputs": [],
+    "mode": 0,
+    "order": 5,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       279
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     2320,
+     440
+    ],
+    "properties": {
+     "Node name for S&R": "UNETLoader",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "models": [
+      {
+       "directory": "diffusion_models",
+       "name": "wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors",
+       "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
+      }
+     ],
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     350,
+     110
+    ],
+    "type": "UNETLoader",
+    "widgets_values": [
+     "WAN\\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+     "default"
+    ],
+    "widgets_values_named": {
+     "unet_name": "WAN\\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+     "weight_dtype": "default"
+    }
+   },
+   {
+    "flags": {},
+    "id": 165,
+    "inputs": [],
+    "mode": 0,
+    "order": 6,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       280
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     2320,
+     600
+    ],
+    "properties": {
+     "Node name for S&R": "UNETLoader",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "models": [
+      {
+       "directory": "diffusion_models",
+       "name": "wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors",
+       "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors"
+      }
+     ],
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     350,
+     110
+    ],
+    "type": "UNETLoader",
+    "widgets_values": [
+     "WAN\\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+     "default"
+    ],
+    "widgets_values_named": {
+     "unet_name": "WAN\\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+     "weight_dtype": "default"
+    }
+   },
+   {
+    "flags": {},
+    "id": 166,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 231,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     }
+    ],
+    "mode": 0,
+    "order": 66,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       258
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     2760,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "LoraLoaderModelOnly",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "models": [
+      {
+       "directory": "loras",
+       "name": "wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors",
+       "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors"
+      }
+     ],
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.49"
+    },
+    "showAdvanced": null,
+    "size": [
+     610,
+     140
+    ],
+    "type": "LoraLoaderModelOnly",
+    "widgets_values": [
+     "WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
+     1.0000000000000002
+    ],
+    "widgets_values_named": {
+     "lora_name": "WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
+     "strength_model": 1.0000000000000002
+    }
+   },
+   {
+    "flags": {},
+    "id": 167,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 232,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     }
+    ],
+    "mode": 0,
+    "order": 65,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       260
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     2760,
+     380
+    ],
+    "properties": {
+     "Node name for S&R": "LoraLoaderModelOnly",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "models": [
+      {
+       "directory": "loras",
+       "name": "wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors",
+       "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors"
+      }
+     ],
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.49"
+    },
+    "showAdvanced": null,
+    "size": [
+     610,
+     140
+    ],
+    "type": "LoraLoaderModelOnly",
+    "widgets_values": [
+     "WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors",
+     1.0000000000000002
+    ],
+    "widgets_values_named": {
+     "lora_name": "WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors",
+     "strength_model": 1.0000000000000002
+    }
+   },
+   {
+    "flags": {
+     "collapsed": false
+    },
+    "id": 168,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 233,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     }
+    ],
+    "mode": 0,
+    "order": 71,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       249
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     2760,
+     560
+    ],
+    "properties": {
+     "Node name for S&R": "ModelSamplingSD3",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     230,
+     110
+    ],
+    "type": "ModelSamplingSD3",
+    "widgets_values": [
+     5.000000000000001
+    ],
+    "widgets_values_named": {
+     "shift": 5.000000000000001
+    }
+   },
+   {
+    "flags": {},
+    "id": 169,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 234,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     }
+    ],
+    "mode": 0,
+    "order": 72,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       236
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     2760,
+     720
+    ],
+    "properties": {
+     "Node name for S&R": "ModelSamplingSD3",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     230,
+     110
+    ],
+    "type": "ModelSamplingSD3",
+    "widgets_values": [
+     5.000000000000001
+    ],
+    "widgets_values_named": {
+     "shift": 5.000000000000001
+    }
+   },
+   {
+    "bgcolor": "#353",
+    "color": "#232",
+    "flags": {},
+    "id": 170,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 235,
+      "locked": null,
+      "name": "clip",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "CLIP"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 275,
+      "locked": null,
+      "name": "text",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "STRING",
+      "widget": {
+       "name": "text"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 67,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       237,
+       250
+      ],
+      "locked": null,
+      "name": "CONDITIONING",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     3520,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     540,
+     560
+    ],
+    "title": "CLIP Text Encode (Positive Prompt)",
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     ""
+    ],
+    "widgets_values_named": {
+     "text": ""
+    }
+   },
+   {
+    "flags": {},
+    "id": 171,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 236,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 237,
+      "locked": null,
+      "name": "positive",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "CONDITIONING"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 238,
+      "locked": null,
+      "name": "negative",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "CONDITIONING"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 239,
+      "locked": null,
+      "name": "latent_image",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "LATENT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 240,
+      "locked": null,
+      "name": "steps",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "INT",
+      "widget": {
+       "name": "steps"
+      }
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 241,
+      "locked": null,
+      "name": "cfg",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "FLOAT",
+      "widget": {
+       "name": "cfg"
+      }
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 242,
+      "locked": null,
+      "name": "end_at_step",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "INT",
+      "widget": {
+       "name": "end_at_step"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 73,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       252
+      ],
+      "locked": null,
+      "name": "LATENT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "LATENT"
+     }
+    ],
+    "pos": [
+     4220,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "KSamplerAdvanced",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": true,
+    "size": [
+     300,
+     550
+    ],
+    "type": "KSamplerAdvanced",
+    "widgets_values": [
+     "enable",
+     551887565404607,
+     "randomize",
+     4,
+     1,
+     "euler",
+     "simple",
+     0,
+     2,
+     "enable"
+    ],
+    "widgets_values_named": {
+     "add_noise": "enable",
+     "cfg": 1,
+     "control_after_generate": "randomize",
+     "end_at_step": 2,
+     "noise_seed": 551887565404607,
+     "return_with_leftover_noise": "enable",
+     "sampler_name": "euler",
+     "scheduler": "simple",
+     "start_at_step": 0,
+     "steps": 4
+    }
+   },
+   {
+    "flags": {},
+    "id": 172,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 243,
+      "locked": null,
+      "name": "images",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "IMAGE"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": null,
+      "locked": null,
+      "name": "audio",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "AUDIO"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 244,
+      "locked": null,
+      "name": "fps",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "FLOAT",
+      "widget": {
+       "name": "fps"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 76,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       269
+      ],
+      "locked": null,
+      "name": "VIDEO",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "VIDEO"
+     }
+    ],
+    "pos": [
+     4680,
+     1180
+    ],
+    "properties": {
+     "Node name for S&R": "CreateVideo",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     270,
+     138
+    ],
+    "type": "CreateVideo",
+    "widgets_values": [
+     16,
+     "auto",
+     "sRGB"
+    ],
+    "widgets_values_named": {
+     "bit_depth": "auto",
+     "color_space": "sRGB",
+     "fps": 16
+    }
+   },
+   {
+    "flags": {},
+    "id": 173,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 245,
+      "locked": null,
+      "name": "samples",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "LATENT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 246,
+      "locked": null,
+      "name": "vae",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "VAE"
+     }
+    ],
+    "mode": 0,
+    "order": 75,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       243
+      ],
+      "locked": null,
+      "name": "IMAGE",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "IMAGE"
+     }
+    ],
+    "pos": [
+     4680,
+     1040
+    ],
+    "properties": {
+     "Node name for S&R": "VAEDecode",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     230,
+     100
+    ],
+    "type": "VAEDecode"
+   },
+   {
+    "bgcolor": "#533",
+    "color": "#322",
+    "flags": {},
+    "id": 174,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 247,
+      "locked": null,
+      "name": "clip",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 68,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       238,
+       251
+      ],
+      "locked": null,
+      "name": "CONDITIONING",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     3520,
+     680
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     520,
+     200
+    ],
+    "title": "CLIP Text Encode (Negative Prompt)",
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，"
+    ],
+    "widgets_values_named": {
+     "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，"
+    }
+   },
+   {
+    "flags": {},
+    "id": 175,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 248,
+      "locked": null,
+      "name": "length",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "INT",
+      "widget": {
+       "name": "length"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 64,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       239
+      ],
+      "locked": null,
+      "name": "LATENT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "LATENT"
+     }
+    ],
+    "pos": [
+     4680,
+     800
+    ],
+    "properties": {
+     "Node name for S&R": "EmptyHunyuanLatentVideo",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     200
+    ],
+    "type": "EmptyHunyuanLatentVideo",
+    "widgets_values": [
+     768,
+     512,
+     81,
+     1
+    ],
+    "widgets_values_named": {
+     "batch_size": 1,
+     "height": 512,
+     "length": 81,
+     "width": 768
+    }
+   },
+   {
+    "flags": {},
+    "id": 176,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 249,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 250,
+      "locked": null,
+      "name": "positive",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "CONDITIONING"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 251,
+      "locked": null,
+      "name": "negative",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "CONDITIONING"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 252,
+      "locked": null,
+      "name": "latent_image",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "LATENT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 253,
+      "locked": null,
+      "name": "steps",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "INT",
+      "widget": {
+       "name": "steps"
+      }
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 254,
+      "locked": null,
+      "name": "cfg",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "FLOAT",
+      "widget": {
+       "name": "cfg"
+      }
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 255,
+      "locked": null,
+      "name": "start_at_step",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "INT",
+      "widget": {
+       "name": "start_at_step"
+      }
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 256,
+      "locked": null,
+      "name": "end_at_step",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "INT",
+      "widget": {
+       "name": "end_at_step"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 74,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       245
+      ],
+      "locked": null,
+      "name": "LATENT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "LATENT"
+     }
+    ],
+    "pos": [
+     4220,
+     1000
+    ],
+    "properties": {
+     "Node name for S&R": "KSamplerAdvanced",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.3.45"
+    },
+    "showAdvanced": true,
+    "size": [
+     310,
+     550
+    ],
+    "type": "KSamplerAdvanced",
+    "widgets_values": [
+     "disable",
+     0,
+     "fixed",
+     4,
+     1,
+     "euler",
+     "simple",
+     2,
+     4,
+     "disable"
+    ],
+    "widgets_values_named": {
+     "add_noise": "disable",
+     "cfg": 1,
+     "control_after_generate": "fixed",
+     "end_at_step": 4,
+     "noise_seed": 0,
+     "return_with_leftover_noise": "disable",
+     "sampler_name": "euler",
+     "scheduler": "simple",
+     "start_at_step": 2,
+     "steps": 4
+    }
+   },
+   {
+    "flags": {},
+    "id": 177,
+    "inputs": [],
+    "mode": 0,
+    "order": 7,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       261
+      ],
+      "locked": null,
+      "name": "INT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     }
+    ],
+    "pos": [
+     880,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveInt",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     610,
+     110
+    ],
+    "title": "Int (Steps)",
+    "type": "PrimitiveInt",
+    "widgets_values": [
+     20,
+     "fixed"
+    ],
+    "widgets_values_named": {
+     "fixed": "fixed",
+     "value": 20
+    }
+   },
+   {
+    "flags": {},
+    "id": 178,
+    "inputs": [],
+    "mode": 0,
+    "order": 8,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       263
+      ],
+      "locked": null,
+      "name": "INT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     }
+    ],
+    "pos": [
+     880,
+     240
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveInt",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     610,
+     110
+    ],
+    "title": "Int (Split Steps)",
+    "type": "PrimitiveInt",
+    "widgets_values": [
+     10,
+     "fixed"
+    ],
+    "widgets_values_named": {
+     "fixed": "fixed",
+     "value": 10
+    }
+   },
+   {
+    "flags": {},
+    "id": 179,
+    "inputs": [],
+    "mode": 0,
+    "order": 9,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       262
+      ],
+      "locked": null,
+      "name": "INT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     }
+    ],
+    "pos": [
+     880,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveInt",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     610,
+     110
+    ],
+    "title": "Int (Steps)",
+    "type": "PrimitiveInt",
+    "widgets_values": [
+     4,
+     "fixed"
+    ],
+    "widgets_values_named": {
+     "fixed": "fixed",
+     "value": 4
+    }
+   },
+   {
+    "flags": {},
+    "id": 180,
+    "inputs": [],
+    "mode": 0,
+    "order": 10,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       264
+      ],
+      "locked": null,
+      "name": "INT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     }
+    ],
+    "pos": [
+     880,
+     560
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveInt",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     610,
+     110
+    ],
+    "title": "Int (Split Steps)",
+    "type": "PrimitiveInt",
+    "widgets_values": [
+     2,
+     "fixed"
+    ],
+    "widgets_values_named": {
+     "fixed": "fixed",
+     "value": 2
+    }
+   },
+   {
+    "flags": {},
+    "id": 181,
+    "inputs": [],
+    "mode": 0,
+    "order": 11,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       266
+      ],
+      "locked": null,
+      "name": "FLOAT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "FLOAT"
+     }
+    ],
+    "pos": [
+     880,
+     720
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveFloat",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     610,
+     110
+    ],
+    "title": "Float(CFG)",
+    "type": "PrimitiveFloat",
+    "widgets_values": [
+     1
+    ],
+    "widgets_values_named": {
+     "value": 1
+    }
+   },
+   {
+    "flags": {},
+    "id": 182,
+    "inputs": [],
+    "mode": 0,
+    "order": 12,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       265
+      ],
+      "locked": null,
+      "name": "FLOAT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "FLOAT"
+     }
+    ],
+    "pos": [
+     1560,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveFloat",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     610,
+     110
+    ],
+    "title": "Float(CFG)",
+    "type": "PrimitiveFloat",
+    "widgets_values": [
+     3.5
+    ],
+    "widgets_values_named": {
+     "value": 3.5
+    }
+   },
+   {
+    "flags": {},
+    "id": 183,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 257,
+      "locked": null,
+      "name": "on_false",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 258,
+      "locked": null,
+      "name": "on_true",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 270,
+      "locked": null,
+      "name": "switch",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "BOOLEAN",
+      "widget": {
+       "name": "switch"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 70,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       234
+      ],
+      "locked": null,
+      "name": "output",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     4220,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "ComfySwitchNode",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     270,
+     130
+    ],
+    "title": "Switch(high noise model)",
+    "type": "ComfySwitchNode",
+    "widgets_values": [
+     false
+    ],
+    "widgets_values_named": {
+     "switch": false
+    }
+   },
+   {
+    "flags": {},
+    "id": 184,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 259,
+      "locked": null,
+      "name": "on_false",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 260,
+      "locked": null,
+      "name": "on_true",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 271,
+      "locked": null,
+      "name": "switch",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "BOOLEAN",
+      "widget": {
+       "name": "switch"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 69,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       233
+      ],
+      "locked": null,
+      "name": "output",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     4220,
+     240
+    ],
+    "properties": {
+     "Node name for S&R": "ComfySwitchNode",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     270,
+     130
+    ],
+    "title": "Switch(low noise model)",
+    "type": "ComfySwitchNode",
+    "widgets_values": [
+     false
+    ],
+    "widgets_values_named": {
+     "switch": false
+    }
+   },
+   {
+    "flags": {},
+    "id": 185,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 261,
+      "locked": null,
+      "name": "on_false",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "INT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 262,
+      "locked": null,
+      "name": "on_true",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "INT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 272,
+      "locked": null,
+      "name": "switch",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "BOOLEAN",
+      "widget": {
+       "name": "switch"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 57,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       240,
+       253,
+       256
+      ],
+      "locked": null,
+      "name": "output",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     }
+    ],
+    "pos": [
+     4680,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "ComfySwitchNode",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     270,
+     130
+    ],
+    "title": "Switch(steps)",
+    "type": "ComfySwitchNode",
+    "widgets_values": [
+     false
+    ],
+    "widgets_values_named": {
+     "switch": false
+    }
+   },
+   {
+    "flags": {},
+    "id": 186,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 263,
+      "locked": null,
+      "name": "on_false",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "INT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 264,
+      "locked": null,
+      "name": "on_true",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "INT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 274,
+      "locked": null,
+      "name": "switch",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "BOOLEAN",
+      "widget": {
+       "name": "switch"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 59,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       242,
+       255
+      ],
+      "locked": null,
+      "name": "output",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     }
+    ],
+    "pos": [
+     4680,
+     240
+    ],
+    "properties": {
+     "Node name for S&R": "ComfySwitchNode",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     270,
+     130
+    ],
+    "title": "Switch(split steps)",
+    "type": "ComfySwitchNode",
+    "widgets_values": [
+     false
+    ],
+    "widgets_values_named": {
+     "switch": false
+    }
+   },
+   {
+    "flags": {},
+    "id": 187,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 265,
+      "locked": null,
+      "name": "on_false",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "FLOAT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 266,
+      "locked": null,
+      "name": "on_true",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "FLOAT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 273,
+      "locked": null,
+      "name": "switch",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "BOOLEAN",
+      "widget": {
+       "name": "switch"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 58,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       241,
+       254
+      ],
+      "locked": null,
+      "name": "output",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "FLOAT"
+     }
+    ],
+    "pos": [
+     4680,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "ComfySwitchNode",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "version": "7.7",
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     270,
+     130
+    ],
+    "title": "Switch(CFG)",
+    "type": "ComfySwitchNode",
+    "widgets_values": [
+     false
+    ],
+    "widgets_values_named": {
+     "switch": false
+    }
+   },
+   {
+    "flags": {},
+    "id": 188,
+    "inputs": [],
+    "mode": 0,
+    "order": 13,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       244,
+       268
+      ],
+      "locked": null,
+      "name": "FLOAT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "FLOAT"
+     }
+    ],
+    "pos": [
+     1560,
+     240
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveFloat",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     270,
+     110
+    ],
+    "title": "Float (FPS)",
+    "type": "PrimitiveFloat",
+    "widgets_values": [
+     16
+    ],
+    "widgets_values_named": {
+     "value": 16
+    }
+   },
+   {
+    "flags": {},
+    "id": 189,
+    "inputs": [],
+    "mode": 0,
+    "order": 14,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       267
+      ],
+      "locked": null,
+      "name": "FLOAT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "FLOAT"
+     }
+    ],
+    "pos": [
+     1560,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveFloat",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     270,
+     110
+    ],
+    "title": "Float (Duration)",
+    "type": "PrimitiveFloat",
+    "widgets_values": [
+     10
+    ],
+    "widgets_values_named": {
+     "value": 10
+    }
+   },
+   {
+    "flags": {},
+    "id": 190,
+    "inputs": [],
+    "mode": 0,
+    "order": 15,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       270,
+       271,
+       272,
+       273,
+       274
+      ],
+      "locked": null,
+      "name": "BOOLEAN",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "BOOLEAN"
+     }
+    ],
+    "pos": [
+     1560,
+     560
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveBoolean",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     530,
+     100
+    ],
+    "title": "Enable Lightning LoRA",
+    "type": "PrimitiveBoolean",
+    "widgets_values": [
+     false
+    ],
+    "widgets_values_named": {
+     "value": false
+    }
+   },
+   {
+    "flags": {},
+    "id": 191,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": "a",
+      "link": 267,
+      "locked": null,
+      "name": "values.a",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "FLOAT,INT,BOOLEAN"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 268,
+      "locked": null,
+      "name": "values.b",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "FLOAT,INT,BOOLEAN"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": null,
+      "locked": null,
+      "name": "values.c",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "FLOAT,INT,BOOLEAN"
+     }
+    ],
+    "mode": 0,
+    "order": 56,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "FLOAT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "FLOAT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       248
+      ],
+      "locked": null,
+      "name": "INT",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "BOOL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "BOOLEAN"
+     }
+    ],
+    "pos": [
+     4680,
+     560
+    ],
+    "properties": {
+     "Node name for S&R": "ComfyMathExpression",
+     "cnr_id": "comfy-core",
+     "enableTabs": false,
+     "hasSecondTab": false,
+     "secondTabOffset": 80,
+     "secondTabText": "Send Back",
+     "secondTabWidth": 65,
+     "tabWidth": 65,
+     "tabXOffset": 10,
+     "ue_properties": {
+      "input_ue_unconnectable": {},
+      "widget_ue_connectable": {}
+     },
+     "ver": "0.18.1"
+    },
+    "showAdvanced": null,
+    "size": [
+     400,
+     190
+    ],
+    "type": "ComfyMathExpression",
+    "widgets_values": [
+     "floor(a * b) + 1"
+    ],
+    "widgets_values_named": {
+     "expression": "floor(a * b) + 1"
+    }
+   },
+   {
+    "bgcolor": "#2a2a2a",
+    "color": "#1d1d1d",
+    "flags": {
+     "no_title": true
+    },
+    "id": 192,
+    "inputs": [],
+    "mode": 0,
+    "order": 16,
+    "outputs": [],
+    "pos": [
+     40,
+     1560
+    ],
+    "properties": {
+     "Node name for S&R": "PixaromaRunTimer",
+     "cnr_id": "ComfyUI-Pixaroma",
+     "ver": "ffcf2f56aa448f2df763b09b70857632792b7805"
+    },
+    "showAdvanced": null,
+    "size": [
+     226,
+     39.296875
+    ],
+    "type": "PixaromaRunTimer",
+    "widgets_values": [
+     {
+      "chime": false,
+      "color": "#f66744",
+      "decimals": 0,
+      "font": "",
+      "sound": "",
+      "version": 1,
+      "volume": 70
+     }
+    ],
+    "widgets_values_named": {
+     "run_timer_ui": {
+      "chime": false,
+      "color": "#f66744",
+      "decimals": 0,
+      "font": "",
+      "sound": "",
+      "version": 1,
+      "volume": 70
+     }
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 193,
+    "inputs": [],
+    "mode": 0,
+    "order": 17,
+    "outputs": [],
+    "pos": [
+     5400,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 80
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     499.375
+    ],
+    "title": "Erklärung · Save Video · Node 80",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Save Video · Node 80\n\n**Zweck:** Saves the input videos to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `video/ComfyUI` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `format` = `auto` — The format to save the video as. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `codec` = `auto` — The codec to use for the video. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `video` (VIDEO, Link 269): The video to save.\n- `filename_prefix` (STRING, nicht verbunden): The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values fr…\n- `format` (COMBO, nicht verbunden): The format to save the video as.\n- `codec` (COMBO, nicht verbunden): The codec to use for the video.\n\n**Ausgänge**\n- Keine Ausgänge."
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Save Video · Node 80\n\n**Zweck:** Saves the input videos to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `video/ComfyUI` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `format` = `auto` — The format to save the video as. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `codec` = `auto` — The codec to use for the video. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `video` (VIDEO, Link 269): The video to save.\n- `filename_prefix` (STRING, nicht verbunden): The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values fr…\n- `format` (COMBO, nicht verbunden): The format to save the video as.\n- `codec` (COMBO, nicht verbunden): The codec to use for the video.\n\n**Ausgänge**\n- Keine Ausgänge."
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 194,
+    "inputs": [],
+    "mode": 0,
+    "order": 18,
+    "outputs": [],
+    "pos": [
+     5400,
+     500
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 162
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     523.375
+    ],
+    "title": "Erklärung · Load CLIP · Node 162",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Load CLIP · Node 162\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `UMT5\\umt5_xxl_fp8_e4m3fn_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `wan` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Load CLIP · Node 162\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `UMT5\\umt5_xxl_fp8_e4m3fn_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `wan` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 195,
+    "inputs": [],
+    "mode": 0,
+    "order": 19,
+    "outputs": [],
+    "pos": [
+     5400,
+     900
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 163
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     294
+    ],
+    "title": "Erklärung · Load VAE · Node 163",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Load VAE · Node 163\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `vae_name` = `WAN\\wan_2.1_vae.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `vae_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Load VAE · Node 163\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `vae_name` = `WAN\\wan_2.1_vae.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `vae_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 196,
+    "inputs": [],
+    "mode": 0,
+    "order": 20,
+    "outputs": [],
+    "pos": [
+     5400,
+     1240
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 164
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     394.375
+    ],
+    "title": "Erklärung · Load Diffusion Model · Node 164",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Load Diffusion Model · Node 164\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `WAN\\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Load Diffusion Model · Node 164\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `WAN\\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 197,
+    "inputs": [],
+    "mode": 0,
+    "order": 21,
+    "outputs": [],
+    "pos": [
+     5400,
+     1600
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 165
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     394.375
+    ],
+    "title": "Erklärung · Load Diffusion Model · Node 165",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Load Diffusion Model · Node 165\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `WAN\\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Load Diffusion Model · Node 165\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `WAN\\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 198,
+    "inputs": [],
+    "mode": 0,
+    "order": 22,
+    "outputs": [],
+    "pos": [
+     5400,
+     1960
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 166
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     452.375
+    ],
+    "title": "Erklärung · Load LoRA · Node 166",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Load LoRA · Node 166\n\n**Zweck:** This LoRAs loader is used to modify the diffusion model, altering the way in which latents are denoised such as applying styles. Multiple LoRA nodes can be linked together.\n\n**Einstellbare Werte**\n- `lora_name` = `WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `strength_model` = `1.0000000000000002` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 231): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `strength_model` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): The modified diffusion model."
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Load LoRA · Node 166\n\n**Zweck:** This LoRAs loader is used to modify the diffusion model, altering the way in which latents are denoised such as applying styles. Multiple LoRA nodes can be linked together.\n\n**Einstellbare Werte**\n- `lora_name` = `WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `strength_model` = `1.0000000000000002` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 231): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `strength_model` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): The modified diffusion model."
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 199,
+    "inputs": [],
+    "mode": 0,
+    "order": 23,
+    "outputs": [],
+    "pos": [
+     5400,
+     2340
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 167
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     452.375
+    ],
+    "title": "Erklärung · Load LoRA · Node 167",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Load LoRA · Node 167\n\n**Zweck:** This LoRAs loader is used to modify the diffusion model, altering the way in which latents are denoised such as applying styles. Multiple LoRA nodes can be linked together.\n\n**Einstellbare Werte**\n- `lora_name` = `WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `strength_model` = `1.0000000000000002` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 232): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `strength_model` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): The modified diffusion model."
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Load LoRA · Node 167\n\n**Zweck:** This LoRAs loader is used to modify the diffusion model, altering the way in which latents are denoised such as applying styles. Multiple LoRA nodes can be linked together.\n\n**Einstellbare Werte**\n- `lora_name` = `WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `strength_model` = `1.0000000000000002` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 232): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `strength_model` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): The modified diffusion model."
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 200,
+    "inputs": [],
+    "mode": 0,
+    "order": 24,
+    "outputs": [],
+    "pos": [
+     5400,
+     2720
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 168
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     320.375
+    ],
+    "title": "Erklärung · ModelSamplingSD3 · Node 168",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · ModelSamplingSD3 · Node 168\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `shift` = `5.000000000000001` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 233): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · ModelSamplingSD3 · Node 168\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `shift` = `5.000000000000001` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 233): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 201,
+    "inputs": [],
+    "mode": 0,
+    "order": 25,
+    "outputs": [],
+    "pos": [
+     5400,
+     3080
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 169
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     320.375
+    ],
+    "title": "Erklärung · ModelSamplingSD3 · Node 169",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · ModelSamplingSD3 · Node 169\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `shift` = `5.000000000000001` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 234): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · ModelSamplingSD3 · Node 169\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `shift` = `5.000000000000001` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 234): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 202,
+    "inputs": [],
+    "mode": 0,
+    "order": 26,
+    "outputs": [],
+    "pos": [
+     5400,
+     3440
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 170
+    },
+    "showAdvanced": null,
+    "size": [
+     423.265625,
+     340.234375
+    ],
+    "title": "Erklärung · CLIP Text Encode (Positive Prompt) · Node 170",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · CLIP Text Encode (Positive Prompt) · Node 170\n\n**Zweck:** Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.\n\n**Einstellbare Werte**\n- `text` = `Explicit NSFW video, close-up and medium shots. A long-haired blonde woman in her mid-20s and a long-haired b…` — The text to be encoded. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `clip` (CLIP, Link 235): The CLIP model used for encoding the text.\n- `text` (STRING, nicht verbunden): The text to be encoded.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): A conditioning containing the embedded text used to guide the diffusion model."
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · CLIP Text Encode (Positive Prompt) · Node 170\n\n**Zweck:** Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.\n\n**Einstellbare Werte**\n- `text` = `Explicit NSFW video, close-up and medium shots. A long-haired blonde woman in her mid-20s and a long-haired b…` — The text to be encoded. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `clip` (CLIP, Link 235): The CLIP model used for encoding the text.\n- `text` (STRING, nicht verbunden): The text to be encoded.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): A conditioning containing the embedded text used to guide the diffusion model."
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 203,
+    "inputs": [],
+    "mode": 0,
+    "order": 27,
+    "outputs": [],
+    "pos": [
+     5880,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 171
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     1302.375
+    ],
+    "title": "Erklärung · KSampler (Advanced) · Node 171",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · KSampler (Advanced) · Node 171\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `add_noise` = `enable` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `noise_seed` = `551887565404607` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `steps` = `4` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `cfg` = `1` — Steuert diesen Parameter. Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `sampler_name` = `euler` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `scheduler` = `simple` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `start_at_step` = `0` — Steuert diesen Parameter. Höher startet später im Rauschabbau und überspringt frühe Schritte; niedriger beginnt näher am vollen Rauschen.\n- `end_at_step` = `2` — Steuert diesen Parameter. Höher denoisiert länger bis zu einem späteren Schritt; niedriger beendet die Stufe früher und lässt mehr Rest-Rauschen für Folgestufen.\n- `return_with_leftover_noise` = `enable` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 236): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `positive` (CONDITIONING, Link 237): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 238): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent_image` (LATENT, Link 239): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `add_noise` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `noise_seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, Link 240): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `cfg` (FLOAT, Link 241): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `start_at_step` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `end_at_step` (INT, Link 242): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `return_with_leftover_noise` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · KSampler (Advanced) · Node 171\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `add_noise` = `enable` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `noise_seed` = `551887565404607` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `steps` = `4` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `cfg` = `1` — Steuert diesen Parameter. Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `sampler_name` = `euler` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `scheduler` = `simple` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `start_at_step` = `0` — Steuert diesen Parameter. Höher startet später im Rauschabbau und überspringt frühe Schritte; niedriger beginnt näher am vollen Rauschen.\n- `end_at_step` = `2` — Steuert diesen Parameter. Höher denoisiert länger bis zu einem späteren Schritt; niedriger beendet die Stufe früher und lässt mehr Rest-Rauschen für Folgestufen.\n- `return_with_leftover_noise` = `enable` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 236): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `positive` (CONDITIONING, Link 237): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 238): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent_image` (LATENT, Link 239): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `add_noise` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `noise_seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, Link 240): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `cfg` (FLOAT, Link 241): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `start_at_step` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `end_at_step` (INT, Link 242): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `return_with_leftover_noise` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 204,
+    "inputs": [],
+    "mode": 0,
+    "order": 28,
+    "outputs": [],
+    "pos": [
+     5880,
+     660
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 172
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     345
+    ],
+    "title": "Erklärung · Create Video · Node 172",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Create Video · Node 172\n\n**Zweck:** Create a video from images.\n\n**Einstellbare Werte**\n- `fps` = `16` — Steuert diesen Parameter. Höher wirkt flüssiger und erzeugt/verarbeitet mehr Frames pro Sekunde; niedriger spart Rechenzeit/Dateigröße.\n\n**Eingänge**\n- `images` (IMAGE, Link 243): The images to create a video from.\n- `audio` (AUDIO, nicht verbunden): The audio to add to the video.\n- `fps` (FLOAT, Link 244): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VIDEO` (VIDEO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Create Video · Node 172\n\n**Zweck:** Create a video from images.\n\n**Einstellbare Werte**\n- `fps` = `16` — Steuert diesen Parameter. Höher wirkt flüssiger und erzeugt/verarbeitet mehr Frames pro Sekunde; niedriger spart Rechenzeit/Dateigröße.\n\n**Eingänge**\n- `images` (IMAGE, Link 243): The images to create a video from.\n- `audio` (AUDIO, nicht verbunden): The audio to add to the video.\n- `fps` (FLOAT, Link 244): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VIDEO` (VIDEO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 205,
+    "inputs": [],
+    "mode": 0,
+    "order": 29,
+    "outputs": [],
+    "pos": [
+     5880,
+     1040
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 173
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     311
+    ],
+    "title": "Erklärung · VAE Decode · Node 173",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · VAE Decode · Node 173\n\n**Zweck:** Decodes latent images back into pixel space images.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `samples` (LATENT, Link 245): The latent to be decoded.\n- `vae` (VAE, Link 246): The VAE model used for decoding the latent.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): The decoded image."
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · VAE Decode · Node 173\n\n**Zweck:** Decodes latent images back into pixel space images.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `samples` (LATENT, Link 245): The latent to be decoded.\n- `vae` (VAE, Link 246): The VAE model used for decoding the latent.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): The decoded image."
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 206,
+    "inputs": [],
+    "mode": 0,
+    "order": 30,
+    "outputs": [],
+    "pos": [
+     5880,
+     1400
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 174
+    },
+    "showAdvanced": null,
+    "size": [
+     430,
+     358.234375
+    ],
+    "title": "Erklärung · CLIP Text Encode (Negative Prompt) · Node 174",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · CLIP Text Encode (Negative Prompt) · Node 174\n\n**Zweck:** Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.\n\n**Einstellbare Werte**\n- `text` = `色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合…` — The text to be encoded. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `clip` (CLIP, Link 247): The CLIP model used for encoding the text.\n- `text` (STRING, nicht verbunden): The text to be encoded.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): A conditioning containing the embedded text used to guide the diffusion model."
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · CLIP Text Encode (Negative Prompt) · Node 174\n\n**Zweck:** Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.\n\n**Einstellbare Werte**\n- `text` = `色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合…` — The text to be encoded. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `clip` (CLIP, Link 247): The CLIP model used for encoding the text.\n- `text` (STRING, nicht verbunden): The text to be encoded.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): A conditioning containing the embedded text used to guide the diffusion model."
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 207,
+    "inputs": [],
+    "mode": 0,
+    "order": 31,
+    "outputs": [],
+    "pos": [
+     5880,
+     1760
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 175
+    },
+    "showAdvanced": null,
+    "size": [
+     398.078125,
+     592.234375
+    ],
+    "title": "Erklärung · Empty HunyuanVideo 1.0 Latent · Node 175",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Empty HunyuanVideo 1.0 Latent · Node 175\n\n**Zweck:** Erzeugt, kombiniert oder transformiert Daten im Latent-Raum vor Sampling oder Decoding.\n\n**Einstellbare Werte**\n- `width` = `768` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `512` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `length` = `81` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n\n**Eingänge**\n- `width` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `length` (INT, Link 248): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `batch_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Empty HunyuanVideo 1.0 Latent · Node 175\n\n**Zweck:** Erzeugt, kombiniert oder transformiert Daten im Latent-Raum vor Sampling oder Decoding.\n\n**Einstellbare Werte**\n- `width` = `768` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `512` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `length` = `81` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n\n**Eingänge**\n- `width` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `length` (INT, Link 248): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `batch_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 208,
+    "inputs": [],
+    "mode": 0,
+    "order": 32,
+    "outputs": [],
+    "pos": [
+     5880,
+     2200
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 176
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     1302.375
+    ],
+    "title": "Erklärung · KSampler (Advanced) · Node 176",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · KSampler (Advanced) · Node 176\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `add_noise` = `disable` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `noise_seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `steps` = `4` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `cfg` = `1` — Steuert diesen Parameter. Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `sampler_name` = `euler` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `scheduler` = `simple` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `start_at_step` = `2` — Steuert diesen Parameter. Höher startet später im Rauschabbau und überspringt frühe Schritte; niedriger beginnt näher am vollen Rauschen.\n- `end_at_step` = `4` — Steuert diesen Parameter. Höher denoisiert länger bis zu einem späteren Schritt; niedriger beendet die Stufe früher und lässt mehr Rest-Rauschen für Folgestufen.\n- `return_with_leftover_noise` = `disable` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 249): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `positive` (CONDITIONING, Link 250): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 251): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent_image` (LATENT, Link 252): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `add_noise` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `noise_seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, Link 253): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `cfg` (FLOAT, Link 254): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `start_at_step` (INT, Link 255): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `end_at_step` (INT, Link 256): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `return_with_leftover_noise` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · KSampler (Advanced) · Node 176\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `add_noise` = `disable` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `noise_seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `steps` = `4` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `cfg` = `1` — Steuert diesen Parameter. Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `sampler_name` = `euler` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `scheduler` = `simple` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `start_at_step` = `2` — Steuert diesen Parameter. Höher startet später im Rauschabbau und überspringt frühe Schritte; niedriger beginnt näher am vollen Rauschen.\n- `end_at_step` = `4` — Steuert diesen Parameter. Höher denoisiert länger bis zu einem späteren Schritt; niedriger beendet die Stufe früher und lässt mehr Rest-Rauschen für Folgestufen.\n- `return_with_leftover_noise` = `disable` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 249): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `positive` (CONDITIONING, Link 250): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `negative` (CONDITIONING, Link 251): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent_image` (LATENT, Link 252): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `add_noise` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `noise_seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, Link 253): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `cfg` (FLOAT, Link 254): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `start_at_step` (INT, Link 255): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `end_at_step` (INT, Link 256): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `return_with_leftover_noise` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 209,
+    "inputs": [],
+    "mode": 0,
+    "order": 33,
+    "outputs": [],
+    "pos": [
+     5880,
+     2780
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 177
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     338.375
+    ],
+    "title": "Erklärung · Int (Steps) · Node 177",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Int (Steps) · Node 177\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `20` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Int (Steps) · Node 177\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `20` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 210,
+    "inputs": [],
+    "mode": 0,
+    "order": 34,
+    "outputs": [],
+    "pos": [
+     5880,
+     3140
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 178
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     338.375
+    ],
+    "title": "Erklärung · Int (Split Steps) · Node 178",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Int (Split Steps) · Node 178\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `10` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Int (Split Steps) · Node 178\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `10` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 211,
+    "inputs": [],
+    "mode": 0,
+    "order": 35,
+    "outputs": [],
+    "pos": [
+     5880,
+     3500
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 179
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     338.375
+    ],
+    "title": "Erklärung · Int (Steps) · Node 179",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Int (Steps) · Node 179\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `4` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Int (Steps) · Node 179\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `4` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 212,
+    "inputs": [],
+    "mode": 0,
+    "order": 36,
+    "outputs": [],
+    "pos": [
+     5880,
+     3860
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 180
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     338.375
+    ],
+    "title": "Erklärung · Int (Split Steps) · Node 180",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Int (Split Steps) · Node 180\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `2` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Int (Split Steps) · Node 180\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `2` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n- `value_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `value` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 213,
+    "inputs": [],
+    "mode": 0,
+    "order": 37,
+    "outputs": [],
+    "pos": [
+     6360,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 181
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     294
+    ],
+    "title": "Erklärung · Float(CFG) · Node 181",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Float(CFG) · Node 181\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `1` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Float(CFG) · Node 181\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `1` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 214,
+    "inputs": [],
+    "mode": 0,
+    "order": 38,
+    "outputs": [],
+    "pos": [
+     6360,
+     420
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 182
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     294
+    ],
+    "title": "Erklärung · Float(CFG) · Node 182",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Float(CFG) · Node 182\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `3.5` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Float(CFG) · Node 182\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `3.5` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 215,
+    "inputs": [],
+    "mode": 0,
+    "order": 39,
+    "outputs": [],
+    "pos": [
+     6360,
+     760
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 183
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     345.375
+    ],
+    "title": "Erklärung · Switch(high noise model) · Node 183",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Switch(high noise model) · Node 183\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (MODEL, Link 257): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (MODEL, Link 258): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 270): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Switch(high noise model) · Node 183\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (MODEL, Link 257): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (MODEL, Link 258): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 270): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 216,
+    "inputs": [],
+    "mode": 0,
+    "order": 40,
+    "outputs": [],
+    "pos": [
+     6360,
+     1120
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 184
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     345.375
+    ],
+    "title": "Erklärung · Switch(low noise model) · Node 184",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Switch(low noise model) · Node 184\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (MODEL, Link 259): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (MODEL, Link 260): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 271): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Switch(low noise model) · Node 184\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (MODEL, Link 259): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (MODEL, Link 260): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 271): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 217,
+    "inputs": [],
+    "mode": 0,
+    "order": 41,
+    "outputs": [],
+    "pos": [
+     6360,
+     1480
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 185
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     345.375
+    ],
+    "title": "Erklärung · Switch(steps) · Node 185",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Switch(steps) · Node 185\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (INT, Link 261): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (INT, Link 262): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 272): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (INT, 3 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Switch(steps) · Node 185\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (INT, Link 261): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (INT, Link 262): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 272): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (INT, 3 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 218,
+    "inputs": [],
+    "mode": 0,
+    "order": 42,
+    "outputs": [],
+    "pos": [
+     6360,
+     1840
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 186
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     345.375
+    ],
+    "title": "Erklärung · Switch(split steps) · Node 186",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Switch(split steps) · Node 186\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (INT, Link 263): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (INT, Link 264): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 274): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Switch(split steps) · Node 186\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (INT, Link 263): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (INT, Link 264): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 274): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (INT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 219,
+    "inputs": [],
+    "mode": 0,
+    "order": 43,
+    "outputs": [],
+    "pos": [
+     6360,
+     2200
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 187
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     345.375
+    ],
+    "title": "Erklärung · Switch(CFG) · Node 187",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Switch(CFG) · Node 187\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (FLOAT, Link 265): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (FLOAT, Link 266): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 273): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Switch(CFG) · Node 187\n\n**Zweck:** Wählt abhängig von der Einstellung einen von mehreren Daten- oder Verarbeitungspfaden aus.\n\n**Einstellbare Werte**\n- `switch` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `on_false` (FLOAT, Link 265): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `on_true` (FLOAT, Link 266): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `switch` (BOOLEAN, Link 273): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 220,
+    "inputs": [],
+    "mode": 0,
+    "order": 44,
+    "outputs": [],
+    "pos": [
+     6360,
+     2560
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 188
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     294
+    ],
+    "title": "Erklärung · Float (FPS) · Node 188",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Float (FPS) · Node 188\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `16` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Float (FPS) · Node 188\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `16` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 221,
+    "inputs": [],
+    "mode": 0,
+    "order": 45,
+    "outputs": [],
+    "pos": [
+     6360,
+     2900
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 189
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     294
+    ],
+    "title": "Erklärung · Float (Duration) · Node 189",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Float (Duration) · Node 189\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `10` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Float (Duration) · Node 189\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `10` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 222,
+    "inputs": [],
+    "mode": 0,
+    "order": 46,
+    "outputs": [],
+    "pos": [
+     6360,
+     3240
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 190
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     294
+    ],
+    "title": "Erklärung · Enable Lightning LoRA · Node 190",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Enable Lightning LoRA · Node 190\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `value` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `BOOLEAN` (BOOLEAN, 5 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Enable Lightning LoRA · Node 190\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `value` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `BOOLEAN` (BOOLEAN, 5 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 223,
+    "inputs": [],
+    "mode": 0,
+    "order": 47,
+    "outputs": [],
+    "pos": [
+     6840,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 191
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     436.375
+    ],
+    "title": "Erklärung · Math Expression · Node 191",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Math Expression · Node 191\n\n**Zweck:** Berechnet oder konvertiert numerische Werte für nachfolgende Nodes.\n\n**Einstellbare Werte**\n- `expression` = `floor(a * b) + 1` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `values.a` (FLOAT,INT,BOOLEAN, Link 267): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.b` (FLOAT,INT,BOOLEAN, Link 268): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `expression` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.c` (FLOAT,INT,BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, nicht verbunden): Ergebnis dieses Nodes\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `BOOL` (BOOLEAN, nicht verbunden): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Math Expression · Node 191\n\n**Zweck:** Berechnet oder konvertiert numerische Werte für nachfolgende Nodes.\n\n**Einstellbare Werte**\n- `expression` = `floor(a * b) + 1` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `values.a` (FLOAT,INT,BOOLEAN, Link 267): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.b` (FLOAT,INT,BOOLEAN, Link 268): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `expression` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `values.c` (FLOAT,INT,BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `FLOAT` (FLOAT, nicht verbunden): Ergebnis dieses Nodes\n- `INT` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `BOOL` (BOOLEAN, nicht verbunden): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#36543d",
+    "color": "#1e3323",
+    "flags": {},
+    "id": 224,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": "text",
+      "link": null,
+      "locked": null,
+      "name": "text_in",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "STRING"
+     }
+    ],
+    "mode": 0,
+    "order": 48,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       275
+      ],
+      "locked": null,
+      "name": "text",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     1560,
+     700
+    ],
+    "properties": {
+     "Node name for S&R": "PixaromaPrompt",
+     "cnr_id": "ComfyUI-Pixaroma",
+     "dawasteh_pixaroma_prompt_integration": {
+      "kind": "prompt",
+      "target": [
+       170,
+       "text"
+      ]
+     },
+     "promptState": {
+      "accent": null,
+      "order": "mine",
+      "sep": ", ",
+      "showExpanded": true,
+      "text": "Explicit NSFW video, close-up and medium shots. A long-haired blonde woman in her mid-20s and a long-haired blonde man in his mid-30s having vigorous sex. Detailed depiction of genitals and penetration with realistic sliding motion and skin-on-skin contact. The woman's long blonde hair is splayed across the white bedsheets. Intense expressions of pleasure, rhythmic thrusting, and natural body weight distribution. High resolution, 8k, highly detailed anatomy, realistic physics, soft interior lighting."
+     },
+     "ver": "fc17bd2b58ef0089cc62a40502669cf71ae86db7"
+    },
+    "showAdvanced": null,
+    "size": [
+     470,
+     230
+    ],
+    "type": "PixaromaPrompt",
+    "widgets_values": [
+     ""
+    ],
+    "widgets_values_named": {
+     "pix_prompt_ui": ""
+    }
+   },
+   {
+    "bgcolor": "#24131b",
+    "color": "#3b1f2b",
+    "flags": {},
+    "id": 225,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 269,
+      "locked": null,
+      "name": "any_input",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "*"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": null,
+      "locked": null,
+      "name": "image_pass",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "IMAGE"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": null,
+      "locked": null,
+      "name": "model_pass",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": 7,
+      "type": "MODEL"
+     }
+    ],
+    "mode": 0,
+    "order": 77,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       276
+      ],
+      "locked": null,
+      "name": "any_output",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "*"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "image_pass",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "IMAGE"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "model_pass",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "freemem_before",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": null,
+      "locked": null,
+      "name": "freemem_after",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": null,
+      "type": "INT"
+     }
+    ],
+    "pos": [
+     2760,
+     880
+    ],
+    "properties": {
+     "Node name for S&R": "VRAM_Debug",
+     "dawasteh_memory_cleanup": {
+      "placement": "terminal",
+      "reason": "after final media barrier, before SaveVideo",
+      "version": 1
+     }
+    },
+    "showAdvanced": null,
+    "size": [
+     320,
+     222
+    ],
+    "type": "VRAM_Debug",
+    "widgets_values": [
+     true,
+     true,
+     true
+    ],
+    "widgets_values_named": {
+     "empty_cache": true,
+     "gc_collect": true,
+     "unload_all_models": true
+    }
+   },
+   {
+    "bgcolor": "#5a4322",
+    "color": "#3b2d18",
+    "flags": {},
+    "id": 226,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 277,
+      "locked": null,
+      "name": "clip",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "CLIP"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 281,
+      "locked": null,
+      "name": "device",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "COMBO",
+      "widget": {
+       "name": "device"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 62,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       235,
+       247
+      ],
+      "locked": null,
+      "name": "CLIP",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "CLIP"
+     }
+    ],
+    "pos": [
+     2320,
+     760
+    ],
+    "properties": {
+     "Node name for S&R": "SelectCLIPDevice",
+     "cnr_id": "comfy-core"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     82
+    ],
+    "title": "SelectCLIPDevice · central control",
+    "type": "SelectCLIPDevice",
+    "widgets_values": [
+     "gpu:1"
+    ],
+    "widgets_values_named": {
+     "device": "gpu:1"
+    }
+   },
+   {
+    "bgcolor": "#5a4322",
+    "color": "#3b2d18",
+    "flags": {},
+    "id": 227,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 278,
+      "locked": null,
+      "name": "vae",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "VAE"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 282,
+      "locked": null,
+      "name": "device",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "COMBO",
+      "widget": {
+       "name": "device"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 63,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       246
+      ],
+      "locked": null,
+      "name": "VAE",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     2320,
+     880
+    ],
+    "properties": {
+     "Node name for S&R": "SelectVAEDevice",
+     "cnr_id": "comfy-core"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     82
+    ],
+    "title": "SelectVAEDevice · central control",
+    "type": "SelectVAEDevice",
+    "widgets_values": [
+     "gpu:1"
+    ],
+    "widgets_values_named": {
+     "device": "gpu:1"
+    }
+   },
+   {
+    "bgcolor": "#1d4968",
+    "color": "#16334a",
+    "flags": {},
+    "id": 228,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 279,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 283,
+      "locked": null,
+      "name": "device",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "COMBO",
+      "widget": {
+       "name": "device"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 60,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       232,
+       259
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     2320,
+     1000
+    ],
+    "properties": {
+     "Node name for S&R": "SelectModelDevice",
+     "cnr_id": "comfy-core"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     82
+    ],
+    "title": "SelectModelDevice · central control",
+    "type": "SelectModelDevice",
+    "widgets_values": [
+     "gpu:0"
+    ],
+    "widgets_values_named": {
+     "device": "gpu:0"
+    }
+   },
+   {
+    "bgcolor": "#1d4968",
+    "color": "#16334a",
+    "flags": {},
+    "id": 229,
+    "inputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 280,
+      "locked": null,
+      "name": "model",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "type": "MODEL"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "link": 284,
+      "locked": null,
+      "name": "device",
+      "nameLocked": null,
+      "removable": null,
+      "shape": null,
+      "type": "COMBO",
+      "widget": {
+       "name": "device"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 61,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       231,
+       257
+      ],
+      "locked": null,
+      "name": "MODEL",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "MODEL"
+     }
+    ],
+    "pos": [
+     2760,
+     80
+    ],
+    "properties": {
+     "Node name for S&R": "SelectModelDevice",
+     "cnr_id": "comfy-core"
+    },
+    "showAdvanced": null,
+    "size": [
+     300,
+     82
+    ],
+    "title": "SelectModelDevice · central control",
+    "type": "SelectModelDevice",
+    "widgets_values": [
+     "gpu:0"
+    ],
+    "widgets_values_named": {
+     "device": "gpu:0"
+    }
+   },
+   {
+    "bgcolor": "#205845",
+    "color": "#173f32",
+    "flags": {},
+    "id": 230,
+    "inputs": [],
+    "mode": 0,
+    "order": 49,
+    "outputs": [
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       283,
+       284
+      ],
+      "locked": null,
+      "name": "model_device",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 0,
+      "type": "COMBO"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       281
+      ],
+      "locked": null,
+      "name": "clip_device",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 1,
+      "type": "COMBO"
+     },
+     {
+      "color_off": null,
+      "color_on": null,
+      "dir": null,
+      "label": null,
+      "links": [
+       282
+      ],
+      "locked": null,
+      "name": "vae_device",
+      "nameLocked": null,
+      "pos": null,
+      "removable": null,
+      "shape": null,
+      "slot_index": 2,
+      "type": "COMBO"
+     }
+    ],
+    "pos": [
+     40,
+     1740
+    ],
+    "properties": {
+     "Node name for S&R": "DaWMultiGPUDeviceControl"
+    },
+    "showAdvanced": null,
+    "size": [
+     380,
+     182
+    ],
+    "title": "Central GPU Control · MODEL / CLIP / VAE",
+    "type": "DaWMultiGPUDeviceControl",
+    "widgets_values": [
+     "gpu:0",
+     "gpu:1",
+     "gpu:1"
+    ],
+    "widgets_values_named": {
+     "clip_device": "gpu:1",
+     "model_device": "gpu:0",
+     "vae_device": "gpu:1"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 231,
+    "inputs": [],
+    "mode": 0,
+    "order": 50,
+    "outputs": [],
+    "pos": [
+     6840,
+     500
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 225
+    },
+    "showAdvanced": null,
+    "size": [
+     390,
+     682.375
+    ],
+    "title": "Erklärung · VRAM Debug · Node 225",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · VRAM Debug · Node 225\n\n**Zweck:** Returns the inputs unchanged, they are only used as triggers,   ↵ and performs comfy model management functions and garbage collection,   ↵ reports free VRAM before and after the operations.\n\n**Einstellbare Werte**\n- `empty_cache` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `gc_collect` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `unload_all_models` = `True` — Steuert diesen Parameter. AN gibt Modell-/VRAM-Speicher nach dem Lauf frei, macht den nächsten Lauf aber langsamer; AUS hält das Modell für Wiederholungen im Cache.\n\n**Eingänge**\n- `empty_cache` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gc_collect` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `unload_all_models` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `any_input` (*, Link 269): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_pass` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_pass` (MODEL, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `any_output` (*, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `image_pass` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `model_pass` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_before` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_after` (INT, nicht verbunden): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · VRAM Debug · Node 225\n\n**Zweck:** Returns the inputs unchanged, they are only used as triggers,   ↵ and performs comfy model management functions and garbage collection,   ↵ reports free VRAM before and after the operations.\n\n**Einstellbare Werte**\n- `empty_cache` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `gc_collect` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `unload_all_models` = `True` — Steuert diesen Parameter. AN gibt Modell-/VRAM-Speicher nach dem Lauf frei, macht den nächsten Lauf aber langsamer; AUS hält das Modell für Wiederholungen im Cache.\n\n**Eingänge**\n- `empty_cache` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `gc_collect` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `unload_all_models` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `any_input` (*, Link 269): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image_pass` (IMAGE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_pass` (MODEL, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `any_output` (*, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `image_pass` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `model_pass` (MODEL, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_before` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `freemem_after` (INT, nicht verbunden): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 232,
+    "inputs": [],
+    "mode": 0,
+    "order": 51,
+    "outputs": [],
+    "pos": [
+     6840,
+     1020
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 226
+    },
+    "showAdvanced": null,
+    "size": [
+     417.296875,
+     323.234375
+    ],
+    "title": "Erklärung · SelectCLIPDevice · central control · Node 226",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · SelectCLIPDevice · central control · Node 226\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 277): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 281): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · SelectCLIPDevice · central control · Node 226\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 277): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 281): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 233,
+    "inputs": [],
+    "mode": 0,
+    "order": 52,
+    "outputs": [],
+    "pos": [
+     6840,
+     1380
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 227
+    },
+    "showAdvanced": null,
+    "size": [
+     412.34375,
+     323.234375
+    ],
+    "title": "Erklärung · SelectVAEDevice · central control · Node 227",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · SelectVAEDevice · central control · Node 227\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 278): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 282): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · SelectVAEDevice · central control · Node 227\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 278): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 282): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 234,
+    "inputs": [],
+    "mode": 0,
+    "order": 53,
+    "outputs": [],
+    "pos": [
+     6840,
+     1740
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 228
+    },
+    "showAdvanced": null,
+    "size": [
+     427.609375,
+     323.234375
+    ],
+    "title": "Erklärung · SelectModelDevice · central control · Node 228",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · SelectModelDevice · central control · Node 228\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 279): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 283): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · SelectModelDevice · central control · Node 228\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 279): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 283): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 235,
+    "inputs": [],
+    "mode": 0,
+    "order": 54,
+    "outputs": [],
+    "pos": [
+     6840,
+     2100
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 229
+    },
+    "showAdvanced": null,
+    "size": [
+     427.625,
+     323.234375
+    ],
+    "title": "Erklärung · SelectModelDevice · central control · Node 229",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · SelectModelDevice · central control · Node 229\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 280): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 284): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · SelectModelDevice · central control · Node 229\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 280): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 284): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 2 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   },
+   {
+    "bgcolor": "#101722",
+    "color": "#1b2638",
+    "flags": {},
+    "id": 236,
+    "inputs": [],
+    "mode": 0,
+    "order": 55,
+    "outputs": [],
+    "pos": [
+     6840,
+     2460
+    ],
+    "properties": {
+     "Node name for S&R": "MarkdownNote",
+     "cnr_id": "comfy-core",
+     "dawasteh_generated_note": true,
+     "dawasteh_note_for": 230
+    },
+    "showAdvanced": null,
+    "size": [
+     471.484375,
+     397.234375
+    ],
+    "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 230",
+    "type": "MarkdownNote",
+    "widgets_values": [
+     "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 230\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    ],
+    "widgets_values_named": {
+     "text": "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 230\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:1` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+    }
+   }
+  ],
+  "revision": 0,
+  "version": 0.4
+ }
+}

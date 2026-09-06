@@ -1847,8 +1847,8 @@
       },
       "widgets_values": [
         "gpu:0",
-        "gpu:1",
-        "gpu:1"
+        "gpu:0",
+        "gpu:0"
       ],
       "title": "Central GPU Control · MODEL / CLIP / VAE",
       "color": "#173f32",
@@ -2356,8 +2356,8 @@
       "curated_split_default": true,
       "defaults": {
         "MODEL": "gpu:0",
-        "CLIP": "gpu:1",
-        "VAE": "gpu:1"
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
       },
       "execution": "device placement only; ComfyUI graph stages remain sequential"
     },
@@ -2384,10 +2384,13 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "80a69b0bd8f7f6d8f4dfb605c0944b9fa039b9d495d073f1d7dcedbe9da45cae",
+      "topology_sha256": "ad79e911c5777f81cac40b5aca22815a9b3cf78b5f5ab4f505711663ca931648",
       "exceptions": []
     },
     "dawasteh_rdna4_v111": {
+      "version": 1
+    },
+    "dawasteh_rdna4_v112": {
       "version": 1
     }
   },

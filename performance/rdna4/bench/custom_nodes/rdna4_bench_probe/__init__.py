@@ -29,6 +29,55 @@ NODE_CLASS_MAPPINGS = {}
 NODE_DISPLAY_NAME_MAPPINGS = {}
 
 _log = logging.getLogger("rdna4_bench_probe")
+_GUARD: list[dict] | str | None = None
+
+
+def _load_repo_vram_guard():
+    """Apply the repo's production VRAM guard (custom_nodes/ComfyUI-DaWasteh-MultiGPU-Control/vram_guard.py)
+    inside the bench instance when RDNA4_VRAM_GUARD=1, without touching the production custom_nodes."""
+    global _GUARD
+    if os.environ.get("RDNA4_VRAM_GUARD", "0") != "1":
+        _GUARD = None
+        return
+    import importlib.util
+    from pathlib import Path
+
+    path = Path(__file__).resolve().parents[5] / "custom_nodes" / "ComfyUI-DaWasteh-MultiGPU-Control" / "vram_guard.py"
+    try:
+        spec = importlib.util.spec_from_file_location("dawasteh_vram_guard_bench", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        _GUARD = mod.apply()
+        _log.info("rdna4_bench_probe: repo VRAM guard applied: %s", _GUARD)
+    except Exception as e:
+        _GUARD = f"err {e}"
+        _log.warning("rdna4_bench_probe: repo VRAM guard failed: %s", e)
+
+
+_load_repo_vram_guard()
+
+
+def _peft_torchao_shim():
+    """Test-only: with RDNA4_PEFT_NO_TORCHAO=1 apply the repo's production shim
+    (custom_nodes/ComfyUI-DaWasteh-Qwen3TTS-LoRA/peft_compat.py) inside the bench instance, so that
+    PEFT 0.19 ignores the venv's torchao 0.9.0 (< 0.16 required); without it every PEFT-based trainer
+    fails to inject LoRA layers (fl-acestep-training swallows that as "PEFT not installed")."""
+    if os.environ.get("RDNA4_PEFT_NO_TORCHAO", "0") != "1":
+        return
+    import importlib.util
+    from pathlib import Path
+
+    path = Path(__file__).resolve().parents[5] / "custom_nodes" / "ComfyUI-DaWasteh-Qwen3TTS-LoRA" / "peft_compat.py"
+    try:
+        spec = importlib.util.spec_from_file_location("dawasteh_peft_compat_bench", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        _log.info("rdna4_bench_probe: repo peft_compat applied=%s", mod.disable_incompatible_torchao_dispatcher())
+    except Exception as e:
+        _log.warning("rdna4_bench_probe: peft shim failed: %s", e)
+
+
+_peft_torchao_shim()
 _lock = threading.Lock()
 _trace: list[dict] = []
 _MAX_TRACE = 200000
@@ -135,6 +184,7 @@ async def info(_req):
         },
         "preferred_blas": str(torch.backends.cuda.preferred_blas_library()),
         "env": {k: os.environ.get(k) for k in _ENV_KEYS},
+        "vram_guard": _GUARD,
         "args": {k: getattr(a, k, None) for k in _ARG_KEYS},
     }
     try:

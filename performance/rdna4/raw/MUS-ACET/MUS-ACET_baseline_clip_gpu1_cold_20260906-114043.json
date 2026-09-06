@@ -1,0 +1,242 @@
+{
+ "run_id": "MUS-ACET_baseline_clip_gpu1_cold_20260906-114043",
+ "test_id": "MUS-ACET",
+ "variant": "baseline_clip_gpu1",
+ "run_type": "cold",
+ "hypothesis": "E2 remaining workflows: CLIP/VAE on gpu:1 (shipped) vs gpu:0",
+ "workload": "60 s stereo 48 kHz (short form of 168 s), 8 steps euler normal cfg1 shift3, ACE-Step 1.5 Turbo 4B bf16 + Qwen 0.6B/4B TE, LM audio codes on, seed 42",
+ "seed": null,
+ "sets": [
+  "98.seconds=60",
+  "94.duration=60",
+  "3.seed=42",
+  "94.seed=42"
+ ],
+ "prompt_file": "api/ACE_TURBO.json",
+ "prompt_id": "1485617e-ab8e-45ca-ac0c-882b20337032",
+ "status": "success",
+ "client_wall_s": 249.58219623565674,
+ "server_exec_s": 249.2601978778839,
+ "queue_delay_s": 0.028972148895263672,
+ "cached_nodes": [],
+ "node_times": [
+  {
+   "node": "106",
+   "display_node": "106",
+   "start": 1788687644.0194163,
+   "dur": 0.3210330009460449,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "127",
+   "display_node": "127",
+   "start": 1788687644.3404493,
+   "dur": 0.0004546642303466797,
+   "class_type": "DaWMultiGPUDeviceControl"
+  },
+  {
+   "node": "125",
+   "display_node": "125",
+   "start": 1788687644.340904,
+   "dur": 0.17255687713623047,
+   "class_type": "SelectVAEDevice"
+  },
+  {
+   "node": "121",
+   "display_node": "121",
+   "start": 1788687644.5134609,
+   "dur": 0.0007135868072509766,
+   "class_type": "PixaromaPrompt"
+  },
+  {
+   "node": "105",
+   "display_node": "105",
+   "start": 1788687644.5141745,
+   "dur": 6.09855842590332,
+   "class_type": "DualCLIPLoader"
+  },
+  {
+   "node": "126",
+   "display_node": "126",
+   "start": 1788687650.612733,
+   "dur": 8.831750392913818,
+   "class_type": "SelectCLIPDevice"
+  },
+  {
+   "node": "94",
+   "display_node": "94",
+   "start": 1788687659.4444833,
+   "dur": 216.9049596786499,
+   "class_type": "TextEncodeAceStepAudio1.5"
+  },
+  {
+   "node": "47",
+   "display_node": "47",
+   "start": 1788687876.349443,
+   "dur": 0.0012917518615722656,
+   "class_type": "ConditioningZeroOut"
+  },
+  {
+   "node": "104",
+   "display_node": "104",
+   "start": 1788687876.3507347,
+   "dur": 3.150453567504883,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "124",
+   "display_node": "124",
+   "start": 1788687879.5011883,
+   "dur": 0.002234935760498047,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "78",
+   "display_node": "78",
+   "start": 1788687879.5034232,
+   "dur": 0.00054168701171875,
+   "class_type": "ModelSamplingAuraFlow"
+  },
+  {
+   "node": "98",
+   "display_node": "98",
+   "start": 1788687879.503965,
+   "dur": 0.0004930496215820312,
+   "class_type": "EmptyAceStep1.5LatentAudio"
+  },
+  {
+   "node": "3",
+   "display_node": "3",
+   "start": 1788687879.504458,
+   "dur": 3.8096923828125,
+   "class_type": "KSampler"
+  },
+  {
+   "node": "122",
+   "display_node": "122",
+   "start": 1788687883.3141503,
+   "dur": 0.3058333396911621,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "18",
+   "display_node": "18",
+   "start": 1788687883.6199837,
+   "dur": 7.947149276733398,
+   "class_type": "VAEDecodeAudio"
+  },
+  {
+   "node": "123",
+   "display_node": "123",
+   "start": 1788687891.567133,
+   "dur": 0.3344123363494873,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "107",
+   "display_node": "107",
+   "start": 1788687891.9015453,
+   "dur": 1.3752646446228027,
+   "class_type": "SaveAudioMP3"
+  }
+ ],
+ "step_stats": {
+  "94": {
+   "steps_observed": 150,
+   "max": 300,
+   "span_s": 204.59386372566223,
+   "s_per_step": 0.6865565896834303,
+   "first_step_t": 1788687671.0819807,
+   "last_step_t": 1788687875.6758444,
+   "class_type": "TextEncodeAceStepAudio1.5"
+  },
+  "3": {
+   "steps_observed": 5,
+   "max": 8,
+   "span_s": 0.47190284729003906,
+   "s_per_step": 0.06741469247000557,
+   "first_step_t": 1788687882.8135116,
+   "last_step_t": 1788687883.2854145,
+   "class_type": "KSampler"
+  }
+ },
+ "gpu0_peak_alloc": 9627318272,
+ "gpu0_peak_reserved": 9653190656,
+ "gpu1_peak_alloc": 11191623680,
+ "gpu1_peak_reserved": 11377049600,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x00016780_phys_0": 11776688128.0,
+  "0x00000000_0x0001914D_phys_0": 9845264384.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 37248245760,
+  "swap_used": 1160839168,
+  "process_rss": 1190744064
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 20718903296,
+  "swap_used": 1015136256,
+  "process_rss": 17060532224
+ },
+ "outputs": [
+  {
+   "node": "107",
+   "kind": "audio",
+   "filename": "Dawasteh_Intro__00001.mp3",
+   "subfolder": "audio",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_vramguard_114030\\output\\audio\\Dawasteh_Intro__00001.mp3",
+   "bytes": 1913188,
+   "sha256": "ea3373bdf2dc763c9cecc7096855725f919a74f07a03727c233e650baae5e827"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_vramguard_114030\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_vramguard_114030\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+  "DISABLE_ADDMM_CUDA_LT": null,
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788687643.9872448,
+ "t_done": 1788687893.569441
+}

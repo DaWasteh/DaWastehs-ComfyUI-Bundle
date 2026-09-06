@@ -1,0 +1,222 @@
+{
+ "10": {
+  "_meta": {
+   "title": "LoRA Training starten (Widgets ggf. pruefen!)"
+  },
+  "class_type": "FL_AceStep_Train",
+  "inputs": {
+   "config": [
+    "9",
+    0
+   ],
+   "lora_name": "rdna4_bench",
+   "model": [
+    "31",
+    0
+   ],
+   "resume_from": "",
+   "tensor_dir": [
+    "8",
+    0
+   ]
+  }
+ },
+ "11": {
+  "_meta": {
+   "title": "Run Timer Pixaroma"
+  },
+  "class_type": "PixaromaRunTimer",
+  "inputs": {}
+ },
+ "2": {
+  "_meta": {
+   "title": "Load Diffusion Model"
+  },
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "ACE\\acestep_v1.5_xl_sft_bf16.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "3": {
+  "_meta": {
+   "title": "Load VAE"
+  },
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "ACE\\ace_1.5_vae.safetensors"
+  }
+ },
+ "31": {
+  "_meta": {
+   "title": "SelectModelDevice · central control"
+  },
+  "class_type": "SelectModelDevice",
+  "inputs": {
+   "device": [
+    "34",
+    0
+   ],
+   "model": [
+    "2",
+    0
+   ]
+  }
+ },
+ "32": {
+  "_meta": {
+   "title": "SelectVAEDevice · central control"
+  },
+  "class_type": "SelectVAEDevice",
+  "inputs": {
+   "device": [
+    "34",
+    2
+   ],
+   "vae": [
+    "3",
+    0
+   ]
+  }
+ },
+ "33": {
+  "_meta": {
+   "title": "SelectCLIPDevice · central control"
+  },
+  "class_type": "SelectCLIPDevice",
+  "inputs": {
+   "clip": [
+    "4",
+    0
+   ],
+   "device": [
+    "34",
+    1
+   ]
+  }
+ },
+ "34": {
+  "_meta": {
+   "title": "Central GPU Control · MODEL / CLIP / VAE"
+  },
+  "class_type": "DaWMultiGPUDeviceControl",
+  "inputs": {
+   "clip_device": "gpu:0",
+   "model_device": "gpu:0",
+   "vae_device": "gpu:0"
+  }
+ },
+ "4": {
+  "_meta": {
+   "title": "Load CLIP (Dual)"
+  },
+  "class_type": "DualCLIPLoader",
+  "inputs": {
+   "clip_name1": "ACE\\qwen_0.6b_ace15.safetensors",
+   "clip_name2": "ACE\\qwen_4b_ace15.safetensors",
+   "device": "default",
+   "type": "ace"
+  }
+ },
+ "5": {
+  "_meta": {
+   "title": "LLM fuers Auto-Labeling"
+  },
+  "class_type": "FL_AceStep_LLMLoader",
+  "inputs": {
+   "backend": "pt",
+   "checkpoint_path": "",
+   "device": "auto",
+   "model_name": "acestep-5Hz-lm-1.7B"
+  }
+ },
+ "6": {
+  "_meta": {
+   "title": "Deine Voice-Samples scannen"
+  },
+  "class_type": "FL_AceStep_ScanDirectory",
+  "inputs": {
+   "all_instrumental": false,
+   "custom_tag": "rdna4_bench",
+   "directory": "L:/ComfyUI/ComfyUI/input/lora_training/_rdna4_bench_audio",
+   "tag_position": "prepend"
+  }
+ },
+ "7": {
+  "_meta": {
+   "title": "Auto-Label (Tags/BPM/Lyrics)"
+  },
+  "class_type": "FL_AceStep_LabelSamples",
+  "inputs": {
+   "dataset": [
+    "6",
+    0
+   ],
+   "format_lyrics": false,
+   "llm": [
+    "5",
+    0
+   ],
+   "model": [
+    "31",
+    0
+   ],
+   "only_unlabeled": false,
+   "skip_metas": false,
+   "transcribe_lyrics": false,
+   "vae": [
+    "32",
+    0
+   ]
+  }
+ },
+ "8": {
+  "_meta": {
+   "title": "Preprocessing (VAE+CLIP Encode)"
+  },
+  "class_type": "FL_AceStep_PreprocessDataset",
+  "inputs": {
+   "clip": [
+    "33",
+    0
+   ],
+   "dataset": [
+    "7",
+    0
+   ],
+   "genre_ratio": 0,
+   "max_duration": 120,
+   "model": [
+    "31",
+    0
+   ],
+   "output_dir": "L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/raw/ACE-TRAIN/dataset",
+   "vae": [
+    "32",
+    0
+   ]
+  }
+ },
+ "9": {
+  "_meta": {
+   "title": "Trainings-Hyperparameter"
+  },
+  "class_type": "FL_AceStep_TrainingConfig",
+  "inputs": {
+   "batch_size": 1,
+   "gradient_accumulation": 4,
+   "learning_rate": 0.0001,
+   "lora_alpha": 32,
+   "lora_dropout": 0.1,
+   "lora_rank": 16,
+   "max_epochs": 10,
+   "max_grad_norm": 1,
+   "output_dir": "L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/raw/ACE-TRAIN/loras",
+   "save_every_n_epochs": 5,
+   "seed": 173489082,
+   "target_modules": "q_proj,k_proj,v_proj,o_proj",
+   "warmup_steps": 0,
+   "weight_decay": 0.01
+  }
+ }
+}

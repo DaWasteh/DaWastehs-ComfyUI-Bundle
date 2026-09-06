@@ -1,0 +1,262 @@
+{
+ "104": {
+  "_meta": {
+   "title": "Load Diffusion Model"
+  },
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "ACE\\acestep_v1.5_turbo.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "105": {
+  "_meta": {
+   "title": "Load CLIP (Dual)"
+  },
+  "class_type": "DualCLIPLoader",
+  "inputs": {
+   "clip_name1": "ACE\\qwen_0.6b_ace15.safetensors",
+   "clip_name2": "ACE\\qwen_4b_ace15.safetensors",
+   "device": "default",
+   "type": "ace"
+  }
+ },
+ "106": {
+  "_meta": {
+   "title": "Load VAE"
+  },
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "ACE\\ace_1.5_vae.safetensors"
+  }
+ },
+ "107": {
+  "_meta": {
+   "title": "Save Audio (MP3) (DEPRECATED)"
+  },
+  "class_type": "SaveAudioMP3",
+  "inputs": {
+   "audio": [
+    "123",
+    0
+   ],
+   "filename_prefix": "audio/Dawasteh_Intro_",
+   "quality": "V0"
+  }
+ },
+ "108": {
+  "_meta": {
+   "title": "Run Timer Pixaroma"
+  },
+  "class_type": "PixaromaRunTimer",
+  "inputs": {}
+ },
+ "121": {
+  "_meta": {
+   "title": "Prompt Pixaroma"
+  },
+  "class_type": "PixaromaPrompt",
+  "inputs": {
+   "PromptState": "{\"text\":\"synthwave, edm, upbeat electronic, bass drops, hype beat, gaming music, modern pop, clear vocals, synthesizer, energetic\",\"order\":\"mine\",\"sep\":\", \"}"
+  }
+ },
+ "122": {
+  "_meta": {
+   "title": "VRAM Debug"
+  },
+  "class_type": "VRAM_Debug",
+  "inputs": {
+   "any_input": [
+    "3",
+    0
+   ],
+   "empty_cache": true,
+   "gc_collect": true,
+   "unload_all_models": false
+  }
+ },
+ "123": {
+  "_meta": {
+   "title": "VRAM Debug"
+  },
+  "class_type": "VRAM_Debug",
+  "inputs": {
+   "any_input": [
+    "18",
+    0
+   ],
+   "empty_cache": true,
+   "gc_collect": true,
+   "unload_all_models": false
+  }
+ },
+ "124": {
+  "_meta": {
+   "title": "SelectModelDevice · central control"
+  },
+  "class_type": "SelectModelDevice",
+  "inputs": {
+   "device": [
+    "127",
+    0
+   ],
+   "model": [
+    "104",
+    0
+   ]
+  }
+ },
+ "125": {
+  "_meta": {
+   "title": "SelectVAEDevice · central control"
+  },
+  "class_type": "SelectVAEDevice",
+  "inputs": {
+   "device": [
+    "127",
+    2
+   ],
+   "vae": [
+    "106",
+    0
+   ]
+  }
+ },
+ "126": {
+  "_meta": {
+   "title": "SelectCLIPDevice · central control"
+  },
+  "class_type": "SelectCLIPDevice",
+  "inputs": {
+   "clip": [
+    "105",
+    0
+   ],
+   "device": [
+    "127",
+    1
+   ]
+  }
+ },
+ "127": {
+  "_meta": {
+   "title": "Central GPU Control · MODEL / CLIP / VAE"
+  },
+  "class_type": "DaWMultiGPUDeviceControl",
+  "inputs": {
+   "clip_device": "gpu:0",
+   "model_device": "gpu:0",
+   "vae_device": "gpu:0"
+  }
+ },
+ "18": {
+  "_meta": {
+   "title": "VAE Decode Audio"
+  },
+  "class_type": "VAEDecodeAudio",
+  "inputs": {
+   "samples": [
+    "122",
+    0
+   ],
+   "vae": [
+    "125",
+    0
+   ]
+  }
+ },
+ "3": {
+  "_meta": {
+   "title": "KSampler"
+  },
+  "class_type": "KSampler",
+  "inputs": {
+   "cfg": 1,
+   "denoise": 1,
+   "latent_image": [
+    "98",
+    0
+   ],
+   "model": [
+    "78",
+    0
+   ],
+   "negative": [
+    "47",
+    0
+   ],
+   "positive": [
+    "94",
+    0
+   ],
+   "sampler_name": "euler",
+   "scheduler": "normal",
+   "seed": 42,
+   "steps": 8
+  }
+ },
+ "47": {
+  "_meta": {
+   "title": "Conditioning Zero Out"
+  },
+  "class_type": "ConditioningZeroOut",
+  "inputs": {
+   "conditioning": [
+    "94",
+    0
+   ]
+  }
+ },
+ "78": {
+  "_meta": {
+   "title": "ModelSamplingAuraFlow"
+  },
+  "class_type": "ModelSamplingAuraFlow",
+  "inputs": {
+   "model": [
+    "124",
+    0
+   ],
+   "shift": 3
+  }
+ },
+ "94": {
+  "_meta": {
+   "title": "TextEncodeAceStepAudio1.5"
+  },
+  "class_type": "TextEncodeAceStepAudio1.5",
+  "inputs": {
+   "bpm": 110,
+   "cfg_scale": 2,
+   "clip": [
+    "126",
+    0
+   ],
+   "duration": 60,
+   "generate_audio_codes": true,
+   "keyscale": "E major",
+   "language": "de",
+   "lyrics": "[Intro]\nHey! Seid ihr bereit?\nDie Bambus-Leitung glüht...\nDer Stream geht online.\nWillkommen in der Panda Community!\n\n[Strophe 1]\nDer Monitor leuchtet, das Setup ist an,\nDie Notification geht raus an jeden ran.\nWir sammeln uns hier, wir machen es uns bequem,\nDer chilligste Platz im gesamten System.\nWir sind schwarz und weiß, doch mit Farbe im Herz,\nWir teilen den Loot, den Win und auch mal den Schmerz.\nLehnt euch zurück, schnappt euch den Snack,\nDer Alltag hat Pause, der Stress ist jetzt weg!\n\n[Pre-Chorus]\nDer Chat rollt rein, die Emotes fliegen hoch,\nEin Follow, ein Sub, wir ziehen am selben Joch.\nDer Hype-Train startet, er fährt nicht mehr zurück,\nDas hier ist unser Spot, unser kleines Stück Glück!\n\n[Refrain]\nDawasteh! Wir sind live, wir sind laut, wir sind hier!\nDie Panda Community – unser Revier!\nEgal, wo du steckst, auf der ganzen Welt,\nDas ist der Vibe, der uns zusammenhält.\nWir kauen den Bambus, wir stürmen das Game,\nNiemand von uns ist hier jemals allein.\nDawasteh – Mach den Stream auf laut,\nWeil diese Community auf Freundschaft baut!\n\n[Strophe 2]\nEgal ob wir tryharden oder krachend failn,\nWir bleiben entspannt, wir lassen uns nicht quälen.\nMal völlig verpeilt, mal voll im Fokus drin,\nDoch am Ende ist jeder Stream mit euch ein Win.\nWir spammen die Pandas ins Chat-Fenster rein,\nLassen die Trolle einfach Trolle sein.\nEin Raid kommt rüber? Wir machen direkt Platz!\nDie Panda-Familie ist mein größter Schatz.\n\n[Pre-Chorus]\nDer Chat rollt rein, die Emotes fliegen hoch,\nEin Follow, ein Sub, wir ziehen am selben Joch.\nDer Hype-Train startet, er fährt nicht mehr zurück,\nDas hier ist unser Spot, unser kleines Stück Glück!\n\n[Refrain]\nDawasteh! Wir sind live, wir sind laut, wir sind hier!\nDie Panda Community – unser Revier!\nEgal, wo du steckst, auf der ganzen Welt,\nDas ist der Vibe, der uns zusammenhält.\nWir kauen den Bambus, wir stürmen das Game,\nNiemand von uns ist hier jemals allein.\nDawasteh – Mach den Stream auf laut,\nWeil diese Community auf Freundschaft baut!\n\n[Bridge]\nManchmal ist das Leben draußen laut und schwer,\nDoch wenn die rote Lampe brennt, gibt's kein Gestern mehr.\nIhr seid der Grund, warum ich jeden Tag hier steh',\nEin riesengroßes Danke... von Dawasteh.\n\nLet’s gooooo!\n\n[Letzter Refrain]\nDawasteh! Wir sind live, wir sind laut, wir sind hier!\nDie Panda Community – unser Revier!\nEgal, wo du steckst, auf der ganzen Welt,\nDas ist der Vibe, der uns zusammenhält.\nWir kauen den Bambus, wir stürmen das Game,\nNiemand von uns ist hier jemals allein.\nDawasteh – Mach den Stream auf laut,\nWeil diese Community auf Freundschaft baut!\n\n[Outro]\nJa, wir sind die Pandas...\nDawasteh auf Twitch.\nMacht's euch gemütlich, der Chat ist frei.\nDer Stream... startet... jetzt!",
+   "min_p": 0,
+   "seed": 42,
+   "tags": [
+    "121",
+    0
+   ],
+   "temperature": 0.85,
+   "timesignature": "4",
+   "top_k": 0,
+   "top_p": 0.9
+  }
+ },
+ "98": {
+  "_meta": {
+   "title": "Empty Ace Step 1.5 Latent Audio"
+  },
+  "class_type": "EmptyAceStep1.5LatentAudio",
+  "inputs": {
+   "batch_size": 1,
+   "seconds": 60
+  }
+ }
+}

@@ -30,6 +30,7 @@ try:
     )
     from tools.upgrade_v095 import addition_sources as v095_addition_sources
     from tools.upgrade_v111 import MARKER_KEY as V111_MARKER_KEY, MARKER_VERSION as V111_MARKER_VERSION, apply as v111_apply
+    from tools.upgrade_v112 import MARKER_KEY as V112_MARKER_KEY, MARKER_VERSION as V112_MARKER_VERSION, apply as v112_apply
 except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows.py
     from refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
     from integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
@@ -49,6 +50,7 @@ except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows
     )
     from upgrade_v095 import addition_sources as v095_addition_sources
     from upgrade_v111 import MARKER_KEY as V111_MARKER_KEY, MARKER_VERSION as V111_MARKER_VERSION, apply as v111_apply
+    from upgrade_v112 import MARKER_KEY as V112_MARKER_KEY, MARKER_VERSION as V112_MARKER_VERSION, apply as v112_apply
 
 BLACKLIST = ("cudaexecutionprovider", "nunchaku", "svdq", "nvfp4", "tensorrt", "xformers", "flash_attn")
 BASELINE_REF = "HEAD"
@@ -583,12 +585,18 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
     # v1.1.1 (RDNA4 performance pass): files carrying the v111 marker are compared against the
     # deterministic, idempotent v111 form of the baseline (see tools/upgrade_v111.py).
     v111_key = _path_key(path).removeprefix("workflows/")
+    # v1.1.2 (LoRA trainer memory fix): the v112 marker additionally selects the v112 form on top.
+    has_v112 = current.get("extra", {}).get(V112_MARKER_KEY, {}).get("version") == V112_MARKER_VERSION
+
+    def _v112(graph: dict[str, Any]) -> dict[str, Any]:
+        return v112_apply(graph, v111_key) if has_v112 else graph
+
     if current.get("extra", {}).get(V111_MARKER_KEY, {}).get("version") == V111_MARKER_VERSION:
         def _v111(graph: dict[str, Any]) -> dict[str, Any]:
-            return v111_apply(graph, v111_key)
+            return _v112(v111_apply(graph, v111_key))
     else:
         def _v111(graph: dict[str, Any]) -> dict[str, Any]:
-            return graph
+            return _v112(graph)
     head = _v111(head_raw)
     if "Live Avatar" in path.parts:
         # The user explicitly requires all Live Avatar roots to be timer-free.

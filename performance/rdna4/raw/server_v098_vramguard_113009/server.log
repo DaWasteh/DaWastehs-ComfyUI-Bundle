@@ -1,0 +1,295 @@
+[32m[INFO][0m setup plugin alembic.autogenerate.schemas
+[32m[INFO][0m setup plugin alembic.autogenerate.tables
+[32m[INFO][0m setup plugin alembic.autogenerate.types
+[32m[INFO][0m setup plugin alembic.autogenerate.constraints
+[32m[INFO][0m setup plugin alembic.autogenerate.defaults
+[32m[INFO][0m setup plugin alembic.autogenerate.comments
+[32m[INFO][0m Adding extra search path custom_nodes L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\bench\custom_nodes
+[32m[INFO][0m Setting output directory to: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_vramguard_113009\output
+[32m[INFO][0m Found comfy_kitchen backend cuda: {'available': True, 'disabled': True, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_svdquant_w4a4', 'sol_attn', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Found comfy_kitchen backend hip: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_simple_dtype', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'int8_linear', 'na3d', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'scaled_mm_svdquant_w4a4', 'sol_attn', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Found comfy_kitchen backend triton: {'available': False, 'disabled': True, 'unavailable_reason': "ImportError: No module named 'triton'", 'capabilities': []}
+[32m[INFO][0m Found comfy_kitchen backend eager: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_embedding', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_mxfp8', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'int8_linear', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_mxfp8', 'scaled_mm_nvfp4', 'scaled_mm_svdquant_w4a4', 'sol_attn', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Checkpoint files will always be loaded safely.
+[32m[INFO][0m Total VRAM 32624 MB, total RAM 48504 MB
+[32m[INFO][0m pytorch version: 2.13.0+rocm10.1.0a20260822
+[32m[INFO][0m Set: torch.backends.cudnn.enabled = False for better AMD performance.
+[32m[INFO][0m AMD arch: gfx1201
+[32m[INFO][0m ROCm version: (7, 16)
+[32m[INFO][0m Set vram state to: NORMAL_VRAM
+[32m[INFO][0m Device: cuda:0 AMD Radeon AI PRO R9700 : native
+[32m[INFO][0m Device: cuda:1 AMD Radeon RX 9070 XT : native
+[32m[INFO][0m Using pytorch attention
+[32m[INFO][0m Python version: 3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]
+[32m[INFO][0m ComfyUI version: 0.34.0
+[32m[INFO][0m comfy-aimdo version: 0.5.2
+[32m[INFO][0m comfy-kitchen version: 0.2.33
+[1m[33m[WARNING][0m Dynamic vram disabled with argument. If you have any issues with dynamic vram enabled please give us a detailed reports as this argument will be removed soon. If you use gguf we recommend keeping dynamic vram enabled and using native ComfyUI model formats instead. ComfyUI native formats like fp8, int8 and w4a8 will be faster even if they are larger than your memory.
+[32m[INFO][0m Setting temp directory to: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_vramguard_113009\temp\temp
+[32m[INFO][0m comfyui-frontend-package version: 1.51.9
+[32m[INFO][0m comfyui-workflow-templates version: 0.11.55
+[32m[INFO][0m comfyui-embedded-docs version: 0.5.11
+[32m[INFO][0m comfy-kitchen version: 0.2.33
+[32m[INFO][0m comfy-aimdo version: 0.5.2
+[32m[INFO][0m [Prompt Server] web root: L:\ComfyUI\.venv\Lib\site-packages\comfyui_frontend_package\static
+[32m[INFO][0m Asset seeder disabled
+[32m[INFO][0m No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[1m[33m[WARNING][0m No prebuilt binary for ROCm 7.16, loading ROCm 7.14 instead. Set BNB_ROCM_VERSION to override.
+W0906 11:30:18.426000 22792 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+[32m[INFO][0m ComfyUI-GGUF: Allowing full torch compile
+[32m[INFO][0m ### Loading: ComfyUI-Impact-Pack (V8.28.3)
+[32m[INFO][0m [Impact Pack] Wildcard total size (0.00 MB) is within cache limit (50.00 MB). Using full cache mode.
+[32m[INFO][0m [Impact Pack] Wildcards loading done.
+[32m[INFO][0m ### Loading: ComfyUI-Impact-Subpack (V1.3.5)
+[32m[INFO][0m [Impact Pack/Subpack] Using folder_paths to determine whitelist path: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[32m[INFO][0m [Impact Pack/Subpack] Ensured whitelist directory exists: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack
+[32m[INFO][0m [Impact Pack/Subpack] Loaded 0 model(s) from whitelist: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[32m[INFO][0m [Impact Subpack] ultralytics_bbox: L:\ComfyUI\ComfyUI\models\ultralytics\bbox
+[32m[INFO][0m [Impact Subpack] ultralytics_segm: L:\ComfyUI\ComfyUI\models\ultralytics\segm
+[1m[33m[WARNING][0m KJNodes: PatchTritonVAE node could not be imported. PatchTritonVAE will be unavailable.
+Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\nodes\triton_vae.py", line 10, in <module>
+    import triton
+ModuleNotFoundError: No module named 'triton'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\__init__.py", line 382, in <module>
+    from .nodes.triton_vae import PatchTritonVAE
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\nodes\triton_vae.py", line 13, in <module>
+    raise ImportError("PatchTritonVAE requires triton (pip install triton, or triton-windows)") from e
+ImportError: PatchTritonVAE requires triton (pip install triton, or triton-windows)
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ckpts path: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux\ckpts[0m
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using symlinks: False[0m
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ort providers: ['CUDAExecutionProvider', 'DmlExecutionProvider', 'DirectMLExecutionProvider', 'OpenVINOExecutionProvider', 'ROCMExecutionProvider', 'CPUExecutionProvider', 'CoreMLExecutionProvider'][0m
+[FL AceStep] Registered JS extension directory: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training\js
+[32m[INFO][0m Registered JS extension directory: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training\js
+[FL AceStep] ACEStep models directory: L:\ComfyUI\ComfyUI\models\acestep
+[32m[INFO][0m ACEStep models directory: L:\ComfyUI\ComfyUI\models\acestep
+[FL AceStep] Loaded 6 nodes successfully
+[32m[INFO][0m Loaded 6 nodes successfully
+2026-09-06 11:30:20.640 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+import error: No module named 'triton'
+[34m[ComfyUI-Easy-Use] server: [0mv1.3.6 [92mLoaded[0m
+[34m[ComfyUI-Easy-Use] web root: [0mL:\ComfyUI\ComfyUI\custom_nodes\comfyui-easy-use\web_version/v2 [92mLoaded[0m
+[38;2;246;103;68m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+  [1;37mPixaroma[0m v1.4.143  |  [38;2;246;103;68m80 nodes[0m Loaded
+  [0;37mComfyUI Tutorials: https://www.youtube.com/@pixaroma[0m
+  [0;37mThis is a notice, not an error. All [38;2;246;103;68mPixaroma[0;37m nodes work in both Classic and Nodes 2.0 mode.[0m
+  [0;37mIf something looks off right after switching the Node UI mode, hard-refresh the page (Ctrl+Shift+R).[0m
+[38;2;246;103;68m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+[34m[ComfyUI-RMBG][0m v[93m3.1.0[0m | [93m42 nodes[0m [92mLoaded[0m
+DWPose: Onnxruntime with acceleration providers detected
+
+[32mInitializing ControlAltAI Nodes[0m
+[35m
+     _    ____ _____   ____  _
+    / \  / ___| ____|_/ ___|| |_ ___ _ __
+   / _ \| |   |  _| |_\___ \| __/ _ \ '_ \
+  / ___ \ |___| |___ _ ___) | ||  __/ |_) |
+ /_/   \_\____|_____|_|____/ \__\___| .__/
+                                    |_|    Training
+[0m
+FL AceStep Training Custom Nodes Loaded - Version 1.1.0
+2026-09-06 11:30:20.640 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+2026-09-06 11:30:20.640 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+2026-09-06 11:30:20.640 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+[Moss_TTS-ComfyUI] Registered 5 node(s).
+[32m[INFO][0m Using pytorch attention
+[32m[INFO][0m [DaWasteh VRAM guard] cuda:0 AMD Radeon AI PRO R9700: allocator capped at 28.71 GiB of 31.86 GiB (fraction 0.901, 31.71 GiB free at start, 3.0 GiB reserve)
+[32m[INFO][0m [DaWasteh VRAM guard] cuda:1 AMD Radeon RX 9070 XT: allocator capped at 12.77 GiB of 15.92 GiB (fraction 0.802, 15.77 GiB free at start, 3.0 GiB reserve)
+[32m[INFO][0m rdna4_bench_probe: repo VRAM guard applied: [{'device': 0, 'name': 'AMD Radeon AI PRO R9700', 'total_gib': 31.86, 'free_gib': 31.71, 'fraction': 0.9012, 'allowed_gib': 28.71, 'reserve_gib': 3.0}, {'device': 1, 'name': 'AMD Radeon RX 9070 XT', 'total_gib': 15.92, 'free_gib': 15.77, 'fraction': 0.8023, 'allowed_gib': 12.77, 'reserve_gib': 3.0}]
+[32m[INFO][0m rdna4_bench_probe: routes registered
+[32m[INFO][0m 
+Import times for custom nodes:
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\websocket_image_save.py
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-AutoSongwriter
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-H3-AutoLength
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-GGUF
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-Krea2T-Enhancer
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_ipadapter_plus
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-TiledDiffusion
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-HeartMuLa
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\krea_training_safety
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-MelBandRoFormer
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-MultiGPU-Control
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\Moss_TTS-ComfyUI
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\mikey_nodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyMath
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\WhatDreamsCost-ComfyUI
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\controlaltai-nodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-LiveAvatar
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-QwenTTS
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\rgthree-comfy
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-H3-MusicVideo
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-Pixaroma
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-videohelpersuite
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-spectrum-minimax-h3
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_layerstyle
+[32m[INFO][0m    0.1 seconds: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\bench\custom_nodes\rdna4_bench_probe
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-impact-pack
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\Jovi_Spout
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\qwen3-tts-comfyui
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI_YuE
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\RES4LYF
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-hunyuan3dwrapper
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-mmaudio-suite
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-impact-subpack
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-LivePortraitKJ
+[32m[INFO][0m    0.4 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-detail-daemon
+[32m[INFO][0m    0.8 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-Qwen3TTS-LoRA
+[32m[INFO][0m    2.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-easy-use
+[32m[INFO][0m 
+[32m[INFO][0m Context impl SQLiteImpl.
+[32m[INFO][0m Will assume non-transactional DDL.
+[32m[INFO][0m Using RAM pressure cache.
+[32m[INFO][0m got prompt
+[1m[31m[ERROR][0m Failed to validate prompt for output 10:
+[1m[31m[ERROR][0m * FL_AceStep_TrainingConfig 9:
+[1m[31m[ERROR][0m   - Value 1 smaller than min of 5: save_every_n_epochs
+[1m[31m[ERROR][0m   - Value 1 smaller than min of 10: max_epochs
+[1m[31m[ERROR][0m Output will be ignored
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.float16
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: None
+[32m[INFO][0m model_type FLOW
+[FL AceStep] Loading ACE-Step LLM: acestep-5Hz-lm-1.7B
+[32m[INFO][0m Loading ACE-Step LLM: acestep-5Hz-lm-1.7B
+[FL AceStep] LM model 'acestep-5Hz-lm-1.7B' is available
+[32m[INFO][0m LM model 'acestep-5Hz-lm-1.7B' is available
+[FL AceStep] Loading LLM from L:\ComfyUI\ComfyUI\models\acestep\acestep-5Hz-lm-1.7B
+[32m[INFO][0m Loading LLM from L:\ComfyUI\ComfyUI\models\acestep\acestep-5Hz-lm-1.7B
+[FL AceStep] Device: cuda, Backend: pt
+[32m[INFO][0m Device: cuda, Backend: pt
+[FL AceStep] LLM 'acestep-5Hz-lm-1.7B' loaded successfully
+[32m[INFO][0m LLM 'acestep-5Hz-lm-1.7B' loaded successfully
+[FL AceStep] Scanning directory: L:/ComfyUI/ComfyUI/input/lora_training/_rdna4_bench_audio
+[32m[INFO][0m Scanning directory: L:/ComfyUI/ComfyUI/input/lora_training/_rdna4_bench_audio
+[FL AceStep] Found 3 audio files in L:/ComfyUI/ComfyUI/input/lora_training/_rdna4_bench_audio
+[32m[INFO][0m Found 3 audio files in L:/ComfyUI/ComfyUI/input/lora_training/_rdna4_bench_audio
+[FL AceStep] Found 3 audio files (tag: 'rdna4_bench')
+[32m[INFO][0m Found 3 audio files (tag: 'rdna4_bench')
+[FL AceStep] Starting auto-labeling...
+[32m[INFO][0m Starting auto-labeling...
+[FL AceStep] Moving audio tokenizer from cpu to cuda:0
+[32m[INFO][0m Moving audio tokenizer from cpu to cuda:0
+[FL AceStep] Encoding audio to codes for sample 0: IntroSong__00001.mp3
+[32m[INFO][0m Encoding audio to codes for sample 0: IntroSong__00001.mp3
+[32m[INFO][0m Requested to load AudioOobleckVAE
+[32m[INFO][0m loaded completely;  321.70 MB loaded, full load: True
+[FL AceStep] [ACEStep] audio_to_codes: 150 codes from L:\ComfyUI\ComfyUI\input\lora_training\_rdna4_bench_audio\IntroSong__00001.mp3
+[32m[INFO][0m [ACEStep] audio_to_codes: 150 codes from L:\ComfyUI\ComfyUI\input\lora_training\_rdna4_bench_audio\IntroSong__00001.mp3
+[FL AceStep] Generated 2994 chars of audio codes for sample 0, calling LLM...
+[32m[INFO][0m Generated 2994 chars of audio codes for sample 0, calling LLM...
+[FL AceStep] LLM understanding response length: 607
+[32m[INFO][0m LLM understanding response length: 607
+[FL AceStep] Sample 0 labeled: caption='A hypnotic and meditative instrumental piece featuring a sin...', bpm=100, key=E major
+[32m[INFO][0m Sample 0 labeled: caption='A hypnotic and meditative instrumental piece featuring a sin...', bpm=100, key=E major
+[FL AceStep] Encoding audio to codes for sample 1: IntroSong__00002.mp3
+[32m[INFO][0m Encoding audio to codes for sample 1: IntroSong__00002.mp3
+[FL AceStep] [ACEStep] audio_to_codes: 150 codes from L:\ComfyUI\ComfyUI\input\lora_training\_rdna4_bench_audio\IntroSong__00002.mp3
+[32m[INFO][0m [ACEStep] audio_to_codes: 150 codes from L:\ComfyUI\ComfyUI\input\lora_training\_rdna4_bench_audio\IntroSong__00002.mp3
+[FL AceStep] Generated 2993 chars of audio codes for sample 1, calling LLM...
+[32m[INFO][0m Generated 2993 chars of audio codes for sample 1, calling LLM...
+[FL AceStep] LLM understanding response length: 479
+[32m[INFO][0m LLM understanding response length: 479
+[FL AceStep] Sample 1 labeled: caption='A clean, dry recording of a nylon-string acoustic guitar pla...', bpm=150, key=E major
+[32m[INFO][0m Sample 1 labeled: caption='A clean, dry recording of a nylon-string acoustic guitar pla...', bpm=150, key=E major
+[FL AceStep] Encoding audio to codes for sample 2: IntroSong__00003.mp3
+[32m[INFO][0m Encoding audio to codes for sample 2: IntroSong__00003.mp3
+[FL AceStep] [ACEStep] audio_to_codes: 150 codes from L:\ComfyUI\ComfyUI\input\lora_training\_rdna4_bench_audio\IntroSong__00003.mp3
+[32m[INFO][0m [ACEStep] audio_to_codes: 150 codes from L:\ComfyUI\ComfyUI\input\lora_training\_rdna4_bench_audio\IntroSong__00003.mp3
+[FL AceStep] Generated 2992 chars of audio codes for sample 2, calling LLM...
+[32m[INFO][0m Generated 2992 chars of audio codes for sample 2, calling LLM...
+[FL AceStep] LLM understanding response length: 472
+[32m[INFO][0m LLM understanding response length: 472
+[FL AceStep] Sample 2 labeled: caption='A dry, close-miked recording of a solo oud playing a hypnoti...', bpm=120, key=C major
+[32m[INFO][0m Sample 2 labeled: caption='A dry, close-miked recording of a solo oud playing a hypnoti...', bpm=120, key=C major
+[FL AceStep] Labeled 3/3 samples
+[32m[INFO][0m Labeled 3/3 samples
+[32m[INFO][0m Requested to load ACE15TEModel_
+[32m[INFO][0m loaded completely;  9127.29 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[FL AceStep] VAE loaded: dtype=torch.float16, device=cuda:0
+[32m[INFO][0m VAE loaded: dtype=torch.float16, device=cuda:0
+[32m[INFO][0m Requested to load ACE15TEModel_
+[FL AceStep] CLIP/text encoder loaded
+[32m[INFO][0m CLIP/text encoder loaded
+[FL AceStep] Condition encoder: dtype=torch.bfloat16, device=cuda:0
+[32m[INFO][0m Condition encoder: dtype=torch.bfloat16, device=cuda:0
+[FL AceStep] Preprocessing 3 samples to L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/raw/ACE-TRAIN/dataset
+[32m[INFO][0m Preprocessing 3 samples to L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/raw/ACE-TRAIN/dataset
+
+********
+Warning: flash-attn is not installed. Will only run the manual PyTorch version. Please install flash-attn for faster inference.
+********
+ 
+✅ ComfyUI-Qwen-TTS v1.0.7 loaded
+(RES4LYF) Init
+(RES4LYF) Importing beta samplers.
+(RES4LYF) Importing legacy samplers.
+
+[92m[rgthree-comfy] Loaded 48 extraordinary nodes. 🎉[0m
+
+[33m[rgthree-comfy] ComfyUI's new Node 2.0 rendering may be incompatible with some rgthree-comfy nodes and features, breaking some rendering as well as losing the ability to access a node's properties (a vital part of many nodes). It also appears to run MUCH more slowly spiking CPU usage and causing jankiness and unresponsiveness, especially with large workflows. Personally I am not planning to use the new Nodes 2.0 and, unfortunately, am not able to invest the time to investigate and overhaul rgthree-comfy where needed. If you have issues when Nodes 2.0 is enabled, I'd urge you to switch it off as well and join me in hoping ComfyUI is not planning to deprecate the existing, stable canvas rendering all together.
+[0m
+LM sampling:   0%|          | 0/600 [00:00<?, ?it/s]LM sampling:   0%|          | 2/600 [00:00<00:34, 17.23it/s]LM sampling:   1%|          | 7/600 [00:00<00:17, 34.18it/s]LM sampling:   2%|▏         | 12/600 [00:00<00:14, 40.73it/s]LM sampling:   3%|▎         | 17/600 [00:00<00:13, 43.84it/s]LM sampling:   4%|▎         | 22/600 [00:00<00:12, 45.66it/s]LM sampling:   4%|▍         | 27/600 [00:00<00:12, 46.95it/s]LM sampling:   6%|▌         | 33/600 [00:00<00:11, 48.32it/s]LM sampling:   6%|▋         | 38/600 [00:00<00:11, 48.24it/s]LM sampling:   7%|▋         | 43/600 [00:00<00:11, 48.65it/s]LM sampling:   8%|▊         | 49/600 [00:01<00:11, 49.23it/s]LM sampling:   9%|▉         | 55/600 [00:01<00:10, 49.76it/s]LM sampling:  10%|█         | 60/600 [00:01<00:10, 49.47it/s]LM sampling:  11%|█         | 65/600 [00:01<00:10, 49.07it/s]LM sampling:  12%|█▏        | 71/600 [00:01<00:10, 49.40it/s]LM sampling:  13%|█▎        | 76/600 [00:01<00:10, 49.46it/s]LM sampling:  14%|█▎        | 81/600 [00:01<00:10, 48.62it/s]LM sampling:  14%|█▍        | 87/600 [00:01<00:10, 47.90it/s]LM sampling:  16%|█▌        | 93/600 [00:01<00:10, 48.49it/s]LM sampling:  16%|█▋        | 98/600 [00:02<00:10, 48.19it/s]LM sampling:  17%|█▋        | 104/600 [00:02<00:10, 48.86it/s]LM sampling:  18%|█▊        | 109/600 [00:02<00:10, 48.90it/s]LM sampling:  19%|█▉        | 115/600 [00:02<00:09, 49.10it/s]LM sampling:  20%|██        | 120/600 [00:02<00:09, 48.82it/s]LM sampling:  21%|██        | 125/600 [00:02<00:09, 48.61it/s]LM sampling:  22%|██▏       | 130/600 [00:02<00:09, 48.44it/s]LM sampling:  22%|██▎       | 135/600 [00:02<00:09, 48.45it/s]LM sampling:  23%|██▎       | 140/600 [00:02<00:09, 48.61it/s]LM sampling:  24%|██▍       | 145/600 [00:03<00:09, 48.69it/s]LM sampling:  25%|██▌       | 151/600 [00:03<00:09, 49.41it/s]LM sampling:  26%|██▌       | 156/600 [00:03<00:09, 49.28it/s]LM sampling:  27%|██▋       | 161/600 [00:03<00:08, 49.32it/s]LM sampling:  28%|██▊       | 167/600 [00:03<00:08, 49.87it/s]LM sampling:  29%|██▉       | 173/600 [00:03<00:08, 49.88it/s]LM sampling:  30%|██▉       | 178/600 [00:03<00:08, 49.81it/s]LM sampling:  31%|███       | 184/600 [00:03<00:08, 50.08it/s]LM sampling:  32%|███▏      | 190/600 [00:03<00:08, 49.85it/s]LM sampling:  33%|███▎      | 196/600 [00:04<00:08, 50.08it/s]LM sampling:  34%|███▎      | 202/600 [00:04<00:07, 50.10it/s]LM sampling:  35%|███▍      | 208/600 [00:04<00:07, 49.63it/s]LM sampling:  36%|███▌      | 214/600 [00:04<00:07, 49.78it/s]LM sampling:  37%|███▋      | 220/600 [00:04<00:07, 49.94it/s]LM sampling:  38%|███▊      | 226/600 [00:04<00:07, 50.08it/s]LM sampling:  39%|███▊      | 232/600 [00:04<00:07, 50.29it/s]LM sampling:  40%|███▉      | 238/600 [00:04<00:07, 50.33it/s]LM sampling:  41%|████      | 244/600 [00:05<00:07, 50.16it/s]LM sampling:  42%|████▏     | 250/600 [00:05<00:06, 50.09it/s]LM sampling:  43%|████▎     | 256/600 [00:05<00:06, 50.24it/s]LM sampling:  44%|████▎     | 262/600 [00:05<00:06, 50.07it/s]LM sampling:  45%|████▍     | 268/600 [00:05<00:06, 50.27it/s]LM sampling:  46%|████▌     | 274/600 [00:05<00:06, 50.32it/s]LM sampling:  47%|████▋     | 280/600 [00:05<00:06, 50.42it/s]LM sampling:  48%|████▊     | 286/600 [00:05<00:06, 50.03it/s]LM sampling:  49%|████▊     | 292/600 [00:05<00:06, 50.04it/s]LM sampling:  50%|████▉     | 298/600 [00:06<00:06, 50.17it/s]LM sampling:  51%|█████     | 304/600 [00:06<00:05, 50.01it/s]LM sampling:  52%|█████▏    | 310/600 [00:06<00:05, 50.00it/s]LM sampling:  53%|█████▎    | 316/600 [00:06<00:05, 50.45it/s]LM sampling:  54%|█████▎    | 322/600 [00:06<00:05, 50.80it/s]LM sampling:  55%|█████▍    | 328/600 [00:06<00:05, 50.53it/s]LM sampling:  56%|█████▌    | 334/600 [00:06<00:05, 49.51it/s]LM sampling:  56%|█████▋    | 339/600 [00:06<00:05, 49.48it/s]LM sampling:  57%|█████▊    | 345/600 [00:07<00:05, 50.16it/s]LM sampling:  58%|█████▊    | 351/600 [00:07<00:04, 49.94it/s]LM sampling:  60%|█████▉    | 357/600 [00:07<00:04, 50.25it/s]LM sampling:  60%|██████    | 363/600 [00:07<00:04, 49.58it/s]LM sampling:  62%|██████▏   | 369/600 [00:07<00:04, 49.82it/s]LM sampling:  62%|██████▎   | 375/600 [00:07<00:04, 49.97it/s]LM sampling:  63%|██████▎   | 380/600 [00:07<00:04, 49.32it/s]LM sampling:  64%|██████▍   | 386/600 [00:07<00:04, 49.52it/s]LM sampling:  65%|██████▌   | 391/600 [00:07<00:04, 49.44it/s]LM sampling:  66%|██████▌   | 396/600 [00:08<00:04, 49.56it/s]LM sampling:  67%|██████▋   | 401/600 [00:08<00:04, 49.57it/s]LM sampling:  68%|██████▊   | 406/600 [00:08<00:03, 49.39it/s]LM sampling:  68%|██████▊   | 411/600 [00:08<00:03, 49.47it/s]LM sampling:  69%|██████▉   | 416/600 [00:08<00:03, 49.57it/s]LM sampling:  70%|███████   | 421/600 [00:08<00:03, 49.41it/s]LM sampling:  71%|███████   | 427/600 [00:08<00:03, 49.86it/s]LM sampling:  72%|███████▏  | 432/600 [00:08<00:03, 49.67it/s]LM sampling:  73%|███████▎  | 438/600 [00:08<00:03, 50.25it/s]LM sampling:  74%|███████▍  | 444/600 [00:09<00:03, 50.19it/s]LM sampling:  75%|███████▌  | 450/600 [00:09<00:02, 50.23it/s]LM sampling:  76%|███████▌  | 456/600 [00:09<00:02, 50.06it/s]LM sampling:  77%|███████▋  | 462/600 [00:09<00:02, 49.68it/s]LM sampling:  78%|███████▊  | 467/600 [00:09<00:02, 49.71it/s]LM sampling:  79%|███████▉  | 473/600 [00:09<00:02, 49.93it/s]LM sampling:  80%|███████▉  | 478/600 [00:09<00:02, 49.71it/s]LM sampling:  80%|████████  | 483/600 [00:09<00:02, 49.67it/s]LM sampling:  81%|████████▏ | 488/600 [00:09<00:02, 49.72it/s]LM sampling:  82%|████████▏ | 494/600 [00:10<00:02, 50.15it/s]LM sampling:  83%|████████▎ | 500/600 [00:10<00:01, 50.26it/s]LM sampling:  84%|████████▍ | 506/600 [00:10<00:01, 49.93it/s]LM sampling:  85%|████████▌ | 512/600 [00:10<00:01, 50.57it/s]LM sampling:  86%|████████▋ | 518/600 [00:10<00:01, 50.27it/s]LM sampling:  87%|████████▋ | 524/600 [00:10<00:01, 50.61it/s]LM sampling:  88%|████████▊ | 530/600 [00:10<00:01, 50.33it/s]LM sampling:  89%|████████▉ | 536/600 [00:10<00:01, 50.46it/s]LM sampling:  90%|█████████ | 542/600 [00:10<00:01, 50.30it/s]LM sampling:  91%|█████████▏| 548/600 [00:11<00:01, 50.34it/s]LM sampling:  92%|█████████▏| 554/600 [00:11<00:00, 50.18it/s]LM sampling:  93%|█████████▎| 560/600 [00:11<00:00, 49.79it/s]LM sampling:  94%|█████████▍| 566/600 [00:11<00:00, 50.02it/s]LM sampling:  95%|█████████▌| 572/600 [00:11<00:00, 50.22it/s]LM sampling:  96%|█████████▋| 578/600 [00:11<00:00, 50.11it/s]LM sampling:  97%|█████████▋| 584/600 [00:11<00:00, 49.36it/s]LM sampling:  98%|█████████▊| 589/600 [00:11<00:00, 49.21it/s]LM sampling:  99%|█████████▉| 594/600 [00:12<00:00, 49.26it/s]LM sampling: 100%|█████████▉| 599/600 [00:12<00:00, 49.40it/s]LM sampling: 100%|██████████| 600/600 [00:12<00:00, 49.39it/s]
+[FL AceStep] [1/3] IntroSong__00001.mp3 (60s)
+[32m[INFO][0m [1/3] IntroSong__00001.mp3 (60s)
+LM sampling:   0%|          | 0/600 [00:00<?, ?it/s]LM sampling:   1%|          | 4/600 [00:00<00:15, 38.77it/s]LM sampling:   2%|▏         | 9/600 [00:00<00:13, 44.83it/s]LM sampling:   2%|▎         | 15/600 [00:00<00:12, 48.06it/s]LM sampling:   4%|▎         | 21/600 [00:00<00:11, 49.21it/s]LM sampling:   4%|▍         | 26/600 [00:00<00:11, 48.78it/s]LM sampling:   5%|▌         | 32/600 [00:00<00:11, 49.54it/s]LM sampling:   6%|▌         | 37/600 [00:00<00:11, 49.57it/s]LM sampling:   7%|▋         | 43/600 [00:00<00:11, 49.82it/s]LM sampling:   8%|▊         | 49/600 [00:01<00:11, 49.83it/s]LM sampling:   9%|▉         | 55/600 [00:01<00:10, 50.12it/s]LM sampling:  10%|█         | 61/600 [00:01<00:10, 49.80it/s]LM sampling:  11%|█         | 66/600 [00:01<00:10, 49.64it/s]LM sampling:  12%|█▏        | 71/600 [00:01<00:10, 49.69it/s]LM sampling:  13%|█▎        | 76/600 [00:01<00:10, 49.70it/s]LM sampling:  14%|█▎        | 82/600 [00:01<00:10, 50.23it/s]LM sampling:  15%|█▍        | 88/600 [00:01<00:10, 50.21it/s]LM sampling:  16%|█▌        | 94/600 [00:01<00:10, 49.96it/s]LM sampling:  17%|█▋        | 100/600 [00:02<00:10, 50.00it/s]LM sampling:  18%|█▊        | 105/600 [00:02<00:09, 49.81it/s]LM sampling:  18%|█▊        | 111/600 [00:02<00:09, 50.18it/s]LM sampling:  20%|█▉        | 117/600 [00:02<00:09, 50.57it/s]LM sampling:  20%|██        | 123/600 [00:02<00:09, 49.95it/s]LM sampling:  21%|██▏       | 128/600 [00:02<00:09, 49.87it/s]LM sampling:  22%|██▏       | 133/600 [00:02<00:09, 49.76it/s]LM sampling:  23%|██▎       | 138/600 [00:02<00:09, 49.11it/s]LM sampling:  24%|██▍       | 143/600 [00:02<00:09, 48.92it/s]LM sampling:  25%|██▍       | 148/600 [00:02<00:09, 48.99it/s]LM sampling:  26%|██▌       | 153/600 [00:03<00:09, 49.14it/s]LM sampling:  26%|██▋       | 158/600 [00:03<00:08, 49.19it/s]LM sampling:  27%|██▋       | 164/600 [00:03<00:08, 49.65it/s]LM sampling:  28%|██▊       | 170/600 [00:03<00:08, 50.13it/s]LM sampling:  29%|██▉       | 176/600 [00:03<00:08, 49.57it/s]LM sampling:  30%|███       | 181/600 [00:03<00:08, 49.63it/s]LM sampling:  31%|███       | 186/600 [00:03<00:08, 49.12it/s]LM sampling:  32%|███▏      | 191/600 [00:03<00:08, 48.99it/s]LM sampling:  33%|███▎      | 196/600 [00:03<00:08, 49.18it/s]LM sampling:  34%|███▎      | 201/600 [00:04<00:08, 48.60it/s]LM sampling:  34%|███▍      | 206/600 [00:04<00:08, 48.67it/s]LM sampling:  35%|███▌      | 211/600 [00:04<00:07, 48.70it/s]LM sampling:  36%|███▌      | 217/600 [00:04<00:07, 49.15it/s]LM sampling:  37%|███▋      | 222/600 [00:04<00:07, 48.83it/s]LM sampling:  38%|███▊      | 227/600 [00:04<00:07, 49.14it/s]LM sampling:  39%|███▊      | 232/600 [00:04<00:07, 48.75it/s]LM sampling:  40%|███▉      | 237/600 [00:04<00:07, 48.30it/s]LM sampling:  40%|████      | 242/600 [00:04<00:07, 48.39it/s]LM sampling:  41%|████      | 247/600 [00:05<00:07, 47.82it/s]LM sampling:  42%|████▏     | 252/600 [00:05<00:07, 47.82it/s]LM sampling:  43%|████▎     | 257/600 [00:05<00:07, 48.27it/s]LM sampling:  44%|████▎     | 262/600 [00:05<00:07, 48.14it/s]LM sampling:  45%|████▍     | 268/600 [00:05<00:06, 48.82it/s]LM sampling:  46%|████▌     | 273/600 [00:05<00:06, 48.89it/s]LM sampling:  46%|████▋     | 278/600 [00:05<00:06, 49.13it/s]LM sampling:  47%|████▋     | 283/600 [00:05<00:06, 49.33it/s]LM sampling:  48%|████▊     | 288/600 [00:05<00:06, 49.32it/s]LM sampling:  49%|████▉     | 293/600 [00:05<00:06, 49.03it/s]LM sampling:  50%|████▉     | 298/600 [00:06<00:06, 48.76it/s]LM sampling:  50%|█████     | 303/600 [00:06<00:06, 48.78it/s]LM sampling:  52%|█████▏    | 309/600 [00:06<00:05, 49.18it/s]LM sampling:  52%|█████▎    | 315/600 [00:06<00:05, 49.69it/s]LM sampling:  54%|█████▎    | 321/600 [00:06<00:05, 49.92it/s]LM sampling:  55%|█████▍    | 327/600 [00:06<00:05, 49.85it/s]LM sampling:  55%|█████▌    | 332/600 [00:06<00:05, 49.71it/s]LM sampling:  56%|█████▌    | 337/600 [00:06<00:05, 49.29it/s]LM sampling:  57%|█████▋    | 342/600 [00:06<00:05, 49.45it/s]LM sampling:  58%|█████▊    | 347/600 [00:07<00:05, 49.32it/s]LM sampling:  59%|█████▊    | 352/600 [00:07<00:05, 48.85it/s]LM sampling:  60%|█████▉    | 358/600 [00:07<00:04, 49.39it/s]LM sampling:  60%|██████    | 363/600 [00:07<00:04, 49.19it/s]LM sampling:  62%|██████▏   | 369/600 [00:07<00:04, 49.67it/s]LM sampling:  62%|██████▏   | 374/600 [00:07<00:04, 49.63it/s]LM sampling:  63%|██████▎   | 380/600 [00:07<00:04, 49.92it/s]LM sampling:  64%|██████▍   | 386/600 [00:07<00:04, 50.03it/s]LM sampling:  65%|██████▌   | 391/600 [00:07<00:04, 49.27it/s]LM sampling:  66%|██████▌   | 397/600 [00:08<00:04, 49.43it/s]LM sampling:  67%|██████▋   | 402/600 [00:08<00:04, 49.25it/s]LM sampling:  68%|██████▊   | 408/600 [00:08<00:03, 49.64it/s]LM sampling:  69%|██████▉   | 413/600 [00:08<00:03, 49.73it/s]LM sampling:  70%|██████▉   | 418/600 [00:08<00:03, 49.76it/s]LM sampling:  70%|███████   | 423/600 [00:08<00:03, 49.82it/s]LM sampling:  72%|███████▏  | 429/600 [00:08<00:03, 50.09it/s]LM sampling:  72%|███████▎  | 435/600 [00:08<00:03, 49.80it/s]LM sampling:  73%|███████▎  | 440/600 [00:08<00:03, 48.68it/s]LM sampling:  74%|███████▍  | 446/600 [00:09<00:03, 49.34it/s]LM sampling:  75%|███████▌  | 452/600 [00:09<00:02, 49.66it/s]LM sampling:  76%|███████▌  | 457/600 [00:09<00:02, 49.69it/s]LM sampling:  77%|███████▋  | 463/600 [00:09<00:02, 50.00it/s]LM sampling:  78%|███████▊  | 468/600 [00:09<00:02, 49.90it/s]LM sampling:  79%|███████▉  | 473/600 [00:09<00:02, 49.59it/s]LM sampling:  80%|███████▉  | 478/600 [00:09<00:02, 49.25it/s]LM sampling:  81%|████████  | 484/600 [00:09<00:02, 49.79it/s]LM sampling:  82%|████████▏ | 489/600 [00:09<00:02, 49.57it/s]LM sampling:  82%|████████▎ | 495/600 [00:10<00:02, 49.74it/s]LM sampling:  83%|████████▎ | 500/600 [00:10<00:02, 49.14it/s]LM sampling:  84%|████████▍ | 505/600 [00:10<00:01, 48.72it/s]LM sampling:  85%|████████▌ | 510/600 [00:10<00:01, 48.74it/s]LM sampling:  86%|████████▌ | 515/600 [00:10<00:01, 48.72it/s]LM sampling:  87%|████████▋ | 520/600 [00:10<00:01, 48.96it/s]LM sampling:  88%|████████▊ | 525/600 [00:10<00:01, 48.96it/s]LM sampling:  88%|████████▊ | 531/600 [00:10<00:01, 49.24it/s]LM sampling:  89%|████████▉ | 536/600 [00:10<00:01, 49.41it/s]LM sampling:  90%|█████████ | 541/600 [00:10<00:01, 49.37it/s]LM sampling:  91%|█████████ | 546/600 [00:11<00:01, 49.43it/s]LM sampling:  92%|█████████▏| 551/600 [00:11<00:00, 49.50it/s]LM sampling:  93%|█████████▎| 556/600 [00:11<00:00, 49.55it/s]LM sampling:  94%|█████████▎| 561/600 [00:11<00:00, 49.09it/s]LM sampling:  94%|█████████▍| 566/600 [00:11<00:00, 49.24it/s]LM sampling:  95%|█████████▌| 571/600 [00:11<00:00, 49.40it/s]LM sampling:  96%|█████████▌| 577/600 [00:11<00:00, 50.00it/s]LM sampling:  97%|█████████▋| 582/600 [00:11<00:00, 49.46it/s]LM sampling:  98%|█████████▊| 588/600 [00:11<00:00, 49.77it/s]LM sampling:  99%|█████████▉| 594/600 [00:12<00:00, 50.19it/s]LM sampling: 100%|██████████| 600/600 [00:12<00:00, 50.31it/s]LM sampling: 100%|██████████| 600/600 [00:12<00:00, 49.36it/s]
+[FL AceStep] [2/3] IntroSong__00002.mp3 (60s)
+[32m[INFO][0m [2/3] IntroSong__00002.mp3 (60s)
+LM sampling:   0%|          | 0/600 [00:00<?, ?it/s]LM sampling:   1%|          | 4/600 [00:00<00:15, 38.28it/s]LM sampling:   2%|▏         | 10/600 [00:00<00:12, 46.48it/s]LM sampling:   3%|▎         | 16/600 [00:00<00:11, 48.82it/s]LM sampling:   4%|▎         | 22/600 [00:00<00:11, 49.89it/s]LM sampling:   5%|▍         | 28/600 [00:00<00:11, 50.40it/s]LM sampling:   6%|▌         | 34/600 [00:00<00:11, 50.61it/s]LM sampling:   7%|▋         | 40/600 [00:00<00:11, 50.26it/s]LM sampling:   8%|▊         | 46/600 [00:00<00:11, 50.20it/s]LM sampling:   9%|▊         | 52/600 [00:01<00:11, 49.67it/s]LM sampling:  10%|▉         | 58/600 [00:01<00:10, 49.74it/s]LM sampling:  10%|█         | 63/600 [00:01<00:10, 49.42it/s]LM sampling:  12%|█▏        | 69/600 [00:01<00:10, 49.80it/s]LM sampling:  12%|█▎        | 75/600 [00:01<00:10, 49.63it/s]LM sampling:  14%|█▎        | 81/600 [00:01<00:10, 49.82it/s]LM sampling:  14%|█▍        | 87/600 [00:01<00:10, 50.22it/s]LM sampling:  16%|█▌        | 93/600 [00:01<00:10, 49.97it/s]LM sampling:  16%|█▋        | 98/600 [00:01<00:10, 49.97it/s]LM sampling:  17%|█▋        | 103/600 [00:02<00:10, 49.65it/s]LM sampling:  18%|█▊        | 109/600 [00:02<00:09, 49.93it/s]LM sampling:  19%|█▉        | 114/600 [00:02<00:09, 49.78it/s]LM sampling:  20%|██        | 120/600 [00:02<00:09, 49.86it/s]LM sampling:  21%|██        | 126/600 [00:02<00:09, 50.19it/s]LM sampling:  22%|██▏       | 132/600 [00:02<00:09, 50.29it/s]LM sampling:  23%|██▎       | 138/600 [00:02<00:09, 50.48it/s]LM sampling:  24%|██▍       | 144/600 [00:02<00:09, 50.49it/s]LM sampling:  25%|██▌       | 150/600 [00:03<00:08, 50.49it/s]LM sampling:  26%|██▌       | 156/600 [00:03<00:08, 51.17it/s]LM sampling:  27%|██▋       | 162/600 [00:03<00:08, 50.35it/s]LM sampling:  28%|██▊       | 168/600 [00:03<00:08, 49.71it/s]LM sampling:  29%|██▉       | 173/600 [00:03<00:08, 49.54it/s]LM sampling:  30%|██▉       | 178/600 [00:03<00:08, 49.61it/s]LM sampling:  31%|███       | 184/600 [00:03<00:08, 50.01it/s]LM sampling:  32%|███▏      | 190/600 [00:03<00:08, 50.21it/s]LM sampling:  33%|███▎      | 196/600 [00:03<00:08, 50.19it/s]LM sampling:  34%|███▎      | 202/600 [00:04<00:07, 50.32it/s]LM sampling:  35%|███▍      | 208/600 [00:04<00:07, 50.44it/s]LM sampling:  36%|███▌      | 214/600 [00:04<00:07, 50.72it/s]LM sampling:  37%|███▋      | 220/600 [00:04<00:07, 51.03it/s]LM sampling:  38%|███▊      | 226/600 [00:04<00:07, 51.38it/s]LM sampling:  39%|███▊      | 232/600 [00:04<00:07, 51.60it/s]LM sampling:  40%|███▉      | 238/600 [00:04<00:07, 51.43it/s]LM sampling:  41%|████      | 244/600 [00:04<00:06, 51.39it/s]LM sampling:  42%|████▏     | 250/600 [00:04<00:06, 51.32it/s]LM sampling:  43%|████▎     | 256/600 [00:05<00:06, 51.06it/s]LM sampling:  44%|████▎     | 262/600 [00:05<00:06, 50.95it/s]LM sampling:  45%|████▍     | 268/600 [00:05<00:06, 50.77it/s]LM sampling:  46%|████▌     | 274/600 [00:05<00:06, 50.88it/s]LM sampling:  47%|████▋     | 280/600 [00:05<00:06, 51.17it/s]LM sampling:  48%|████▊     | 286/600 [00:05<00:06, 50.93it/s]LM sampling:  49%|████▊     | 292/600 [00:05<00:06, 51.03it/s]LM sampling:  50%|████▉     | 298/600 [00:05<00:06, 49.37it/s]LM sampling:  51%|█████     | 304/600 [00:06<00:05, 50.15it/s]LM sampling:  52%|█████▏    | 310/600 [00:06<00:05, 50.47it/s]LM sampling:  53%|█████▎    | 316/600 [00:06<00:05, 50.76it/s]LM sampling:  54%|█████▎    | 322/600 [00:06<00:05, 50.70it/s]LM sampling:  55%|█████▍    | 328/600 [00:06<00:05, 50.56it/s]LM sampling:  56%|█████▌    | 334/600 [00:06<00:05, 50.39it/s]LM sampling:  57%|█████▋    | 340/600 [00:06<00:05, 50.51it/s]LM sampling:  58%|█████▊    | 346/600 [00:06<00:05, 50.59it/s]LM sampling:  59%|█████▊    | 352/600 [00:06<00:04, 50.54it/s]LM sampling:  60%|█████▉    | 358/600 [00:07<00:04, 50.43it/s]LM sampling:  61%|██████    | 364/600 [00:07<00:04, 50.57it/s]LM sampling:  62%|██████▏   | 370/600 [00:07<00:04, 50.59it/s]LM sampling:  63%|██████▎   | 376/600 [00:07<00:04, 50.43it/s]LM sampling:  64%|██████▎   | 382/600 [00:07<00:04, 50.72it/s]LM sampling:  65%|██████▍   | 388/600 [00:07<00:04, 49.81it/s]LM sampling:  66%|██████▌   | 393/600 [00:07<00:04, 49.76it/s]LM sampling:  66%|██████▋   | 398/600 [00:07<00:04, 49.71it/s]LM sampling:  67%|██████▋   | 404/600 [00:08<00:03, 49.87it/s]LM sampling:  68%|██████▊   | 409/600 [00:08<00:03, 49.55it/s]LM sampling:  69%|██████▉   | 414/600 [00:08<00:03, 49.58it/s]LM sampling:  70%|███████   | 420/600 [00:08<00:03, 49.78it/s]LM sampling:  71%|███████   | 425/600 [00:08<00:03, 49.63it/s]LM sampling:  72%|███████▏  | 430/600 [00:08<00:03, 49.43it/s]LM sampling:  72%|███████▎  | 435/600 [00:08<00:03, 49.41it/s]LM sampling:  74%|███████▎  | 441/600 [00:08<00:03, 49.82it/s]LM sampling:  74%|███████▍  | 447/600 [00:08<00:03, 50.08it/s]LM sampling:  76%|███████▌  | 453/600 [00:09<00:02, 50.60it/s]LM sampling:  76%|███████▋  | 459/600 [00:09<00:02, 50.77it/s]LM sampling:  78%|███████▊  | 465/600 [00:09<00:02, 50.95it/s]LM sampling:  78%|███████▊  | 471/600 [00:09<00:02, 51.11it/s]LM sampling:  80%|███████▉  | 477/600 [00:09<00:02, 50.60it/s]LM sampling:  80%|████████  | 483/600 [00:09<00:02, 50.67it/s]LM sampling:  82%|████████▏ | 489/600 [00:09<00:02, 50.44it/s]LM sampling:  82%|████████▎ | 495/600 [00:09<00:02, 50.18it/s]LM sampling:  84%|████████▎ | 501/600 [00:09<00:01, 50.05it/s]LM sampling:  84%|████████▍ | 507/600 [00:10<00:01, 49.89it/s]LM sampling:  86%|████████▌ | 513/600 [00:10<00:01, 49.95it/s]LM sampling:  86%|████████▋ | 518/600 [00:10<00:01, 49.67it/s]LM sampling:  87%|████████▋ | 523/600 [00:10<00:01, 49.32it/s]LM sampling:  88%|████████▊ | 528/600 [00:10<00:01, 49.32it/s]LM sampling:  89%|████████▉ | 534/600 [00:10<00:01, 49.81it/s]LM sampling:  90%|█████████ | 540/600 [00:10<00:01, 50.14it/s]LM sampling:  91%|█████████ | 546/600 [00:10<00:01, 49.90it/s]LM sampling:  92%|█████████▏| 551/600 [00:10<00:00, 49.88it/s]LM sampling:  93%|█████████▎| 556/600 [00:11<00:00, 48.91it/s]LM sampling:  94%|█████████▎| 561/600 [00:11<00:00, 49.14it/s]LM sampling:  94%|█████████▍| 567/600 [00:11<00:00, 49.47it/s]LM sampling:  95%|█████████▌| 572/600 [00:11<00:00, 49.52it/s]LM sampling:  96%|█████████▌| 577/600 [00:11<00:00, 49.21it/s]LM sampling:  97%|█████████▋| 583/600 [00:11<00:00, 49.52it/s]LM sampling:  98%|█████████▊| 588/600 [00:11<00:00, 49.42it/s]LM sampling:  99%|█████████▉| 594/600 [00:11<00:00, 49.88it/s]LM sampling: 100%|██████████| 600/600 [00:11<00:00, 50.07it/s]LM sampling: 100%|██████████| 600/600 [00:11<00:00, 50.14it/s]
+[FL AceStep] [3/3] IntroSong__00003.mp3 (60s)
+[32m[INFO][0m [3/3] IntroSong__00003.mp3 (60s)
+[FL AceStep] Preprocessed 3/3 samples
+[32m[INFO][0m Preprocessed 3/3 samples
+[32m[INFO][0m [32mPrompt executed in 84.53 seconds[0m
+[32m[INFO][0m got prompt
+[1m[31m[ERROR][0m Failed to validate prompt for output 10:
+[1m[31m[ERROR][0m * FL_AceStep_TrainingConfig 9:
+[1m[31m[ERROR][0m   - Value 1 smaller than min of 5: save_every_n_epochs
+[1m[31m[ERROR][0m   - Value 1 smaller than min of 10: max_epochs
+[1m[31m[ERROR][0m Output will be ignored
+[32m[INFO][0m [32mPrompt executed in 0.00 seconds[0m
+[32m[INFO][0m got prompt
+[FL AceStep] LoRA Config: rank=16, alpha=32, dropout=0.1
+[32m[INFO][0m LoRA Config: rank=16, alpha=32, dropout=0.1
+[FL AceStep] Training Config: lr=0.0001, epochs=10, batch=1
+[32m[INFO][0m Training Config: lr=0.0001, epochs=10, batch=1
+[FL AceStep] Output directory: L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/raw/ACE-TRAIN/loras
+[32m[INFO][0m Output directory: L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/raw/ACE-TRAIN/loras
+[FL AceStep] Starting ACE-Step LoRA training: rdna4_bench
+[32m[INFO][0m Starting ACE-Step LoRA training: rdna4_bench
+[FL AceStep] Loaded 3 samples from L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\ACE-TRAIN\dataset
+[32m[INFO][0m Loaded 3 samples from L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\ACE-TRAIN\dataset
+[FL AceStep] Replacing ALL ComfyUI custom modules with fresh PyTorch modules to remove inference tensor taint...
+[32m[INFO][0m Replacing ALL ComfyUI custom modules with fresh PyTorch modules to remove inference tensor taint...
+[FL AceStep]   Replaced RotaryEmbedding at decoder.rotary_emb
+[32m[INFO][0m   Replaced RotaryEmbedding at decoder.rotary_emb
+[FL AceStep] Decoder: replaced {'Linear': 359, 'RMSNorm': 225, 'LayerNorm': 0, 'Conv1d': 1, 'ConvTranspose1d': 1, 'Embedding': 0, 'RotaryEmbedding': 1, 'Other': 0}
+[32m[INFO][0m Decoder: replaced {'Linear': 359, 'RMSNorm': 225, 'LayerNorm': 0, 'Conv1d': 1, 'ConvTranspose1d': 1, 'Embedding': 0, 'RotaryEmbedding': 1, 'Other': 0}
+[FL AceStep]   Replaced RotaryEmbedding at encoder.lyric_encoder.rotary_emb
+[32m[INFO][0m   Replaced RotaryEmbedding at encoder.lyric_encoder.rotary_emb
+[FL AceStep]   Replaced RotaryEmbedding at encoder.timbre_encoder.rotary_emb
+[32m[INFO][0m   Replaced RotaryEmbedding at encoder.timbre_encoder.rotary_emb
+[FL AceStep] encoder: replaced {'Linear': 87, 'RMSNorm': 50, 'LayerNorm': 0, 'Conv1d': 0, 'ConvTranspose1d': 0, 'Embedding': 0, 'RotaryEmbedding': 2, 'Other': 0}
+[32m[INFO][0m encoder: replaced {'Linear': 87, 'RMSNorm': 50, 'LayerNorm': 0, 'Conv1d': 0, 'ConvTranspose1d': 0, 'Embedding': 0, 'RotaryEmbedding': 2, 'Other': 0}
+[FL AceStep] Module replacement complete (including RotaryEmbedding with clone-on-forward)
+[32m[INFO][0m Module replacement complete (including RotaryEmbedding with clone-on-forward)
+[FL AceStep] Decoder buffers cloned: 3
+[32m[INFO][0m Decoder buffers cloned: 3
+[FL AceStep] encoder buffers cloned: 6
+[32m[INFO][0m encoder buffers cloned: 6
+[FL AceStep] All module and buffer cloning complete - inference tensor taint removed
+[32m[INFO][0m All module and buffer cloning complete - inference tensor taint removed
+[32m[INFO][0m [32mPrompt executed in 11.80 seconds[0m
+[1m[33m[WARNING][0m [DEPRECATION WARNING] Detected import of deprecated legacy API: /scripts/ui.js. This is likely caused by a custom node extension using outdated APIs. Please update your extensions or contact the extension author for an updated version.
+[1m[33m[WARNING][0m [DEPRECATION WARNING] Detected import of deprecated legacy API: /extensions/core/clipspace.js. This is likely caused by a custom node extension using outdated APIs. Please update your extensions or contact the extension author for an updated version.
+[1m[33m[WARNING][0m [DEPRECATION WARNING] Detected import of deprecated legacy API: /extensions/core/widgetInputs.js. This is likely caused by a custom node extension using outdated APIs. Please update your extensions or contact the extension author for an updated version.

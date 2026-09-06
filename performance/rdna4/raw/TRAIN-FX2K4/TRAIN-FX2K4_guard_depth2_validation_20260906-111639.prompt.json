@@ -1,0 +1,227 @@
+{
+ "1": {
+  "_meta": {
+   "title": "Dataset aus ComfyUI input"
+  },
+  "class_type": "LoadImageTextDataSetFromFolder",
+  "inputs": {
+   "folder": "lora_training/_rdna4_bench"
+  }
+ },
+ "10": {
+  "_meta": {
+   "title": "LoRA lokal speichern"
+  },
+  "class_type": "SaveLoRA",
+  "inputs": {
+   "lora": [
+    "8",
+    0
+   ],
+   "prefix": "loras/rdna4_bench/TRAIN-FX2K4_guard_depth2",
+   "steps": [
+    "8",
+    2
+   ]
+  }
+ },
+ "11": {
+  "_meta": {
+   "title": "Run Timer Pixaroma"
+  },
+  "class_type": "PixaromaRunTimer",
+  "inputs": {}
+ },
+ "2": {
+  "_meta": {
+   "title": "Dataset-Vorschau"
+  },
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "1",
+    0
+   ]
+  }
+ },
+ "24": {
+  "_meta": {
+   "title": "SelectModelDevice · central control"
+  },
+  "class_type": "SelectModelDevice",
+  "inputs": {
+   "device": [
+    "27",
+    0
+   ],
+   "model": [
+    "3",
+    0
+   ]
+  }
+ },
+ "25": {
+  "_meta": {
+   "title": "SelectCLIPDevice · central control"
+  },
+  "class_type": "SelectCLIPDevice",
+  "inputs": {
+   "clip": [
+    "4",
+    0
+   ],
+   "device": [
+    "27",
+    1
+   ]
+  }
+ },
+ "26": {
+  "_meta": {
+   "title": "SelectVAEDevice · central control"
+  },
+  "class_type": "SelectVAEDevice",
+  "inputs": {
+   "device": [
+    "27",
+    2
+   ],
+   "vae": [
+    "5",
+    0
+   ]
+  }
+ },
+ "27": {
+  "_meta": {
+   "title": "Central GPU Control · MODEL / CLIP / VAE"
+  },
+  "class_type": "DaWMultiGPUDeviceControl",
+  "inputs": {
+   "clip_device": "gpu:0",
+   "model_device": "gpu:0",
+   "vae_device": "gpu:0"
+  }
+ },
+ "3": {
+  "_meta": {
+   "title": "Load Diffusion Model"
+  },
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "FLUX\\flux-2-klein-base-4b.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "4": {
+  "_meta": {
+   "title": "Load CLIP"
+  },
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "Qwen\\qwen_3_4b.safetensors",
+   "device": "default",
+   "type": "flux2"
+  }
+ },
+ "5": {
+  "_meta": {
+   "title": "Load VAE"
+  },
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "FLUX2\\flux2-vae.safetensors"
+  }
+ },
+ "6": {
+  "_meta": {
+   "title": "Make Training Dataset"
+  },
+  "class_type": "MakeTrainingDataset",
+  "inputs": {
+   "clip": [
+    "25",
+    0
+   ],
+   "images": [
+    "1",
+    0
+   ],
+   "texts": [
+    "1",
+    1
+   ],
+   "vae": [
+    "26",
+    0
+   ]
+  }
+ },
+ "7": {
+  "_meta": {
+   "title": "Resolution Bucket"
+  },
+  "class_type": "ResolutionBucket",
+  "inputs": {
+   "conditioning": [
+    "6",
+    1
+   ],
+   "latents": [
+    "6",
+    0
+   ]
+  }
+ },
+ "8": {
+  "_meta": {
+   "title": "Lokales LoRA-Training"
+  },
+  "class_type": "TrainLoraNode",
+  "inputs": {
+   "algorithm": "LoRA",
+   "batch_size": 1,
+   "bucket_mode": true,
+   "bypass_mode": false,
+   "checkpoint_depth": 2,
+   "existing_lora": "[None]",
+   "grad_accumulation_steps": 4,
+   "gradient_checkpointing": true,
+   "latents": [
+    "7",
+    0
+   ],
+   "learning_rate": 0.0001,
+   "lora_dtype": "bf16",
+   "loss_function": "MSE",
+   "model": [
+    "24",
+    0
+   ],
+   "offloading": false,
+   "optimizer": "AdamW",
+   "positive": [
+    "7",
+    1
+   ],
+   "quantized_backward": false,
+   "rank": 16,
+   "seed": 42,
+   "steps": 2,
+   "training_dtype": "bf16"
+  }
+ },
+ "9": {
+  "_meta": {
+   "title": "LossGraph anzeigen"
+  },
+  "class_type": "LossGraphNode",
+  "inputs": {
+   "filename_prefix": "lora_training/flux2-klein-4b-base_loss",
+   "loss": [
+    "8",
+    1
+   ]
+  }
+ }
+}

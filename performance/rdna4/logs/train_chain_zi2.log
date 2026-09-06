@@ -1,0 +1,35 @@
+started pid=12812 port=8190 log=L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_vramguard_105451\server.log
+ready after 13.7s; attention=attention_pytorch vram_state=VRAMState.NORMAL_VRAM streams=0 pinned_max=-1 aimdo=False
+### TRAIN-ZI guard_depth1 depth=1 10:55:06
+host_guard: killed 12812: available RAM 1.35 GiB < 1.5
+urllib.error.URLError: <urlopen error [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte>
+host_guard: {"event": "kill", "pid": 12812, "reason": "available RAM 1.35 GiB < 1.5", "host": {"t": 1788684929.1893167, "avail_gib": 1.35, "commit_gib": 76.62, "commit_limit_gib": 97.37, "nonpaged_gib": 2.593, "paged_gib": 1.523}, "peaks": {"min_avail_gib": 1.35, "max_commit_gib": 76.65, "max_nonpaged_gib": 2.6
+[32m[INFO][0m Found comfy_kitchen backend triton: {'available': False, 'disabled': True, 'unavailable_reason': "ImportError: No module named 'triton'", 'capabilities': []}
+ModuleNotFoundError: No module named 'triton'
+    raise ImportError("PatchTritonVAE requires triton (pip install triton, or triton-windows)") from e
+ImportError: PatchTritonVAE requires triton (pip install triton, or triton-windows)
+import error: No module named 'triton'
+  [0;37mThis is a notice, not an error. All [38;2;246;103;68mPixaroma[0;37m nodes work in both Classic and Nodes 2.0 mode.[0m
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+[32m[INFO][0m loaded completely;  7672.25 MB loaded, full load: True
+[32m[INFO][0m loaded completely; 10991.98 MB usable, 159.87 MB loaded, full load: True
+pid 12812 not running
+started pid=4712 port=8190 log=L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_vramguard_105538\server.log
+ready after 13.7s; attention=attention_pytorch vram_state=VRAMState.NORMAL_VRAM streams=0 pinned_max=-1 aimdo=False
+### TRAIN-ZI guard_depth2 depth=2 10:55:53
+host_guard: killed 4712: available RAM 0.01 GiB < 1.5
+urllib.error.URLError: <urlopen error [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte>
+host_guard: {"event": "kill", "pid": 4712, "reason": "available RAM 0.01 GiB < 1.5", "host": {"t": 1788684978.2633824, "avail_gib": 0.01, "commit_gib": 76.53, "commit_limit_gib": 97.37, "nonpaged_gib": 2.593, "paged_gib": 1.513}, "peaks": {"min_avail_gib": 0.01, "max_commit_gib": 76.66, "max_nonpaged_gib": 2.59
+[32m[INFO][0m Found comfy_kitchen backend triton: {'available': False, 'disabled': True, 'unavailable_reason': "ImportError: No module named 'triton'", 'capabilities': []}
+ModuleNotFoundError: No module named 'triton'
+    raise ImportError("PatchTritonVAE requires triton (pip install triton, or triton-windows)") from e
+ImportError: PatchTritonVAE requires triton (pip install triton, or triton-windows)
+import error: No module named 'triton'
+  [0;37mThis is a notice, not an error. All [38;2;246;103;68mPixaroma[0;37m nodes work in both Classic and Nodes 2.0 mode.[0m
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+[32m[INFO][0m loaded completely;  7672.25 MB loaded, full load: True
+[32m[INFO][0m loaded completely; 10991.98 MB usable, 159.87 MB loaded, full load: True
+pid 4712 not running
+### chain done 10:56:24

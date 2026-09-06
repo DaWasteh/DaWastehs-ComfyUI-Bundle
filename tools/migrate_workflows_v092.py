@@ -228,6 +228,15 @@ def _curated_profiles() -> dict[str, tuple[str, dict[str, str], bool]]:
         if path in profiles:
             name, _devices, h3 = profiles[path]
             profiles[path] = (name, {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:1"}, h3)
+    # v1.1.2 (performance/rdna4/REPORT.md §9.4): measured placement of the remaining split workflows.
+    try:
+        from tools.upgrade_v112 import E2_REMAINING as _V112_E2
+    except ModuleNotFoundError:  # direct execution from tools/
+        from upgrade_v112 import E2_REMAINING as _V112_E2
+    for path in _V112_E2:
+        if path in profiles:
+            name, _devices, h3 = profiles[path]
+            profiles[path] = (name, {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"}, h3)
     return profiles
 
 

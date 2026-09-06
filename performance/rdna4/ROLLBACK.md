@@ -34,6 +34,17 @@ Die Benchmark-Instanz schrieb ausschließlich nach `performance/rdna4/raw/server
 | – | Startprofile: **kein** Produktions-Startprofil geändert; kein Profil-Kandidat war besser als v0.9.8 (siehe REPORT.md) | – |
 | – | venv/Pakete/Custom Nodes/ComfyUI-Code: unverändert | – |
 
+## Durchlauf 2 (2026-09-06, v1.1.2)
+
+Produktionsinstallation `L:\ComfyUI`: weiterhin **keine** Datei geändert (Startprofil, `comfy/samplers.py`, Launcher, venv-Pakete, Custom Nodes unverändert; `bench/rollback.py` gilt unverändert). Neu unter `input/lora_training/`: Ordner `_rdna4_bench_audio/` (3 MP3 aus dem ACE-Step-Benchmark, synthetisch, kein Nutzermaterial) für den ACE-Voice-Trainer-Smoke-Test; Rückweg: Ordner löschen (`bench/rollback.py --apply` entfernt ihn zusammen mit `_rdna4_bench/`).
+
+| Nr. | Änderung im Repo | Rückweg |
+|---|---|---|
+| R5 | `custom_nodes/ComfyUI-DaWasteh-MultiGPU-Control/vram_guard.py` + Aufruf in `__init__.py` (VRAM-Guard); `tools/start-MultiGPU.ps1` (`$VramGuard`, `DAWASTEH_VRAM_GUARD*`) | `DAWASTEH_VRAM_GUARD=0` bzw. `$VramGuard = $false` schaltet den Guard ohne Codeänderung ab; sonst `git revert` |
+| R6 | `custom_nodes/ComfyUI-DaWasteh-Qwen3TTS-LoRA/peft_compat.py`, Aufruf beim Laden in `__init__.py`, `nodes.py` delegiert | `git revert`; die Umgehung greift nur bei torchao < 0.16 und ändert kein Paket |
+| R7 | 5 Trainer-Workflows `checkpoint_depth` 1 → 2 (`tools/upgrade_v112.py`, Marker `dawasteh_rdna4_v112`; `tools/validate_workflows.py` prüft die v112-Form gegen HEAD) | `git checkout v1.1.1 -- "workflows/LoRA Generation"` oder im Workflow `checkpoint_depth` zurück auf 1 (nicht empfohlen, siehe REPORT.md §9) |
+| R8 | Bench-Erweiterungen `performance/rdna4/bench/{vram_probe,host_guard,train_chain}.py|sh`, Profile `v098_vramguard*.json`, Probe-Erweiterungen, API-Prompts `api/TRAIN_*.json`, `api/ACE_TURBO.json`, `api/WAN22_T2V_14B.json`, Rohdaten `raw/vram_probe/`, `raw/TRAIN-*`, `raw/MUS-ACET`, `raw/ACE-TRAIN` | Dateien löschen / `git revert` |
+
 ## Getesteter Rückweg
 
 `bench/rollback.py` wurde am 2026-09-06 an Kopien in einem Scratch-Ordner geprüft (`raw/rollback_restore_test.txt`): unveränderte Datei → `[ok]`; von diesem Durchlauf installierte Version → wiederhergestellt und SHA-256-identisch mit dem Original; nachträglich vom Nutzer geänderte Datei → `[SKIP] … manual review` (Exit 1, Datei unangetastet). Der Dry-Run gegen die echten Produktionsdateien meldete alle drei als `== original`.

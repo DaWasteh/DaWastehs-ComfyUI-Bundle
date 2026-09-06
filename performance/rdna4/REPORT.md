@@ -97,3 +97,60 @@ Gesamtzähler: 15 Experimente (E1, E1b, E2, E1+E2, E2-LTX a/b, E13, E16, E3, E4,
 
 - Lokaler Code: `comfy/model_management.py` (`is_nvidia`, `supports_fp8_compute`, `cleanup_models_gc`), `comfy_extras/nodes_multigpu.py` (`_retarget_patcher` → `deepclone_multigpu`), `comfy/ops.py` (`pick_operations`), `comfy_kitchen/backends/hip/__init__.py` (WMMA-Kernel), `custom_nodes/comfyui-kjnodes/nodes/nodes.py` (`VRAM_Debug`).
 - ComfyUI `comfy/cli_args.py` (lokal, Stand 0.34.0) für alle Flags; PyTorch HIP-Semantik (`torch.cuda` = HIP) bestätigt durch `torch.version.hip = 7.16.26332`, `torch.version.cuda = None`.
+
+## 9. Durchlauf 2 (2026-09-06) · LoRA-Training entsperrt, VRAM-Guard, PEFT-Kollision
+
+### 9.1 Ursache der beiden Systemabstürze (B4) — gemessen, nicht vermutet
+
+Isolierte Sonden ohne ComfyUI (`bench/vram_probe.py`, jede in einem Kindprozess hinter einem Host-RAM-Watchdog; Rohdaten `raw/vram_probe/*.jsonl`), ausgeführt auf der RX 9070 XT (16 GiB), damit ein Fehlverhalten klein bleibt:
+
+| Sonde | Ergebnis |
+|---|---|
+| `oversub`: 512-MiB-Blöcke allokieren und beschreiben, über das VRAM hinaus | **18,4 GiB auf einer 16-GiB-Karte ohne jeden OOM-Fehler.** Ab ~2 GiB vor dem VRAM-Ende sinkt der freie Host-RAM um 0,5 GiB je Block (Commit +0,5 GiB); der WDDM-Treiber lagert GPU-Allokationen still in den Host aus. Nonpaged Pool bleibt bei 2,67 GiB. |
+| `cap`: dieselbe Schleife mit `torch.cuda.set_per_process_memory_fraction(0.8)` | sauberer `torch.OutOfMemoryError` bei 12,74 GiB („12.74 GiB allowed“), Host-RAM unverändert |
+| `sdpa_bwd`: bf16-SDPA Forward+Backward (1×24×4096×128) | flash 0,42 s, efficient 0,03 s, math 4,4 s — alle Gradienten endlich, identische Loss; die AOTriton-Backward-Kernel sind **nicht** die Ursache |
+| `ckpt_bwd`: 4 Transformer-Blöcke (dim 3072, 4096 Token), LoRA-Adapter, `torch.utils.checkpoint` | Peak per Block 1,64 GiB, Gesamt-Checkpoint 2,31 GiB, ohne Checkpoint 2,34 GiB → **ein Checkpoint über das ganze Modell spart nichts** |
+
+Dazu der Code des Core-Trainers: `find_modules_at_depth(diffusion_model, depth=1)` liefert das Wurzelmodul selbst (Log „patching 1 modules at depth 1“). Bei 1024²-Bildern (4096 Bild-Token) rekonstruiert der Backward damit alle Aktivierungen des 6B-Modells auf einmal, überschreitet die 32 GB der R9700, der Treiber lagert in den Host aus, der Host läuft voll (`WinError 10055`), der Rechner steht. Beide Abstürze vom 2026-09-05 passen exakt auf diese Kette; ein GPU-Hang (TDR-Ereignis 4101) wurde nie protokolliert.
+
+### 9.2 Schutz: VRAM-Guard (produktiv) + Host-Watchdog (nur Bench)
+
+- `custom_nodes/ComfyUI-DaWasteh-MultiGPU-Control/vram_guard.py` setzt beim Laden des Node-Packs je GPU `set_per_process_memory_fraction` auf „freier VRAM beim Start − 3 GiB“ (R9700 28,71 GiB, RX 9070 XT 12,77 GiB; Log-Zeile „[DaWasteh VRAM guard] …“). Fremde residente Prozesse werden über den freien VRAM berücksichtigt. `tools/start-MultiGPU.ps1`: `$VramGuard`, `$VramGuardReserveGib` → `DAWASTEH_VRAM_GUARD`, `DAWASTEH_VRAM_GUARD_RESERVE_GIB`. Unit-Tests `tests/test_vram_guard.py`.
+- Bench: Profil `profiles/v098_vramguard.json` lädt denselben Repo-Code über die Probe (`RDNA4_VRAM_GUARD=1`); `bench/host_guard.py` beendet den Testserver bei Commit-Headroom < 6 GiB oder Nonpaged Pool > 6 GiB (eine Schwelle „freier RAM < x“ feuert beim normalen Modell-Laden: Modell + erzwungene Zweitkopie des Trainers (2 × 12 GB) + Textencoder drücken den freien RAM kurz auf 0,1–0,8 GiB, was die LTX-/E15-Läufe des ersten Durchlaufs bereits 40 min lang überlebt hatten).
+
+### 9.3 Trainer-Validierung (Profil v0.9.8 + Guard, 3-Bild-Datensatz 1024², Rank 16, 2 Updates × 4 Akkumulation = 8 Forward/Backward)
+
+| Trainer | `checkpoint_depth` 1 (ausgeliefert bis v1.1.1) | `checkpoint_depth` 2 (v1.1.2) | LoRA-Datei |
+|---|---|---|---|
+| SDXL RealVisXL V4 (fp16-Checkpoint) | ok, 28,5 s (kalt), 0,92 s/Schritt, **Peak 22,9 GiB** | ok, 0,86 s/Schritt, **Peak 7,9 GiB** (42 Blöcke) | 3268 Tensoren bf16, 51,0 M Parameter, keine NaN, keine Nulltensoren |
+| Z-Image Base bf16 (6B) | **Absturzkonfiguration** (2026-09-05 zweimal Systemhänger; jetzt vom Guard auf 28,7 GiB begrenzt, nicht erneut provoziert) | **ok**, 97 s kalt, 7,06 s/Schritt, Peak 16,1 GiB (40 Blöcke); Swap nach Lauf 4,7 GB | 867 Tensoren bf16, 44,9 M Parameter, keine NaN |
+| FLUX.2 Klein 4B Base bf16 | **sauberer `torch.OutOfMemoryError`** nach 37 s bei 28,24 GiB („28.71 GiB allowed“), Server läuft weiter | ok, 36 s, 2,60 s/Schritt, Peak 15,5 GiB (34 Blöcke) | erzeugt |
+| FLUX.1-dev fp8 (Bypass, quantisierter Backward, 12B) | nicht gemessen | **OOM** bei 28,31 GiB (64 Blöcke) → mit `offloading` ebenfalls OOM; `depth` 3 (507 Module) und der Offload-Versuch endeten am Host-**Commit-Limit** (92 GB von 97 GB, Watchdog) | keine |
+| Boogu Image Base bf16 (20,6 GB Modell + Qwen3-VL-8B fp8 10,6 GB, `offloading` an) | nicht gemessen | Host-Commit erreichte beim Laden das Limit (102,5 GB = Limit; Textencoder 10 GB + Modell 20 GB + Zweitkopie 20 GB + GPU-Backing) → Watchdog; **auf diesem Rechner nicht trainierbar** | keine |
+
+Zeilen in `benchmark_results.csv`: `TRAIN-SDXL_*`, `TRAIN-ZI_*`, `TRAIN-FX2K4_*`, `TRAIN-FX1_*`; Logs `raw/server_v098_vramguard_*/server.log`, Watchdog `…/host_guard.jsonl`. Alle Läufe endeten mit laufendem Betriebssystem; kein einziger Systemhänger in Durchlauf 2.
+
+Übernommen (v1.1.2, `tools/upgrade_v112.py`, Marker `dawasteh_rdna4_v112`): `checkpoint_depth` 1 → 2 in allen fünf Core-Trainern. Für FLUX.1-dev fp8 und Boogu bleibt der Workflow ausgeliefert, aber als „auf 48 GB Host-RAM / 32 GB VRAM nicht lauffähig“ dokumentiert (README); ein Lauf endet dort jetzt mit einem lesbaren OOM statt mit einem Systemabsturz.
+
+### 9.4 Verbleibende Geräte-Splits (E2c) — zwei Workflows gemessen, übernommen
+
+14 Workflows hatten CLIP/VAE noch auf der RX 9070 XT (`gpu:1`). Zwei kurze, repräsentative Vertreter wurden A/B gemessen (je ein frischer Server pro Variante, Kurzform, identische Seeds, Profil v0.9.8 + Guard):
+
+| Workflow (Kurzform) | ausgeliefert (CLIP/VAE gpu:1) | E2c: alles gpu:0 | Ausgaben |
+|---|---|---|---|
+| ACE-Step 1.5 Turbo 4B, 60 s, 8 Schritte, LM-Audio-Codes (300 Token) | kalt 249,6 s, warm 218,6 s — die 300 LM-Token laufen mit 0,68 s/Token auf der 16-GB-Karte (10,7 GiB belegt, Qwen-4B-LM teilgeladen), dazu Deep-Clone von TE und Audio-VAE | **kalt 24,6 s, warm 10,1 s** (LM 0,02 s/Token, 6,1 s); Peak gpu:0 21,1 GiB | beide 60,0 s / 48 kHz / Stereo, RMS 0,2000 vs 0,2000; nicht bitidentisch (SNR 18,3 dB kalt, 23,4 dB warm — die LM-Token-Auswahl mit Temperatur 0,85 divergiert zwischen Geräten) |
+| WAN 2.2 T2V 14B fp8, 768×512, 49 Frames, lightx2v 2+2 Schritte | kalt 124,8 s, warm 159,2 s (Warmlauf langsamer als kalt: RAM-Cache-Verdrängung durch den Deep-Clone) | **kalt 106,9 s, warm 69,4 s**; Sampling unverändert 8,4–8,7 s/Schritt; Peak gpu:0 25,6 GiB | 49 Frames, keine schwarzen/eingefrorenen Frames; **nicht bitidentisch, PSNR 18,0 dB** (gleicher Seed): der Textencoder liefert auf gpu:0 numerisch andere Konditionierung; eine Sichtprüfung erfolgte nicht |
+
+n = 1 kalt + 1 warm je Variante (Screening, vorläufig); die Richtung ist in beiden Fällen eindeutig und mit dem in Durchlauf 1 bewiesenen Mechanismus (Deep-Clone, GC-Stürme, RAM-Verdrängung) konsistent. Übernommen in v1.1.2 (`E2_REMAINING` in `tools/upgrade_v112.py`, Gerätetabelle in `tools/migrate_workflows_v092.py`): `ACE-Step1_5_Turbo_4B-Music-Generation.json`, `WAN22_14B_fp8_lightx2v-Text-to-Video.json`. Die übrigen zwölf Split-Workflows (SCAIL2, WanAnimate2, StableAudio3, Kandinsky5 Lite, LTX 2.3, drei H3-Spectrum-Varianten, H3-Song-to-Video, MiniMax Music 3) bleiben unverändert: nicht gemessen, deshalb nicht angefasst. Zeilen `MUS-ACET_*`, `VID-WANT2V_*` in `benchmark_results.csv`; Serverlogs `raw/server_v098_vramguard_114030|115009|115150|115655/`.
+
+### 9.5 Audio-Trainer: PEFT-Kollision (B5) gefunden und umgangen
+
+Der ACE-Step-Voice-LoRA-Workflow (`fl-acestep-training`, PEFT) lief mit drei synthetischen 60-s-MP3s aus dem ACE-Benchmark (`input/lora_training/_rdna4_bench_audio/`, kein Nutzermaterial): Scan, Auto-Labeling (acestep-5Hz-lm-1.7B: Caption/BPM/Tonart) und Preprocessing funktionieren (85 s), der Trainingsnode endete nach 12 s ohne Adapter und ohne Fehlermeldung. Ursache: peft 0.19.1 prüft im LoRA-Dispatcher `is_torchao_available()` und wirft bei torchao < 0.16 einen `ImportError`; installiert ist torchao 0.9.0 (Anforderung von ComfyUI-HeartMuLa, Installationsdatum 2026-07-28, nach peft vom 2026-07-03). Der Node fängt das als „Error: PEFT not installed“. Der eigene Qwen3-TTS-Trainer trug die Umgehung bereits lokal in seiner Ausführung; v1.1.2 zieht sie in `custom_nodes/ComfyUI-DaWasteh-Qwen3TTS-LoRA/peft_compat.py` und wendet sie beim Laden des Node-Packs prozessweit an (nur der torchao-Dispatcher wird abgeschaltet, kein Paket geändert; Unit-Tests `tests/test_peft_compat.py`).
+
+Validierung im Testserver mit genau diesem Repo-Modul (Profil `v098_vramguard_peftshim`): PEFT-Injektion ok, 10 Epochen × 1 Schritt (Node-Minimum), Loss 1,21–1,23, `final/adapter_model.safetensors` geschrieben; 113 s gesamt, Peak 27,6 GiB (knapp unter der Guard-Grenze von 28,7 GiB — längere Samples als 60 s oder größere Batches brauchen `max_duration` bzw. Rank-Anpassung). Der Qwen3-TTS-Trainer wurde nicht erneut ausgeführt (er benötigt Stimmaufnahmen des Nutzers; sein Code hatte die Umgehung schon).
+
+### 9.6 Ergebnis Durchlauf 2
+
+- Alle sechs Pflichtbereiche sind jetzt gemessen; der Bereich LoRA-Training ist mit SDXL, Z-Image Base, FLUX.2 Klein 4B und ACE-Step-Voice real trainiert (Adapter mit endlichen, nicht-null Gewichten), FLUX.1-dev fp8 und Boogu sind mit konkreten, reproduzierbaren Limits (VRAM 28,7 GiB / Host-Commit) dokumentiert.
+- Kein Systemabsturz in Durchlauf 2 (17 Trainer-/Sonden-Läufe, davon 4 kontrollierte OOM- bzw. Watchdog-Abbrüche).
+- Offen: (1) FLUX.1/Boogu-Training braucht mehr Host-Speicher (RAM oder feste Auslagerungsdatei ≥ 64 GB) — nicht per Startflag lösbar; (2) die zwölf ungemessenen Split-Workflows; (3) eine Sichtprüfung der 18-dB-Abweichung bei WAN T2V; (4) das Upstream-Problem `checkpoint_depth=1` (ComfyUI `nodes_train.py`) sowie die peft/torchao-Versionsprüfung wären als Meldungen an die Projekte sinnvoll.

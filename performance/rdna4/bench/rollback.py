@@ -28,6 +28,7 @@ LIVE = {
     "windows_comfy_launcher.py.orig": Path("L:/ComfyUI/scripts/windows_comfy_launcher.py"),
 }
 DATASET = Path("L:/ComfyUI/ComfyUI/input/lora_training/_rdna4_bench")
+DATASET_AUDIO = Path("L:/ComfyUI/ComfyUI/input/lora_training/_rdna4_bench_audio")  # v1.1.2 ACE voice trainer smoke set
 INSTALLED_DIR = HERE.parent / "profiles" / "installed"  # copies of files this pass installed into L:\ComfyUI
 
 
@@ -65,6 +66,12 @@ def main() -> int:
             shutil.rmtree(DATASET)
     else:
         print(f"[ok]      {DATASET} absent")
+    if DATASET_AUDIO.exists():
+        print(f"[remove]  {DATASET_AUDIO} ({sum(1 for _ in DATASET_AUDIO.iterdir())} files)")
+        if a.apply:
+            shutil.rmtree(DATASET_AUDIO)
+    else:
+        print(f"[ok]      {DATASET_AUDIO} absent")
     if a.remove_bench_db:
         for db in (HERE / "bench_state").glob("*.db*"):
             print(f"[remove]  {db}")

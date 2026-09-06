@@ -1,0 +1,35 @@
+{
+  "name": "v098_vramguard_peftshim",
+  "description": "v098_vramguard + test-only peft shim (RDNA4_PEFT_NO_TORCHAO=1) to validate the PEFT-based audio trainers despite torchao 0.9.0.",
+  "env": {
+    "HIP_VISIBLE_DEVICES": "0,1",
+    "CUDA_VISIBLE_DEVICES": "0,1",
+    "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+    "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+    "OMP_NUM_THREADS": "24",
+    "MKL_NUM_THREADS": "24",
+    "OPENBLAS_NUM_THREADS": "24",
+    "NUMEXPR_NUM_THREADS": "24",
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "RDNA4_VRAM_GUARD": "1",
+    "RDNA4_PEFT_NO_TORCHAO": "1"
+  },
+  "unset_env": [
+    "TORCH_BLAS_PREFER_CUBLASLT",
+    "DISABLE_ADDMM_CUDA_LT",
+    "HSA_OVERRIDE_GFX_VERSION",
+    "PYTORCH_TUNABLEOP_ENABLED"
+  ],
+  "args": [
+    "--default-device",
+    "0",
+    "--use-pytorch-cross-attention",
+    "--reserve-vram",
+    "4",
+    "--disable-dynamic-vram",
+    "--disable-async-offload",
+    "--disable-pinned-memory",
+    "--cache-ram"
+  ]
+}

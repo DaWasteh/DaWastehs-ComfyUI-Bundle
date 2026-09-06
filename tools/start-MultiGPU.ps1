@@ -49,6 +49,12 @@ $PreferHipBlasLt = $true           # measured +15-40 % GEMM throughput on gfx120
 $UseComfyKitchenAttention = $false # opt-in: --use-ck-attention (INT8 QK attention, quality trade-off)
 $FastFp8MatrixMult = $false        # opt-in: --fast fp8_matrix_mult (117 TFLOPS torch._scaled_mm measured)
 $DebugHipLaunchBlocking = $false
+$VramGuard = $true                 # v1.1.2: per-process HIP allocator cap (DaWasteh VRAM guard in the
+                                   # MultiGPU-Control node pack). On Windows/ROCm the driver never raises
+                                   # OOM; past the VRAM it backs GPU allocations with host RAM until the
+                                   # machine freezes (measured 2026-09-06, two hard freezes on 2026-09-05
+                                   # from TrainLoraNode). The cap turns that into a normal OOM error.
+$VramGuardReserveGib = 3           # VRAM left untouched per device (driver starts spilling ~2 GiB early)
 
 if (!(Test-Path $ComfyPath)) { throw "ComfyUI folder not found: $ComfyPath" }
 if (!(Test-Path $PythonExe)) { throw "Python venv not found: $PythonExe" }
@@ -95,6 +101,13 @@ $env:NUMEXPR_NUM_THREADS = "$CpuThreads"
 $env:PYTHONUTF8 = "1"
 $env:PYTHONIOENCODING = "utf-8"
 
+if ($VramGuard) {
+    $env:DAWASTEH_VRAM_GUARD = "1"
+    $env:DAWASTEH_VRAM_GUARD_RESERVE_GIB = "$VramGuardReserveGib"
+} else {
+    $env:DAWASTEH_VRAM_GUARD = "0"
+}
+
 if ($DebugHipLaunchBlocking) {
     $env:HIP_LAUNCH_BLOCKING = "1"
     $env:CUDA_LAUNCH_BLOCKING = "1"
@@ -114,6 +127,7 @@ Write-Host "VRAM:    reserve-vram=$ReserveVramGb GB"
 Write-Host "Profile: DynamicVRAM=$EnableDynamicVram, async-offload=$AsyncOffloadStreams, pinned memory=$(-not $DisablePinnedMemory), cache=$CacheMode"
 Write-Host "BLAS:    hipBLASLt=$PreferHipBlasLt"
 Write-Host "Opt-in:  ck-attention=$UseComfyKitchenAttention, fp8_matrix_mult=$FastFp8MatrixMult"
+Write-Host "Guard:   VRAM guard=$VramGuard (reserve $VramGuardReserveGib GiB per GPU, DAWASTEH_VRAM_GUARD)"
 Write-Host ""
 
 $GpuCheck = "import torch; names=[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]; print('torch:', torch.__version__); print('cuda available:', torch.cuda.is_available()); print('device count:', len(names)); [print(f'gpu:{i} = {name}') for i, name in enumerate(names)]; assert len(names) == 2, f'Expected exactly two visible HIP GPUs, found {len(names)}'; assert 'R9700' in names[0] and '9070 XT' in names[1], f'Unexpected HIP order: {names!r}'"

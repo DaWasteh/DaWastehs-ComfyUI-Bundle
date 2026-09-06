@@ -1,0 +1,402 @@
+{
+ "run_id": "VID-WANT2V_baseline_clip_gpu1_cold_20260906-115202",
+ "test_id": "VID-WANT2V",
+ "variant": "baseline_clip_gpu1",
+ "run_type": "cold",
+ "hypothesis": "E2 remaining workflows: CLIP/VAE on gpu:1 (shipped) vs gpu:0",
+ "workload": "768x512, 49 frames (3s@16fps), lightx2v mode 4 steps (2+2) euler simple cfg1, Wan2.2 14B fp8_scaled x2 + UMT5 fp8 + wan_2.1_vae (T2V workflow short form) seed 1001",
+ "seed": 1001,
+ "sets": [
+  "190.value=true",
+  "189.value=3.0",
+  "171.noise_seed=1001"
+ ],
+ "prompt_file": "api/WAN22_T2V_14B.json",
+ "prompt_id": "245f4a08-8c96-4198-b3a9-5ec04a9d850f",
+ "status": "success",
+ "client_wall_s": 124.82221674919128,
+ "server_exec_s": 124.17695713043213,
+ "queue_delay_s": 0.0059223175048828125,
+ "cached_nodes": [],
+ "node_times": [
+  {
+   "node": "163",
+   "display_node": "163",
+   "start": 1788688322.5314882,
+   "dur": 0.2860264778137207,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "230",
+   "display_node": "230",
+   "start": 1788688322.8175147,
+   "dur": 0.0003590583801269531,
+   "class_type": "DaWMultiGPUDeviceControl"
+  },
+  {
+   "node": "227",
+   "display_node": "227",
+   "start": 1788688322.8178737,
+   "dur": 0.12526178359985352,
+   "class_type": "SelectVAEDevice"
+  },
+  {
+   "node": "190",
+   "display_node": "190",
+   "start": 1788688322.9431355,
+   "dur": 0.0007054805755615234,
+   "class_type": "PrimitiveBoolean"
+  },
+  {
+   "node": "185",
+   "display_node": "185",
+   "start": 1788688322.943841,
+   "dur": 0.00024056434631347656,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "186",
+   "display_node": "186",
+   "start": 1788688322.9440815,
+   "dur": 0.0002105236053466797,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "224",
+   "display_node": "224",
+   "start": 1788688322.944292,
+   "dur": 0.0005431175231933594,
+   "class_type": "PixaromaPrompt"
+  },
+  {
+   "node": "162",
+   "display_node": "162",
+   "start": 1788688322.9448352,
+   "dur": 9.285749673843384,
+   "class_type": "CLIPLoader"
+  },
+  {
+   "node": "226",
+   "display_node": "226",
+   "start": 1788688332.2305849,
+   "dur": 7.522790431976318,
+   "class_type": "SelectCLIPDevice"
+  },
+  {
+   "node": "170",
+   "display_node": "170",
+   "start": 1788688339.7533753,
+   "dur": 7.956840991973877,
+   "class_type": "CLIPTextEncode"
+  },
+  {
+   "node": "174",
+   "display_node": "174",
+   "start": 1788688347.7102163,
+   "dur": 1.6922266483306885,
+   "class_type": "CLIPTextEncode"
+  },
+  {
+   "node": "184",
+   "display_node": "184",
+   "start": 1788688349.402443,
+   "dur": 0.0007216930389404297,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "183",
+   "display_node": "183",
+   "start": 1788688349.4031646,
+   "dur": 0.0009222030639648438,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "188",
+   "display_node": "188",
+   "start": 1788688349.4040868,
+   "dur": 0.0005440711975097656,
+   "class_type": "PrimitiveFloat"
+  },
+  {
+   "node": "189",
+   "display_node": "189",
+   "start": 1788688349.404631,
+   "dur": 0.0003895759582519531,
+   "class_type": "PrimitiveFloat"
+  },
+  {
+   "node": "191",
+   "display_node": "191",
+   "start": 1788688349.4050205,
+   "dur": 0.0005812644958496094,
+   "class_type": "ComfyMathExpression"
+  },
+  {
+   "node": "175",
+   "display_node": "175",
+   "start": 1788688349.4056017,
+   "dur": 0.0008943080902099609,
+   "class_type": "EmptyHunyuanLatentVideo"
+  },
+  {
+   "node": "187",
+   "display_node": "187",
+   "start": 1788688349.406496,
+   "dur": 0.0003304481506347656,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "179",
+   "display_node": "179",
+   "start": 1788688349.4068265,
+   "dur": 0.0002906322479248047,
+   "class_type": "PrimitiveInt"
+  },
+  {
+   "node": "185",
+   "display_node": "185",
+   "start": 1788688349.4071171,
+   "dur": 0.0002808570861816406,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "180",
+   "display_node": "180",
+   "start": 1788688349.407398,
+   "dur": 0.0002455711364746094,
+   "class_type": "PrimitiveInt"
+  },
+  {
+   "node": "186",
+   "display_node": "186",
+   "start": 1788688349.4076436,
+   "dur": 0.0005881786346435547,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "164",
+   "display_node": "164",
+   "start": 1788688349.4082317,
+   "dur": 0.18014812469482422,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "228",
+   "display_node": "228",
+   "start": 1788688349.5883799,
+   "dur": 0.00398707389831543,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "167",
+   "display_node": "167",
+   "start": 1788688349.592367,
+   "dur": 0.16307473182678223,
+   "class_type": "LoraLoaderModelOnly"
+  },
+  {
+   "node": "184",
+   "display_node": "184",
+   "start": 1788688349.7554417,
+   "dur": 0.00037288665771484375,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "168",
+   "display_node": "168",
+   "start": 1788688349.7558146,
+   "dur": 0.0010523796081542969,
+   "class_type": "ModelSamplingSD3"
+  },
+  {
+   "node": "165",
+   "display_node": "165",
+   "start": 1788688349.756867,
+   "dur": 0.1781907081604004,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "229",
+   "display_node": "229",
+   "start": 1788688349.9350576,
+   "dur": 0.004786014556884766,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "166",
+   "display_node": "166",
+   "start": 1788688349.9398437,
+   "dur": 0.17003822326660156,
+   "class_type": "LoraLoaderModelOnly"
+  },
+  {
+   "node": "183",
+   "display_node": "183",
+   "start": 1788688350.1098819,
+   "dur": 0.0005283355712890625,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "169",
+   "display_node": "169",
+   "start": 1788688350.1104102,
+   "dur": 0.0007281303405761719,
+   "class_type": "ModelSamplingSD3"
+  },
+  {
+   "node": "181",
+   "display_node": "181",
+   "start": 1788688350.1111383,
+   "dur": 0.0004353523254394531,
+   "class_type": "PrimitiveFloat"
+  },
+  {
+   "node": "187",
+   "display_node": "187",
+   "start": 1788688350.1115737,
+   "dur": 0.0003135204315185547,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "171",
+   "display_node": "171",
+   "start": 1788688350.1118872,
+   "dur": 40.8112735748291,
+   "class_type": "KSamplerAdvanced"
+  },
+  {
+   "node": "176",
+   "display_node": "176",
+   "start": 1788688390.9231608,
+   "dur": 40.53432846069336,
+   "class_type": "KSamplerAdvanced"
+  },
+  {
+   "node": "173",
+   "display_node": "173",
+   "start": 1788688431.4574893,
+   "dur": 11.549355745315552,
+   "class_type": "VAEDecode"
+  },
+  {
+   "node": "172",
+   "display_node": "172",
+   "start": 1788688443.006845,
+   "dur": 0.0012819766998291016,
+   "class_type": "CreateVideo"
+  },
+  {
+   "node": "225",
+   "display_node": "225",
+   "start": 1788688443.008127,
+   "dur": 2.9292993545532227,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "80",
+   "display_node": "80",
+   "start": 1788688445.9374263,
+   "dur": 0.7675747871398926,
+   "class_type": "SaveVideo"
+  }
+ ],
+ "step_stats": {
+  "171": {
+   "steps_observed": 2,
+   "max": 2,
+   "span_s": 8.580480098724365,
+   "s_per_step": 8.580480098724365,
+   "first_step_t": 1788688374.0619328,
+   "last_step_t": 1788688382.642413,
+   "class_type": "KSamplerAdvanced"
+  },
+  "176": {
+   "steps_observed": 2,
+   "max": 2,
+   "span_s": 8.4573974609375,
+   "s_per_step": 8.4573974609375,
+   "first_step_t": 1788688413.2162986,
+   "last_step_t": 1788688421.673696,
+   "class_type": "KSamplerAdvanced"
+  }
+ },
+ "gpu0_peak_alloc": 22717062656,
+ "gpu0_peak_reserved": 23601348608,
+ "gpu1_peak_alloc": 11462256640,
+ "gpu1_peak_reserved": 12924747776,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x00016780_phys_0": 13345853440.0,
+  "0x00000000_0x0001914D_phys_0": 24050483200.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 37157801984,
+  "swap_used": 1050378240,
+  "process_rss": 1190776832
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 21706903552,
+  "swap_used": 2714648576,
+  "process_rss": 15589584896
+ },
+ "outputs": [
+  {
+   "node": "80",
+   "kind": "images",
+   "filename": "ComfyUI_00001_.mp4",
+   "subfolder": "video",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_vramguard_115150\\output\\video\\ComfyUI_00001_.mp4",
+   "bytes": 1351396,
+   "sha256": "84d25970bd149cae6aeebcd38447275cd0a553c239813f55e731d175cdbd495b"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_vramguard_115150\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_vramguard_115150\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+  "DISABLE_ADDMM_CUDA_LT": null,
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788688322.5204918,
+ "t_done": 1788688447.3427086
+}
