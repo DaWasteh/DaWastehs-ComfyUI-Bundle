@@ -1041,7 +1041,18 @@ tracked = subprocess.run(
     encoding="utf-8",
 ).stdout.splitlines()
 manifest_files = manifest.get("files")
-if not isinstance(manifest_files, list) or set(manifest_files) != set(tracked):
+if not isinstance(manifest_files, list):
+    raise SystemExit("Deployment manifest does not match the Git-tracked source file set")
+# Manifest v1 fuehrt reine Pfade, v2 Objekte mit path + sha256.
+manifest_paths = set()
+for item in manifest_files:
+    if isinstance(item, str):
+        manifest_paths.add(item)
+    elif isinstance(item, dict) and isinstance(item.get("path"), str):
+        manifest_paths.add(item["path"])
+    else:
+        raise SystemExit("Deployment manifest has an unreadable file entry")
+if manifest_paths != set(tracked):
     raise SystemExit("Deployment manifest does not match the Git-tracked source file set")
 
 for relative in tracked:
