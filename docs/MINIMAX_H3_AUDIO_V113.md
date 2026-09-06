@@ -125,8 +125,11 @@ Anschließend derselbe Graph mit allen drei zurückgenommenen Einstellungen:
 | `ref_exact` (Fehlerzustand) | −0,3 dB | 28,7 % |
 | `ref_vendor` (3a + 3b + 3c zurückgenommen) | **−2,7 dB** | 22,6 % |
 
-**Verbesserung: 2,4 dB** im kontrollierten Paar (gleiche Eingaben, gleicher Seed) — real, aber
-weit entfernt von den −28…−29 dB der guten Läufe.
+**Verbesserung: 2,4 dB** im kontrollierten Paar (gleiche Eingaben, gleicher Seed).
+
+> **Später relativiert (Abschnitt 8c):** Der HF-Abstand streut allein durch den Seed um ±7 dB.
+> Diese 2,4 dB liegen damit innerhalb der Streuung und sind **kein belastbarer Effektnachweis**.
+> Der Fix ist durch die Hörabnahme bestätigt, nicht durch diese Zahl.
 
 ### Wichtige Einschränkung dieser Zahl
 
@@ -184,6 +187,75 @@ stellen. Der zuverlässige Standardpfad hat Vorrang, die Beschleunigung ist doku
 5. **Geräteaufteilung:** Bei CLIP auf `gpu:1` lädt der 26-GB-Textencoder auf der 16-GB-Karte nur
    teilweise (gemessen: 10 374 MB geladen, 15 508 MB ausgelagert). Das ist ein
    Performance-Befund, kein belegter Audio-Befund.
+
+## 8. Nacharbeit v1.1.4 (2026-09-06, nach der Hörabnahme)
+
+Die Hörabnahme ergab: hörbar besser, Stimme aber weiterhin roboterhaft. Vier Nachmessungen auf der
+isolierten Bench-Instanz — und eine wichtige Korrektur an der Methodik.
+
+### 8a · Turbo-LoRA endgültig entlastet
+
+Der Nutzer hat `MiniMax_H3_00002_` (Turbo, 8 Schritte) gegen `00003_` (kein Turbo, 20 Schritte)
+gehört: **beide klingen gut.** Damit ist die Turbo-Destillation auch perzeptiv ausgeschlossen,
+obwohl ihr HNR um 1,2 dB niedriger liegt. Ein Turbo-Qualitätsschalter wurde deshalb **nicht**
+gebaut — er hätte ein Problem gelöst, das nicht existiert.
+
+### 8b · Geräteaufteilung erzeugt bitidentisches Audio
+
+Kontrollierter Dreiervergleich, identische Eingaben und Seed, 8 s:
+
+| Variante | Audio |
+|---|---|
+| `M0` offizielle Konfiguration (kein MultiGPU, kein SigmaShift) | Referenz |
+| `M1` = M0 + `DaWMultiGPUDeviceControl` (gpu:0/1/1) | **bitidentisch zu M0** |
+| `M2` = M1 + `MiniMaxH3SigmaShift(12.0, 3.0)` | **bitidentisch zu M0** |
+
+Geprüft per SHA-256 über die dekodierten PCM-Daten. Die Geräteaufteilung und der SigmaShift-Knoten
+mit Hersteller-Werten sind für das Audio **exakte No-ops**.
+
+**Damit ist der Audiopfad unserer Workflows nach v1.1.3 byte-für-byte der offizielle Pfad.** Ein
+Pipeline-Defekt existiert an dieser Stelle nicht mehr.
+
+### 8c · Methodische Korrektur: der HF-Abstand ist seed-abhängig
+
+Test des Seitenverhältnisses (Hochformat 480×864 gegen Querformat 864×480, sonst alles gleich),
+zwei unabhängige Seeds:
+
+| | Seed A | Seed B |
+|---|---|---|
+| Hochformat | −26,5 dB | −19,8 dB |
+| Querformat | −19,2 dB | −26,5 dB |
+
+Vollständige Umkehr. Der HF-Abstand streut allein durch den Seed um **±7 dB**.
+
+Daraus folgen zwei Dinge:
+
+1. Das Seitenverhältnis ist **nicht** die Ursache.
+2. **Die in Abschnitt 4 berichtete Verbesserung von 2,4 dB liegt innerhalb dieser Streuung** und ist
+   damit *kein* belastbarer Effektnachweis. Der v1.1.3-Fix bleibt trotzdem richtig — er ist durch
+   die Hörabnahme des Nutzers bestätigt und durch die Rücknahme dokumentierter Abweichungen von der
+   Hersteller-Referenz begründet, nicht durch diese Zahl.
+
+Einzelmessungen von Rauschkennzahlen über verschiedene Denoising-Trajektorien sind für diese Frage
+untauglich. Belastbar sind nur bitidentische Vergleiche (8b) oder Hörabnahmen.
+
+### 8d · Was als Ursache übrig bleibt
+
+Der beanstandete Vergleich ist in vier Punkten unkontrolliert: **anderer Seed**
+(271828182845904 gegen 757358688076805), **anderes Referenzbild**, **andere Dauer** (11 s gegen
+13 s) und **anderes Seitenverhältnis**. Nur der Prompt ist byteidentisch.
+
+Ungeprüft ist bisher die **Bild-Vorverarbeitung**: Der offizielle Graph reicht `LoadImage` direkt an
+`MiniMaxH3ImageToVideo`, unser FL2VA-Workflow schiebt `PixaromaLongestSide` → `PixaromaSwitchWH` →
+`PixaromaResizeCrop` dazwischen. H3 ist bild-konditioniert; ein anderer Bildausschnitt ändert die
+Konditionierung und damit die erzeugte Stimme. Das ist der nächste konkrete Testpunkt.
+
+### Nächster Test
+
+Unseren **echten** FL2VA-Workflow gegen den offiziellen Graphen laufen lassen, mit identischem
+Bild, Seed, Dauer und Zielauflösung. Ist das Ergebnis bitidentisch, liegt kein Workflow-Defekt mehr
+vor und die Unterschiede stammen ausschliesslich aus den Eingaben. Weicht es ab, ist die
+Vorverarbeitungskette die Ursache.
 
 ## 7. Nicht gemacht
 

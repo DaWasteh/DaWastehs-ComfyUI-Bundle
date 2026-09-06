@@ -53,9 +53,28 @@ Vergleich `00002_`/`00003_` belegt einen identischen *Rauschboden* (0,6 dB) — 
 über *Klangfarbe und Prosodie*, also genau die Größen, die „roboterhaft" beschreibt. `00002_`
 (Turbo an, 8 Schritte) wurde nie bewertet; dieser Hörvergleich kostet nichts und entscheidet.
 
+### Nacharbeit v1.1.4 (2026-09-06, nach der Hörabnahme)
+
+- **Turbo-LoRA endgültig entlastet.** Der Nutzer hat `00002_` (Turbo) gegen `00003_` (kein Turbo)
+  gehört: beide klingen gut. Ein Turbo-Qualitätsschalter wurde deshalb **nicht** gebaut.
+- **Geräteaufteilung und SigmaShift sind exakte No-ops.** Kontrollierter Dreiervergleich bei
+  identischen Eingaben: offizielle Konfiguration, + `DaWMultiGPUDeviceControl`, + `MiniMaxH3SigmaShift`
+  (12.0/3.0) liefern **bitidentisches** Audio (SHA-256 über die dekodierten PCM-Daten). Der Audiopfad
+  unserer Workflows ist nach v1.1.3 byte-für-byte der offizielle.
+- **Methodische Korrektur:** Der HF-Abstand streut allein durch den Seed um ±7 dB (Seitenverhältnis-
+  Test kehrte sich beim zweiten Seed vollständig um). Die früher berichteten 2,4 dB für den
+  v1.1.3-Fix liegen **innerhalb dieser Streuung** und sind kein belastbarer Effektnachweis; der Fix
+  bleibt durch die Hörabnahme und die Rücknahme dokumentierter Abweichungen begründet.
+- **Verbleibende Unterschiede sind Eingaben, nicht Pipeline:** anderer Seed, anderes Referenzbild,
+  andere Dauer, anderes Seitenverhältnis. Nur der Prompt war identisch.
+
 ### Offen / nächste Schritte
 
-1. **v1.1.4: Klangfarbe statt Rauschboden.** Hörvergleich `MiniMax_H3_00002_` (Turbo, 8 Schritte)
+1. **Bild-Vorverarbeitung prüfen (nächster konkreter Test).** Der offizielle Graph reicht
+   `LoadImage` direkt an `MiniMaxH3ImageToVideo`; unser FL2VA-Workflow schiebt `PixaromaLongestSide`
+   → `PixaromaSwitchWH` → `PixaromaResizeCrop` dazwischen. H3 ist bild-konditioniert. Test: echter
+   FL2VA-Workflow gegen offiziellen Graphen bei identischem Bild, Seed, Dauer und Auflösung —
+   bitidentisch bedeutet kein Defekt mehr, Abweichung bedeutet Vorverarbeitung als Ursache. Hörvergleich `MiniMax_H3_00002_` (Turbo, 8 Schritte)
    gegen `00003_` (kein Turbo, 20 Schritte) entscheidet, ob die Turbo-Destillation die
    Roboterstimme verursacht. Zusätzlich stimmspezifische Metriken (Harmonic-to-Noise-Ratio,
    Formantstruktur, Jitter/Shimmer) statt reiner Rauschbodenmessung.
