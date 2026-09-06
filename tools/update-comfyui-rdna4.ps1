@@ -714,7 +714,7 @@ function Initialize-UpdateLog {
 
 function Write-Log {
     param(
-        [Parameter(Mandatory = $true)][string] $Message,
+        [Parameter(Mandatory = $true)][AllowEmptyString()][string] $Message,
         [string] $Level = "INFO",
         [System.ConsoleColor] $Color = [System.ConsoleColor]::Gray
     )
