@@ -871,7 +871,21 @@ Write-Host "============================================================" -Foreg
 Write-Host "Update eigene DaWasteh Workflows und Custom Nodes" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor DarkCyan
 
-Update-GitRepository $OwnRepo
+# v1.1.3: Im Trockenlauf wird nichts geholt; ohne konfiguriertes Upstream (z. B. auf einem
+# lokalen Release-Kandidaten-Branch) wird der Pull uebersprungen statt abzubrechen.
+if ($DryRun) {
+    Write-DryRun "wuerde das Bundle-Repository aktualisieren: $OwnRepo"
+}
+else {
+    & git -C $OwnRepo rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null | Out-Null
+    if ($LASTEXITCODE -eq 0) {
+        Update-GitRepository $OwnRepo
+    }
+    else {
+        Write-Log ("Kein Upstream fuer den aktuellen Branch in $OwnRepo; " +
+                   "es wird der lokale Stand ausgeliefert.") -Level "WARN"
+    }
+}
 Assert-CleanOwnRepository
 $DeploymentCommit = & git -C $OwnRepo rev-parse --verify HEAD
 if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($DeploymentCommit)) {
