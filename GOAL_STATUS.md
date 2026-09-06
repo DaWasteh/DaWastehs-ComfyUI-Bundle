@@ -78,7 +78,7 @@ Vergleich `00002_`/`00003_` belegt einen identischen *Rauschboden* (0,6 dB) — 
 
 ### Offen / nächste Schritte
 
-1. **Hörvergleich A/B/C** unter `L:\ComfyUI\ComfyUI\outputideo\_v114_hoervergleich\`.
+1. **Hörvergleich A/B/C** unter `L:\ComfyUI\ComfyUI\output\video\_v114_hoervergleich\`.
    A = offizieller Graph, B = unser Workflow mit identischen Eingaben, C = unser Workflow im
    16:9-Querformat. A↔B beantwortet, ob noch ein Workflow-Unterschied hörbar ist; B↔C, ob das
    16:9-Format der Talking-Head-Workflows Stimmqualität kostet.
