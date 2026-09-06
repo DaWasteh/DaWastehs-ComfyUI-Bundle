@@ -71,7 +71,12 @@ Auftrag: `COMFYUI_RDNA4_GOAL.md` (5. September 2026), zuletzt `COMFYUI_v1.1.3_Ar
   `-LogPath`, `-RestoreFrom`, `-IncludeUpstream`, `-UpdateDependencies`, `-Force`), Logdatei,
   Trockenlauf, Wiederherstellung über `restore-map.json`, Manifest v2 mit SHA-256 je Datei und
   daraus abgeleiteter Schutz persönlich veränderter Dateien, Alt→Neu-Bericht. Pauschale
-  `pip install --upgrade`-Läufe und Upstream-Pulls sind jetzt Opt-in.
+  `pip install --upgrade`-Läufe und Upstream-Pulls wurden hier zu Opt-in gemacht.
+  **Korrigiert in v1.1.6 (2026-09-06):** Das Opt-in war nicht beauftragt und ließ den
+  Standardaufruf über die `.bat` ComfyUI-Core, Pixaroma, Spectrum und pip/torch ungeändert.
+  Beides ist wieder Standard; `-SkipUpstream` und `-SkipDependencies` schalten es gezielt ab.
+  `-ReleaseVersion` folgt ohne Angabe dem neuesten erreichbaren Tag statt einem fest
+  eingetragenen `v1.1.3`.
 - **Prüfungen grün:** pytest 279 bestanden (1 übersprungen), `validate_workflows.py` plain und
   `--against-head` je 0 Fehler, beide Migrationswerkzeuge idempotent, PowerShell-Syntaxprüfung OK.
 

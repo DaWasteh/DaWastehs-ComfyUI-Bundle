@@ -3,17 +3,19 @@
     Uebernimmt die freigegebenen Projektdateien dieses Repositories in eine ComfyUI-Installation.
 
 .DESCRIPTION
-    Synchronisiert ausschliesslich die eigenen Workflows und Node-Packs aus dem Bundle-Repository.
-    Modelle, input/, output/, Zugangsdaten, private Einstellungen und fremde Custom Nodes werden
-    nie angefasst. Upstream-Repositories und pip-Abhaengigkeiten werden nur auf ausdrueckliche
-    Anforderung aktualisiert (-IncludeUpstream / -UpdateDependencies).
+    Aktualisiert im Standardlauf ComfyUI-Core, Pixaroma und Spectrum MiniMax H3 per Fast-Forward,
+    die Python-/Torch-/ROCm-Abhaengigkeiten sowie die eigenen Workflows und Node-Packs aus dem
+    Bundle-Repository. Modelle, input/, output/, Zugangsdaten und private Einstellungen werden
+    nie angefasst. Mit -SkipUpstream bzw. -SkipDependencies lassen sich die Upstream-Pulls und
+    die pip-Aktualisierung gezielt auslassen (v1.1.3 bis v1.1.5 waren beide faelschlich Opt-in).
 
 .PARAMETER ComfyUIRoot
     Wurzel der ComfyUI-Installation (enthaelt ComfyUI\ und .venv\). Standard: L:\ComfyUI
 
 .PARAMETER ReleaseVersion
     Erwartete Release-Version. Das Skript prueft vor jedem Schreibzugriff, dass der
-    Bundle-Checkout diese Version tatsaechlich enthaelt. Standard: v1.1.3
+    Bundle-Checkout diese Version tatsaechlich enthaelt. Ohne Angabe wird der neueste
+    von HEAD erreichbare Tag des Bundle-Checkouts verwendet.
 
 .PARAMETER DryRun
     Trockenlauf: zeigt jede Aktion an, schreibt und loescht aber nichts.
@@ -24,12 +26,12 @@
 .PARAMETER RestoreFrom
     Stellt einen frueheren Lauf aus dessen Backup-Verzeichnis wieder her und beendet sich danach.
 
-.PARAMETER IncludeUpstream
-    Zusaetzlich ComfyUI-Core, Pixaroma und Spectrum per Fast-Forward aktualisieren.
+.PARAMETER SkipUpstream
+    ComfyUI-Core, Pixaroma und Spectrum NICHT aktualisieren (Standard: werden aktualisiert).
 
-.PARAMETER UpdateDependencies
-    Zusaetzlich pip/torch/requirements aktualisieren. Ohne diesen Schalter bleibt die
-    funktionierende Python-/Torch-/ROCm-Umgebung unangetastet.
+.PARAMETER SkipDependencies
+    pip/torch/requirements NICHT aktualisieren (Standard: werden aktualisiert). Die Qwen3-TTS-
+    und DirectML-Pins werden trotzdem angewendet.
 
 .PARAMETER Force
     Ueberschreibt auch Dateien, die seit dem letzten Lauf lokal veraendert wurden.
@@ -39,19 +41,25 @@
 .EXAMPLE
     .\update-comfyui-rdna4.ps1
 .EXAMPLE
+    .\update-comfyui-rdna4.ps1 -SkipUpstream -SkipDependencies
+.EXAMPLE
     .\update-comfyui-rdna4.ps1 -RestoreFrom "L:\ComfyUI\_update_backups\20260906-171500"
 #>
 [CmdletBinding()]
 param(
     [string] $ComfyUIRoot = "L:\ComfyUI",
-    [string] $ReleaseVersion = "v1.1.3",
+    [string] $ReleaseVersion = "",
     [switch] $DryRun,
     [string] $LogPath,
     [string] $RestoreFrom,
-    [switch] $IncludeUpstream,
-    [switch] $UpdateDependencies,
+    [switch] $SkipUpstream,
+    [switch] $SkipDependencies,
     [switch] $Force
 )
+
+# v1.1.6: Upstream-Pulls und pip-Updates sind wieder Standard; die Schalter sind Opt-out.
+$IncludeUpstream = -not $SkipUpstream
+$UpdateDependencies = -not $SkipDependencies
 
 # ============================================================
 # ComfyUI RDNA4 SAFE Update Script
@@ -700,12 +708,12 @@ function Initialize-UpdateLog {
     $header = @(
         "=== DaWasteh ComfyUI Bundle Update ===",
         "Zeit:        $((Get-Date).ToString('o'))",
-        "Release:     $ReleaseVersion",
+        "Release:     $(if ([string]::IsNullOrWhiteSpace($ReleaseVersion)) { '(neuester Tag)' } else { $ReleaseVersion })",
         "ComfyUIRoot: $Root",
         "Bundle:      $OwnRepo",
         "DryRun:      $($DryRun.IsPresent)",
-        "Upstream:    $($IncludeUpstream.IsPresent)",
-        "Deps:        $($UpdateDependencies.IsPresent)",
+        "Upstream:    $IncludeUpstream",
+        "Deps:        $UpdateDependencies",
         "Force:       $($Force.IsPresent)",
         ""
     )
@@ -737,7 +745,15 @@ function Write-DryRun {
 function Assert-ReleaseVersion {
     <#  Prueft, dass der Bundle-Checkout die angeforderte Release-Version wirklich enthaelt,
         bevor irgendetwas geschrieben wird. Akzeptiert den Tag selbst oder einen Nachfahren. #>
-    if ([string]::IsNullOrWhiteSpace($ReleaseVersion)) { return }
+    if ([string]::IsNullOrWhiteSpace($ReleaseVersion)) {
+        $latestTag = & git -C $OwnRepo describe --tags --abbrev=0 --match "v*" 2>$null
+        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($latestTag)) {
+            Write-Log "Kein Release-Tag im Bundle-Checkout erreichbar; HEAD wird ohne Versionspruefung uebernommen." -Level "WARN"
+            return
+        }
+        $script:ReleaseVersion = ([string]$latestTag).Trim()
+        Write-Log "Release-Version aus dem neuesten Tag bestimmt: $ReleaseVersion" -Color DarkGray
+    }
     $tagExists = & git -C $OwnRepo tag --list $ReleaseVersion
     if ($LASTEXITCODE -eq 0 -and ![string]::IsNullOrWhiteSpace($tagExists)) {
         & git -C $OwnRepo merge-base --is-ancestor $ReleaseVersion HEAD 2>$null
@@ -808,8 +824,8 @@ function Report-WorkflowMigration {
     Write-Log "Abgeloeste Workflows dieses Releases (Alt -> Neu):" -Color Cyan
     foreach ($old in $WorkflowMigrationMap.Keys) {
         $installedOld = Join-Path $WorkflowTarget ($old -replace '/', '\')
-        $state = if (Test-Path -LiteralPath $installedOld -PathType Leaf) { "installiert" } else { "nicht vorhanden" }
-        Write-Log ("  {0}`n      -> {1}   [{2}]" -f $old, $WorkflowMigrationMap[$old], $state) -Color DarkGray
+        $state = if (Test-Path -LiteralPath $installedOld -PathType Leaf) { "alt noch installiert, wird entfernt" } else { "alt bereits entfernt" }
+        Write-Log ("  {0}   [{2}]`n      -> {1}" -f $old, $WorkflowMigrationMap[$old], $state) -Color DarkGray
     }
 }
 
@@ -846,7 +862,7 @@ Remove-LegacyOwnRepository
 
 if ($IncludeUpstream) {
     Write-Log ""
-    Write-Log "=== Update ComfyUI Core (angefordert mit -IncludeUpstream) ===" -Color Cyan
+    Write-Log "=== Update ComfyUI Core ===" -Color Cyan
     if ($DryRun) { Write-DryRun "wuerde ComfyUI-Core per Fast-Forward aktualisieren: $Repo" }
     else { Update-GitRepository $Repo }
 
@@ -863,7 +879,7 @@ if ($IncludeUpstream) {
 else {
     Write-Log ""
     Write-Log ("ComfyUI-Core und fremde Node-Packs bleiben unveraendert " +
-               "(mit -IncludeUpstream mitaktualisieren).") -Color DarkGray
+               "(-SkipUpstream angegeben).") -Color DarkGray
 }
 
 Write-Host ""
@@ -932,19 +948,19 @@ if ($script:SkippedUserFiles.Count -gt 0) {
     Write-Log "Mit -Force werden diese Dateien ueberschrieben (vorher wird gesichert)." -Color DarkYellow
 }
 
-# v1.1.3: Die funktionierende Python-/Torch-/ROCm-Umgebung bleibt unangetastet.
-# Pauschale Upgrades laufen nur noch auf ausdrueckliche Anforderung (-UpdateDependencies).
+# v1.1.6: pip/torch/requirements werden standardmaessig aktualisiert; -SkipDependencies laesst
+# die funktionierende Python-/Torch-/ROCm-Umgebung unangetastet.
 if (-not $UpdateDependencies) {
     Write-Log ""
-    Write-Log ("Python-/Torch-/ROCm-Umgebung bleibt unveraendert. " +
-               "Abhaengigkeiten mit -UpdateDependencies aktualisieren.") -Color DarkGray
+    Write-Log ("Python-/Torch-/ROCm-Umgebung bleibt unveraendert " +
+               "(-SkipDependencies angegeben).") -Color DarkGray
 }
 elseif ($DryRun) {
     Write-DryRun "wuerde pip/wheel/setuptools, torch[device-gfx1201], torchvision, torchaudio und die requirements aktualisieren"
 }
 else {
     Write-Log ""
-    Write-Log "=== Update Python Basis (angefordert mit -UpdateDependencies) ===" -Color Cyan
+    Write-Log "=== Update Python Basis ===" -Color Cyan
     Invoke-NativeCommand $PythonExe "-m" "pip" "install" "--upgrade" "pip" "wheel" "setuptools<82"
 
     Write-Log ""
@@ -968,6 +984,10 @@ foreach ($nodeName in ($(if ($UpdateDependencies -and -not $DryRun) { $ChangedCu
 }
 if ($ChangedCustomNodeNames.Count -eq 0) {
     Write-Host "Keine eigenen Custom Nodes geaendert; deren requirements werden uebersprungen." -ForegroundColor DarkGreen
+}
+elseif (-not $UpdateDependencies) {
+    Write-Log ("requirements der geaenderten eigenen Custom Nodes werden wegen -SkipDependencies " +
+               "nicht installiert: " + ($ChangedCustomNodeNames -join ", ")) -Level "WARN"
 }
 
 # Apply these pins last because several Qwen3-TTS node packs otherwise upgrade
@@ -1133,8 +1153,10 @@ if ($DryRun) {
     Write-Log "Trockenlauf fertig. Es wurde nichts geschrieben, geloescht oder installiert." -Color Green
 }
 else {
-    $upstreamNote = if ($IncludeUpstream) { "Pixaroma und Spectrum MiniMax H3 wurden direkt von GitHub aktualisiert." }
-                    else { "ComfyUI-Core und fremde Node-Packs blieben unveraendert." }
-    Write-Log "Update fertig. Nur geaenderte Workflows und eigene Custom Nodes wurden aus $OwnRepo synchronisiert; $upstreamNote" -Color Green
+    $upstreamNote = if ($IncludeUpstream) { "ComfyUI-Core, Pixaroma und Spectrum MiniMax H3 wurden per Fast-Forward von GitHub aktualisiert." }
+                    else { "ComfyUI-Core und fremde Node-Packs blieben unveraendert (-SkipUpstream)." }
+    $depsNote = if ($UpdateDependencies) { "pip/torch/requirements wurden aktualisiert." }
+                else { "Python-Umgebung blieb unveraendert (-SkipDependencies)." }
+    Write-Log "Update fertig. Geaenderte Workflows und eigene Custom Nodes wurden aus $OwnRepo synchronisiert; $upstreamNote $depsNote" -Color Green
 }
 Write-Log "Logdatei: $($script:LogFile)" -Color DarkGray

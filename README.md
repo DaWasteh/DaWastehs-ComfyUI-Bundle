@@ -75,6 +75,8 @@ Der maschinenlesbare Abschluss-Audit liegt hier:
 
 Die versionierten Startdateien `tools/update-comfyui-rdna4.ps1` und `tools/update-comfyui-rdna4.bat` gehören nach `L:/ComfyUI/`. Der Batch-Aufruf bleibt unverändert; vor dem Update müssen die ComfyUI-Server auf Port 8188 und 8189 beendet sein.
 
+Der Standardaufruf über die `.bat` aktualisiert alles: ComfyUI-Core, Pixaroma und Spectrum MiniMax H3 per Fast-Forward, pip/torch/requirements sowie die eigenen Workflows und Node-Packs. Mit `-SkipUpstream` bleiben Core und fremde Node-Packs unverändert, mit `-SkipDependencies` bleibt die Python-/Torch-/ROCm-Umgebung unverändert; `-DryRun` zeigt nur an, was passieren würde. In v1.1.3 bis v1.1.5 waren Upstream- und Abhängigkeits-Updates versehentlich Opt-in (`-IncludeUpstream`/`-UpdateDependencies`); seit v1.1.6 sind sie wieder Standard.
+
 Der Updater verwendet jetzt den vorhandenen Hauptklon `L:/GitHub/DaWastehs-ComfyUI-Bundle` direkt. Dieser Klon muss vor und nach dem Fast-Forward-Pull sauber sein, damit ausschließlich der eindeutig zu `HEAD` gehörende Inhalt verteilt wird. Der frühere Nebenklon `L:/GitHub/DaWasteh ComfyUI Nodes` wird nicht mehr erzeugt; ein vorhandener alter Klon wird nur dann automatisch entfernt, wenn sein Remote eindeutig dem früheren Repository entspricht und sein Arbeitsbaum einschließlich ungetrackter und ignorierter Dateien vollständig leer ist.
 
 Eigene Inhalte werden inkrementell nach `L:/ComfyUI/ComfyUI/user/default/workflows/DaWasteh` und `L:/ComfyUI/ComfyUI/custom_nodes/` synchronisiert:
