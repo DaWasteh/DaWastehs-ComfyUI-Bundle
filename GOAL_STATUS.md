@@ -12,7 +12,7 @@ Auftrag: `COMFYUI_RDNA4_GOAL.md` (5. September 2026), zuletzt `COMFYUI_v1.1.3_Ar
 | Benchmark-Runs (Server-Jobs, selbst gestartet) | 116 + 24 (Durchlauf 2; davon 4 kontrollierte OOM-/Watchdog-Abbrüche); alle Testserver beendet |
 | Testbereiche gemessen | **6 / 6** (Bild, WAN 2.2, LTX 2.5, Musik, MiniMax H3, LoRA-Training) |
 
-## Durchlauf 3 (2026-09-06) — MiniMax-H3-Audiofix, Konsolidierung, Update-Skript (v1.1.3-RC)
+## Durchlauf 3 (2026-09-06) — MiniMax-H3-Audiofix, Konsolidierung, Update-Skript (v1.1.3)
 
 **Auftrag:** `COMFYUI_v1.1.3_Arbeitsauftrag.md`. Details der Audiountersuchung:
 [docs/MINIMAX_H3_AUDIO_V113.md](docs/MINIMAX_H3_AUDIO_V113.md).
@@ -42,16 +42,23 @@ Auftrag: `COMFYUI_RDNA4_GOAL.md` (5. September 2026), zuletzt `COMFYUI_v1.1.3_Ar
 - **Prüfungen grün:** pytest 279 bestanden (1 übersprungen), `validate_workflows.py` plain und
   `--against-head` je 0 Fehler, beide Migrationswerkzeuge idempotent, PowerShell-Syntaxprüfung OK.
 
-### Release-Blocker (bewusst kein v1.1.3-Tag)
+### Hörabnahme: Teilerfolg, v1.1.4 folgt
 
-Der Audiofix ist **reproduziert, aber nicht ausreichend verifiziert**: 2,4 dB Verbesserung im
-kontrollierten Paar sind belegt, die Hörabnahme steht aus, und der FL2VA-Fall (die eigentliche
-Stimm-Beschwerde) konnte nicht mehr gemessen werden. Nach §9 des Auftrags bleibt es deshalb bei
-einem Release-Kandidaten ohne Tag.
+Hörabnahme durch den Nutzer am 2026-09-06: **„Fix ist definitiv besser, aber immer noch eine
+roboterhafte Stimme im Vergleich zum offiziellen Workflow."** Der Fix ist damit als Verbesserung
+bestätigt und wurde auf Anweisung als **v1.1.3 veröffentlicht**; das Problem ist aber nicht gelöst.
+
+Der wichtigste noch ungeprüfte Verdacht ist die **8-Schritt-Turbo-Destillation**. Der kontrollierte
+Vergleich `00002_`/`00003_` belegt einen identischen *Rauschboden* (0,6 dB) — er sagt aber nichts
+über *Klangfarbe und Prosodie*, also genau die Größen, die „roboterhaft" beschreibt. `00002_`
+(Turbo an, 8 Schritte) wurde nie bewertet; dieser Hörvergleich kostet nichts und entscheidet.
 
 ### Offen / nächste Schritte
 
-1. **Hörabnahme** der beiden Vergleichsdateien unter `performance/rdna4/raw/h3audio/output/repro/`.
+1. **v1.1.4: Klangfarbe statt Rauschboden.** Hörvergleich `MiniMax_H3_00002_` (Turbo, 8 Schritte)
+   gegen `00003_` (kein Turbo, 20 Schritte) entscheidet, ob die Turbo-Destillation die
+   Roboterstimme verursacht. Zusätzlich stimmspezifische Metriken (Harmonic-to-Noise-Ratio,
+   Formantstruktur, Jitter/Shimmer) statt reiner Rauschbodenmessung.
 2. **FL2VA messen** (`P0_fl_exact` / `P4_fl_vendor`) — braucht freien Host-Speicher; der 26-GB-
    Textencoder kollidiert mit paralleler Nutzerarbeit (Commit-Limit bei 48 GB RAM).
 3. **Dominante Ursache des Ref2VA-Rauschbodens** isolieren: Referenzaudio als Conditioning,

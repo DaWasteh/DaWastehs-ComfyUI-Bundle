@@ -4,9 +4,12 @@ Untersuchung vom 6. September 2026 zur Beobachtung: „Der offizielle Template-W
 Ton, unsere REF- und FL-Workflows erzeugen blechernen, artefaktbehafteten Ton; die Stimme klingt
 robotisch." Diese Seite hält fest, was **belegt**, was **gemessen** und was **offen** ist.
 
-> **Abnahme offen.** Die Hörabnahme konnte mit den hier verfügbaren Werkzeugen nicht durchgeführt
-> werden. Es wurde kein Hörtest gemacht. Alle Aussagen unten stützen sich auf den tatsächlichen
-> Code, die eingebetteten Ausführungsgraphen und objektive Signalmessungen.
+> **Hörabnahme durchgeführt (Nutzer, 2026-09-06):** „Fix ist definitiv besser, aber immer noch
+> eine roboterhafte Stimme im Vergleich zum offiziellen Workflow." Der Fix ist damit als
+> Verbesserung bestätigt, das Problem aber **nicht gelöst**. Die Weiterarbeit läuft unter v1.1.4.
+>
+> Ich selbst habe keinen Hörtest durchgeführt; alle Messwerte unten stammen aus dem tatsächlichen
+> Code, den eingebetteten Ausführungsgraphen und objektiven Signalmessungen.
 
 ## 1. Vergleichsbasis: die Graphen stammen aus den Dateien selbst
 
@@ -166,9 +169,12 @@ stellen. Der zuverlässige Standardpfad hat Vorrang, die Beschleunigung ist doku
 
 ## 6. Offene Punkte
 
-1. **Hörabnahme steht aus.** Bitte die Vergleichsdateien anhören:
-   - Fehlerzustand: `performance/rdna4/raw/h3audio/output/repro/ref_exact_00001_.mp4`
-   - Mit Fix: `performance/rdna4/raw/h3audio/output/repro/ref_vendor_00001_.mp4`
+1. **Hörabnahme erfolgt, Restproblem bestätigt.** Der Fix ist hörbar besser, die Stimme klingt
+   aber weiterhin roboterhaft gegenüber der offiziellen Referenz. Weiterarbeit: v1.1.4.
+   Der wichtigste noch ungeprüfte Verdacht ist die **8-Schritt-Turbo-Destillation**: Der
+   kontrollierte Vergleich `00002_`/`00003_` zeigt einen identischen *Rauschboden* (0,6 dB), sagt
+   aber nichts über *Klangfarbe und Prosodie* — genau die Größen, die „roboterhaft" beschreibt.
+   `MiniMax_H3_00002_` (Turbo an, 8 Schritte) wurde vom Nutzer nie bewertet.
 2. **FL2VA-Fall ungemessen.** Der Stimm-Fall ist der eigentlich relevante und wurde nicht mehr
    verifiziert (Host-Speicher). Vorbereitet und lauffähig: `P0_fl_exact` / `P4_fl_vendor`.
 3. **Dominante Ursache des Ref2VA-Rauschbodens unbekannt.** Die drei zurückgenommenen
