@@ -303,5 +303,86 @@ class IncrementalUpdateRuntimeTests(unittest.TestCase):
         self.assertIn("Incremental updater runtime checks passed", completed.stdout)
 
 
+    def test_restore_from_backup_and_user_modified_file_detection(self) -> None:
+        """v1.1.3: Rueckweg ueber restore-map.json und Schutz lokal veraenderter Dateien."""
+        harness = textwrap.dedent(
+            r"""
+            param(
+                [Parameter(Mandatory = $true)][string] $ScriptPath,
+                [Parameter(Mandatory = $true)][string] $TemporaryRoot
+            )
+            $ErrorActionPreference = "Stop"
+
+            $tokens = $null; $errors = $null
+            $ast = [System.Management.Automation.Language.Parser]::ParseFile($ScriptPath, [ref]$tokens, [ref]$errors)
+            if ($errors.Count -gt 0) { throw ($errors -join "`n") }
+            $functionNames = @("Get-Sha256", "Assert-NoReparsePoints", "Assert-SafeRepositoryPath",
+                               "Resolve-SafeTargetFile", "Backup-ChangedFile", "Write-Log", "Write-DryRun",
+                               "Test-UserModifiedFile", "Restore-FromBackup")
+            $definitions = $ast.FindAll({
+                param($node)
+                $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and
+                    $functionNames -contains $node.Name
+            }, $true)
+            if ($definitions.Count -ne $functionNames.Count) { throw "Nicht alle v1.1.3-Funktionen gefunden." }
+            foreach ($definition in $definitions) { Invoke-Expression $definition.Extent.Text }
+
+            $DryRun = $false
+            $Force = $false
+            $script:LogFile = $null
+            $script:PreviousManifestHashes = @{}
+            $BackupRoot = Join-Path $TemporaryRoot "backups"
+            $target = Join-Path $TemporaryRoot "target"
+            New-Item -ItemType Directory -Path $target -Force | Out-Null
+
+            # --- Rueckweg: Datei sichern, veraendern, wiederherstellen ---
+            $file = Join-Path $target "workflow.json"
+            Set-Content -LiteralPath $file -Value '{"original":true}' -Encoding UTF8
+            $originalHash = Get-Sha256 -Path $file
+            Backup-ChangedFile -Path $file -BackupGroup "workflows" -RelativeFile "workflow.json"
+            if (!(Test-Path -LiteralPath (Join-Path $BackupRoot "restore-map.json"))) { throw "restore-map.json fehlt" }
+            Set-Content -LiteralPath $file -Value '{"replaced":true}' -Encoding UTF8
+            if ((Get-Sha256 -Path $file) -eq $originalHash) { throw "Datei wurde nicht ersetzt" }
+            Restore-FromBackup -BackupDirectory $BackupRoot
+            if ((Get-Sha256 -Path $file) -ne $originalHash) { throw "Wiederherstellung hat das Original nicht zurueckgebracht" }
+
+            # --- Erkennung lokaler Aenderungen ---
+            $tracked = "workflows/workflow.json"
+            $script:PreviousManifestHashes[$tracked] = $originalHash
+            # unveraendert gegenueber dem ausgelieferten Stand -> darf ueberschrieben werden
+            if (Test-UserModifiedFile -TargetFile $file -TrackedFile $tracked -CurrentHash "deadbeef") {
+                throw "Unveraenderte Datei faelschlich als lokal veraendert erkannt"
+            }
+            # lokal veraendert -> muss geschuetzt werden
+            Set-Content -LiteralPath $file -Value '{"user":"edited"}' -Encoding UTF8
+            if (!(Test-UserModifiedFile -TargetFile $file -TrackedFile $tracked -CurrentHash "deadbeef")) {
+                throw "Lokale Aenderung wurde nicht erkannt"
+            }
+            # entspricht bereits dem neuen Stand -> keine Kollision
+            $newHash = Get-Sha256 -Path $file
+            if (Test-UserModifiedFile -TargetFile $file -TrackedFile $tracked -CurrentHash $newHash) {
+                throw "Datei auf neuem Stand faelschlich als Konflikt gemeldet"
+            }
+            # ohne Vergleichsstand im Manifest ist nichts entscheidbar -> nicht blockieren
+            $script:PreviousManifestHashes.Remove($tracked)
+            if (Test-UserModifiedFile -TargetFile $file -TrackedFile $tracked -CurrentHash "deadbeef") {
+                throw "Ohne Manifest-Hash darf keine lokale Aenderung behauptet werden"
+            }
+            Write-Output "OK"
+            """
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            harness_path = Path(directory) / "harness.ps1"
+            harness_path.write_text(harness, encoding="utf-8")
+            completed = subprocess.run(
+                ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass",
+                 "-File", str(harness_path), "-ScriptPath", str(SCRIPT), "-TemporaryRoot", directory],
+                capture_output=True, text=True,
+            )
+            self.assertEqual(completed.returncode, 0,
+                             msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}")
+            self.assertIn("OK", completed.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()
