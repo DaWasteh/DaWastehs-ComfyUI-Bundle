@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from tools.integrate_pixaroma_prompts import MARK, apply, sha
 from tools.validate_workflows import rect, overlaps, validate_integration_delta
+from tools.consolidate_workflows_v113 import ADDED_PATHS as V113_ADDED_PATHS
 
 MANIFEST_PATH = ROOT / "tools" / "pixaroma_prompt_manifest.json"
 LIBRARY_PATH = ROOT / "prompt-libraries" / "DaWasteh-Pixaroma-Prompt-Library.json"
@@ -39,7 +40,8 @@ class PixaromaIntegrationTests(unittest.TestCase):
     def test_manifest_exactly_covers_collection_and_head_hashes(self):
         paths = {path.relative_to(ROOT).as_posix() for path in (ROOT / "workflows").rglob("*.json")}
         manifest_paths = [entry["path"] for entry in self.manifest["entries"]]
-        self.assertEqual(self.manifest["workflow_count"], 186)
+        # v1.1.3: 3 General-Prompt-Enhancer -> 1, Ref2VA-Dublette entfernt
+        self.assertEqual(self.manifest["workflow_count"], 184)
         self.assertEqual(len(manifest_paths), len(set(manifest_paths)))
         self.assertTrue(set(manifest_paths) <= paths)
         generated_unmanaged = {
@@ -74,7 +76,6 @@ class PixaromaIntegrationTests(unittest.TestCase):
                 "workflows/Music Generation/YuE_7B-INT8_R9700-Music-Generation.json",
                 "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json",
-                "workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_Picture_and_Video_to_Video_LOCAL.json",
                 "workflows/Reference to Video/MiniMax_H3_Spectrum_RefImage_Audio_to_Video_OriginalAudio_AutoLength.json",
@@ -104,7 +105,17 @@ class PixaromaIntegrationTests(unittest.TestCase):
             self.assertIn(entry["action"], {"integrate", "skip"})
             self.assertTrue(entry["reason"])
             self.assertEqual(entry["action"] == "integrate", bool(entry.get("targets") or entry.get("pauses")))
-            before = head_json(ROOT / entry["path"])
+            try:
+                before = head_json(ROOT / entry["path"])
+            except subprocess.CalledProcessError:
+                # Noch nicht in HEAD: nur fuer die in diesem Release neu erzeugten Workflows
+                # zulaessig (gleiche Regel wie der Additions-Zweig in validate_workflows.py).
+                self.assertIn(
+                    entry["path"].removeprefix("workflows/"), V113_ADDED_PATHS, entry["path"]
+                )
+                self.assertEqual(entry.get("targets"), [], entry["path"])
+                self.assertFalse(entry.get("pauses"), entry["path"])
+                continue
             nodes = {node["id"]: node for node in before["nodes"]}
             for target in entry.get("targets", []):
                 node = nodes[target["node_id"]]

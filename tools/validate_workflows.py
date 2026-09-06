@@ -31,6 +31,14 @@ try:
     from tools.upgrade_v095 import addition_sources as v095_addition_sources
     from tools.upgrade_v111 import MARKER_KEY as V111_MARKER_KEY, MARKER_VERSION as V111_MARKER_VERSION, apply as v111_apply
     from tools.upgrade_v112 import MARKER_KEY as V112_MARKER_KEY, MARKER_VERSION as V112_MARKER_VERSION, apply as v112_apply
+    from tools.upgrade_v113 import MARKER_KEY as V113_MARKER_KEY, MARKER_VERSION as V113_MARKER_VERSION, apply as v113_apply
+    from tools.consolidate_workflows_v113 import (
+        ADDED_PATHS as V113_ADDED_PATHS,
+        REMOVED_PATHS as V113_REMOVED_PATHS,
+        TARGET_PATH as V113_TARGET_PATH,
+        TARGET_SOURCE as V113_TARGET_SOURCE,
+        build_target as build_v113_target,
+    )
 except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows.py
     from refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
     from integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
@@ -51,6 +59,14 @@ except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows
     from upgrade_v095 import addition_sources as v095_addition_sources
     from upgrade_v111 import MARKER_KEY as V111_MARKER_KEY, MARKER_VERSION as V111_MARKER_VERSION, apply as v111_apply
     from upgrade_v112 import MARKER_KEY as V112_MARKER_KEY, MARKER_VERSION as V112_MARKER_VERSION, apply as v112_apply
+    from upgrade_v113 import MARKER_KEY as V113_MARKER_KEY, MARKER_VERSION as V113_MARKER_VERSION, apply as v113_apply
+    from consolidate_workflows_v113 import (
+        ADDED_PATHS as V113_ADDED_PATHS,
+        REMOVED_PATHS as V113_REMOVED_PATHS,
+        TARGET_PATH as V113_TARGET_PATH,
+        TARGET_SOURCE as V113_TARGET_SOURCE,
+        build_target as build_v113_target,
+    )
 
 BLACKLIST = ("cudaexecutionprovider", "nunchaku", "svdq", "nvfp4", "tensorrt", "xformers", "flash_attn")
 BASELINE_REF = "HEAD"
@@ -587,9 +603,14 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
     v111_key = _path_key(path).removeprefix("workflows/")
     # v1.1.2 (LoRA trainer memory fix): the v112 marker additionally selects the v112 form on top.
     has_v112 = current.get("extra", {}).get(V112_MARKER_KEY, {}).get("version") == V112_MARKER_VERSION
+    # v1.1.3 (MiniMax-H3-Audiofix): the v113 marker selects the v113 form on top of v112.
+    has_v113 = current.get("extra", {}).get(V113_MARKER_KEY, {}).get("version") == V113_MARKER_VERSION
+
+    def _v113(graph: dict[str, Any]) -> dict[str, Any]:
+        return v113_apply(graph, v111_key) if has_v113 else graph
 
     def _v112(graph: dict[str, Any]) -> dict[str, Any]:
-        return v112_apply(graph, v111_key) if has_v112 else graph
+        return _v113(v112_apply(graph, v111_key) if has_v112 else graph)
 
     if current.get("extra", {}).get(V111_MARKER_KEY, {}).get("version") == V111_MARKER_VERSION:
         def _v111(graph: dict[str, Any]) -> dict[str, Any]:
@@ -732,10 +753,12 @@ def main() -> int:
             if not path.startswith("workflows/Dual GPU - R9700 + RX 9070 XT/")
             and path not in {f"workflows/{key}" for key in DELETED_PATHS}
             and path not in {f"workflows/{key}" for key in V093_SOURCE_WORKFLOWS}
+            and path not in {f"workflows/{key}" for key in V113_REMOVED_PATHS}
         }
         expected_paths.update(f"workflows/{addition.path}" for addition in ADDITIONS)
         expected_paths.update(f"workflows/{target.path}" for target in V093_TARGET_WORKFLOWS)
         expected_paths.update(f"workflows/{target}" for target in v095_addition_sources())
+        expected_paths.update(f"workflows/{key}" for key in V113_ADDED_PATHS)
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
@@ -819,12 +842,25 @@ def main() -> int:
                         totals["old_links"] += sum(
                             len(graph.get("links", []) or []) for _, graph in graph_locator(source)
                         )
+                    elif key == V113_TARGET_PATH:
+                        # v1.1.3: aus einer der drei abgeloesten Enhancer-Quellen deterministisch erzeugt
+                        source = git_ref_json(f"workflows/{V113_TARGET_SOURCE}")
+                        if build_v113_target(source) != workflow:
+                            errors.append(f"{path}: differs from deterministic v1.1.3 consolidation")
+                        totals["old_nodes"] += sum(
+                            len(graph.get("nodes", [])) for _, graph in graph_locator(source)
+                        )
+                        totals["old_links"] += sum(
+                            len(graph.get("links", []) or []) for _, graph in graph_locator(source)
+                        )
                     else:
                         errors.append(f"{path}: unexpected workflow absent from {BASELINE_REF}")
                 errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    expected = {"files": 234, "graphs": 287, "nodes": 10453, "notes": 4759, "links": 7211, "timers": 215}  # v1.1.1: +6 links (WAN I2V pos/neg rewiring)
+    # v1.1.3: -3 Dateien (3 General-Prompt-Enhancer -> 1, Ref2VA-Dublette entfernt), also
+    # -3 Graphen/-53 Notizen/-68 Links/-3 Timer und -118 Knoten gegenueber v1.1.2.
+    expected = {"files": 231, "graphs": 284, "nodes": 10335, "notes": 4706, "links": 7143, "timers": 212}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

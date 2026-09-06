@@ -33,9 +33,10 @@ class H3TurboWorkflowTests(unittest.TestCase):
                 sigma = next(node for node in nodes if node["type"] == "MiniMaxH3SigmaShift")
                 sampler = next(node for node in nodes if node["type"] == "KSamplerSelect")
                 scheduler = next(node for node in nodes if node["type"] == "BasicScheduler")
-                self.assertEqual(sigma["widgets_values"], [12.0, 4.0])
-                self.assertEqual(sampler["widgets_values"], ["euler"])
-                self.assertEqual(scheduler["widgets_values"][:2], ["beta", 8])
+                # v1.1.3: Audio-Sigma zurueck auf den Hersteller-Default 3.0 (Audiofix, tools/upgrade_v113.py)
+                self.assertEqual(sigma["widgets_values"], [12.0, 3.0])
+                self.assertEqual(sampler["widgets_values"], ["res_multistep"])
+                self.assertEqual(scheduler["widgets_values"][:2], ["simple", 8])
                 marker = workflow["extra"]["dawasteh_h3_turbo_lora"]
                 self.assertEqual(marker["sha256"], LORA_SHA256)
                 self.assertEqual(marker["sampling"]["steps"], 8)
@@ -62,7 +63,8 @@ class H3TurboWorkflowTests(unittest.TestCase):
         director = next(node for node in workflow["nodes"] if node["type"] == "DaWH3MusicVideoDirectorDualGPU")
         values = director["widgets_values"]
         self.assertEqual(values[12], 8)
-        self.assertEqual(values[31:35], [12.0, 4.0, "euler", "beta"])
+        # v1.1.3 Audiofix: Hersteller-Sigma/Sampler auch im Director (tools/upgrade_v113.py)
+        self.assertEqual(values[31:35], [12.0, 3.0, "res_multistep", "simple"])
         self.assertEqual(workflow["extra"]["dawasteh_h3_turbo_lora"]["lora_name"], LORA_NAME)
 
     def test_turbo_integrator_is_idempotent_on_release_files(self):

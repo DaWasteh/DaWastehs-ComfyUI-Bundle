@@ -44,7 +44,10 @@ class IncrementalUpdateRuntimeTests(unittest.TestCase):
                 "Remove-EmptyParentDirectories",
                 "Install-GitTrackedDirectory",
                 "Update-InstalledUpdater",
-                "Export-SyncManifest"
+                "Export-SyncManifest",
+                "Write-Log",
+                "Write-DryRun",
+                "Test-UserModifiedFile"
             )
             $definitions = $ast.FindAll({
                 param($node)
@@ -61,6 +64,15 @@ class IncrementalUpdateRuntimeTests(unittest.TestCase):
             $OwnRepo = Join-Path $TemporaryRoot "repo"
             $target = Join-Path $TemporaryRoot "target"
             $BackupRoot = Join-Path $TemporaryRoot "backups"
+            # v1.1.3: Schalter und Sammler, die der Sync-Kern jetzt kennt.
+            $DryRun = $false
+            $Force = $false
+            $ReleaseVersion = "v1.1.3"
+            $script:LogFile = $null
+            $script:DeployedHashes = @{}
+            $script:PreviousManifestHashes = @{}
+            $script:SkippedUserFiles = [System.Collections.Generic.List[string]]::new()
+            $WorkflowMigrationMap = [ordered]@{}
             $PreviousManifestFiles = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
             $AllDeployedFiles = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
             $BackupCreated = $false

@@ -37,7 +37,8 @@ class H3WorkflowSerializationTests(unittest.TestCase):
         self.assertEqual(values[15], "fixed")
         self.assertIs(values[16], True)
         self.assertEqual(values[17:21], [14.0, 18.0, "medium", "mkv"])
-        self.assertEqual(values[31:35], [12.0, 4.0, "euler", "beta"])
+        # v1.1.3 Audiofix: Hersteller-Sigma/Sampler (tools/upgrade_v113.py)
+        self.assertEqual(values[31:35], [12.0, 3.0, "res_multistep", "simple"])
         self.assertEqual(values[-5:-3], ["identity lock (recommended)", True])
         self.assertEqual(values[-3:], ["gpu:0", "gpu:1", "gpu:1"])
 

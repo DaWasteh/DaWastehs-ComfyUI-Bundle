@@ -1,3 +1,58 @@
+<#
+.SYNOPSIS
+    Uebernimmt die freigegebenen Projektdateien dieses Repositories in eine ComfyUI-Installation.
+
+.DESCRIPTION
+    Synchronisiert ausschliesslich die eigenen Workflows und Node-Packs aus dem Bundle-Repository.
+    Modelle, input/, output/, Zugangsdaten, private Einstellungen und fremde Custom Nodes werden
+    nie angefasst. Upstream-Repositories und pip-Abhaengigkeiten werden nur auf ausdrueckliche
+    Anforderung aktualisiert (-IncludeUpstream / -UpdateDependencies).
+
+.PARAMETER ComfyUIRoot
+    Wurzel der ComfyUI-Installation (enthaelt ComfyUI\ und .venv\). Standard: L:\ComfyUI
+
+.PARAMETER ReleaseVersion
+    Erwartete Release-Version. Das Skript prueft vor jedem Schreibzugriff, dass der
+    Bundle-Checkout diese Version tatsaechlich enthaelt. Standard: v1.1.3
+
+.PARAMETER DryRun
+    Trockenlauf: zeigt jede Aktion an, schreibt und loescht aber nichts.
+
+.PARAMETER LogPath
+    Logdatei. Standard: <ComfyUIRoot>\logs\update-<Zeitstempel>.log
+
+.PARAMETER RestoreFrom
+    Stellt einen frueheren Lauf aus dessen Backup-Verzeichnis wieder her und beendet sich danach.
+
+.PARAMETER IncludeUpstream
+    Zusaetzlich ComfyUI-Core, Pixaroma und Spectrum per Fast-Forward aktualisieren.
+
+.PARAMETER UpdateDependencies
+    Zusaetzlich pip/torch/requirements aktualisieren. Ohne diesen Schalter bleibt die
+    funktionierende Python-/Torch-/ROCm-Umgebung unangetastet.
+
+.PARAMETER Force
+    Ueberschreibt auch Dateien, die seit dem letzten Lauf lokal veraendert wurden.
+
+.EXAMPLE
+    .\update-comfyui-rdna4.ps1 -DryRun
+.EXAMPLE
+    .\update-comfyui-rdna4.ps1
+.EXAMPLE
+    .\update-comfyui-rdna4.ps1 -RestoreFrom "L:\ComfyUI\_update_backups\20260906-171500"
+#>
+[CmdletBinding()]
+param(
+    [string] $ComfyUIRoot = "L:\ComfyUI",
+    [string] $ReleaseVersion = "v1.1.3",
+    [switch] $DryRun,
+    [string] $LogPath,
+    [string] $RestoreFrom,
+    [switch] $IncludeUpstream,
+    [switch] $UpdateDependencies,
+    [switch] $Force
+)
+
 # ============================================================
 # ComfyUI RDNA4 SAFE Update Script
 # Root: L:\ComfyUI
@@ -17,7 +72,7 @@
 
 $ErrorActionPreference = "Stop"
 
-$Root = "L:\ComfyUI"
+$Root = $ComfyUIRoot
 $Repo = Join-Path $Root "ComfyUI"
 $PythonExe = Join-Path $Root ".venv\Scripts\python.exe"
 $TorchIndex = "https://rocm.nightlies.amd.com/whl-multi-arch/"
@@ -54,6 +109,7 @@ $BackupCreated = $false
 $PreviousManifestFiles = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
 $AllDeployedFiles = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
 $DeploymentCommit = $null
+$script:DeployedHashes = @{}
 
 function Invoke-NativeCommand {
     param(
@@ -388,6 +444,18 @@ function Backup-ChangedFile {
     New-Item -ItemType Directory -Path (Split-Path -Parent $backupTarget) -Force | Out-Null
     Copy-Item -LiteralPath $Path -Destination $backupTarget -Force
     $script:BackupCreated = $true
+    # v1.1.3: Zuordnung Backup -> Originalpfad, damit -RestoreFrom automatisch zurueckspielen kann.
+    $mapPath = Join-Path $BackupRoot "restore-map.json"
+    $entries = @()
+    if (Test-Path -LiteralPath $mapPath -PathType Leaf) {
+        $entries = @((Get-Content -LiteralPath $mapPath -Raw | ConvertFrom-Json).entries)
+    }
+    $entries += [pscustomobject]@{
+        backup   = (Join-Path $BackupGroup $RelativeFile)
+        original = $Path
+    }
+    [pscustomobject]@{ version = 1; created = (Get-Date).ToString("o"); entries = $entries } |
+        ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $mapPath -Encoding UTF8
 }
 
 function Remove-EmptyParentDirectories {
@@ -431,6 +499,7 @@ function Install-GitTrackedDirectory {
     $changed = 0
     $unchanged = 0
     $removed = 0
+    $skipped = 0
 
     foreach ($trackedFile in $trackedFiles) {
         if (!$trackedFile.StartsWith($prefix, [StringComparison]::Ordinal)) {
@@ -449,19 +518,29 @@ function Install-GitTrackedDirectory {
         $temporaryBlob = [IO.Path]::GetTempFileName()
         try {
             Export-GitBlob -BlobId $blobId -Destination $temporaryBlob
+            $sourceHash = Get-Sha256 -Path $temporaryBlob
+            $script:DeployedHashes[$trackedFile] = $sourceHash
             $isIdentical = $false
             if (Test-Path -LiteralPath $targetFile -PathType Leaf) {
-                $sourceInfo = Get-Item -LiteralPath $temporaryBlob
-                $targetInfo = Get-Item -LiteralPath $targetFile
-                if ($sourceInfo.Length -eq $targetInfo.Length) {
-                    $sourceHash = Get-Sha256 -Path $temporaryBlob
-                    $targetHash = Get-Sha256 -Path $targetFile
-                    $isIdentical = $sourceHash -eq $targetHash
-                }
+                $isIdentical = ((Get-Sha256 -Path $targetFile) -eq $sourceHash)
             }
 
             if ($isIdentical) {
                 $unchanged++
+                continue
+            }
+
+            # v1.1.3: persoenlich veraenderte Dateien nicht ungefragt ueberschreiben.
+            if (!$Force -and (Test-UserModifiedFile -TargetFile $targetFile -TrackedFile $trackedFile -CurrentHash $sourceHash)) {
+                Write-Log ("Uebersprungen (lokal veraendert): $targetFile") -Level "WARN"
+                [void]$script:SkippedUserFiles.Add($targetFile)
+                $skipped++
+                continue
+            }
+
+            if ($DryRun) {
+                Write-DryRun "wuerde schreiben: $targetFile"
+                $changed++
                 continue
             }
 
@@ -482,6 +561,21 @@ function Install-GitTrackedDirectory {
         $relativeFile = $previousFile.Substring($prefix.Length).Replace('/', '\')
         $targetFile = Resolve-SafeTargetFile -TargetRoot $Target -RelativeFile $relativeFile
         if (Test-Path -LiteralPath $targetFile -PathType Leaf) {
+            # v1.1.3: abgeloeste, aber persoenlich veraenderte Dateien bleiben liegen.
+            $previousHash = $script:PreviousManifestHashes[$previousFile]
+            if (!$Force -and ![string]::IsNullOrWhiteSpace($previousHash) -and
+                (Get-Sha256 -Path $targetFile) -ne $previousHash) {
+                $replacement = $WorkflowMigrationMap[($previousFile -replace '^workflows/', '')]
+                $hint = if ($replacement) { " Ersatz: $replacement" } else { "" }
+                Write-Log ("Nicht geloescht (lokal veraendert): $targetFile.$hint") -Level "WARN"
+                [void]$script:SkippedUserFiles.Add($targetFile)
+                continue
+            }
+            if ($DryRun) {
+                Write-DryRun "wuerde entfernen: $targetFile"
+                $removed++
+                continue
+            }
             Backup-ChangedFile -Path $targetFile -BackupGroup $BackupGroup -RelativeFile $relativeFile
             Remove-Item -LiteralPath $targetFile -Force
             Remove-EmptyParentDirectories -TargetRoot $Target -RemovedFile $targetFile
@@ -489,7 +583,7 @@ function Install-GitTrackedDirectory {
         }
     }
 
-    Write-Host "Synchronisiert: $changed geaendert, $removed entfernt, $unchanged unveraendert -> $Target" -ForegroundColor Green
+    Write-Log "Synchronisiert: $changed geaendert, $removed entfernt, $unchanged unveraendert, $skipped uebersprungen -> $Target" -Color Green
     return [pscustomobject]@{
         Changed = $changed
         Removed = $removed
@@ -526,9 +620,16 @@ function Import-SyncManifest {
         return
     }
     $manifest = Get-Content -LiteralPath $SyncManifestPath -Raw | ConvertFrom-Json
-    foreach ($path in @($manifest.files)) {
-        if ($path -is [string]) {
-            [void]$script:PreviousManifestFiles.Add($path)
+    foreach ($entry in @($manifest.files)) {
+        if ($entry -is [string]) {
+            # Manifest v1: nur Pfade, keine Hashes -> keine Erkennung eigener Aenderungen moeglich
+            [void]$script:PreviousManifestFiles.Add($entry)
+        }
+        elseif ($entry -and $entry.path) {
+            [void]$script:PreviousManifestFiles.Add([string]$entry.path)
+            if ($entry.sha256) {
+                $script:PreviousManifestHashes[[string]$entry.path] = [string]$entry.sha256
+            }
         }
     }
 }
@@ -543,18 +644,172 @@ function Export-SyncManifest {
         if ([string]::IsNullOrWhiteSpace($DeploymentCommit)) {
             throw "Git-Commit fuer das Sync-Manifest wurde nicht festgelegt."
         }
+        $fileEntries = @()
+        foreach ($tracked in ($AllDeployedFiles | Sort-Object)) {
+            $entry = [ordered]@{ path = $tracked }
+            $hash = $script:DeployedHashes[$tracked]
+            if (![string]::IsNullOrWhiteSpace($hash)) { $entry["sha256"] = $hash }
+            $fileEntries += [pscustomobject]$entry
+        }
         $manifest = [ordered]@{
-            version = 1
+            version = 2
+            release = $ReleaseVersion
             source_repository = $OwnRepo
             source_commit = $DeploymentCommit
             updated_at = (Get-Date).ToString("o")
-            files = @($AllDeployedFiles | Sort-Object)
+            files = $fileEntries
         }
         $manifest | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $temporary -Encoding UTF8
         Move-Item -LiteralPath $temporary -Destination $SyncManifestPath -Force
     }
     finally {
         Remove-Item -LiteralPath $temporary -Force -ErrorAction SilentlyContinue
+    }
+}
+
+# ------------------------------------------------------------
+# v1.1.3: Logdatei, Trockenlauf, Versionspruefung, Wiederherstellung,
+#         Erkennung persoenlich veraenderter Dateien, Alt->Neu-Migration
+# ------------------------------------------------------------
+
+# Alt -> Neu fuer die in v1.1.3 abgeloesten, projektverwalteten Workflows.
+# Quelle: tools/consolidate_workflows_v113.py (MIGRATION_MAP).
+$WorkflowMigrationMap = [ordered]@{
+    "Prompt Enhancer/LLM_Gemma3_12B_General-Prompt-Enhancer.json"             = "Prompt Enhancer/LLM_General-Prompt-Enhancer.json"
+    "Prompt Enhancer/LLM_Gemma4_e4b_General-Prompt-Enhancer.json"             = "Prompt Enhancer/LLM_General-Prompt-Enhancer.json"
+    "Prompt Enhancer/LLM_Gemma4_e4b_abliterated_General-Prompt-Enhancer.json" = "Prompt Enhancer/LLM_General-Prompt-Enhancer.json"
+    "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json" = "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json"
+}
+
+$script:LogFile = $null
+$script:SkippedUserFiles = [System.Collections.Generic.List[string]]::new()
+$script:PreviousManifestHashes = @{}
+
+function Initialize-UpdateLog {
+    if ([string]::IsNullOrWhiteSpace($LogPath)) {
+        $logDir = Join-Path $Root "logs"
+        $script:LogFile = Join-Path $logDir ("update-{0}.log" -f (Get-Date -Format "yyyyMMdd-HHmmss"))
+    }
+    else {
+        $script:LogFile = $LogPath
+    }
+    $parent = Split-Path -Parent $script:LogFile
+    if ($parent -and !(Test-Path -LiteralPath $parent)) {
+        New-Item -ItemType Directory -Path $parent -Force | Out-Null
+    }
+    $header = @(
+        "=== DaWasteh ComfyUI Bundle Update ===",
+        "Zeit:        $((Get-Date).ToString('o'))",
+        "Release:     $ReleaseVersion",
+        "ComfyUIRoot: $Root",
+        "Bundle:      $OwnRepo",
+        "DryRun:      $($DryRun.IsPresent)",
+        "Upstream:    $($IncludeUpstream.IsPresent)",
+        "Deps:        $($UpdateDependencies.IsPresent)",
+        "Force:       $($Force.IsPresent)",
+        ""
+    )
+    Set-Content -LiteralPath $script:LogFile -Value $header -Encoding UTF8
+}
+
+function Write-Log {
+    param(
+        [Parameter(Mandatory = $true)][string] $Message,
+        [string] $Level = "INFO",
+        [System.ConsoleColor] $Color = [System.ConsoleColor]::Gray
+    )
+    $line = "[{0}] [{1}] {2}" -f (Get-Date -Format "HH:mm:ss"), $Level, $Message
+    if ($script:LogFile) {
+        Add-Content -LiteralPath $script:LogFile -Value $line -Encoding UTF8
+    }
+    switch ($Level) {
+        "WARN"   { Write-Warning $Message }
+        "ERROR"  { Write-Host $Message -ForegroundColor Red }
+        default  { Write-Host $Message -ForegroundColor $Color }
+    }
+}
+
+function Write-DryRun {
+    param([Parameter(Mandatory = $true)][string] $Message)
+    Write-Log -Message "TROCKENLAUF: $Message" -Level "DRY" -Color DarkYellow
+}
+
+function Assert-ReleaseVersion {
+    <#  Prueft, dass der Bundle-Checkout die angeforderte Release-Version wirklich enthaelt,
+        bevor irgendetwas geschrieben wird. Akzeptiert den Tag selbst oder einen Nachfahren. #>
+    if ([string]::IsNullOrWhiteSpace($ReleaseVersion)) { return }
+    $tagExists = & git -C $OwnRepo tag --list $ReleaseVersion
+    if ($LASTEXITCODE -eq 0 -and ![string]::IsNullOrWhiteSpace($tagExists)) {
+        & git -C $OwnRepo merge-base --is-ancestor $ReleaseVersion HEAD 2>$null
+        if ($LASTEXITCODE -ne 0) {
+            throw ("Der Bundle-Checkout enthaelt $ReleaseVersion nicht. " +
+                   "Erst 'git -C $OwnRepo pull' ausfuehren oder -ReleaseVersion anpassen.")
+        }
+        Write-Log "Release $ReleaseVersion ist im Checkout enthalten." -Color DarkGreen
+        return
+    }
+    # Tag noch nicht veroeffentlicht: Release-Kandidat aus dem Arbeitsstand zulassen, aber melden.
+    Write-Log ("Tag $ReleaseVersion existiert im Bundle-Repository noch nicht; " +
+               "es wird der aktuelle HEAD als Release-Kandidat uebernommen.") -Level "WARN"
+}
+
+function Test-UserModifiedFile {
+    <#  True, wenn die installierte Datei weder dem neuen Stand noch dem zuletzt
+        ausgelieferten Stand entspricht - also lokal veraendert wurde. #>
+    param(
+        [Parameter(Mandatory = $true)][string] $TargetFile,
+        [Parameter(Mandatory = $true)][string] $TrackedFile,
+        [Parameter(Mandatory = $true)][string] $CurrentHash
+    )
+    if (!(Test-Path -LiteralPath $TargetFile -PathType Leaf)) { return $false }
+    $previous = $script:PreviousManifestHashes[$TrackedFile]
+    if ([string]::IsNullOrWhiteSpace($previous)) { return $false }  # ohne Vergleichsstand nicht entscheidbar
+    $installed = Get-Sha256 -Path $TargetFile
+    return ($installed -ne $previous -and $installed -ne $CurrentHash)
+}
+
+function Restore-FromBackup {
+    param([Parameter(Mandatory = $true)][string] $BackupDirectory)
+    if (!(Test-Path -LiteralPath $BackupDirectory -PathType Container)) {
+        throw "Backup-Verzeichnis nicht gefunden: $BackupDirectory"
+    }
+    $mapPath = Join-Path $BackupDirectory "restore-map.json"
+    if (!(Test-Path -LiteralPath $mapPath -PathType Leaf)) {
+        throw ("Dieses Backup enthaelt keine restore-map.json und kann nicht automatisch " +
+               "zurueckgespielt werden: $BackupDirectory")
+    }
+    $entries = @((Get-Content -LiteralPath $mapPath -Raw | ConvertFrom-Json).entries)
+    $restored = 0
+    $missing = 0
+    foreach ($entry in $entries) {
+        $from = Join-Path $BackupDirectory $entry.backup
+        $to = $entry.original
+        if (!(Test-Path -LiteralPath $from -PathType Leaf)) { $missing++; continue }
+        if ($DryRun) {
+            Write-DryRun "wuerde wiederherstellen: $to"
+            $restored++
+            continue
+        }
+        $parent = Split-Path -Parent $to
+        if ($parent -and !(Test-Path -LiteralPath $parent)) {
+            New-Item -ItemType Directory -Path $parent -Force | Out-Null
+        }
+        Copy-Item -LiteralPath $from -Destination $to -Force
+        $restored++
+    }
+    Write-Log "Wiederherstellung: $restored Datei(en) zurueckgespielt, $missing fehlten im Backup." -Color Green
+    Write-Log "ComfyUI neu starten, damit der zurueckgespielte Stand geladen wird." -Color Yellow
+}
+
+function Report-WorkflowMigration {
+    <#  Meldet die Alt->Neu-Zuordnung fuer die in diesem Release abgeloesten Workflows.
+        Das eigentliche Entfernen erledigt die manifestbasierte Loeschlogik. #>
+    Write-Log "" 
+    Write-Log "Abgeloeste Workflows dieses Releases (Alt -> Neu):" -Color Cyan
+    foreach ($old in $WorkflowMigrationMap.Keys) {
+        $installedOld = Join-Path $WorkflowTarget ($old -replace '/', '\')
+        $state = if (Test-Path -LiteralPath $installedOld -PathType Leaf) { "installiert" } else { "nicht vorhanden" }
+        Write-Log ("  {0}`n      -> {1}   [{2}]" -f $old, $WorkflowMigrationMap[$old], $state) -Color DarkGray
     }
 }
 
@@ -572,26 +827,43 @@ Remove-Item Env:HIP_LAUNCH_BLOCKING -ErrorAction SilentlyContinue
 Remove-Item Env:CUDA_LAUNCH_BLOCKING -ErrorAction SilentlyContinue
 Remove-Item Env:PYTORCH_TUNABLEOP_ENABLED -ErrorAction SilentlyContinue
 
+Initialize-UpdateLog
+Write-Log "Logdatei: $($script:LogFile)" -Color DarkGray
+if ($DryRun) { Write-Log "TROCKENLAUF aktiv - es wird nichts geschrieben oder geloescht." -Color Yellow }
+
+if (![string]::IsNullOrWhiteSpace($RestoreFrom)) {
+    Write-Log "Wiederherstellungsmodus: $RestoreFrom" -Color Cyan
+    Assert-ComfyServersStopped
+    Restore-FromBackup -BackupDirectory $RestoreFrom
+    Write-Log "Fertig (Wiederherstellung)." -Color Green
+    return
+}
+
 Assert-ComfyServersStopped
 Assert-CanonicalOwnRepository
 Assert-CleanOwnRepository
 Remove-LegacyOwnRepository
 
-Write-Host ""
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "Update ComfyUI Core" -ForegroundColor Cyan
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Update-GitRepository $Repo
+if ($IncludeUpstream) {
+    Write-Log ""
+    Write-Log "=== Update ComfyUI Core (angefordert mit -IncludeUpstream) ===" -Color Cyan
+    if ($DryRun) { Write-DryRun "wuerde ComfyUI-Core per Fast-Forward aktualisieren: $Repo" }
+    else { Update-GitRepository $Repo }
 
-Write-Host ""
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "Update Pixaroma und Spectrum MiniMax H3 direkt von GitHub" -ForegroundColor Cyan
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Warn-PixaromaManagerCopies
-foreach ($trackedNode in $GitTrackedNodes) {
-    $trackedTarget = Join-Path (Join-Path $Repo "custom_nodes") $trackedNode.Name
-    Write-Host "GitHub-Node: $($trackedNode.Name)" -ForegroundColor DarkCyan
-    Ensure-GitDirectory -Path $trackedTarget -RepositoryUrl $trackedNode.Url
+    Write-Log ""
+    Write-Log "=== Update Pixaroma und Spectrum MiniMax H3 ===" -Color Cyan
+    Warn-PixaromaManagerCopies
+    foreach ($trackedNode in $GitTrackedNodes) {
+        $trackedTarget = Join-Path (Join-Path $Repo "custom_nodes") $trackedNode.Name
+        Write-Log "GitHub-Node: $($trackedNode.Name)" -Color DarkCyan
+        if ($DryRun) { Write-DryRun "wuerde aktualisieren: $trackedTarget" }
+        else { Ensure-GitDirectory -Path $trackedTarget -RepositoryUrl $trackedNode.Url }
+    }
+}
+else {
+    Write-Log ""
+    Write-Log ("ComfyUI-Core und fremde Node-Packs bleiben unveraendert " +
+               "(mit -IncludeUpstream mitaktualisieren).") -Color DarkGray
 }
 
 Write-Host ""
@@ -606,7 +878,9 @@ if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($DeploymentCommit)) {
     throw "Deployment-Commit konnte nicht festgelegt werden: $OwnRepo"
 }
 $DeploymentCommit = $DeploymentCommit.Trim()
-Update-InstalledUpdater
+Assert-ReleaseVersion
+Write-Log "Release $ReleaseVersion, Bundle-Commit $DeploymentCommit" -Color DarkGreen
+if ($DryRun) { Write-DryRun "wuerde den installierten Updater ersetzen" } else { Update-InstalledUpdater }
 Import-SyncManifest
 
 $workflowSync = Install-GitTrackedDirectory `
@@ -624,38 +898,55 @@ foreach ($nodeName in $CustomNodeNames) {
         $ChangedCustomNodeNames.Add($nodeName)
     }
 }
-Export-SyncManifest
+Report-WorkflowMigration
+if ($DryRun) { Write-DryRun "wuerde das Sync-Manifest schreiben: $SyncManifestPath" } else { Export-SyncManifest }
 
 if ($BackupCreated) {
-    Write-Host "Backup der wirklich geaenderten Dateien: $BackupRoot" -ForegroundColor Yellow
+    Write-Log "Backup der wirklich geaenderten Dateien: $BackupRoot" -Color Yellow
+    Write-Log ("Rueckweg: update-comfyui-rdna4.ps1 -RestoreFrom '" + $BackupRoot + "'") -Color Yellow
+}
+elseif ($DryRun) {
+    Write-Log "Trockenlauf beendet; es wurde nichts geschrieben." -Color Yellow
 }
 else {
-    Write-Host "Eigene Workflows und Nodes sind bereits aktuell; kein Backup notwendig." -ForegroundColor DarkGreen
+    Write-Log "Eigene Workflows und Nodes sind bereits aktuell; kein Backup notwendig." -Color DarkGreen
+}
+if ($script:SkippedUserFiles.Count -gt 0) {
+    Write-Log ""
+    Write-Log ("{0} Datei(en) wurden wegen lokaler Aenderungen NICHT angefasst:" -f $script:SkippedUserFiles.Count) -Level "WARN"
+    foreach ($f in $script:SkippedUserFiles) { Write-Log "    $f" -Color DarkYellow }
+    Write-Log "Mit -Force werden diese Dateien ueberschrieben (vorher wird gesichert)." -Color DarkYellow
 }
 
-Write-Host ""
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "Update Python Basis" -ForegroundColor Cyan
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Invoke-NativeCommand $PythonExe "-m" "pip" "install" "--upgrade" "pip" "wheel" "setuptools<82"
+# v1.1.3: Die funktionierende Python-/Torch-/ROCm-Umgebung bleibt unangetastet.
+# Pauschale Upgrades laufen nur noch auf ausdrueckliche Anforderung (-UpdateDependencies).
+if (-not $UpdateDependencies) {
+    Write-Log ""
+    Write-Log ("Python-/Torch-/ROCm-Umgebung bleibt unveraendert. " +
+               "Abhaengigkeiten mit -UpdateDependencies aktualisieren.") -Color DarkGray
+}
+elseif ($DryRun) {
+    Write-DryRun "wuerde pip/wheel/setuptools, torch[device-gfx1201], torchvision, torchaudio und die requirements aktualisieren"
+}
+else {
+    Write-Log ""
+    Write-Log "=== Update Python Basis (angefordert mit -UpdateDependencies) ===" -Color Cyan
+    Invoke-NativeCommand $PythonExe "-m" "pip" "install" "--upgrade" "pip" "wheel" "setuptools<82"
 
-Write-Host ""
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "Update PyTorch ROCm RDNA4 gfx1201" -ForegroundColor Cyan
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Invoke-NativeCommand $PythonExe "-m" "pip" "install" "--upgrade" "--no-cache-dir" "--index-url" $TorchIndex `
-    "torch[device-gfx1201]" `
-    "torchvision[device-gfx1201]" `
-    "torchaudio"
+    Write-Log ""
+    Write-Log "=== Update PyTorch ROCm RDNA4 gfx1201 ===" -Color Cyan
+    Invoke-NativeCommand $PythonExe "-m" "pip" "install" "--upgrade" "--no-cache-dir" "--index-url" $TorchIndex `
+        "torch[device-gfx1201]" `
+        "torchvision[device-gfx1201]" `
+        "torchaudio"
 
-Write-Host ""
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "Update ComfyUI + eigene Node-Abhaengigkeiten" -ForegroundColor Cyan
-Write-Host "============================================================" -ForegroundColor DarkCyan
-Invoke-NativeCommand $PythonExe "-m" "pip" "install" "-r" (Join-Path $Repo "requirements.txt")
-Invoke-NativeCommand $PythonExe "-m" "pip" "install" "-r" (Join-Path $Repo "manager_requirements.txt")
+    Write-Log ""
+    Write-Log "=== Update ComfyUI + eigene Node-Abhaengigkeiten ===" -Color Cyan
+    Invoke-NativeCommand $PythonExe "-m" "pip" "install" "-r" (Join-Path $Repo "requirements.txt")
+    Invoke-NativeCommand $PythonExe "-m" "pip" "install" "-r" (Join-Path $Repo "manager_requirements.txt")
+}
 
-foreach ($nodeName in $ChangedCustomNodeNames) {
+foreach ($nodeName in ($(if ($UpdateDependencies -and -not $DryRun) { $ChangedCustomNodeNames } else { @() }))) {
     $nodeRequirements = Join-Path $Repo "custom_nodes\$nodeName\requirements.txt"
     if (Test-Path -LiteralPath $nodeRequirements) {
         Invoke-NativeCommand $PythonExe "-m" "pip" "install" "-r" $nodeRequirements

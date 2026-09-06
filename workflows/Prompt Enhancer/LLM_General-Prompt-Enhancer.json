@@ -1,5 +1,5 @@
 {
-  "id": "ac551a8b-14cd-4fb1-ba39-8d72b575af93",
+  "id": "0a9e126d-2589-4195-b2f9-5264b4dedfdc",
   "revision": 0,
   "last_node_id": 13,
   "last_link_id": 4,
@@ -13,12 +13,11 @@
       ],
       "size": [
         400,
-        172
+        140
       ],
       "flags": {},
       "order": 0,
       "mode": 0,
-      "showAdvanced": true,
       "inputs": [
         {
           "localized_name": "clip_name",
@@ -60,14 +59,14 @@
           ]
         }
       ],
-      "title": "Gemma LLM (gemma)",
+      "title": "LLM-Auswahl — siehe Preset-Tabelle",
       "properties": {
         "Node name for S&R": "CLIPLoader",
         "cnr_id": "comfy-core",
         "ver": "0.3.68"
       },
       "widgets_values": [
-        "Gemma\\gemma4-e4b-it-abliterated_bf16.safetensors",
+        "Gemma\\gemma4_e4b_it_fp8_scaled.safetensors",
         "stable_diffusion",
         "default"
       ]
@@ -80,7 +79,7 @@
         80.0
       ],
       "size": [
-        438.3833312988281,
+        440,
         532
       ],
       "flags": {},
@@ -308,8 +307,8 @@
         80.0
       ],
       "size": [
-        440,
-        360
+        437.3333435058594,
+        458.6333312988281
       ],
       "flags": {},
       "order": 1,
@@ -323,7 +322,7 @@
         "ver": "0.3.68"
       },
       "widgets_values": [
-        "=== Gemma 3 12B abliterated Prompt-Gen ===\n\nAbliterated = weniger Refusals, freiere Prompt-Generierung.\nACHTUNG: Das ist eine LoRA-Datei — auf das Gemma-3-12B-Base\nanwenden (LoraLoader) ODER als gemergtes Modell laden.\nHier als Platzhalter; ggf. Base + diese LoRA kombinieren.\n\n\n\nWandelt eine kurze Idee in einen ausgearbeiteten Bild-/Video-Prompt.\nDen System-Prompt oben anpassen; die 'User idea:'-Zeile ist dein Input.\n\nSettings (TextGenerate):\n- max_tokens 2048\n- temperature 0.7 (hoeher = kreativer, 0.3 = praeziser)\n- top_k 64, top_p 0.95\n\nWorkflow-Idee: Output per PreviewAny kopieren und in den\nCLIPTextEncode deines Bild-/Video-Workflows einfuegen.\n(Oder STRING-Output direkt in einen Encode verdrahten.)\n\nNative ComfyUI LLM-Unterstuetzung (TextGenerate-Node).\nGemma ist gut fuer natuerlichsprachige, kohaerente Prompts."
+        "=== General Prompt Enhancer ===\n\nEin Workflow, drei LLM-Presets. Modell im CLIPLoader (Node 1)\nwaehlen; passenden `type` aus der Preset-Tabelle uebernehmen.\n\nWandelt eine kurze Idee in einen ausgearbeiteten Bild-/Video-Prompt."
       ],
       "color": "#653",
       "bgcolor": "#432"
@@ -333,7 +332,7 @@
       "type": "MarkdownNote",
       "pos": [
         40.0,
-        480.0
+        580.0
       ],
       "size": [
         400,
@@ -344,14 +343,14 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "📥 Modelle & Downloads",
+      "title": "MODELLAUSWAHL — General Prompt Enhancer",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
         "ver": "0.3.68"
       },
       "widgets_values": [
-        "**Gemma 3 12B abliterated**\n\n- LoRA: `Gemma/gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors`\n- auf Gemma-3-12B-Base anwenden\n\nFreiere Prompt-Gen (weniger Refusals)."
+        "# MODELLAUSWAHL — General Prompt Enhancer\n\nEin Workflow fuer alle drei LLMs. Das Modell wird im **CLIPLoader (Node 1)** gewaehlt.\n\n> **Wichtig:** `type` gehoert zum Modell und muss mitgesetzt werden.\n\n| Modell | `clip_name` | `type` |\n|---|---|---|\n| Gemma 4 e4B FP8 (Standard) | `Gemma/gemma4_e4b_it_fp8_scaled.safetensors` | `stable_diffusion` |\n| Gemma 3 12B FP8 (hoechste Qualitaet) | `Gemma/gemma_3_12B_it_fp8_e4m3fn.safetensors` | `ltxv` |\n| Gemma 4 e4B abliterated BF16 (ungefiltert) | `Gemma/gemma4-e4b-it-abliterated_bf16.safetensors` | `stable_diffusion` |\n\n**Hinweise**\n\n- *Gemma 4 e4B FP8 (Standard)* — Klein und schnell; Standard fuer zuegige Prompt-Iteration auf wenig VRAM.\n- *Gemma 3 12B FP8 (hoechste Qualitaet)* — Groesstes Modell, beste Prompt-Qualitaet, mehr VRAM. Zugleich der LTX-2.3-Textencoder.\n- *Gemma 4 e4B abliterated BF16 (ungefiltert)* — Wie der Standard, ohne Inhaltsfilter des Basismodells.\n\nSystemprompt, Sampling-Einstellungen und Ein-/Ausgabeformat sind fuer alle drei Modelle\nidentisch; ersetzt die frueheren Einzelworkflows `LLM_Gemma3_12B_`, `LLM_Gemma4_e4b_` und `LLM_Gemma4_e4b_abliterated_General-Prompt-Enhancer`."
       ],
       "color": "#222",
       "bgcolor": "#111"
@@ -361,7 +360,7 @@
       "type": "PixaromaRunTimer",
       "pos": [
         40.0,
-        820.0
+        920.0
       ],
       "size": [
         226,
@@ -415,7 +414,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Gemma LLM (gemma) · Node 1\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `Gemma\\gemma4-e4b-it-abliterated_bf16.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `stable_diffusion` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · Gemma LLM (gemma) · Node 1\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `Gemma\\gemma4_e4b_it_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `stable_diffusion` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -483,7 +482,7 @@
       "type": "SelectCLIPDevice",
       "pos": [
         1240.0,
-        300.0
+        260.0
       ],
       "size": [
         300,
@@ -536,7 +535,7 @@
       "type": "DaWMultiGPUDeviceControl",
       "pos": [
         40.0,
-        1000.0
+        1100.0
       ],
       "size": [
         380,
@@ -684,7 +683,7 @@
         0.0,
         0.0,
         520.0,
-        1200.0
+        1320.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -710,7 +709,7 @@
         1200.0,
         0.0,
         480.0,
-        420.0
+        380.0
       ],
       "color": "#3F789E",
       "font_size": 24,
@@ -746,10 +745,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 1.2400927000000008,
+      "scale": 1.5005121670000012,
       "offset": [
-        474.7954987558583,
-        241.4719544756613
+        191.89189842803776,
+        112.7448877860377
       ]
     },
     "dawasteh_workflow_refinement": {
@@ -773,8 +772,8 @@
       },
       "version": 3,
       "scope": "collection-wide optional GPU placement",
-      "family": "LLM_Gemma4_e4b_abliterated_General-Prompt-Enhancer",
-      "source": "workflows/Prompt Enhancer/LLM_Gemma4_e4b_abliterated_General-Prompt-Enhancer.json",
+      "family": "LLM_Gemma4_e4b_General-Prompt-Enhancer",
+      "source": "workflows/Prompt Enhancer/LLM_Gemma4_e4b_General-Prompt-Enhancer.json",
       "server": "127.0.0.1:8188",
       "backend": "ROCm/HIP",
       "selector_count": 1,
@@ -804,8 +803,34 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "1aec6da54ed395ee93b1393d67aca998bb89a274aea1156dae92b17e122ede44",
+      "topology_sha256": "d7e038f39599d1e37c225ca185de0b04391245ebd216398a688425faf639f572",
       "exceptions": []
+    },
+    "dawasteh_v113_consolidation": {
+      "version": 1,
+      "target": "Prompt Enhancer/LLM_General-Prompt-Enhancer.json",
+      "sources": [
+        "Prompt Enhancer/LLM_Gemma3_12B_General-Prompt-Enhancer.json",
+        "Prompt Enhancer/LLM_Gemma4_e4b_General-Prompt-Enhancer.json",
+        "Prompt Enhancer/LLM_Gemma4_e4b_abliterated_General-Prompt-Enhancer.json"
+      ],
+      "presets": [
+        {
+          "label": "Gemma 4 e4B FP8 (Standard)",
+          "clip_name": "Gemma\\gemma4_e4b_it_fp8_scaled.safetensors",
+          "clip_type": "stable_diffusion"
+        },
+        {
+          "label": "Gemma 3 12B FP8 (hoechste Qualitaet)",
+          "clip_name": "Gemma\\gemma_3_12B_it_fp8_e4m3fn.safetensors",
+          "clip_type": "ltxv"
+        },
+        {
+          "label": "Gemma 4 e4B abliterated BF16 (ungefiltert)",
+          "clip_name": "Gemma\\gemma4-e4b-it-abliterated_bf16.safetensors",
+          "clip_type": "stable_diffusion"
+        }
+      ]
     }
   },
   "version": 0.4

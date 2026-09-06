@@ -1,6 +1,7 @@
 # GOAL_STATUS · ComfyUI RDNA4 Optimierung
 
-Auftrag: `COMFYUI_RDNA4_GOAL.md` (5. September 2026). Artefakte unter `performance/rdna4/`.
+Auftrag: `COMFYUI_RDNA4_GOAL.md` (5. September 2026), zuletzt `COMFYUI_v1.1.3_Arbeitsauftrag.md`
+(6. September 2026). Artefakte unter `performance/rdna4/`.
 
 ## Zähler
 
@@ -10,6 +11,59 @@ Auftrag: `COMFYUI_RDNA4_GOAL.md` (5. September 2026). Artefakte unter `performan
 | Optimierungsexperimente (Hypothese + A/B) | 15 (Durchlauf 1) + 6 (Durchlauf 2: VRAM-Sonden, Checkpoint-Tiefe je Trainer, E2c ACE Turbo, E2c WAN T2V, PEFT-Umgehung) |
 | Benchmark-Runs (Server-Jobs, selbst gestartet) | 116 + 24 (Durchlauf 2; davon 4 kontrollierte OOM-/Watchdog-Abbrüche); alle Testserver beendet |
 | Testbereiche gemessen | **6 / 6** (Bild, WAN 2.2, LTX 2.5, Musik, MiniMax H3, LoRA-Training) |
+
+## Durchlauf 3 (2026-09-06) — MiniMax-H3-Audiofix, Konsolidierung, Update-Skript (v1.1.3-RC)
+
+**Auftrag:** `COMFYUI_v1.1.3_Arbeitsauftrag.md`. Details der Audiountersuchung:
+[docs/MINIMAX_H3_AUDIO_V113.md](docs/MINIMAX_H3_AUDIO_V113.md).
+
+- **Vergleichsbasis rekonstruiert, nicht geraten:** Die ausgeführten Graphen liegen als
+  `prompt`-Metadatum in den MP4s. Damit waren alle vier Läufe exakt vergleichbar.
+- **Turbo-LoRA und Schrittzahl als Ursache ausgeschlossen.** `MiniMax_H3_00002_`/`00003_` sind ein
+  vom Nutzer selbst erzeugtes, vollständig kontrolliertes Paar (gleicher Seed, gleicher Prompt,
+  einziger Unterschied ein `PrimitiveBoolean` für LoRA + 20↔8 Schritte). Gemessener HF-Abstand
+  −28,5 dB gegenüber −29,1 dB: **0,6 dB**. Beide bleiben unverändert.
+- **Drei belegte Abweichungen von der Hersteller-Referenz zurückgenommen** (`tools/upgrade_v113.py`,
+  6 Workflows): `shift_audio` 4.0 → 3.0 (Default in Knoten, Modellkonfiguration und DiT),
+  `euler`/`beta` → `res_multistep`/`simple` (offizielle Vorlage, Verfahren 2. statt 1. Ordnung bei
+  gleicher NFE-Zahl), Spectrum auf Bypass (prognostiziert den gepackten Video+**Audio**-Zustand;
+  `audio_blend_weight = 0.0` hält Audio nachweislich **nicht** exakt). Alle drei stammten aus
+  `tools/integrate_h3_turbo_lora.py`, das mitkorrigiert wurde.
+- **Defekt reproduziert:** Ref2VA auf isolierter Bench-Instanz nachgestellt (+0,7 dB Original,
+  −0,3 dB Reproduktion). Fix im kontrollierten Paar: **−0,3 → −2,7 dB (2,4 dB besser)**.
+- **Konsolidierung** (`tools/consolidate_workflows_v113.py`): 3 General-Prompt-Enhancer → 1 mit
+  Modell-Presets, Ref2VA-Dublette entfernt (234 → 231 Dateien). Die beiden Official-Guide-Enhancer
+  bleiben bewusst getrennt (unterschiedliche Ausgabeverträge, keine reine Modellvariante).
+- **Update-Skript v1.1.3:** `param()`-Block (`-ComfyUIRoot`, `-ReleaseVersion`, `-DryRun`,
+  `-LogPath`, `-RestoreFrom`, `-IncludeUpstream`, `-UpdateDependencies`, `-Force`), Logdatei,
+  Trockenlauf, Wiederherstellung über `restore-map.json`, Manifest v2 mit SHA-256 je Datei und
+  daraus abgeleiteter Schutz persönlich veränderter Dateien, Alt→Neu-Bericht. Pauschale
+  `pip install --upgrade`-Läufe und Upstream-Pulls sind jetzt Opt-in.
+- **Prüfungen grün:** pytest 279 bestanden (1 übersprungen), `validate_workflows.py` plain und
+  `--against-head` je 0 Fehler, beide Migrationswerkzeuge idempotent, PowerShell-Syntaxprüfung OK.
+
+### Release-Blocker (bewusst kein v1.1.3-Tag)
+
+Der Audiofix ist **reproduziert, aber nicht ausreichend verifiziert**: 2,4 dB Verbesserung im
+kontrollierten Paar sind belegt, die Hörabnahme steht aus, und der FL2VA-Fall (die eigentliche
+Stimm-Beschwerde) konnte nicht mehr gemessen werden. Nach §9 des Auftrags bleibt es deshalb bei
+einem Release-Kandidaten ohne Tag.
+
+### Offen / nächste Schritte
+
+1. **Hörabnahme** der beiden Vergleichsdateien unter `performance/rdna4/raw/h3audio/output/repro/`.
+2. **FL2VA messen** (`P0_fl_exact` / `P4_fl_vendor`) — braucht freien Host-Speicher; der 26-GB-
+   Textencoder kollidiert mit paralleler Nutzerarbeit (Commit-Limit bei 48 GB RAM).
+3. **Dominante Ursache des Ref2VA-Rauschbodens** isolieren: Referenzaudio als Conditioning,
+   `ref2va`-Modell, Geräteaufteilung. Zweiter Seed steht ebenfalls aus.
+4. **v1.1.2 wurde nie getaggt** (Tags enden bei v1.1.1). Vor einem v1.1.3-Tag klären.
+5. **Offen aus dem Auftrag, nicht umgesetzt:** einheitliche Sekundensteuerung über alle
+   Video-Workflows (§5) und zentrale Ein/Aus-Schalter für optionale Zweige (§6). Der vorhandene
+   Sekunden-Vertrag (53 Workflows) und das H3-Raster (17k+5, `align_frame_count`) sind geprüft und
+   korrekt, aber nicht auf die übrigen Modelle ausgeweitet.
+6. **w4a8-Quantisierung** (Textencoder 15,7 GB statt 27 GB) auf Nutzerwunsch zurückgestellt, bis
+   der Audiofix verifiziert ist. Die offizielle 4-Bit-Variante ist `nvfp4_awq` und für gfx1201
+   ungeeignet (keine HIP-Kernel, zudem Projekt-Blacklist).
 
 ## Durchlauf 2 (2026-09-06) — LoRA-Training entsperrt
 

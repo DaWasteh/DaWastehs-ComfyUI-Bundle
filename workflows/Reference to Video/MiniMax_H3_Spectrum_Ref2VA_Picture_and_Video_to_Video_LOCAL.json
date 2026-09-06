@@ -546,9 +546,9 @@
       },
       "widgets_values": [
         12.0,
-        4.0
+        3.0
       ],
-      "title": "MiniMax H3 Sigma Shift — video 12 / audio 4"
+      "title": "MiniMax H3 Sigma Shift — video 12 / audio 3"
     },
     {
       "id": 11,
@@ -563,7 +563,7 @@
       ],
       "flags": {},
       "order": 15,
-      "mode": 0,
+      "mode": 4,
       "inputs": [
         {
           "name": "model",
@@ -701,9 +701,9 @@
         "Node name for S&R": "KSamplerSelect"
       },
       "widgets_values": [
-        "euler"
+        "res_multistep"
       ],
-      "title": "SAMPLER — euler"
+      "title": "SAMPLER — res_multistep"
     },
     {
       "id": 19,
@@ -739,11 +739,11 @@
         "Node name for S&R": "BasicScheduler"
       },
       "widgets_values": [
-        "beta",
+        "simple",
         8,
         1
       ],
-      "title": "SCHEDULER — beta / 8 steps"
+      "title": "SCHEDULER — simple / 8 steps"
     },
     {
       "id": 20,
@@ -1310,7 +1310,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · MiniMax H3 Sigma Shift — video 12 / audio 4 · Node 10",
+      "title": "Erklärung · MiniMax H3 Sigma Shift — video 12 / audio 3 · Node 10",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1318,7 +1318,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · MiniMax H3 Sigma Shift — video 12 / audio 4 · Node 10\n\n**Zweck:** Set the video/audio flow shifts.\n\n**Einstellbare Werte**\n- `shift_video` = `12.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n- `shift_audio` = `4.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · MiniMax H3 Sigma Shift — video 12 / audio 3 · Node 10\n\n**Zweck:** Set the video/audio flow shifts.\n\n**Einstellbare Werte**\n- `shift_video` = `12.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n- `shift_audio` = `3.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1542,7 +1542,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · SAMPLER — euler · Node 18",
+      "title": "Erklärung · SAMPLER — res_multistep · Node 18",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1550,7 +1550,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SAMPLER — euler · Node 18\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `sampler_name` = `euler` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `SAMPLER` (SAMPLER, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SAMPLER — res_multistep · Node 18\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `sampler_name` = `res_multistep` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `SAMPLER` (SAMPLER, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -1571,7 +1571,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · SCHEDULER — beta / 8 steps · Node 19",
+      "title": "Erklärung · SCHEDULER — simple / 8 steps · Node 19",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -1579,7 +1579,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SCHEDULER — beta / 8 steps · Node 19\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `scheduler` = `beta` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `steps` = `8` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `denoise` = `1` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `SIGMAS` (SIGMAS, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SCHEDULER — simple / 8 steps · Node 19\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `scheduler` = `simple` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `steps` = `8` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `denoise` = `1` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `SIGMAS` (SIGMAS, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2971,10 +2971,10 @@
       "sha256": "7098acf3ee75028fd9fcd948f50fcc8d995057fabb76f86bd3ca2c0ffc58e409",
       "sampling": {
         "steps": 8,
-        "sampler": "euler",
-        "scheduler": "beta",
+        "sampler": "res_multistep",
+        "scheduler": "simple",
         "shift_video": 12.0,
-        "shift_audio": 4.0
+        "shift_audio": 3.0
       },
       "ref2va_status": "compatible graph integration; Turbo quality with full-reference conditioning remains community/experimental"
     },
@@ -3029,8 +3029,11 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "c7a615b42b1bb2e42261ec20f91bd8dcad3a3254780dcf29dc8083a8984bc461",
+      "topology_sha256": "adf6aedc4fd4186748e4b01ab141b410a32fb19c7253eafc8fbdb8b96fe98f62",
       "exceptions": []
+    },
+    "dawasteh_rdna4_v113": {
+      "version": 1
     }
   },
   "version": 0.4

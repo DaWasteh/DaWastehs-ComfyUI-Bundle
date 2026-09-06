@@ -542,9 +542,9 @@
         "MiniMax H3\\minimax_h3_video_vae_fp16.safetensors",
         "MiniMax H3\\minimax_h3_audio_vae_fp32.safetensors",
         12.0,
-        4.0,
-        "euler",
-        "beta",
+        3.0,
+        "res_multistep",
+        "simple",
         0.5,
         4,
         0.1,
@@ -807,10 +807,10 @@
       "sha256": "7098acf3ee75028fd9fcd948f50fcc8d995057fabb76f86bd3ca2c0ffc58e409",
       "sampling": {
         "steps": 8,
-        "sampler": "euler",
-        "scheduler": "beta",
+        "sampler": "res_multistep",
+        "scheduler": "simple",
         "shift_video": 12.0,
-        "shift_audio": 4.0
+        "shift_audio": 3.0
       },
       "ref2va_status": "compatible graph integration; Turbo quality with full-reference conditioning remains community/experimental"
     },
@@ -866,8 +866,11 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "36903d093ca8464df2dbb659baa6d6ffae3dc649f4be3897a3e55bcb51d1888d",
+      "topology_sha256": "46ec663366b393d2ff26f8d6dcc218718ad9c67ec2e998d45165d7ea3e6efba4",
       "exceptions": []
+    },
+    "dawasteh_rdna4_v113": {
+      "version": 1
     }
   },
   "version": 0.4

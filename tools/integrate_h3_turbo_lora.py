@@ -14,7 +14,6 @@ LORA_SOURCE = "drbaph/MiniMax-H3-Turbo-Lora-ComfyUI"
 LORA_SHA256 = "7098acf3ee75028fd9fcd948f50fcc8d995057fabb76f86bd3ca2c0ffc58e409"
 VISIBLE_WORKFLOWS = (
     "MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json",
-    "MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json",
     "MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json",
     "MiniMax_H3_Spectrum_Ref2VA_Picture_and_Video_to_Video_LOCAL.json",
     "MiniMax_H3_Spectrum_RefImage_Audio_to_Video_OriginalAudio_AutoLength.json",
@@ -99,7 +98,7 @@ def _marker() -> dict[str, Any]:
         "lora_name": LORA_NAME,
         "source": f"https://huggingface.co/{LORA_SOURCE}",
         "sha256": LORA_SHA256,
-        "sampling": {"steps": 8, "sampler": "euler", "scheduler": "beta", "shift_video": 12.0, "shift_audio": 4.0},
+        "sampling": {"steps": 8, "sampler": "res_multistep", "scheduler": "simple", "shift_video": 12.0, "shift_audio": 3.0},
         "ref2va_status": "compatible graph integration; Turbo quality with full-reference conditioning remains community/experimental",
     }
 
@@ -115,19 +114,23 @@ def integrate_visible(workflow: dict[str, Any], label: str) -> None:
     for node in nodes:
         if node.get("type") == "MiniMaxH3SigmaShift":
             old_title = str(node.get("title") or "MiniMax H3 Sigma Shift — video 12 / audio 3")
-            node["widgets_values"] = [12.0, 4.0]
-            node["title"] = "MiniMax H3 Sigma Shift — video 12 / audio 4"
+            # v1.1.3: Audio-Sigma bleibt auf dem Hersteller-Default 3.0 (siehe tools/upgrade_v113.py).
+            node["widgets_values"] = [12.0, 3.0]
+            node["title"] = "MiniMax H3 Sigma Shift — video 12 / audio 3"
             _update_generated_note(workflow, node, {
                 old_title: node["title"],
-                "`shift_audio` = `3.0`": "`shift_audio` = `4.0`",
+                # v1.1.3: Alttexte aus v1.1.2 mitheilen, damit Widget und Notiz nie auseinanderlaufen.
+                "MiniMax H3 Sigma Shift — video 12 / audio 4": node["title"],
+                "`shift_audio` = `4.0`": "`shift_audio` = `3.0`",
             })
         elif node.get("type") == "KSamplerSelect":
             old_title = str(node.get("title") or "SAMPLER — res_multistep")
-            node["widgets_values"] = ["euler"]
-            node["title"] = "SAMPLER — euler"
+            node["widgets_values"] = ["res_multistep"]
+            node["title"] = "SAMPLER — res_multistep"
             _update_generated_note(workflow, node, {
                 old_title: node["title"],
-                "`sampler_name` = `res_multistep`": "`sampler_name` = `euler`",
+                "SAMPLER — euler": node["title"],
+                "`sampler_name` = `euler`": "`sampler_name` = `res_multistep`",
             })
         elif node.get("type") == "BasicScheduler":
             old_title = str(node.get("title") or "SCHEDULER — simple / 20 steps")
@@ -135,12 +138,15 @@ def integrate_visible(workflow: dict[str, Any], label: str) -> None:
             if len(values) < 3:
                 raise ValueError(f"{label}: unexpected BasicScheduler widgets")
             old_scheduler, old_steps = str(values[0]), int(values[1])
-            values[0], values[1] = "beta", 8
+            # v1.1.3: Scheduler zurueck auf den Hersteller-Wert; nur die Schrittzahl bleibt Turbo.
+            values[0], values[1] = "simple", 8
             node["widgets_values"] = values
-            node["title"] = "SCHEDULER — beta / 8 steps"
+            node["title"] = "SCHEDULER — simple / 8 steps"
             _update_generated_note(workflow, node, {
                 old_title: node["title"],
-                f"`scheduler` = `{old_scheduler}`": "`scheduler` = `beta`",
+                f"`scheduler` = `{old_scheduler}`": "`scheduler` = `simple`",
+                "SCHEDULER — beta / 8 steps": node["title"],
+                "`scheduler` = `beta`": "`scheduler` = `simple`",
                 f"`steps` = `{old_steps}`": "`steps` = `8`",
             })
 
@@ -197,8 +203,8 @@ def integrate_director(workflow: dict[str, Any]) -> None:
     if len(values) < 35:
         raise ValueError(f"{DIRECTOR_WORKFLOW}: unexpected Director widget count")
     values[12] = 8
-    values[31], values[32] = 12.0, 4.0
-    values[33], values[34] = "euler", "beta"
+    values[31], values[32] = 12.0, 3.0
+    values[33], values[34] = "res_multistep", "simple"
     director = directors[0]
     director["widgets_values"] = values
     _update_generated_note(workflow, director, {
