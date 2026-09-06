@@ -42,7 +42,7 @@ Auftrag: `COMFYUI_RDNA4_GOAL.md` (5. September 2026), zuletzt `COMFYUI_v1.1.3_Ar
 - **Prüfungen grün:** pytest 279 bestanden (1 übersprungen), `validate_workflows.py` plain und
   `--against-head` je 0 Fehler, beide Migrationswerkzeuge idempotent, PowerShell-Syntaxprüfung OK.
 
-### Hörabnahme: Teilerfolg, v1.1.4 folgt
+### Verlauf der Hörabnahme
 
 Hörabnahme durch den Nutzer am 2026-09-06: **„Fix ist definitiv besser, aber immer noch eine
 roboterhafte Stimme im Vergleich zum offiziellen Workflow."** Der Fix ist damit als Verbesserung
@@ -76,30 +76,29 @@ Vergleich `00002_`/`00003_` belegt einen identischen *Rauschboden* (0,6 dB) — 
   (das Referenzbild geht über `clip.tokenize(prompt, images=...)` in den VLM ein und prägt die
   Stimme mit).
 
-### Offen / nächste Schritte
+### Abschluss: Hörabnahme bestanden
 
-1. **Hörvergleich A/B/C** unter `L:\ComfyUI\ComfyUI\output\video\_v114_hoervergleich\`.
-   A = offizieller Graph, B = unser Workflow mit identischen Eingaben, C = unser Workflow im
-   16:9-Querformat. A↔B beantwortet, ob noch ein Workflow-Unterschied hörbar ist; B↔C, ob das
-   16:9-Format der Talking-Head-Workflows Stimmqualität kostet.
-2. **Falls C hörbar schlechter ist:** Hochformat-Preset als Standard für die sprechenden
-   H3-Workflows. Messtechnisch war der Effekt nicht belastbar (Silbenrhythmus in beiden Seeds
-   niedriger, HF-Abstand aber seed-dominiert), deshalb entscheidet hier das Ohr. Hörvergleich `MiniMax_H3_00002_` (Turbo, 8 Schritte)
-   gegen `00003_` (kein Turbo, 20 Schritte) entscheidet, ob die Turbo-Destillation die
-   Roboterstimme verursacht. Zusätzlich stimmspezifische Metriken (Harmonic-to-Noise-Ratio,
-   Formantstruktur, Jitter/Shimmer) statt reiner Rauschbodenmessung.
-2. **FL2VA messen** (`P0_fl_exact` / `P4_fl_vendor`) — braucht freien Host-Speicher; der 26-GB-
-   Textencoder kollidiert mit paralleler Nutzerarbeit (Commit-Limit bei 48 GB RAM).
-3. **Dominante Ursache des Ref2VA-Rauschbodens** isolieren: Referenzaudio als Conditioning,
-   `ref2va`-Modell, Geräteaufteilung. Zweiter Seed steht ebenfalls aus.
-4. **v1.1.2 wurde nie getaggt** (Tags enden bei v1.1.1). Vor einem v1.1.3-Tag klären.
-5. **Offen aus dem Auftrag, nicht umgesetzt:** einheitliche Sekundensteuerung über alle
-   Video-Workflows (§5) und zentrale Ein/Aus-Schalter für optionale Zweige (§6). Der vorhandene
-   Sekunden-Vertrag (53 Workflows) und das H3-Raster (17k+5, `align_frame_count`) sind geprüft und
-   korrekt, aber nicht auf die übrigen Modelle ausgeweitet.
-6. **w4a8-Quantisierung** (Textencoder 15,7 GB statt 27 GB) auf Nutzerwunsch zurückgestellt, bis
-   der Audiofix verifiziert ist. Die offizielle 4-Bit-Variante ist `nvfp4_awq` und für gfx1201
-   ungeeignet (keine HIP-Kernel, zudem Projekt-Blacklist).
+Der Nutzer hat A (offizieller Graph), B (unser Workflow, gleiche Eingaben) und C (unser Workflow,
+16:9) gehört: **alle drei klingen gut.** Damit ist der v1.1.3-Audiofix als Lösung bestätigt, das
+16:9-Format bleibt unverändert, und die zwischenzeitliche Beobachtung „immer noch roboterhaft"
+stammte aus einem Vergleich mit anderen Eingaben (Seed, Referenzbild, Dauer) — nicht aus einem
+Restdefekt. H3 ist bild-konditioniert.
+
+**v1.1.4** enthält darüber hinaus zwei echte Korrekturen am Update-Skript, die beim ersten
+Produktivlauf von v1.1.3 aufgefallen sind: der eingebettete Abschluss-Validator verstand das neue
+Manifest-Format v2 nicht (Abbruch mit ExitCode 1 nach erfolgreicher Übernahme), und der Trockenlauf
+führte die beiden Abhängigkeits-Pins tatsächlich aus, statt sie nur anzuzeigen.
+
+### Offen aus dem Auftrag (nicht umgesetzt)
+
+- **§5 Sekundensteuerung** über alle Video-Workflows. Der vorhandene Sekunden-Vertrag (53
+  Workflows) und das H3-Raster (17k+5, `align_frame_count`) sind geprüft und korrekt, aber nicht
+  auf die übrigen Modelle ausgeweitet.
+- **§6 zentrale Ein/Aus-Schalter** für optionale Funktionszweige.
+- **w4a8-Quantisierung** (Textencoder 15,7 GB statt 27 GB) — auf Nutzerwunsch zurückgestellt. Die
+  offizielle 4-Bit-Variante `nvfp4_awq` ist für gfx1201 ungeeignet (keine HIP-Kernel,
+  Projekt-Blacklist); passend wäre nur die Community-`w4a8`.
+- **v1.1.2 wurde nie getaggt** (Tags springen von v1.1.1 auf v1.1.3).
 
 ## Durchlauf 2 (2026-09-06) — LoRA-Training entsperrt
 

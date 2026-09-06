@@ -4,9 +4,10 @@ Untersuchung vom 6. September 2026 zur Beobachtung: „Der offizielle Template-W
 Ton, unsere REF- und FL-Workflows erzeugen blechernen, artefaktbehafteten Ton; die Stimme klingt
 robotisch." Diese Seite hält fest, was **belegt**, was **gemessen** und was **offen** ist.
 
-> **Hörabnahme durchgeführt (Nutzer, 2026-09-06):** „Fix ist definitiv besser, aber immer noch
-> eine roboterhafte Stimme im Vergleich zum offiziellen Workflow." Der Fix ist damit als
-> Verbesserung bestätigt, das Problem aber **nicht gelöst**. Die Weiterarbeit läuft unter v1.1.4.
+> **Abgeschlossen (Nutzer, 2026-09-06):** Nach dem v1.1.3-Fix klingen der offizielle Graph, unser
+> Workflow mit gleichen Eingaben und unser Workflow im 16:9-Querformat **alle drei gut**. Der Fix
+> hat das Problem gelöst; die zwischenzeitliche Beobachtung „immer noch roboterhaft" stammte aus
+> einem Vergleich mit anderen Eingaben. Details in Abschnitt 9.
 >
 > Ich selbst habe keinen Hörtest durchgeführt; alle Messwerte unten stammen aus dem tatsächlichen
 > Code, den eingebetteten Ausführungsgraphen und objektiven Signalmessungen.
@@ -292,6 +293,38 @@ Zum Anhören bereitgestellt unter `L:\ComfyUI\ComfyUI\output\video\_v114_hoerver
 
 A gegen B beantwortet: Ist noch ein Workflow-Unterschied hörbar? B gegen C beantwortet: Kostet das
 16:9-Format der Talking-Head-Workflows Stimmqualität?
+
+## 9. Abschluss: Hörabnahme bestanden (2026-09-06)
+
+Der Nutzer hat A, B und C gehört: **alle drei klingen gut.**
+
+| Datei | Konfiguration | Urteil |
+|---|---|---|
+| `A_offizieller_Graph.mp4` | offizielle Konfiguration, Hochformat | gut |
+| `B_unser_Workflow_v113.mp4` | unser Workflow, identische Eingaben | **gut** |
+| `C_unser_Workflow_Querformat.mp4` | unser Workflow, 16:9 Querformat | **gut** |
+
+Damit ist die Untersuchung abgeschlossen:
+
+- **B klingt gut** → unser Workflow hat nach v1.1.3 keinen Audiodefekt mehr. Das deckt sich mit dem
+  Messbefund aus 8e (alle Kennzahlen innerhalb der Seed-Streuung).
+- **C klingt gut** → das 16:9-Querformat kostet keine Stimmqualität. Ein Hochformat-Preset ist
+  nicht nötig; die Talking-Head-Workflows bleiben unverändert.
+- Die frühere Beobachtung „immer noch roboterhaft" stammte aus einem Vergleich mit **anderen
+  Eingaben** (anderer Seed, anderes Referenzbild, andere Dauer), nicht aus einem Restdefekt.
+  H3 ist bild-konditioniert; ein anderes Porträt und ein anderer Seed ergeben eine andere Stimme.
+
+**Der v1.1.3-Fix hat das Problem gelöst.** Rückwirkend bestätigt das die Vorgehensweise: Die drei
+zurückgenommenen Abweichungen von der Hersteller-Referenz (`shift_audio` 4.0 → 3.0, `euler`/`beta` →
+`res_multistep`/`simple`, Spectrum auf Bypass) waren die Ursache — auch wenn die Rauschbodenmessung
+den Effekt wegen der Seed-Streuung nicht sauber quantifizieren konnte.
+
+### Lehre für künftige Audio-A/Bs
+
+Einzelmessungen von Rauschkennzahlen über verschiedene Denoising-Trajektorien sind untauglich: Die
+Seed-Streuung des HF-Abstands beträgt ±7 dB. Belastbar sind nur **bitidentische** Vergleiche (die
+zeigen, ob ein Eingriff überhaupt etwas verändert) und **Hörabnahmen** (die zeigen, ob es besser
+klingt). Dazwischen gibt es für diese Fragestellung nichts Verwertbares.
 
 ## 7. Nicht gemacht
 
