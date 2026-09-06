@@ -12,6 +12,39 @@ Auftrag: `COMFYUI_RDNA4_GOAL.md` (5. September 2026), zuletzt `COMFYUI_v1.1.3_Ar
 | Benchmark-Runs (Server-Jobs, selbst gestartet) | 116 + 24 (Durchlauf 2; davon 4 kontrollierte OOM-/Watchdog-Abbrüche); alle Testserver beendet |
 | Testbereiche gemessen | **6 / 6** (Bild, WAN 2.2, LTX 2.5, Musik, MiniMax H3, LoRA-Training) |
 
+## Durchlauf 4 (2026-09-06) — Auftrag §5/§6 abgeschlossen (v1.1.5)
+
+- **§6 optionale Zweige.** Gegen die Prompt-Validierung von ComfyUI 0.34.0 gemessen: ein
+  verbundener Loader mit fehlender Datei blockiert (HTTP 400), ein stummgeschalteter nicht
+  (HTTP 200), ein unverbundener ebenfalls nicht. Der MAXIMUM-Workflow lieferte 13 aktive
+  Platzhalter-Loader aus und war damit **ausgeliefert nicht lauffähig**. Diese Zweige stehen jetzt
+  auf Mute (nicht Bypass — ein Loader hat keinen Eingang zum Durchreichen), beschriftet mit
+  `OPTIONAL · … · Strg+M schaltet ein`. Vor dem Stummschalten prüft die Migration, dass jede
+  ausgehende Verbindung in einem optionalen Eingang endet; bei zwei Workflows speist das
+  Referenzvideo Pflichteingänge (`length`, `duration`) — dort wird dokumentiert statt geändert.
+  Verifiziert: der stummgeschaltete MAXIMUM-Graph besteht die Validierung (HTTP 200).
+- **§5 Sekundensteuerung.** Rasterwerte gegen die Node-Schemata verifiziert (`EmptyLTXVLatentVideo`
+  step 8, WAN/Kandinsky/SCAIL step 4, `MiniMaxH3ImageToVideo` step 17 = `align_frame_count`). Der
+  Marker trägt jetzt `minimum_frames`, eine Rundungsregel und eine `preview`-Tabelle mit
+  gewünschter Dauer, berechneten Frames und tatsächlicher Dauer an drei Stützstellen (Minimum,
+  Standard, nicht ganzzahlig) — z. B. LTX 2.3: 4,0 s → 97 Frames → 3,84 s.
+- **Prüfungen:** pytest 290 bestanden, Validator plain und `--against-head` je 0 Fehler,
+  `upgrade_v115.py` idempotent, RODENT-Layout unverletzt.
+
+### Damit ist der Auftrag `COMFYUI_v1.1.3_Arbeitsauftrag.md` vollständig abgearbeitet
+
+§3 Audiofix (v1.1.3, Hörabnahme bestanden) · §4 Konsolidierung (v1.1.3) · §5 Sekundensteuerung
+(v1.1.5) · §6 optionale Inputs (v1.1.5) · §7 GPU-Zuweisung (geprüft: bitidentisches No-op, v1.1.4)
+· §8 Update-Skript (v1.1.3, zwei Korrekturen in v1.1.4) · §9 Release.
+
+### Offen (ausserhalb des Auftrags)
+
+- **w4a8-Quantisierung** (Textencoder 15,7 GB statt 27 GB, UNETs 12,5 GB statt 21 GB) — Community-
+  Quantisierung, noch nicht bewertet. Die offizielle 4-Bit-Variante `nvfp4_awq` ist für gfx1201
+  ungeeignet (keine HIP-Kernel, Projekt-Blacklist).
+- 16 Workflows verweisen auf Nutzer-Medien, die es lokal nicht gibt (eigene Bilder, Tonspuren).
+  Das ist beabsichtigt und wurde bewusst nicht angefasst — dort wählt der Nutzer seine Datei.
+
 ## Durchlauf 3 (2026-09-06) — MiniMax-H3-Audiofix, Konsolidierung, Update-Skript (v1.1.3)
 
 **Auftrag:** `COMFYUI_v1.1.3_Arbeitsauftrag.md`. Details der Audiountersuchung:

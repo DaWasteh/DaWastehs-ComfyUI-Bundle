@@ -2971,7 +2971,26 @@
       "frame_alignment": "4n+1",
       "targets": [
         "60.length"
-      ]
+      ],
+      "minimum_frames": 5,
+      "preview": [
+        {
+          "requested_seconds": 0.167,
+          "frames": 5,
+          "actual_seconds": 0.167
+        },
+        {
+          "requested_seconds": 5.0,
+          "frames": 121,
+          "actual_seconds": 5.0
+        },
+        {
+          "requested_seconds": 5.37,
+          "frames": 129,
+          "actual_seconds": 5.333
+        }
+      ],
+      "rounding": "Nicht darstellbare Dauern rasten auf das naechstgelegene gueltige Raster ein; die tatsaechliche Dauer steht in preview.actual_seconds."
     },
     "dawasteh_rodent_layout": {
       "version": 1,
@@ -2986,6 +3005,9 @@
       "stage_gap": 120,
       "topology_sha256": "0f2a1baf84a5f31f90b433fa9415d9b61ff29bf8aceb8d0c8f0e4e9ea35f2c5f",
       "exceptions": []
+    },
+    "dawasteh_rdna4_v115": {
+      "version": 1
     }
   },
   "version": 0.4

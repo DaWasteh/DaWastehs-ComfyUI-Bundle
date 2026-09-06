@@ -32,6 +32,7 @@ try:
     from tools.upgrade_v111 import MARKER_KEY as V111_MARKER_KEY, MARKER_VERSION as V111_MARKER_VERSION, apply as v111_apply
     from tools.upgrade_v112 import MARKER_KEY as V112_MARKER_KEY, MARKER_VERSION as V112_MARKER_VERSION, apply as v112_apply
     from tools.upgrade_v113 import MARKER_KEY as V113_MARKER_KEY, MARKER_VERSION as V113_MARKER_VERSION, apply as v113_apply
+    from tools.upgrade_v115 import MARKER_KEY as V115_MARKER_KEY, MARKER_VERSION as V115_MARKER_VERSION, apply as v115_apply
     from tools.consolidate_workflows_v113 import (
         ADDED_PATHS as V113_ADDED_PATHS,
         REMOVED_PATHS as V113_REMOVED_PATHS,
@@ -60,6 +61,7 @@ except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows
     from upgrade_v111 import MARKER_KEY as V111_MARKER_KEY, MARKER_VERSION as V111_MARKER_VERSION, apply as v111_apply
     from upgrade_v112 import MARKER_KEY as V112_MARKER_KEY, MARKER_VERSION as V112_MARKER_VERSION, apply as v112_apply
     from upgrade_v113 import MARKER_KEY as V113_MARKER_KEY, MARKER_VERSION as V113_MARKER_VERSION, apply as v113_apply
+    from upgrade_v115 import MARKER_KEY as V115_MARKER_KEY, MARKER_VERSION as V115_MARKER_VERSION, apply as v115_apply
     from consolidate_workflows_v113 import (
         ADDED_PATHS as V113_ADDED_PATHS,
         REMOVED_PATHS as V113_REMOVED_PATHS,
@@ -606,8 +608,14 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
     # v1.1.3 (MiniMax-H3-Audiofix): the v113 marker selects the v113 form on top of v112.
     has_v113 = current.get("extra", {}).get(V113_MARKER_KEY, {}).get("version") == V113_MARKER_VERSION
 
+    # v1.1.5 (optionale Zweige, Sekundenvorschau) liegt als weitere Schicht darueber.
+    has_v115 = current.get("extra", {}).get(V115_MARKER_KEY, {}).get("version") == V115_MARKER_VERSION
+
+    def _v115(graph: dict[str, Any]) -> dict[str, Any]:
+        return v115_apply(graph, v111_key) if has_v115 else graph
+
     def _v113(graph: dict[str, Any]) -> dict[str, Any]:
-        return v113_apply(graph, v111_key) if has_v113 else graph
+        return _v115(v113_apply(graph, v111_key) if has_v113 else graph)
 
     def _v112(graph: dict[str, Any]) -> dict[str, Any]:
         return _v113(v112_apply(graph, v111_key) if has_v112 else graph)
