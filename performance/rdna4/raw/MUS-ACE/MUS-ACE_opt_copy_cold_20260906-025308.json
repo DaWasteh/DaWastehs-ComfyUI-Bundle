@@ -1,0 +1,248 @@
+{
+ "run_id": "MUS-ACE_opt_copy_cold_20260906-025308",
+ "test_id": "MUS-ACE",
+ "variant": "opt_copy",
+ "run_type": "cold",
+ "hypothesis": "regression: optimized workflow copy (E1 no-unload / E2 placement / B1 fix) converted from performance/rdna4/workflows",
+ "workload": "60 s stereo 48 kHz, 75 steps euler normal cfg4 shift3, ACE-Step 1.5 XL SFT bf16 + Qwen 0.6B/4B TE, LM audio codes on",
+ "seed": 1001,
+ "sets": [
+  "94.duration=60",
+  "98.seconds=60",
+  "109.value=1001"
+ ],
+ "prompt_file": "api/opt/ACE_XL_SFT_opt.json",
+ "prompt_id": "f566d71a-a1af-4673-96c5-15fd42e727b2",
+ "status": "success",
+ "client_wall_s": 54.853336572647095,
+ "server_exec_s": 54.18599486351013,
+ "queue_delay_s": 0.011028766632080078,
+ "cached_nodes": [],
+ "node_times": [
+  {
+   "node": "106",
+   "display_node": "106",
+   "start": 1788655989.178554,
+   "dur": 0.39770030975341797,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "143",
+   "display_node": "143",
+   "start": 1788655989.5762544,
+   "dur": 0.00044155120849609375,
+   "class_type": "DaWMultiGPUDeviceControl"
+  },
+  {
+   "node": "141",
+   "display_node": "141",
+   "start": 1788655989.576696,
+   "dur": 0.0013275146484375,
+   "class_type": "SelectVAEDevice"
+  },
+  {
+   "node": "109",
+   "display_node": "109",
+   "start": 1788655989.5780234,
+   "dur": 0.00024890899658203125,
+   "class_type": "PrimitiveInt"
+  },
+  {
+   "node": "123",
+   "display_node": "123",
+   "start": 1788655989.5782723,
+   "dur": 0.0005552768707275391,
+   "class_type": "PixaromaPrompt"
+  },
+  {
+   "node": "105",
+   "display_node": "105",
+   "start": 1788655989.5788276,
+   "dur": 10.016356468200684,
+   "class_type": "DualCLIPLoader"
+  },
+  {
+   "node": "142",
+   "display_node": "142",
+   "start": 1788655999.595184,
+   "dur": 0.0008947849273681641,
+   "class_type": "SelectCLIPDevice"
+  },
+  {
+   "node": "94",
+   "display_node": "94",
+   "start": 1788655999.5960789,
+   "dur": 12.253024816513062,
+   "class_type": "TextEncodeAceStepAudio1.5"
+  },
+  {
+   "node": "47",
+   "display_node": "47",
+   "start": 1788656011.8491037,
+   "dur": 0.0014133453369140625,
+   "class_type": "ConditioningZeroOut"
+  },
+  {
+   "node": "104",
+   "display_node": "104",
+   "start": 1788656011.850517,
+   "dur": 6.785415410995483,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "140",
+   "display_node": "140",
+   "start": 1788656018.6359324,
+   "dur": 0.0023114681243896484,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "78",
+   "display_node": "78",
+   "start": 1788656018.638244,
+   "dur": 0.0005626678466796875,
+   "class_type": "ModelSamplingAuraFlow"
+  },
+  {
+   "node": "98",
+   "display_node": "98",
+   "start": 1788656018.6388066,
+   "dur": 0.0005006790161132812,
+   "class_type": "EmptyAceStep1.5LatentAudio"
+  },
+  {
+   "node": "3",
+   "display_node": "3",
+   "start": 1788656018.6393073,
+   "dur": 21.344769954681396,
+   "class_type": "KSampler"
+  },
+  {
+   "node": "124",
+   "display_node": "124",
+   "start": 1788656039.9840772,
+   "dur": 0.3023374080657959,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "18",
+   "display_node": "18",
+   "start": 1788656040.2864146,
+   "dur": 1.350182056427002,
+   "class_type": "VAEDecodeAudio"
+  },
+  {
+   "node": "125",
+   "display_node": "125",
+   "start": 1788656041.6365967,
+   "dur": 0.36181139945983887,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "107",
+   "display_node": "107",
+   "start": 1788656041.998408,
+   "dur": 1.3621826171875,
+   "class_type": "SaveAudioMP3"
+  }
+ ],
+ "step_stats": {
+  "94": {
+   "steps_observed": 76,
+   "max": 300,
+   "span_s": 8.07302451133728,
+   "s_per_step": 0.0270906862796553,
+   "first_step_t": 1788656003.7464354,
+   "last_step_t": 1788656011.81946,
+   "class_type": "TextEncodeAceStepAudio1.5"
+  },
+  "3": {
+   "steps_observed": 75,
+   "max": 75,
+   "span_s": 18.488781929016113,
+   "s_per_step": 0.24984840444616369,
+   "first_step_t": 1788656021.4148853,
+   "last_step_t": 1788656039.9036672,
+   "class_type": "KSampler"
+  }
+ },
+ "gpu0_peak_alloc": 27901145600,
+ "gpu0_peak_reserved": 30450647040,
+ "gpu1_peak_alloc": 0,
+ "gpu1_peak_reserved": 0,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x000168BD_phys_0": 161624064.0,
+  "0x00000000_0x0001929A_phys_0": 24679014400.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 38400045056,
+  "swap_used": 984465408,
+  "process_rss": 1190797312
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 36696801280,
+  "swap_used": 960700416,
+  "process_rss": 2722324480
+ },
+ "outputs": [
+  {
+   "node": "107",
+   "kind": "audio",
+   "filename": "IntroSong__00001.mp3",
+   "subfolder": "audio",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline_025251\\output\\audio\\IntroSong__00001.mp3",
+   "bytes": 1849267,
+   "sha256": "67f62aba22f1274621e0dd9c672a069cb6d1c3ac5c4b167b5593136584d2b744"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline_025251\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline_025251\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+  "DISABLE_ADDMM_CUDA_LT": null,
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788655989.1631832,
+ "t_done": 1788656044.0165198
+}

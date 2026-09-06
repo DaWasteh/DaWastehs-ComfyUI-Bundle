@@ -215,6 +215,19 @@ def _curated_profiles() -> dict[str, tuple[str, dict[str, str], bool]]:
     )
     for addition in ADDITIONS:
         profiles[addition.path] = (addition.family, addition.devices, False)
+    # v1.1.1 (performance/rdna4/REPORT.md): measured device placement overrides.
+    try:
+        from tools.upgrade_v111 import E2B_LTX as _V111_LTX, E2_IMAGE as _V111_IMAGE
+    except ModuleNotFoundError:  # direct execution from tools/
+        from upgrade_v111 import E2B_LTX as _V111_LTX, E2_IMAGE as _V111_IMAGE
+    for path in _V111_IMAGE:
+        if path in profiles:
+            name, _devices, h3 = profiles[path]
+            profiles[path] = (name, {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"}, h3)
+    for path in _V111_LTX:
+        if path in profiles:
+            name, _devices, h3 = profiles[path]
+            profiles[path] = (name, {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:1"}, h3)
     return profiles
 
 

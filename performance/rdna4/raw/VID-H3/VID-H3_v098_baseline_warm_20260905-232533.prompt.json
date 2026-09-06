@@ -1,0 +1,344 @@
+{
+ "92": {
+  "inputs": {
+   "filename_prefix": "video/MiniMax_H3",
+   "format": "auto",
+   "format.codec": "auto",
+   "codec": "auto",
+   "video": [
+    "105:91",
+    0
+   ]
+  },
+  "class_type": "SaveVideo",
+  "_meta": {
+   "title": "Save Video"
+  }
+ },
+ "114": {
+  "inputs": {
+   "image": "13_smile_closeup_img00031_00001_.png"
+  },
+  "class_type": "LoadImage",
+  "_meta": {
+   "title": "Load Image"
+  }
+ },
+ "115": {
+  "inputs": {
+   "aspect_ratio": "1:1 (Square)",
+   "megapixels": 0.4,
+   "multiple": 32
+  },
+  "class_type": "ResolutionSelector",
+  "_meta": {
+   "title": "Resolution Selector"
+  }
+ },
+ "105:11": {
+  "inputs": {
+   "vae_name": "MiniMax H3\\minimax_h3_video_vae_fp16.safetensors"
+  },
+  "class_type": "VAELoader",
+  "_meta": {
+   "title": "Load VAE"
+  }
+ },
+ "105:24": {
+  "inputs": {
+   "vae_name": "MiniMax H3\\minimax_h3_audio_vae_fp32.safetensors"
+  },
+  "class_type": "VAELoader",
+  "_meta": {
+   "title": "Load VAE"
+  }
+ },
+ "105:23": {
+  "inputs": {
+   "samples": [
+    "105:14",
+    0
+   ],
+   "vae": [
+    "105:24",
+    0
+   ]
+  },
+  "class_type": "VAEDecodeAudio",
+  "_meta": {
+   "title": "VAE Decode Audio"
+  }
+ },
+ "105:10": {
+  "inputs": {
+   "samples": [
+    "105:14",
+    0
+   ],
+   "vae": [
+    "105:11",
+    0
+   ]
+  },
+  "class_type": "VAEDecode",
+  "_meta": {
+   "title": "VAE Decode"
+  }
+ },
+ "105:17": {
+  "inputs": {
+   "sampler_name": "res_multistep"
+  },
+  "class_type": "KSamplerSelect",
+  "_meta": {
+   "title": "KSamplerSelect"
+  }
+ },
+ "105:9": {
+  "inputs": {
+   "scheduler": "simple",
+   "steps": [
+    "105:123",
+    0
+   ],
+   "denoise": 1.0,
+   "model": [
+    "105:122",
+    0
+   ]
+  },
+  "class_type": "BasicScheduler",
+  "_meta": {
+   "title": "BasicScheduler"
+  }
+ },
+ "105:14": {
+  "inputs": {
+   "noise": [
+    "105:15",
+    0
+   ],
+   "guider": [
+    "105:16",
+    0
+   ],
+   "sampler": [
+    "105:17",
+    0
+   ],
+   "sigmas": [
+    "105:9",
+    0
+   ],
+   "latent_image": [
+    "105:104",
+    1
+   ]
+  },
+  "class_type": "SamplerCustomAdvanced",
+  "_meta": {
+   "title": "SamplerCustomAdvanced"
+  }
+ },
+ "105:16": {
+  "inputs": {
+   "model": [
+    "105:122",
+    0
+   ],
+   "conditioning": [
+    "105:104",
+    0
+   ]
+  },
+  "class_type": "BasicGuider",
+  "_meta": {
+   "title": "Basic Guider"
+  }
+ },
+ "105:6": {
+  "inputs": {
+   "unet_name": "MiniMax H3\\minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+   "weight_dtype": "default"
+  },
+  "class_type": "UNETLoader",
+  "_meta": {
+   "title": "Load Diffusion Model"
+  }
+ },
+ "105:13": {
+  "inputs": {
+   "clip_name": "MiniMax H3\\qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+   "type": "minimax",
+   "device": "default"
+  },
+  "class_type": "CLIPLoader",
+  "_meta": {
+   "title": "Load CLIP"
+  }
+ },
+ "105:15": {
+  "inputs": {
+   "noise_seed": 1003
+  },
+  "class_type": "RandomNoise",
+  "_meta": {
+   "title": "RandomNoise"
+  }
+ },
+ "105:91": {
+  "inputs": {
+   "fps": 24.0,
+   "bit_depth": 8,
+   "color_space": "sRGB",
+   "images": [
+    "105:10",
+    0
+   ],
+   "audio": [
+    "105:23",
+    0
+   ]
+  },
+  "class_type": "CreateVideo",
+  "_meta": {
+   "title": "Create Video"
+  }
+ },
+ "105:104": {
+  "inputs": {
+   "prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] Eine einzige durchgehende, ungeschnittene Aufnahme mit einer Gesamtdauer von 13 Sekunden. Hochformat, die realistische Bildästhetik und das warme seitliche Licht des Referenzbildes bleiben erhalten. Die erwachsene Frau aus dem Eingangsbild behält dasselbe Gesicht, dieselben Körperproportionen und dieselben langen blonden Haare mit pastellrosa Strähnen. Zu Beginn trägt sie unverändert das schwarze, fein glitzernde T-Shirt mit dem weißen Schriftzug \"DaWasteh\". Der schlichte dunkelgraue Studiohintergrund bleibt bestehen. Die Kamera befindet sich frontal auf Augenhöhe. Ihre Bewegungen wirken natürlich, selbstbewusst und spielerisch flirtend.\n\nVon 0,00 bis 3,80 Sekunden:\nAusgehend vom exakten Bildausschnitt des Referenzbildes geht die Frau mit entspannten, natürlichen Schritten geradeaus auf die Kamera zu. Gleichzeitig fährt die Kamera gleichmäßig rückwärts, deutlich schneller, als die Frau vorwärtsgeht. Dadurch vergrößert sich der Abstand, obwohl sie auf die Kamera zugeht. Der Bildausschnitt öffnet sich allmählich bis zu einer Einstellung vom vollständigen Kopf bis zur Hüfte. Sie bleibt mittig im Bild und schaut direkt in die Linse. Ihre Haare und ihr Shirt bewegen sich leicht mit ihren Schritten.\n\nDie Frau mit einer klaren, warmen, erwachsenen weiblichen Stimme und natürlicher deutscher Aussprache (S1) sagt während des Gehens lebhaft und auffordernd: <d>[German] Hopp, hopp, auf zu DaWasteh</d>\nIhre Lippen bewegen sich synchron zum gesprochenen Satz. Sie beendet den Satz, bevor sie mit dem Ausziehen beginnt.\n\nVon 3,80 bis 7,80 Sekunden:\nSie verlangsamt ihren Gang und kommt entspannt zum Stehen. Mit beiden Händen greift sie den unteren Saum ihres T-Shirts und zieht es in einer zusammenhängenden, anatomisch natürlichen Bewegung nach oben und vollständig über den Kopf. Der Stoff faltet und bewegt sich nachvollziehbar; das Shirt wird tatsächlich ausgezogen und verwandelt sich nicht in ein anderes Kleidungsstück.\n\nDarunter trägt sie bereits einen blickdichten BH aus Stoff im Pokéball-Design. Beide Cups haben eine rote obere Hälfte, eine weiße untere Hälfte und einen schwarzen horizontalen Trennstreifen mit einem weiß ausgefüllten, schwarz umrandeten Kreis in der Mitte. Schwarze Träger und ein schwarzes Unterbrustband vervollständigen das Design. Der BH sitzt sicher, bleibt geschlossen und bedeckt ihre Brust während der gesamten Bewegung vollständig.\n\nDie Kamera beendet ihre Rückwärtsfahrt und beginnt während des Ausziehens sanft wieder auf sie zuzufahren. Solange das Shirt über ihren Kopf gezogen wird, lässt die Kamera genügend Platz für die Bewegung. Sobald das Shirt ihren Kopf vollständig passiert hat, setzt sie die Annäherung zu einem engeren Oberkörperporträt fort. Die Frau senkt das ausgezogene Shirt in ihrer linken Hand seitlich neben ihren Körper. Ihre Haare fallen natürlich über ihre Schultern zurück.\n\nVon 7,80 bis 11,30 Sekunden:\nDie Kamera erreicht eine ruhige, frontale Oberkörper-Porträteinstellung und hält diesen Abstand. Der gesamte Kopf einschließlich Haaransatz und Scheitel bleibt mit etwas Luft zum oberen Bildrand sichtbar. Beide Schultern, beide BH-Cups und das vollständige Unterbrustband liegen innerhalb des Bildes. Der untere Bildrand befindet sich etwas unterhalb des Unterbrustbandes. Kein enger Gesichtszoom und keine isolierte Nahaufnahme des BHs.\n\nSie hält direkten Blickkontakt, neigt den Kopf leicht und lächelt schelmisch. Mit derselben Stimme (S1), nun etwas ruhiger und spielerisch herausfordernd, sagt sie deutlich: <d>[German] Oder muss ich dich erst überzeugen</d>\nDie Lippenbewegungen passen exakt zum Dialog. Der vollständige Satz ist vor der Schlussgeste beendet.\n\nVon 11,30 bis 13,00 Sekunden:\nSie zwinkert der Kamera einmal deutlich mit einem Auge zu. Anschließend hebt sie ihre freie rechte Hand seitlich neben ihren Oberkörper und macht eine langsame, laszive „Komm her“-Geste: Die Handfläche zeigt leicht nach oben, während sie ihren Zeigefinger einmal einladend zu sich herankrümmt. Die Hand bleibt sichtbar, ohne ihr Gesicht oder das Pokéball-Design zu verdecken. Dazu eine kleine, entspannte Schulterdrehung und ein selbstbewusstes, verführerisches Lächeln. Sie hält den Blickkontakt und lässt die Endpose für den letzten kurzen Moment ruhig stehen.\n\nDie gesamte Handlung bleibt eine einzige räumlich und zeitlich zusammenhängende Aufnahme. Keine Schnitte, keine Perspektivsprünge, keine Zeitlupe und keine abrupten Zooms. Gesicht, Haare, Körperproportionen und Beleuchtung bleiben konsistent. Das ausgezogene Shirt bleibt in ihrer linken Hand und erscheint nicht wieder an ihrem Körper. Keine zusätzlichen Personen, keine Untertitel und keine eingeblendeten Texte. Ausschließlich die beiden vorgegebenen Dialogzeilen werden gesprochen.\n\noverall_soundscape: Dezente, gleichbleibende Studio-Raumatmosphäre, leise natürliche Schritte und sanftes Stoffrascheln beim Ausziehen des T-Shirts. Die Stimme ist klar im Vordergrund, ohne auffälligen Hall. Keine zusätzlichen Stimmen und keine überzeichneten Geräusche.\n\nnon_diegetic_music: N/A",
+   "width": [
+    "115",
+    0
+   ],
+   "height": [
+    "115",
+    1
+   ],
+   "length": [
+    "105:107",
+    1
+   ],
+   "clip": [
+    "105:13",
+    0
+   ],
+   "vae": [
+    "105:11",
+    0
+   ],
+   "first_frame": [
+    "114",
+    0
+   ]
+  },
+  "class_type": "MiniMaxH3ImageToVideo",
+  "_meta": {
+   "title": "MiniMax H3 Image to Video"
+  }
+ },
+ "105:107": {
+  "inputs": {
+   "expression": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17",
+   "values.a": [
+    "105:111",
+    0
+   ]
+  },
+  "class_type": "ComfyMathExpression",
+  "_meta": {
+   "title": "Math Expression"
+  }
+ },
+ "105:111": {
+  "inputs": {
+   "value": 3.0
+  },
+  "class_type": "PrimitiveFloat",
+  "_meta": {
+   "title": "Float (duration)"
+  }
+ },
+ "105:121": {
+  "inputs": {
+   "lora_name": "MiniMax H3\\minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+   "strength_model": 1.0,
+   "model": [
+    "105:6",
+    0
+   ]
+  },
+  "class_type": "LoraLoaderModelOnly",
+  "_meta": {
+   "title": "Load LoRA"
+  }
+ },
+ "105:122": {
+  "inputs": {
+   "switch": [
+    "105:126",
+    0
+   ],
+   "on_false": [
+    "105:6",
+    0
+   ],
+   "on_true": [
+    "105:121",
+    0
+   ]
+  },
+  "class_type": "ComfySwitchNode",
+  "_meta": {
+   "title": "If/Else Switch (Model)"
+  }
+ },
+ "105:123": {
+  "inputs": {
+   "switch": [
+    "105:126",
+    0
+   ],
+   "on_false": [
+    "105:124",
+    0
+   ],
+   "on_true": [
+    "105:125",
+    0
+   ]
+  },
+  "class_type": "ComfySwitchNode",
+  "_meta": {
+   "title": "If/Else Switch (Steps)"
+  }
+ },
+ "105:124": {
+  "inputs": {
+   "value": 20
+  },
+  "class_type": "PrimitiveInt",
+  "_meta": {
+   "title": "Int"
+  }
+ },
+ "105:125": {
+  "inputs": {
+   "value": 8
+  },
+  "class_type": "PrimitiveInt",
+  "_meta": {
+   "title": "Int"
+  }
+ },
+ "105:126": {
+  "inputs": {
+   "value": false
+  },
+  "class_type": "PrimitiveBoolean",
+  "_meta": {
+   "title": "Boolean (Enable Lightning LoRA)"
+  }
+ }
+}

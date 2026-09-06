@@ -1,0 +1,235 @@
+{
+ "1": {
+  "_meta": {
+   "title": "Diffusion Model"
+  },
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "Z-Image\\z_image_turbo_bf16.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "12": {
+  "_meta": {
+   "title": "Run Timer Pixaroma"
+  },
+  "class_type": "PixaromaRunTimer",
+  "inputs": {}
+ },
+ "2": {
+  "_meta": {
+   "title": "CLIP (lumina2)"
+  },
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "Qwen\\qwen_3_4b.safetensors",
+   "device": "default",
+   "type": "lumina2"
+  }
+ },
+ "22": {
+  "_meta": {
+   "title": "Prompt Pixaroma"
+  },
+  "class_type": "PixaromaPrompt",
+  "inputs": {
+   "PromptState": "{\"text\":\"3D cartoon render of a cute humanoid panda with long, flowing blonde hair cascading over its shoulders, holding a wooden acoustic guitar in its right hand, fingers gently resting on the strings as if mid-song. The panda’s large, expressive black eyes gaze directly at the camera with a soft, friendly smile, ears perked and slightly tilted. It wears a simple brown leather vest over a white tunic, with faint embroidered leaf patterns along the hem. The setting is a whimsical fantasy forest where towering mushroom-like trees rise in spiraling clusters, their caps glowing softly with bioluminescent hues of lavender and teal. Thick moss carpets the forest floor, dotted with tiny glowing fireflies. Morning light filters through the canopy in golden shafts, casting warm highlights on the panda’s fur and illuminating misty air particles. The composition centers the panda slightly off-center, framed by two giant mushrooms in the foreground, creating depth. Textures are smooth yet detailed: plush fur, polished wood grain on the guitar, dew-damp moss. Mood is serene, magical, and inviting, bathed in gentle dawn radiance.\",\"order\":\"mine\",\"sep\":\", \"}"
+  }
+ },
+ "23": {
+  "_meta": {
+   "title": "VRAM Debug"
+  },
+  "class_type": "VRAM_Debug",
+  "inputs": {
+   "any_input": [
+    "6",
+    0
+   ],
+   "empty_cache": false,
+   "gc_collect": false,
+   "unload_all_models": false
+  }
+ },
+ "24": {
+  "_meta": {
+   "title": "VRAM Debug"
+  },
+  "class_type": "VRAM_Debug",
+  "inputs": {
+   "any_input": [
+    "8",
+    0
+   ],
+   "empty_cache": false,
+   "gc_collect": false,
+   "unload_all_models": false
+  }
+ },
+ "25": {
+  "_meta": {
+   "title": "SelectModelDevice · central control"
+  },
+  "class_type": "SelectModelDevice",
+  "inputs": {
+   "device": [
+    "28",
+    0
+   ],
+   "model": [
+    "1",
+    0
+   ]
+  }
+ },
+ "26": {
+  "_meta": {
+   "title": "SelectCLIPDevice · central control"
+  },
+  "class_type": "SelectCLIPDevice",
+  "inputs": {
+   "clip": [
+    "2",
+    0
+   ],
+   "device": [
+    "28",
+    1
+   ]
+  }
+ },
+ "27": {
+  "_meta": {
+   "title": "SelectVAEDevice · central control"
+  },
+  "class_type": "SelectVAEDevice",
+  "inputs": {
+   "device": [
+    "28",
+    2
+   ],
+   "vae": [
+    "7",
+    0
+   ]
+  }
+ },
+ "28": {
+  "_meta": {
+   "title": "Central GPU Control · MODEL / CLIP / VAE"
+  },
+  "class_type": "DaWMultiGPUDeviceControl",
+  "inputs": {
+   "clip_device": "gpu:1",
+   "model_device": "gpu:0",
+   "vae_device": "gpu:1"
+  }
+ },
+ "3": {
+  "_meta": {
+   "title": "Positiv"
+  },
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "26",
+    0
+   ],
+   "text": [
+    "22",
+    0
+   ]
+  }
+ },
+ "4": {
+  "_meta": {
+   "title": "Negativ (ZeroOut, CFG=1)"
+  },
+  "class_type": "ConditioningZeroOut",
+  "inputs": {
+   "conditioning": [
+    "3",
+    0
+   ]
+  }
+ },
+ "5": {
+  "_meta": {
+   "title": "Latent"
+  },
+  "class_type": "EmptySD3LatentImage",
+  "inputs": {
+   "batch_size": 1,
+   "height": 1024,
+   "width": 1024
+  }
+ },
+ "6": {
+  "_meta": {
+   "title": "KSampler"
+  },
+  "class_type": "KSampler",
+  "inputs": {
+   "cfg": 1,
+   "denoise": 1,
+   "latent_image": [
+    "5",
+    0
+   ],
+   "model": [
+    "25",
+    0
+   ],
+   "negative": [
+    "4",
+    0
+   ],
+   "positive": [
+    "3",
+    0
+   ],
+   "sampler_name": "res_multistep",
+   "scheduler": "simple",
+   "seed": 1004,
+   "steps": 8
+  }
+ },
+ "7": {
+  "_meta": {
+   "title": "VAE"
+  },
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "FLUX\\ae.safetensors"
+  }
+ },
+ "8": {
+  "_meta": {
+   "title": "VAE Decode"
+  },
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "23",
+    0
+   ],
+   "vae": [
+    "27",
+    0
+   ]
+  }
+ },
+ "9": {
+  "_meta": {
+   "title": "Speichern"
+  },
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "WF_ZImage_turbo",
+   "images": [
+    "24",
+    0
+   ]
+  }
+ }
+}

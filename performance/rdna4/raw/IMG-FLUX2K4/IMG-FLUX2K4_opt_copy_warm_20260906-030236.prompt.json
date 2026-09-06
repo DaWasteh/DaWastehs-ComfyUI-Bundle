@@ -1,0 +1,235 @@
+{
+ "1": {
+  "_meta": {
+   "title": "Diffusion Model"
+  },
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "FLUX\\flux-2-klein-4b.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "12": {
+  "_meta": {
+   "title": "Run Timer Pixaroma"
+  },
+  "class_type": "PixaromaRunTimer",
+  "inputs": {}
+ },
+ "2": {
+  "_meta": {
+   "title": "CLIP (flux2 / Qwen3-4B)"
+  },
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "Qwen\\qwen_3_4b.safetensors",
+   "device": "default",
+   "type": "flux2"
+  }
+ },
+ "22": {
+  "_meta": {
+   "title": "Prompt Pixaroma"
+  },
+  "class_type": "PixaromaPrompt",
+  "inputs": {
+   "PromptState": "{\"text\":\"Extreme close-up photograph of a single human eye, filling most of the frame. The eye is open and looking directly toward the camera. Highly detailed iris with intricate radial fibers, subtle natural color variations, a clearly defined pupil and a realistic wet surface. Sharp eyelashes, visible eyelid texture, fine pores and tiny skin hairs around the eye. A soft rectangular window reflection is visible on the cornea, with a small natural catchlight. Neutral expression, realistic anatomy, natural asymmetry, unretouched skin, physically plausible lighting.\\n\\nSoft diffused daylight coming from one side, gentle shadows, neutral gray background, shallow depth of field. The iris and the front eyelashes are in precise focus while the surrounding skin gradually becomes softer. Macro photography, approximately 100 mm macro lens, high dynamic range, realistic color reproduction, documentary photography, no makeup, no stylization, no text, no decorative elements.\",\"order\":\"mine\",\"sep\":\", \"}"
+  }
+ },
+ "23": {
+  "_meta": {
+   "title": "VRAM Debug"
+  },
+  "class_type": "VRAM_Debug",
+  "inputs": {
+   "any_input": [
+    "6",
+    0
+   ],
+   "empty_cache": true,
+   "gc_collect": true,
+   "unload_all_models": false
+  }
+ },
+ "24": {
+  "_meta": {
+   "title": "VRAM Debug"
+  },
+  "class_type": "VRAM_Debug",
+  "inputs": {
+   "any_input": [
+    "8",
+    0
+   ],
+   "empty_cache": true,
+   "gc_collect": true,
+   "unload_all_models": false
+  }
+ },
+ "25": {
+  "_meta": {
+   "title": "SelectModelDevice · central control"
+  },
+  "class_type": "SelectModelDevice",
+  "inputs": {
+   "device": [
+    "28",
+    0
+   ],
+   "model": [
+    "1",
+    0
+   ]
+  }
+ },
+ "26": {
+  "_meta": {
+   "title": "SelectCLIPDevice · central control"
+  },
+  "class_type": "SelectCLIPDevice",
+  "inputs": {
+   "clip": [
+    "2",
+    0
+   ],
+   "device": [
+    "28",
+    1
+   ]
+  }
+ },
+ "27": {
+  "_meta": {
+   "title": "SelectVAEDevice · central control"
+  },
+  "class_type": "SelectVAEDevice",
+  "inputs": {
+   "device": [
+    "28",
+    2
+   ],
+   "vae": [
+    "7",
+    0
+   ]
+  }
+ },
+ "28": {
+  "_meta": {
+   "title": "Central GPU Control · MODEL / CLIP / VAE"
+  },
+  "class_type": "DaWMultiGPUDeviceControl",
+  "inputs": {
+   "clip_device": "gpu:0",
+   "model_device": "gpu:0",
+   "vae_device": "gpu:0"
+  }
+ },
+ "3": {
+  "_meta": {
+   "title": "Positiv"
+  },
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "26",
+    0
+   ],
+   "text": [
+    "22",
+    0
+   ]
+  }
+ },
+ "4": {
+  "_meta": {
+   "title": "Negativ (ZeroOut, CFG=1)"
+  },
+  "class_type": "ConditioningZeroOut",
+  "inputs": {
+   "conditioning": [
+    "3",
+    0
+   ]
+  }
+ },
+ "5": {
+  "_meta": {
+   "title": "Latent"
+  },
+  "class_type": "EmptyFlux2LatentImage",
+  "inputs": {
+   "batch_size": 1,
+   "height": 1024,
+   "width": 1024
+  }
+ },
+ "6": {
+  "_meta": {
+   "title": "KSampler"
+  },
+  "class_type": "KSampler",
+  "inputs": {
+   "cfg": 1,
+   "denoise": 1,
+   "latent_image": [
+    "5",
+    0
+   ],
+   "model": [
+    "25",
+    0
+   ],
+   "negative": [
+    "4",
+    0
+   ],
+   "positive": [
+    "3",
+    0
+   ],
+   "sampler_name": "euler",
+   "scheduler": "simple",
+   "seed": 1002,
+   "steps": 4
+  }
+ },
+ "7": {
+  "_meta": {
+   "title": "VAE"
+  },
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "FLUX2\\flux2-vae.safetensors"
+  }
+ },
+ "8": {
+  "_meta": {
+   "title": "VAE Decode"
+  },
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "23",
+    0
+   ],
+   "vae": [
+    "27",
+    0
+   ]
+  }
+ },
+ "9": {
+  "_meta": {
+   "title": "Speichern"
+  },
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "WF_FLUX2_Klein_4b",
+   "images": [
+    "24",
+    0
+   ]
+  }
+ }
+}

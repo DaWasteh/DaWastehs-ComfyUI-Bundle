@@ -1,0 +1,204 @@
+[32m[INFO][0m setup plugin alembic.autogenerate.schemas
+[32m[INFO][0m setup plugin alembic.autogenerate.tables
+[32m[INFO][0m setup plugin alembic.autogenerate.types
+[32m[INFO][0m setup plugin alembic.autogenerate.constraints
+[32m[INFO][0m setup plugin alembic.autogenerate.defaults
+[32m[INFO][0m setup plugin alembic.autogenerate.comments
+[32m[INFO][0m Adding extra search path custom_nodes L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\bench\custom_nodes
+[32m[INFO][0m Setting output directory to: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_baseline_233238\output
+[32m[INFO][0m Found comfy_kitchen backend triton: {'available': False, 'disabled': True, 'unavailable_reason': "ImportError: No module named 'triton'", 'capabilities': []}
+[32m[INFO][0m Found comfy_kitchen backend eager: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_embedding', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_mxfp8', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'int8_linear', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_mxfp8', 'scaled_mm_nvfp4', 'scaled_mm_svdquant_w4a4', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Found comfy_kitchen backend cuda: {'available': True, 'disabled': True, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_svdquant_w4a4', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Found comfy_kitchen backend hip: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_simple_dtype', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'int8_linear', 'na3d', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'scaled_mm_svdquant_w4a4', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Checkpoint files will always be loaded safely.
+[32m[INFO][0m Total VRAM 32624 MB, total RAM 48504 MB
+[32m[INFO][0m pytorch version: 2.13.0+rocm10.1.0a20260822
+[32m[INFO][0m Set: torch.backends.cudnn.enabled = False for better AMD performance.
+[32m[INFO][0m AMD arch: gfx1201
+[32m[INFO][0m ROCm version: (7, 16)
+[32m[INFO][0m Set vram state to: NORMAL_VRAM
+[32m[INFO][0m Device: cuda:0 AMD Radeon AI PRO R9700 : native
+[32m[INFO][0m Device: cuda:1 AMD Radeon RX 9070 XT : native
+[32m[INFO][0m Using pytorch attention
+[32m[INFO][0m Python version: 3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]
+[32m[INFO][0m ComfyUI version: 0.34.0
+[32m[INFO][0m comfy-aimdo version: 0.5.2
+[32m[INFO][0m comfy-kitchen version: 0.2.31
+[1m[33m[WARNING][0m Dynamic vram disabled with argument. If you have any issues with dynamic vram enabled please give us a detailed reports as this argument will be removed soon. If you use gguf we recommend keeping dynamic vram enabled and using native ComfyUI model formats instead. ComfyUI native formats like fp8, int8 and w4a8 will be faster even if they are larger than your memory.
+[32m[INFO][0m Setting temp directory to: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_baseline_233238\temp\temp
+[32m[INFO][0m comfyui-frontend-package version: 1.51.9
+[32m[INFO][0m comfyui-workflow-templates version: 0.11.55
+[32m[INFO][0m comfyui-embedded-docs version: 0.5.10
+[32m[INFO][0m comfy-kitchen version: 0.2.31
+[32m[INFO][0m comfy-aimdo version: 0.5.2
+[32m[INFO][0m [Prompt Server] web root: L:\ComfyUI\.venv\Lib\site-packages\comfyui_frontend_package\static
+[32m[INFO][0m Asset seeder disabled
+[32m[INFO][0m No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[1m[33m[WARNING][0m No prebuilt binary for ROCm 7.16, loading ROCm 7.14 instead. Set BNB_ROCM_VERSION to override.
+W0905 23:32:52.336000 25920 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+[32m[INFO][0m ComfyUI-GGUF: Allowing full torch compile
+[32m[INFO][0m ### Loading: ComfyUI-Impact-Pack (V8.28.3)
+[32m[INFO][0m [Impact Pack] Wildcard total size (0.00 MB) is within cache limit (50.00 MB). Using full cache mode.
+[32m[INFO][0m [Impact Pack] Wildcards loading done.
+[32m[INFO][0m ### Loading: ComfyUI-Impact-Subpack (V1.3.5)
+[32m[INFO][0m [Impact Pack/Subpack] Using folder_paths to determine whitelist path: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[32m[INFO][0m [Impact Pack/Subpack] Ensured whitelist directory exists: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack
+[32m[INFO][0m [Impact Pack/Subpack] Loaded 0 model(s) from whitelist: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[32m[INFO][0m [Impact Subpack] ultralytics_bbox: L:\ComfyUI\ComfyUI\models\ultralytics\bbox
+[32m[INFO][0m [Impact Subpack] ultralytics_segm: L:\ComfyUI\ComfyUI\models\ultralytics\segm
+[1m[33m[WARNING][0m KJNodes: PatchTritonVAE node could not be imported. PatchTritonVAE will be unavailable.
+Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\nodes\triton_vae.py", line 10, in <module>
+    import triton
+ModuleNotFoundError: No module named 'triton'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\__init__.py", line 382, in <module>
+    from .nodes.triton_vae import PatchTritonVAE
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\nodes\triton_vae.py", line 13, in <module>
+    raise ImportError("PatchTritonVAE requires triton (pip install triton, or triton-windows)") from e
+ImportError: PatchTritonVAE requires triton (pip install triton, or triton-windows)
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ckpts path: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux\ckpts[0m
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using symlinks: False[0m
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ort providers: ['CUDAExecutionProvider', 'DmlExecutionProvider', 'DirectMLExecutionProvider', 'OpenVINOExecutionProvider', 'ROCMExecutionProvider', 'CPUExecutionProvider', 'CoreMLExecutionProvider'][0m
+[FL AceStep] Registered JS extension directory: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training\js
+[32m[INFO][0m Registered JS extension directory: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training\js
+[FL AceStep] ACEStep models directory: L:\ComfyUI\ComfyUI\models\acestep
+[32m[INFO][0m ACEStep models directory: L:\ComfyUI\ComfyUI\models\acestep
+[FL AceStep] Loaded 6 nodes successfully
+[32m[INFO][0m Loaded 6 nodes successfully
+2026-09-05 23:32:55.237 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+import error: No module named 'triton'
+[34m[ComfyUI-Easy-Use] server: [0mv1.3.6 [92mLoaded[0m
+[34m[ComfyUI-Easy-Use] web root: [0mL:\ComfyUI\ComfyUI\custom_nodes\comfyui-easy-use\web_version/v2 [92mLoaded[0m
+[38;2;246;103;68m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+  [1;37mPixaroma[0m v1.4.142  |  [38;2;246;103;68m80 nodes[0m Loaded
+  [0;37mComfyUI Tutorials: https://www.youtube.com/@pixaroma[0m
+  [0;37mThis is a notice, not an error. All [38;2;246;103;68mPixaroma[0;37m nodes work in both Classic and Nodes 2.0 mode.[0m
+  [0;37mIf something looks off right after switching the Node UI mode, hard-refresh the page (Ctrl+Shift+R).[0m
+[38;2;246;103;68m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+[34m[ComfyUI-RMBG][0m v[93m3.1.0[0m | [93m42 nodes[0m [92mLoaded[0m
+DWPose: Onnxruntime with acceleration providers detected
+
+[32mInitializing ControlAltAI Nodes[0m
+[35m
+     _    ____ _____   ____  _
+    / \  / ___| ____|_/ ___|| |_ ___ _ __
+   / _ \| |   |  _| |_\___ \| __/ _ \ '_ \
+  / ___ \ |___| |___ _ ___) | ||  __/ |_) |
+ /_/   \_\____|_____|_|____/ \__\___| .__/
+                                    |_|    Training
+[0m
+FL AceStep Training Custom Nodes Loaded - Version 1.1.0
+2026-09-05 23:32:55.237 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+2026-09-05 23:32:55.237 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+2026-09-05 23:32:55.237 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+[Moss_TTS-ComfyUI] Registered 5 node(s).
+[32m[INFO][0m Using pytorch attention
+[32m[INFO][0m rdna4_bench_probe: routes registered
+[32m[INFO][0m 
+Import times for custom nodes:
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\websocket_image_save.py
+[32m[INFO][0m    0.0 seconds: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\bench\custom_nodes\rdna4_bench_probe
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-H3-AutoLength
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-AutoSongwriter
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-GGUF
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-HeartMuLa
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-TiledDiffusion
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-MelBandRoFormer
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\krea_training_safety
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_ipadapter_plus
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\mikey_nodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-MultiGPU-Control
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-Krea2T-Enhancer
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\Moss_TTS-ComfyUI
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\WhatDreamsCost-ComfyUI
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyMath
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-LiveAvatar
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\controlaltai-nodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-QwenTTS
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\rgthree-comfy
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-H3-MusicVideo
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-videohelpersuite
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-spectrum-minimax-h3
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-Pixaroma
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\qwen3-tts-comfyui
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-impact-pack
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_layerstyle
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\Jovi_Spout
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI_YuE
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\RES4LYF
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-LivePortraitKJ
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-impact-subpack
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-mmaudio-suite
+[32m[INFO][0m    0.4 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-hunyuan3dwrapper
+[32m[INFO][0m    0.4 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-detail-daemon
+[32m[INFO][0m    1.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-Qwen3TTS-LoRA
+[32m[INFO][0m    2.9 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-easy-use
+[32m[INFO][0m 
+[32m[INFO][0m Context impl SQLiteImpl.
+[32m[INFO][0m Will assume non-transactional DDL.
+[32m[INFO][0m Using RAM pressure cache.
+[32m[INFO][0m got prompt
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Creating deepclone of CausalDiffusionVAE for cuda:1.
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.float32
+[32m[INFO][0m Creating deepclone of AudioVAE for cuda:1.
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.float32
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Using MixedPrecisionOps for text encoder
+[32m[INFO][0m Requested to load LTXAVTEModel_
+[32m[INFO][0m loaded completely;  14613.55 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Requested to load LTXAVTEModel_
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, asym_w4a8_int8, float8_e4m3fn, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: torch.bfloat16
+[32m[INFO][0m model_type FLUX
+[32m[INFO][0m Requested to load Gemma4TEModel_
+[32m[INFO][0m Unloaded partially: 8348.81 MB freed, 6281.15 MB remains loaded, 281.31 MB buffer reserved, lowvram patches: 0
+[32m[INFO][0m loaded completely;  9741.68 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Requested to load Gemma4TEModel_
+
+********
+Warning: flash-attn is not installed. Will only run the manual PyTorch version. Please install flash-attn for faster inference.
+********
+ 
+✅ ComfyUI-Qwen-TTS v1.0.7 loaded
+(RES4LYF) Init
+(RES4LYF) Importing beta samplers.
+(RES4LYF) Importing legacy samplers.
+
+[92m[rgthree-comfy] Loaded 48 extraordinary nodes. 🎉[0m
+
+[33m[rgthree-comfy] ComfyUI's new Node 2.0 rendering may be incompatible with some rgthree-comfy nodes and features, breaking some rendering as well as losing the ability to access a node's properties (a vital part of many nodes). It also appears to run MUCH more slowly spiking CPU usage and causing jankiness and unresponsiveness, especially with large workflows. Personally I am not planning to use the new Nodes 2.0 and, unfortunately, am not able to invest the time to investigate and overhaul rgthree-comfy where needed. If you have issues when Nodes 2.0 is enabled, I'd urge you to switch it off as well and join me in hoping ComfyUI is not planning to deprecate the existing, stable canvas rendering all together.
+[0m
+Generating tokens:   0%|          | 0/600 [00:00<?, ?it/s]Generating tokens:   0%|          | 1/600 [00:00<05:20,  1.87it/s]Generating tokens:   0%|          | 2/600 [00:00<03:42,  2.69it/s]Generating tokens:   1%|          | 7/600 [00:00<00:53, 11.04it/s]Generating tokens:   2%|▏         | 12/600 [00:01<00:32, 18.34it/s]Generating tokens:   3%|▎         | 17/600 [00:01<00:23, 24.43it/s]Generating tokens:   4%|▎         | 22/600 [00:01<00:19, 28.99it/s]Generating tokens:   4%|▍         | 27/600 [00:01<00:17, 32.20it/s]Generating tokens:   5%|▌         | 32/600 [00:01<00:16, 34.74it/s]Generating tokens:   6%|▌         | 37/600 [00:01<00:15, 36.62it/s]Generating tokens:   7%|▋         | 42/600 [00:01<00:14, 37.72it/s]Generating tokens:   8%|▊         | 46/600 [00:01<00:14, 38.28it/s]Generating tokens:   8%|▊         | 51/600 [00:01<00:14, 39.09it/s]Generating tokens:   9%|▉         | 56/600 [00:02<00:13, 39.48it/s]Generating tokens:  10%|█         | 61/600 [00:02<00:13, 40.96it/s]Generating tokens:  11%|█         | 66/600 [00:02<00:12, 42.29it/s]Generating tokens:  12%|█▏        | 71/600 [00:02<00:12, 43.29it/s]Generating tokens:  13%|█▎        | 76/600 [00:02<00:11, 44.02it/s]Generating tokens:  14%|█▎        | 81/600 [00:02<00:11, 44.35it/s]Generating tokens:  14%|█▍        | 86/600 [00:02<00:11, 44.46it/s]Generating tokens:  15%|█▌        | 91/600 [00:02<00:11, 45.02it/s]Generating tokens:  16%|█▌        | 96/600 [00:02<00:11, 45.11it/s]Generating tokens:  17%|█▋        | 101/600 [00:03<00:10, 45.42it/s]Generating tokens:  18%|█▊        | 106/600 [00:03<00:10, 46.03it/s]Generating tokens:  18%|█▊        | 111/600 [00:03<00:10, 45.59it/s]Generating tokens:  19%|█▉        | 116/600 [00:03<00:10, 45.66it/s]Generating tokens:  20%|██        | 121/600 [00:03<00:10, 45.54it/s]Generating tokens:  21%|██        | 126/600 [00:03<00:10, 46.17it/s]Generating tokens:  22%|██▏       | 131/600 [00:03<00:10, 45.86it/s]Generating tokens:  23%|██▎       | 136/600 [00:03<00:09, 46.50it/s]Generating tokens:  24%|██▎       | 141/600 [00:03<00:09, 46.67it/s]Generating tokens:  24%|██▍       | 146/600 [00:04<00:09, 46.59it/s]Generating tokens:  25%|██▌       | 151/600 [00:04<00:09, 46.92it/s]Generating tokens:  26%|██▌       | 156/600 [00:04<00:09, 47.00it/s]Generating tokens:  27%|██▋       | 161/600 [00:04<00:09, 46.97it/s]Generating tokens:  28%|██▊       | 166/600 [00:04<00:09, 46.07it/s]Generating tokens:  28%|██▊       | 171/600 [00:04<00:09, 46.20it/s]Generating tokens:  29%|██▊       | 172/600 [00:04<00:11, 37.06it/s]
+[32m[INFO][0m loaded completely; 16229.45 MB usable, 14613.55 MB loaded, full load: True
+[32m[INFO][0m Requested to load LTXAV
+[32m[INFO][0m Unloaded partially: 10432.23 MB freed, 4197.73 MB remains loaded, 281.31 MB buffer reserved, lowvram patches: 0
+[32m[INFO][0m loaded completely; 22901.80 MB usable, 20487.25 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:08,  1.24s/it] 25%|██▌       | 2/8 [00:02<00:06,  1.03s/it] 38%|███▊      | 3/8 [00:02<00:04,  1.04it/s] 50%|█████     | 4/8 [00:03<00:03,  1.08it/s] 62%|██████▎   | 5/8 [00:04<00:02,  1.10it/s] 75%|███████▌  | 6/8 [00:05<00:01,  1.12it/s] 88%|████████▊ | 7/8 [00:06<00:00,  1.12it/s]100%|██████████| 8/8 [00:07<00:00,  1.13it/s]100%|██████████| 8/8 [00:07<00:00,  1.09it/s]
+[32m[INFO][0m Requested to load LatentUpsampler
+[32m[INFO][0m loaded completely; 2320.57 MB usable, 949.61 MB loaded, full load: True
+[32m[INFO][0m Unloaded partially: 4181.32 MB freed, 16.41 MB remains loaded, 5760.00 MB buffer reserved, lowvram patches: 0
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:07,  3.75s/it] 67%|██████▋   | 2/3 [00:07<00:03,  3.73s/it]100%|██████████| 3/3 [00:11<00:00,  3.73s/it]100%|██████████| 3/3 [00:11<00:00,  3.73s/it]
+[32m[INFO][0m Requested to load CausalDiffusionVAE
+[32m[INFO][0m loaded completely;  1403.92 MB loaded, full load: True
+[32m[INFO][0m Requested to load AudioVAE
+[32m[INFO][0m loaded completely;  693.46 MB loaded, full load: True
+[32m[INFO][0m [32mPrompt executed in 150.05 seconds[0m
+[32m[INFO][0m 
+Stopped server

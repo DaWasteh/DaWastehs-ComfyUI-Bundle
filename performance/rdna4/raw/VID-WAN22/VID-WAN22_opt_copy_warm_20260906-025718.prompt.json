@@ -1,0 +1,406 @@
+{
+ "1": {
+  "_meta": {
+   "title": "UNet HIGH noise"
+  },
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "WAN\\wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "10": {
+  "_meta": {
+   "title": "Eingangsbild"
+  },
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "13_profile_left_00001_.png"
+  }
+ },
+ "11": {
+  "_meta": {
+   "title": "WAN VAE"
+  },
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "WAN\\wan_2.1_vae.safetensors"
+  }
+ },
+ "12": {
+  "_meta": {
+   "title": "I2V Latent 1280x720 81f"
+  },
+  "class_type": "WanImageToVideo",
+  "inputs": {
+   "batch_size": 1,
+   "height": 480,
+   "length": [
+    "46",
+    1
+   ],
+   "negative": [
+    "9",
+    0
+   ],
+   "positive": [
+    "8",
+    0
+   ],
+   "start_image": [
+    "10",
+    0
+   ],
+   "vae": [
+    "43",
+    0
+   ],
+   "width": 832
+  }
+ },
+ "13": {
+  "_meta": {
+   "title": "KSampler HIGH (Step 0→switch)"
+  },
+  "class_type": "KSamplerAdvanced",
+  "inputs": {
+   "add_noise": "enable",
+   "cfg": 1,
+   "end_at_step": 2,
+   "latent_image": [
+    "12",
+    2
+   ],
+   "model": [
+    "3",
+    0
+   ],
+   "negative": [
+    "12",
+    1
+   ],
+   "noise_seed": 1002,
+   "positive": [
+    "12",
+    0
+   ],
+   "return_with_leftover_noise": "enable",
+   "sampler_name": "euler",
+   "scheduler": "simple",
+   "start_at_step": 0,
+   "steps": 4
+  }
+ },
+ "14": {
+  "_meta": {
+   "title": "KSampler LOW (switch→total)"
+  },
+  "class_type": "KSamplerAdvanced",
+  "inputs": {
+   "add_noise": "disable",
+   "cfg": 1,
+   "end_at_step": 4,
+   "latent_image": [
+    "13",
+    0
+   ],
+   "model": [
+    "6",
+    0
+   ],
+   "negative": [
+    "12",
+    1
+   ],
+   "noise_seed": 1002,
+   "positive": [
+    "12",
+    0
+   ],
+   "return_with_leftover_noise": "disable",
+   "sampler_name": "euler",
+   "scheduler": "simple",
+   "start_at_step": 2,
+   "steps": 4
+  }
+ },
+ "15": {
+  "_meta": {
+   "title": "VAE Decode"
+  },
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "14",
+    0
+   ],
+   "vae": [
+    "43",
+    0
+   ]
+  }
+ },
+ "16": {
+  "_meta": {
+   "title": "CreateVideo (16fps)"
+  },
+  "class_type": "CreateVideo",
+  "inputs": {
+   "bit_depth": 8,
+   "color_space": "sRGB",
+   "fps": 16,
+   "images": [
+    "15",
+    0
+   ]
+  }
+ },
+ "17": {
+  "_meta": {
+   "title": "Video speichern"
+  },
+  "class_type": "SaveVideo",
+  "inputs": {
+   "codec": "auto",
+   "filename_prefix": "video/WF_WAN22_i2v_14B_fp8_lightx2v",
+   "format": "auto",
+   "format.codec": "auto",
+   "video": [
+    "39",
+    0
+   ]
+  }
+ },
+ "2": {
+  "_meta": {
+   "title": "lightx2v 4step LoRA (high)"
+  },
+  "class_type": "LoraLoaderModelOnly",
+  "inputs": {
+   "lora_name": "WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
+   "model": [
+    "40",
+    0
+   ],
+   "strength_model": 1
+  }
+ },
+ "20": {
+  "_meta": {
+   "title": "Run Timer Pixaroma"
+  },
+  "class_type": "PixaromaRunTimer",
+  "inputs": {}
+ },
+ "3": {
+  "_meta": {
+   "title": "ModelSamplingSD3 (high)"
+  },
+  "class_type": "ModelSamplingSD3",
+  "inputs": {
+   "model": [
+    "2",
+    0
+   ],
+   "shift": 5
+  }
+ },
+ "38": {
+  "_meta": {
+   "title": "Prompt Pixaroma"
+  },
+  "class_type": "PixaromaPrompt",
+  "inputs": {
+   "PromptState": "{\"text\":\"A royal cyborg queen walks steadily forward through a grand hall, cinematic lighting, smooth camera push-in, highly detailed\",\"order\":\"mine\",\"sep\":\", \"}"
+  }
+ },
+ "39": {
+  "_meta": {
+   "title": "VRAM Debug"
+  },
+  "class_type": "VRAM_Debug",
+  "inputs": {
+   "any_input": [
+    "16",
+    0
+   ],
+   "empty_cache": true,
+   "gc_collect": true,
+   "unload_all_models": false
+  }
+ },
+ "4": {
+  "_meta": {
+   "title": "UNet LOW noise"
+  },
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "WAN\\wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "40": {
+  "_meta": {
+   "title": "SelectModelDevice · central control"
+  },
+  "class_type": "SelectModelDevice",
+  "inputs": {
+   "device": [
+    "44",
+    0
+   ],
+   "model": [
+    "1",
+    0
+   ]
+  }
+ },
+ "41": {
+  "_meta": {
+   "title": "SelectModelDevice · central control"
+  },
+  "class_type": "SelectModelDevice",
+  "inputs": {
+   "device": [
+    "44",
+    0
+   ],
+   "model": [
+    "4",
+    0
+   ]
+  }
+ },
+ "42": {
+  "_meta": {
+   "title": "SelectCLIPDevice · central control"
+  },
+  "class_type": "SelectCLIPDevice",
+  "inputs": {
+   "clip": [
+    "7",
+    0
+   ],
+   "device": [
+    "44",
+    1
+   ]
+  }
+ },
+ "43": {
+  "_meta": {
+   "title": "SelectVAEDevice · central control"
+  },
+  "class_type": "SelectVAEDevice",
+  "inputs": {
+   "device": [
+    "44",
+    2
+   ],
+   "vae": [
+    "11",
+    0
+   ]
+  }
+ },
+ "44": {
+  "_meta": {
+   "title": "Central GPU Control · MODEL / CLIP / VAE"
+  },
+  "class_type": "DaWMultiGPUDeviceControl",
+  "inputs": {
+   "clip_device": "gpu:0",
+   "model_device": "gpu:0",
+   "vae_device": "gpu:0"
+  }
+ },
+ "45": {
+  "_meta": {
+   "title": "OUTPUT DURATION · SECONDS"
+  },
+  "class_type": "PrimitiveFloat",
+  "inputs": {
+   "value": 3.0
+  }
+ },
+ "46": {
+  "_meta": {
+   "title": "SECONDS → VALID MODEL FRAME COUNT"
+  },
+  "class_type": "ComfyMathExpression",
+  "inputs": {
+   "expression": "max(5, round((a * 16 - 1) / 4) * 4 + 1)",
+   "values.a": [
+    "45",
+    0
+   ]
+  }
+ },
+ "5": {
+  "_meta": {
+   "title": "lightx2v 4step LoRA (low)"
+  },
+  "class_type": "LoraLoaderModelOnly",
+  "inputs": {
+   "lora_name": "WAN\\wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors",
+   "model": [
+    "41",
+    0
+   ],
+   "strength_model": 1
+  }
+ },
+ "6": {
+  "_meta": {
+   "title": "ModelSamplingSD3 (low)"
+  },
+  "class_type": "ModelSamplingSD3",
+  "inputs": {
+   "model": [
+    "5",
+    0
+   ],
+   "shift": 5
+  }
+ },
+ "7": {
+  "_meta": {
+   "title": "UMT5 (type wan)"
+  },
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "UMT5\\umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+   "device": "default",
+   "type": "wan"
+  }
+ },
+ "8": {
+  "_meta": {
+   "title": "Positiv"
+  },
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "42",
+    0
+   ],
+   "text": [
+    "38",
+    0
+   ]
+  }
+ },
+ "9": {
+  "_meta": {
+   "title": "Negativ (CN-Default)"
+  },
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "42",
+    0
+   ],
+   "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走"
+  }
+ }
+}

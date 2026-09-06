@@ -1,0 +1,33 @@
+{
+  "name": "E3_reserve1",
+  "description": "E3: --reserve-vram 1 so both Wan2.2 14B fp8 models (2x13.6 GB) can stay resident",
+  "env": {
+    "HIP_VISIBLE_DEVICES": "0,1",
+    "CUDA_VISIBLE_DEVICES": "0,1",
+    "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+    "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+    "OMP_NUM_THREADS": "24",
+    "MKL_NUM_THREADS": "24",
+    "OPENBLAS_NUM_THREADS": "24",
+    "NUMEXPR_NUM_THREADS": "24",
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "unset_env": [
+    "TORCH_BLAS_PREFER_CUBLASLT",
+    "DISABLE_ADDMM_CUDA_LT",
+    "HSA_OVERRIDE_GFX_VERSION",
+    "PYTORCH_TUNABLEOP_ENABLED"
+  ],
+  "args": [
+    "--default-device",
+    "0",
+    "--use-pytorch-cross-attention",
+    "--reserve-vram",
+    "1",
+    "--disable-dynamic-vram",
+    "--disable-async-offload",
+    "--disable-pinned-memory",
+    "--cache-ram"
+  ]
+}

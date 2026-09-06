@@ -29,6 +29,7 @@ try:
         consolidate_workflow as consolidate_v093_autosongwriter,
     )
     from tools.upgrade_v095 import addition_sources as v095_addition_sources
+    from tools.upgrade_v111 import MARKER_KEY as V111_MARKER_KEY, MARKER_VERSION as V111_MARKER_VERSION, apply as v111_apply
 except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows.py
     from refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
     from integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
@@ -47,6 +48,7 @@ except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows
         consolidate_workflow as consolidate_v093_autosongwriter,
     )
     from upgrade_v095 import addition_sources as v095_addition_sources
+    from upgrade_v111 import MARKER_KEY as V111_MARKER_KEY, MARKER_VERSION as V111_MARKER_VERSION, apply as v111_apply
 
 BLACKLIST = ("cudaexecutionprovider", "nunchaku", "svdq", "nvfp4", "tensorrt", "xformers", "flash_attn")
 BASELINE_REF = "HEAD"
@@ -577,7 +579,17 @@ def validate_integration_delta(
 
 
 def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tuple[int, int]:
-    head = git_head_json(path)
+    head_raw = git_head_json(path)
+    # v1.1.1 (RDNA4 performance pass): files carrying the v111 marker are compared against the
+    # deterministic, idempotent v111 form of the baseline (see tools/upgrade_v111.py).
+    v111_key = _path_key(path).removeprefix("workflows/")
+    if current.get("extra", {}).get(V111_MARKER_KEY, {}).get("version") == V111_MARKER_VERSION:
+        def _v111(graph: dict[str, Any]) -> dict[str, Any]:
+            return v111_apply(graph, v111_key)
+    else:
+        def _v111(graph: dict[str, Any]) -> dict[str, Any]:
+            return graph
+    head = _v111(head_raw)
     if "Live Avatar" in path.parts:
         # The user explicitly requires all Live Avatar roots to be timer-free.
         # Normalize only the standalone timer out of the historical baseline;
@@ -596,7 +608,7 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
         )
     key = _path_key(path).removeprefix("workflows/")
     addition = next((item for item in ADDITIONS if item.path == key), None)
-    if addition is not None and migrate_workflow(build_addition(addition), key) == current:
+    if addition is not None and _v111(migrate_workflow(build_addition(addition), key)) == current:
         # A pinned-template addition that was rebuilt from a newer template
         # (e.g. Workflow 16 in v1.0.0) is reproducible from the template alone.
         return (
@@ -604,7 +616,7 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
             sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
         )
     if current.get("extra", {}).get(MIGRATION_KEY, {}).get("version") == MIGRATION_VERSION:
-        expected = migrate_workflow(head, key)
+        expected = _v111(migrate_workflow(head_raw, key))
         if expected != current:
             errors.append(f"{path}: differs from deterministic v0.9.2 collection migration")
         return (
@@ -612,13 +624,14 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
             sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
         )
     if current.get("extra", {}).get("dawasteh_h3_turbo_lora", {}).get("version") == 1:
-        expected = copy.deepcopy(head)
+        expected = copy.deepcopy(head_raw)
         if path.name == DIRECTOR_WORKFLOW:
             integrate_director(expected)
         elif path.name in VISIBLE_WORKFLOWS:
             integrate_visible(expected, path.name)
         else:
             errors.append(f"{path}: unexpected H3 Turbo migration target")
+        expected = _v111(expected)
         if expected != current:
             errors.append(f"{path}: differs from the deterministic H3 Turbo migration")
         return (
@@ -803,7 +816,7 @@ def main() -> int:
                 errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    expected = {"files": 234, "graphs": 287, "nodes": 10453, "notes": 4759, "links": 7205, "timers": 215}
+    expected = {"files": 234, "graphs": 287, "nodes": 10453, "notes": 4759, "links": 7211, "timers": 215}  # v1.1.1: +6 links (WAN I2V pos/neg rewiring)
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

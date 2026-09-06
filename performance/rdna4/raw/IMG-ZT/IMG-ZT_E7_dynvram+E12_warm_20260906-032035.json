@@ -1,0 +1,223 @@
+{
+ "run_id": "IMG-ZT_E7_dynvram+E12_warm_20260906-032035",
+ "test_id": "IMG-ZT",
+ "variant": "E7_dynvram+E12",
+ "run_type": "warm",
+ "hypothesis": "E7: DynamicVRAM (comfy-aimdo 0.5.2) re-test, screening with 900 s timeout",
+ "workload": "1024x1024 8 steps res_multistep cfg1 Z-Image-Turbo bf16 + Qwen3-4B TE + FLUX ae",
+ "seed": 1002,
+ "sets": [
+  "6.seed=1002"
+ ],
+ "prompt_file": "api/IMG_ZTurbo__E12_nounload_allgpu0.json",
+ "prompt_id": "f36ab935-d1b0-49e3-b154-45bb62acdcb0",
+ "status": "success",
+ "client_wall_s": 104.4099133014679,
+ "server_exec_s": 103.47653388977051,
+ "queue_delay_s": 0.004595041275024414,
+ "cached_nodes": [],
+ "node_times": [
+  {
+   "node": "7",
+   "display_node": "7",
+   "start": 1788657635.5923438,
+   "dur": 0.09226298332214355,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "28",
+   "display_node": "28",
+   "start": 1788657635.6846068,
+   "dur": 0.0005965232849121094,
+   "class_type": "DaWMultiGPUDeviceControl"
+  },
+  {
+   "node": "27",
+   "display_node": "27",
+   "start": 1788657635.6852033,
+   "dur": 0.0008771419525146484,
+   "class_type": "SelectVAEDevice"
+  },
+  {
+   "node": "22",
+   "display_node": "22",
+   "start": 1788657635.6860805,
+   "dur": 0.0005686283111572266,
+   "class_type": "PixaromaPrompt"
+  },
+  {
+   "node": "2",
+   "display_node": "2",
+   "start": 1788657635.686649,
+   "dur": 0.1257915496826172,
+   "class_type": "CLIPLoader"
+  },
+  {
+   "node": "26",
+   "display_node": "26",
+   "start": 1788657635.8124406,
+   "dur": 0.0042476654052734375,
+   "class_type": "SelectCLIPDevice"
+  },
+  {
+   "node": "3",
+   "display_node": "3",
+   "start": 1788657635.8166883,
+   "dur": 28.86835217475891,
+   "class_type": "CLIPTextEncode"
+  },
+  {
+   "node": "4",
+   "display_node": "4",
+   "start": 1788657664.6850405,
+   "dur": 0.0026433467864990234,
+   "class_type": "ConditioningZeroOut"
+  },
+  {
+   "node": "1",
+   "display_node": "1",
+   "start": 1788657664.6876838,
+   "dur": 0.02180194854736328,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "25",
+   "display_node": "25",
+   "start": 1788657664.7094858,
+   "dur": 0.0014717578887939453,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "5",
+   "display_node": "5",
+   "start": 1788657664.7109575,
+   "dur": 0.0007939338684082031,
+   "class_type": "EmptySD3LatentImage"
+  },
+  {
+   "node": "6",
+   "display_node": "6",
+   "start": 1788657664.7117515,
+   "dur": 65.75990009307861,
+   "class_type": "KSampler"
+  },
+  {
+   "node": "23",
+   "display_node": "23",
+   "start": 1788657730.4716516,
+   "dur": 1.3134346008300781,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "8",
+   "display_node": "8",
+   "start": 1788657731.7850862,
+   "dur": 6.89614725112915,
+   "class_type": "VAEDecode"
+  },
+  {
+   "node": "24",
+   "display_node": "24",
+   "start": 1788657738.6812334,
+   "dur": 0.3092985153198242,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "9",
+   "display_node": "9",
+   "start": 1788657738.990532,
+   "dur": 0.07694268226623535,
+   "class_type": "SaveImage"
+  }
+ ],
+ "step_stats": {
+  "6": {
+   "steps_observed": 7,
+   "max": 8,
+   "span_s": 3.8390443325042725,
+   "s_per_step": 0.5484349046434674,
+   "first_step_t": 1788657726.0140054,
+   "last_step_t": 1788657729.8530498,
+   "class_type": "KSampler"
+  }
+ },
+ "gpu0_peak_alloc": 6272711168,
+ "gpu0_peak_reserved": 9219080192,
+ "gpu1_peak_alloc": 0,
+ "gpu1_peak_reserved": 0,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x000168BD_phys_0": 162689024.0,
+  "0x00000000_0x0001929A_phys_0": 31042109440.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 39059648512,
+  "swap_used": 1400541184,
+  "process_rss": 1195180032
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 680329216,
+  "swap_used": 1627566080,
+  "process_rss": 38986498048
+ },
+ "outputs": [
+  {
+   "node": "9",
+   "kind": "images",
+   "filename": "WF_ZImage_turbo_00001_.png",
+   "subfolder": "",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E7_dynvram_032017\\output\\WF_ZImage_turbo_00001_.png",
+   "bytes": 1412458,
+   "sha256": "7f96807ab2ccba42d20528930c8353791808b5c1e6d7ed624c51214709c3d0ed"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E7_dynvram_032017\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E7_dynvram_032017\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--enable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+  "DISABLE_ADDMM_CUDA_LT": null,
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788657635.58507,
+ "t_done": 1788657739.9949832
+}

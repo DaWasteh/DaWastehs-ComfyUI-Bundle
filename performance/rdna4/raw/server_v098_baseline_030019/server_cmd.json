@@ -1,0 +1,78 @@
+{
+  "cmd": [
+    "L:\\ComfyUI\\.venv\\Scripts\\python.exe",
+    "-c",
+    "import runpy, signal, sys; signal.signal(signal.SIGBREAK, signal.default_int_handler); script = sys.argv.pop(1); sys.argv[0] = script; runpy.run_path(script, run_name='__main__')",
+    "L:\\ComfyUI\\ComfyUI\\main.py",
+    "--listen",
+    "127.0.0.1",
+    "--port",
+    "8190",
+    "--database-url",
+    "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+    "--output-directory",
+    "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline_030019\\output",
+    "--temp-directory",
+    "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline_030019\\temp",
+    "--extra-model-paths-config",
+    "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+    "--disable-auto-launch",
+    "--dont-print-server",
+    "--default-device",
+    "0",
+    "--use-pytorch-cross-attention",
+    "--reserve-vram",
+    "4",
+    "--disable-dynamic-vram",
+    "--disable-async-offload",
+    "--disable-pinned-memory",
+    "--cache-ram"
+  ],
+  "profile": {
+    "name": "v098_baseline",
+    "description": "Exact production profile from L:\\ComfyUI\\start-MultiGPU.ps1 (v0.9.8) as verified on 2026-09-05 (argv of the live 8188 instance). Only port/db/output/temp differ (bench instance).",
+    "env": {
+      "HIP_VISIBLE_DEVICES": "0,1",
+      "CUDA_VISIBLE_DEVICES": "0,1",
+      "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+      "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+      "OMP_NUM_THREADS": "24",
+      "MKL_NUM_THREADS": "24",
+      "OPENBLAS_NUM_THREADS": "24",
+      "NUMEXPR_NUM_THREADS": "24",
+      "PYTHONUTF8": "1",
+      "PYTHONIOENCODING": "utf-8"
+    },
+    "unset_env": [
+      "TORCH_BLAS_PREFER_CUBLASLT",
+      "DISABLE_ADDMM_CUDA_LT",
+      "HSA_OVERRIDE_GFX_VERSION",
+      "PYTORCH_TUNABLEOP_ENABLED"
+    ],
+    "args": [
+      "--default-device",
+      "0",
+      "--use-pytorch-cross-attention",
+      "--reserve-vram",
+      "4",
+      "--disable-dynamic-vram",
+      "--disable-async-offload",
+      "--disable-pinned-memory",
+      "--cache-ram"
+    ]
+  },
+  "env_overrides": {
+    "HIP_VISIBLE_DEVICES": "0,1",
+    "CUDA_VISIBLE_DEVICES": "0,1",
+    "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+    "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+    "OMP_NUM_THREADS": "24",
+    "MKL_NUM_THREADS": "24",
+    "OPENBLAS_NUM_THREADS": "24",
+    "NUMEXPR_NUM_THREADS": "24",
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "port": 8190,
+  "started": 1788656420.538822
+}

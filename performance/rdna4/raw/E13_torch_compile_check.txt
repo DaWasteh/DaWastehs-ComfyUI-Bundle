@@ -1,0 +1,6 @@
+W0905 22:13:57.542000 22456 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+torch 2.13.0+rocm10.1.0a20260822 dev AMD Radeon RX 9070 XT
+compile mode=default: FAILED TritonMissing: Cannot find a working triton installation. Either the package is not installed or it is too old. More information on installing Triton can be found at: https:// ... Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TO
+compile mode=reduce-overhead: FAILED TritonMissing: Cannot find a working triton installation. Either the package is not installed or it is too old. More information on installing Triton can be found at: https:// ... Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TO
+compile mode=max-autotune-no-cudagraphs: FAILED InductorError: LoweringException: ModuleNotFoundError: No module named 'triton' ... Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TO
+inductor cpp compiler: (None, 'g++')

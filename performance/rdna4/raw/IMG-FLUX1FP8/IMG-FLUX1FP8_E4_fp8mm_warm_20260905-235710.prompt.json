@@ -1,0 +1,227 @@
+{
+ "1": {
+  "_meta": {
+   "title": "UNet (safetensors)"
+  },
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "FLUX\\flux1-dev-fp8.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "10": {
+  "_meta": {
+   "title": "Speichern"
+  },
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "WF_FLUX1_dev_fp8",
+   "images": [
+    "9",
+    0
+   ]
+  }
+ },
+ "13": {
+  "_meta": {
+   "title": "Run Timer Pixaroma"
+  },
+  "class_type": "PixaromaRunTimer",
+  "inputs": {}
+ },
+ "2": {
+  "_meta": {
+   "title": "ModelSamplingFlux"
+  },
+  "class_type": "ModelSamplingFlux",
+  "inputs": {
+   "base_shift": 0.5,
+   "height": 1024,
+   "max_shift": 1.15,
+   "model": [
+    "25",
+    0
+   ],
+   "width": 1024
+  }
+ },
+ "24": {
+  "_meta": {
+   "title": "Prompt Pixaroma"
+  },
+  "class_type": "PixaromaPrompt",
+  "inputs": {
+   "PromptState": "{\"text\":\"Extreme close-up photograph of a single human eye, filling most of the frame. The eye is open and looking directly toward the camera. Highly detailed iris with intricate radial fibers, subtle natural color variations, a clearly defined pupil and a realistic wet surface. Sharp eyelashes, visible eyelid texture, fine pores and tiny skin hairs around the eye. A soft rectangular window reflection is visible on the cornea, with a small natural catchlight. Neutral expression, realistic anatomy, natural asymmetry, unretouched skin, physically plausible lighting.\\n\\nSoft diffused daylight coming from one side, gentle shadows, neutral gray background, shallow depth of field. The iris and the front eyelashes are in precise focus while the surrounding skin gradually becomes softer. Macro photography, approximately 100 mm macro lens, high dynamic range, realistic color reproduction, documentary photography, no makeup, no stylization, no text, no decorative elements.\",\"order\":\"mine\",\"sep\":\", \"}"
+  }
+ },
+ "25": {
+  "_meta": {
+   "title": "SelectModelDevice · central control"
+  },
+  "class_type": "SelectModelDevice",
+  "inputs": {
+   "device": [
+    "28",
+    0
+   ],
+   "model": [
+    "1",
+    0
+   ]
+  }
+ },
+ "26": {
+  "_meta": {
+   "title": "SelectCLIPDevice · central control"
+  },
+  "class_type": "SelectCLIPDevice",
+  "inputs": {
+   "clip": [
+    "3",
+    0
+   ],
+   "device": [
+    "28",
+    1
+   ]
+  }
+ },
+ "27": {
+  "_meta": {
+   "title": "SelectVAEDevice · central control"
+  },
+  "class_type": "SelectVAEDevice",
+  "inputs": {
+   "device": [
+    "28",
+    2
+   ],
+   "vae": [
+    "8",
+    0
+   ]
+  }
+ },
+ "28": {
+  "_meta": {
+   "title": "Central GPU Control · MODEL / CLIP / VAE"
+  },
+  "class_type": "DaWMultiGPUDeviceControl",
+  "inputs": {
+   "clip_device": "gpu:0",
+   "model_device": "gpu:0",
+   "vae_device": "gpu:0"
+  }
+ },
+ "3": {
+  "_meta": {
+   "title": "DualCLIP (clip_l + t5xxl)"
+  },
+  "class_type": "DualCLIPLoader",
+  "inputs": {
+   "clip_name1": "clip_l.safetensors",
+   "clip_name2": "T5\\t5xxl_fp8_e4m3fn.safetensors",
+   "device": "default",
+   "type": "flux"
+  }
+ },
+ "4": {
+  "_meta": {
+   "title": "Positiv (Flux)"
+  },
+  "class_type": "CLIPTextEncodeFlux",
+  "inputs": {
+   "clip": [
+    "26",
+    0
+   ],
+   "clip_l": "",
+   "guidance": 3.5,
+   "t5xxl": [
+    "24",
+    0
+   ]
+  }
+ },
+ "5": {
+  "_meta": {
+   "title": "Negativ (leer)"
+  },
+  "class_type": "CLIPTextEncodeFlux",
+  "inputs": {
+   "clip": [
+    "26",
+    0
+   ],
+   "clip_l": "",
+   "guidance": 3.5,
+   "t5xxl": ""
+  }
+ },
+ "6": {
+  "_meta": {
+   "title": "Latent"
+  },
+  "class_type": "EmptySD3LatentImage",
+  "inputs": {
+   "batch_size": 1,
+   "height": 1024,
+   "width": 1024
+  }
+ },
+ "7": {
+  "_meta": {
+   "title": "KSampler (cfg=1)"
+  },
+  "class_type": "KSampler",
+  "inputs": {
+   "cfg": 1,
+   "denoise": 1,
+   "latent_image": [
+    "6",
+    0
+   ],
+   "model": [
+    "2",
+    0
+   ],
+   "negative": [
+    "5",
+    0
+   ],
+   "positive": [
+    "4",
+    0
+   ],
+   "sampler_name": "euler",
+   "scheduler": "simple",
+   "seed": 1003,
+   "steps": 25
+  }
+ },
+ "8": {
+  "_meta": {
+   "title": "VAE (ae.safetensors)"
+  },
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "FLUX\\ae.safetensors"
+  }
+ },
+ "9": {
+  "_meta": {
+   "title": "VAE Decode"
+  },
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "7",
+    0
+   ],
+   "vae": [
+    "27",
+    0
+   ]
+  }
+ }
+}

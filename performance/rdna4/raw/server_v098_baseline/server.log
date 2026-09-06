@@ -1,0 +1,1383 @@
+[32m[INFO][0m setup plugin alembic.autogenerate.schemas
+[32m[INFO][0m setup plugin alembic.autogenerate.tables
+[32m[INFO][0m setup plugin alembic.autogenerate.types
+[32m[INFO][0m setup plugin alembic.autogenerate.constraints
+[32m[INFO][0m setup plugin alembic.autogenerate.defaults
+[32m[INFO][0m setup plugin alembic.autogenerate.comments
+[32m[INFO][0m Adding extra search path custom_nodes L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\bench\custom_nodes
+[32m[INFO][0m Setting output directory to: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_baseline\output
+[32m[INFO][0m Found comfy_kitchen backend triton: {'available': False, 'disabled': True, 'unavailable_reason': "ImportError: No module named 'triton'", 'capabilities': []}
+[32m[INFO][0m Found comfy_kitchen backend eager: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_embedding', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_mxfp8', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'int8_linear', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_mxfp8', 'scaled_mm_nvfp4', 'scaled_mm_svdquant_w4a4', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Found comfy_kitchen backend cuda: {'available': True, 'disabled': True, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_svdquant_w4a4', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Found comfy_kitchen backend hip: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_simple_dtype', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'gemv_awq_w4a16', 'int8_linear', 'na3d', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'scaled_mm_svdquant_w4a4', 'stochastic_rounding_fp8', 'w4a8_int8_linear']}
+[32m[INFO][0m Checkpoint files will always be loaded safely.
+[32m[INFO][0m Total VRAM 32624 MB, total RAM 48504 MB
+[32m[INFO][0m pytorch version: 2.13.0+rocm10.1.0a20260822
+[32m[INFO][0m Set: torch.backends.cudnn.enabled = False for better AMD performance.
+[32m[INFO][0m AMD arch: gfx1201
+[32m[INFO][0m ROCm version: (7, 16)
+[32m[INFO][0m Set vram state to: NORMAL_VRAM
+[32m[INFO][0m Device: cuda:0 AMD Radeon AI PRO R9700 : native
+[32m[INFO][0m Device: cuda:1 AMD Radeon RX 9070 XT : native
+[32m[INFO][0m Using pytorch attention
+[32m[INFO][0m Python version: 3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]
+[32m[INFO][0m ComfyUI version: 0.34.0
+[32m[INFO][0m comfy-aimdo version: 0.5.2
+[32m[INFO][0m comfy-kitchen version: 0.2.31
+[1m[33m[WARNING][0m Dynamic vram disabled with argument. If you have any issues with dynamic vram enabled please give us a detailed reports as this argument will be removed soon. If you use gguf we recommend keeping dynamic vram enabled and using native ComfyUI model formats instead. ComfyUI native formats like fp8, int8 and w4a8 will be faster even if they are larger than your memory.
+[32m[INFO][0m Setting temp directory to: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\raw\server_v098_baseline\temp\temp
+[32m[INFO][0m comfyui-frontend-package version: 1.51.9
+[32m[INFO][0m comfyui-workflow-templates version: 0.11.55
+[32m[INFO][0m comfyui-embedded-docs version: 0.5.10
+[32m[INFO][0m comfy-kitchen version: 0.2.31
+[32m[INFO][0m comfy-aimdo version: 0.5.2
+[32m[INFO][0m [Prompt Server] web root: L:\ComfyUI\.venv\Lib\site-packages\comfyui_frontend_package\static
+[32m[INFO][0m Asset seeder disabled
+[32m[INFO][0m No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[1m[33m[WARNING][0m No prebuilt binary for ROCm 7.16, loading ROCm 7.14 instead. Set BNB_ROCM_VERSION to override.
+W0905 21:56:42.910000 23244 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+[32m[INFO][0m ComfyUI-GGUF: Allowing full torch compile
+[32m[INFO][0m ### Loading: ComfyUI-Impact-Pack (V8.28.3)
+[32m[INFO][0m [Impact Pack] Wildcard total size (0.00 MB) is within cache limit (50.00 MB). Using full cache mode.
+[32m[INFO][0m [Impact Pack] Wildcards loading done.
+[32m[INFO][0m ### Loading: ComfyUI-Impact-Subpack (V1.3.5)
+[32m[INFO][0m [Impact Pack/Subpack] Using folder_paths to determine whitelist path: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[32m[INFO][0m [Impact Pack/Subpack] Ensured whitelist directory exists: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack
+[32m[INFO][0m [Impact Pack/Subpack] Loaded 0 model(s) from whitelist: L:\ComfyUI\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[32m[INFO][0m [Impact Subpack] ultralytics_bbox: L:\ComfyUI\ComfyUI\models\ultralytics\bbox
+[32m[INFO][0m [Impact Subpack] ultralytics_segm: L:\ComfyUI\ComfyUI\models\ultralytics\segm
+[1m[33m[WARNING][0m KJNodes: PatchTritonVAE node could not be imported. PatchTritonVAE will be unavailable.
+Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\nodes\triton_vae.py", line 10, in <module>
+    import triton
+ModuleNotFoundError: No module named 'triton'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\__init__.py", line 382, in <module>
+    from .nodes.triton_vae import PatchTritonVAE
+  File "L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes\nodes\triton_vae.py", line 13, in <module>
+    raise ImportError("PatchTritonVAE requires triton (pip install triton, or triton-windows)") from e
+ImportError: PatchTritonVAE requires triton (pip install triton, or triton-windows)
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ckpts path: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux\ckpts[0m
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using symlinks: False[0m
+[36;20m[L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ort providers: ['CUDAExecutionProvider', 'DmlExecutionProvider', 'DirectMLExecutionProvider', 'OpenVINOExecutionProvider', 'ROCMExecutionProvider', 'CPUExecutionProvider', 'CoreMLExecutionProvider'][0m
+[FL AceStep] Registered JS extension directory: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training\js
+[32m[INFO][0m Registered JS extension directory: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training\js
+[FL AceStep] ACEStep models directory: L:\ComfyUI\ComfyUI\models\acestep
+[32m[INFO][0m ACEStep models directory: L:\ComfyUI\ComfyUI\models\acestep
+[FL AceStep] Loaded 6 nodes successfully
+[32m[INFO][0m Loaded 6 nodes successfully
+2026-09-05 21:56:45.891 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+import error: No module named 'triton'
+[34m[ComfyUI-Easy-Use] server: [0mv1.3.6 [92mLoaded[0m
+[34m[ComfyUI-Easy-Use] web root: [0mL:\ComfyUI\ComfyUI\custom_nodes\comfyui-easy-use\web_version/v2 [92mLoaded[0m
+[38;2;246;103;68m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+  [1;37mPixaroma[0m v1.4.142  |  [38;2;246;103;68m80 nodes[0m Loaded
+  [0;37mComfyUI Tutorials: https://www.youtube.com/@pixaroma[0m
+  [0;37mThis is a notice, not an error. All [38;2;246;103;68mPixaroma[0;37m nodes work in both Classic and Nodes 2.0 mode.[0m
+  [0;37mIf something looks off right after switching the Node UI mode, hard-refresh the page (Ctrl+Shift+R).[0m
+[38;2;246;103;68m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+Error loading L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg\py\AILab_SAM3Segment.py: No module named 'triton'
+[34m[ComfyUI-RMBG][0m v[93m3.1.0[0m | [93m42 nodes[0m [92mLoaded[0m
+DWPose: Onnxruntime with acceleration providers detected
+
+[32mInitializing ControlAltAI Nodes[0m
+[35m
+     _    ____ _____   ____  _
+    / \  / ___| ____|_/ ___|| |_ ___ _ __
+   / _ \| |   |  _| |_\___ \| __/ _ \ '_ \
+  / ___ \ |___| |___ _ ___) | ||  __/ |_) |
+ /_/   \_\____|_____|_|____/ \__\___| .__/
+                                    |_|    Training
+[0m
+FL AceStep Training Custom Nodes Loaded - Version 1.1.0
+2026-09-05 21:56:45.891 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+2026-09-05 21:56:45.892 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+2026-09-05 21:56:45.892 | INFO     | cozy_comfyui.node:loader:135 - JOV_SPOUT 2 nodes loaded
+[Moss_TTS-ComfyUI] Registered 5 node(s).
+[32m[INFO][0m Using pytorch attention
+[32m[INFO][0m rdna4_bench_probe: routes registered
+[32m[INFO][0m 
+Import times for custom nodes:
+[32m[INFO][0m    0.0 seconds: L:\GitHub\DaWastehs-ComfyUI-Bundle\performance\rdna4\bench\custom_nodes\rdna4_bench_probe
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\websocket_image_save.py
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-H3-AutoLength
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-AutoSongwriter
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-GGUF
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-TiledDiffusion
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-HeartMuLa
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_ipadapter_plus
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\krea_training_safety
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-MelBandRoFormer
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-MultiGPU-Control
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\mikey_nodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-Krea2T-Enhancer
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\Moss_TTS-ComfyUI
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyMath
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\WhatDreamsCost-ComfyUI
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-LiveAvatar
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\fl-acestep-training
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\controlaltai-nodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-QwenTTS
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-H3-MusicVideo
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\rgthree-comfy
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-kjnodes
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_controlnet_aux
+[32m[INFO][0m    0.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-videohelpersuite
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-spectrum-minimax-h3
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-Pixaroma
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\qwen3-tts-comfyui
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui_layerstyle
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-rmbg
+[32m[INFO][0m    0.1 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-impact-pack
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\Jovi_Spout
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI_YuE
+[32m[INFO][0m    0.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\RES4LYF
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-LivePortraitKJ
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-mmaudio-suite
+[32m[INFO][0m    0.3 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-impact-subpack
+[32m[INFO][0m    0.4 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-hunyuan3dwrapper
+[32m[INFO][0m    0.4 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-detail-daemon
+[32m[INFO][0m    1.2 seconds: L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-DaWasteh-Qwen3TTS-LoRA
+[32m[INFO][0m    3.0 seconds: L:\ComfyUI\ComfyUI\custom_nodes\comfyui-easy-use
+[32m[INFO][0m 
+[32m[INFO][0m Context impl SQLiteImpl.
+[32m[INFO][0m Will assume non-transactional DDL.
+[32m[INFO][0m Context impl SQLiteImpl.
+[32m[INFO][0m Will assume non-transactional DDL.
+[32m[INFO][0m Running upgrade  -> 0001_assets, Initial assets schema
+Revision ID: 0001_assets
+Revises: None
+Create Date: 2025-12-10 00:00:00
+[32m[INFO][0m Running upgrade 0001_assets -> 0002_merge_to_asset_references, Merge AssetInfo and AssetCacheState into unified asset_references table.
+[32m[INFO][0m Running upgrade 0002_merge_to_asset_references -> 0003_add_metadata_job_id, Add system_metadata and job_id columns to asset_references.
+Change preview_id FK from assets.id to asset_references.id.
+[32m[INFO][0m Running upgrade 0003_add_metadata_job_id -> 0004_drop_tag_type, Drop the vestigial tags.tag_type column.
+[32m[INFO][0m Running upgrade 0004_drop_tag_type -> 0005_allow_case_sensitive_tags, Allow case-sensitive tag names.
+[32m[INFO][0m Running upgrade 0005_allow_case_sensitive_tags -> 0006_add_loader_path, Add loader_path column to asset_references.
+[32m[INFO][0m Database upgraded from None to 0006_add_loader_path
+[32m[INFO][0m Using RAM pressure cache.
+[1m[33m[WARNING][0m [DEPRECATION WARNING] Detected import of deprecated legacy API: /scripts/ui.js. This is likely caused by a custom node extension using outdated APIs. Please update your extensions or contact the extension author for an updated version.
+[1m[33m[WARNING][0m [DEPRECATION WARNING] Detected import of deprecated legacy API: /extensions/core/clipspace.js. This is likely caused by a custom node extension using outdated APIs. Please update your extensions or contact the extension author for an updated version.
+[1m[33m[WARNING][0m [DEPRECATION WARNING] Detected import of deprecated legacy API: /extensions/core/widgetInputs.js. This is likely caused by a custom node extension using outdated APIs. Please update your extensions or contact the extension author for an updated version.
+[32m[INFO][0m got prompt
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Creating deepclone of AutoencodingEngine for cuda:1.
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m loaded completely;  7672.25 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Creating deepclone of ZImageTEModel_ for cuda:1.
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m loaded completely;  7672.25 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 18909.99 MB usable, 7672.25 MB loaded, full load: True
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: None
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 27448.68 MB usable, 11739.54 MB loaded, full load: True
+
+********
+Warning: flash-attn is not installed. Will only run the manual PyTorch version. Please install flash-attn for faster inference.
+********
+ 
+✅ ComfyUI-Qwen-TTS v1.0.7 loaded
+(RES4LYF) Init
+(RES4LYF) Importing beta samplers.
+(RES4LYF) Importing legacy samplers.
+
+[92m[rgthree-comfy] Loaded 48 extraordinary nodes. 🎉[0m
+
+[33m[rgthree-comfy] ComfyUI's new Node 2.0 rendering may be incompatible with some rgthree-comfy nodes and features, breaking some rendering as well as losing the ability to access a node's properties (a vital part of many nodes). It also appears to run MUCH more slowly spiking CPU usage and causing jankiness and unresponsiveness, especially with large workflows. Personally I am not planning to use the new Nodes 2.0 and, unfortunately, am not able to invest the time to investigate and overhaul rgthree-comfy where needed. If you have issues when Nodes 2.0 is enabled, I'd urge you to switch it off as well and join me in hoping ComfyUI is not planning to deprecate the existing, stable canvas rendering all together.
+[0m
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.14s/it] 25%|██▌       | 2/8 [00:01<00:04,  1.21it/s] 38%|███▊      | 3/8 [00:02<00:03,  1.39it/s] 50%|█████     | 4/8 [00:02<00:02,  1.49it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.56it/s] 75%|███████▌  | 6/8 [00:04<00:01,  1.60it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.62it/s]100%|██████████| 8/8 [00:05<00:00,  1.64it/s]100%|██████████| 8/8 [00:05<00:00,  1.51it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,661,649,920
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,808,252,928
+[32m[INFO][0m VRAMdebug: freed memory: 13,146,603,008
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m loaded completely; 6385.20 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,808,252,928
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,808,252,928
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 53.98 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m [32mPrompt executed in 0.30 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 27230.56 MB usable, 11739.54 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.60it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.65it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.66it/s] 50%|█████     | 4/8 [00:02<00:02,  1.67it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.67it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.67it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.68it/s]100%|██████████| 8/8 [00:04<00:00,  1.68it/s]100%|██████████| 8/8 [00:04<00:00,  1.67it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 21,416,624,640
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,808,252,928
+[32m[INFO][0m VRAMdebug: freed memory: 12,391,628,288
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m loaded completely; 6340.30 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,808,252,928
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,808,252,928
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 15.05 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 27230.56 MB usable, 11739.54 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.59it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.64it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.66it/s] 50%|█████     | 4/8 [00:02<00:02,  1.67it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.67it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.67it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.67it/s]100%|██████████| 8/8 [00:04<00:00,  1.67it/s]100%|██████████| 8/8 [00:04<00:00,  1.67it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 21,416,624,640
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,808,252,928
+[32m[INFO][0m VRAMdebug: freed memory: 12,391,628,288
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m loaded completely; 6340.30 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,808,252,928
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,808,252,928
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 14.97 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Creating deepclone of AutoencoderKL for cuda:1.
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m model weight dtype torch.float16, manual cast: None
+[32m[INFO][0m model_type EPS
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Requested to load SDXLClipModel
+[32m[INFO][0m loaded completely;  1560.80 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m loaded diffusion model directly to GPU
+[32m[INFO][0m Requested to load SDXL
+[32m[INFO][0m loaded completely;  4897.05 MB loaded, full load: True
+[32m[INFO][0m Creating deepclone of SDXLClipModel for cuda:1.
+[32m[INFO][0m Requested to load SDXLClipModel
+[32m[INFO][0m loaded completely;  1560.80 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load SDXLClipModel
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 12496.35 MB usable, 1560.80 MB loaded, full load: True
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load SDXL
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/32 [00:00<?, ?it/s]L:\ComfyUI\.venv\Lib\site-packages\torchsde\_brownian\brownian_interval.py:608: UserWarning: Should have tb<=t1 but got tb=14.614643096923828 and t1=14.614643.
+  warnings.warn(f"Should have {tb_name}<=t1 but got {tb_name}={tb} and t1={self._end}.")
+  3%|▎         | 1/32 [00:00<00:24,  1.27it/s]  6%|▋         | 2/32 [00:01<00:13,  2.16it/s]  9%|▉         | 3/32 [00:01<00:10,  2.77it/s] 12%|█▎        | 4/32 [00:01<00:08,  3.19it/s] 16%|█▌        | 5/32 [00:01<00:07,  3.49it/s] 19%|█▉        | 6/32 [00:01<00:07,  3.70it/s] 22%|██▏       | 7/32 [00:02<00:06,  3.84it/s] 25%|██▌       | 8/32 [00:02<00:06,  3.95it/s] 28%|██▊       | 9/32 [00:02<00:05,  4.02it/s] 31%|███▏      | 10/32 [00:02<00:05,  4.07it/s] 34%|███▍      | 11/32 [00:03<00:05,  4.10it/s] 38%|███▊      | 12/32 [00:03<00:04,  4.13it/s] 41%|████      | 13/32 [00:03<00:04,  4.14it/s] 44%|████▍     | 14/32 [00:03<00:04,  4.15it/s] 47%|████▋     | 15/32 [00:04<00:04,  4.16it/s] 50%|█████     | 16/32 [00:04<00:03,  4.16it/s] 53%|█████▎    | 17/32 [00:04<00:03,  4.17it/s] 56%|█████▋    | 18/32 [00:04<00:03,  4.17it/s] 59%|█████▉    | 19/32 [00:05<00:03,  4.17it/s] 62%|██████▎   | 20/32 [00:05<00:02,  4.16it/s] 66%|██████▌   | 21/32 [00:05<00:02,  4.17it/s] 69%|██████▉   | 22/32 [00:05<00:02,  4.16it/s] 72%|███████▏  | 23/32 [00:06<00:02,  4.17it/s] 75%|███████▌  | 24/32 [00:06<00:01,  4.17it/s] 78%|███████▊  | 25/32 [00:06<00:01,  4.17it/s] 81%|████████▏ | 26/32 [00:06<00:01,  4.17it/s] 84%|████████▍ | 27/32 [00:07<00:01,  4.17it/s] 88%|████████▊ | 28/32 [00:07<00:00,  4.17it/s] 91%|█████████ | 29/32 [00:07<00:00,  4.17it/s] 94%|█████████▍| 30/32 [00:07<00:00,  4.17it/s] 97%|█████████▋| 31/32 [00:07<00:00,  4.18it/s]100%|██████████| 32/32 [00:08<00:00,  4.19it/s]100%|██████████| 32/32 [00:08<00:00,  3.90it/s]
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load AutoencoderKL
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m loaded completely; 6336.85 MB usable, 159.56 MB loaded, full load: True
+[32m[INFO][0m [32mPrompt executed in 26.75 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/32 [00:00<?, ?it/s]  3%|▎         | 1/32 [00:00<00:08,  3.55it/s]  6%|▋         | 2/32 [00:00<00:07,  3.89it/s]  9%|▉         | 3/32 [00:00<00:07,  4.01it/s] 12%|█▎        | 4/32 [00:01<00:06,  4.07it/s] 16%|█▌        | 5/32 [00:01<00:06,  4.10it/s] 19%|█▉        | 6/32 [00:01<00:06,  4.13it/s] 22%|██▏       | 7/32 [00:01<00:06,  4.13it/s] 25%|██▌       | 8/32 [00:01<00:05,  4.14it/s] 28%|██▊       | 9/32 [00:02<00:05,  4.15it/s] 31%|███▏      | 10/32 [00:02<00:05,  4.15it/s] 34%|███▍      | 11/32 [00:02<00:05,  4.15it/s] 38%|███▊      | 12/32 [00:02<00:04,  4.16it/s] 41%|████      | 13/32 [00:03<00:04,  4.16it/s] 44%|████▍     | 14/32 [00:03<00:04,  4.17it/s] 47%|████▋     | 15/32 [00:03<00:04,  4.17it/s] 50%|█████     | 16/32 [00:03<00:03,  4.16it/s] 53%|█████▎    | 17/32 [00:04<00:03,  4.17it/s] 56%|█████▋    | 18/32 [00:04<00:03,  4.17it/s] 59%|█████▉    | 19/32 [00:04<00:03,  4.16it/s] 62%|██████▎   | 20/32 [00:04<00:02,  4.15it/s] 66%|██████▌   | 21/32 [00:05<00:02,  4.16it/s] 69%|██████▉   | 22/32 [00:05<00:02,  4.15it/s] 72%|███████▏  | 23/32 [00:05<00:02,  4.16it/s] 75%|███████▌  | 24/32 [00:05<00:01,  4.16it/s] 78%|███████▊  | 25/32 [00:06<00:01,  4.16it/s] 81%|████████▏ | 26/32 [00:06<00:01,  4.15it/s] 84%|████████▍ | 27/32 [00:06<00:01,  4.15it/s] 88%|████████▊ | 28/32 [00:06<00:00,  4.15it/s] 91%|█████████ | 29/32 [00:07<00:00,  4.15it/s] 94%|█████████▍| 30/32 [00:07<00:00,  4.14it/s] 97%|█████████▋| 31/32 [00:07<00:00,  4.14it/s]100%|██████████| 32/32 [00:07<00:00,  4.15it/s]100%|██████████| 32/32 [00:07<00:00,  4.14it/s]
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m [32mPrompt executed in 9.89 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/32 [00:00<?, ?it/s]  3%|▎         | 1/32 [00:00<00:08,  3.52it/s]  6%|▋         | 2/32 [00:00<00:07,  3.88it/s]  9%|▉         | 3/32 [00:00<00:07,  4.00it/s] 12%|█▎        | 4/32 [00:01<00:06,  4.06it/s] 16%|█▌        | 5/32 [00:01<00:06,  4.09it/s] 19%|█▉        | 6/32 [00:01<00:06,  4.11it/s] 22%|██▏       | 7/32 [00:01<00:06,  4.13it/s] 25%|██▌       | 8/32 [00:01<00:05,  4.13it/s] 28%|██▊       | 9/32 [00:02<00:05,  4.14it/s] 31%|███▏      | 10/32 [00:02<00:05,  4.14it/s] 34%|███▍      | 11/32 [00:02<00:05,  4.14it/s] 38%|███▊      | 12/32 [00:02<00:04,  4.15it/s] 41%|████      | 13/32 [00:03<00:04,  4.16it/s] 44%|████▍     | 14/32 [00:03<00:04,  4.16it/s] 47%|████▋     | 15/32 [00:03<00:04,  4.16it/s] 50%|█████     | 16/32 [00:03<00:03,  4.16it/s] 53%|█████▎    | 17/32 [00:04<00:03,  4.16it/s] 56%|█████▋    | 18/32 [00:04<00:03,  4.16it/s] 59%|█████▉    | 19/32 [00:04<00:03,  4.15it/s] 62%|██████▎   | 20/32 [00:04<00:02,  4.15it/s] 66%|██████▌   | 21/32 [00:05<00:02,  4.14it/s] 69%|██████▉   | 22/32 [00:05<00:02,  4.13it/s] 72%|███████▏  | 23/32 [00:05<00:02,  4.13it/s] 75%|███████▌  | 24/32 [00:05<00:01,  4.14it/s] 78%|███████▊  | 25/32 [00:06<00:01,  4.13it/s] 81%|████████▏ | 26/32 [00:06<00:01,  4.13it/s] 84%|████████▍ | 27/32 [00:06<00:01,  4.13it/s] 88%|████████▊ | 28/32 [00:06<00:00,  4.13it/s] 91%|█████████ | 29/32 [00:07<00:00,  4.13it/s] 94%|█████████▍| 30/32 [00:07<00:00,  4.13it/s] 97%|█████████▋| 31/32 [00:07<00:00,  4.15it/s]100%|██████████| 32/32 [00:07<00:00,  4.16it/s]100%|██████████| 32/32 [00:07<00:00,  4.12it/s]
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m [32mPrompt executed in 9.92 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/32 [00:00<?, ?it/s]  3%|▎         | 1/32 [00:00<00:08,  3.46it/s]  6%|▋         | 2/32 [00:00<00:07,  3.84it/s]  9%|▉         | 3/32 [00:00<00:07,  3.98it/s] 12%|█▎        | 4/32 [00:01<00:06,  4.05it/s] 16%|█▌        | 5/32 [00:01<00:06,  4.08it/s] 19%|█▉        | 6/32 [00:01<00:06,  4.10it/s] 22%|██▏       | 7/32 [00:01<00:06,  4.12it/s] 25%|██▌       | 8/32 [00:01<00:05,  4.13it/s] 28%|██▊       | 9/32 [00:02<00:05,  4.11it/s] 31%|███▏      | 10/32 [00:02<00:05,  4.13it/s] 34%|███▍      | 11/32 [00:02<00:05,  4.13it/s] 38%|███▊      | 12/32 [00:02<00:04,  4.14it/s] 41%|████      | 13/32 [00:03<00:04,  4.13it/s] 44%|████▍     | 14/32 [00:03<00:04,  4.14it/s] 47%|████▋     | 15/32 [00:03<00:04,  4.13it/s] 50%|█████     | 16/32 [00:03<00:03,  4.12it/s] 53%|█████▎    | 17/32 [00:04<00:03,  4.13it/s] 56%|█████▋    | 18/32 [00:04<00:03,  4.14it/s] 59%|█████▉    | 19/32 [00:04<00:03,  4.13it/s] 62%|██████▎   | 20/32 [00:04<00:02,  4.13it/s] 66%|██████▌   | 21/32 [00:05<00:02,  4.13it/s] 69%|██████▉   | 22/32 [00:05<00:02,  4.13it/s] 72%|███████▏  | 23/32 [00:05<00:02,  4.13it/s] 75%|███████▌  | 24/32 [00:05<00:01,  4.12it/s] 78%|███████▊  | 25/32 [00:06<00:01,  4.13it/s] 81%|████████▏ | 26/32 [00:06<00:01,  4.13it/s] 84%|████████▍ | 27/32 [00:06<00:01,  4.13it/s] 88%|████████▊ | 28/32 [00:06<00:00,  4.12it/s] 91%|█████████ | 29/32 [00:07<00:00,  4.13it/s] 94%|█████████▍| 30/32 [00:07<00:00,  4.13it/s] 97%|█████████▋| 31/32 [00:07<00:00,  4.13it/s]100%|██████████| 32/32 [00:07<00:00,  4.14it/s]100%|██████████| 32/32 [00:07<00:00,  4.11it/s]
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m [32mPrompt executed in 9.93 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model SDXLClipModel, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model SDXLClipModel. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Using MixedPrecisionOps for text encoder
+[32m[INFO][0m Requested to load WanTEModel
+[32m[INFO][0m loaded completely;  6419.48 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Requested to load WanTEModel
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, float8_e4m3fn, asym_w4a8_int8, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.float16, manual cast: torch.float16
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, float8_e4m3fn, asym_w4a8_int8, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.float16, manual cast: torch.float16
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely; 18681.52 MB usable, 1344.09 MB loaded, full load: True
+[32m[INFO][0m Requested to load WAN21
+[32m[INFO][0m loaded completely; 18553.79 MB usable, 13631.42 MB loaded, full load: True
+[1m[31m[ERROR][0m !!! Exception during processing !!! The size of tensor a (48) must match the size of tensor b (16) at non-singleton dimension 1
+[1m[31m[ERROR][0m Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\execution.py", line 545, in execute
+    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 344, in get_output_data
+    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 318, in _async_map_node_over_list
+    await process_inputs(input_dict, i)
+  File "L:\ComfyUI\ComfyUI\execution.py", line 306, in process_inputs
+    result = f(**inputs)
+  File "L:\ComfyUI\ComfyUI\nodes.py", line 1658, in sample
+    return common_ksampler(model, noise_seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise=denoise, disable_noise=disable_noise, start_step=start_at_step, last_step=end_at_step, force_full_denoise=force_full_denoise)
+  File "L:\ComfyUI\ComfyUI\nodes.py", line 1588, in common_ksampler
+    samples = comfy.sample.sample(model, noise, steps, cfg, sampler_name, scheduler, positive, negative, latent_image,
+                                  denoise=denoise, disable_noise=disable_noise, start_step=start_step, last_step=last_step,
+                                  force_full_denoise=force_full_denoise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\comfy\sample.py", line 82, in sample
+    samples = sampler.sample(noise, positive, negative, cfg=cfg, latent_image=latent_image, start_step=start_step, last_step=last_step, force_full_denoise=force_full_denoise, denoise_mask=noise_mask, sigmas=sigmas, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-TiledDiffusion\utils.py", line 51, in KSampler_sample
+    return orig_fn(*args, **kwargs)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1465, in sample
+    return sample(self.model, noise, positive, negative, cfg, self.device, sampler, sigmas, self.model_options, latent_image=latent_image, denoise_mask=denoise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1355, in sample
+    return cfg_guider.sample(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1337, in sample
+    output = executor.execute(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
+  File "L:\ComfyUI\ComfyUI\comfy\patcher_extension.py", line 113, in execute
+    return self.original(*args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1264, in outer_sample
+    output = self.inner_sample(noise, latent_image, device, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1226, in inner_sample
+    latent_image = self.inner_model.process_latent_in(latent_image)
+  File "L:\ComfyUI\ComfyUI\comfy\model_base.py", line 379, in process_latent_in
+    return self.latent_format.process_in(latent)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\latent_formats.py", line 770, in process_in
+    return (latent - latents_mean) * self.scale_factor / latents_std
+            ~~~~~~~^~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (48) must match the size of tensor b (16) at non-singleton dimension 1
+
+[32m[INFO][0m [32mPrompt executed in 33.61 seconds[0m
+[32m[INFO][0m got prompt
+[1m[31m[ERROR][0m !!! Exception during processing !!! The size of tensor a (48) must match the size of tensor b (16) at non-singleton dimension 1
+[1m[31m[ERROR][0m Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\execution.py", line 545, in execute
+    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 344, in get_output_data
+    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 318, in _async_map_node_over_list
+    await process_inputs(input_dict, i)
+  File "L:\ComfyUI\ComfyUI\execution.py", line 306, in process_inputs
+    result = f(**inputs)
+  File "L:\ComfyUI\ComfyUI\nodes.py", line 1658, in sample
+    return common_ksampler(model, noise_seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise=denoise, disable_noise=disable_noise, start_step=start_at_step, last_step=end_at_step, force_full_denoise=force_full_denoise)
+  File "L:\ComfyUI\ComfyUI\nodes.py", line 1588, in common_ksampler
+    samples = comfy.sample.sample(model, noise, steps, cfg, sampler_name, scheduler, positive, negative, latent_image,
+                                  denoise=denoise, disable_noise=disable_noise, start_step=start_step, last_step=last_step,
+                                  force_full_denoise=force_full_denoise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\comfy\sample.py", line 82, in sample
+    samples = sampler.sample(noise, positive, negative, cfg=cfg, latent_image=latent_image, start_step=start_step, last_step=last_step, force_full_denoise=force_full_denoise, denoise_mask=noise_mask, sigmas=sigmas, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-TiledDiffusion\utils.py", line 51, in KSampler_sample
+    return orig_fn(*args, **kwargs)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1465, in sample
+    return sample(self.model, noise, positive, negative, cfg, self.device, sampler, sigmas, self.model_options, latent_image=latent_image, denoise_mask=denoise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1355, in sample
+    return cfg_guider.sample(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1337, in sample
+    output = executor.execute(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
+  File "L:\ComfyUI\ComfyUI\comfy\patcher_extension.py", line 113, in execute
+    return self.original(*args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1264, in outer_sample
+    output = self.inner_sample(noise, latent_image, device, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1226, in inner_sample
+    latent_image = self.inner_model.process_latent_in(latent_image)
+  File "L:\ComfyUI\ComfyUI\comfy\model_base.py", line 379, in process_latent_in
+    return self.latent_format.process_in(latent)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\latent_formats.py", line 770, in process_in
+    return (latent - latents_mean) * self.scale_factor / latents_std
+            ~~~~~~~^~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (48) must match the size of tensor b (16) at non-singleton dimension 1
+
+[32m[INFO][0m [32mPrompt executed in 0.02 seconds[0m
+[32m[INFO][0m got prompt
+[1m[31m[ERROR][0m !!! Exception during processing !!! The size of tensor a (48) must match the size of tensor b (16) at non-singleton dimension 1
+[1m[31m[ERROR][0m Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\execution.py", line 545, in execute
+    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 344, in get_output_data
+    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 318, in _async_map_node_over_list
+    await process_inputs(input_dict, i)
+  File "L:\ComfyUI\ComfyUI\execution.py", line 306, in process_inputs
+    result = f(**inputs)
+  File "L:\ComfyUI\ComfyUI\nodes.py", line 1658, in sample
+    return common_ksampler(model, noise_seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise=denoise, disable_noise=disable_noise, start_step=start_at_step, last_step=end_at_step, force_full_denoise=force_full_denoise)
+  File "L:\ComfyUI\ComfyUI\nodes.py", line 1588, in common_ksampler
+    samples = comfy.sample.sample(model, noise, steps, cfg, sampler_name, scheduler, positive, negative, latent_image,
+                                  denoise=denoise, disable_noise=disable_noise, start_step=start_step, last_step=last_step,
+                                  force_full_denoise=force_full_denoise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\comfy\sample.py", line 82, in sample
+    samples = sampler.sample(noise, positive, negative, cfg=cfg, latent_image=latent_image, start_step=start_step, last_step=last_step, force_full_denoise=force_full_denoise, denoise_mask=noise_mask, sigmas=sigmas, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-TiledDiffusion\utils.py", line 51, in KSampler_sample
+    return orig_fn(*args, **kwargs)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1465, in sample
+    return sample(self.model, noise, positive, negative, cfg, self.device, sampler, sigmas, self.model_options, latent_image=latent_image, denoise_mask=denoise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1355, in sample
+    return cfg_guider.sample(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1337, in sample
+    output = executor.execute(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
+  File "L:\ComfyUI\ComfyUI\comfy\patcher_extension.py", line 113, in execute
+    return self.original(*args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1264, in outer_sample
+    output = self.inner_sample(noise, latent_image, device, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1226, in inner_sample
+    latent_image = self.inner_model.process_latent_in(latent_image)
+  File "L:\ComfyUI\ComfyUI\comfy\model_base.py", line 379, in process_latent_in
+    return self.latent_format.process_in(latent)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\latent_formats.py", line 770, in process_in
+    return (latent - latents_mean) * self.scale_factor / latents_std
+            ~~~~~~~^~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (48) must match the size of tensor b (16) at non-singleton dimension 1
+
+[32m[INFO][0m [32mPrompt executed in 0.02 seconds[0m
+[32m[INFO][0m got prompt
+[1m[31m[ERROR][0m !!! Exception during processing !!! The size of tensor a (48) must match the size of tensor b (16) at non-singleton dimension 1
+[1m[31m[ERROR][0m Traceback (most recent call last):
+  File "L:\ComfyUI\ComfyUI\execution.py", line 545, in execute
+    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 344, in get_output_data
+    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\execution.py", line 318, in _async_map_node_over_list
+    await process_inputs(input_dict, i)
+  File "L:\ComfyUI\ComfyUI\execution.py", line 306, in process_inputs
+    result = f(**inputs)
+  File "L:\ComfyUI\ComfyUI\nodes.py", line 1658, in sample
+    return common_ksampler(model, noise_seed, steps, cfg, sampler_name, scheduler, positive, negative, latent_image, denoise=denoise, disable_noise=disable_noise, start_step=start_at_step, last_step=end_at_step, force_full_denoise=force_full_denoise)
+  File "L:\ComfyUI\ComfyUI\nodes.py", line 1588, in common_ksampler
+    samples = comfy.sample.sample(model, noise, steps, cfg, sampler_name, scheduler, positive, negative, latent_image,
+                                  denoise=denoise, disable_noise=disable_noise, start_step=start_step, last_step=last_step,
+                                  force_full_denoise=force_full_denoise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\comfy\sample.py", line 82, in sample
+    samples = sampler.sample(noise, positive, negative, cfg=cfg, latent_image=latent_image, start_step=start_step, last_step=last_step, force_full_denoise=force_full_denoise, denoise_mask=noise_mask, sigmas=sigmas, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\custom_nodes\ComfyUI-TiledDiffusion\utils.py", line 51, in KSampler_sample
+    return orig_fn(*args, **kwargs)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1465, in sample
+    return sample(self.model, noise, positive, negative, cfg, self.device, sampler, sigmas, self.model_options, latent_image=latent_image, denoise_mask=denoise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1355, in sample
+    return cfg_guider.sample(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1337, in sample
+    output = executor.execute(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
+  File "L:\ComfyUI\ComfyUI\comfy\patcher_extension.py", line 113, in execute
+    return self.original(*args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1264, in outer_sample
+    output = self.inner_sample(noise, latent_image, device, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
+  File "L:\ComfyUI\ComfyUI\comfy\samplers.py", line 1226, in inner_sample
+    latent_image = self.inner_model.process_latent_in(latent_image)
+  File "L:\ComfyUI\ComfyUI\comfy\model_base.py", line 379, in process_latent_in
+    return self.latent_format.process_in(latent)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "L:\ComfyUI\ComfyUI\comfy\latent_formats.py", line 770, in process_in
+    return (latent - latents_mean) * self.scale_factor / latents_std
+            ~~~~~~~^~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (48) must match the size of tensor b (16) at non-singleton dimension 1
+
+[32m[INFO][0m [32mPrompt executed in 0.02 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely; 4445.11 MB usable, 242.03 MB loaded, full load: True
+[32m[INFO][0m Unloaded partially: 256.48 MB freed, 6163.00 MB remains loaded, 80.00 MB buffer reserved, lowvram patches: 0
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00,  5.20it/s]100%|██████████| 2/2 [00:09<00:00,  5.36s/it]100%|██████████| 2/2 [00:09<00:00,  4.59s/it]
+[32m[INFO][0m Requested to load WAN21
+[32m[INFO][0m Unloaded partially: 9025.05 MB freed, 4608.74 MB remains loaded, 337.51 MB buffer reserved, lowvram patches: 334
+[32m[INFO][0m loaded completely; 19402.04 MB usable, 13631.42 MB loaded, full load: True
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00,  6.81it/s]100%|██████████| 2/2 [00:08<00:00,  5.06s/it]100%|██████████| 2/2 [00:08<00:00,  4.32s/it]
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely; 5107.78 MB usable, 242.03 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 12,427,033,600
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 21,035,319,296
+[32m[INFO][0m [32mPrompt executed in 114.95 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Using MixedPrecisionOps for text encoder
+[32m[INFO][0m Requested to load WanTEModel
+[32m[INFO][0m loaded completely;  6419.48 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Requested to load WanTEModel
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely; 16711.31 MB usable, 242.03 MB loaded, full load: True
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, float8_e4m3fn, asym_w4a8_int8, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.float16, manual cast: torch.float16
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, float8_e4m3fn, asym_w4a8_int8, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.float16, manual cast: torch.float16
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Requested to load WAN21
+[32m[INFO][0m Unloaded partially: 1456.48 MB freed, 4963.00 MB remains loaded, 80.00 MB buffer reserved, lowvram patches: 0
+[32m[INFO][0m loaded completely; 19115.76 MB usable, 13631.42 MB loaded, full load: True
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00,  6.70it/s]100%|██████████| 2/2 [00:08<00:00,  5.06s/it]100%|██████████| 2/2 [00:08<00:00,  4.33s/it]
+[32m[INFO][0m Requested to load WAN21
+[32m[INFO][0m Unloaded partially: 8687.50 MB freed, 4946.29 MB remains loaded, 337.51 MB buffer reserved, lowvram patches: 329
+[32m[INFO][0m loaded completely; 19101.98 MB usable, 13631.42 MB loaded, full load: True
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00,  6.89it/s]100%|██████████| 2/2 [00:08<00:00,  5.05s/it]100%|██████████| 2/2 [00:08<00:00,  4.32s/it]
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely; 22484.16 MB usable, 242.03 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,002,434,560
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 459,918,336
+[32m[INFO][0m [32mPrompt executed in 93.69 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Requested to load WanTEModel
+[32m[INFO][0m loaded completely; 26996.99 MB usable, 6419.48 MB loaded, full load: True
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely; 16775.31 MB usable, 242.03 MB loaded, full load: True
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, float8_e4m3fn, asym_w4a8_int8, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.float16, manual cast: torch.float16
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, float8_e4m3fn, asym_w4a8_int8, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.float16, manual cast: torch.float16
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Requested to load WAN21
+[32m[INFO][0m Unloaded partially: 1200.48 MB freed, 5219.00 MB remains loaded, 80.00 MB buffer reserved, lowvram patches: 0
+[32m[INFO][0m loaded completely; 18807.76 MB usable, 13631.42 MB loaded, full load: True
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00,  6.81it/s]100%|██████████| 2/2 [00:08<00:00,  5.08s/it]100%|██████████| 2/2 [00:08<00:00,  4.34s/it]
+[32m[INFO][0m Requested to load WAN21
+[32m[INFO][0m Unloaded partially: 8755.01 MB freed, 4878.78 MB remains loaded, 337.51 MB buffer reserved, lowvram patches: 330
+[32m[INFO][0m loaded completely; 19170.49 MB usable, 13631.42 MB loaded, full load: True
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00,  5.55it/s]100%|██████████| 2/2 [00:08<00:00,  5.09s/it]100%|██████████| 2/2 [00:08<00:00,  4.36s/it]
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely; 22484.16 MB usable, 242.03 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,002,434,560
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 459,918,336
+[32m[INFO][0m [32mPrompt executed in 76.75 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Requested to load WanTEModel
+[32m[INFO][0m loaded completely; 26996.99 MB usable, 6419.48 MB loaded, full load: True
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely; 16775.31 MB usable, 242.03 MB loaded, full load: True
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, float8_e4m3fn, asym_w4a8_int8, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.float16, manual cast: torch.float16
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, float8_e4m3fn, asym_w4a8_int8, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.float16, manual cast: torch.float16
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Requested to load WAN21
+[32m[INFO][0m Unloaded partially: 1200.48 MB freed, 5219.00 MB remains loaded, 80.00 MB buffer reserved, lowvram patches: 0
+[32m[INFO][0m loaded completely; 18807.76 MB usable, 13631.42 MB loaded, full load: True
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00,  6.32it/s]100%|██████████| 2/2 [00:08<00:00,  5.08s/it]100%|██████████| 2/2 [00:08<00:00,  4.34s/it]
+[32m[INFO][0m Requested to load WAN21
+[32m[INFO][0m Unloaded partially: 8755.01 MB freed, 4878.78 MB remains loaded, 337.51 MB buffer reserved, lowvram patches: 330
+[32m[INFO][0m loaded completely; 19170.49 MB usable, 13631.42 MB loaded, full load: True
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:00<00:00,  4.75it/s]100%|██████████| 2/2 [00:08<00:00,  5.08s/it]100%|██████████| 2/2 [00:08<00:00,  4.35s/it]
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely; 22484.16 MB usable, 242.03 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,002,434,560
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 459,918,336
+[32m[INFO][0m [32mPrompt executed in 77.16 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Creating deepclone of AutoencodingEngine for cuda:1.
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m loaded completely;  7672.25 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Creating deepclone of ZImageTEModel_ for cuda:1.
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m loaded completely;  7672.25 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 18599.17 MB usable, 7672.25 MB loaded, full load: True
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: None
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 26898.68 MB usable, 11739.54 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.56it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.61it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.64it/s] 50%|█████     | 4/8 [00:02<00:02,  1.65it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.66it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.67it/s]100%|██████████| 8/8 [00:04<00:00,  1.67it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,311,555,584
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 92,274,688
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m loaded completely; 6336.85 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 20,403,830,272
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 45.57 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.56it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.63it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.65it/s] 50%|█████     | 4/8 [00:02<00:02,  1.66it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.66it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.67it/s]100%|██████████| 8/8 [00:04<00:00,  1.67it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,282,195,456
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 121,634,816
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m VRAMdebug: free memory before: 20,403,830,272
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 7.69 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.64it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.66it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.66it/s] 50%|█████     | 4/8 [00:02<00:02,  1.66it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.67it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.67it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.67it/s]100%|██████████| 8/8 [00:04<00:00,  1.67it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,275,904,000
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 127,926,272
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m VRAMdebug: free memory before: 20,403,830,272
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 7.47 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.65it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.66it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.66it/s] 50%|█████     | 4/8 [00:02<00:02,  1.67it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.67it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.67it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.67it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,275,904,000
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 127,926,272
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m VRAMdebug: free memory before: 20,403,830,272
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 7.43 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.54it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.61it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.64it/s] 50%|█████     | 4/8 [00:02<00:02,  1.65it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.65it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,275,904,000
+[32m[INFO][0m VRAMdebug: free memory after: 20,275,904,000
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m VRAMdebug: free memory before: 20,403,830,272
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 6.98 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.55it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.62it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.64it/s] 50%|█████     | 4/8 [00:02<00:02,  1.65it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.65it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,275,904,000
+[32m[INFO][0m VRAMdebug: free memory after: 20,275,904,000
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m VRAMdebug: free memory before: 20,403,830,272
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 6.92 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.63it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.65it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.65it/s] 50%|█████     | 4/8 [00:02<00:02,  1.66it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.66it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,275,904,000
+[32m[INFO][0m VRAMdebug: free memory after: 20,275,904,000
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m VRAMdebug: free memory before: 20,403,830,272
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 6.95 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.54it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.61it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.63it/s] 50%|█████     | 4/8 [00:02<00:02,  1.64it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.65it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.65it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.65it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]100%|██████████| 8/8 [00:04<00:00,  1.64it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,275,904,000
+[32m[INFO][0m VRAMdebug: free memory after: 20,275,904,000
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m VRAMdebug: free memory before: 20,403,830,272
+[32m[INFO][0m VRAMdebug: free memory after: 20,403,830,272
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 6.97 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m loaded completely; 14543.41 MB usable, 7672.25 MB loaded, full load: True
+[32m[INFO][0m Requested to load Lumina2
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.64it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.65it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.65it/s] 50%|█████     | 4/8 [00:02<00:02,  1.66it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.66it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 11,995,936,768
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 21,466,416,128
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m loaded completely; 15924.31 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,053,399,552
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 408,953,344
+[32m[INFO][0m [32mPrompt executed in 15.56 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m loaded completely; 26898.68 MB usable, 11739.54 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.56it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.62it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.64it/s] 50%|█████     | 4/8 [00:02<00:02,  1.65it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.65it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 21,066,530,304
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 12,395,822,592
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m loaded completely; 15924.31 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,294,572,032
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 167,780,864
+[32m[INFO][0m [32mPrompt executed in 13.82 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m loaded completely; 26898.68 MB usable, 11739.54 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.57it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.62it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.64it/s] 50%|█████     | 4/8 [00:02<00:02,  1.65it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.65it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 21,066,530,304
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 12,395,822,592
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m loaded completely; 15924.31 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,294,572,032
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 167,780,864
+[32m[INFO][0m [32mPrompt executed in 13.05 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m loaded completely; 26898.68 MB usable, 11739.54 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.56it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.62it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.64it/s] 50%|█████     | 4/8 [00:02<00:02,  1.64it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.65it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.65it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.65it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]100%|██████████| 8/8 [00:04<00:00,  1.64it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 21,066,530,304
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 12,395,822,592
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m loaded completely; 15924.31 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,294,572,032
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 167,780,864
+[32m[INFO][0m [32mPrompt executed in 12.15 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m loaded completely; 26898.68 MB usable, 11739.54 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.56it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.62it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.64it/s] 50%|█████     | 4/8 [00:02<00:02,  1.65it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.65it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.65it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.65it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]100%|██████████| 8/8 [00:04<00:00,  1.64it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 21,066,530,304
+[32m[INFO][0m VRAMdebug: free memory after: 21,045,558,784
+[32m[INFO][0m VRAMdebug: freed memory: -20,971,520
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m loaded completely; 8028.24 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 20,736,744,448
+[32m[INFO][0m VRAMdebug: free memory after: 20,833,213,440
+[32m[INFO][0m VRAMdebug: freed memory: 96,468,992
+[32m[INFO][0m [32mPrompt executed in 8.49 seconds[0m
+[32m[INFO][0m got prompt
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.54it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.61it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.63it/s] 50%|█████     | 4/8 [00:02<00:02,  1.64it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.64it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.65it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.65it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]100%|██████████| 8/8 [00:04<00:00,  1.64it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,854,184,960
+[32m[INFO][0m VRAMdebug: free memory after: 20,833,213,440
+[32m[INFO][0m VRAMdebug: freed memory: -20,971,520
+[32m[INFO][0m VRAMdebug: free memory before: 20,722,064,384
+[32m[INFO][0m VRAMdebug: free memory after: 20,833,213,440
+[32m[INFO][0m VRAMdebug: freed memory: 111,149,056
+[32m[INFO][0m [32mPrompt executed in 5.93 seconds[0m
+[32m[INFO][0m got prompt
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.52it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.60it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.62it/s] 50%|█████     | 4/8 [00:02<00:02,  1.63it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.64it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.64it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.64it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]100%|██████████| 8/8 [00:04<00:00,  1.63it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,854,184,960
+[32m[INFO][0m VRAMdebug: free memory after: 20,833,213,440
+[32m[INFO][0m VRAMdebug: freed memory: -20,971,520
+[32m[INFO][0m VRAMdebug: free memory before: 20,722,064,384
+[32m[INFO][0m VRAMdebug: free memory after: 20,833,213,440
+[32m[INFO][0m VRAMdebug: freed memory: 111,149,056
+[32m[INFO][0m [32mPrompt executed in 5.92 seconds[0m
+[32m[INFO][0m got prompt
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.51it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.59it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.62it/s] 50%|█████     | 4/8 [00:02<00:02,  1.63it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.63it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.64it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.64it/s]100%|██████████| 8/8 [00:04<00:00,  1.64it/s]100%|██████████| 8/8 [00:04<00:00,  1.63it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,854,184,960
+[32m[INFO][0m VRAMdebug: free memory after: 20,833,213,440
+[32m[INFO][0m VRAMdebug: freed memory: -20,971,520
+[32m[INFO][0m VRAMdebug: free memory before: 20,722,064,384
+[32m[INFO][0m VRAMdebug: free memory after: 20,833,213,440
+[32m[INFO][0m VRAMdebug: freed memory: 111,149,056
+[32m[INFO][0m [32mPrompt executed in 5.97 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m model weight dtype torch.float16, manual cast: None
+[32m[INFO][0m model_type EPS
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Requested to load SDXLClipModel
+[32m[INFO][0m loaded completely;  1560.80 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Requested to load SDXLClipModel
+[32m[INFO][0m Requested to load SDXL
+[32m[INFO][0m loaded completely; 25397.81 MB usable, 4897.05 MB loaded, full load: True
+  0%|          | 0/32 [00:00<?, ?it/s]L:\ComfyUI\.venv\Lib\site-packages\torchsde\_brownian\brownian_interval.py:608: UserWarning: Should have tb<=t1 but got tb=14.614643096923828 and t1=14.614643.
+  warnings.warn(f"Should have {tb_name}<=t1 but got {tb_name}={tb} and t1={self._end}.")
+  3%|▎         | 1/32 [00:00<00:08,  3.53it/s]  6%|▋         | 2/32 [00:00<00:07,  3.84it/s]  9%|▉         | 3/32 [00:00<00:07,  3.97it/s] 12%|█▎        | 4/32 [00:01<00:06,  4.02it/s] 16%|█▌        | 5/32 [00:01<00:06,  4.06it/s] 19%|█▉        | 6/32 [00:01<00:06,  4.08it/s] 22%|██▏       | 7/32 [00:01<00:06,  4.11it/s] 25%|██▌       | 8/32 [00:01<00:05,  4.11it/s] 28%|██▊       | 9/32 [00:02<00:05,  4.11it/s] 31%|███▏      | 10/32 [00:02<00:05,  4.11it/s] 34%|███▍      | 11/32 [00:02<00:05,  4.11it/s] 38%|███▊      | 12/32 [00:02<00:04,  4.11it/s] 41%|████      | 13/32 [00:03<00:04,  4.09it/s] 44%|████▍     | 14/32 [00:03<00:04,  4.10it/s] 47%|████▋     | 15/32 [00:03<00:04,  4.09it/s] 50%|█████     | 16/32 [00:03<00:03,  4.10it/s] 53%|█████▎    | 17/32 [00:04<00:03,  4.11it/s] 56%|█████▋    | 18/32 [00:04<00:03,  4.11it/s] 59%|█████▉    | 19/32 [00:04<00:03,  4.11it/s] 62%|██████▎   | 20/32 [00:04<00:02,  4.11it/s] 66%|██████▌   | 21/32 [00:05<00:02,  4.11it/s] 69%|██████▉   | 22/32 [00:05<00:02,  4.12it/s] 72%|███████▏  | 23/32 [00:05<00:02,  4.11it/s] 75%|███████▌  | 24/32 [00:05<00:01,  4.11it/s] 78%|███████▊  | 25/32 [00:06<00:01,  4.10it/s] 81%|████████▏ | 26/32 [00:06<00:01,  4.11it/s] 84%|████████▍ | 27/32 [00:06<00:01,  4.11it/s] 88%|████████▊ | 28/32 [00:06<00:00,  4.10it/s] 91%|█████████ | 29/32 [00:07<00:00,  4.10it/s] 94%|█████████▍| 30/32 [00:07<00:00,  4.10it/s] 97%|█████████▋| 31/32 [00:07<00:00,  4.11it/s]100%|██████████| 32/32 [00:07<00:00,  4.12it/s]100%|██████████| 32/32 [00:07<00:00,  4.09it/s]
+[32m[INFO][0m Requested to load AutoencoderKL
+[32m[INFO][0m loaded completely; 10095.17 MB usable, 159.56 MB loaded, full load: True
+[32m[INFO][0m [32mPrompt executed in 16.18 seconds[0m
+[32m[INFO][0m got prompt
+  0%|          | 0/32 [00:00<?, ?it/s]  3%|▎         | 1/32 [00:00<00:08,  3.72it/s]  6%|▋         | 2/32 [00:00<00:07,  3.94it/s]  9%|▉         | 3/32 [00:00<00:07,  4.00it/s] 12%|█▎        | 4/32 [00:01<00:06,  4.05it/s] 16%|█▌        | 5/32 [00:01<00:06,  4.07it/s] 19%|█▉        | 6/32 [00:01<00:06,  4.09it/s] 22%|██▏       | 7/32 [00:01<00:06,  4.10it/s] 25%|██▌       | 8/32 [00:01<00:05,  4.11it/s] 28%|██▊       | 9/32 [00:02<00:05,  4.11it/s] 31%|███▏      | 10/32 [00:02<00:05,  4.11it/s] 34%|███▍      | 11/32 [00:02<00:05,  4.11it/s] 38%|███▊      | 12/32 [00:02<00:04,  4.11it/s] 41%|████      | 13/32 [00:03<00:04,  4.11it/s] 44%|████▍     | 14/32 [00:03<00:04,  4.11it/s] 47%|████▋     | 15/32 [00:03<00:04,  4.11it/s] 50%|█████     | 16/32 [00:03<00:03,  4.11it/s] 53%|█████▎    | 17/32 [00:04<00:03,  4.11it/s] 56%|█████▋    | 18/32 [00:04<00:03,  4.11it/s] 59%|█████▉    | 19/32 [00:04<00:03,  4.11it/s] 62%|██████▎   | 20/32 [00:04<00:02,  4.11it/s] 66%|██████▌   | 21/32 [00:05<00:02,  4.11it/s] 69%|██████▉   | 22/32 [00:05<00:02,  4.11it/s] 72%|███████▏  | 23/32 [00:05<00:02,  4.10it/s] 75%|███████▌  | 24/32 [00:05<00:01,  4.11it/s] 78%|███████▊  | 25/32 [00:06<00:01,  4.11it/s] 81%|████████▏ | 26/32 [00:06<00:01,  4.11it/s] 84%|████████▍ | 27/32 [00:06<00:01,  4.11it/s] 88%|████████▊ | 28/32 [00:06<00:00,  4.11it/s] 91%|█████████ | 29/32 [00:07<00:00,  4.11it/s] 94%|█████████▍| 30/32 [00:07<00:00,  4.10it/s] 97%|█████████▋| 31/32 [00:07<00:00,  4.11it/s]100%|██████████| 32/32 [00:07<00:00,  4.11it/s]100%|██████████| 32/32 [00:07<00:00,  4.10it/s]
+[32m[INFO][0m [32mPrompt executed in 8.25 seconds[0m
+[32m[INFO][0m got prompt
+  0%|          | 0/32 [00:00<?, ?it/s]  3%|▎         | 1/32 [00:00<00:08,  3.77it/s]  6%|▋         | 2/32 [00:00<00:07,  3.91it/s]  9%|▉         | 3/32 [00:00<00:07,  4.00it/s] 12%|█▎        | 4/32 [00:01<00:06,  4.04it/s] 16%|█▌        | 5/32 [00:01<00:06,  4.05it/s] 19%|█▉        | 6/32 [00:01<00:06,  4.07it/s] 22%|██▏       | 7/32 [00:01<00:06,  4.09it/s] 25%|██▌       | 8/32 [00:01<00:05,  4.10it/s] 28%|██▊       | 9/32 [00:02<00:05,  4.10it/s] 31%|███▏      | 10/32 [00:02<00:05,  4.10it/s] 34%|███▍      | 11/32 [00:02<00:05,  4.10it/s] 38%|███▊      | 12/32 [00:02<00:04,  4.10it/s] 41%|████      | 13/32 [00:03<00:04,  4.10it/s] 44%|████▍     | 14/32 [00:03<00:04,  4.10it/s] 47%|████▋     | 15/32 [00:03<00:04,  4.10it/s] 50%|█████     | 16/32 [00:03<00:03,  4.10it/s] 53%|█████▎    | 17/32 [00:04<00:03,  4.10it/s] 56%|█████▋    | 18/32 [00:04<00:03,  4.11it/s] 59%|█████▉    | 19/32 [00:04<00:03,  4.10it/s] 62%|██████▎   | 20/32 [00:04<00:02,  4.10it/s] 66%|██████▌   | 21/32 [00:05<00:02,  4.09it/s] 69%|██████▉   | 22/32 [00:05<00:02,  4.09it/s] 72%|███████▏  | 23/32 [00:05<00:02,  4.10it/s] 75%|███████▌  | 24/32 [00:05<00:01,  4.10it/s] 78%|███████▊  | 25/32 [00:06<00:01,  4.10it/s] 81%|████████▏ | 26/32 [00:06<00:01,  4.11it/s] 84%|████████▍ | 27/32 [00:06<00:01,  4.10it/s] 88%|████████▊ | 28/32 [00:06<00:00,  4.10it/s] 91%|█████████ | 29/32 [00:07<00:00,  4.10it/s] 94%|█████████▍| 30/32 [00:07<00:00,  4.09it/s] 97%|█████████▋| 31/32 [00:07<00:00,  4.10it/s]100%|██████████| 32/32 [00:07<00:00,  4.11it/s]100%|██████████| 32/32 [00:07<00:00,  4.09it/s]
+[32m[INFO][0m [32mPrompt executed in 8.26 seconds[0m
+[32m[INFO][0m got prompt
+  0%|          | 0/32 [00:00<?, ?it/s]  3%|▎         | 1/32 [00:00<00:08,  3.76it/s]  6%|▋         | 2/32 [00:00<00:07,  3.93it/s]  9%|▉         | 3/32 [00:00<00:07,  4.01it/s] 12%|█▎        | 4/32 [00:00<00:06,  4.05it/s] 16%|█▌        | 5/32 [00:01<00:06,  4.07it/s] 19%|█▉        | 6/32 [00:01<00:06,  4.08it/s] 22%|██▏       | 7/32 [00:01<00:06,  4.09it/s] 25%|██▌       | 8/32 [00:01<00:05,  4.10it/s] 28%|██▊       | 9/32 [00:02<00:05,  4.11it/s] 31%|███▏      | 10/32 [00:02<00:05,  4.11it/s] 34%|███▍      | 11/32 [00:02<00:05,  4.11it/s] 38%|███▊      | 12/32 [00:02<00:04,  4.11it/s] 41%|████      | 13/32 [00:03<00:04,  4.10it/s] 44%|████▍     | 14/32 [00:03<00:04,  4.10it/s] 47%|████▋     | 15/32 [00:03<00:04,  4.10it/s] 50%|█████     | 16/32 [00:03<00:03,  4.10it/s] 53%|█████▎    | 17/32 [00:04<00:03,  4.10it/s] 56%|█████▋    | 18/32 [00:04<00:03,  4.10it/s] 59%|█████▉    | 19/32 [00:04<00:03,  4.09it/s] 62%|██████▎   | 20/32 [00:04<00:02,  4.09it/s] 66%|██████▌   | 21/32 [00:05<00:02,  4.10it/s] 69%|██████▉   | 22/32 [00:05<00:02,  4.10it/s] 72%|███████▏  | 23/32 [00:05<00:02,  4.10it/s] 75%|███████▌  | 24/32 [00:05<00:01,  4.10it/s] 78%|███████▊  | 25/32 [00:06<00:01,  4.09it/s] 81%|████████▏ | 26/32 [00:06<00:01,  4.10it/s] 84%|████████▍ | 27/32 [00:06<00:01,  4.09it/s] 88%|████████▊ | 28/32 [00:06<00:00,  4.08it/s] 91%|█████████ | 29/32 [00:07<00:00,  4.09it/s] 94%|█████████▍| 30/32 [00:07<00:00,  4.09it/s] 97%|█████████▋| 31/32 [00:07<00:00,  4.09it/s]100%|██████████| 32/32 [00:07<00:00,  4.10it/s]100%|██████████| 32/32 [00:07<00:00,  4.09it/s]
+[32m[INFO][0m [32mPrompt executed in 8.29 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Creating deepclone of AutoencodingEngine for cuda:1.
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m loaded completely;  7672.25 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Creating deepclone of ZImageTEModel_ for cuda:1.
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m loaded completely;  7672.25 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 18599.17 MB usable, 7672.25 MB loaded, full load: True
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: None
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 26898.68 MB usable, 11739.54 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.60it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.64it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.65it/s] 50%|█████     | 4/8 [00:02<00:02,  1.65it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.66it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 20,311,555,584
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 13,150,797,312
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m loaded completely; 6336.85 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,462,352,896
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 45.31 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 26898.68 MB usable, 11739.54 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:04,  1.59it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.63it/s] 38%|███▊      | 3/8 [00:01<00:03,  1.65it/s] 50%|█████     | 4/8 [00:02<00:02,  1.65it/s] 62%|██████▎   | 5/8 [00:03<00:01,  1.66it/s] 75%|███████▌  | 6/8 [00:03<00:01,  1.66it/s] 88%|████████▊ | 7/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.66it/s]100%|██████████| 8/8 [00:04<00:00,  1.65it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 21,066,530,304
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 12,395,822,592
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m loaded completely; 6336.85 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 33,462,352,896
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VRAMdebug: free memory after: 33,462,352,896
+[32m[INFO][0m VRAMdebug: freed memory: 0
+[32m[INFO][0m [32mPrompt executed in 16.55 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model ZImageTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model ZImageTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Creating deepclone of CausalDiffusionVAE for cuda:1.
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.float32
+[32m[INFO][0m Creating deepclone of AudioVAE for cuda:1.
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.float32
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Using MixedPrecisionOps for text encoder
+[32m[INFO][0m Requested to load LTXAVTEModel_
+[32m[INFO][0m loaded completely;  14613.55 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Creating deepclone of LTXAVTEModel_ for cuda:1.
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Using MixedPrecisionOps for text encoder
+[32m[INFO][0m Requested to load LTXAVTEModel_
+[32m[INFO][0m loaded completely;  14613.55 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Potential memory leak detected with model LTXAVTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load LTXAVTEModel_
+[32m[INFO][0m Potential memory leak detected with model LTXAVTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 24450.08 MB usable, 14613.55 MB loaded, full load: True
+[32m[INFO][0m Found quantization metadata version 1
+[32m[INFO][0m Detected mixed precision quantization
+[32m[INFO][0m Using mixed precision operations
+[32m[INFO][0m Native ops: float8_e5m2, float8_e4m3fn, asym_w4a8_int8, convrot_w4a4, int8_tensorwise , emulated ops: nvfp4, mxfp8
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: torch.bfloat16
+[32m[INFO][0m model_type FLUX
+[32m[INFO][0m Potential memory leak detected with model LTXAVTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load Gemma4TEModel_
+[32m[INFO][0m Potential memory leak detected with model LTXAVTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely;  9741.68 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Creating deepclone of Gemma4TEModel_ for cuda:1.
+[32m[INFO][0m Potential memory leak detected with model LTXAVTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model LTXAVTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load Gemma4TEModel_
+[32m[INFO][0m Potential memory leak detected with model LTXAVTEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely;  9741.68 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load Gemma4TEModel_
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 20613.99 MB usable, 9741.68 MB loaded, full load: True
+Generating tokens:   0%|          | 0/600 [00:00<?, ?it/s]Generating tokens:   0%|          | 1/600 [00:17<2:51:41, 17.20s/it]Generating tokens:   0%|          | 2/600 [00:18<1:19:05,  7.94s/it]Generating tokens:   0%|          | 3/600 [00:19<46:55,  4.72s/it]  Generating tokens:   1%|          | 4/600 [00:20<31:51,  3.21s/it]Generating tokens:   1%|          | 5/600 [00:21<23:34,  2.38s/it]Generating tokens:   1%|          | 6/600 [00:22<18:30,  1.87s/it]Generating tokens:   1%|          | 7/600 [00:23<15:19,  1.55s/it]Generating tokens:   1%|▏         | 8/600 [00:23<13:11,  1.34s/it]Generating tokens:   2%|▏         | 9/600 [00:24<11:47,  1.20s/it]Generating tokens:   2%|▏         | 10/600 [00:25<10:51,  1.10s/it]Generating tokens:   2%|▏         | 11/600 [00:26<10:11,  1.04s/it]Generating tokens:   2%|▏         | 12/600 [00:27<09:41,  1.01it/s]Generating tokens:   2%|▏         | 13/600 [00:28<09:22,  1.04it/s]Generating tokens:   2%|▏         | 14/600 [00:29<09:08,  1.07it/s]Generating tokens:   2%|▎         | 15/600 [00:30<09:00,  1.08it/s]Generating tokens:   3%|▎         | 16/600 [00:31<08:53,  1.10it/s]Generating tokens:   3%|▎         | 17/600 [00:31<08:47,  1.10it/s]Generating tokens:   3%|▎         | 18/600 [00:32<08:43,  1.11it/s]Generating tokens:   3%|▎         | 19/600 [00:33<08:40,  1.12it/s]Generating tokens:   3%|▎         | 20/600 [00:34<08:39,  1.12it/s]Generating tokens:   4%|▎         | 21/600 [00:35<08:45,  1.10it/s]Generating tokens:   4%|▎         | 22/600 [00:36<08:44,  1.10it/s]Generating tokens:   4%|▍         | 23/600 [00:37<08:43,  1.10it/s]Generating tokens:   4%|▍         | 24/600 [00:38<08:40,  1.11it/s]Generating tokens:   4%|▍         | 25/600 [00:39<08:40,  1.11it/s]Generating tokens:   4%|▍         | 26/600 [00:40<08:37,  1.11it/s]Generating tokens:   4%|▍         | 27/600 [00:40<08:34,  1.11it/s]Generating tokens:   5%|▍         | 28/600 [00:41<08:35,  1.11it/s]Generating tokens:   5%|▍         | 29/600 [00:42<08:36,  1.10it/s]Generating tokens:   5%|▌         | 30/600 [00:43<08:34,  1.11it/s]Generating tokens:   5%|▌         | 31/600 [00:44<08:32,  1.11it/s]Generating tokens:   5%|▌         | 32/600 [00:45<08:33,  1.11it/s]Generating tokens:   6%|▌         | 33/600 [00:46<08:30,  1.11it/s]Generating tokens:   6%|▌         | 34/600 [00:47<08:29,  1.11it/s]Generating tokens:   6%|▌         | 35/600 [00:48<08:27,  1.11it/s]Generating tokens:   6%|▌         | 36/600 [00:49<08:25,  1.12it/s]Generating tokens:   6%|▌         | 37/600 [00:49<08:22,  1.12it/s]Generating tokens:   6%|▋         | 38/600 [00:50<08:21,  1.12it/s]Generating tokens:   6%|▋         | 39/600 [00:51<08:20,  1.12it/s]Generating tokens:   7%|▋         | 40/600 [00:52<08:16,  1.13it/s]Generating tokens:   7%|▋         | 41/600 [00:53<08:15,  1.13it/s]Generating tokens:   7%|▋         | 42/600 [00:54<08:13,  1.13it/s]Generating tokens:   7%|▋         | 43/600 [00:55<08:13,  1.13it/s]Generating tokens:   7%|▋         | 44/600 [00:56<08:12,  1.13it/s]Generating tokens:   8%|▊         | 45/600 [00:57<08:12,  1.13it/s]Generating tokens:   8%|▊         | 46/600 [00:57<08:12,  1.13it/s]Generating tokens:   8%|▊         | 47/600 [00:58<08:12,  1.12it/s]Generating tokens:   8%|▊         | 48/600 [00:59<08:12,  1.12it/s]Generating tokens:   8%|▊         | 49/600 [01:00<08:14,  1.11it/s]Generating tokens:   8%|▊         | 50/600 [01:01<08:14,  1.11it/s]Generating tokens:   8%|▊         | 51/600 [01:02<08:15,  1.11it/s]Generating tokens:   9%|▊         | 52/600 [01:03<08:13,  1.11it/s]Generating tokens:   9%|▉         | 53/600 [01:04<08:12,  1.11it/s]Generating tokens:   9%|▉         | 54/600 [01:05<08:11,  1.11it/s]Generating tokens:   9%|▉         | 55/600 [01:06<08:11,  1.11it/s]Generating tokens:   9%|▉         | 56/600 [01:06<08:10,  1.11it/s]Generating tokens:  10%|▉         | 57/600 [01:07<08:10,  1.11it/s]Generating tokens:  10%|▉         | 58/600 [01:08<08:07,  1.11it/s]Generating tokens:  10%|▉         | 59/600 [01:09<08:04,  1.12it/s]Generating tokens:  10%|█         | 60/600 [01:10<08:04,  1.12it/s]Generating tokens:  10%|█         | 61/600 [01:11<08:01,  1.12it/s]Generating tokens:  10%|█         | 62/600 [01:12<07:59,  1.12it/s]Generating tokens:  10%|█         | 63/600 [01:13<07:57,  1.12it/s]Generating tokens:  11%|█         | 64/600 [01:14<07:55,  1.13it/s]Generating tokens:  11%|█         | 65/600 [01:14<07:55,  1.12it/s]Generating tokens:  11%|█         | 66/600 [01:15<07:55,  1.12it/s]Generating tokens:  11%|█         | 67/600 [01:16<07:54,  1.12it/s]Generating tokens:  11%|█▏        | 68/600 [01:17<07:53,  1.12it/s]Generating tokens:  12%|█▏        | 69/600 [01:18<07:51,  1.13it/s]Generating tokens:  12%|█▏        | 70/600 [01:19<07:49,  1.13it/s]Generating tokens:  12%|█▏        | 71/600 [01:20<07:50,  1.12it/s]Generating tokens:  12%|█▏        | 72/600 [01:21<07:49,  1.12it/s]Generating tokens:  12%|█▏        | 73/600 [01:22<07:49,  1.12it/s]Generating tokens:  12%|█▏        | 74/600 [01:23<07:49,  1.12it/s]Generating tokens:  12%|█▎        | 75/600 [01:23<07:49,  1.12it/s]Generating tokens:  13%|█▎        | 76/600 [01:24<07:48,  1.12it/s]Generating tokens:  13%|█▎        | 77/600 [01:25<07:58,  1.09it/s]Generating tokens:  13%|█▎        | 78/600 [01:26<07:54,  1.10it/s]Generating tokens:  13%|█▎        | 79/600 [01:27<07:50,  1.11it/s]Generating tokens:  13%|█▎        | 80/600 [01:28<07:48,  1.11it/s]Generating tokens:  14%|█▎        | 81/600 [01:29<07:45,  1.11it/s]Generating tokens:  14%|█▎        | 82/600 [01:30<07:44,  1.12it/s]Generating tokens:  14%|█▍        | 83/600 [01:31<07:42,  1.12it/s]Generating tokens:  14%|█▍        | 84/600 [01:32<07:42,  1.12it/s]Generating tokens:  14%|█▍        | 85/600 [01:32<07:39,  1.12it/s]Generating tokens:  14%|█▍        | 86/600 [01:33<07:38,  1.12it/s]Generating tokens:  14%|█▍        | 87/600 [01:34<07:35,  1.13it/s]Generating tokens:  15%|█▍        | 88/600 [01:35<07:34,  1.13it/s]Generating tokens:  15%|█▍        | 89/600 [01:36<07:35,  1.12it/s]Generating tokens:  15%|█▌        | 90/600 [01:37<07:35,  1.12it/s]Generating tokens:  15%|█▌        | 91/600 [01:38<07:32,  1.13it/s]Generating tokens:  15%|█▌        | 92/600 [01:39<07:30,  1.13it/s]Generating tokens:  16%|█▌        | 93/600 [01:39<07:29,  1.13it/s]Generating tokens:  16%|█▌        | 94/600 [01:40<07:31,  1.12it/s]Generating tokens:  16%|█▌        | 95/600 [01:41<07:28,  1.13it/s]Generating tokens:  16%|█▌        | 96/600 [01:42<07:27,  1.13it/s]Generating tokens:  16%|█▌        | 97/600 [01:43<07:26,  1.13it/s]Generating tokens:  16%|█▋        | 98/600 [01:44<07:25,  1.13it/s]Generating tokens:  16%|█▋        | 99/600 [01:45<07:27,  1.12it/s]Generating tokens:  17%|█▋        | 100/600 [01:46<07:27,  1.12it/s]Generating tokens:  17%|█▋        | 101/600 [01:47<07:25,  1.12it/s]Generating tokens:  17%|█▋        | 102/600 [01:48<07:25,  1.12it/s]Generating tokens:  17%|█▋        | 103/600 [01:48<07:24,  1.12it/s]Generating tokens:  17%|█▋        | 104/600 [01:49<07:24,  1.12it/s]Generating tokens:  18%|█▊        | 105/600 [01:50<07:24,  1.11it/s]Generating tokens:  18%|█▊        | 106/600 [01:51<07:23,  1.11it/s]Generating tokens:  18%|█▊        | 107/600 [01:52<07:22,  1.11it/s]Generating tokens:  18%|█▊        | 108/600 [01:53<07:21,  1.12it/s]Generating tokens:  18%|█▊        | 109/600 [01:54<07:21,  1.11it/s]Generating tokens:  18%|█▊        | 110/600 [01:55<07:20,  1.11it/s]Generating tokens:  18%|█▊        | 111/600 [01:56<07:18,  1.12it/s]Generating tokens:  19%|█▊        | 112/600 [01:56<07:16,  1.12it/s]Generating tokens:  19%|█▉        | 113/600 [01:57<07:13,  1.12it/s]Generating tokens:  19%|█▉        | 114/600 [01:58<07:13,  1.12it/s]Generating tokens:  19%|█▉        | 115/600 [01:59<07:09,  1.13it/s]Generating tokens:  19%|█▉        | 116/600 [02:00<07:08,  1.13it/s]Generating tokens:  20%|█▉        | 117/600 [02:01<07:07,  1.13it/s]Generating tokens:  20%|█▉        | 118/600 [02:02<07:07,  1.13it/s]Generating tokens:  20%|█▉        | 119/600 [02:03<07:07,  1.13it/s]Generating tokens:  20%|██        | 120/600 [02:04<07:06,  1.13it/s]Generating tokens:  20%|██        | 121/600 [02:04<07:04,  1.13it/s]Generating tokens:  20%|██        | 122/600 [02:05<07:06,  1.12it/s]Generating tokens:  20%|██        | 123/600 [02:06<07:06,  1.12it/s]Generating tokens:  21%|██        | 124/600 [02:07<07:06,  1.12it/s]Generating tokens:  21%|██        | 125/600 [02:08<07:04,  1.12it/s]Generating tokens:  21%|██        | 126/600 [02:09<07:04,  1.12it/s]Generating tokens:  21%|██        | 127/600 [02:10<07:03,  1.12it/s]Generating tokens:  21%|██▏       | 128/600 [02:11<07:02,  1.12it/s]Generating tokens:  22%|██▏       | 129/600 [02:12<07:02,  1.12it/s]Generating tokens:  22%|██▏       | 130/600 [02:13<07:02,  1.11it/s]Generating tokens:  22%|██▏       | 131/600 [02:13<07:01,  1.11it/s]Generating tokens:  22%|██▏       | 132/600 [02:14<07:01,  1.11it/s]Generating tokens:  22%|██▏       | 133/600 [02:15<07:01,  1.11it/s]Generating tokens:  22%|██▏       | 134/600 [02:16<06:59,  1.11it/s]Generating tokens:  22%|██▎       | 135/600 [02:17<06:57,  1.11it/s]Generating tokens:  23%|██▎       | 136/600 [02:18<06:57,  1.11it/s]Generating tokens:  23%|██▎       | 137/600 [02:19<06:55,  1.12it/s]Generating tokens:  23%|██▎       | 138/600 [02:20<06:52,  1.12it/s]Generating tokens:  23%|██▎       | 139/600 [02:21<06:51,  1.12it/s]Generating tokens:  23%|██▎       | 140/600 [02:22<06:50,  1.12it/s]Generating tokens:  24%|██▎       | 141/600 [02:22<06:48,  1.12it/s]Generating tokens:  24%|██▎       | 142/600 [02:23<06:47,  1.12it/s]Generating tokens:  24%|██▍       | 143/600 [02:24<06:47,  1.12it/s]Generating tokens:  24%|██▍       | 144/600 [02:25<06:45,  1.12it/s]Generating tokens:  24%|██▍       | 145/600 [02:26<06:44,  1.12it/s]Generating tokens:  24%|██▍       | 146/600 [02:27<06:43,  1.13it/s]Generating tokens:  24%|██▍       | 147/600 [02:28<06:42,  1.13it/s]Generating tokens:  25%|██▍       | 148/600 [02:29<06:40,  1.13it/s]Generating tokens:  25%|██▍       | 149/600 [02:30<06:39,  1.13it/s]Generating tokens:  25%|██▌       | 150/600 [02:30<06:41,  1.12it/s]Generating tokens:  25%|██▌       | 151/600 [02:31<06:40,  1.12it/s]Generating tokens:  25%|██▌       | 152/600 [02:32<06:40,  1.12it/s]Generating tokens:  26%|██▌       | 153/600 [02:33<06:40,  1.11it/s]Generating tokens:  26%|██▌       | 154/600 [02:34<06:39,  1.12it/s]Generating tokens:  26%|██▌       | 155/600 [02:35<06:40,  1.11it/s]Generating tokens:  26%|██▌       | 156/600 [02:36<06:40,  1.11it/s]Generating tokens:  26%|██▌       | 157/600 [02:37<06:39,  1.11it/s]Generating tokens:  26%|██▋       | 158/600 [02:38<06:38,  1.11it/s]Generating tokens:  26%|██▋       | 159/600 [02:39<06:37,  1.11it/s]Generating tokens:  27%|██▋       | 160/600 [02:39<06:36,  1.11it/s]Generating tokens:  27%|██▋       | 161/600 [02:40<06:37,  1.10it/s]Generating tokens:  27%|██▋       | 162/600 [02:41<06:35,  1.11it/s]Generating tokens:  27%|██▋       | 163/600 [02:42<06:33,  1.11it/s]Generating tokens:  27%|██▋       | 164/600 [02:43<06:31,  1.11it/s]Generating tokens:  28%|██▊       | 165/600 [02:44<06:31,  1.11it/s]Generating tokens:  28%|██▊       | 166/600 [02:45<06:29,  1.11it/s]Generating tokens:  28%|██▊       | 167/600 [02:46<06:28,  1.12it/s]Generating tokens:  28%|██▊       | 168/600 [02:47<06:25,  1.12it/s]Generating tokens:  28%|██▊       | 169/600 [02:47<06:24,  1.12it/s]Generating tokens:  28%|██▊       | 170/600 [02:48<06:22,  1.12it/s]Generating tokens:  28%|██▊       | 171/600 [02:49<06:20,  1.13it/s]Generating tokens:  29%|██▊       | 172/600 [02:50<06:21,  1.12it/s]Generating tokens:  29%|██▊       | 172/600 [02:51<07:06,  1.00it/s]
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load LTXAVTEModel_
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[1m[33m[WARNING][0m WARNING, memory leak with model LTXAVTEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded partially; 9626.56 MB usable, 9345.25 MB loaded, 5267.20 MB offloaded, 281.31 MB buffer reserved, lowvram patches: 0
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load LTXAV
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 26996.99 MB usable, 20487.25 MB loaded, full load: True
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:08,  1.24s/it] 25%|██▌       | 2/8 [00:02<00:06,  1.02s/it] 38%|███▊      | 3/8 [00:02<00:04,  1.05it/s] 50%|█████     | 4/8 [00:03<00:03,  1.09it/s] 62%|██████▎   | 5/8 [00:04<00:02,  1.11it/s] 75%|███████▌  | 6/8 [00:05<00:01,  1.13it/s] 88%|████████▊ | 7/8 [00:06<00:00,  1.13it/s]100%|██████████| 8/8 [00:07<00:00,  1.14it/s]100%|██████████| 8/8 [00:07<00:00,  1.09it/s]
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load LatentUpsampler
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely; 6397.63 MB usable, 949.61 MB loaded, full load: True
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:07,  3.71s/it] 67%|██████▋   | 2/3 [00:07<00:03,  3.70s/it]100%|██████████| 3/3 [00:11<00:00,  3.70s/it]100%|██████████| 3/3 [00:11<00:00,  3.70s/it]
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load CausalDiffusionVAE
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely;  1403.92 MB loaded, full load: True
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Requested to load AudioVAE
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m loaded completely;  693.46 MB loaded, full load: True
+[32m[INFO][0m [32mPrompt executed in 547.34 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:06,  1.15it/s] 25%|██▌       | 2/8 [00:01<00:05,  1.15it/s] 38%|███▊      | 3/8 [00:02<00:04,  1.15it/s] 50%|█████     | 4/8 [00:03<00:03,  1.15it/s] 62%|██████▎   | 5/8 [00:04<00:02,  1.15it/s] 75%|███████▌  | 6/8 [00:05<00:01,  1.15it/s] 88%|████████▊ | 7/8 [00:06<00:00,  1.15it/s]100%|██████████| 8/8 [00:06<00:00,  1.15it/s]100%|██████████| 8/8 [00:06<00:00,  1.15it/s]
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:07,  3.70s/it] 67%|██████▋   | 2/3 [00:07<00:03,  3.71s/it]100%|██████████| 3/3 [00:11<00:00,  3.71s/it]100%|██████████| 3/3 [00:11<00:00,  3.71s/it]
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m [32mPrompt executed in 36.98 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:00<00:06,  1.13it/s] 25%|██▌       | 2/8 [00:01<00:05,  1.14it/s] 38%|███▊      | 3/8 [00:02<00:04,  1.14it/s] 50%|█████     | 4/8 [00:03<00:03,  1.15it/s] 62%|██████▎   | 5/8 [00:04<00:02,  1.15it/s] 75%|███████▌  | 6/8 [00:05<00:01,  1.14it/s] 88%|████████▊ | 7/8 [00:06<00:00,  1.15it/s]100%|██████████| 8/8 [00:06<00:00,  1.14it/s]100%|██████████| 8/8 [00:06<00:00,  1.14it/s]
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:07,  3.71s/it] 67%|██████▋   | 2/3 [00:07<00:03,  3.71s/it]100%|██████████| 3/3 [00:11<00:00,  3.72s/it]100%|██████████| 3/3 [00:11<00:00,  3.71s/it]
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m [32mPrompt executed in 36.91 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Potential memory leak detected with model Gemma4TEModel_, doing a full garbage collect, for maximum performance avoid circular references in the model code.
+[1m[33m[WARNING][0m WARNING, memory leak with model Gemma4TEModel_. Please make sure it is not being referenced from somewhere.
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.float16
+[32m[INFO][0m Requested to load ACE15TEModel_
+[32m[INFO][0m loaded completely;  9127.29 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Requested to load ACE15TEModel_
+LM sampling:   0%|          | 0/300 [00:00<?, ?it/s]LM sampling:   0%|          | 1/300 [00:00<01:05,  4.60it/s]LM sampling:   2%|▏         | 5/300 [00:00<00:17, 17.13it/s]LM sampling:   3%|▎         | 9/300 [00:00<00:11, 24.79it/s]LM sampling:   4%|▍         | 13/300 [00:00<00:09, 29.31it/s]LM sampling:   6%|▌         | 17/300 [00:00<00:08, 32.54it/s]LM sampling:   7%|▋         | 21/300 [00:00<00:08, 34.64it/s]LM sampling:   8%|▊         | 25/300 [00:00<00:07, 36.10it/s]LM sampling:  10%|▉         | 29/300 [00:00<00:07, 37.05it/s]LM sampling:  11%|█         | 33/300 [00:01<00:07, 37.71it/s]LM sampling:  12%|█▏        | 37/300 [00:01<00:06, 37.64it/s]LM sampling:  14%|█▎        | 41/300 [00:01<00:06, 38.06it/s]LM sampling:  15%|█▌        | 45/300 [00:01<00:06, 38.45it/s]LM sampling:  16%|█▋        | 49/300 [00:01<00:06, 38.46it/s]LM sampling:  18%|█▊        | 53/300 [00:01<00:06, 38.71it/s]LM sampling:  19%|█▉        | 57/300 [00:01<00:06, 38.81it/s]LM sampling:  20%|██        | 61/300 [00:01<00:06, 37.75it/s]LM sampling:  22%|██▏       | 65/300 [00:01<00:06, 38.29it/s]LM sampling:  23%|██▎       | 69/300 [00:01<00:05, 38.57it/s]LM sampling:  24%|██▍       | 73/300 [00:02<00:05, 38.83it/s]LM sampling:  26%|██▌       | 77/300 [00:02<00:05, 39.06it/s]LM sampling:  27%|██▋       | 81/300 [00:02<00:05, 38.87it/s]LM sampling:  28%|██▊       | 85/300 [00:02<00:05, 38.83it/s]LM sampling:  30%|██▉       | 89/300 [00:02<00:05, 38.93it/s]LM sampling:  31%|███       | 93/300 [00:02<00:05, 39.03it/s]LM sampling:  32%|███▏      | 97/300 [00:02<00:05, 38.99it/s]LM sampling:  34%|███▎      | 101/300 [00:02<00:05, 38.95it/s]LM sampling:  35%|███▌      | 105/300 [00:02<00:05, 38.97it/s]LM sampling:  36%|███▋      | 109/300 [00:03<00:04, 39.24it/s]LM sampling:  38%|███▊      | 113/300 [00:03<00:04, 39.32it/s]LM sampling:  39%|███▉      | 117/300 [00:03<00:04, 39.43it/s]LM sampling:  40%|████      | 121/300 [00:03<00:04, 39.41it/s]LM sampling:  42%|████▏     | 125/300 [00:03<00:04, 38.87it/s]LM sampling:  43%|████▎     | 129/300 [00:03<00:04, 39.05it/s]LM sampling:  44%|████▍     | 133/300 [00:03<00:04, 39.15it/s]LM sampling:  46%|████▌     | 137/300 [00:03<00:04, 39.14it/s]LM sampling:  47%|████▋     | 141/300 [00:03<00:04, 39.20it/s]LM sampling:  48%|████▊     | 145/300 [00:03<00:03, 39.26it/s]LM sampling:  50%|████▉     | 149/300 [00:04<00:03, 39.24it/s]LM sampling:  51%|█████     | 153/300 [00:04<00:03, 39.29it/s]LM sampling:  52%|█████▏    | 157/300 [00:04<00:03, 39.31it/s]LM sampling:  54%|█████▎    | 161/300 [00:04<00:03, 39.31it/s]LM sampling:  55%|█████▌    | 165/300 [00:04<00:03, 39.22it/s]LM sampling:  56%|█████▋    | 169/300 [00:04<00:03, 39.20it/s]LM sampling:  58%|█████▊    | 173/300 [00:04<00:03, 39.11it/s]LM sampling:  59%|█████▉    | 177/300 [00:04<00:03, 38.82it/s]LM sampling:  60%|██████    | 181/300 [00:04<00:03, 38.79it/s]LM sampling:  62%|██████▏   | 185/300 [00:04<00:02, 38.82it/s]LM sampling:  63%|██████▎   | 189/300 [00:05<00:02, 38.97it/s]LM sampling:  64%|██████▍   | 193/300 [00:05<00:02, 39.06it/s]LM sampling:  66%|██████▌   | 197/300 [00:05<00:02, 39.09it/s]LM sampling:  67%|██████▋   | 201/300 [00:05<00:02, 39.13it/s]LM sampling:  68%|██████▊   | 205/300 [00:05<00:02, 39.03it/s]LM sampling:  70%|██████▉   | 209/300 [00:05<00:02, 39.04it/s]LM sampling:  71%|███████   | 213/300 [00:05<00:02, 38.94it/s]LM sampling:  72%|███████▏  | 217/300 [00:05<00:02, 38.87it/s]LM sampling:  74%|███████▎  | 221/300 [00:05<00:02, 38.86it/s]LM sampling:  75%|███████▌  | 225/300 [00:05<00:01, 38.82it/s]LM sampling:  76%|███████▋  | 229/300 [00:06<00:01, 38.83it/s]LM sampling:  78%|███████▊  | 233/300 [00:06<00:01, 38.76it/s]LM sampling:  79%|███████▉  | 237/300 [00:06<00:01, 38.75it/s]LM sampling:  80%|████████  | 241/300 [00:06<00:01, 38.67it/s]LM sampling:  82%|████████▏ | 245/300 [00:06<00:01, 38.68it/s]LM sampling:  83%|████████▎ | 249/300 [00:06<00:01, 38.64it/s]LM sampling:  84%|████████▍ | 253/300 [00:06<00:01, 38.37it/s]LM sampling:  86%|████████▌ | 257/300 [00:06<00:01, 38.42it/s]LM sampling:  87%|████████▋ | 261/300 [00:06<00:01, 38.32it/s]LM sampling:  88%|████████▊ | 265/300 [00:07<00:00, 38.33it/s]LM sampling:  90%|████████▉ | 269/300 [00:07<00:00, 38.44it/s]LM sampling:  91%|█████████ | 273/300 [00:07<00:00, 38.35it/s]LM sampling:  92%|█████████▏| 277/300 [00:07<00:00, 38.35it/s]LM sampling:  94%|█████████▎| 281/300 [00:07<00:00, 38.27it/s]LM sampling:  95%|█████████▌| 285/300 [00:07<00:00, 38.25it/s]LM sampling:  96%|█████████▋| 289/300 [00:07<00:00, 38.12it/s]LM sampling:  98%|█████████▊| 293/300 [00:07<00:00, 38.11it/s]LM sampling:  99%|█████████▉| 297/300 [00:07<00:00, 38.12it/s]LM sampling: 100%|██████████| 300/300 [00:07<00:00, 37.79it/s]
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: None
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Requested to load ACEStep15
+[32m[INFO][0m loaded completely; 16915.16 MB usable, 9511.56 MB loaded, full load: True
+  0%|          | 0/75 [00:00<?, ?it/s]  1%|▏         | 1/75 [00:00<00:18,  3.94it/s]  3%|▎         | 2/75 [00:00<00:18,  4.05it/s]  4%|▍         | 3/75 [00:00<00:17,  4.11it/s]  5%|▌         | 4/75 [00:00<00:17,  4.14it/s]  7%|▋         | 5/75 [00:01<00:16,  4.15it/s]  8%|▊         | 6/75 [00:01<00:16,  4.15it/s]  9%|▉         | 7/75 [00:01<00:16,  4.16it/s] 11%|█         | 8/75 [00:01<00:16,  4.16it/s] 12%|█▏        | 9/75 [00:02<00:15,  4.16it/s] 13%|█▎        | 10/75 [00:02<00:15,  4.16it/s] 15%|█▍        | 11/75 [00:02<00:15,  4.16it/s] 16%|█▌        | 12/75 [00:02<00:15,  4.16it/s] 17%|█▋        | 13/75 [00:03<00:14,  4.16it/s] 19%|█▊        | 14/75 [00:03<00:14,  4.17it/s] 20%|██        | 15/75 [00:03<00:14,  4.17it/s] 21%|██▏       | 16/75 [00:03<00:14,  4.16it/s] 23%|██▎       | 17/75 [00:04<00:13,  4.15it/s] 24%|██▍       | 18/75 [00:04<00:13,  4.16it/s] 25%|██▌       | 19/75 [00:04<00:13,  4.15it/s] 27%|██▋       | 20/75 [00:04<00:13,  4.16it/s] 28%|██▊       | 21/75 [00:05<00:13,  4.15it/s] 29%|██▉       | 22/75 [00:05<00:12,  4.15it/s] 31%|███       | 23/75 [00:05<00:12,  4.16it/s] 32%|███▏      | 24/75 [00:05<00:12,  4.16it/s] 33%|███▎      | 25/75 [00:06<00:12,  4.16it/s] 35%|███▍      | 26/75 [00:06<00:11,  4.16it/s] 36%|███▌      | 27/75 [00:06<00:11,  4.16it/s] 37%|███▋      | 28/75 [00:06<00:11,  4.15it/s] 39%|███▊      | 29/75 [00:06<00:11,  4.15it/s] 40%|████      | 30/75 [00:07<00:10,  4.15it/s] 41%|████▏     | 31/75 [00:07<00:10,  4.14it/s] 43%|████▎     | 32/75 [00:07<00:10,  4.16it/s] 44%|████▍     | 33/75 [00:07<00:10,  4.15it/s] 45%|████▌     | 34/75 [00:08<00:09,  4.15it/s] 47%|████▋     | 35/75 [00:08<00:09,  4.15it/s] 48%|████▊     | 36/75 [00:08<00:09,  4.15it/s] 49%|████▉     | 37/75 [00:08<00:09,  4.15it/s] 51%|█████     | 38/75 [00:09<00:08,  4.15it/s] 52%|█████▏    | 39/75 [00:09<00:08,  4.15it/s] 53%|█████▎    | 40/75 [00:09<00:08,  4.14it/s] 55%|█████▍    | 41/75 [00:09<00:08,  4.15it/s] 56%|█████▌    | 42/75 [00:10<00:07,  4.15it/s] 57%|█████▋    | 43/75 [00:10<00:07,  4.15it/s] 59%|█████▊    | 44/75 [00:10<00:07,  4.15it/s] 60%|██████    | 45/75 [00:10<00:07,  4.14it/s] 61%|██████▏   | 46/75 [00:11<00:07,  4.14it/s] 63%|██████▎   | 47/75 [00:11<00:06,  4.14it/s] 64%|██████▍   | 48/75 [00:11<00:06,  4.15it/s] 65%|██████▌   | 49/75 [00:11<00:06,  4.15it/s] 67%|██████▋   | 50/75 [00:12<00:06,  4.14it/s] 68%|██████▊   | 51/75 [00:12<00:05,  4.15it/s] 69%|██████▉   | 52/75 [00:12<00:05,  4.14it/s] 71%|███████   | 53/75 [00:12<00:05,  4.14it/s] 72%|███████▏  | 54/75 [00:13<00:05,  4.11it/s] 73%|███████▎  | 55/75 [00:13<00:04,  4.13it/s] 75%|███████▍  | 56/75 [00:13<00:04,  4.12it/s] 76%|███████▌  | 57/75 [00:13<00:04,  4.13it/s] 77%|███████▋  | 58/75 [00:13<00:04,  4.14it/s] 79%|███████▊  | 59/75 [00:14<00:03,  4.13it/s] 80%|████████  | 60/75 [00:14<00:03,  4.13it/s] 81%|████████▏ | 61/75 [00:14<00:03,  4.13it/s] 83%|████████▎ | 62/75 [00:14<00:03,  4.13it/s] 84%|████████▍ | 63/75 [00:15<00:02,  4.13it/s] 85%|████████▌ | 64/75 [00:15<00:02,  4.13it/s] 87%|████████▋ | 65/75 [00:15<00:02,  4.13it/s] 88%|████████▊ | 66/75 [00:15<00:02,  4.13it/s] 89%|████████▉ | 67/75 [00:16<00:01,  4.13it/s] 91%|█████████ | 68/75 [00:16<00:01,  4.13it/s] 92%|█████████▏| 69/75 [00:16<00:01,  4.12it/s] 93%|█████████▎| 70/75 [00:16<00:01,  4.12it/s] 95%|█████████▍| 71/75 [00:17<00:00,  4.12it/s] 96%|█████████▌| 72/75 [00:17<00:00,  4.12it/s] 97%|█████████▋| 73/75 [00:17<00:00,  4.12it/s] 99%|█████████▊| 74/75 [00:17<00:00,  4.11it/s]100%|██████████| 75/75 [00:18<00:00,  4.11it/s]100%|██████████| 75/75 [00:18<00:00,  4.14it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 12,314,456,064
+[32m[INFO][0m VRAMdebug: free memory after: 33,436,662,784
+[32m[INFO][0m VRAMdebug: freed memory: 21,122,206,720
+[32m[INFO][0m Requested to load AudioOobleckVAE
+[32m[INFO][0m loaded completely;  321.70 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 32,770,186,240
+[32m[INFO][0m VRAMdebug: free memory after: 33,413,004,288
+[32m[INFO][0m VRAMdebug: freed memory: 642,818,048
+[32m[INFO][0m [32mPrompt executed in 55.71 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Requested to load ACE15TEModel_
+[32m[INFO][0m loaded completely; 26949.92 MB usable, 9127.29 MB loaded, full load: True
+LM sampling:   0%|          | 0/300 [00:00<?, ?it/s]LM sampling:   0%|          | 1/300 [00:00<01:01,  4.84it/s]LM sampling:   2%|▏         | 5/300 [00:00<00:15, 19.20it/s]LM sampling:   3%|▎         | 10/300 [00:00<00:10, 28.03it/s]LM sampling:   5%|▌         | 15/300 [00:00<00:08, 32.63it/s]LM sampling:   6%|▋         | 19/300 [00:00<00:08, 34.71it/s]LM sampling:   8%|▊         | 23/300 [00:00<00:07, 36.13it/s]LM sampling:   9%|▉         | 27/300 [00:00<00:07, 37.07it/s]LM sampling:  10%|█         | 31/300 [00:00<00:07, 37.74it/s]LM sampling:  12%|█▏        | 35/300 [00:01<00:06, 38.29it/s]LM sampling:  13%|█▎        | 39/300 [00:01<00:06, 38.77it/s]LM sampling:  14%|█▍        | 43/300 [00:01<00:06, 39.06it/s]LM sampling:  16%|█▌        | 47/300 [00:01<00:06, 39.00it/s]LM sampling:  17%|█▋        | 52/300 [00:01<00:06, 39.38it/s]LM sampling:  19%|█▊        | 56/300 [00:01<00:06, 39.30it/s]LM sampling:  20%|██        | 60/300 [00:01<00:06, 39.45it/s]LM sampling:  21%|██▏       | 64/300 [00:01<00:05, 39.42it/s]LM sampling:  23%|██▎       | 68/300 [00:01<00:05, 39.48it/s]LM sampling:  24%|██▍       | 72/300 [00:01<00:05, 39.44it/s]LM sampling:  25%|██▌       | 76/300 [00:02<00:05, 39.38it/s]LM sampling:  27%|██▋       | 80/300 [00:02<00:05, 39.49it/s]LM sampling:  28%|██▊       | 85/300 [00:02<00:05, 39.66it/s]LM sampling:  30%|███       | 90/300 [00:02<00:05, 39.81it/s]LM sampling:  31%|███▏      | 94/300 [00:02<00:05, 39.85it/s]LM sampling:  33%|███▎      | 98/300 [00:02<00:05, 39.85it/s]LM sampling:  34%|███▍      | 102/300 [00:02<00:04, 39.81it/s]LM sampling:  35%|███▌      | 106/300 [00:02<00:04, 39.75it/s]LM sampling:  37%|███▋      | 110/300 [00:02<00:04, 39.42it/s]LM sampling:  38%|███▊      | 114/300 [00:03<00:04, 39.49it/s]LM sampling:  39%|███▉      | 118/300 [00:03<00:04, 39.10it/s]LM sampling:  41%|████      | 122/300 [00:03<00:04, 39.23it/s]LM sampling:  42%|████▏     | 126/300 [00:03<00:04, 39.37it/s]LM sampling:  43%|████▎     | 130/300 [00:03<00:04, 39.48it/s]LM sampling:  45%|████▍     | 134/300 [00:03<00:04, 39.49it/s]LM sampling:  46%|████▌     | 138/300 [00:03<00:04, 39.58it/s]LM sampling:  47%|████▋     | 142/300 [00:03<00:03, 39.59it/s]LM sampling:  49%|████▊     | 146/300 [00:03<00:03, 39.52it/s]LM sampling:  50%|█████     | 150/300 [00:03<00:03, 39.51it/s]LM sampling:  51%|█████▏    | 154/300 [00:04<00:03, 39.45it/s]LM sampling:  53%|█████▎    | 158/300 [00:04<00:03, 39.46it/s]LM sampling:  54%|█████▍    | 162/300 [00:04<00:03, 39.49it/s]LM sampling:  55%|█████▌    | 166/300 [00:04<00:03, 39.48it/s]LM sampling:  57%|█████▋    | 170/300 [00:04<00:03, 39.43it/s]LM sampling:  58%|█████▊    | 174/300 [00:04<00:03, 39.29it/s]LM sampling:  59%|█████▉    | 178/300 [00:04<00:03, 39.28it/s]LM sampling:  61%|██████    | 182/300 [00:04<00:03, 39.31it/s]LM sampling:  62%|██████▏   | 186/300 [00:04<00:02, 38.91it/s]LM sampling:  63%|██████▎   | 190/300 [00:04<00:02, 38.95it/s]LM sampling:  65%|██████▍   | 194/300 [00:05<00:02, 39.10it/s]LM sampling:  66%|██████▌   | 198/300 [00:05<00:02, 39.04it/s]LM sampling:  67%|██████▋   | 202/300 [00:05<00:02, 39.00it/s]LM sampling:  69%|██████▊   | 206/300 [00:05<00:02, 38.96it/s]LM sampling:  70%|███████   | 210/300 [00:05<00:02, 38.91it/s]LM sampling:  71%|███████▏  | 214/300 [00:05<00:02, 38.96it/s]LM sampling:  73%|███████▎  | 218/300 [00:05<00:02, 38.94it/s]LM sampling:  74%|███████▍  | 222/300 [00:05<00:02, 38.96it/s]LM sampling:  75%|███████▌  | 226/300 [00:05<00:01, 38.93it/s]LM sampling:  77%|███████▋  | 230/300 [00:06<00:01, 38.92it/s]LM sampling:  78%|███████▊  | 234/300 [00:06<00:01, 38.87it/s]LM sampling:  79%|███████▉  | 238/300 [00:06<00:01, 38.83it/s]LM sampling:  81%|████████  | 242/300 [00:06<00:01, 38.79it/s]LM sampling:  82%|████████▏ | 246/300 [00:06<00:01, 38.67it/s]LM sampling:  83%|████████▎ | 250/300 [00:06<00:01, 38.54it/s]LM sampling:  85%|████████▍ | 254/300 [00:06<00:01, 38.63it/s]LM sampling:  86%|████████▌ | 258/300 [00:06<00:01, 38.66it/s]LM sampling:  87%|████████▋ | 262/300 [00:06<00:00, 38.61it/s]LM sampling:  89%|████████▊ | 266/300 [00:06<00:00, 38.60it/s]LM sampling:  90%|█████████ | 270/300 [00:07<00:00, 38.58it/s]LM sampling:  91%|█████████▏| 274/300 [00:07<00:00, 38.59it/s]LM sampling:  93%|█████████▎| 278/300 [00:07<00:00, 38.54it/s]LM sampling:  94%|█████████▍| 282/300 [00:07<00:00, 38.53it/s]LM sampling:  95%|█████████▌| 286/300 [00:07<00:00, 37.73it/s]LM sampling:  97%|█████████▋| 290/300 [00:07<00:00, 37.88it/s]LM sampling:  98%|█████████▊| 294/300 [00:07<00:00, 37.94it/s]LM sampling:  99%|█████████▉| 298/300 [00:07<00:00, 38.05it/s]LM sampling: 100%|██████████| 300/300 [00:07<00:00, 38.25it/s]
+[32m[INFO][0m Requested to load ACEStep15
+[32m[INFO][0m loaded completely; 17740.60 MB usable, 9511.56 MB loaded, full load: True
+  0%|          | 0/75 [00:00<?, ?it/s]  1%|▏         | 1/75 [00:00<00:13,  5.65it/s]  3%|▎         | 2/75 [00:00<00:15,  4.60it/s]  4%|▍         | 3/75 [00:00<00:16,  4.40it/s]  5%|▌         | 4/75 [00:00<00:16,  4.28it/s]  7%|▋         | 5/75 [00:01<00:16,  4.22it/s]  8%|▊         | 6/75 [00:01<00:16,  4.19it/s]  9%|▉         | 7/75 [00:01<00:16,  4.18it/s] 11%|█         | 8/75 [00:01<00:16,  4.16it/s] 12%|█▏        | 9/75 [00:02<00:15,  4.17it/s] 13%|█▎        | 10/75 [00:02<00:15,  4.15it/s] 15%|█▍        | 11/75 [00:02<00:15,  4.15it/s] 16%|█▌        | 12/75 [00:02<00:15,  4.14it/s] 17%|█▋        | 13/75 [00:03<00:14,  4.14it/s] 19%|█▊        | 14/75 [00:03<00:14,  4.14it/s] 20%|██        | 15/75 [00:03<00:14,  4.15it/s] 21%|██▏       | 16/75 [00:03<00:14,  4.14it/s] 23%|██▎       | 17/75 [00:04<00:14,  4.14it/s] 24%|██▍       | 18/75 [00:04<00:13,  4.14it/s] 25%|██▌       | 19/75 [00:04<00:13,  4.13it/s] 27%|██▋       | 20/75 [00:04<00:13,  4.13it/s] 28%|██▊       | 21/75 [00:05<00:13,  4.13it/s] 29%|██▉       | 22/75 [00:05<00:12,  4.13it/s] 31%|███       | 23/75 [00:05<00:12,  4.14it/s] 32%|███▏      | 24/75 [00:05<00:12,  4.13it/s] 33%|███▎      | 25/75 [00:05<00:12,  4.13it/s] 35%|███▍      | 26/75 [00:06<00:11,  4.13it/s] 36%|███▌      | 27/75 [00:06<00:11,  4.14it/s] 37%|███▋      | 28/75 [00:06<00:11,  4.13it/s] 39%|███▊      | 29/75 [00:06<00:11,  4.14it/s] 40%|████      | 30/75 [00:07<00:10,  4.14it/s] 41%|████▏     | 31/75 [00:07<00:10,  4.14it/s] 43%|████▎     | 32/75 [00:07<00:10,  4.13it/s] 44%|████▍     | 33/75 [00:07<00:10,  4.14it/s] 45%|████▌     | 34/75 [00:08<00:09,  4.13it/s] 47%|████▋     | 35/75 [00:08<00:09,  4.13it/s] 48%|████▊     | 36/75 [00:08<00:09,  4.13it/s] 49%|████▉     | 37/75 [00:08<00:09,  4.13it/s] 51%|█████     | 38/75 [00:09<00:08,  4.13it/s] 52%|█████▏    | 39/75 [00:09<00:08,  4.12it/s] 53%|█████▎    | 40/75 [00:09<00:08,  4.13it/s] 55%|█████▍    | 41/75 [00:09<00:08,  4.13it/s] 56%|█████▌    | 42/75 [00:10<00:08,  4.12it/s] 57%|█████▋    | 43/75 [00:10<00:07,  4.12it/s] 59%|█████▊    | 44/75 [00:10<00:07,  4.13it/s] 60%|██████    | 45/75 [00:10<00:07,  4.13it/s] 61%|██████▏   | 46/75 [00:11<00:07,  4.12it/s] 63%|██████▎   | 47/75 [00:11<00:06,  4.12it/s] 64%|██████▍   | 48/75 [00:11<00:06,  4.12it/s] 65%|██████▌   | 49/75 [00:11<00:06,  4.12it/s] 67%|██████▋   | 50/75 [00:12<00:06,  4.12it/s] 68%|██████▊   | 51/75 [00:12<00:05,  4.13it/s] 69%|██████▉   | 52/75 [00:12<00:05,  4.12it/s] 71%|███████   | 53/75 [00:12<00:05,  4.12it/s] 72%|███████▏  | 54/75 [00:13<00:05,  4.13it/s] 73%|███████▎  | 55/75 [00:13<00:04,  4.13it/s] 75%|███████▍  | 56/75 [00:13<00:04,  4.11it/s] 76%|███████▌  | 57/75 [00:13<00:04,  4.09it/s] 77%|███████▋  | 58/75 [00:13<00:04,  4.09it/s] 79%|███████▊  | 59/75 [00:14<00:03,  4.09it/s] 80%|████████  | 60/75 [00:14<00:03,  4.10it/s] 81%|████████▏ | 61/75 [00:14<00:03,  4.10it/s] 83%|████████▎ | 62/75 [00:14<00:03,  4.11it/s] 84%|████████▍ | 63/75 [00:15<00:02,  4.11it/s] 85%|████████▌ | 64/75 [00:15<00:02,  4.11it/s] 87%|████████▋ | 65/75 [00:15<00:02,  4.09it/s] 88%|████████▊ | 66/75 [00:15<00:02,  4.11it/s] 89%|████████▉ | 67/75 [00:16<00:01,  4.10it/s] 91%|█████████ | 68/75 [00:16<00:01,  4.12it/s] 92%|█████████▏| 69/75 [00:16<00:01,  4.12it/s] 93%|█████████▎| 70/75 [00:16<00:01,  4.11it/s] 95%|█████████▍| 71/75 [00:17<00:00,  4.10it/s] 96%|█████████▌| 72/75 [00:17<00:00,  4.10it/s] 97%|█████████▋| 73/75 [00:17<00:00,  4.09it/s] 99%|█████████▊| 74/75 [00:17<00:00,  4.10it/s]100%|██████████| 75/75 [00:18<00:00,  4.10it/s]100%|██████████| 75/75 [00:18<00:00,  4.14it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 13,593,368,576
+[32m[INFO][0m VRAMdebug: free memory after: 33,413,004,288
+[32m[INFO][0m VRAMdebug: freed memory: 19,819,635,712
+[32m[INFO][0m Requested to load AudioOobleckVAE
+[32m[INFO][0m loaded completely;  321.70 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 32,436,739,072
+[32m[INFO][0m VRAMdebug: free memory after: 33,413,004,288
+[32m[INFO][0m VRAMdebug: freed memory: 976,265,216
+[32m[INFO][0m [32mPrompt executed in 41.17 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Requested to load ACE15TEModel_
+[32m[INFO][0m loaded completely; 26949.92 MB usable, 9127.29 MB loaded, full load: True
+LM sampling:   0%|          | 0/300 [00:00<?, ?it/s]LM sampling:   0%|          | 1/300 [00:00<01:02,  4.78it/s]LM sampling:   2%|▏         | 5/300 [00:00<00:15, 19.00it/s]LM sampling:   3%|▎         | 9/300 [00:00<00:10, 26.59it/s]LM sampling:   5%|▍         | 14/300 [00:00<00:08, 31.96it/s]LM sampling:   6%|▌         | 18/300 [00:00<00:08, 34.46it/s]LM sampling:   8%|▊         | 23/300 [00:00<00:07, 36.50it/s]LM sampling:   9%|▉         | 27/300 [00:00<00:07, 37.46it/s]LM sampling:  10%|█         | 31/300 [00:00<00:07, 38.18it/s]LM sampling:  12%|█▏        | 35/300 [00:01<00:06, 38.58it/s]LM sampling:  13%|█▎        | 39/300 [00:01<00:06, 38.97it/s]LM sampling:  14%|█▍        | 43/300 [00:01<00:06, 39.21it/s]LM sampling:  16%|█▌        | 47/300 [00:01<00:06, 39.43it/s]LM sampling:  17%|█▋        | 51/300 [00:01<00:06, 39.53it/s]LM sampling:  18%|█▊        | 55/300 [00:01<00:06, 39.64it/s]LM sampling:  20%|█▉        | 59/300 [00:01<00:06, 39.63it/s]LM sampling:  21%|██        | 63/300 [00:01<00:05, 39.67it/s]LM sampling:  23%|██▎       | 68/300 [00:01<00:05, 39.82it/s]LM sampling:  24%|██▍       | 72/300 [00:01<00:05, 39.81it/s]LM sampling:  25%|██▌       | 76/300 [00:02<00:05, 39.63it/s]LM sampling:  27%|██▋       | 80/300 [00:02<00:05, 39.71it/s]LM sampling:  28%|██▊       | 84/300 [00:02<00:05, 39.74it/s]LM sampling:  29%|██▉       | 88/300 [00:02<00:05, 39.80it/s]LM sampling:  31%|███       | 92/300 [00:02<00:05, 39.51it/s]LM sampling:  32%|███▏      | 96/300 [00:02<00:05, 39.65it/s]LM sampling:  34%|███▎      | 101/300 [00:02<00:05, 39.76it/s]LM sampling:  35%|███▌      | 105/300 [00:02<00:04, 39.77it/s]LM sampling:  36%|███▋      | 109/300 [00:02<00:04, 39.82it/s]LM sampling:  38%|███▊      | 113/300 [00:03<00:04, 39.78it/s]LM sampling:  39%|███▉      | 117/300 [00:03<00:04, 39.76it/s]LM sampling:  40%|████      | 121/300 [00:03<00:04, 39.58it/s]LM sampling:  42%|████▏     | 125/300 [00:03<00:04, 39.67it/s]LM sampling:  43%|████▎     | 129/300 [00:03<00:04, 39.68it/s]LM sampling:  45%|████▍     | 134/300 [00:03<00:04, 39.78it/s]LM sampling:  46%|████▌     | 138/300 [00:03<00:04, 39.70it/s]LM sampling:  47%|████▋     | 142/300 [00:03<00:03, 39.63it/s]LM sampling:  49%|████▊     | 146/300 [00:03<00:03, 39.64it/s]LM sampling:  50%|█████     | 150/300 [00:03<00:03, 39.62it/s]LM sampling:  51%|█████▏    | 154/300 [00:04<00:03, 39.59it/s]LM sampling:  53%|█████▎    | 158/300 [00:04<00:03, 39.49it/s]LM sampling:  54%|█████▍    | 162/300 [00:04<00:03, 39.45it/s]LM sampling:  55%|█████▌    | 166/300 [00:04<00:03, 39.42it/s]LM sampling:  57%|█████▋    | 170/300 [00:04<00:03, 39.38it/s]LM sampling:  58%|█████▊    | 174/300 [00:04<00:03, 39.18it/s]LM sampling:  59%|█████▉    | 178/300 [00:04<00:03, 39.15it/s]LM sampling:  61%|██████    | 182/300 [00:04<00:03, 39.17it/s]LM sampling:  62%|██████▏   | 186/300 [00:04<00:02, 39.17it/s]LM sampling:  63%|██████▎   | 190/300 [00:04<00:02, 39.22it/s]LM sampling:  65%|██████▍   | 194/300 [00:05<00:02, 39.25it/s]LM sampling:  66%|██████▌   | 198/300 [00:05<00:02, 39.26it/s]LM sampling:  67%|██████▋   | 202/300 [00:05<00:02, 39.24it/s]LM sampling:  69%|██████▊   | 206/300 [00:05<00:02, 39.20it/s]LM sampling:  70%|███████   | 210/300 [00:05<00:02, 39.20it/s]LM sampling:  71%|███████▏  | 214/300 [00:05<00:02, 39.04it/s]LM sampling:  73%|███████▎  | 218/300 [00:05<00:02, 38.98it/s]LM sampling:  74%|███████▍  | 222/300 [00:05<00:02, 38.83it/s]LM sampling:  75%|███████▌  | 226/300 [00:05<00:01, 38.79it/s]LM sampling:  77%|███████▋  | 230/300 [00:06<00:01, 38.64it/s]LM sampling:  78%|███████▊  | 234/300 [00:06<00:01, 38.71it/s]LM sampling:  79%|███████▉  | 238/300 [00:06<00:01, 38.76it/s]LM sampling:  81%|████████  | 242/300 [00:06<00:01, 38.73it/s]LM sampling:  82%|████████▏ | 246/300 [00:06<00:01, 38.73it/s]LM sampling:  83%|████████▎ | 250/300 [00:06<00:01, 38.67it/s]LM sampling:  85%|████████▍ | 254/300 [00:06<00:01, 38.68it/s]LM sampling:  86%|████████▌ | 258/300 [00:06<00:01, 38.69it/s]LM sampling:  87%|████████▋ | 262/300 [00:06<00:01, 37.67it/s]LM sampling:  89%|████████▊ | 266/300 [00:06<00:00, 37.92it/s]LM sampling:  90%|█████████ | 270/300 [00:07<00:00, 38.01it/s]LM sampling:  91%|█████████▏| 274/300 [00:07<00:00, 38.07it/s]LM sampling:  93%|█████████▎| 278/300 [00:07<00:00, 38.10it/s]LM sampling:  94%|█████████▍| 282/300 [00:07<00:00, 38.07it/s]LM sampling:  95%|█████████▌| 286/300 [00:07<00:00, 38.13it/s]LM sampling:  97%|█████████▋| 290/300 [00:07<00:00, 38.22it/s]LM sampling:  98%|█████████▊| 294/300 [00:07<00:00, 38.24it/s]LM sampling:  99%|█████████▉| 298/300 [00:07<00:00, 38.18it/s]LM sampling: 100%|██████████| 300/300 [00:07<00:00, 38.30it/s]
+[32m[INFO][0m Requested to load ACEStep15
+[32m[INFO][0m loaded completely; 17740.60 MB usable, 9511.56 MB loaded, full load: True
+  0%|          | 0/75 [00:00<?, ?it/s]  1%|▏         | 1/75 [00:00<00:13,  5.68it/s]  3%|▎         | 2/75 [00:00<00:15,  4.59it/s]  4%|▍         | 3/75 [00:00<00:16,  4.40it/s]  5%|▌         | 4/75 [00:00<00:16,  4.27it/s]  7%|▋         | 5/75 [00:01<00:16,  4.24it/s]  8%|▊         | 6/75 [00:01<00:16,  4.20it/s]  9%|▉         | 7/75 [00:01<00:16,  4.18it/s] 11%|█         | 8/75 [00:01<00:16,  4.15it/s] 12%|█▏        | 9/75 [00:02<00:16,  4.12it/s] 13%|█▎        | 10/75 [00:02<00:15,  4.14it/s] 15%|█▍        | 11/75 [00:02<00:15,  4.14it/s] 16%|█▌        | 12/75 [00:02<00:15,  4.15it/s] 17%|█▋        | 13/75 [00:03<00:14,  4.14it/s] 19%|█▊        | 14/75 [00:03<00:14,  4.14it/s] 20%|██        | 15/75 [00:03<00:14,  4.14it/s] 21%|██▏       | 16/75 [00:03<00:14,  4.14it/s] 23%|██▎       | 17/75 [00:04<00:14,  4.13it/s] 24%|██▍       | 18/75 [00:04<00:13,  4.13it/s] 25%|██▌       | 19/75 [00:04<00:13,  4.14it/s] 27%|██▋       | 20/75 [00:04<00:13,  4.14it/s] 28%|██▊       | 21/75 [00:05<00:13,  4.13it/s] 29%|██▉       | 22/75 [00:05<00:12,  4.13it/s] 31%|███       | 23/75 [00:05<00:12,  4.12it/s] 32%|███▏      | 24/75 [00:05<00:12,  4.13it/s] 33%|███▎      | 25/75 [00:05<00:12,  4.12it/s] 35%|███▍      | 26/75 [00:06<00:11,  4.13it/s] 36%|███▌      | 27/75 [00:06<00:11,  4.12it/s] 37%|███▋      | 28/75 [00:06<00:11,  4.13it/s] 39%|███▊      | 29/75 [00:06<00:11,  4.13it/s] 40%|████      | 30/75 [00:07<00:10,  4.13it/s] 41%|████▏     | 31/75 [00:07<00:10,  4.12it/s] 43%|████▎     | 32/75 [00:07<00:10,  4.12it/s] 44%|████▍     | 33/75 [00:07<00:10,  4.11it/s] 45%|████▌     | 34/75 [00:08<00:09,  4.13it/s] 47%|████▋     | 35/75 [00:08<00:09,  4.13it/s] 48%|████▊     | 36/75 [00:08<00:09,  4.12it/s] 49%|████▉     | 37/75 [00:08<00:09,  4.11it/s] 51%|█████     | 38/75 [00:09<00:08,  4.13it/s] 52%|█████▏    | 39/75 [00:09<00:08,  4.12it/s] 53%|█████▎    | 40/75 [00:09<00:08,  4.11it/s] 55%|█████▍    | 41/75 [00:09<00:08,  4.11it/s] 56%|█████▌    | 42/75 [00:10<00:08,  4.12it/s] 57%|█████▋    | 43/75 [00:10<00:07,  4.12it/s] 59%|█████▊    | 44/75 [00:10<00:07,  4.11it/s] 60%|██████    | 45/75 [00:10<00:07,  4.11it/s] 61%|██████▏   | 46/75 [00:11<00:07,  4.10it/s] 63%|██████▎   | 47/75 [00:11<00:06,  4.12it/s] 64%|██████▍   | 48/75 [00:11<00:06,  4.12it/s] 65%|██████▌   | 49/75 [00:11<00:06,  4.12it/s] 67%|██████▋   | 50/75 [00:12<00:06,  4.11it/s] 68%|██████▊   | 51/75 [00:12<00:05,  4.11it/s] 69%|██████▉   | 52/75 [00:12<00:05,  4.10it/s] 71%|███████   | 53/75 [00:12<00:05,  4.11it/s] 72%|███████▏  | 54/75 [00:13<00:05,  4.09it/s] 73%|███████▎  | 55/75 [00:13<00:04,  4.10it/s] 75%|███████▍  | 56/75 [00:13<00:04,  4.11it/s] 76%|███████▌  | 57/75 [00:13<00:04,  4.11it/s] 77%|███████▋  | 58/75 [00:14<00:04,  4.11it/s] 79%|███████▊  | 59/75 [00:14<00:03,  4.11it/s] 80%|████████  | 60/75 [00:14<00:03,  4.11it/s] 81%|████████▏ | 61/75 [00:14<00:03,  4.10it/s] 83%|████████▎ | 62/75 [00:14<00:03,  4.11it/s] 84%|████████▍ | 63/75 [00:15<00:02,  4.09it/s] 85%|████████▌ | 64/75 [00:15<00:02,  4.10it/s] 87%|████████▋ | 65/75 [00:15<00:02,  4.10it/s] 88%|████████▊ | 66/75 [00:15<00:02,  4.11it/s] 89%|████████▉ | 67/75 [00:16<00:01,  4.10it/s] 91%|█████████ | 68/75 [00:16<00:01,  4.10it/s] 92%|█████████▏| 69/75 [00:16<00:01,  4.10it/s] 93%|█████████▎| 70/75 [00:16<00:01,  4.09it/s] 95%|█████████▍| 71/75 [00:17<00:00,  4.10it/s] 96%|█████████▌| 72/75 [00:17<00:00,  4.10it/s] 97%|█████████▋| 73/75 [00:17<00:00,  4.10it/s] 99%|█████████▊| 74/75 [00:17<00:00,  4.10it/s]100%|██████████| 75/75 [00:18<00:00,  4.09it/s]100%|██████████| 75/75 [00:18<00:00,  4.13it/s]
+[32m[INFO][0m VRAMdebug: free memory before: 13,593,368,576
+[32m[INFO][0m VRAMdebug: free memory after: 33,413,004,288
+[32m[INFO][0m VRAMdebug: freed memory: 19,819,635,712
+[32m[INFO][0m Requested to load AudioOobleckVAE
+[32m[INFO][0m loaded completely;  321.70 MB loaded, full load: True
+[32m[INFO][0m VRAMdebug: free memory before: 32,436,739,072
+[32m[INFO][0m VRAMdebug: free memory after: 33,413,004,288
+[32m[INFO][0m VRAMdebug: freed memory: 976,265,216
+[32m[INFO][0m [32mPrompt executed in 40.94 seconds[0m
+[32m[INFO][0m got prompt
+[32m[INFO][0m Loading images from folder: lora_training/_rdna4_bench
+[32m[INFO][0m Loaded 3 images from L:\ComfyUI\ComfyUI\input\lora_training\_rdna4_bench.
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m loaded completely;  7672.25 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cuda:0, dtype: torch.float16
+[32m[INFO][0m Encoding 3 images with VAE...
+[32m[INFO][0m Requested to load AutoencodingEngine
+[32m[INFO][0m loaded completely; 10362.91 MB usable, 159.87 MB loaded, full load: True
+[32m[INFO][0m Encoding 3 texts with CLIP...
+[32m[INFO][0m Requested to load ZImageTEModel_
+[32m[INFO][0m Created dataset with 3 latents and 3 conditioning.
+[32m[INFO][0m Resolution bucket (128x128): 3 samples
+[32m[INFO][0m Created 1 resolution buckets from 3 samples
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: None
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m model weight dtype torch.bfloat16, manual cast: None
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Gradient checkpointing: patching 1 modules at depth 1
+[32m[INFO][0m Requested to load Lumina2
+[32m[INFO][0m 0 models unloaded.
+[32m[INFO][0m loaded completely;  11825.14 MB loaded, full load: True
+Training LoRA:   0%|          | 0/32 [00:00<?, ?it/s][1m[31m[ERROR][0m Accept failed on a socket
+socket: <asyncio.TransportSocket fd=2204, family=2, type=1, proto=6, laddr=('127.0.0.1', 8190)>
+Traceback (most recent call last):
+  File "C:\Users\Sebas\AppData\Local\Python\pythoncore-3.13-64\Lib\asyncio\proactor_events.py", line 862, in loop
+    f = self._proactor.accept(sock)
+  File "C:\Users\Sebas\AppData\Local\Python\pythoncore-3.13-64\Lib\asyncio\windows_events.py", line 553, in accept
+    ov.AcceptEx(listener.fileno(), conn.fileno())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 10055] Ein Socketvorgang konnte nicht ausgeführt werden, da dem System Pufferspeicher fehlte oder eine Warteschlange voll war

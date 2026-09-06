@@ -1,0 +1,223 @@
+{
+ "run_id": "IMG-ZT_v098_baseline_warm-repeat_20260905-221546",
+ "test_id": "IMG-ZT",
+ "variant": "v098_baseline",
+ "run_type": "warm-repeat",
+ "hypothesis": "",
+ "workload": "1024x1024 8 steps res_multistep cfg1 Z-Image-Turbo bf16 + Qwen3-4B TE + FLUX ae",
+ "seed": 1002,
+ "sets": [
+  "6.seed=1002"
+ ],
+ "prompt_file": "api/IMG_ZTurbo.json",
+ "prompt_id": "157485ae-34ec-472b-91bd-48e0cf5141e3",
+ "status": "success",
+ "client_wall_s": 46.27808451652527,
+ "server_exec_s": 45.30679106712341,
+ "queue_delay_s": 0.0037407875061035156,
+ "cached_nodes": [],
+ "node_times": [
+  {
+   "node": "7",
+   "display_node": "7",
+   "start": 1788639346.340631,
+   "dur": 0.3436298370361328,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "28",
+   "display_node": "28",
+   "start": 1788639346.6842608,
+   "dur": 0.0003447532653808594,
+   "class_type": "DaWMultiGPUDeviceControl"
+  },
+  {
+   "node": "27",
+   "display_node": "27",
+   "start": 1788639346.6846056,
+   "dur": 0.128220796585083,
+   "class_type": "SelectVAEDevice"
+  },
+  {
+   "node": "22",
+   "display_node": "22",
+   "start": 1788639346.8128264,
+   "dur": 0.0006747245788574219,
+   "class_type": "PixaromaPrompt"
+  },
+  {
+   "node": "2",
+   "display_node": "2",
+   "start": 1788639346.8135011,
+   "dur": 7.620180130004883,
+   "class_type": "CLIPLoader"
+  },
+  {
+   "node": "26",
+   "display_node": "26",
+   "start": 1788639354.4336812,
+   "dur": 7.033373594284058,
+   "class_type": "SelectCLIPDevice"
+  },
+  {
+   "node": "3",
+   "display_node": "3",
+   "start": 1788639361.4670548,
+   "dur": 6.018717050552368,
+   "class_type": "CLIPTextEncode"
+  },
+  {
+   "node": "4",
+   "display_node": "4",
+   "start": 1788639367.485772,
+   "dur": 0.0014123916625976562,
+   "class_type": "ConditioningZeroOut"
+  },
+  {
+   "node": "1",
+   "display_node": "1",
+   "start": 1788639367.4871843,
+   "dur": 4.642799139022827,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "25",
+   "display_node": "25",
+   "start": 1788639372.1299834,
+   "dur": 0.003068208694458008,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "5",
+   "display_node": "5",
+   "start": 1788639372.1330516,
+   "dur": 0.0006797313690185547,
+   "class_type": "EmptySD3LatentImage"
+  },
+  {
+   "node": "6",
+   "display_node": "6",
+   "start": 1788639372.1337314,
+   "dur": 9.874892711639404,
+   "class_type": "KSampler"
+  },
+  {
+   "node": "23",
+   "display_node": "23",
+   "start": 1788639382.008624,
+   "dur": 7.282142400741577,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "8",
+   "display_node": "8",
+   "start": 1788639389.2907665,
+   "dur": 1.3292391300201416,
+   "class_type": "VAEDecode"
+  },
+  {
+   "node": "24",
+   "display_node": "24",
+   "start": 1788639390.6200056,
+   "dur": 0.9583332538604736,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "9",
+   "display_node": "9",
+   "start": 1788639391.5783389,
+   "dur": 0.06708097457885742,
+   "class_type": "SaveImage"
+  }
+ ],
+ "step_stats": {
+  "6": {
+   "steps_observed": 8,
+   "max": 8,
+   "span_s": 4.2220635414123535,
+   "s_per_step": 0.6031519344874791,
+   "first_step_t": 1788639377.2024055,
+   "last_step_t": 1788639381.424469,
+   "class_type": "KSampler"
+  }
+ },
+ "gpu0_peak_alloc": 13019249152,
+ "gpu0_peak_reserved": 13541310464,
+ "gpu1_peak_alloc": 8956749312,
+ "gpu1_peak_reserved": 9714008064,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x00016581_phys_0": 10543714304.0,
+  "0x00000000_0x000199AF_phys_0": 18456961024.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 36593541120,
+  "swap_used": 3594891264,
+  "process_rss": 1088368640
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 8348299264,
+  "swap_used": 3591479296,
+  "process_rss": 29630246912
+ },
+ "outputs": [
+  {
+   "node": "9",
+   "kind": "images",
+   "filename": "WF_ZImage_turbo_00020_.png",
+   "subfolder": "",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline\\output\\WF_ZImage_turbo_00020_.png",
+   "bytes": 1412456,
+   "sha256": "4bda92f8fabb8c176278ad49fb69224a49cd1bfc97d4af38715fbc72e727687a"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+  "DISABLE_ADDMM_CUDA_LT": null,
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788639346.334477,
+ "t_done": 1788639392.6125615
+}

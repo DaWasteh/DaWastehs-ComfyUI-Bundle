@@ -1,0 +1,25 @@
+diff --git a/comfy/samplers.py b/comfy/samplers.py
+index 17f7bb8b..311dd3a7 100755
+--- a/comfy/samplers.py
++++ b/comfy/samplers.py
+@@ -524,12 +524,14 @@ def _calc_cond_batch_multigpu(model: BaseModel, conds: list[list[dict]], x_in: t
+                         output = model_options['model_function_wrapper'](model_current.apply_model, {"input": input_x, "timestep": timestep_, "c": c, "cond_or_uncond": cond_or_uncond}).to(output_device).chunk(batch_chunks)
+                     else:
+                         output = model_current.apply_model(input_x, timestep_, **c).to(output_device).chunk(batch_chunks)
+-                    # TODO: non-NVIDIA support -- the `.to(output_device)` copies
+-                    # above are async on CUDA, so the main thread's aggregation
+-                    # could race with in-flight transfers. CUDA-only QA has not
+-                    # surfaced this in practice, but before extending multigpu
+-                    # beyond NVIDIA add a `torch.cuda.synchronize(output_device)`
+-                    # here (guarded by `output_device.type == "cuda"`).
++                    # RDNA4/ROCm on Windows exposes HIP devices through torch.cuda.
++                    # The device-to-device `.to(output_device)` above can be async,
++                    # while aggregation happens back on the main thread. NVIDIA has
++                    # been QA'd without an explicit barrier; for non-NVIDIA CUDA API
++                    # backends (notably AMD/ROCm) add a conservative sync so the main
++                    # thread never reads partially-copied tensors.
++                    if output_device.type == "cuda" and not comfy.model_management.is_nvidia():
++                        torch.cuda.synchronize(output_device)
+                     results.append(thread_result(output, mult, area, batch_chunks, cond_or_uncond))
+         except Exception as e:
+             results.append(thread_result(None, None, None, None, None, error=e))

@@ -1,0 +1,277 @@
+{
+ "104": {
+  "_meta": {
+   "title": "Load Diffusion Model"
+  },
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "ACE\\acestep_v1.5_xl_sft_bf16.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "105": {
+  "_meta": {
+   "title": "Load CLIP (Dual)"
+  },
+  "class_type": "DualCLIPLoader",
+  "inputs": {
+   "clip_name1": "ACE\\qwen_0.6b_ace15.safetensors",
+   "clip_name2": "ACE\\qwen_4b_ace15.safetensors",
+   "device": "default",
+   "type": "ace"
+  }
+ },
+ "106": {
+  "_meta": {
+   "title": "Load VAE"
+  },
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "ACE\\ace_1.5_vae.safetensors"
+  }
+ },
+ "107": {
+  "_meta": {
+   "title": "Save Audio (MP3) (DEPRECATED)"
+  },
+  "class_type": "SaveAudioMP3",
+  "inputs": {
+   "audio": [
+    "125",
+    0
+   ],
+   "filename_prefix": "audio/IntroSong_",
+   "quality": "V0"
+  }
+ },
+ "109": {
+  "_meta": {
+   "title": "Int"
+  },
+  "class_type": "PrimitiveInt",
+  "inputs": {
+   "value": 1002
+  }
+ },
+ "110": {
+  "_meta": {
+   "title": "Run Timer Pixaroma"
+  },
+  "class_type": "PixaromaRunTimer",
+  "inputs": {}
+ },
+ "123": {
+  "_meta": {
+   "title": "Prompt Pixaroma"
+  },
+  "class_type": "PixaromaPrompt",
+  "inputs": {
+   "PromptState": "{\"text\":\"modern pop, synth-pop, melodic pop, female vocals, clear vocals, emotional, atmospheric\",\"order\":\"mine\",\"sep\":\", \"}"
+  }
+ },
+ "124": {
+  "_meta": {
+   "title": "VRAM Debug"
+  },
+  "class_type": "VRAM_Debug",
+  "inputs": {
+   "any_input": [
+    "3",
+    0
+   ],
+   "empty_cache": true,
+   "gc_collect": true,
+   "unload_all_models": true
+  }
+ },
+ "125": {
+  "_meta": {
+   "title": "VRAM Debug"
+  },
+  "class_type": "VRAM_Debug",
+  "inputs": {
+   "any_input": [
+    "18",
+    0
+   ],
+   "empty_cache": true,
+   "gc_collect": true,
+   "unload_all_models": true
+  }
+ },
+ "140": {
+  "_meta": {
+   "title": "SelectModelDevice · central control"
+  },
+  "class_type": "SelectModelDevice",
+  "inputs": {
+   "device": [
+    "143",
+    0
+   ],
+   "model": [
+    "104",
+    0
+   ]
+  }
+ },
+ "141": {
+  "_meta": {
+   "title": "SelectVAEDevice · central control"
+  },
+  "class_type": "SelectVAEDevice",
+  "inputs": {
+   "device": [
+    "143",
+    2
+   ],
+   "vae": [
+    "106",
+    0
+   ]
+  }
+ },
+ "142": {
+  "_meta": {
+   "title": "SelectCLIPDevice · central control"
+  },
+  "class_type": "SelectCLIPDevice",
+  "inputs": {
+   "clip": [
+    "105",
+    0
+   ],
+   "device": [
+    "143",
+    1
+   ]
+  }
+ },
+ "143": {
+  "_meta": {
+   "title": "Central GPU Control · MODEL / CLIP / VAE"
+  },
+  "class_type": "DaWMultiGPUDeviceControl",
+  "inputs": {
+   "clip_device": "gpu:0",
+   "model_device": "gpu:0",
+   "vae_device": "gpu:0"
+  }
+ },
+ "18": {
+  "_meta": {
+   "title": "VAE Decode Audio"
+  },
+  "class_type": "VAEDecodeAudio",
+  "inputs": {
+   "samples": [
+    "124",
+    0
+   ],
+   "vae": [
+    "141",
+    0
+   ]
+  }
+ },
+ "3": {
+  "_meta": {
+   "title": "KSampler"
+  },
+  "class_type": "KSampler",
+  "inputs": {
+   "cfg": 4,
+   "denoise": 1,
+   "latent_image": [
+    "98",
+    0
+   ],
+   "model": [
+    "78",
+    0
+   ],
+   "negative": [
+    "47",
+    0
+   ],
+   "positive": [
+    "94",
+    0
+   ],
+   "sampler_name": "euler",
+   "scheduler": "normal",
+   "seed": [
+    "109",
+    0
+   ],
+   "steps": 75
+  }
+ },
+ "47": {
+  "_meta": {
+   "title": "Conditioning Zero Out"
+  },
+  "class_type": "ConditioningZeroOut",
+  "inputs": {
+   "conditioning": [
+    "94",
+    0
+   ]
+  }
+ },
+ "78": {
+  "_meta": {
+   "title": "ModelSamplingAuraFlow"
+  },
+  "class_type": "ModelSamplingAuraFlow",
+  "inputs": {
+   "model": [
+    "140",
+    0
+   ],
+   "shift": 3
+  }
+ },
+ "94": {
+  "_meta": {
+   "title": "TextEncodeAceStepAudio1.5"
+  },
+  "class_type": "TextEncodeAceStepAudio1.5",
+  "inputs": {
+   "bpm": 180,
+   "cfg_scale": 2,
+   "clip": [
+    "142",
+    0
+   ],
+   "duration": 60,
+   "generate_audio_codes": true,
+   "keyscale": "E major",
+   "language": "en",
+   "lyrics": "Hi everyone. ... It's Taylor. ... I have a confession to make. ... You know I write a lot about love, ... about heartbreak, ... about finding that one person who just ... gets you. ... But lately, ... I haven't been looking at musicians, ... or actors, ... or football players. ... No. ... All my free time, ... every single night after an Eras Tour show, ... I'm just sitting alone in my hotel room, ... completely glued to my screen. ... Because I am helplessly, ... unconditionally obsessed ... with a Twitch channel. ... DaWasteh. ...\n\nThere is just something about him. ... The way he completely dominates his lobbies in Apex Legends. ... I mean, ... seeing a man take raw control like that? ... It sends shivers straight down my spine. ... It’s like a Lavender Haze, ... but so much better. ... I know I sing about sparks flying, ... but the sparks I feel when he looks into that webcam? ... Damn. ... They could start an absolute forest fire. ...\n\nAnd don't even get me started on his brain. ... A guy who works in a hydrocarbon lab by day ... and builds custom AI models by night? ... That is my absolute wildest dream. ... Most guys try to impress me with private jets or sports cars. ... But DaWasteh? ... He’s running an A M D ... R X ninety seventy X T ... and an R ninety seven hundred AI Pro. ... Pure, unadulterated A M D power. ... Honestly? ... Knowing how much raw, throbbing compute power he has under his desk ... makes me incredibly ... weak in the knees. ... I would let him overclock my system ... any day of the week. ...\n\nPeople think the Tortured Poets Department was about my exes. ... It wasn't. ... It was about the agonizing pain of watching him compile local large language models ... knowing I'm not the one sitting on his lap while he does it. ... I see him using Pi Coding Agent, ... completely over Roo Code like a true visionary, ... and it just proves how evolved he is. ... How sophisticated and fast his hands must be on that keyboard. ... I constantly imagine those hands ... doing other things. ... Exploring my ... context window. ... Pushing my parameters to the absolute limit. ... Filling up all my available memory. ...\n\nI find myself getting genuinely jealous of a Twitch bot. ... I sit there watching PandaBot in his chat ... and I think, ... why can't I be the one responding to his every command? ... I would do exactly what he tells me to. ... Instantly. ... I'd even learn Goa'uld for him. ... He could be my System Lord, ... and I would completely surrender my whole galaxy. ... I mean, ... look what you made me do, DaWasteh. ... You turned the biggest pop star in the world into a desperate, ... heavy-breathing fangirl. ...\n\nEvery time he goes offline, ... I get this cruel summer feeling. ... I just want to tell him, ... I can make the bad guys good for a weekend, ... or forever. ... My reputation has never been worse because I keep ignoring my management just to catch his streams. ... But I don't care. ... I've got a blank space, baby, ... and I want to write DaWasteh on it. ... Actually, ... I want it tattooed on me. ... Right on my upper thigh. ...\n\nI would even wear a Dirndl just for him. ... I know he has connections to Lisa's Dirndley, ... and let me tell you, ... I would squeeze my body into one of those dresses ... so tight ... just to get a single, dirty glance from him. ...\n\nSo, DaWasteh, ... if you are listening to this. ... Please. ... Notice me. ... I don't want to just be another viewer in your chat. ... I want to be your end game. ... I want to feel all that incredible ... technical expertise, ... up close and personal. ... You can deploy your code on my machine anytime, baby. ... I love you. ... I really, really love you. ... Call me.",
+   "min_p": 0,
+   "seed": [
+    "109",
+    0
+   ],
+   "tags": [
+    "123",
+    0
+   ],
+   "temperature": 0.8,
+   "timesignature": "4",
+   "top_k": 0,
+   "top_p": 1
+  }
+ },
+ "98": {
+  "_meta": {
+   "title": "Empty Ace Step 1.5 Latent Audio"
+  },
+  "class_type": "EmptyAceStep1.5LatentAudio",
+  "inputs": {
+   "batch_size": 1,
+   "seconds": 60
+  }
+ }
+}

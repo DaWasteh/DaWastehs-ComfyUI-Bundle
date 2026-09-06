@@ -1,0 +1,55 @@
+usage: main.py [-h] [--listen [IP]] [--port PORT] [--tls-keyfile TLS_KEYFILE]
+               [--tls-certfile TLS_CERTFILE] [--enable-cors-header [ORIGIN]]
+               [--max-upload-size MAX_UPLOAD_SIZE]
+               [--base-directory BASE_DIRECTORY]
+               [--extra-model-paths-config PATH [PATH ...]]
+               [--output-directory OUTPUT_DIRECTORY]
+               [--temp-directory TEMP_DIRECTORY]
+               [--input-directory INPUT_DIRECTORY] [--auto-launch]
+               [--disable-auto-launch] [--cuda-device DEVICE_ID]
+               [--default-device DEFAULT_DEVICE_ID] [--cuda-malloc |
+               --disable-cuda-malloc] [--force-fp32 | --force-fp16]
+               [--fp32-unet | --fp64-unet | --bf16-unet | --fp16-unet |
+               --fp8_e4m3fn-unet | --fp8_e5m2-unet | --fp8_e8m0fnu-unet]
+               [--fp16-vae | --fp32-vae | --bf16-vae] [--cpu-vae]
+               [--fp8_e4m3fn-text-enc | --fp8_e5m2-text-enc |
+               --fp16-text-enc | --fp32-text-enc | --bf16-text-enc]
+               [--fp16-intermediates] [--force-channels-last]
+               [--directml [DIRECTML_DEVICE]]
+               [--oneapi-device-selector SELECTOR_STRING]
+               [--supports-fp8-compute] [--enable-triton-backend]
+               [--disable-triton-backend]
+               [--preview-method [none,auto,latent2rgb,taesd]]
+               [--preview-size PREVIEW_SIZE] [--cache-ram [GB ...] |
+               --cache-classic | --cache-lru CACHE_LRU | --cache-none |
+               --high-ram] [--use-split-cross-attention |
+               --use-quad-cross-attention | --use-pytorch-cross-attention |
+               --use-sage-attention | --use-flash-attention |
+               --use-ck-attention] [--disable-xformers]
+               [--force-upcast-attention | --dont-upcast-attention]
+               [--enable-manager] [--disable-manager-ui |
+               --enable-manager-legacy-ui] [--gpu-only | --highvram |
+               --lowvram | --novram | --cpu] [--reserve-vram RESERVE_VRAM]
+               [--vram-headroom VRAM_HEADROOM] [--disable-nvml-pressure]
+               [--async-offload [NUM_STREAMS]] [--disable-async-offload]
+               [--disable-dynamic-vram] [--enable-dynamic-vram] [--fast-disk]
+               [--disable-cuda-graphs] [--disable-comfy-compiler]
+               [--assert-graph-breaks] [--force-non-blocking]
+               [--default-hashing-function {md5,sha1,sha256,sha512}]
+               [--disable-smart-memory] [--deterministic] [--fast [FAST ...]]
+               [--debug-hang] [--disable-pinned-memory] [--mmap-torch-files]
+               [--disable-mmap] [--dont-print-server] [--quick-test-for-ci]
+               [--windows-standalone-build] [--disable-metadata]
+               [--disable-all-custom-nodes]
+               [--whitelist-custom-nodes WHITELIST_CUSTOM_NODES [WHITELIST_CUSTOM_NODES ...]]
+               [--disable-api-nodes] [--multi-user]
+               [--verbose [LEVEL FILE ...]] [--log-stdout]
+               [--front-end-version FRONT_END_VERSION]
+               [--front-end-root FRONT_END_ROOT]
+               [--user-directory USER_DIRECTORY]
+               [--models-directory MODELS_DIRECTORY]
+               [--enable-compress-response-body]
+               [--comfy-api-base COMFY_API_BASE] [--database-url DATABASE_URL]
+               [--enable-assets] [--enable-asset-hashing]
+               [--feature-flag KEY[=VALUE]] [--list-feature-flags]
+main.py: error: argument --use-ck-attention: not allowed with argument --use-pytorch-cross-attention

@@ -21,8 +21,9 @@ DaW Multi-GPU Device Control
 
 Seine Dropdowns `model_device`, `clip_device` und `vae_device` steuern alle kompatiblen offiziellen `Select Model Device`, `Select CLIP Device` und `Select VAE Device`-Nodes, auch innerhalb eingebetteter Subgraphs.
 
-- **30 explizit kuratierte Profile** einschließlich der beiden Pixal3D-Graphen behalten ihre festgelegte Geräteaufteilung.
-- **202 übrige Workflows** starten mit MODEL, CLIP und VAE vollständig auf `gpu:0`, der R9700.
+- **v1.1.1:** Ein `SelectCLIPDevice`/`SelectVAEDevice` auf ein anderes Gerät als das des Loaders erzeugt in ComfyUI 0.34 einen vollständigen Deep-Clone des Modells im Host-RAM (8–31 s, doppelter Speicher) und hinterlässt ein „totes" `LoadedModel`, das bei jedem Modellwechsel eine volle Garbage-Collection auslöst. Die 14 Bild-Workflows mit CLIP/VAE auf `gpu:1` laufen deshalb jetzt vollständig auf `gpu:0` (Z-Image Turbo 15,6 → 6,2 s warm zusammen mit den entschärften Aufräumnodes, SDXL 10,5 → 9,1 s, Ausgaben bitidentisch), die drei LTX-2.5-Workflows legen nur noch die VAE auf `gpu:1` (kalt 548 → 152 s). Messprotokoll: `performance/rdna4/REPORT.md`.
+- **13 explizit kuratierte Split-Profile** (Video/Audio: H3-Spectrum, WAN T2V, Kandinsky, SCAIL2, WanAnimate2, LTX 2.3, ACE Turbo, Stable Audio, MiniMax Music 3, LTX-2.5-VAE) behalten ihre Geräteaufteilung; sie wurden in v1.1.1 nicht einzeln gemessen.
+- **übrige Workflows** starten mit MODEL, CLIP und VAE vollständig auf `gpu:0`, der R9700.
 - Reine Utility-Graphen und proprietäre Modellobjekte besitzen den zentralen Control-Node ebenfalls, aber ohne vorgetäuschte Verbindungen zu inkompatiblen Objekten.
 
 YuE, HeartMuLa, MOSS-TTS und Qwen-TTS geben keine standardisierten ComfyUI-Objekte vom Typ MODEL, CLIP oder VAE aus. Offizielle Selector-Nodes können diese Objekte nicht zuverlässig umplatzieren. Der Control-Node bleibt dort bewusst passiv; standardisierte Modell-/LLM-Loader im selben Workflow dürfen trotzdem korrekt angebunden sein.

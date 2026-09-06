@@ -131,9 +131,14 @@ $ComfyArgs = @(
     "--port", "$Port",
     "--database-url", $DbUrl,
     "--default-device", "0",
-    "--use-pytorch-cross-attention",
     "--reserve-vram", "$ReserveVramGb"
 )
+# v1.1.1: --use-ck-attention and --use-pytorch-cross-attention are mutually exclusive in
+# ComfyUI 0.34 (main.py rejects the pair with "not allowed with argument"); only add the
+# pytorch flag when the comfy-kitchen opt-in is off.
+if (-not $UseComfyKitchenAttention) {
+    $ComfyArgs += "--use-pytorch-cross-attention"
+}
 
 if ($EnableDynamicVram) {
     $ComfyArgs += "--enable-dynamic-vram"

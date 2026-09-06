@@ -1,0 +1,149 @@
+﻿# ============================================================
+# ComfyUI - AMD Radeon AI PRO R9700 only
+# Repo: L:\ComfyUI\ComfyUI
+# venv: L:\ComfyUI\.venv
+# Erwartung: HIP device 0 = R9700
+# ============================================================
+
+$ErrorActionPreference = "Stop"
+
+$Root = "L:\ComfyUI"
+$ComfyPath = Join-Path $Root "ComfyUI"
+$PythonExe = Join-Path $Root ".venv\Scripts\python.exe"
+$Launcher = Join-Path $Root "scripts\windows_comfy_launcher.py"
+$Port = 8188
+
+# Eigene DB pro Instanz, damit R9700 und 9070XT parallel laufen koennen
+# (sonst sqlite-Lock auf gemeinsamer user/comfyui.db).
+$DbFile = Join-Path $ComfyPath "user\comfyui-r9700.db"
+$DbUrl = "sqlite:///" + ($DbFile -replace '\\', '/')
+
+# RDNA4/ROCm Windows Safe-Profil Stand 01.07.2026:
+# Wan 14B/R9700 crashte mit comfy-aimdo DynamicVRAM/VBAR/VRAMBuffer
+# (Access Violation 0x...00E0). Daher AIMDO/DynamicVRAM und async offload
+# im Solo-Profil explizit aus, pinned memory aus, mehr VRAM-Reserve.
+$ReserveVramGb = 4
+$EnableDynamicVram = $false
+$AsyncOffloadStreams = 0
+$DisablePinnedMemory = $true
+$UseLowVram = $false
+$UseCpuVae = $false
+$ForceFp16Unet = $false
+$UseFp32Vae = $false
+$DisableSmartMemory = $false
+$DebugHipLaunchBlocking = $false
+
+# hipBLASLt ist fuer viele Bildmodell-Matmuls auf gfx1201 schnell, unterstuetzt
+# aber zahlreiche YuE/HeartCodec-Linear- und Conv1d-Geometrien nicht. PyTorch
+# probiert dann hipBLASLt, protokolliert HIPBLAS_STATUS_NOT_SUPPORTED und faellt
+# fuer jede neue Form auf hipBLAS zurueck. Das erzeugt Warnungsfluten und hohe
+# Erstaufrufkosten. Das robuste gemeinsame Audio-/ComfyUI-Profil nutzt daher
+# wieder direkt klassisches hipBLAS.
+$PreferHipBlasLt = $false
+
+if (!(Test-Path $ComfyPath)) { throw "ComfyUI-Ordner nicht gefunden: $ComfyPath" }
+if (!(Test-Path $PythonExe)) { throw "Python in venv nicht gefunden: $PythonExe" }
+if (!(Test-Path $Launcher)) { throw "Windows-Launcher nicht gefunden: $Launcher" }
+
+Set-Location $ComfyPath
+
+Remove-Item Env:HSA_OVERRIDE_GFX_VERSION -ErrorAction SilentlyContinue
+Remove-Item Env:PYTORCH_TUNABLEOP_ENABLED -ErrorAction SilentlyContinue
+Remove-Item Env:HIP_LAUNCH_BLOCKING -ErrorAction SilentlyContinue
+Remove-Item Env:CUDA_LAUNCH_BLOCKING -ErrorAction SilentlyContinue
+
+$env:HIP_VISIBLE_DEVICES = "0"
+$env:CUDA_VISIBLE_DEVICES = "0"
+$env:TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL = "1"
+
+# BLAS-Pfad fuer gfx1201; Audio-Workloads verwenden standardmaessig hipBLAS.
+if ($PreferHipBlasLt) {
+    $env:TORCH_BLAS_PREFER_HIPBLASLT = "1"
+    Remove-Item Env:TORCH_BLAS_PREFER_CUBLASLT -ErrorAction SilentlyContinue
+    Remove-Item Env:DISABLE_ADDMM_CUDA_LT -ErrorAction SilentlyContinue
+} else {
+    # Fallback: hipBLAS classic, hipBLASLt- und addmm-LT-Pfad aus.
+    $env:TORCH_BLAS_PREFER_HIPBLASLT = "0"
+    $env:TORCH_BLAS_PREFER_CUBLASLT = "0"
+    $env:DISABLE_ADDMM_CUDA_LT = "1"
+}
+
+# Explicit CPU thread count for CPU helper libraries; PyTorch already sees 24.
+$CpuThreads = [Environment]::ProcessorCount
+$env:OMP_NUM_THREADS = "$CpuThreads"
+$env:MKL_NUM_THREADS = "$CpuThreads"
+$env:OPENBLAS_NUM_THREADS = "$CpuThreads"
+$env:NUMEXPR_NUM_THREADS = "$CpuThreads"
+
+$env:PYTHONUTF8 = "1"
+$env:PYTHONIOENCODING = "utf-8"
+
+if ($DebugHipLaunchBlocking) {
+    $env:HIP_LAUNCH_BLOCKING = "1"
+    $env:CUDA_LAUNCH_BLOCKING = "1"
+}
+
+Write-Host ""
+Write-Host "============================================================" -ForegroundColor DarkCyan
+Write-Host "ComfyUI R9700 Startprofil" -ForegroundColor Cyan
+Write-Host "============================================================" -ForegroundColor DarkCyan
+Write-Host "ComfyUI: $ComfyPath"
+Write-Host "Port:    $Port"
+Write-Host "DB:      $DbUrl"
+Write-Host "GPU:     HIP_VISIBLE_DEVICES=$env:HIP_VISIBLE_DEVICES"
+Write-Host "VRAM:    reserve-vram=$ReserveVramGb GB"
+Write-Host "Profil:  DynamicVRAM=$EnableDynamicVram, async-offload=$AsyncOffloadStreams, pinned memory=$(-not $DisablePinnedMemory)"
+Write-Host "CPU:     OMP/MKL/OpenBLAS threads=$CpuThreads"
+Write-Host "BLAS:    hipBLASLt=$PreferHipBlasLt (klassisches hipBLAS fuer YuE/Audio)"
+Write-Host ""
+
+& $PythonExe -c "import os, torch; print('torch:', torch.__version__); print('cuda available:', torch.cuda.is_available()); print('torch threads:', torch.get_num_threads(), 'interop:', torch.get_num_interop_threads()); print('preferred blas:', torch.backends.cuda.preferred_blas_library()); print('TORCH_BLAS_PREFER_HIPBLASLT:', os.environ.get('TORCH_BLAS_PREFER_HIPBLASLT')); print('DISABLE_ADDMM_CUDA_LT:', os.environ.get('DISABLE_ADDMM_CUDA_LT')); print('device count:', torch.cuda.device_count()); [print(i, torch.cuda.get_device_name(i)) for i in range(torch.cuda.device_count())]"
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Torch/GPU-Check fehlgeschlagen." -ForegroundColor Red
+    pause
+    exit $LASTEXITCODE
+}
+
+$ComfyArgs = @(
+    "main.py",
+    "--enable-manager",
+    "--listen", "127.0.0.1",
+    "--port", "$Port",
+    "--database-url", $DbUrl,
+    "--use-pytorch-cross-attention",
+    "--reserve-vram", "$ReserveVramGb",
+    "--disable-dynamic-vram",
+    # Workaround fuer ComfyUI 0.29 RAM-Pressure-Cache: Nach manuellem
+    # Unload blieben unter Windows ROCm mehrere GB RAM/VRAM gebunden und
+    # torch.cuda.mem_get_info() meldete im laufenden Prozess 0 Byte frei.
+    "--cache-classic"
+)
+
+if ($EnableDynamicVram) {
+    $ComfyArgs = $ComfyArgs | Where-Object { $_ -ne "--disable-dynamic-vram" }
+    $ComfyArgs += "--enable-dynamic-vram"
+}
+if ($AsyncOffloadStreams -gt 0) { $ComfyArgs += @("--async-offload", "$AsyncOffloadStreams") }
+else { $ComfyArgs += "--disable-async-offload" }
+if ($DisablePinnedMemory) { $ComfyArgs += "--disable-pinned-memory" }
+if ($UseLowVram) { $ComfyArgs += "--lowvram" }
+if ($UseCpuVae) { $ComfyArgs += "--cpu-vae" }
+if ($ForceFp16Unet) { $ComfyArgs += "--fp16-unet" }
+if ($UseFp32Vae) { $ComfyArgs += "--fp32-vae" }
+if ($DisableSmartMemory) { $ComfyArgs += "--disable-smart-memory" }
+
+# PowerShell 7/Windows can suppress Ctrl+C for a foreground native child. The
+# supervisor catches the console event and maps CTRL_BREAK to KeyboardInterrupt
+# in ComfyUI, preserving current ComfyUI's normal cleanup path.
+Write-Host "Zum Beenden einmal Strg+C druecken." -ForegroundColor Green
+& $PythonExe $Launcher --python $PythonExe --working-directory $ComfyPath -- @ComfyArgs
+$ExitCode = $LASTEXITCODE
+
+Write-Host ""
+Write-Host "ComfyUI wurde beendet. ExitCode: $ExitCode" -ForegroundColor Yellow
+
+if ($ExitCode -ne 0) {
+    pause
+    exit $ExitCode
+}

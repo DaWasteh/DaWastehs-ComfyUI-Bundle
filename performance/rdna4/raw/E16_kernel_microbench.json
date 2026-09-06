@@ -1,0 +1,145 @@
+[
+ {
+  "M": 4096,
+  "K": 3072,
+  "N": 3072,
+  "bf16_tflops": 133.89925790347718,
+  "int8_tensorwise_tflops": 126.42503325388272,
+  "int8_tensorwise_relerr": 0.015257755294442177,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 222.65125071234417,
+  "fp8_relerr": 0.03747998923063278
+ },
+ {
+  "M": 4096,
+  "K": 3072,
+  "N": 12288,
+  "bf16_tflops": 142.06823111705967,
+  "int8_tensorwise_tflops": 172.96591868771506,
+  "int8_tensorwise_relerr": 0.01626625284552574,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 240.575100428954,
+  "fp8_relerr": 0.0374249629676342
+ },
+ {
+  "M": 4096,
+  "K": 12288,
+  "N": 3072,
+  "bf16_tflops": 136.40645321648702,
+  "int8_tensorwise_tflops": 145.45432462866378,
+  "int8_tensorwise_relerr": 0.015908842906355858,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 193.81986062141684,
+  "fp8_relerr": 0.037599556148052216
+ },
+ {
+  "M": 4096,
+  "K": 4096,
+  "N": 4096,
+  "bf16_tflops": 140.4849447164276,
+  "int8_tensorwise_tflops": 140.50764035887767,
+  "int8_tensorwise_relerr": 0.015651946887373924,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 237.45458389539834,
+  "fp8_relerr": 0.03768651932477951
+ },
+ {
+  "M": 4096,
+  "K": 4096,
+  "N": 16384,
+  "bf16_tflops": 142.21366340384935,
+  "int8_tensorwise_tflops": 174.30602950741584,
+  "int8_tensorwise_relerr": 0.0152689004316926,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 244.5275140829965,
+  "fp8_relerr": 0.03731900081038475
+ },
+ {
+  "M": 16384,
+  "K": 3072,
+  "N": 3072,
+  "bf16_tflops": 144.2979141278261,
+  "int8_tensorwise_tflops": 142.3252675576462,
+  "int8_tensorwise_relerr": 0.015782618895173073,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 241.07454510737776,
+  "fp8_relerr": 0.037577658891677856
+ },
+ {
+  "M": 16384,
+  "K": 3072,
+  "N": 12288,
+  "bf16_tflops": 135.39707285474918,
+  "int8_tensorwise_tflops": 167.834621023157,
+  "int8_tensorwise_relerr": 0.015337853692471981,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 244.54985860679963,
+  "fp8_relerr": 0.037371676415205
+ },
+ {
+  "M": 16384,
+  "K": 12288,
+  "N": 3072,
+  "bf16_tflops": 135.80583843908735,
+  "int8_tensorwise_tflops": 153.2571327045277,
+  "int8_tensorwise_relerr": 0.015907911583781242,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 189.35083271172488,
+  "fp8_relerr": 0.0376213863492012
+ },
+ {
+  "M": 16384,
+  "K": 4096,
+  "N": 4096,
+  "bf16_tflops": 135.64422009532487,
+  "int8_tensorwise_tflops": 154.68832040126694,
+  "int8_tensorwise_relerr": 0.01556482631713152,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 247.75839771339463,
+  "fp8_relerr": 0.0376143679022789
+ },
+ {
+  "M": 16384,
+  "K": 4096,
+  "N": 16384,
+  "bf16_tflops": 136.2837255569605,
+  "int8_tensorwise_tflops": 172.27812139552555,
+  "int8_tensorwise_relerr": 0.0155639024451375,
+  "int8_convrot_err": "AttributeError: module 'comfy_kitchen' has no attribute 'quantize_int8_convrot_weight'",
+  "fp8_scaled_mm_tflops": 245.8717822099989,
+  "fp8_relerr": 0.03761001303792
+ },
+ {
+  "sdpa_L": 4096,
+  "flash_ms": 3.135774040222168,
+  "flash_tflops": 65.7440324346182,
+  "mem_eff_ms": 2.9271320343017577,
+  "mem_eff_tflops": 70.43017800089682,
+  "auto_ms": 2.72597599029541,
+  "auto_tflops": 75.62738297840212,
+  "ck_int8_attn_ms": 2.1278959274291993,
+  "ck_int8_attn_relerr": 0.014948224648833275
+ },
+ {
+  "sdpa_L": 16384,
+  "flash_ms": 44.98454284667969,
+  "flash_tflops": 73.32596208814124,
+  "mem_eff_ms": 45.569287109375,
+  "mem_eff_tflops": 72.38504467736978,
+  "auto_ms": 44.90306396484375,
+  "auto_tflops": 73.45901575693239,
+  "ck_int8_attn_ms": 26.70643310546875,
+  "ck_int8_attn_relerr": 0.0156187629327178
+ },
+ {
+  "sdpa_L": 32768,
+  "flash_ms": 188.5312255859375,
+  "flash_tflops": 69.98384215827294,
+  "mem_eff_ms": 181.85904541015626,
+  "mem_eff_tflops": 72.5514615099544,
+  "auto_ms": 180.73094482421874,
+  "auto_tflops": 73.00431891254036,
+  "ck_int8_attn_ms": 105.8314208984375,
+  "ck_int8_attn_relerr": 0.015744773671030998
+ }
+]

@@ -1,0 +1,204 @@
+{
+ "run_id": "IMG-SDXL_E9_hipblas+E2_cold_20260906-000821",
+ "test_id": "IMG-SDXL",
+ "variant": "E9_hipblas+E2",
+ "run_type": "cold",
+ "hypothesis": "E9: classic hipBLAS vs hipBLASLt on gfx1201",
+ "workload": "1024x1024 32 steps dpmpp_2m_sde_gpu karras cfg5 RealVisXL V4 fp16 + sdxl_vae",
+ "seed": 1001,
+ "sets": [
+  "6.seed=1001"
+ ],
+ "prompt_file": "api/IMG_SDXL__E2_allgpu0.json",
+ "prompt_id": "4d5b250f-709c-41b6-8cf0-361c9357297c",
+ "status": "success",
+ "client_wall_s": 17.32738447189331,
+ "server_exec_s": 17.027158975601196,
+ "queue_delay_s": 0.004458427429199219,
+ "cached_nodes": [
+  "25"
+ ],
+ "node_times": [
+  {
+   "node": "7",
+   "display_node": "7",
+   "start": 1788646101.4044003,
+   "dur": 0.4702024459838867,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "24",
+   "display_node": "24",
+   "start": 1788646101.8746028,
+   "dur": 0.0015573501586914062,
+   "class_type": "SelectVAEDevice"
+  },
+  {
+   "node": "21",
+   "display_node": "21",
+   "start": 1788646101.8761601,
+   "dur": 0.0004894733428955078,
+   "class_type": "PixaromaPrompt"
+  },
+  {
+   "node": "1",
+   "display_node": "1",
+   "start": 1788646101.8766496,
+   "dur": 5.262041807174683,
+   "class_type": "CheckpointLoaderSimple"
+  },
+  {
+   "node": "23",
+   "display_node": "23",
+   "start": 1788646107.1386914,
+   "dur": 0.0004177093505859375,
+   "class_type": "SelectCLIPDevice"
+  },
+  {
+   "node": "2",
+   "display_node": "2",
+   "start": 1788646107.1391091,
+   "dur": 0.0002090930938720703,
+   "class_type": "CLIPSetLastLayer"
+  },
+  {
+   "node": "3",
+   "display_node": "3",
+   "start": 1788646107.1393182,
+   "dur": 0.1080482006072998,
+   "class_type": "CLIPTextEncode"
+  },
+  {
+   "node": "4",
+   "display_node": "4",
+   "start": 1788646107.2473664,
+   "dur": 0.05248260498046875,
+   "class_type": "CLIPTextEncode"
+  },
+  {
+   "node": "22",
+   "display_node": "22",
+   "start": 1788646107.299849,
+   "dur": 0.004342317581176758,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "5",
+   "display_node": "5",
+   "start": 1788646107.3041914,
+   "dur": 0.0004715919494628906,
+   "class_type": "EmptyLatentImage"
+  },
+  {
+   "node": "6",
+   "display_node": "6",
+   "start": 1788646107.304663,
+   "dur": 10.512879371643066,
+   "class_type": "KSampler"
+  },
+  {
+   "node": "8",
+   "display_node": "8",
+   "start": 1788646117.8175423,
+   "dur": 0.547675371170044,
+   "class_type": "VAEDecode"
+  },
+  {
+   "node": "9",
+   "display_node": "9",
+   "start": 1788646118.3652177,
+   "dur": 0.06501340866088867,
+   "class_type": "SaveImage"
+  }
+ ],
+ "step_stats": {
+  "6": {
+   "steps_observed": 32,
+   "max": 32,
+   "span_s": 8.01334810256958,
+   "s_per_step": 0.2584951000828897,
+   "first_step_t": 1788646109.5836864,
+   "last_step_t": 1788646117.5970345,
+   "class_type": "KSampler"
+  }
+ },
+ "gpu0_peak_alloc": 16830390784,
+ "gpu0_peak_reserved": 17085497344,
+ "gpu1_peak_alloc": 0,
+ "gpu1_peak_reserved": 0,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x000168BD_phys_0": 161624064.0,
+  "0x00000000_0x0001929A_phys_0": 21667405824.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 33280917504,
+  "swap_used": 1269755904,
+  "process_rss": 6228639744
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 36852871168,
+  "swap_used": 1269747712,
+  "process_rss": 2726166528
+ },
+ "outputs": [
+  {
+   "node": "9",
+   "kind": "images",
+   "filename": "WF_SDXL_RealVisXL_V4_00001_.png",
+   "subfolder": "",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E9_hipblas_000712\\output\\WF_SDXL_RealVisXL_V4_00001_.png",
+   "bytes": 1561474,
+   "sha256": "8899939587869aed11a67fd23807d2ab22f288030e311948bb70b90fb9719047"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E9_hipblas_000712\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E9_hipblas_000712\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "0",
+  "DISABLE_ADDMM_CUDA_LT": "1",
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788646101.398293,
+ "t_done": 1788646118.7256775
+}

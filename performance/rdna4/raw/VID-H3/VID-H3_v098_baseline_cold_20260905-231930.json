@@ -1,0 +1,279 @@
+{
+ "run_id": "VID-H3_v098_baseline_cold_20260905-231930",
+ "test_id": "VID-H3",
+ "variant": "v098_baseline",
+ "run_type": "cold",
+ "hypothesis": "",
+ "workload": "640x640 (0.4MP 1:1), 73 frames (3s@24fps), 20 steps res_multistep simple, no turbo LoRA, MiniMax H3 FL2VA INT8-ConvRot 21GB + Qwen3-VL-32B INT8 27GB TE + video VAE fp16 + audio VAE fp32, image 13_smile_closeup",
+ "seed": 1001,
+ "sets": [
+  "105:15.noise_seed=1001"
+ ],
+ "prompt_file": "api/H3_I2V_user_short.json",
+ "prompt_id": "2a4b7990-a3dd-484f-ad25-ffaa9221ba8f",
+ "status": "success",
+ "client_wall_s": 233.38521695137024,
+ "server_exec_s": 232.35190773010254,
+ "queue_delay_s": 0.01115870475769043,
+ "cached_nodes": [],
+ "node_times": [
+  {
+   "node": "105:24",
+   "display_node": "105:24",
+   "start": 1788643170.336828,
+   "dur": 0.5436427593231201,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "114",
+   "display_node": "114",
+   "start": 1788643170.8804708,
+   "dur": 0.05219888687133789,
+   "class_type": "LoadImage"
+  },
+  {
+   "node": "105:11",
+   "display_node": "105:11",
+   "start": 1788643170.9326696,
+   "dur": 3.3913941383361816,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "105:13",
+   "display_node": "105:13",
+   "start": 1788643174.3240638,
+   "dur": 1.1770257949829102,
+   "class_type": "CLIPLoader"
+  },
+  {
+   "node": "105:111",
+   "display_node": "105:111",
+   "start": 1788643175.5010896,
+   "dur": 0.0005359649658203125,
+   "class_type": "PrimitiveFloat"
+  },
+  {
+   "node": "105:107",
+   "display_node": "105:107",
+   "start": 1788643175.5016255,
+   "dur": 0.0004878044128417969,
+   "class_type": "ComfyMathExpression"
+  },
+  {
+   "node": "115",
+   "display_node": "115",
+   "start": 1788643175.5021133,
+   "dur": 0.0002875328063964844,
+   "class_type": "ResolutionSelector"
+  },
+  {
+   "node": "105:104",
+   "display_node": "105:104",
+   "start": 1788643175.5024009,
+   "dur": 49.72816014289856,
+   "class_type": "MiniMaxH3ImageToVideo"
+  },
+  {
+   "node": "105:126",
+   "display_node": "105:126",
+   "start": 1788643225.230561,
+   "dur": 0.0005774497985839844,
+   "class_type": "PrimitiveBoolean"
+  },
+  {
+   "node": "105:122",
+   "display_node": "105:122",
+   "start": 1788643225.2311385,
+   "dur": 0.0002219676971435547,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "105:123",
+   "display_node": "105:123",
+   "start": 1788643225.2313604,
+   "dur": 0.0002627372741699219,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "105:17",
+   "display_node": "105:17",
+   "start": 1788643225.2316232,
+   "dur": 0.00035834312438964844,
+   "class_type": "KSamplerSelect"
+  },
+  {
+   "node": "105:15",
+   "display_node": "105:15",
+   "start": 1788643225.2319815,
+   "dur": 0.005414009094238281,
+   "class_type": "RandomNoise"
+  },
+  {
+   "node": "105:6",
+   "display_node": "105:6",
+   "start": 1788643225.2373955,
+   "dur": 0.5501072406768799,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "105:122",
+   "display_node": "105:122",
+   "start": 1788643225.7875028,
+   "dur": 0.000377655029296875,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "105:16",
+   "display_node": "105:16",
+   "start": 1788643225.7878804,
+   "dur": 0.0004622936248779297,
+   "class_type": "BasicGuider"
+  },
+  {
+   "node": "105:124",
+   "display_node": "105:124",
+   "start": 1788643225.7883427,
+   "dur": 0.0002465248107910156,
+   "class_type": "PrimitiveInt"
+  },
+  {
+   "node": "105:123",
+   "display_node": "105:123",
+   "start": 1788643225.7885892,
+   "dur": 0.00028586387634277344,
+   "class_type": "ComfySwitchNode"
+  },
+  {
+   "node": "105:9",
+   "display_node": "105:9",
+   "start": 1788643225.788875,
+   "dur": 0.0008313655853271484,
+   "class_type": "BasicScheduler"
+  },
+  {
+   "node": "105:14",
+   "display_node": "105:14",
+   "start": 1788643225.7897065,
+   "dur": 163.64591813087463,
+   "class_type": "SamplerCustomAdvanced"
+  },
+  {
+   "node": "105:23",
+   "display_node": "105:23",
+   "start": 1788643389.4356246,
+   "dur": 3.943145513534546,
+   "class_type": "VAEDecodeAudio"
+  },
+  {
+   "node": "105:10",
+   "display_node": "105:10",
+   "start": 1788643393.37877,
+   "dur": 8.214678049087524,
+   "class_type": "VAEDecode"
+  },
+  {
+   "node": "105:91",
+   "display_node": "105:91",
+   "start": 1788643401.5934482,
+   "dur": 0.0065767765045166016,
+   "class_type": "CreateVideo"
+  },
+  {
+   "node": "92",
+   "display_node": "92",
+   "start": 1788643401.600025,
+   "dur": 1.0869145393371582,
+   "class_type": "SaveVideo"
+  }
+ ],
+ "step_stats": {
+  "105:14": {
+   "steps_observed": 20,
+   "max": 20,
+   "span_s": 113.50010180473328,
+   "s_per_step": 5.9736895686701725,
+   "first_step_t": 1788643269.9461765,
+   "last_step_t": 1788643383.4462783,
+   "class_type": "SamplerCustomAdvanced"
+  }
+ },
+ "gpu0_peak_alloc": 28448514048,
+ "gpu0_peak_reserved": 29553065984,
+ "gpu1_peak_alloc": 0,
+ "gpu1_peak_reserved": 0,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x000168BD_phys_0": 161628160.0,
+  "0x00000000_0x0001929A_phys_0": 30801891328.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 33306030080,
+  "swap_used": 0,
+  "process_rss": 1190633472
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 26768306176,
+  "swap_used": 17881128960,
+  "process_rss": 1775443968
+ },
+ "outputs": [
+  {
+   "node": "92",
+   "kind": "images",
+   "filename": "MiniMax_H3_00001_.mp4",
+   "subfolder": "video",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline_231912\\output\\video\\MiniMax_H3_00001_.mp4",
+   "bytes": 555087,
+   "sha256": "5ce49e49cf0d20b7d9138248d06837110fc4c7fb525d85f07acba7d9dc645999"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline_231912\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_v098_baseline_231912\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+  "DISABLE_ADDMM_CUDA_LT": null,
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788643170.318931,
+ "t_done": 1788643403.704148
+}

@@ -1,0 +1,307 @@
+{
+ "run_id": "VID-WAN22_E8_ckattn_warm_20260906-030544",
+ "test_id": "VID-WAN22",
+ "variant": "E8_ckattn",
+ "run_type": "warm",
+ "hypothesis": "E8: --use-ck-attention (INT8 QK attention, comfy-kitchen HIP), quality trade-off -> compare PSNR to baseline seeds",
+ "workload": "832x480 49 frames (3s@16fps) 4 steps (2 high + 2 low) euler simple cfg1 lightx2v LoRAs, Wan2.2 i2v 14B fp8_scaled x2 + UMT5 fp8 + wan_2.1_vae (fixed I2V graph), image 13_profile_left",
+ "seed": 1002,
+ "sets": [
+  "12.width=832",
+  "12.height=480",
+  "45.value=3.0",
+  "10.image=13_profile_left_00001_.png",
+  "13.noise_seed=1002",
+  "14.noise_seed=1002"
+ ],
+ "prompt_file": "api/WAN22_I2V_14B_fixed.json",
+ "prompt_id": "c5f737ea-0be8-4433-b3b1-6e352000e215",
+ "status": "success",
+ "client_wall_s": 116.82502770423889,
+ "server_exec_s": 115.84121108055115,
+ "queue_delay_s": 0.010913848876953125,
+ "cached_nodes": [],
+ "node_times": [
+  {
+   "node": "11",
+   "display_node": "11",
+   "start": 1788656745.2103126,
+   "dur": 0.2481706142425537,
+   "class_type": "VAELoader"
+  },
+  {
+   "node": "44",
+   "display_node": "44",
+   "start": 1788656745.4584832,
+   "dur": 0.0004749298095703125,
+   "class_type": "DaWMultiGPUDeviceControl"
+  },
+  {
+   "node": "43",
+   "display_node": "43",
+   "start": 1788656745.4589581,
+   "dur": 0.0017135143280029297,
+   "class_type": "SelectVAEDevice"
+  },
+  {
+   "node": "10",
+   "display_node": "10",
+   "start": 1788656745.4606717,
+   "dur": 0.030669689178466797,
+   "class_type": "LoadImage"
+  },
+  {
+   "node": "45",
+   "display_node": "45",
+   "start": 1788656745.4913414,
+   "dur": 0.0006883144378662109,
+   "class_type": "PrimitiveFloat"
+  },
+  {
+   "node": "46",
+   "display_node": "46",
+   "start": 1788656745.4920297,
+   "dur": 0.0006659030914306641,
+   "class_type": "ComfyMathExpression"
+  },
+  {
+   "node": "7",
+   "display_node": "7",
+   "start": 1788656745.4926956,
+   "dur": 9.647230386734009,
+   "class_type": "CLIPLoader"
+  },
+  {
+   "node": "42",
+   "display_node": "42",
+   "start": 1788656755.139926,
+   "dur": 0.0004470348358154297,
+   "class_type": "SelectCLIPDevice"
+  },
+  {
+   "node": "9",
+   "display_node": "9",
+   "start": 1788656755.140373,
+   "dur": 2.808823823928833,
+   "class_type": "CLIPTextEncode"
+  },
+  {
+   "node": "38",
+   "display_node": "38",
+   "start": 1788656757.9491968,
+   "dur": 0.00033783912658691406,
+   "class_type": "PixaromaPrompt"
+  },
+  {
+   "node": "8",
+   "display_node": "8",
+   "start": 1788656757.9495347,
+   "dur": 0.5459377765655518,
+   "class_type": "CLIPTextEncode"
+  },
+  {
+   "node": "12",
+   "display_node": "12",
+   "start": 1788656758.4954724,
+   "dur": 4.7879462242126465,
+   "class_type": "WanImageToVideo"
+  },
+  {
+   "node": "4",
+   "display_node": "4",
+   "start": 1788656763.2834187,
+   "dur": 0.08352899551391602,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "41",
+   "display_node": "41",
+   "start": 1788656763.3669477,
+   "dur": 0.003964900970458984,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "5",
+   "display_node": "5",
+   "start": 1788656763.3709126,
+   "dur": 0.051491498947143555,
+   "class_type": "LoraLoaderModelOnly"
+  },
+  {
+   "node": "6",
+   "display_node": "6",
+   "start": 1788656763.422404,
+   "dur": 0.000789642333984375,
+   "class_type": "ModelSamplingSD3"
+  },
+  {
+   "node": "1",
+   "display_node": "1",
+   "start": 1788656763.4231937,
+   "dur": 0.3508026599884033,
+   "class_type": "UNETLoader"
+  },
+  {
+   "node": "40",
+   "display_node": "40",
+   "start": 1788656763.7739964,
+   "dur": 0.004084348678588867,
+   "class_type": "SelectModelDevice"
+  },
+  {
+   "node": "2",
+   "display_node": "2",
+   "start": 1788656763.7780807,
+   "dur": 0.09089112281799316,
+   "class_type": "LoraLoaderModelOnly"
+  },
+  {
+   "node": "3",
+   "display_node": "3",
+   "start": 1788656763.8689718,
+   "dur": 0.0005419254302978516,
+   "class_type": "ModelSamplingSD3"
+  },
+  {
+   "node": "13",
+   "display_node": "13",
+   "start": 1788656763.8695138,
+   "dur": 26.882148027420044,
+   "class_type": "KSamplerAdvanced"
+  },
+  {
+   "node": "14",
+   "display_node": "14",
+   "start": 1788656790.7516618,
+   "dur": 39.67763614654541,
+   "class_type": "KSamplerAdvanced"
+  },
+  {
+   "node": "15",
+   "display_node": "15",
+   "start": 1788656830.429298,
+   "dur": 28.319453716278076,
+   "class_type": "VAEDecode"
+  },
+  {
+   "node": "16",
+   "display_node": "16",
+   "start": 1788656858.7487516,
+   "dur": 0.0009047985076904297,
+   "class_type": "CreateVideo"
+  },
+  {
+   "node": "39",
+   "display_node": "39",
+   "start": 1788656858.7496564,
+   "dur": 1.2637243270874023,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "17",
+   "display_node": "17",
+   "start": 1788656860.0133808,
+   "dur": 1.031489610671997,
+   "class_type": "SaveVideo"
+  }
+ ],
+ "step_stats": {
+  "13": {
+   "steps_observed": 2,
+   "max": 2,
+   "span_s": 7.243695974349976,
+   "s_per_step": 7.243695974349976,
+   "first_step_t": 1788656776.288549,
+   "last_step_t": 1788656783.532245,
+   "class_type": "KSamplerAdvanced"
+  },
+  "14": {
+   "steps_observed": 2,
+   "max": 2,
+   "span_s": 7.237524509429932,
+   "s_per_step": 7.237524509429932,
+   "first_step_t": 1788656815.9614232,
+   "last_step_t": 1788656823.1989477,
+   "class_type": "KSamplerAdvanced"
+  }
+ },
+ "gpu0_peak_alloc": 27074817024,
+ "gpu0_peak_reserved": 29544677376,
+ "gpu1_peak_alloc": 0,
+ "gpu1_peak_reserved": 0,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x000168BD_phys_0": 161624064.0,
+  "0x00000000_0x0001929A_phys_0": 32907198464.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 38140854272,
+  "swap_used": 1297915904,
+  "process_rss": 1190117376
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 1697820672,
+  "swap_used": 1386434560,
+  "process_rss": 34230685696
+ },
+ "outputs": [
+  {
+   "node": "17",
+   "kind": "images",
+   "filename": "WF_WAN22_i2v_14B_fp8_lightx2v_00001_.mp4",
+   "subfolder": "video",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E8_ckattn_030530\\output\\video\\WF_WAN22_i2v_14B_fp8_lightx2v_00001_.mp4",
+   "bytes": 276702,
+   "sha256": "b310043bcb9d702d1d9cce9466fca4ac70b68ea9adc96754bb0ad6bac4d799cf"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E8_ckattn_030530\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E8_ckattn_030530\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram",
+  "--use-ck-attention"
+ ],
+ "attention_function": "attention_comfy_kitchen_int8",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+  "DISABLE_ADDMM_CUDA_LT": null,
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788656745.1914163,
+ "t_done": 1788656862.016444
+}

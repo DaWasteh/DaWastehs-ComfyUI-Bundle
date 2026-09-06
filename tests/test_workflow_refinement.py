@@ -145,7 +145,7 @@ class WidgetMappingTests(unittest.TestCase):
     def test_generated_train_lora_widgets_follow_live_schema(self):
         expected_names = [
             "batch_size", "grad_accumulation_steps", "steps", "learning_rate", "rank",
-            "optimizer", "loss_function", "seed", "training_dtype", "lora_dtype",
+            "optimizer", "loss_function", "seed", "seed_control_after_generate", "training_dtype", "lora_dtype",
             "quantized_backward", "algorithm", "gradient_checkpointing", "checkpoint_depth",
             "offloading", "existing_lora", "bucket_mode", "bypass_mode",
         ]

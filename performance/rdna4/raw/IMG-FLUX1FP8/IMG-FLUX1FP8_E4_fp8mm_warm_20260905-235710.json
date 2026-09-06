@@ -1,0 +1,147 @@
+{
+ "run_id": "IMG-FLUX1FP8_E4_fp8mm_warm_20260905-235710",
+ "test_id": "IMG-FLUX1FP8",
+ "variant": "E4_fp8mm",
+ "run_type": "warm",
+ "hypothesis": "E4: --fast fp8_matrix_mult (torch._scaled_mm) for legacy fp8 checkpoints; fp8_scaled models already use native fp8 (SUPPORT_FP8_OPS=True)",
+ "workload": "1024x1024 FLUX.1-dev fp8 (legacy fp8_e4m3fn unet, no quant metadata) + t5xxl fp8 + clip_l, E12 prompt (no unload, all gpu:0)",
+ "seed": 1003,
+ "sets": [
+  "7.seed=1003"
+ ],
+ "prompt_file": "api/IMG_FLUX1fp8__E12.json",
+ "prompt_id": "130abb80-f02d-4489-815b-0096636f6e37",
+ "status": "success",
+ "client_wall_s": 20.11691379547119,
+ "server_exec_s": 19.63249659538269,
+ "queue_delay_s": 0.0033218860626220703,
+ "cached_nodes": [
+  "1",
+  "2",
+  "24",
+  "25",
+  "26",
+  "27",
+  "28",
+  "3",
+  "4",
+  "5",
+  "6",
+  "8"
+ ],
+ "node_times": [
+  {
+   "node": "7",
+   "display_node": "7",
+   "start": 1788645430.980177,
+   "dur": 19.20656156539917,
+   "class_type": "KSampler"
+  },
+  {
+   "node": "9",
+   "display_node": "9",
+   "start": 1788645450.1867385,
+   "dur": 0.36019396781921387,
+   "class_type": "VAEDecode"
+  },
+  {
+   "node": "10",
+   "display_node": "10",
+   "start": 1788645450.5469325,
+   "dur": 0.06470990180969238,
+   "class_type": "SaveImage"
+  }
+ ],
+ "step_stats": {
+  "7": {
+   "steps_observed": 25,
+   "max": 25,
+   "span_s": 18.409342288970947,
+   "s_per_step": 0.7670559287071228,
+   "first_step_t": 1788645431.0695167,
+   "last_step_t": 1788645449.478859,
+   "class_type": "KSampler"
+  }
+ },
+ "gpu0_peak_alloc": 23150046720,
+ "gpu0_peak_reserved": 26734493696,
+ "gpu1_peak_alloc": 0,
+ "gpu1_peak_reserved": 0,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x000168BD_phys_0": 161624064.0,
+  "0x00000000_0x0001929A_phys_0": 22446989312.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 36942082048,
+  "swap_used": 1234042880,
+  "process_rss": 2977894400
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 36500647936,
+  "swap_used": 1231642624,
+  "process_rss": 2978029568
+ },
+ "outputs": [
+  {
+   "node": "10",
+   "kind": "images",
+   "filename": "WF_FLUX1_dev_fp8_00003_.png",
+   "subfolder": "",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E4_fp8mm_235548\\output\\WF_FLUX1_dev_fp8_00003_.png",
+   "bytes": 1212257,
+   "sha256": "fc37a66c128316d5c2ecc85218d87c80682756b422d9cef0b6a4e944a8833454"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E4_fp8mm_235548\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E4_fp8mm_235548\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram",
+  "--fast",
+  "fp8_matrix_mult"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+  "DISABLE_ADDMM_CUDA_LT": null,
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788645430.9754593,
+ "t_done": 1788645451.0923731
+}

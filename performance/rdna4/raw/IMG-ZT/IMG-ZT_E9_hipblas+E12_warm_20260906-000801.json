@@ -1,0 +1,158 @@
+{
+ "run_id": "IMG-ZT_E9_hipblas+E12_warm_20260906-000801",
+ "test_id": "IMG-ZT",
+ "variant": "E9_hipblas+E12",
+ "run_type": "warm",
+ "hypothesis": "E9: classic hipBLAS vs hipBLASLt on gfx1201",
+ "workload": "1024x1024 8 steps res_multistep cfg1 Z-Image-Turbo bf16 + Qwen3-4B TE + FLUX ae",
+ "seed": 1002,
+ "sets": [
+  "6.seed=1002"
+ ],
+ "prompt_file": "api/IMG_ZTurbo__E12_nounload_allgpu0.json",
+ "prompt_id": "0617e1e9-8b34-43cf-90e6-8ed20e862e7b",
+ "status": "success",
+ "client_wall_s": 6.350207805633545,
+ "server_exec_s": 6.1218788623809814,
+ "queue_delay_s": 0.01824355125427246,
+ "cached_nodes": [
+  "1",
+  "2",
+  "22",
+  "25",
+  "26",
+  "27",
+  "28",
+  "3",
+  "4",
+  "5",
+  "7"
+ ],
+ "node_times": [
+  {
+   "node": "6",
+   "display_node": "6",
+   "start": 1788646081.5143814,
+   "dur": 5.023475170135498,
+   "class_type": "KSampler"
+  },
+  {
+   "node": "23",
+   "display_node": "23",
+   "start": 1788646086.5378566,
+   "dur": 0.30382823944091797,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "8",
+   "display_node": "8",
+   "start": 1788646086.8416848,
+   "dur": 0.40428781509399414,
+   "class_type": "VAEDecode"
+  },
+  {
+   "node": "24",
+   "display_node": "24",
+   "start": 1788646087.2459726,
+   "dur": 0.32614564895629883,
+   "class_type": "VRAM_Debug"
+  },
+  {
+   "node": "9",
+   "display_node": "9",
+   "start": 1788646087.5721183,
+   "dur": 0.06311202049255371,
+   "class_type": "SaveImage"
+  }
+ ],
+ "step_stats": {
+  "6": {
+   "steps_observed": 8,
+   "max": 8,
+   "span_s": 4.364630937576294,
+   "s_per_step": 0.623518705368042,
+   "first_step_t": 1788646081.560603,
+   "last_step_t": 1788646085.9252338,
+   "class_type": "KSampler"
+  }
+ },
+ "gpu0_peak_alloc": 23021707776,
+ "gpu0_peak_reserved": 26090668032,
+ "gpu1_peak_alloc": 0,
+ "gpu1_peak_reserved": 0,
+ "os_gpu_dedicated_peak_bytes": {
+  "0x00000000_0x000168BD_phys_0": 161624064.0,
+  "0x00000000_0x0001929A_phys_0": 22472179712.0
+ },
+ "gpu_sampler_error": null,
+ "host_before": {
+  "ram_total": 50860650496,
+  "ram_available": 33433260032,
+  "swap_used": 1269755904,
+  "process_rss": 6227968000
+ },
+ "host_after": {
+  "ram_total": 50860650496,
+  "ram_available": 33375449088,
+  "swap_used": 1269755904,
+  "process_rss": 6228652032
+ },
+ "outputs": [
+  {
+   "node": "9",
+   "kind": "images",
+   "filename": "WF_ZImage_turbo_00002_.png",
+   "subfolder": "",
+   "type": "output",
+   "path": "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E9_hipblas_000712\\output\\WF_ZImage_turbo_00002_.png",
+   "bytes": 1417064,
+   "sha256": "46fc3ffe88e39adf03ae48720875c1bb110f2c8d37c97d212b9cd07774b55d13"
+  }
+ ],
+ "error": null,
+ "server_argv": [
+  "L:\\ComfyUI\\ComfyUI\\main.py",
+  "--listen",
+  "127.0.0.1",
+  "--port",
+  "8190",
+  "--database-url",
+  "sqlite:///L:/GitHub/DaWastehs-ComfyUI-Bundle/performance/rdna4/bench/bench_state/comfyui-bench-8190.db",
+  "--output-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E9_hipblas_000712\\output",
+  "--temp-directory",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\raw\\server_E9_hipblas_000712\\temp",
+  "--extra-model-paths-config",
+  "L:\\GitHub\\DaWastehs-ComfyUI-Bundle\\performance\\rdna4\\bench\\extra_model_paths_bench.yaml",
+  "--disable-auto-launch",
+  "--dont-print-server",
+  "--default-device",
+  "0",
+  "--use-pytorch-cross-attention",
+  "--reserve-vram",
+  "4",
+  "--disable-dynamic-vram",
+  "--disable-async-offload",
+  "--disable-pinned-memory",
+  "--cache-ram"
+ ],
+ "attention_function": "attention_pytorch",
+ "profile_env": {
+  "HIP_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31",
+  "TORCH_BLAS_PREFER_HIPBLASLT": "0",
+  "DISABLE_ADDMM_CUDA_LT": "1",
+  "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+  "PYTORCH_TUNABLEOP_ENABLED": null,
+  "OMP_NUM_THREADS": "24",
+  "HSA_OVERRIDE_GFX_VERSION": null,
+  "PYTORCH_HIP_ALLOC_CONF": null,
+  "PYTORCH_CUDA_ALLOC_CONF": null,
+  "TORCH_ROCM_FA_PREFER_CK": null,
+  "HIPBLASLT_TENSILE_LIBPATH": null,
+  "MIOPEN_FIND_MODE": null,
+  "GPU_MAX_HW_QUEUES": null
+ },
+ "t_post": 1788646081.4946826,
+ "t_done": 1788646087.8448904
+}
