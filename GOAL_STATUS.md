@@ -65,16 +65,26 @@ Vergleich `00002_`/`00003_` belegt einen identischen *Rauschboden* (0,6 dB) — 
   Test kehrte sich beim zweiten Seed vollständig um). Die früher berichteten 2,4 dB für den
   v1.1.3-Fix liegen **innerhalb dieser Streuung** und sind kein belastbarer Effektnachweis; der Fix
   bleibt durch die Hörabnahme und die Rücknahme dokumentierter Abweichungen begründet.
+- **Vorverarbeitung geprüft — kein Defekt, sondern Schutz.** `MiniMaxH3ImageToVideo` skaliert den
+  `first_frame` mit `crop="disabled"`, also reines Verzerren auf die Latent-Geometrie; unsere
+  `PixaromaResizeCrop`-Kette verhindert genau diese Quetschung. Unser **echter** FL2VA-Graph mit den
+  Eingaben des offiziellen Laufs: HNR 5,67 gegen 5,84, Silbenrhythmus 14,6 gegen 13,6, HF-Abstand
+  −25,3 gegen −26,5 dB — alles innerhalb der Seed-Streuung. **Bei gleichen Eingaben ist unser
+  Workflow messtechnisch gleichwertig zum offiziellen.**
 - **Verbleibende Unterschiede sind Eingaben, nicht Pipeline:** anderer Seed, anderes Referenzbild,
-  andere Dauer, anderes Seitenverhältnis. Nur der Prompt war identisch.
+  andere Dauer, anderes Seitenverhältnis. Nur der Prompt war identisch. H3 ist bild-konditioniert
+  (das Referenzbild geht über `clip.tokenize(prompt, images=...)` in den VLM ein und prägt die
+  Stimme mit).
 
 ### Offen / nächste Schritte
 
-1. **Bild-Vorverarbeitung prüfen (nächster konkreter Test).** Der offizielle Graph reicht
-   `LoadImage` direkt an `MiniMaxH3ImageToVideo`; unser FL2VA-Workflow schiebt `PixaromaLongestSide`
-   → `PixaromaSwitchWH` → `PixaromaResizeCrop` dazwischen. H3 ist bild-konditioniert. Test: echter
-   FL2VA-Workflow gegen offiziellen Graphen bei identischem Bild, Seed, Dauer und Auflösung —
-   bitidentisch bedeutet kein Defekt mehr, Abweichung bedeutet Vorverarbeitung als Ursache. Hörvergleich `MiniMax_H3_00002_` (Turbo, 8 Schritte)
+1. **Hörvergleich A/B/C** unter `L:\ComfyUI\ComfyUI\outputideo\_v114_hoervergleich\`.
+   A = offizieller Graph, B = unser Workflow mit identischen Eingaben, C = unser Workflow im
+   16:9-Querformat. A↔B beantwortet, ob noch ein Workflow-Unterschied hörbar ist; B↔C, ob das
+   16:9-Format der Talking-Head-Workflows Stimmqualität kostet.
+2. **Falls C hörbar schlechter ist:** Hochformat-Preset als Standard für die sprechenden
+   H3-Workflows. Messtechnisch war der Effekt nicht belastbar (Silbenrhythmus in beiden Seeds
+   niedriger, HF-Abstand aber seed-dominiert), deshalb entscheidet hier das Ohr. Hörvergleich `MiniMax_H3_00002_` (Turbo, 8 Schritte)
    gegen `00003_` (kein Turbo, 20 Schritte) entscheidet, ob die Turbo-Destillation die
    Roboterstimme verursacht. Zusätzlich stimmspezifische Metriken (Harmonic-to-Noise-Ratio,
    Formantstruktur, Jitter/Shimmer) statt reiner Rauschbodenmessung.

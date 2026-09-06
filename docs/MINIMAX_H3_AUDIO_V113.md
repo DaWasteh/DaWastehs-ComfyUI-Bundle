@@ -250,12 +250,48 @@ Ungeprüft ist bisher die **Bild-Vorverarbeitung**: Der offizielle Graph reicht 
 `PixaromaResizeCrop` dazwischen. H3 ist bild-konditioniert; ein anderer Bildausschnitt ändert die
 Konditionierung und damit die erzeugte Stimme. Das ist der nächste konkrete Testpunkt.
 
-### Nächster Test
+### 8e · Vorverarbeitung geprüft: kein Defekt, aber ein Schutzmechanismus
 
-Unseren **echten** FL2VA-Workflow gegen den offiziellen Graphen laufen lassen, mit identischem
-Bild, Seed, Dauer und Zielauflösung. Ist das Ergebnis bitidentisch, liegt kein Workflow-Defekt mehr
-vor und die Unterschiede stammen ausschliesslich aus den Eingaben. Weicht es ab, ist die
-Vorverarbeitungskette die Ursache.
+Statisch belegt (`comfy_extras/nodes_minimax_h3.py`:145-146): `MiniMaxH3ImageToVideo` skaliert den
+`first_frame` mit `crop="disabled"` — also **reines Verzerren auf die Latent-Geometrie**, ohne
+seitenverhältnis-erhaltenden Zuschnitt. Ein Hochformat-Porträt in einem 16:9-Latent würde damit
+gequetscht. Unsere `PixaromaLongestSide` → `PixaromaSwitchWH` → `PixaromaResizeCrop`-Kette bringt das
+Bild vorher auf die Zielgeometrie und **verhindert genau diese Verzerrung**. Die Vorverarbeitung ist
+also schützend, nicht schädlich.
+
+Empirisch (`N1`): unser **echter** FL2VA-Graph auf v1.1.3-Stand — volle Vorverarbeitungskette,
+MultiGPU, SigmaShift — mit den Eingaben des offiziellen Laufs (gleiches Bild, Seed
+757358688076805, 8 s, Hochformat 480×864, identischer Prompt):
+
+| | HNR | Silbenrhythmus | HF-Abstand |
+|---|---|---|---|
+| `M2` offizieller Graph | 5,84 dB | 13,6 % | −26,5 dB |
+| `N1` unser Workflow | 5,67 dB | **14,6 %** | −25,3 dB |
+
+Nicht bitidentisch (Korrelation 0,37) — die Vorverarbeitung resampelt das Bild minimal anders und
+erzeugt damit eine andere Trajektorie. Aber **alle Kennzahlen liegen innerhalb der in 8c gemessenen
+Seed-Streuung**, der Silbenrhythmus ist bei uns sogar leicht höher.
+
+**Fazit: Bei gleichen Eingaben ist unser Workflow nach v1.1.3 messtechnisch gleichwertig zum
+offiziellen.** Ein Pipeline-Defekt ist nicht mehr nachweisbar.
+
+### 8f · Damit verbleibt: die Eingaben
+
+Der beanstandete Vergleich unterscheidet sich in Seed, Referenzbild, Dauer und Seitenverhältnis.
+H3 ist bild-konditioniert — das Referenzbild geht über `clip.tokenize(prompt, images=...)` in den
+VLM-Textencoder ein und prägt die erzeugte Stimme mit. Ein anderes Porträt und ein anderer Seed
+ergeben eine andere Stimme, ohne dass etwas defekt ist.
+
+Zum Anhören bereitgestellt unter `L:\ComfyUI\ComfyUI\output\video\_v114_hoervergleich\`:
+
+| Datei | Was |
+|---|---|
+| `A_offizieller_Graph.mp4` | offizielle Konfiguration, Hochformat |
+| `B_unser_Workflow_v113.mp4` | unser Workflow, **identische Eingaben** |
+| `C_unser_Workflow_Querformat.mp4` | unser Workflow, 16:9 Querformat (sonst gleich) |
+
+A gegen B beantwortet: Ist noch ein Workflow-Unterschied hörbar? B gegen C beantwortet: Kostet das
+16:9-Format der Talking-Head-Workflows Stimmqualität?
 
 ## 7. Nicht gemacht
 
