@@ -30,7 +30,9 @@ def ps_string(value: Path | str) -> str:
 
 @unittest.skipUnless(WINDOWS, "Windows PowerShell runtime tests")
 class UpdateV117Tests(unittest.TestCase):
-    def run_fixture(self, switches: str, *, stale: bool = False, legacy_launcher: bool = False) -> tuple[str, list[str]]:
+    def run_fixture(self, switches: str, *, stale: bool = False, legacy_launcher: bool = False,
+                    personal_workflow: bool = False, repeat: bool = False,
+                    tamper_preserved: bool = False) -> tuple[str, list[str]]:
         with tempfile.TemporaryDirectory(prefix="dawasteh-v117-") as tmp:
             root = Path(tmp)
             own = root / "bundle"
@@ -71,6 +73,16 @@ class UpdateV117Tests(unittest.TestCase):
                 (own / "tools/start-MultiGPU.ps1").write_bytes(files["tools/start-MultiGPU.ps1"])
                 for args in (["add", "tools"], ["-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "v117"], ["tag", "v1.1.7"]):
                     subprocess.run(["git", "-C", str(own), *args], capture_output=True, check=True)
+            if personal_workflow:
+                import hashlib
+                import json
+                target = install / "ComfyUI/user/default/workflows/DaWasteh/example.json"
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(b'{"user":"personal edit"}\n')
+                (install / "config").mkdir(exist_ok=True)
+                (install / "config/dawasteh-bundle-sync-manifest.json").write_text(json.dumps({
+                    "version": 2, "files": [{"path": "workflows/example.json", "sha256": hashlib.sha256(files["workflows/example.json"]).hexdigest()}],
+                }))
             # Redirect only the canonical fixture paths; execute the real main flow.
             source = UPDATER.read_text(encoding="utf-8-sig")
             source = source.replace('$OwnRepo = "L:\\GitHub\\DaWastehs-ComfyUI-Bundle"', "$OwnRepo = " + ps_string(own))
@@ -88,6 +100,8 @@ function Invoke-NativeCommand {
     }
 }
 '''.replace('__REAL_PYTHON__', ps_string(sys.executable))
+            if tamper_preserved:
+                overrides = overrides.replace("        & " + ps_string(sys.executable), "        Add-Content -LiteralPath (Join-Path $Repo 'user/default/workflows/DaWasteh/example.json') -Value 'tamper'\n        & " + ps_string(sys.executable))
             source = source.replace('if (!(Test-Path -LiteralPath $Repo))', overrides + '\nif (!(Test-Path -LiteralPath $Repo))', 1)
             fixture = root / "updater.ps1"
             fixture.write_text(source, encoding="utf-8-sig")
@@ -102,8 +116,13 @@ function Invoke-NativeCommand {
                 subprocess.run(["git", "-C", str(legacy), "remote", "set-url", "origin", "https://github.com/DaWasteh/DaWasteh-ComfyUI-Workflows.git"], capture_output=True, check=True)
             before = sorted(str(p.relative_to(install)) for p in install.rglob("*"))
             before_bytes = {str(p.relative_to(install)): p.read_bytes() for p in install.rglob("*") if p.is_file()}
-            proc = run_ps(f"$ErrorActionPreference='Stop'\n& {ps_string(fixture)} -ComfyUIRoot {ps_string(install)} {switches}\n", root)
-            self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+            invoke = f"& {ps_string(fixture)} -ComfyUIRoot {ps_string(install)} {switches}\n"
+            proc = run_ps("$ErrorActionPreference='Stop'\n" + invoke * (2 if repeat else 1), root)
+            if tamper_preserved:
+                self.assertNotEqual(proc.returncode, 0)
+                self.assertIn("Preserved local file changed during update", proc.stdout + proc.stderr)
+            else:
+                self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
             after = sorted(str(p.relative_to(install)) for p in install.rglob("*"))
             if "-DryRun" in switches:
                 self.assertFalse((root / "no-log").exists())
@@ -118,6 +137,12 @@ function Invoke-NativeCommand {
                 paths = {entry["path"] for entry in manifest["files"]}
                 self.assertIn("tools/start-MultiGPU.ps1", paths)
                 self.assertNotIn("tools/update-comfyui-rdna4.ps1", paths)
+                if personal_workflow and not tamper_preserved:
+                    target = install / "ComfyUI/user/default/workflows/DaWasteh/example.json"
+                    self.assertEqual(target.read_bytes(), b'{"user":"personal edit"}\n')
+                    entry = next(e for e in manifest["files"] if e["path"] == "workflows/example.json")
+                    self.assertEqual(entry["preserved_sha256"], hashlib.sha256(target.read_bytes()).hexdigest().upper())
+                    self.assertEqual(entry["sha256"], hashlib.sha256(files["workflows/example.json"]).hexdigest().upper())
             return proc.stdout, after
 
     def test_dry_run_first_install_has_no_persistent_writes_or_native_commands(self):
@@ -134,6 +159,14 @@ function Invoke-NativeCommand {
         stdout, _ = self.run_fixture("-SkipDependencies -SkipUpstream")
         self.assertNotIn("MOCK_NATIVE:-m|pip", stdout)
         self.assertNotIn("MOCK_PULL:", stdout)
+
+    def test_personal_workflow_is_preserved_validated_and_protected_on_next_run(self):
+        stdout, _ = self.run_fixture("-SkipUpstream -SkipDependencies", personal_workflow=True, repeat=True)
+        self.assertEqual(stdout.count("PRESERVED LOCAL (not synchronized to source commit)"), 2)
+        self.assertIn("NICHT synchronisiert", stdout)
+
+    def test_preserved_workflow_tampering_during_update_is_rejected(self):
+        self.run_fixture("-SkipUpstream -SkipDependencies", personal_workflow=True, tamper_preserved=True)
 
     def test_existing_release_launcher_is_adopted_without_force(self):
         stdout, after = self.run_fixture("-SkipDependencies -SkipUpstream", legacy_launcher=True)

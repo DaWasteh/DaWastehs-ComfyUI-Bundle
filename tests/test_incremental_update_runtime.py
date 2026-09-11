@@ -71,6 +71,7 @@ class IncrementalUpdateRuntimeTests(unittest.TestCase):
             $ReleaseVersion = "v1.1.3"
             $script:LogFile = $null
             $script:DeployedHashes = @{}
+            $script:PreservedFileHashes = @{}
             $script:PreviousManifestHashes = @{}
             $script:SkippedUserFiles = [System.Collections.Generic.List[string]]::new()
             $WorkflowMigrationMap = [ordered]@{}

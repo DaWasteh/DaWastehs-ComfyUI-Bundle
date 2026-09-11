@@ -119,6 +119,7 @@ $PreviousManifestFiles = [System.Collections.Generic.HashSet[string]]::new([Stri
 $AllDeployedFiles = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
 $DeploymentCommit = $null
 $script:DeployedHashes = @{}
+$script:PreservedFileHashes = @{}
 
 function Invoke-NativeCommand {
     param(
@@ -585,6 +586,7 @@ function Install-GitTrackedDirectory {
             if (!$Force -and ($unknownLauncher -or (Test-UserModifiedFile -TargetFile $targetFile -TrackedFile $trackedFile -CurrentHash $sourceHash))) {
                 Write-Log ("Uebersprungen (lokal veraendert): $targetFile") -Level "WARN"
                 [void]$script:SkippedUserFiles.Add($targetFile)
+                $script:PreservedFileHashes[$trackedFile] = Get-Sha256 -Path $targetFile
                 $skipped++
                 continue
             }
@@ -701,6 +703,10 @@ function Export-SyncManifest {
             $entry = [ordered]@{ path = $tracked }
             $hash = $script:DeployedHashes[$tracked]
             if (![string]::IsNullOrWhiteSpace($hash)) { $entry["sha256"] = $hash }
+            # sha256 remains the expected source hash, not a new permission to
+            # overwrite a user's edit on the next run. Record retained bytes separately.
+            $preserved = $script:PreservedFileHashes[$tracked]
+            if ($preserved) { $entry["preserved_sha256"] = $preserved }
             $fileEntries += [pscustomobject]$entry
         }
         $manifest = [ordered]@{
@@ -1138,11 +1144,17 @@ if not isinstance(manifest_files, list):
     raise SystemExit("Deployment manifest does not match the Git-tracked source file set")
 # Manifest v1 fuehrt reine Pfade, v2 Objekte mit path + sha256.
 manifest_paths = set()
+preserved_hashes = {}
 for item in manifest_files:
     if isinstance(item, str):
         manifest_paths.add(item)
     elif isinstance(item, dict) and isinstance(item.get("path"), str):
         manifest_paths.add(item["path"])
+        if "preserved_sha256" in item:
+            value = item["preserved_sha256"]
+            if not isinstance(value, str) or len(value) != 64 or any(c not in "0123456789abcdefABCDEF" for c in value):
+                raise SystemExit("Invalid preserved-file hash in deployment manifest")
+            preserved_hashes[item["path"]] = value.upper()
     else:
         raise SystemExit("Deployment manifest has an unreadable file entry")
 if manifest_paths != set(tracked):
@@ -1170,7 +1182,12 @@ for relative in tracked:
         )
     if not target.is_file():
         raise SystemExit(f"Deployed file is missing: {target}")
-    if hashlib.sha256(committed_bytes).digest() != hashlib.sha256(target.read_bytes()).digest():
+    target_hash = hashlib.sha256(target.read_bytes()).hexdigest().upper()
+    if relative in preserved_hashes:
+        if target_hash != preserved_hashes[relative]:
+            raise SystemExit(f"Preserved local file changed during update: {target}")
+        print(f"PRESERVED LOCAL (not synchronized to source commit): {target}")
+    elif hashlib.sha256(committed_bytes).hexdigest().upper() != target_hash:
         raise SystemExit(f"Deployed file differs from committed Git blob {source_commit}: {target}")
 
 workflow_files = sorted(workflows.rglob("*.json"))
@@ -1187,7 +1204,8 @@ for node_root in node_roots:
         python_files.append(path)
 
 print(
-    f"Validated {len(tracked)} deployed Git files, {len(workflow_files)} workflow JSON files, "
+    f"Validated {len(tracked)} tracked paths ({len(preserved_hashes)} explicitly preserved local files), "
+    f"{len(workflow_files)} workflow JSON files, "
     f"and {len(python_files)} Python files in {len(node_roots)} custom-node packs"
 )
 '@
@@ -1232,6 +1250,11 @@ else {
                     else { "ComfyUI-Core und fremde Node-Packs blieben unveraendert (-SkipUpstream)." }
     $depsNote = if ($UpdateDependencies) { "pip/torch/requirements wurden aktualisiert." }
                 else { "Python-Umgebung blieb unveraendert (-SkipDependencies)." }
-    Write-Log "Update fertig. Geaenderte Workflows und eigene Custom Nodes wurden aus $OwnRepo synchronisiert; $upstreamNote $depsNote" -Color Green
+    if ($script:SkippedUserFiles.Count -gt 0) {
+        Write-Log "Update mit erhaltenen lokalen Anpassungen fertig: $($script:SkippedUserFiles.Count) Datei(en) NICHT synchronisiert; siehe Warnungen und Manifest. $upstreamNote $depsNote" -Level "WARN"
+    }
+    else {
+        Write-Log "Update fertig. Geaenderte Workflows und eigene Custom Nodes wurden aus $OwnRepo synchronisiert; $upstreamNote $depsNote" -Color Green
+    }
 }
 Write-Log "Logdatei: $($script:LogFile)" -Color DarkGray
