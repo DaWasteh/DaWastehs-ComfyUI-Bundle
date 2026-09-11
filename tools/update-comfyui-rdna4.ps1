@@ -18,7 +18,8 @@
     von HEAD erreichbare Tag des Bundle-Checkouts verwendet.
 
 .PARAMETER DryRun
-    Trockenlauf: zeigt jede Aktion an, schreibt und loescht aber nichts.
+    Trockenlauf: zeigt Aktionen ohne persistente Aenderungen an. Kurzlebige Git-Blob-Dateien
+    in TEMP werden nach der Inhaltspruefung entfernt; es wird kein Update-Log geschrieben.
 
 .PARAMETER LogPath
     Logdatei. Standard: <ComfyUIRoot>\logs\update-<Zeitstempel>.log
@@ -30,8 +31,8 @@
     ComfyUI-Core, Pixaroma und Spectrum NICHT aktualisieren (Standard: werden aktualisiert).
 
 .PARAMETER SkipDependencies
-    pip/torch/requirements NICHT aktualisieren (Standard: werden aktualisiert). Die Qwen3-TTS-
-    und DirectML-Pins werden trotzdem angewendet.
+    Python-Umgebung NICHT veraendern: auch Qwen3-TTS- und DirectML-Pins sowie pip-Uninstall
+    werden ausgelassen (Standard: Abhaengigkeiten werden aktualisiert).
 
 .PARAMETER Force
     Ueberschreibt auch Dateien, die seit dem letzten Lauf lokal veraendert wurden.
@@ -154,15 +155,17 @@ function Assert-ComfyServersStopped {
     # A launcher can be active for a while before ComfyUI binds its port (Torch
     # probe, imports, custom-node initialization). Detect that startup window as
     # well, otherwise the updater could replace files in an already running venv.
+    $normalizedRoot = [IO.Path]::GetFullPath($Root).TrimEnd('\', '/').ToLowerInvariant().Replace('/', '\')
     $activeLaunchers = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
         if ($_.Name -notin @("python.exe", "pythonw.exe", "powershell.exe", "pwsh.exe")) {
             return $false
         }
         $command = ([string]$_.CommandLine).ToLowerInvariant().Replace('/', '\')
-        return $command -like "*l:\comfyui\start-r9700.ps1*" -or
-            $command -like "*l:\comfyui\start-9070xt.ps1*" -or
-            $command -like "*l:\comfyui\scripts\windows_comfy_launcher.py*" -or
-            $command -like "*l:\comfyui\comfyui\main.py*"
+        return $command.Contains("$normalizedRoot\start-r9700.ps1") -or
+            $command.Contains("$normalizedRoot\start-9070xt.ps1") -or
+            $command.Contains("$normalizedRoot\start-multigpu.ps1") -or
+            $command.Contains("$normalizedRoot\scripts\windows_comfy_launcher.py") -or
+            $command.Contains("$normalizedRoot\comfyui\main.py")
     }
     if ($null -ne $activeLaunchers) {
         $details = ($activeLaunchers | ForEach-Object { "PID $($_.ProcessId) $($_.Name): $($_.CommandLine)" }) -join "`n"
@@ -285,6 +288,10 @@ function Remove-LegacyOwnRepository {
         return
     }
 
+    if ($DryRun) {
+        Write-DryRun "wuerde den alten, sauberen Update-Klon entfernen: $LegacyOwnRepo"
+        return
+    }
     Remove-Item -LiteralPath $LegacyOwnRepo -Recurse -Force
     Write-Host "Alten, sauberen Update-Klon entfernt: $LegacyOwnRepo" -ForegroundColor Yellow
 }
@@ -304,6 +311,31 @@ function Get-GitBlobId {
         throw "Ungueltige Git-Blob-ID fuer ${TrackedFile}: $blob"
     }
     return $blob
+}
+
+function Test-KnownLauncherContent {
+    param([string] $TrackedFile, [string] $TargetFile)
+
+    # Older updater manifests did not include launchers. Recognize only exact
+    # historical source content (allow Windows CRLF/BOM), never arbitrary edits.
+    $installedText = [IO.File]::ReadAllText($TargetFile).Replace("`r`n", "`n")
+    $commits = @(& git -C $OwnRepo log '--format=%H' '--diff-filter=AM' $DeploymentCommit -- $TrackedFile)
+    if ($LASTEXITCODE -ne 0) { throw "Launcher-Historie konnte nicht gelesen werden: $TrackedFile" }
+    $temporary = [IO.Path]::GetTempFileName()
+    try {
+        foreach ($commit in $commits) {
+            $blob = & git -C $OwnRepo rev-parse --verify "${commit}:$TrackedFile"
+            if ($LASTEXITCODE -ne 0) { throw "Launcher-Blob fehlt: ${commit}:$TrackedFile" }
+            Export-GitBlob -BlobId $blob.Trim() -Destination $temporary
+            if ($installedText -ceq [IO.File]::ReadAllText($temporary).Replace("`r`n", "`n")) {
+                return $true
+            }
+        }
+        return $false
+    }
+    finally {
+        Remove-Item -LiteralPath $temporary -Force -ErrorAction SilentlyContinue
+    }
 }
 
 function Export-GitBlob {
@@ -489,10 +521,13 @@ function Install-GitTrackedDirectory {
     param(
         [Parameter(Mandatory = $true)][string] $RelativeSource,
         [Parameter(Mandatory = $true)][string] $Target,
-        [Parameter(Mandatory = $true)][string] $BackupGroup
+        [Parameter(Mandatory = $true)][string] $BackupGroup,
+        [string[]] $IncludeFiles = @()
     )
 
-    $trackedFiles = @(& git -C $OwnRepo ls-tree -r --name-only $DeploymentCommit -- $RelativeSource)
+    # Explicit allowlist for tools: never copy the complete tools tree to the runtime root.
+    [string[]] $sourcePaths = if ($IncludeFiles.Count -gt 0) { $IncludeFiles } else { @($RelativeSource) }
+    $trackedFiles = @(& git -C $OwnRepo ls-tree -r --name-only $DeploymentCommit -- @sourcePaths)
     if ($LASTEXITCODE -ne 0) {
         throw "git ls-tree fehlgeschlagen fuer $RelativeSource bei Commit $DeploymentCommit"
     }
@@ -501,7 +536,7 @@ function Install-GitTrackedDirectory {
     }
 
     Assert-NoReparsePoints -TargetRoot $Target -Candidate (Join-Path $Target ".dawasteh-sync-preflight")
-    New-Item -ItemType Directory -Path $Target -Force | Out-Null
+    if (-not $DryRun) { New-Item -ItemType Directory -Path $Target -Force | Out-Null }
     $prefix = ($RelativeSource.TrimEnd('/', '\') + "/")
     $currentFiles = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
     $changed = 0
@@ -538,8 +573,16 @@ function Install-GitTrackedDirectory {
                 continue
             }
 
-            # v1.1.3: persoenlich veraenderte Dateien nicht ungefragt ueberschreiben.
-            if (!$Force -and (Test-UserModifiedFile -TargetFile $targetFile -TrackedFile $trackedFile -CurrentHash $sourceHash)) {
+            # When first adopting a launcher, no manifest hash proves that an
+            # existing different file is unmodified. Preserve it unless -Force.
+            $unknownLauncher = $IncludeFiles.Count -gt 0 -and
+                (Test-Path -LiteralPath $targetFile -PathType Leaf) -and
+                [string]::IsNullOrWhiteSpace($script:PreviousManifestHashes[$trackedFile])
+            if ($unknownLauncher -and (Test-KnownLauncherContent -TrackedFile $trackedFile -TargetFile $targetFile)) {
+                $script:PreviousManifestHashes[$trackedFile] = Get-Sha256 -Path $targetFile
+                $unknownLauncher = $false
+            }
+            if (!$Force -and ($unknownLauncher -or (Test-UserModifiedFile -TargetFile $targetFile -TrackedFile $trackedFile -CurrentHash $sourceHash))) {
                 Write-Log ("Uebersprungen (lokal veraendert): $targetFile") -Level "WARN"
                 [void]$script:SkippedUserFiles.Add($targetFile)
                 $skipped++
@@ -563,6 +606,7 @@ function Install-GitTrackedDirectory {
     }
 
     foreach ($previousFile in $PreviousManifestFiles) {
+        if ($IncludeFiles.Count -gt 0 -and $previousFile -notin $IncludeFiles) { continue }
         if (!$previousFile.StartsWith($prefix, [StringComparison]::Ordinal) -or $currentFiles.Contains($previousFile)) {
             continue
         }
@@ -694,6 +738,10 @@ $script:SkippedUserFiles = [System.Collections.Generic.List[string]]::new()
 $script:PreviousManifestHashes = @{}
 
 function Initialize-UpdateLog {
+    if ($DryRun) {
+        $script:LogFile = $null
+        return
+    }
     if ([string]::IsNullOrWhiteSpace($LogPath)) {
         $logDir = Join-Path $Root "logs"
         $script:LogFile = Join-Path $logDir ("update-{0}.log" -f (Get-Date -Format "yyyyMMdd-HHmmss"))
@@ -701,7 +749,9 @@ function Initialize-UpdateLog {
     else {
         $script:LogFile = $LogPath
     }
+    $script:LogFile = [IO.Path]::GetFullPath($script:LogFile)
     $parent = Split-Path -Parent $script:LogFile
+    Assert-NoReparsePoints -TargetRoot $parent -Candidate $script:LogFile
     if ($parent -and !(Test-Path -LiteralPath $parent)) {
         New-Item -ItemType Directory -Path $parent -Force | Out-Null
     }
@@ -893,8 +943,13 @@ if ($DryRun) {
     Write-DryRun "wuerde das Bundle-Repository aktualisieren: $OwnRepo"
 }
 else {
-    & git -C $OwnRepo rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null | Out-Null
-    if ($LASTEXITCODE -eq 0) {
+    # Query without expected stderr: PS 5.1 + Stop treats native stderr as fatal,
+    # even with 2>$null (e.g. a local release branch without an upstream).
+    $branchRef = & git -C $OwnRepo rev-parse --symbolic-full-name HEAD
+    if ($LASTEXITCODE -ne 0) { throw "Bundle-Branch konnte nicht gelesen werden." }
+    $upstreamRef = & git -C $OwnRepo for-each-ref '--format=%(upstream)' $branchRef
+    if ($LASTEXITCODE -ne 0) { throw "Bundle-Upstream konnte nicht gelesen werden." }
+    if (![string]::IsNullOrWhiteSpace($upstreamRef)) {
         Update-GitRepository $OwnRepo
     }
     else {
@@ -928,6 +983,12 @@ foreach ($nodeName in $CustomNodeNames) {
         $ChangedCustomNodeNames.Add($nodeName)
     }
 }
+# v1.1.7: start scripts use the same commit/hash/backup/local-edit protection as nodes.
+$launcherSync = Install-GitTrackedDirectory `
+    -RelativeSource "tools" `
+    -Target $Root `
+    -BackupGroup "launchers" `
+    -IncludeFiles @("tools/start-MultiGPU.ps1", "tools/start-MultiGPU.bat")
 Report-WorkflowMigration
 if ($DryRun) { Write-DryRun "wuerde das Sync-Manifest schreiben: $SyncManifestPath" } else { Export-SyncManifest }
 
@@ -976,24 +1037,27 @@ else {
     Invoke-NativeCommand $PythonExe "-m" "pip" "install" "-r" (Join-Path $Repo "manager_requirements.txt")
 }
 
-foreach ($nodeName in ($(if ($UpdateDependencies -and -not $DryRun) { $ChangedCustomNodeNames } else { @() }))) {
+# Re-check all owned requirements without --upgrade. A previous skipped/failed
+# dependency run may already have synced the node files; changed-files-only
+# would then skip the missing dependencies forever on subsequent runs.
+foreach ($nodeName in ($(if ($UpdateDependencies -and -not $DryRun) { $CustomNodeNames } else { @() }))) {
     $nodeRequirements = Join-Path $Repo "custom_nodes\$nodeName\requirements.txt"
     if (Test-Path -LiteralPath $nodeRequirements) {
         Invoke-NativeCommand $PythonExe "-m" "pip" "install" "-r" $nodeRequirements
     }
 }
-if ($ChangedCustomNodeNames.Count -eq 0) {
-    Write-Host "Keine eigenen Custom Nodes geaendert; deren requirements werden uebersprungen." -ForegroundColor DarkGreen
-}
-elseif (-not $UpdateDependencies) {
+if (-not $UpdateDependencies -and $ChangedCustomNodeNames.Count -gt 0) {
     Write-Log ("requirements der geaenderten eigenen Custom Nodes werden wegen -SkipDependencies " +
                "nicht installiert: " + ($ChangedCustomNodeNames -join ", ")) -Level "WARN"
 }
 
 # Apply these pins last because several Qwen3-TTS node packs otherwise upgrade
 # transformers/huggingface-hub to mutually incompatible versions.
-# v1.1.3: Beide Pins veraendern die Umgebung und laufen deshalb nicht im Trockenlauf.
-if ($DryRun) {
+# Both switches must also cover the last-writer compatibility pins.
+if (-not $UpdateDependencies) {
+    Write-Log "Qwen3-TTS- und DirectML-Pins bleiben unveraendert (-SkipDependencies)." -Color DarkGray
+}
+elseif ($DryRun) {
     Write-DryRun "wuerde die Qwen3-TTS-Pins und den DirectML-ONNX-Runtime-Pin anwenden"
 }
 else {
@@ -1030,6 +1094,14 @@ Write-Host "============================================================" -Foreg
 Write-Host "Validierung" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor DarkCyan
 
+# A dry run has not deployed a manifest. Validating the old installation here
+# can fail on a first install or on precisely the stale files the update would fix.
+if ($DryRun) {
+    Write-DryRun "wuerde Commit-Identitaet, Workflow-/Node-Dateien und Torch/ROCm nach dem Update validieren"
+    Write-Log "Trockenlauf fertig. Keine persistenten Aenderungen oder Paketinstallationen." -Color Green
+    return
+}
+
 $ValidationScript = @'
 from __future__ import annotations
 import ast
@@ -1048,7 +1120,8 @@ node_roots = [repo / "custom_nodes" / name for name in node_names]
 if not node_roots:
     raise SystemExit("No custom-node packs were supplied for validation")
 
-tracked_roots = ["workflows", *(f"custom_nodes/{name}" for name in node_names)]
+launcher_paths = {"tools/start-MultiGPU.ps1", "tools/start-MultiGPU.bat"}
+tracked_roots = ["workflows", *(f"custom_nodes/{name}" for name in node_names), *sorted(launcher_paths)]
 manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
 source_commit = manifest.get("source_commit")
 if not isinstance(source_commit, str) or not source_commit:
@@ -1083,6 +1156,8 @@ for relative in tracked:
     ).stdout
     if relative.startswith("workflows/"):
         target = workflows / Path(relative.removeprefix("workflows/"))
+    elif relative in launcher_paths:
+        target = repo.parent / Path(relative).name
     else:
         matching_name = next(
             (name for name in node_names if relative.startswith(f"custom_nodes/{name}/")),

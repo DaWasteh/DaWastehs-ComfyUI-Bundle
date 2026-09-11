@@ -35,6 +35,7 @@ class IncrementalUpdateRuntimeTests(unittest.TestCase):
 
             $functionNames = @(
                 "Get-GitBlobId",
+                "Test-KnownLauncherContent",
                 "Export-GitBlob",
                 "Get-Sha256",
                 "Assert-NoReparsePoints",
@@ -266,6 +267,40 @@ class IncrementalUpdateRuntimeTests(unittest.TestCase):
             Update-InstalledUpdater
             if ((Get-Content -LiteralPath $installedUpdater -Raw) -notmatch "committed updater") {
                 throw "Installed PowerShell updater was not refreshed from the committed blob."
+            }
+            # v1.1.7: allowlisted launcher sync, first-adoption/local-edit protection,
+            # backups and idempotence. Unrelated tools (including the active BAT) stay out.
+            $launcher = Join-Path $Root "start-MultiGPU.ps1"
+            $launcherBat = Join-Path $Root "start-MultiGPU.bat"
+            Set-Content (Join-Path $OwnRepo "tools\start-MultiGPU.ps1") "launcher v1"
+            Set-Content (Join-Path $OwnRepo "tools\start-MultiGPU.bat") "launcher bat"
+            Set-Content (Join-Path $OwnRepo "tools\unrelated.py") "not deployed"
+            & git -C $OwnRepo add -- tools
+            & git -C $OwnRepo -c user.name=UpdaterTest -c user.email=updater@test.invalid commit --quiet -m launchers
+            if ($LASTEXITCODE -ne 0) { throw "launcher commit failed" }
+            $DeploymentCommit = (& git -C $OwnRepo rev-parse HEAD).Trim()
+            $allowlist = @("tools/start-MultiGPU.ps1", "tools/start-MultiGPU.bat")
+            Set-Content $launcher "personal launcher"
+            $adopt = Install-GitTrackedDirectory "tools" $Root "launchers" -IncludeFiles $allowlist
+            if ($adopt.Changed -ne 1 -or (Get-Content $launcher -Raw) -notmatch "personal") {
+                throw "First-adoption local launcher was overwritten"
+            }
+            if ((Test-Path (Join-Path $Root "unrelated.py")) -or !(Test-Path $launcherBat)) {
+                throw "Launcher allowlist not respected"
+            }
+            $Force = $true
+            $forced = Install-GitTrackedDirectory "tools" $Root "launchers" -IncludeFiles $allowlist
+            $Force = $false
+            if ($forced.Changed -ne 1 -or !(Test-Path (Join-Path $BackupRoot "launchers\start-MultiGPU.ps1"))) {
+                throw "Explicit launcher replacement was not backed up"
+            }
+            $again = Install-GitTrackedDirectory "tools" $Root "launchers" -IncludeFiles $allowlist
+            if ($again.HasChanges) { throw "Launcher update is not idempotent" }
+            $script:PreviousManifestHashes["tools/start-MultiGPU.ps1"] = Get-Sha256 $launcher
+            Set-Content $launcher "personal launcher again"
+            $protected = Install-GitTrackedDirectory "tools" $Root "launchers" -IncludeFiles $allowlist
+            if ($protected.HasChanges -or (Get-Content $launcher -Raw) -notmatch "personal") {
+                throw "Manifested local launcher modification was overwritten"
             }
             "Incremental updater runtime checks passed"
             """

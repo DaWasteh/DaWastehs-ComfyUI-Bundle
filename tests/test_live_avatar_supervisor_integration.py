@@ -35,6 +35,9 @@ class H(BaseHTTPRequestHandler):
   if not self.authorized():return
   self.reply(health)
  def do_POST(self):
+  # Drain the tiny fixture body before closing on 401/403; otherwise Windows
+  # can reset the connection and hide the status from Invoke-WebRequest.
+  self.rfile.read(int(self.headers.get('Content-Length', '0')))
   if not self.authorized():return
   self.reply({'accepted':True})
   if self.path.endswith('/shutdown'):threading.Thread(target=self.server.shutdown,daemon=True).start()

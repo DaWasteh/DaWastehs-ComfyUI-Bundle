@@ -52,7 +52,7 @@ class IncrementalUpdateScriptTests(unittest.TestCase):
     def test_deploys_only_a_clean_head_and_validates_hash_parity(self) -> None:
         self.assertGreaterEqual(self.source.count("Assert-CleanOwnRepository"), 3)
         self.assertIn("Deployment manifest does not match the Git-tracked source file set", self.source)
-        self.assertIn("ls-tree -r --name-only $DeploymentCommit", self.source)
+        self.assertIn("ls-tree -r --name-only $DeploymentCommit -- @sourcePaths", self.source)
         self.assertIn("git cat-file fehlgeschlagen", self.source)
         self.assertIn("Deployed file differs from committed Git blob", self.source)
 

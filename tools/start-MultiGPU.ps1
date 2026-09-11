@@ -24,9 +24,26 @@
 #   before switching $EnableDynamicVram on.
 # ============================================================
 
+[CmdletBinding()]
+param(
+    # Validate the configured flags and HIP devices without starting a server.
+    [switch] $CheckOnly,
+    [string] $ComfyUIRoot = ""
+)
+
 $ErrorActionPreference = "Stop"
 
-$Root = "L:\ComfyUI"
+# Installed copies follow their installation, including custom updater roots.
+# Direct invocation from the source repository retains the machine default.
+$Root = $ComfyUIRoot
+if ([string]::IsNullOrWhiteSpace($Root)) {
+    $Root = $PSScriptRoot
+    if ((Split-Path -Leaf $PSScriptRoot) -eq "tools" -and
+        (Test-Path -LiteralPath (Join-Path (Split-Path -Parent $PSScriptRoot) ".git"))) {
+        $Root = "L:\ComfyUI"
+    }
+}
+$Root = [IO.Path]::GetFullPath($Root)
 $ComfyPath = Join-Path $Root "ComfyUI"
 $PythonExe = Join-Path $Root ".venv\Scripts\python.exe"
 $Launcher = Join-Path $Root "scripts\windows_comfy_launcher.py"
@@ -56,17 +73,17 @@ $VramGuard = $true                 # v1.1.2: per-process HIP allocator cap (DaWa
                                    # from TrainLoraNode). The cap turns that into a normal OOM error.
 $VramGuardReserveGib = 3           # VRAM left untouched per device (driver starts spilling ~2 GiB early)
 
-if (!(Test-Path $ComfyPath)) { throw "ComfyUI folder not found: $ComfyPath" }
-if (!(Test-Path $PythonExe)) { throw "Python venv not found: $PythonExe" }
-if (!(Test-Path $Launcher)) { throw "Windows launcher not found: $Launcher" }
+if (!(Test-Path -LiteralPath $ComfyPath)) { throw "ComfyUI folder not found: $ComfyPath" }
+if (!(Test-Path -LiteralPath $PythonExe)) { throw "Python venv not found: $PythonExe" }
+if (!(Test-Path -LiteralPath $Launcher)) { throw "Windows launcher not found: $Launcher" }
 
 $Listener = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue
-if ($Listener) {
+if ($Listener -and -not $CheckOnly) {
     $Pids = ($Listener | Select-Object -ExpandProperty OwningProcess -Unique) -join ", "
     throw "Port $Port is already in use (PID: $Pids). Stop the existing 8188 instance first."
 }
 
-Set-Location $ComfyPath
+Set-Location -LiteralPath $ComfyPath
 
 Remove-Item Env:HSA_OVERRIDE_GFX_VERSION -ErrorAction SilentlyContinue
 Remove-Item Env:PYTORCH_TUNABLEOP_ENABLED -ErrorAction SilentlyContinue
@@ -115,7 +132,7 @@ if ($DebugHipLaunchBlocking) {
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "ComfyUI Dual-GPU Start Profile v0.9.8" -ForegroundColor Cyan
+Write-Host "ComfyUI Dual-GPU Launcher v1.1.7 (performance profile v0.9.8)" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor DarkCyan
 Write-Host "ComfyUI: $ComfyPath"
 Write-Host "Port:    $Port"
@@ -129,14 +146,6 @@ Write-Host "BLAS:    hipBLASLt=$PreferHipBlasLt"
 Write-Host "Opt-in:  ck-attention=$UseComfyKitchenAttention, fp8_matrix_mult=$FastFp8MatrixMult"
 Write-Host "Guard:   VRAM guard=$VramGuard (reserve $VramGuardReserveGib GiB per GPU, DAWASTEH_VRAM_GUARD)"
 Write-Host ""
-
-$GpuCheck = "import torch; names=[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]; print('torch:', torch.__version__); print('cuda available:', torch.cuda.is_available()); print('device count:', len(names)); [print(f'gpu:{i} = {name}') for i, name in enumerate(names)]; assert len(names) == 2, f'Expected exactly two visible HIP GPUs, found {len(names)}'; assert 'R9700' in names[0] and '9070 XT' in names[1], f'Unexpected HIP order: {names!r}'"
-& $PythonExe -c $GpuCheck
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "Torch/GPU preflight failed." -ForegroundColor Red
-    pause
-    exit $LASTEXITCODE
-}
 
 $ComfyArgs = @(
     "main.py",
@@ -180,6 +189,21 @@ if ($FastFp8MatrixMult) {
 }
 
 Write-Host "Args:    $($ComfyArgs -join ' ')" -ForegroundColor DarkGray
+
+# Fail before loading Torch/custom nodes when an upstream update removes a flag
+# or makes a configured pair mutually exclusive. Do not silently drop safety flags.
+$CliArgs = @($ComfyArgs | Select-Object -Skip 1)
+& $PythonExe -B -c "from comfy.cli_args import parser; parser.parse_args()" @CliArgs
+if ($LASTEXITCODE -ne 0) { throw "ComfyUI CLI preflight failed (exit $LASTEXITCODE). No server started." }
+
+$GpuCheck = "import torch; names=[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]; print('torch:', torch.__version__, 'HIP:', torch.version.hip); print('device count:', len(names)); [print(f'gpu:{i} = {name}') for i, name in enumerate(names)]; assert torch.version.hip and torch.cuda.is_available(), 'Expected working ROCm/HIP PyTorch'; assert len(names) == 2, f'Expected exactly two visible HIP GPUs, found {len(names)}'; assert 'R9700' in names[0] and '9070 XT' in names[1], f'Unexpected HIP order: {names!r}'"
+& $PythonExe -B -c $GpuCheck
+if ($LASTEXITCODE -ne 0) { throw "Torch/GPU preflight failed (exit $LASTEXITCODE). No server started." }
+if ($CheckOnly) {
+    Write-Host "CLI and GPU preflight passed. CheckOnly: no server started." -ForegroundColor Green
+    return
+}
+
 Write-Host "Press Ctrl+C once to stop ComfyUI." -ForegroundColor Green
 & $PythonExe $Launcher --python $PythonExe --working-directory $ComfyPath -- @ComfyArgs
 $ExitCode = $LASTEXITCODE
