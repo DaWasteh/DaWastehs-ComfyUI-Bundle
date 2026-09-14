@@ -1,4 +1,5 @@
 """CPU-only, conservative single-convex collision proxies (no neural physics)."""
+
 from __future__ import annotations
 
 import itertools
@@ -46,20 +47,38 @@ def collision_proxy(vertices, mode="convex_hull", max_vertices=128, margin=0.002
         proxy = np.array(list(itertools.product(*zip(lo - margin, hi + margin))))
     hull = ConvexHull(proxy)
     faces = hull.simplices.copy()
-    normal = np.cross(proxy[faces[:, 1]] - proxy[faces[:, 0]], proxy[faces[:, 2]] - proxy[faces[:, 0]])
+    normal = np.cross(
+        proxy[faces[:, 1]] - proxy[faces[:, 0]], proxy[faces[:, 2]] - proxy[faces[:, 0]]
+    )
     flip = (normal * hull.equations[:, :3]).sum(1) < 0
     faces[flip] = faces[flip][:, [0, 2, 1]]
     # Chunked containment check: bounded RAM even for dense input meshes.
     tolerance = max(1e-7, float(span.max()) * 1e-6)
     for start in range(0, len(points), 4096):
-        if np.max(points[start:start + 4096] @ hull.equations[:, :3].T + hull.equations[:, 3]) > tolerance:
+        if (
+            np.max(
+                points[start : start + 4096] @ hull.equations[:, :3].T
+                + hull.equations[:, 3]
+            )
+            > tolerance
+        ):
             raise ValueError("Collision proxy failed source-containment check")
-    return proxy.astype(np.float32), faces.astype(np.int64), {
-        "requested_mode": mode, "actual_mode": "box" if mode == "box" or reason else "convex_hull",
-        "fallback_reason": reason, "source_vertices": len(points), "vertices": len(proxy),
-        "triangles": len(faces), "volume": float(hull.volume), "margin_mesh_units": margin,
-        "contains_source": True, "limitation": "One solid convex collider; fills holes, doors and concavities. No rig, joints or decomposition.",
-    }
+    return (
+        proxy.astype(np.float32),
+        faces.astype(np.int64),
+        {
+            "requested_mode": mode,
+            "actual_mode": "box" if mode == "box" or reason else "convex_hull",
+            "fallback_reason": reason,
+            "source_vertices": len(points),
+            "vertices": len(proxy),
+            "triangles": len(faces),
+            "volume": float(hull.volume),
+            "margin_mesh_units": margin,
+            "contains_source": True,
+            "limitation": "One solid convex collider; fills holes, doors and concavities. No rig, joints or decomposition.",
+        },
+    )
 
 
 def godot_scene(points, body_type="StaticBody3D", mass=1.0):
@@ -70,9 +89,9 @@ def godot_scene(points, body_type="StaticBody3D", mass=1.0):
     values = ", ".join(format(float(x), ".9g") for x in np.asarray(points).reshape(-1))
     mass_line = f"mass = {mass:.9g}\n" if body_type == "RigidBody3D" else ""
     return (
-        '[gd_scene load_steps=2 format=3]\n\n'
+        "[gd_scene load_steps=2 format=3]\n\n"
         '[sub_resource type="ConvexPolygonShape3D" id="Shape_collision"]\n'
-        f'points = PackedVector3Array({values})\n\n'
+        f"points = PackedVector3Array({values})\n\n"
         f'[node name="DaWastehCollision" type="{body_type}"]\n{mass_line}\n'
         '[node name="CollisionShape3D" type="CollisionShape3D" parent="."]\n'
         'shape = SubResource("Shape_collision")\n'

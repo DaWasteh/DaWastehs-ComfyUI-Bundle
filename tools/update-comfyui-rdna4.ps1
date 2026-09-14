@@ -94,6 +94,7 @@ $WorkflowTarget = Join-Path $Repo "user\default\workflows\DaWasteh"
 $SyncManifestPath = Join-Path $Root "config\dawasteh-bundle-sync-manifest.json"
 $CustomNodeNames = @(
     "ComfyUI-DaWasteh-AutoSongwriter",
+    "ComfyUI-DaWasteh-GamePhysics",
     "ComfyUI-DaWasteh-H3-AutoLength",
     "ComfyUI-DaWasteh-H3-MusicVideo",
     "ComfyUI-DaWasteh-LiveAvatar",

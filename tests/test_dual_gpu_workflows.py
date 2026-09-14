@@ -46,8 +46,8 @@ def paths() -> list[Path]:
 
 class DualGPUWorkflowTests(unittest.TestCase):
     def test_collection_has_one_central_control_per_workflow(self):
-        # v1.1.3: 3 General-Prompt-Enhancer -> 1, Ref2VA-Dublette entfernt (234 -> 231)
-        self.assertEqual(len(paths()), 231)
+        # v1.1.8: 13 model workflows added to the 231-file v1.1.3 collection.
+        self.assertEqual(len(paths()), 244)
         for path in paths():
             with self.subTest(path=path.relative_to(ROOT)):
                 workflow = json.loads(path.read_text(encoding="utf-8"))
@@ -76,8 +76,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 counts["all_r9700"] += 1
             self.assertEqual(defaults, expected, key)
             self.assertEqual(control["widgets_values"], [expected["MODEL"], expected["CLIP"], expected["VAE"]], key)
-        # v1.1.3: 3 Enhancer -> 1 (all_r9700 -2), Ref2VA-Dublette entfernt (curated_split -1)
-        self.assertEqual(counts, {"all_r9700": 200, "curated_split": 31})
+        # v1.1.8 adds 13 R9700 defaults; existing curated assignments stay intact.
+        self.assertEqual(counts, {"all_r9700": 213, "curated_split": 31})
 
     def test_every_selector_is_driven_by_the_root_control_or_subgraph_interface(self):
         selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
@@ -148,6 +148,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
         expected.update(f"workflows/{target.path}" for target in V093_TARGET_WORKFLOWS)
         expected.update(f"workflows/{target}" for target in v095_addition_sources())
         expected.update(f"workflows/{key}" for key in V113_ADDED_PATHS)
+        from tools.build_workflows_v118 import build_all, SCHEMAS
+        expected.update(f"workflows/{key}" for key in build_all(json.loads(SCHEMAS.read_text(encoding="utf-8"))))
         actual = {path.relative_to(ROOT).as_posix() for path in paths()}
         self.assertEqual(actual, expected)
 

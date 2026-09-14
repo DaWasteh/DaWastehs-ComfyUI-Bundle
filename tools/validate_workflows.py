@@ -754,6 +754,15 @@ def main() -> int:
     BASELINE_REF = args.baseline_ref
     paths = sorted(args.workflows.rglob("*.json"))
     errors: list[str] = []
+    v118_additions = {}
+    if args.against_head:
+        # Import lazily so historical validators and pure graph tests do not
+        # acquire a generator dependency unless checking collection migration.
+        try:
+            from tools.build_workflows_v118 import build_all as build_v118, SCHEMAS as V118_SCHEMAS
+        except ModuleNotFoundError:
+            from build_workflows_v118 import build_all as build_v118, SCHEMAS as V118_SCHEMAS
+        v118_additions = build_v118(json.loads(V118_SCHEMAS.read_text(encoding="utf-8")))
     if args.against_head and not args.skip_collection_totals:
         baseline_paths = git_baseline_workflow_paths()
         expected_paths = {
@@ -767,6 +776,7 @@ def main() -> int:
         expected_paths.update(f"workflows/{target.path}" for target in V093_TARGET_WORKFLOWS)
         expected_paths.update(f"workflows/{target}" for target in v095_addition_sources())
         expected_paths.update(f"workflows/{key}" for key in V113_ADDED_PATHS)
+        expected_paths.update(f"workflows/{key}" for key in v118_additions)
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
@@ -822,7 +832,10 @@ def main() -> int:
                 key = _path_key(path).removeprefix("workflows/")
                 addition = next((item for item in ADDITIONS if item.path == key), None)
                 autosongwriter = next((item for item in V093_TARGET_WORKFLOWS if item.path == key), None)
-                if addition is not None:
+                if key in v118_additions:
+                    if v118_additions[key] != workflow:
+                        errors.append(f"{path}: differs from deterministic v1.1.8 model workflow")
+                elif addition is not None:
                     expected = migrate_workflow(build_addition(addition), key)
                     if expected != workflow:
                         errors.append(f"{path}: differs from deterministic pinned-template addition")
@@ -866,9 +879,8 @@ def main() -> int:
                 errors.extend(path_errors)
         else:
             errors.extend(path_errors)
-    # v1.1.3: -3 Dateien (3 General-Prompt-Enhancer -> 1, Ref2VA-Dublette entfernt), also
-    # -3 Graphen/-53 Notizen/-68 Links/-3 Timer und -118 Knoten gegenueber v1.1.2.
-    expected = {"files": 231, "graphs": 284, "nodes": 10335, "notes": 4706, "links": 7143, "timers": 212}
+    # v1.1.8 adds 13 flat model workflows: +779 nodes, +368 notes, +547 links.
+    expected = {"files": 244, "graphs": 297, "nodes": 11114, "notes": 5074, "links": 7690, "timers": 225}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

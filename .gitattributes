@@ -1,2 +1,11 @@
 # Patch fixtures preserve upstream whitespace so `git apply` remains exact.
 tools/patches/*.patch whitespace=-trailing-space
+
+# Pinned upstream v1.1.8 fixtures retain their exact downloaded bytes.
+tools/workflow_templates/v118/* -text
+# Audited new workflows use identical bytes on Windows and Linux.
+workflows/**/Cosmos_Predict2_2B-*.json text eol=lf
+workflows/**/YuE2_3B_INT8-PRIVATE-*.json text eol=lf
+workflows/**/Pixal3D_INT8-*-Collision.json text eol=lf
+workflows/**/TRELLIS2_INT8-*-Collision.json text eol=lf
+performance/rdna4/v118-validation.json text eol=lf

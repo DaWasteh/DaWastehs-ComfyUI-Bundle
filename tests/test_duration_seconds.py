@@ -32,12 +32,11 @@ class DurationSecondsTests(unittest.TestCase):
             self.assertEqual(marker.get("version"), DURATION_VERSION, path.name)
             self.assertEqual(marker.get("unit"), "seconds", path.name)
             modes[marker["mode"]] = modes.get(marker["mode"], 0) + 1
-        # v1.1.3: Ref2VA-Dublette konsolidiert (54 -> 53)
-        self.assertEqual(checked, 53)
+        # v1.1.8: three YuE2 audio and four Cosmos video workflows.
+        self.assertEqual(checked, 60)
         self.assertEqual(modes, {
-            # v1.1.3: Ref2VA-Dublette konsolidiert (32 -> 31)
-            "native-seconds": 31,
-            "explicit-seconds-to-model-valid-frames": 12,
+            "native-seconds": 34,
+            "explicit-seconds-to-model-valid-frames": 16,
             "explicit-seconds-dynamic-source-fps": 1,
             "source-media-duration": 9,
         })

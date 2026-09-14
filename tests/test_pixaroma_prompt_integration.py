@@ -64,6 +64,8 @@ class PixaromaIntegrationTests(unittest.TestCase):
                 "workflows/Live Avatar/LiveAvatar-17-Live-Person-Swap-Matting-Voice-DirectML-Spout-OBS.json",
             }
         }
+        from tools.build_workflows_v118 import build_all, SCHEMAS
+        generated_unmanaged.update(f"workflows/{key}" for key in build_all(json.loads(SCHEMAS.read_text(encoding="utf-8"))))
         self.assertEqual(
             paths - set(manifest_paths),
             {

@@ -1,0 +1,5087 @@
+{
+  "KSampler": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL",
+          {
+            "tooltip": "The model used for denoising the input latent."
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 18446744073709551615,
+            "control_after_generate": true,
+            "tooltip": "The random seed used for creating the noise."
+          }
+        ],
+        "steps": [
+          "INT",
+          {
+            "default": 20,
+            "min": 1,
+            "max": 10000,
+            "tooltip": "The number of steps used in the denoising process."
+          }
+        ],
+        "cfg": [
+          "FLOAT",
+          {
+            "default": 8.0,
+            "min": 0.0,
+            "max": 100.0,
+            "step": 0.1,
+            "round": 0.01,
+            "tooltip": "The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality."
+          }
+        ],
+        "sampler_name": [
+          [
+            "euler",
+            "euler_cfg_pp",
+            "euler_ancestral",
+            "euler_ancestral_cfg_pp",
+            "heun",
+            "heunpp2",
+            "exp_heun_2_x0",
+            "exp_heun_2_x0_sde",
+            "dpm_2",
+            "dpm_2_ancestral",
+            "lms",
+            "dpm_fast",
+            "dpm_adaptive",
+            "dpmpp_2s_ancestral",
+            "dpmpp_2s_ancestral_cfg_pp",
+            "dpmpp_sde",
+            "dpmpp_sde_gpu",
+            "dpmpp_2m",
+            "dpmpp_2m_cfg_pp",
+            "dpmpp_2m_sde",
+            "dpmpp_2m_sde_gpu",
+            "dpmpp_2m_sde_heun",
+            "dpmpp_2m_sde_heun_gpu",
+            "dpmpp_3m_sde",
+            "dpmpp_3m_sde_gpu",
+            "ddpm",
+            "lcm",
+            "ipndm",
+            "ipndm_v",
+            "deis",
+            "cfgpp_ud10_ab",
+            "res_multistep",
+            "res_multistep_cfg_pp",
+            "res_multistep_ancestral",
+            "res_multistep_ancestral_cfg_pp",
+            "gradient_estimation",
+            "gradient_estimation_cfg_pp",
+            "er_sde",
+            "seeds_2",
+            "seeds_3",
+            "sa_solver",
+            "sa_solver_pece",
+            "ddim",
+            "uni_pc",
+            "uni_pc_bh2",
+            "legacy_rk",
+            "rk",
+            "rk_beta",
+            "deis_3m_ode",
+            "deis_2m_ode",
+            "deis_3m",
+            "deis_2m",
+            "res_6s_ode",
+            "res_5s_ode",
+            "res_3s_ode",
+            "res_2s_ode",
+            "res_3m_ode",
+            "res_2m_ode",
+            "res_6s",
+            "res_5s",
+            "res_3s",
+            "res_2s",
+            "res_3m",
+            "res_2m"
+          ],
+          {
+            "tooltip": "The algorithm used when sampling, this can affect the quality, speed, and style of the generated output."
+          }
+        ],
+        "scheduler": [
+          [
+            "simple",
+            "sgm_uniform",
+            "karras",
+            "exponential",
+            "ddim_uniform",
+            "beta",
+            "normal",
+            "linear_quadratic",
+            "kl_optimal",
+            "bong_tangent",
+            "beta57"
+          ],
+          {
+            "tooltip": "The scheduler controls how noise is gradually removed to form the image."
+          }
+        ],
+        "positive": [
+          "CONDITIONING",
+          {
+            "tooltip": "The conditioning describing the attributes you want to include in the image."
+          }
+        ],
+        "negative": [
+          "CONDITIONING",
+          {
+            "tooltip": "The conditioning describing the attributes you want to exclude from the image."
+          }
+        ],
+        "latent_image": [
+          "LATENT",
+          {
+            "tooltip": "The latent image to denoise."
+          }
+        ],
+        "denoise": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.01,
+            "tooltip": "The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "seed",
+        "steps",
+        "cfg",
+        "sampler_name",
+        "scheduler",
+        "positive",
+        "negative",
+        "latent_image",
+        "denoise"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "LATENT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "LATENT"
+    ],
+    "name": "KSampler",
+    "display_name": "KSampler",
+    "description": "Uses the provided model, positive and negative conditioning to denoise the latent image.",
+    "python_module": "nodes",
+    "category": "model/sampling",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The denoised latent."
+    ],
+    "search_aliases": [
+      "sampler",
+      "sample",
+      "generate",
+      "denoise",
+      "diffuse",
+      "txt2img",
+      "img2img"
+    ]
+  },
+  "CheckpointLoaderSimple": {
+    "input": {
+      "required": {
+        "ckpt_name": [
+          [
+            "choose-local-file"
+          ],
+          {
+            "tooltip": "The name of the checkpoint (model) to load."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "ckpt_name"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL",
+      "CLIP",
+      "VAE"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "MODEL",
+      "CLIP",
+      "VAE"
+    ],
+    "name": "CheckpointLoaderSimple",
+    "display_name": "Load Checkpoint",
+    "description": "Loads a diffusion model checkpoint, diffusion models are used to denoise latents.",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The model used for denoising latents.",
+      "The CLIP model used for encoding text prompts.",
+      "The VAE model used for encoding and decoding images to and from latent space."
+    ],
+    "search_aliases": [
+      "load model",
+      "checkpoint",
+      "model loader",
+      "load checkpoint",
+      "ckpt",
+      "model"
+    ]
+  },
+  "CLIPTextEncode": {
+    "input": {
+      "required": {
+        "text": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true,
+            "tooltip": "The text to be encoded."
+          }
+        ],
+        "clip": [
+          "CLIP",
+          {
+            "tooltip": "The CLIP model used for encoding the text."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "text",
+        "clip"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "CONDITIONING"
+    ],
+    "name": "CLIPTextEncode",
+    "display_name": "CLIP Text Encode (Prompt)",
+    "description": "Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.",
+    "python_module": "nodes",
+    "category": "model/conditioning",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "A conditioning containing the embedded text used to guide the diffusion model."
+    ],
+    "search_aliases": [
+      "text",
+      "prompt",
+      "text prompt",
+      "positive prompt",
+      "negative prompt",
+      "encode text",
+      "text encoder",
+      "encode prompt"
+    ]
+  },
+  "VAEDecode": {
+    "input": {
+      "required": {
+        "samples": [
+          "LATENT",
+          {
+            "tooltip": "The latent to be decoded."
+          }
+        ],
+        "vae": [
+          "VAE",
+          {
+            "tooltip": "The VAE model used for decoding the latent."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "samples",
+        "vae"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "IMAGE"
+    ],
+    "name": "VAEDecode",
+    "display_name": "VAE Decode",
+    "description": "Decodes latent images back into pixel space images.",
+    "python_module": "nodes",
+    "category": "model/latent",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The decoded image."
+    ],
+    "search_aliases": [
+      "decode",
+      "decode latent",
+      "latent to image",
+      "render latent"
+    ]
+  },
+  "VAELoader": {
+    "input": {
+      "required": {
+        "vae_name": [
+          [
+            "choose-local-file"
+          ]
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "vae_name"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "VAE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "VAE"
+    ],
+    "name": "VAELoader",
+    "display_name": "Load VAE",
+    "description": "",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "SaveImage": {
+    "input": {
+      "required": {
+        "images": [
+          "IMAGE",
+          {
+            "tooltip": "The images to save."
+          }
+        ],
+        "filename_prefix": [
+          "STRING",
+          {
+            "default": "ComfyUI",
+            "tooltip": "The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes."
+          }
+        ]
+      },
+      "hidden": {
+        "prompt": "PROMPT",
+        "extra_pnginfo": "EXTRA_PNGINFO"
+      }
+    },
+    "input_order": {
+      "required": [
+        "images",
+        "filename_prefix"
+      ],
+      "hidden": [
+        "prompt",
+        "extra_pnginfo"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "images"
+    ],
+    "name": "SaveImage",
+    "display_name": "Save Image",
+    "description": "Saves the input images to your ComfyUI output directory.",
+    "python_module": "nodes",
+    "category": "image",
+    "output_node": true,
+    "has_intermediate_output": false,
+    "search_aliases": [
+      "save",
+      "save image",
+      "export image",
+      "output image",
+      "write image",
+      "download"
+    ],
+    "essentials_category": "Basics"
+  },
+  "PreviewImage": {
+    "input": {
+      "required": {
+        "images": [
+          "IMAGE"
+        ]
+      },
+      "hidden": {
+        "prompt": "PROMPT",
+        "extra_pnginfo": "EXTRA_PNGINFO"
+      }
+    },
+    "input_order": {
+      "required": [
+        "images"
+      ],
+      "hidden": [
+        "prompt",
+        "extra_pnginfo"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "images"
+    ],
+    "name": "PreviewImage",
+    "display_name": "Preview Image",
+    "description": "Preview the images without saving them to the ComfyUI output directory.",
+    "python_module": "nodes",
+    "category": "image",
+    "output_node": true,
+    "has_intermediate_output": false,
+    "search_aliases": [
+      "preview",
+      "preview image",
+      "show image",
+      "view image",
+      "display image",
+      "image viewer"
+    ],
+    "essentials_category": "Basics"
+  },
+  "LoadImage": {
+    "input": {
+      "required": {
+        "image": [
+          [
+            "choose-local-file"
+          ],
+          {
+            "image_upload": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "image"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE",
+      "MASK"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "IMAGE",
+      "MASK"
+    ],
+    "name": "LoadImage",
+    "display_name": "Load Image",
+    "description": "",
+    "python_module": "nodes",
+    "category": "image",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": [
+      "load image",
+      "open image",
+      "import image",
+      "image input",
+      "upload image",
+      "read image",
+      "image loader"
+    ],
+    "essentials_category": "Basics"
+  },
+  "CLIPLoader": {
+    "input": {
+      "required": {
+        "clip_name": [
+          [
+            "choose-local-file"
+          ]
+        ],
+        "type": [
+          [
+            "stable_diffusion",
+            "stable_cascade",
+            "sd3",
+            "stable_audio",
+            "mochi",
+            "ltxv",
+            "pixart",
+            "cosmos",
+            "lumina2",
+            "wan",
+            "hidream",
+            "chroma",
+            "ace",
+            "omnigen2",
+            "qwen_image",
+            "hunyuan_image",
+            "flux2",
+            "ovis",
+            "longcat_image",
+            "cogvideox",
+            "lens",
+            "pixeldit",
+            "ideogram4",
+            "boogu",
+            "krea2",
+            "joyimage",
+            "mage",
+            "minimax",
+            "yue2"
+          ]
+        ]
+      },
+      "optional": {
+        "device": [
+          [
+            "default",
+            "cpu"
+          ],
+          {
+            "advanced": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip_name",
+        "type"
+      ],
+      "optional": [
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CLIP"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "CLIP"
+    ],
+    "name": "CLIPLoader",
+    "display_name": "Load CLIP",
+    "description": "Recipes:\nsd: clip-l\nstable cascade: clip-g\nsd3: t5 xxl / clip-g / clip-l\nstable audio: t5 base\nmochi: t5 xxl\ncogvideox: t5 xxl (226-token padding)\ncosmos: old t5 xxl\nlumina2: gemma 2 2B\nwan: umt5 xxl\nhidream: llama-3.1 (Recommend) or t5\nomnigen2: qwen vl 2.5 3B\njoyimage: qwen3-vl 8B\nlens: gpt-oss-20b\npixeldit: gemma 2 2B elm\nminimax: MiniMax H3 Qwen3-VL or Music3 Qwen/RVQ",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "UNETLoader": {
+    "input": {
+      "required": {
+        "unet_name": [
+          [
+            "choose-local-file"
+          ]
+        ],
+        "weight_dtype": [
+          [
+            "default",
+            "fp8_e4m3fn",
+            "fp8_e4m3fn_fast",
+            "fp8_e5m2"
+          ],
+          {
+            "advanced": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "unet_name",
+        "weight_dtype"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MODEL"
+    ],
+    "name": "UNETLoader",
+    "display_name": "Load Diffusion Model",
+    "description": "",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "CLIPVisionLoader": {
+    "input": {
+      "required": {
+        "clip_name": [
+          [
+            "choose-local-file"
+          ]
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip_name"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CLIP_VISION"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "CLIP_VISION"
+    ],
+    "name": "CLIPVisionLoader",
+    "display_name": "Load CLIP Vision",
+    "description": "",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "ConditioningZeroOut": {
+    "input": {
+      "required": {
+        "conditioning": [
+          "CONDITIONING"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "conditioning"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "CONDITIONING"
+    ],
+    "name": "ConditioningZeroOut",
+    "display_name": "Conditioning Zero Out",
+    "description": "",
+    "python_module": "nodes",
+    "category": "model/conditioning/transform",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": [
+      "null conditioning",
+      "clear conditioning"
+    ]
+  },
+  "MaskPreview": {
+    "input": {
+      "required": {
+        "mask": [
+          "MASK",
+          {}
+        ]
+      },
+      "hidden": {
+        "prompt": [
+          "PROMPT"
+        ],
+        "extra_pnginfo": [
+          "EXTRA_PNGINFO"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mask"
+      ],
+      "hidden": [
+        "prompt",
+        "extra_pnginfo"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MASK"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "mask"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "MaskPreview",
+    "display_name": "Preview Mask",
+    "description": "Preview the masks without saving them to the ComfyUI output directory.",
+    "python_module": "comfy_extras.nodes_mask",
+    "category": "image/mask",
+    "output_node": true,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "preview",
+      "preview mask",
+      "show mask",
+      "view mask",
+      "inspect mask",
+      "debug mask"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "CFGOverride": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL",
+          {}
+        ],
+        "cfg": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": 0.0,
+            "max": 100.0,
+            "step": 0.1,
+            "round": 0.01
+          }
+        ],
+        "start_percent": [
+          "FLOAT",
+          {
+            "default": 0.0,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.001
+          }
+        ],
+        "end_percent": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.001
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "cfg",
+        "start_percent",
+        "end_percent"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MODEL"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "CFGOverride",
+    "display_name": "CFG Override",
+    "description": "Override cfg to a fixed value over a [start, end] percent (sigma) range. With multiple overrides, the one nearest the sampler wins on overlap.",
+    "python_module": "comfy_extras.nodes_custom_sampler",
+    "category": "model/sampling/guiders",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "ModelSamplingSD3": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL"
+        ],
+        "shift": [
+          "FLOAT",
+          {
+            "default": 3.0,
+            "min": 0.0,
+            "max": 100.0,
+            "step": 0.01
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "shift"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MODEL"
+    ],
+    "name": "ModelSamplingSD3",
+    "display_name": "ModelSamplingSD3",
+    "description": "",
+    "python_module": "comfy_extras.nodes_model_advanced",
+    "category": "model/patch/stable diffusion",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "RescaleCFG": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL"
+        ],
+        "multiplier": [
+          "FLOAT",
+          {
+            "default": 0.7,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.01
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "multiplier"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MODEL"
+    ],
+    "name": "RescaleCFG",
+    "display_name": "RescaleCFG",
+    "description": "",
+    "python_module": "comfy_extras.nodes_model_advanced",
+    "category": "model/patch",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "ImageCropToMask": {
+    "input": {
+      "required": {
+        "images": [
+          "IMAGE",
+          {}
+        ],
+        "masks": [
+          "MASK",
+          {}
+        ],
+        "width": [
+          "INT",
+          {
+            "tooltip": "Output width in pixels.",
+            "default": 1024,
+            "min": 64,
+            "max": 4096,
+            "step": 8
+          }
+        ],
+        "height": [
+          "INT",
+          {
+            "tooltip": "Output height in pixels.",
+            "default": 1024,
+            "min": 64,
+            "max": 4096,
+            "step": 8
+          }
+        ],
+        "pad_factor": [
+          "FLOAT",
+          {
+            "tooltip": "Extra margin around the mask bounding box as a multiplier.",
+            "default": 1.0,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.01
+          }
+        ],
+        "grow_mask": [
+          "INT",
+          {
+            "tooltip": "Grow or shrink the mask by this many pixels before cropping.",
+            "default": 0,
+            "min": -32,
+            "max": 32,
+            "step": 1
+          }
+        ],
+        "background": [
+          "COLOR",
+          {
+            "tooltip": "Background color behind the masked subject.",
+            "default": "#000000",
+            "socketless": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "images",
+        "masks",
+        "width",
+        "height",
+        "pad_factor",
+        "grow_mask",
+        "background"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "images"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "ImageCropToMask",
+    "display_name": "Crop Image to Mask",
+    "description": "",
+    "python_module": "comfy_extras.nodes_images",
+    "category": "image/transform",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "crop to mask",
+      "mask crop",
+      "crop mask",
+      "mask crop resize",
+      "crop mask resize",
+      "trellis2",
+      "pixal3d"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "VAEDecodeAudio": {
+    "input": {
+      "required": {
+        "samples": [
+          "LATENT",
+          {}
+        ],
+        "vae": [
+          "VAE",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "samples",
+        "vae"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "AUDIO"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "AUDIO"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "VAEDecodeAudio",
+    "display_name": "VAE Decode Audio",
+    "description": "",
+    "python_module": "comfy_extras.nodes_audio",
+    "category": "model/latent",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "latent to audio"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SaveAudioAdvanced": {
+    "input": {
+      "required": {
+        "audio": [
+          "AUDIO",
+          {
+            "tooltip": "The audio to save."
+          }
+        ],
+        "filename_prefix": [
+          "STRING",
+          {
+            "tooltip": "The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd%.",
+            "default": "audio/ComfyUI",
+            "multiline": false
+          }
+        ],
+        "format": [
+          "COMFY_DYNAMICCOMBO_V3",
+          {
+            "tooltip": "The file format in which to save the audio.",
+            "options": [
+              {
+                "key": "flac",
+                "inputs": {
+                  "required": {}
+                }
+              },
+              {
+                "key": "mp3",
+                "inputs": {
+                  "required": {
+                    "quality": [
+                      "COMBO",
+                      {
+                        "default": "V0",
+                        "multiselect": false,
+                        "options": [
+                          "V0",
+                          "128k",
+                          "320k"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "key": "opus",
+                "inputs": {
+                  "required": {
+                    "quality": [
+                      "COMBO",
+                      {
+                        "default": "128k",
+                        "multiselect": false,
+                        "options": [
+                          "64k",
+                          "96k",
+                          "128k",
+                          "192k",
+                          "320k"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "hidden": {
+        "prompt": [
+          "PROMPT"
+        ],
+        "extra_pnginfo": [
+          "EXTRA_PNGINFO"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "audio",
+        "filename_prefix",
+        "format"
+      ],
+      "hidden": [
+        "prompt",
+        "extra_pnginfo"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "AUDIO"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "audio"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SaveAudioAdvanced",
+    "display_name": "Save Audio (Advanced)",
+    "description": "Saves the input audio to your ComfyUI output directory.",
+    "python_module": "comfy_extras.nodes_audio",
+    "category": "audio",
+    "output_node": true,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "save audio",
+      "export audio",
+      "output audio",
+      "write audio",
+      "flac",
+      "mp3",
+      "opus"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "LoadAudio": {
+    "input": {
+      "required": {
+        "audio": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "choose-local-file"
+            ],
+            "audio_upload": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "audio"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "AUDIO"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "AUDIO"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "LoadAudio",
+    "display_name": "Load Audio",
+    "description": "",
+    "python_module": "comfy_extras.nodes_audio",
+    "category": "audio",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "import audio",
+      "open audio",
+      "audio file"
+    ],
+    "essentials_category": "Audio",
+    "has_intermediate_output": false
+  },
+  "EmptySD3LatentImage": {
+    "input": {
+      "required": {
+        "width": [
+          "INT",
+          {
+            "default": 1024,
+            "min": 16,
+            "max": 16384,
+            "step": 16
+          }
+        ],
+        "height": [
+          "INT",
+          {
+            "default": 1024,
+            "min": 16,
+            "max": 16384,
+            "step": 16
+          }
+        ],
+        "batch_size": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 4096
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "width",
+        "height",
+        "batch_size"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "LATENT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "LATENT"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "EmptySD3LatentImage",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_sd3",
+    "category": "model/latent/stable diffusion",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "YuE2GenerateABC": {
+    "input": {
+      "required": {
+        "clip": [
+          "CLIP",
+          {}
+        ],
+        "style": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "lyrics": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 18446744073709551615,
+            "control_after_generate": true
+          }
+        ],
+        "mode": [
+          "COMBO",
+          {
+            "tooltip": "full: generates melody and chords; melody: generates melody only, recommended for covers.",
+            "multiselect": false,
+            "options": [
+              "full",
+              "melody"
+            ]
+          }
+        ],
+        "max_abc_tokens": [
+          "INT",
+          {
+            "advanced": true,
+            "default": 8192,
+            "min": 1,
+            "max": 20000
+          }
+        ],
+        "temperature": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 0.7,
+            "min": 0.0,
+            "max": 5.0,
+            "step": 0.05
+          }
+        ],
+        "top_p": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 0.9,
+            "min": 0.01,
+            "max": 1.0,
+            "step": 0.01
+          }
+        ],
+        "top_k": [
+          "INT",
+          {
+            "advanced": true,
+            "default": 30,
+            "min": 1,
+            "max": 32768
+          }
+        ],
+        "repetition_penalty": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 1.005,
+            "min": 0.01,
+            "max": 10.0,
+            "step": 0.005
+          }
+        ],
+        "penalty_window": [
+          "INT",
+          {
+            "tooltip": "Number of recent ABC tokens used to penalize repetition.",
+            "advanced": true,
+            "default": 100,
+            "min": 1,
+            "max": 20000
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip",
+        "style",
+        "lyrics",
+        "seed",
+        "mode",
+        "max_abc_tokens",
+        "temperature",
+        "top_p",
+        "top_k",
+        "repetition_penalty",
+        "penalty_window"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "STRING"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "abc"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "YuE2GenerateABC",
+    "display_name": "YuE2 Generate ABC",
+    "description": "Generates the ABC notation of a song from style and lyrics. Connect abc to YuE2 Generate Music node.",
+    "python_module": "comfy_extras.nodes_yue2",
+    "category": "model/conditioning/yue2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "YuE2GenerateMusic": {
+    "input": {
+      "required": {
+        "clip": [
+          "CLIP",
+          {}
+        ],
+        "style": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "lyrics": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "abc": [
+          "STRING",
+          {
+            "tooltip": "Connect the ABC generator or supply an edited score. Leave empty to use off mode automatically.",
+            "default": "",
+            "multiline": true
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 18446744073709551615,
+            "control_after_generate": true
+          }
+        ],
+        "mode": [
+          "COMBO",
+          {
+            "tooltip": "full: generates melody and chords; melody: generates melody only, recommended for covers.",
+            "multiselect": false,
+            "options": [
+              "full",
+              "melody"
+            ]
+          }
+        ],
+        "max_duration": [
+          "FLOAT",
+          {
+            "tooltip": "Maximum duration in seconds. Automatically reduced for long prompts; generation can stop earlier.",
+            "default": 360.0,
+            "min": 0.04,
+            "max": 900.0,
+            "step": 0.04
+          }
+        ],
+        "temperature": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 1.0,
+            "min": 0.0,
+            "max": 5.0,
+            "step": 0.05
+          }
+        ],
+        "top_p": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 0.95,
+            "min": 0.01,
+            "max": 1.0,
+            "step": 0.01
+          }
+        ],
+        "top_k": [
+          "INT",
+          {
+            "advanced": true,
+            "default": 100,
+            "min": 1,
+            "max": 32768
+          }
+        ],
+        "repetition_penalty": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 1.2,
+            "min": 0.01,
+            "max": 10.0,
+            "step": 0.01
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip",
+        "style",
+        "lyrics",
+        "abc",
+        "seed",
+        "mode",
+        "max_duration",
+        "temperature",
+        "top_p",
+        "top_k",
+        "repetition_penalty"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING",
+      "FLOAT"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "CONDITIONING",
+      "seconds"
+    ],
+    "output_tooltips": [
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "YuE2GenerateMusic",
+    "display_name": "YuE2 Generate Music",
+    "description": "Generates music tokens and acoustic conditioning from style, lyrics, and an ABC notation. Provide the generated seconds to the Empty YuE2 Latent Audio node. An empty ABC input ignores the selected mode.",
+    "python_module": "comfy_extras.nodes_yue2",
+    "category": "model/conditioning/yue2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "EmptyYuE2LatentAudio": {
+    "input": {
+      "required": {
+        "seconds": [
+          "FLOAT",
+          {
+            "default": 120.0,
+            "min": 0.04,
+            "max": 1000.0,
+            "step": 0.04
+          }
+        ],
+        "batch_size": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 4096
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "seconds",
+        "batch_size"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "LATENT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "LATENT"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "EmptyYuE2LatentAudio",
+    "display_name": "Empty YuE2 Latent Audio",
+    "description": "",
+    "python_module": "comfy_extras.nodes_yue2",
+    "category": "model/latent/yue2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SelectModelDevice": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL",
+          {}
+        ],
+        "device": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MODEL"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SelectModelDevice",
+    "display_name": "Select Model Device",
+    "description": "Place the diffusion model on a specific device (default / cpu / gpu:N).\n\n- \"default\" restores the device assigned by the loader (even after a\n  prior Select Model Device call).\n- \"cpu\" pins both the load and offload device to CPU.\n- \"gpu:N\" pins the load device to the Nth available GPU; the offload\n  device is restored to the loader's original choice.\n\nWhen the requested device differs from the device the input model is\nalready on, a fresh model is spawned via the loader's reload factory\n(cached_patcher_init) so the new patcher owns independent weights on\nthe new device. Loaders that don't support multigpu (no factory) will\ncause the node to pass through unchanged with a warning.\n\nIf the workflow already has MultiGPU CFG Split applied and the chosen\nGPU collides with one of the existing multigpu clones, that clone is\ndropped so two patchers don't end up bound to the same device.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the model through unchanged and logs a message\ninstead of failing.\n\nNOTE: Placing Select Model Device *after* a node that has already\nconsumed the same model (e.g. a KSampler that ran on this model on\nthe original device) is not recommended -- any state the prior\nconsumer mutated on the original model will be observed when the\nselected device matches the original (fast path). Place Select Model\nDevice before any consumer of the model.",
+    "python_module": "comfy_extras.nodes_multigpu",
+    "category": "advanced/multigpu",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SelectCLIPDevice": {
+    "input": {
+      "required": {
+        "clip": [
+          "CLIP",
+          {}
+        ],
+        "device": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip",
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CLIP"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "CLIP"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SelectCLIPDevice",
+    "display_name": "Select CLIP Device",
+    "description": "Place the CLIP text encoder on a specific device (default / cpu / gpu:N).\n\n- \"default\" restores the device assigned by the loader.\n- \"cpu\" pins both the load and offload device to CPU.\n- \"gpu:N\" pins the load device to the Nth available GPU.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the CLIP through unchanged and logs a message\ninstead of failing.",
+    "python_module": "comfy_extras.nodes_multigpu",
+    "category": "advanced/multigpu",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SelectVAEDevice": {
+    "input": {
+      "required": {
+        "vae": [
+          "VAE",
+          {}
+        ],
+        "device": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "default",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "vae",
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "VAE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "VAE"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SelectVAEDevice",
+    "display_name": "Select VAE Device",
+    "description": "Place the VAE on a specific device (default / gpu:N).\n\n- \"default\" restores the device assigned by the loader.\n- \"gpu:N\" pins the load device to the Nth available GPU; the offload\n  device is set to the standard VAE offload device.\n\nCPU is intentionally not exposed in the UI for the VAE; if a workflow\nsupplies \"cpu\" anyway (e.g. opened from another machine), the request\nis dropped with a log message and the VAE is passed through unchanged.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the VAE through unchanged and logs a message\ninstead of failing.",
+    "python_module": "comfy_extras.nodes_multigpu",
+    "category": "advanced/multigpu",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "CosmosPredict2ImageToVideoLatent": {
+    "input": {
+      "required": {
+        "vae": [
+          "VAE",
+          {}
+        ],
+        "width": [
+          "INT",
+          {
+            "default": 848,
+            "min": 16,
+            "max": 16384,
+            "step": 16
+          }
+        ],
+        "height": [
+          "INT",
+          {
+            "default": 480,
+            "min": 16,
+            "max": 16384,
+            "step": 16
+          }
+        ],
+        "length": [
+          "INT",
+          {
+            "default": 93,
+            "min": 1,
+            "max": 16384,
+            "step": 4
+          }
+        ],
+        "batch_size": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 4096
+          }
+        ]
+      },
+      "optional": {
+        "start_image": [
+          "IMAGE",
+          {}
+        ],
+        "end_image": [
+          "IMAGE",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "vae",
+        "width",
+        "height",
+        "length",
+        "batch_size"
+      ],
+      "optional": [
+        "start_image",
+        "end_image"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "LATENT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "LATENT"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "CosmosPredict2ImageToVideoLatent",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_cosmos",
+    "category": "model/conditioning/cosmos",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SaveWEBM": {
+    "input": {
+      "required": {
+        "images": [
+          "IMAGE",
+          {
+            "tooltip": "RGBA images are saved with their alpha channel as transparency (vp9 codec only)."
+          }
+        ],
+        "filename_prefix": [
+          "STRING",
+          {
+            "default": "ComfyUI",
+            "multiline": false
+          }
+        ],
+        "codec": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "vp9",
+              "av1"
+            ]
+          }
+        ],
+        "fps": [
+          "FLOAT",
+          {
+            "default": 24.0,
+            "min": 0.01,
+            "max": 1000.0,
+            "step": 0.01
+          }
+        ],
+        "crf": [
+          "FLOAT",
+          {
+            "tooltip": "Higher crf means lower quality with a smaller file size, lower crf means higher quality higher filesize.",
+            "default": 32.0,
+            "min": 0,
+            "max": 63.0,
+            "step": 1
+          }
+        ]
+      },
+      "hidden": {
+        "prompt": [
+          "PROMPT"
+        ],
+        "extra_pnginfo": [
+          "EXTRA_PNGINFO"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "images",
+        "filename_prefix",
+        "codec",
+        "fps",
+        "crf"
+      ],
+      "hidden": [
+        "prompt",
+        "extra_pnginfo"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "images"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SaveWEBM",
+    "display_name": "Save WEBM",
+    "description": "",
+    "python_module": "comfy_extras.nodes_video",
+    "category": "video",
+    "output_node": true,
+    "deprecated": false,
+    "experimental": true,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "export webm"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "PrimitiveInt": {
+    "input": {
+      "required": {
+        "value": [
+          "INT",
+          {
+            "min": -9223372036854775807,
+            "max": 9223372036854775807,
+            "control_after_generate": "fixed"
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "value"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "INT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "INT"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "PrimitiveInt",
+    "display_name": "Int",
+    "description": "",
+    "python_module": "comfy_extras.nodes_primitive",
+    "category": "utilities/primitive",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "PrimitiveFloat": {
+    "input": {
+      "required": {
+        "value": [
+          "FLOAT",
+          {
+            "min": -9223372036854775807,
+            "max": 9223372036854775807,
+            "step": 0.1
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "value"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "FLOAT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "FLOAT"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "PrimitiveFloat",
+    "display_name": "Float",
+    "description": "",
+    "python_module": "comfy_extras.nodes_primitive",
+    "category": "utilities/primitive",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "PreviewAny": {
+    "input": {
+      "required": {
+        "source": [
+          "*",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "source"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "STRING"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "STRING"
+    ],
+    "name": "PreviewAny",
+    "display_name": "Preview as Text",
+    "description": "Preview any input value as text.",
+    "python_module": "comfy_extras.nodes_preview_any",
+    "category": "utilities",
+    "output_node": true,
+    "has_intermediate_output": false,
+    "search_aliases": [
+      "preview",
+      "preview text",
+      "show output",
+      "inspect",
+      "debug",
+      "print value",
+      "show text"
+    ]
+  },
+  "AudioEncoderLoader": {
+    "input": {
+      "required": {
+        "audio_encoder_name": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "choose-local-file"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "audio_encoder_name"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "AUDIO_ENCODER"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "AUDIO_ENCODER"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "AudioEncoderLoader",
+    "display_name": "Load Audio Encoder",
+    "description": "",
+    "python_module": "comfy_extras.nodes_audio_encoder",
+    "category": "model/loaders",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SheetSage2AudioToABC": {
+    "input": {
+      "required": {
+        "audio_encoder": [
+          "AUDIO_ENCODER",
+          {}
+        ],
+        "audio": [
+          "AUDIO",
+          {}
+        ],
+        "mode": [
+          "COMBO",
+          {
+            "tooltip": "full: generates melody and chords; melody: generates melody only, recommended for covers.",
+            "multiselect": false,
+            "options": [
+              "melody",
+              "full"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "audio_encoder",
+        "audio",
+        "mode"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "STRING"
+    ],
+    "output_is_list": [
+      true
+    ],
+    "output_name": [
+      "abc"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SheetSage2AudioToABC",
+    "display_name": "SheetSage2 Audio to ABC",
+    "description": "Transcribes vocal and instrumental melodies from music into ABC notation. Connect abc output to YuE2 Generate Music node and use the matching mode.",
+    "python_module": "comfy_extras.nodes_audio_encoder",
+    "category": "model/conditioning/yue2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "ComfySwitchNode": {
+    "input": {
+      "required": {
+        "switch": [
+          "BOOLEAN",
+          {}
+        ]
+      },
+      "optional": {
+        "on_false": [
+          "COMFY_MATCHTYPE_V3",
+          {
+            "lazy": true,
+            "template": {
+              "template_id": "switch",
+              "allowed_types": "*"
+            }
+          }
+        ],
+        "on_true": [
+          "COMFY_MATCHTYPE_V3",
+          {
+            "lazy": true,
+            "template": {
+              "template_id": "switch",
+              "allowed_types": "*"
+            }
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "switch"
+      ],
+      "optional": [
+        "on_false",
+        "on_true"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "COMFY_MATCHTYPE_V3"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "output"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": [
+      "switch"
+    ],
+    "name": "ComfySwitchNode",
+    "display_name": "If/Else Switch",
+    "description": "",
+    "python_module": "comfy_extras.nodes_logic",
+    "category": "utilities/logic",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": true,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "if",
+      "then",
+      "switch",
+      "conditional",
+      "branch"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "Trellis2Conditioning": {
+    "input": {
+      "required": {
+        "clip_vision_model": [
+          "CLIP_VISION",
+          {}
+        ],
+        "image": [
+          "IMAGE",
+          {
+            "tooltip": "Preprocessed image from ImageCropToMask (pad_factor=1.0 for TRELLIS.2)."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip_vision_model",
+        "image"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING",
+      "CONDITIONING"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "positive",
+      "negative"
+    ],
+    "output_tooltips": [
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "Trellis2Conditioning",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/conditioning/trellis2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "Pixal3DConditioning": {
+    "input": {
+      "required": {
+        "clip_vision_model": [
+          "CLIP_VISION",
+          {
+            "tooltip": "DINOv3 ViT-L/16 ClipVision."
+          }
+        ],
+        "image": [
+          "IMAGE",
+          {
+            "tooltip": "Preprocessed image from ImageCropToMask (pad_factor=1.1 for Pixal3D)."
+          }
+        ],
+        "camera_angle_x": [
+          "FLOAT",
+          {
+            "display_name": "fov",
+            "tooltip": "Horizontal FOV in degrees. Wire a MoGeGeometryToFOV (axis='horizontal', unit='degrees') for a per-image FoV (matches upstream default).",
+            "default": 49.13,
+            "min": 1.0,
+            "max": 170.0,
+            "step": 0.01
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip_vision_model",
+        "image",
+        "camera_angle_x"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING",
+      "CONDITIONING"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "positive",
+      "negative"
+    ],
+    "output_tooltips": [
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "Pixal3DConditioning",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/conditioning/trellis2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "Pixal3DMultiViewConditioning": {
+    "input": {
+      "required": {
+        "clip_vision_model": [
+          "CLIP_VISION",
+          {
+            "tooltip": "DINOv3 ViT-L/16 ClipVision with bundled NAF weights."
+          }
+        ],
+        "fov": [
+          "FLOAT",
+          {
+            "tooltip": "Horizontal FOV in degrees of the views as framed: 20 for rig renders and most multi-view generators, or MoGeGeometryToFOV on one of the views for photos.",
+            "default": 20.0,
+            "min": 1.0,
+            "max": 170.0,
+            "step": 0.01,
+            "round": false
+          }
+        ]
+      },
+      "optional": {
+        "front": [
+          "IMAGE",
+          {
+            "tooltip": "Square view of the object's front side, with alpha or on a black background, framed like the rig: the object spans about 1/1.1 of the frame at its widest, the same scale in every view. The first connected view (front, left, back, right order) is the front the mesh is posed to."
+          }
+        ],
+        "left": [
+          "IMAGE",
+          {
+            "tooltip": "Square view of the object's left side, with alpha or on a black background, framed like the rig: the object spans about 1/1.1 of the frame at its widest, the same scale in every view. The first connected view (front, left, back, right order) is the front the mesh is posed to."
+          }
+        ],
+        "back": [
+          "IMAGE",
+          {
+            "tooltip": "Square view of the object's back side, with alpha or on a black background, framed like the rig: the object spans about 1/1.1 of the frame at its widest, the same scale in every view. The first connected view (front, left, back, right order) is the front the mesh is posed to."
+          }
+        ],
+        "right": [
+          "IMAGE",
+          {
+            "tooltip": "Square view of the object's right side, with alpha or on a black background, framed like the rig: the object spans about 1/1.1 of the frame at its widest, the same scale in every view. The first connected view (front, left, back, right order) is the front the mesh is posed to."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip_vision_model",
+        "fov"
+      ],
+      "optional": [
+        "front",
+        "left",
+        "back",
+        "right"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING",
+      "CONDITIONING"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "positive",
+      "negative"
+    ],
+    "output_tooltips": [
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "Pixal3DMultiViewConditioning",
+    "display_name": "Pixal3D Multi-View Conditioning",
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/conditioning/trellis2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "Trellis2ShapeStage": {
+    "input": {
+      "required": {
+        "positive": [
+          "CONDITIONING",
+          {}
+        ],
+        "negative": [
+          "CONDITIONING",
+          {}
+        ],
+        "voxel": [
+          "VOXEL",
+          {
+            "tooltip": "Dense structure voxel from VaeDecodeStructureTrellis2."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "positive",
+        "negative",
+        "voxel"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING",
+      "CONDITIONING",
+      "LATENT"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "positive",
+      "negative",
+      "LATENT"
+    ],
+    "output_tooltips": [
+      null,
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "Trellis2ShapeStage",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/conditioning/trellis2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "EmptyTrellis2LatentStructure": {
+    "input": {
+      "required": {
+        "batch_size": [
+          "INT",
+          {
+            "tooltip": "The number of latent images in the batch.",
+            "default": 1,
+            "min": 1,
+            "max": 4096
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "batch_size"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "LATENT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "LATENT"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "EmptyTrellis2LatentStructure",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/latent/trellis",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "Trellis2TextureStage": {
+    "input": {
+      "required": {
+        "positive": [
+          "CONDITIONING",
+          {}
+        ],
+        "negative": [
+          "CONDITIONING",
+          {}
+        ],
+        "shape_latent": [
+          "LATENT",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "positive",
+        "negative",
+        "shape_latent"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING",
+      "CONDITIONING",
+      "LATENT"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "positive",
+      "negative",
+      "LATENT"
+    ],
+    "output_tooltips": [
+      null,
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "Trellis2TextureStage",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/conditioning/trellis2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "VaeDecodeTextureTrellis": {
+    "input": {
+      "required": {
+        "samples": [
+          "LATENT",
+          {}
+        ],
+        "vae": [
+          "VAE",
+          {}
+        ],
+        "shape_subdivides": [
+          "SHAPE_SUBDIVIDES",
+          {
+            "tooltip": "Shape information used to guide higher-detail reconstruction during decoding. Helps preserve structure consistency at higher resolutions."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "samples",
+        "vae",
+        "shape_subdivides"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "VOXEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "voxel_colors"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "VaeDecodeTextureTrellis",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/latent/trellis",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "VaeDecodeShapeTrellis": {
+    "input": {
+      "required": {
+        "samples": [
+          "LATENT",
+          {}
+        ],
+        "vae": [
+          "VAE",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "samples",
+        "vae"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MESH",
+      "SHAPE_SUBDIVIDES"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "mesh",
+      "shape_subdivides"
+    ],
+    "output_tooltips": [
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "VaeDecodeShapeTrellis",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/latent/trellis",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "VaeDecodeStructureTrellis2": {
+    "input": {
+      "required": {
+        "samples": [
+          "LATENT",
+          {}
+        ],
+        "vae": [
+          "VAE",
+          {}
+        ],
+        "resolution": [
+          "COMBO",
+          {
+            "default": "32",
+            "multiselect": false,
+            "options": [
+              "32",
+              "64"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "samples",
+        "vae",
+        "resolution"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "VOXEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "voxel"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "VaeDecodeStructureTrellis2",
+    "display_name": null,
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/latent/trellis",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "Trellis2UpsampleStage": {
+    "input": {
+      "required": {
+        "positive": [
+          "CONDITIONING",
+          {}
+        ],
+        "negative": [
+          "CONDITIONING",
+          {}
+        ],
+        "shape_latent": [
+          "LATENT",
+          {
+            "tooltip": "The 512-resolution shape latent output from the first shape-stage KSampler."
+          }
+        ],
+        "vae": [
+          "VAE",
+          {}
+        ],
+        "target_resolution": [
+          "INT",
+          {
+            "tooltip": "Voxel resolution of the upsampled shape. Higher = more detail, more VRAM.",
+            "default": 1024,
+            "min": 1024,
+            "max": 2048,
+            "step": 128
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "positive",
+        "negative",
+        "shape_latent",
+        "vae",
+        "target_resolution"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING",
+      "CONDITIONING",
+      "LATENT"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "positive",
+      "negative",
+      "LATENT"
+    ],
+    "output_tooltips": [
+      null,
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "Trellis2UpsampleStage",
+    "display_name": "Trellis2 Upsample Stage",
+    "description": "",
+    "python_module": "comfy_extras.nodes_trellis2",
+    "category": "model/conditioning/trellis2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "DecimateMesh": {
+    "input": {
+      "required": {
+        "mesh": [
+          "MESH",
+          {}
+        ],
+        "target_face_count": [
+          "INT",
+          {
+            "tooltip": "Target max faces. 0 disables.",
+            "default": 200000,
+            "min": 0,
+            "max": 50000000
+          }
+        ],
+        "placement_mode": [
+          "COMFY_DYNAMICCOMBO_V3",
+          {
+            "display_name": "placement_mode",
+            "tooltip": "midpoint: cumesh-faithful (recommended). qem: QEM-optimal placement.",
+            "options": [
+              {
+                "key": "midpoint",
+                "inputs": {
+                  "required": {}
+                }
+              },
+              {
+                "key": "qem",
+                "inputs": {
+                  "required": {
+                    "line_quadric_weight": [
+                      "FLOAT",
+                      {
+                        "tooltip": "Per-edge line-quadric weight; preserves sharp ridges/valleys. 0 = off.",
+                        "default": 0.0,
+                        "min": 0.0,
+                        "max": 100.0,
+                        "step": 0.1
+                      }
+                    ],
+                    "feature_edge_quadric_weight": [
+                      "FLOAT",
+                      {
+                        "tooltip": "Extra quadric weight on dihedral feature edges (creases). 0 = off.",
+                        "default": 0.0,
+                        "min": 0.0,
+                        "max": 1000.0,
+                        "step": 1.0
+                      }
+                    ],
+                    "feature_edge_min_dihedral_deg": [
+                      "FLOAT",
+                      {
+                        "tooltip": "Minimum dihedral angle (degree) to count an edge as a feature edge.",
+                        "default": 30.0,
+                        "min": 0.0,
+                        "max": 180.0,
+                        "step": 1.0
+                      }
+                    ],
+                    "clamp_v_to_edge": [
+                      "BOOLEAN",
+                      {
+                        "tooltip": "Project the QEM-optimal position onto the collapsed edge segment.",
+                        "default": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "hidden": {
+        "unique_id": [
+          "UNIQUE_ID"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mesh",
+        "target_face_count",
+        "placement_mode"
+      ],
+      "hidden": [
+        "unique_id"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MESH"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "mesh"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "DecimateMesh",
+    "display_name": "Decimate Mesh",
+    "description": "Simplifies a mesh to a target face count using QEM, on the active compute device. 'midpoint' is the cumesh-faithful preset (best quality, preserves thin features / hair); 'qem' places vertices at the QEM optimum with line/feature-edge controls. Output stays welded.",
+    "python_module": "comfy_extras.nodes_mesh_postprocess",
+    "category": "3d/mesh",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "RemeshMesh": {
+    "input": {
+      "required": {
+        "mesh": [
+          "MESH",
+          {}
+        ],
+        "resolution": [
+          "INT",
+          {
+            "tooltip": "Voxel grid resolution (output density). 256 ~ 100k faces, 512 ~ 1M. For an exact face count, follow with Decimate Mesh.",
+            "default": 512,
+            "min": 32,
+            "max": 2048
+          }
+        ],
+        "sign_mode": [
+          "COMFY_DYNAMICCOMBO_V3",
+          {
+            "display_name": "sign_mode",
+            "tooltip": "udf: robust to messy/non-manifold input. sdf: clean single surface with QEF (Quadratic Error Function) sharp-feature recovery, but needs consistent winding.",
+            "options": [
+              {
+                "key": "udf",
+                "inputs": {
+                  "required": {
+                    "qef": [
+                      "BOOLEAN",
+                      {
+                        "tooltip": "QEF (Quadratic Error Function) dual-vertex placement for sharper edges.",
+                        "advanced": true,
+                        "default": false
+                      }
+                    ],
+                    "drop_inverted_components": [
+                      "BOOLEAN",
+                      {
+                        "tooltip": "Drop inward-normal (negative-volume) closed components — the UDF inner shell.",
+                        "advanced": true,
+                        "default": false
+                      }
+                    ],
+                    "drop_enclosed_components": [
+                      "BOOLEAN",
+                      {
+                        "tooltip": "Drop components inside the largest's bbox that fail a point-in-mesh raycast. Disable for legitimate nested parts.",
+                        "advanced": true,
+                        "default": false
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "key": "sdf",
+                "inputs": {
+                  "required": {
+                    "qef": [
+                      "BOOLEAN",
+                      {
+                        "tooltip": "QEF (Quadratic Error Function) dual-vertex placement (recovers sharp features) vs edge-crossing centroid.",
+                        "default": true
+                      }
+                    ],
+                    "manifold": [
+                      "BOOLEAN",
+                      {
+                        "tooltip": "Manifold Dual Contouring: 1-4 dual verts/voxel for multi-sheet cases. Slower.",
+                        "default": false
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "band": [
+          "FLOAT",
+          {
+            "tooltip": "Narrow-band width in voxel units. In UDF mode also offsets the surface.",
+            "advanced": true,
+            "default": 1.0,
+            "min": 0.5,
+            "max": 4.0,
+            "step": 0.1
+          }
+        ],
+        "project_back": [
+          "FLOAT",
+          {
+            "tooltip": "Linearly interpolate vertices toward the original surface (0 = pure DC, 1 = snapped).",
+            "advanced": true,
+            "default": 0.0,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.05
+          }
+        ],
+        "fix_poles": [
+          "BOOLEAN",
+          {
+            "tooltip": "Collapse valence-3 vertex pairs (DC T-junction artifact).",
+            "advanced": true,
+            "default": false
+          }
+        ],
+        "smooth_iters": [
+          "INT",
+          {
+            "tooltip": "Taubin smoothing iterations (0 = off). 2-3 cleans DC staircase-like artifacts; higher over-smooth QEF edges.",
+            "default": 0,
+            "min": 0,
+            "max": 20
+          }
+        ],
+        "drop_small_components": [
+          "FLOAT",
+          {
+            "tooltip": "Drop components below this fraction of the largest's face count. 0 disables.",
+            "advanced": true,
+            "default": 0.01,
+            "min": 0.0,
+            "max": 0.5,
+            "step": 0.005
+          }
+        ],
+        "precluster_max_verts": [
+          "INT",
+          {
+            "tooltip": "Cap input vertex count before the field queries, inputs above this are cluster-decimated to it first. Prevents OOM on huge meshes.",
+            "advanced": true,
+            "default": 20000000,
+            "min": 0,
+            "max": 100000000
+          }
+        ]
+      },
+      "hidden": {
+        "unique_id": [
+          "UNIQUE_ID"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mesh",
+        "resolution",
+        "sign_mode",
+        "band",
+        "project_back",
+        "fix_poles",
+        "smooth_iters",
+        "drop_small_components",
+        "precluster_max_verts"
+      ],
+      "hidden": [
+        "unique_id"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MESH"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "mesh"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "RemeshMesh",
+    "display_name": "Remesh Mesh (Narrow-Band DC)",
+    "description": "Re-extracts a uniformly tessellated mesh via a narrow-band distance field + Dual Contouring, on the active compute device. Normalizes messy / non-manifold / self-intersecting topology; run before Decimate Mesh to hit an exact face count. Output stays welded.",
+    "python_module": "comfy_extras.nodes_mesh_postprocess",
+    "category": "3d/mesh",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "UnwrapMesh": {
+    "input": {
+      "required": {
+        "mesh": [
+          "MESH",
+          {}
+        ],
+        "segmenter": [
+          "COMBO",
+          {
+            "tooltip": "pec: fast parallel-edge-collapse charting on GPU. adaptive: CPU, slower.",
+            "default": "pec",
+            "multiselect": false,
+            "options": [
+              "pec",
+              "adaptive"
+            ]
+          }
+        ],
+        "resolution": [
+          "INT",
+          {
+            "tooltip": "Target atlas resolution for texel-density auto-scale (0 = fit-to-content).",
+            "default": 1024,
+            "min": 0,
+            "max": 8192,
+            "step": 256
+          }
+        ],
+        "padding": [
+          "INT",
+          {
+            "tooltip": "Texel padding between charts.",
+            "default": 1,
+            "min": 0,
+            "max": 16
+          }
+        ],
+        "weld_distance": [
+          "FLOAT",
+          {
+            "tooltip": "Coincident-vert merge radius as a fraction of mesh extent (0 = auto). Raise to ~0.001 if you get per-triangle charts (unwelded input).",
+            "default": 0.0,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.0001
+          }
+        ]
+      },
+      "hidden": {
+        "unique_id": [
+          "UNIQUE_ID"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mesh",
+        "segmenter",
+        "resolution",
+        "padding",
+        "weld_distance"
+      ],
+      "hidden": [
+        "unique_id"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MESH"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "mesh"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "UnwrapMesh",
+    "display_name": "Unwrap Mesh UVs",
+    "description": "Generates a UV atlas: segments the surface into charts, parameterizes each, packs into a [0,1] atlas. Vertices on chart seams are duplicated (one copy per chart, same position, own UV), so the output mesh has more vertices than the input. Run after Remesh/Decimate, before texture baking.",
+    "python_module": "comfy_extras.nodes_mesh_postprocess",
+    "category": "3d/texturing",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "BakeTextureFromVoxel": {
+    "input": {
+      "required": {
+        "mesh": [
+          "MESH",
+          {}
+        ],
+        "voxel_colors": [
+          "VOXEL",
+          {}
+        ],
+        "texture_size": [
+          "INT",
+          {
+            "display_name": "resolution",
+            "tooltip": "Square UV atlas resolution.",
+            "default": 2048,
+            "min": 64,
+            "max": 8192
+          }
+        ]
+      },
+      "optional": {
+        "reference_mesh": [
+          "MESH",
+          {
+            "tooltip": "Optional dense pre-decimation mesh; back-projects each texel onto its true surface before sampling, removing faceted baking on coarse meshes."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mesh",
+        "voxel_colors",
+        "texture_size"
+      ],
+      "optional": [
+        "reference_mesh"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE",
+      "IMAGE",
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "base_color",
+      "metallic",
+      "roughness"
+    ],
+    "output_tooltips": [
+      null,
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "BakeTextureFromVoxel",
+    "display_name": "Bake Texture From Voxel",
+    "description": "Bakes PBR textures onto the mesh's existing UV layout (trilinear-sample the sparse voxel volume). Does NOT unwrap — connect a UV unwrap node upstream. Outputs base_color + metallic/roughness grayscale IMAGEs (black if no PBR); feed them to ApplyTextureToMesh (SAME mesh) for SaveGLB.",
+    "python_module": "comfy_extras.nodes_mesh_postprocess",
+    "category": "3d/texturing",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "ApplyTextureToMesh": {
+    "input": {
+      "required": {
+        "mesh": [
+          "MESH",
+          {}
+        ],
+        "base_color": [
+          "IMAGE",
+          {}
+        ]
+      },
+      "optional": {
+        "metallic": [
+          "IMAGE",
+          {}
+        ],
+        "roughness": [
+          "IMAGE",
+          {}
+        ],
+        "occlusion": [
+          "IMAGE",
+          {}
+        ],
+        "normal_map": [
+          "IMAGE",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mesh",
+        "base_color"
+      ],
+      "optional": [
+        "metallic",
+        "roughness",
+        "occlusion",
+        "normal_map"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MESH"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "mesh"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "ApplyTextureToMesh",
+    "display_name": "Apply Texture to Mesh",
+    "description": "Attaches baked texture IMAGEs to a mesh's UV layout for SaveGLB. Feed the SAME mesh you baked",
+    "python_module": "comfy_extras.nodes_mesh_postprocess",
+    "category": "3d/texturing",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "BakeNormalMapFromMesh": {
+    "input": {
+      "required": {
+        "low_poly": [
+          "MESH",
+          {}
+        ],
+        "high_poly": [
+          "MESH",
+          {}
+        ],
+        "resolution": [
+          "INT",
+          {
+            "display_name": "resolution",
+            "default": 1024,
+            "min": 64,
+            "max": 8192,
+            "step": 64
+          }
+        ],
+        "cage_distance": [
+          "FLOAT",
+          {
+            "tooltip": "Surface search band, as a fraction of the bounding box diagonal. Raise for wrong/missing patches under heavy decimation; lower if it grabs across gaps.",
+            "default": 0.05,
+            "min": 0.001,
+            "max": 0.5,
+            "step": 0.001
+          }
+        ],
+        "ignore_backfaces": [
+          "BOOLEAN",
+          {
+            "tooltip": "Skip high-poly surfaces facing away from the texel, so crevices/enclosed spaces don't grab the opposite wall. Disable only if the high-poly winding is inconsistent.",
+            "default": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "low_poly",
+        "high_poly",
+        "resolution",
+        "cage_distance",
+        "ignore_backfaces"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "normal_map"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "BakeNormalMapFromMesh",
+    "display_name": "Bake Normal Map from Mesh",
+    "description": "Bakes a tangent-space normal map (glTF/OpenGL +Y) from a high-poly mesh into a low-poly's UV layout, capturing detail lost during decimation. Feed the UV-unwrapped low_poly and the high_poly it was decimated from. Outputs an image for Apply Texture To Mesh's normal_map input.",
+    "python_module": "comfy_extras.nodes_mesh_postprocess",
+    "category": "3d/texturing",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "BakeAmbientOcclusion": {
+    "input": {
+      "required": {
+        "low_poly": [
+          "MESH",
+          {}
+        ],
+        "high_poly": [
+          "MESH",
+          {}
+        ],
+        "resolution": [
+          "INT",
+          {
+            "default": 1024,
+            "min": 64,
+            "max": 8192,
+            "step": 64
+          }
+        ],
+        "samples": [
+          "INT",
+          {
+            "tooltip": "Rays per texel. More = smoother, slower. Raise if grainy.",
+            "default": 64,
+            "min": 4,
+            "max": 1024,
+            "step": 4
+          }
+        ],
+        "max_distance": [
+          "FLOAT",
+          {
+            "tooltip": "Ray length, as a fraction of the bounding box diagonal. Smaller = tighter, more local occlusion.",
+            "default": 0.5,
+            "min": 0.01,
+            "max": 2.0,
+            "step": 0.01
+          }
+        ],
+        "strength": [
+          "FLOAT",
+          {
+            "tooltip": "Scales the occlusion. >1 darkens, <1 lightens.",
+            "default": 1.0,
+            "min": 0.0,
+            "max": 2.0,
+            "step": 0.05
+          }
+        ],
+        "bias": [
+          "FLOAT",
+          {
+            "tooltip": "Ray origin lift off the surface, as a fraction of the bounding box diagonal. Raise if even surfaces show dark blotches/holes.",
+            "default": 0.01,
+            "min": 0.0001,
+            "max": 0.2,
+            "step": 0.0005
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "low_poly",
+        "high_poly",
+        "resolution",
+        "samples",
+        "max_distance",
+        "strength",
+        "bias"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "occlusion"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "BakeAmbientOcclusion",
+    "display_name": "Bake Ambient Occlusion",
+    "description": "Bakes an ambient-occlusion map from a high-poly mesh into a low-poly's UV layout (white = open, dark = crevices). Feed the UV-unwrapped low_poly and the high_poly it was decimated from. Outputs a grayscale image for Apply Texture To Mesh's occlusion input (packed into the ORM map / occlusionTexture).",
+    "python_module": "comfy_extras.nodes_mesh_postprocess",
+    "category": "3d/texturing",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "MeshSmoothNormals": {
+    "input": {
+      "required": {
+        "mesh": [
+          "MESH",
+          {}
+        ],
+        "crease_angle": [
+          "FLOAT",
+          {
+            "tooltip": "Edges whose dihedral angle exceeds this value (degrees) stay hard (vertices are split). 180 = fully smooth; lower preserves sharp edges (e.g. ~30-60 for hard-surface).",
+            "default": 180.0,
+            "min": 0.0,
+            "max": 180.0,
+            "step": 1.0
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mesh",
+        "crease_angle"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MESH"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "mesh"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "MeshSmoothNormals",
+    "display_name": "Smooth Mesh Normals",
+    "description": "Compute smooth per-vertex normals and attach them to the mesh. Meshes without normals are shaded flat (per-face) by glTF viewers; this makes them shade smoothly. With crease_angle below 180, edges sharper than the threshold are kept hard by splitting vertices along them.",
+    "python_module": "comfy_extras.nodes_mesh_postprocess",
+    "category": "3d/mesh",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "ComfyMathExpression": {
+    "input": {
+      "required": {
+        "expression": [
+          "STRING",
+          {
+            "default": "a + b",
+            "multiline": true
+          }
+        ],
+        "values": [
+          "COMFY_AUTOGROW_V3",
+          {
+            "template": {
+              "input": {
+                "required": {
+                  "value": [
+                    "FLOAT,INT,BOOLEAN",
+                    {}
+                  ]
+                }
+              },
+              "names": [
+                "a",
+                "b",
+                "c",
+                "d",
+                "e",
+                "f",
+                "g",
+                "h",
+                "i",
+                "j",
+                "k",
+                "l",
+                "m",
+                "n",
+                "o",
+                "p",
+                "q",
+                "r",
+                "s",
+                "t",
+                "u",
+                "v",
+                "w",
+                "x",
+                "y",
+                "z"
+              ],
+              "min": 1
+            }
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "expression",
+        "values"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "FLOAT",
+      "INT",
+      "BOOLEAN"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "FLOAT",
+      "INT",
+      "BOOL"
+    ],
+    "output_tooltips": [
+      null,
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "ComfyMathExpression",
+    "display_name": "Math Expression",
+    "description": "",
+    "python_module": "comfy_extras.nodes_math",
+    "category": "utilities",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "math",
+      "expression",
+      "formula",
+      "calculate",
+      "calculator",
+      "eval"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "LoadBackgroundRemovalModel": {
+    "input": {
+      "required": {
+        "bg_removal_name": [
+          "COMBO",
+          {
+            "tooltip": "The model used to remove backgrounds from images",
+            "multiselect": false,
+            "options": [
+              "choose-local-file"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "bg_removal_name"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "BACKGROUND_REMOVAL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "bg_model"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "LoadBackgroundRemovalModel",
+    "display_name": "Load Background Removal Model",
+    "description": "",
+    "python_module": "comfy_extras.nodes_bg_removal",
+    "category": "model/loaders",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "RemoveBackground": {
+    "input": {
+      "required": {
+        "bg_removal_model": [
+          "BACKGROUND_REMOVAL",
+          {
+            "tooltip": "Background removal model used to generate the mask"
+          }
+        ],
+        "image": [
+          "IMAGE",
+          {
+            "tooltip": "Input image to remove the background from"
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "bg_removal_model",
+        "image"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MASK"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "mask"
+    ],
+    "output_tooltips": [
+      "Generated foreground mask"
+    ],
+    "output_matchtypes": null,
+    "name": "RemoveBackground",
+    "display_name": "Remove Background",
+    "description": "Generates a foreground mask to remove the background from an image using a background removal model.",
+    "python_module": "comfy_extras.nodes_bg_removal",
+    "category": "image/background removal",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "MeshToFile3D": {
+    "input": {
+      "required": {
+        "mesh": [
+          "MESH",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mesh"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "FILE_3D_GLB"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "model_3d"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "MeshToFile3D",
+    "display_name": "Create 3D File (from Mesh)",
+    "description": "Serialize a mesh to a GLB File3D object for Save / Preview 3D nodes, carrying its UVs, colors, normals, texture, normal/occlusion/emissive maps and material. Supports one item per batch only.",
+    "python_module": "comfy_extras.nodes_save_3d",
+    "category": "3d",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "mesh to glb",
+      "mesh to file",
+      "export mesh"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "GetMeshInfo": {
+    "input": {
+      "required": {
+        "mesh": [
+          "MESH",
+          {}
+        ]
+      },
+      "hidden": {
+        "unique_id": [
+          "UNIQUE_ID"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mesh"
+      ],
+      "hidden": [
+        "unique_id"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MESH",
+      "STRING"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "mesh",
+      "info"
+    ],
+    "output_tooltips": [
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "GetMeshInfo",
+    "display_name": "Get Mesh Info",
+    "description": "",
+    "python_module": "comfy_extras.nodes_save_3d",
+    "category": "3d/mesh",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "Save3DAdvanced": {
+    "input": {
+      "required": {
+        "model_3d": [
+          "FILE_3D_GLB,FILE_3D_GLTF,FILE_3D_FBX,FILE_3D_OBJ,FILE_3D_STL,FILE_3D_USDZ,FILE_3D",
+          {
+            "tooltip": "3D model file from an upstream 3D node."
+          }
+        ],
+        "filename_prefix": [
+          "STRING",
+          {
+            "default": "3d/ComfyUI",
+            "multiline": false
+          }
+        ],
+        "viewport_state": [
+          "LOAD_3D",
+          {}
+        ],
+        "width": [
+          "INT",
+          {
+            "tooltip": "Render width of the viewport in pixels.",
+            "default": 1024,
+            "min": 1,
+            "max": 4096,
+            "step": 1
+          }
+        ],
+        "height": [
+          "INT",
+          {
+            "tooltip": "Render height of the viewport in pixels.",
+            "default": 1024,
+            "min": 1,
+            "max": 4096,
+            "step": 1
+          }
+        ]
+      },
+      "optional": {
+        "model_3d_info": [
+          "LOAD3D_MODEL_INFO",
+          {
+            "tooltip": "Placement of each model in the scene: position, rotation, and scale (Y-up world space).",
+            "advanced": true
+          }
+        ],
+        "camera_info": [
+          "LOAD3D_CAMERA",
+          {
+            "tooltip": "Viewport camera information: position, look-at target, zoom, and type.",
+            "advanced": true
+          }
+        ]
+      },
+      "hidden": {
+        "prompt": [
+          "PROMPT"
+        ],
+        "extra_pnginfo": [
+          "EXTRA_PNGINFO"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model_3d",
+        "filename_prefix",
+        "viewport_state",
+        "width",
+        "height"
+      ],
+      "optional": [
+        "model_3d_info",
+        "camera_info"
+      ],
+      "hidden": [
+        "prompt",
+        "extra_pnginfo"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "FILE_3D",
+      "LOAD3D_MODEL_INFO",
+      "LOAD3D_CAMERA",
+      "INT",
+      "INT"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "model_3d",
+      "model_3d_info",
+      "camera_info",
+      "width",
+      "height"
+    ],
+    "output_tooltips": [
+      "3D model file (glb/obj/stl/etc.) from an upstream 3D node.",
+      "Placement of each model in the scene: position, rotation, and scale (Y-up world space).",
+      "Viewport camera information: position, look-at target, zoom, and type.",
+      "Render width of the viewport in pixels.",
+      "Render height of the viewport in pixels."
+    ],
+    "output_matchtypes": null,
+    "name": "Save3DAdvanced",
+    "display_name": "Save 3D (Advanced)",
+    "description": "",
+    "python_module": "comfy_extras.nodes_save_3d",
+    "category": "3d",
+    "output_node": true,
+    "deprecated": false,
+    "experimental": true,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "save 3d",
+      "export 3d model",
+      "save mesh advanced"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "LoadMoGeModel": {
+    "input": {
+      "required": {
+        "model_name": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "choose-local-file"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model_name"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MOGE_MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MOGE_MODEL"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "LoadMoGeModel",
+    "display_name": "Load MoGe Model",
+    "description": "",
+    "python_module": "comfy_extras.nodes_moge",
+    "category": "model/loaders",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "MoGeInference": {
+    "input": {
+      "required": {
+        "moge_model": [
+          "MOGE_MODEL",
+          {}
+        ],
+        "image": [
+          "IMAGE",
+          {}
+        ],
+        "resolution_level": [
+          "INT",
+          {
+            "tooltip": "0 = fastest, 9 = most detail.",
+            "default": 9,
+            "min": 0,
+            "max": 9
+          }
+        ],
+        "fov_x_degrees": [
+          "FLOAT",
+          {
+            "tooltip": "Horizontal field of view of the source camera. Sets the focal length used to unproject the depth map into 3D. 0 = auto-recover from the predicted points.",
+            "advanced": true,
+            "default": 0.0,
+            "min": 0.0,
+            "max": 170.0,
+            "step": 0.1
+          }
+        ],
+        "batch_size": [
+          "INT",
+          {
+            "tooltip": "Images per inference call. Lower if you OOM on a long video / image set.",
+            "default": 4,
+            "min": 1,
+            "max": 64
+          }
+        ],
+        "force_projection": [
+          "BOOLEAN",
+          {
+            "advanced": true,
+            "default": true
+          }
+        ],
+        "apply_mask": [
+          "BOOLEAN",
+          {
+            "tooltip": "Set masked-out (sky / invalid) pixels to inf in points and depth so meshing culls them. Disable to keep the raw predicted geometry everywhere; the mask is still returned separately.",
+            "advanced": true,
+            "default": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "moge_model",
+        "image",
+        "resolution_level",
+        "fov_x_degrees",
+        "batch_size",
+        "force_projection",
+        "apply_mask"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MOGE_GEOMETRY"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "moge_geometry"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "MoGeInference",
+    "display_name": "Run MoGe Inference",
+    "description": "Run MoGe on a single image to estimate depth and geometry.",
+    "python_module": "comfy_extras.nodes_moge",
+    "category": "image/geometry estimation",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "moge",
+      "depth",
+      "geometry",
+      "depth estimation",
+      "geometry estimation"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "MoGeGeometryToFOV": {
+    "input": {
+      "required": {
+        "moge_geometry": [
+          "MOGE_GEOMETRY",
+          {}
+        ],
+        "axis": [
+          "COMBO",
+          {
+            "tooltip": "'vertical' (fov_y), 'horizontal' (fov_x), or 'diagonal'.",
+            "default": "vertical",
+            "multiselect": false,
+            "options": [
+              "vertical",
+              "horizontal",
+              "diagonal"
+            ]
+          }
+        ],
+        "unit": [
+          "COMBO",
+          {
+            "tooltip": "Output unit for the FOV.",
+            "default": "degrees",
+            "multiselect": false,
+            "options": [
+              "degrees",
+              "radians"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "moge_geometry",
+        "axis",
+        "unit"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "FLOAT",
+      "FLOAT"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "fov",
+      "focal_pixels"
+    ],
+    "output_tooltips": [
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "MoGeGeometryToFOV",
+    "display_name": "Get FoV from MoGe Geometry",
+    "description": "Derive the field of view and focal length from MoGe intrinsics.",
+    "python_module": "comfy_extras.nodes_moge",
+    "category": "image/geometry estimation",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "moge",
+      "fov",
+      "geometry",
+      "intrinsics",
+      "field of view"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "DaWCollisionProxy": {
+    "input": {
+      "required": {
+        "mesh": [
+          "MESH",
+          {}
+        ],
+        "mode": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "convex_hull",
+              "box"
+            ]
+          }
+        ],
+        "max_vertices": [
+          "INT",
+          {
+            "default": 128,
+            "min": 8,
+            "max": 4096
+          }
+        ],
+        "margin": [
+          "FLOAT",
+          {
+            "default": 0.002,
+            "min": 0,
+            "max": 1,
+            "step": 0.001
+          }
+        ],
+        "body_type": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "StaticBody3D",
+              "RigidBody3D"
+            ]
+          }
+        ],
+        "mass": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": 0.001,
+            "max": 100000
+          }
+        ],
+        "filename_prefix": [
+          "STRING",
+          {
+            "default": "GameDev/Collision/asset",
+            "multiline": false
+          }
+        ]
+      },
+      "hidden": {
+        "prompt": [
+          "PROMPT"
+        ],
+        "extra_pnginfo": [
+          "EXTRA_PNGINFO"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "mesh",
+        "mode",
+        "max_vertices",
+        "margin",
+        "body_type",
+        "mass",
+        "filename_prefix"
+      ],
+      "hidden": [
+        "prompt",
+        "extra_pnginfo"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MESH",
+      "STRING"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "collision_mesh",
+      "report"
+    ],
+    "output_tooltips": [
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "DaWCollisionProxy",
+    "display_name": "DaW Game Collision Proxy (CPU)",
+    "description": "Build a conservative convex collider and export a real Godot 4 physics scene. One solid hull fills doorways and other concavities; not suitable for walkable buildings or articulated characters. Input units/axes are preserved. CPU only.",
+    "python_module": "custom_nodes.ComfyUI-DaWasteh-GamePhysics",
+    "category": "DaWasteh/3d/physics",
+    "output_node": true,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "DaWMultiGPUDeviceControl": {
+    "input": {
+      "required": {
+        "model_device": [
+          "COMBO",
+          {
+            "default": "gpu:0",
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ],
+        "clip_device": [
+          "COMBO",
+          {
+            "default": "gpu:1",
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ],
+        "vae_device": [
+          "COMBO",
+          {
+            "default": "gpu:1",
+            "multiselect": false,
+            "options": [
+              "default",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "COMBO",
+      "COMBO",
+      "COMBO"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "model_device",
+      "clip_device",
+      "vae_device"
+    ],
+    "output_tooltips": [
+      null,
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "DaWMultiGPUDeviceControl",
+    "display_name": "DaW Multi-GPU Device Control",
+    "description": "Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector.\n\nConnect these COMBO outputs to the ``device`` input of ComfyUI's official\nSelect Model Device, Select CLIP Device, and Select VAE Device nodes. The\nnode chooses labels only; the official selectors remain responsible for\nvalidating and moving the actual model objects.",
+    "python_module": "custom_nodes.ComfyUI-DaWasteh-MultiGPU-Control",
+    "category": "DaWasteh/multigpu",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "PixaromaPrompt": {
+    "input": {
+      "required": {},
+      "optional": {
+        "text_in": [
+          "STRING",
+          {
+            "forceInput": true,
+            "tooltip": "Optional. Wire another prompt in and it is joined with your typed prompt (order + separator set on the node). Leave it unconnected to output just your prompt."
+          }
+        ]
+      },
+      "hidden": {
+        "PromptState": [
+          "STRING",
+          {
+            "default": "{}"
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [],
+      "optional": [
+        "text_in"
+      ],
+      "hidden": [
+        "PromptState"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "STRING"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "text"
+    ],
+    "name": "PixaromaPrompt",
+    "display_name": "Prompt Pixaroma",
+    "description": "Prompt Pixaroma - a prompt box with a single text output, plus a personal library of reusable @tags and an optional text input you can join with.\n\nType your prompt and drop in @tags for the parts you reuse a lot. Save a tag called oilpainting whose full text is a long 'oil painting, thick brush strokes, Rembrandt lighting, ...' and then just type @oilpainting. Type @ in the box for a searchable list grouped by category; known tags glow, unknown ones warn you of a typo. Each @tag is swapped for its full text at run time, so the box stays short. Turn on Show expanded to preview what is sent.\n\nWire a prompt into the text input and it is joined with yours - choose My prompt first or Wired first, and the separator. With nothing wired, the output is just your prompt.\n\nManage tags with the Tags button: a fullscreen library with categories. Your library is saved in ComfyUI's settings, so it stays private to you and survives updating the plugin; share it on purpose with Export / Import.",
+    "python_module": "custom_nodes.ComfyUI-Pixaroma",
+    "category": "👑 Pixaroma/💬 Prompt & Text",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "Your prompt with every @tag expanded, joined with the wired text input if one is connected."
+    ],
+    "search_aliases": []
+  },
+  "PixaromaRunTimer": {
+    "input": {
+      "required": {}
+    },
+    "input_order": {
+      "required": []
+    },
+    "is_input_list": false,
+    "output": [],
+    "output_is_list": [],
+    "output_name": [],
+    "name": "PixaromaRunTimer",
+    "display_name": "Run Timer Pixaroma",
+    "description": "Run Timer Pixaroma - a clock that times how long a workflow takes. It resets to zero when you press Run, counts up while the workflow is working, and freezes on the total time the moment it finishes, then plays a chime so you know it is done even when you are in another tab.\n\nThe node face shows only the clock. Right-click the node for settings: turn the chime on or off, pick the sound and volume (with a Preview button), choose how many decimals to show, and set the clock color.\n\nChime sounds are the same library as Notify Pixaroma - drop a .mp3, .wav, or .ogg with a simple name (letters, numbers, dashes) into assets/sounds/ to add more (restart ComfyUI to pick up new files). A master mute for every run timer chime sits at the top of this node's own settings, opened with the gear button on the node toolbar or by right-clicking the node.",
+    "python_module": "custom_nodes.ComfyUI-Pixaroma",
+    "category": "👑 Pixaroma/🔀 Logic & Flow",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "VHS_LoadVideo": {
+    "input": {
+      "required": {
+        "video": [
+          [
+            "choose-local-file"
+          ]
+        ],
+        "force_rate": [
+          "FLOAT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 60,
+            "step": 1,
+            "disable": 0
+          }
+        ],
+        "custom_width": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 8192,
+            "disable": 0
+          }
+        ],
+        "custom_height": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 8192,
+            "disable": 0
+          }
+        ],
+        "frame_load_cap": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 9007199254740991,
+            "step": 1,
+            "disable": 0
+          }
+        ],
+        "skip_first_frames": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 9007199254740991,
+            "step": 1
+          }
+        ],
+        "select_every_nth": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 9007199254740991,
+            "step": 1
+          }
+        ]
+      },
+      "optional": {
+        "meta_batch": [
+          "VHS_BatchManager"
+        ],
+        "vae": [
+          "VAE"
+        ],
+        "format": [
+          [
+            "None",
+            "AnimateDiff",
+            "Mochi",
+            "LTXV",
+            "Hunyuan",
+            "Cosmos",
+            "Wan"
+          ],
+          {
+            "default": "AnimateDiff",
+            "formats": {
+              "None": {},
+              "AnimateDiff": {
+                "target_rate": 8,
+                "dim": [
+                  8,
+                  0,
+                  512,
+                  512
+                ]
+              },
+              "Mochi": {
+                "target_rate": 24,
+                "dim": [
+                  16,
+                  0,
+                  848,
+                  480
+                ],
+                "frames": [
+                  6,
+                  1
+                ]
+              },
+              "LTXV": {
+                "target_rate": 24,
+                "dim": [
+                  32,
+                  0,
+                  768,
+                  512
+                ],
+                "frames": [
+                  8,
+                  1
+                ]
+              },
+              "Hunyuan": {
+                "target_rate": 24,
+                "dim": [
+                  16,
+                  0,
+                  848,
+                  480
+                ],
+                "frames": [
+                  4,
+                  1
+                ]
+              },
+              "Cosmos": {
+                "target_rate": 24,
+                "dim": [
+                  16,
+                  0,
+                  1280,
+                  704
+                ],
+                "frames": [
+                  8,
+                  1
+                ]
+              },
+              "Wan": {
+                "target_rate": 16,
+                "dim": [
+                  8,
+                  0,
+                  832,
+                  480
+                ],
+                "frames": [
+                  4,
+                  1
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "hidden": {
+        "force_size": "STRING",
+        "unique_id": "UNIQUE_ID"
+      }
+    },
+    "input_order": {
+      "required": [
+        "video",
+        "force_rate",
+        "custom_width",
+        "custom_height",
+        "frame_load_cap",
+        "skip_first_frames",
+        "select_every_nth"
+      ],
+      "optional": [
+        "meta_batch",
+        "vae",
+        "format"
+      ],
+      "hidden": [
+        "force_size",
+        "unique_id"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE",
+      "INT",
+      "AUDIO",
+      "VHS_VIDEOINFO"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "IMAGE",
+      "frame_count",
+      "audio",
+      "video_info"
+    ],
+    "name": "VHS_LoadVideo",
+    "display_name": "Load Video (Upload) 🎥🅥🅗🅢",
+    "description": "Load Video 🎥🅥🅗🅢<div style=\"font-size: 0.8em\"><div id=VHS_shortdesc>Loads a video from the input folder</div></div><div style=\"font-size: 0.8em\"><div vhs_title=\"Inputs\" style=\"display: flex; font-size: 0.8em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">Inputs: <div vhs_title=\"meta_batch\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">meta_batch: (optional) Connect to a Meta Batch manager to divide extremely long sequences into sub batches. See the documentation for Meta Batch Manager</div></div><div vhs_title=\"vae\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">vae: (optional) If provided the node will output latents instead of images. This drastically reduces the required RAM (not VRAM) when working with long (100+ frames) sequences<div style=\"font-size: 1em\">Using this is strongly encouraged unless connecting to a node that requires a blue image connection such as Apply Controllnet</div></div></div></div></div><div vhs_title=\"Outputs\" style=\"display: flex; font-size: 0.8em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">Outputs: <div vhs_title=\"IMAGE\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">IMAGE: The loaded images</div></div><div vhs_title=\"frame_count\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">frame_count: The length of images just returned</div></div><div vhs_title=\"audio\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">audio: The audio from the loaded video</div></div><div vhs_title=\"video_info\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">video_info: Exposes additional info about the video such as the source frame rate, or the total length</div></div><div vhs_title=\"LATENT\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">LATENT: The loaded images pre-converted to latents. Only available when a vae is connected</div></div></div></div><div vhs_title=\"Widgets\" style=\"display: flex; font-size: 0.8em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">Widgets: <div vhs_title=\"video\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">video: The video file to be loaded. Lists all files with a video extension in the ComfyUI/Input folder</div></div><div vhs_title=\"force_rate\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">force_rate: Drops or duplicates frames so that the produced output has the target frame rate. Many motion models are trained on videos of a specific frame rate and will give better results if input matches that frame rate. If set to 0, all frames are returned. May give unusual results with inputs that have a variable frame rate like animated gifs. Reducing this value can also greatly reduce the execution time and memory requirements.</div></div><div vhs_title=\"force_size\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">force_size: Previously was used to provide suggested resolutions. Instead, custom_width and custom_height can be disabled by setting to 0.</div></div><div vhs_title=\"custom_width\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">custom_width: Allows for an arbitrary width to be entered, cropping to maintain aspect ratio if both are set</div></div><div vhs_title=\"custom_height\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">custom_height: Allows for an arbitrary height to be entered, cropping to maintain aspect ratio if both are set</div></div><div vhs_title=\"frame_load_cap\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">frame_load_cap: The maximum number of frames to load. If 0, all frames are loaded.</div></div><div vhs_title=\"skip_first_frames\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">skip_first_frames: A number of frames which are discarded before producing output.</div></div><div vhs_title=\"select_every_nth\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">select_every_nth: Similar to frame rate. Keeps only the first of every n frames and discard the rest. Has better compatibility with variable frame rate inputs such as gifs. When combined with force_rate, select_every_nth_applies after force_rate so the resulting output has a frame rate equivalent to force_rate/select_every_nth. select_every_nth does not apply to skip_first_frames</div></div><div vhs_title=\"format\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">format: Updates other widgets so that only values supported by the given format can be entered and provides recommended defaults.</div></div><div vhs_title=\"choose video to upload\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">choose video to upload: An upload button is provided to upload local files to the input folder</div></div><div vhs_title=\"videopreview\" style=\"display: flex; font-size: 1em\" class=\"VHS_collapse\"><div style=\"color: #AAA; height: 1.5em;\">[<span style=\"font-family: monospace\">-</span>]</div><div style=\"width: 100%\">videopreview: Displays a preview for the selected video input. If advanced previews is enabled, this preview will reflect the frame_load_cap, force_rate, skip_first_frames, and select_every_nth values chosen. If the video has audio, it will also be previewed when moused over. Additional preview options can be accessed with right click.</div></div></div></div></div>",
+    "python_module": "custom_nodes.comfyui-videohelpersuite",
+    "category": "Video Helper Suite 🎥🅥🅗🅢",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "DaWVideoFrames": {
+    "input": {
+      "required": {
+        "video": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "choose-local-file"
+            ],
+            "video_upload": true
+          }
+        ],
+        "fps": [
+          "FLOAT",
+          {
+            "default": 16,
+            "min": 1,
+            "max": 60
+          }
+        ],
+        "width": [
+          "INT",
+          {
+            "default": 848,
+            "min": 64,
+            "max": 2048,
+            "step": 8
+          }
+        ],
+        "height": [
+          "INT",
+          {
+            "default": 480,
+            "min": 64,
+            "max": 2048,
+            "step": 8
+          }
+        ],
+        "frame_limit": [
+          "INT",
+          {
+            "default": 5,
+            "min": 1,
+            "max": 93
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "video",
+        "fps",
+        "width",
+        "height",
+        "frame_limit"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "IMAGE"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "DaWVideoFrames",
+    "display_name": "DaW Video Frames (No Audio)",
+    "description": "Bounded reference frames via VideoHelperSuite. Drops lazy audio before RAM caching; safe for silent videos. No audio output.",
+    "python_module": "custom_nodes.ComfyUI-DaWasteh-GamePhysics",
+    "category": "DaWasteh/video/physics",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  }
+}

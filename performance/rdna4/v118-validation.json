@@ -1,0 +1,801 @@
+{
+  "version": "1.1.8",
+  "date": "2026-09-14",
+  "scope": "Technical generation and output checks of 13 added workflows, not all historical workflows. No listening or numerical-physics certification.",
+  "environment": {
+    "comfyui": "0.35.0",
+    "core_commit": "db70adbd",
+    "python": "3.13.13",
+    "torch": "2.13.0+rocm10.1.0a20260822",
+    "gpu": "AMD Radeon AI PRO R9700 32 GB",
+    "host_ram_gib": 48,
+    "secondary_gpu_used": false
+  },
+  "models": {
+    "count": 15,
+    "bytes": 40325784886,
+    "manifest_sha256": "6f03be85f7467cbf543426afdd187f296c34b12ac6b77f2adb5b9c2b3c42264d",
+    "verified": true,
+    "verification_command": "python tools/install_models_v118.py --comfy-root <runtime> --include-private-yue2 --verify-only"
+  },
+  "runs": [
+    {
+      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B-First-Last-Frame.json",
+      "workflow_sha256": "7dbfe9b57c107fedd9f6b26b798df6cbaa13a00c5009cc43fb229f613a3fc1e1",
+      "api_contract_sha256": "02d87b772ff14a814c031409c1d81386eab1c7044d52d014f2a0ff0d2995227b",
+      "executed_contract_matches_final": true,
+      "prompt_id": "f2a6d8ad-ff5a-4f6b-bbfd-473529348381",
+      "status": "success",
+      "execution_seconds": 435.412,
+      "supervisor_seconds": 440.26,
+      "cached_nodes": [
+        "6",
+        "7",
+        "10",
+        "13",
+        "15",
+        "29",
+        "32",
+        "33",
+        "36",
+        "37",
+        "52",
+        "53",
+        "54",
+        "55"
+      ],
+      "outputs": [
+        {
+          "path": "Physics/Cosmos2/First-Last-Frame_00001_.webm",
+          "bytes": 129730,
+          "sha256": "a446a0fe260f1cc573004d270290f79b1fa99cd02c8758e49dc6c81be47ff89d"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B-Image-to-Video.json",
+      "workflow_sha256": "f37d2dcb28672372d1dfb2824b55951650b0667cd7107b27b225861609eceb9e",
+      "api_contract_sha256": "f138fa42f50ce097689b3fb573ec83810819261c55a0ca46c91b858c466ca7a1",
+      "executed_contract_matches_final": true,
+      "prompt_id": "b0ad2b02-f211-4588-b266-4cc895f8365f",
+      "status": "success",
+      "execution_seconds": 427.421,
+      "supervisor_seconds": 430.238,
+      "cached_nodes": [
+        "6",
+        "7",
+        "10",
+        "15",
+        "32",
+        "33",
+        "50",
+        "51",
+        "53"
+      ],
+      "outputs": [
+        {
+          "path": "Physics/Cosmos2/Image-to-Video_00001_.webm",
+          "bytes": 113230,
+          "sha256": "3571a8c05eff8b8e3499b4f884a4bad401e5628ddf3140b9be64d49c59912961"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B-Text-to-Video.json",
+      "workflow_sha256": "adcc9e1197b9b7cafdb12ebd2362b7b7b0585118ce58420377341334a0b86fad",
+      "api_contract_sha256": "22b5d7fc4f11847509895136c4f4ea3b0e6d7170490717b89843351bab7f6f37",
+      "executed_contract_matches_final": true,
+      "prompt_id": "ffd0e4c1-85a4-44bc-8812-162ada5d8e9a",
+      "status": "success",
+      "execution_seconds": 448.687,
+      "supervisor_seconds": 451.359,
+      "cached_nodes": [
+        "6",
+        "7",
+        "10",
+        "13",
+        "15",
+        "32",
+        "33",
+        "39",
+        "40",
+        "57",
+        "58",
+        "59",
+        "61"
+      ],
+      "outputs": [
+        {
+          "path": "Physics/Cosmos2/Text-to-Video_00001_.webm",
+          "bytes": 294982,
+          "sha256": "acd10a837c14d50caef7ea42e7f9d3577350cd5a91d8cea7be3494f4c9c7095d"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B-Video-Continuation.json",
+      "workflow_sha256": "6176a92b369554272ca4386ae2797bf2135ab18d01d287a03f0ac34359e5fe2f",
+      "api_contract_sha256": "ba0239395db3e93b84b889fe1607b312848cb97435f30c2bd333a6e8f0c6ef12",
+      "executed_contract_matches_final": true,
+      "prompt_id": "ceeba216-6fcc-4305-be37-188efad7d56f",
+      "status": "success",
+      "execution_seconds": 421.552,
+      "supervisor_seconds": 430.239,
+      "cached_nodes": [],
+      "outputs": [
+        {
+          "path": "Physics/Cosmos2/Video-Continuation_00002_.webm",
+          "bytes": 110250,
+          "sha256": "a07bcc3e3c699f26a053e812922602afab0efffc91ec0ee1a67c19da72548c92"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Game Development/Pixal3D_INT8-MultiView-PBR-Collision.json",
+      "workflow_sha256": "ff407a84a4361888967141a83210fafe970c7fc3d98ca7c2c5524d2c38ab4e2f",
+      "api_contract_sha256": "5ac27626b4a2fadb34fdbbf559e03e948f2f8279e70d953b290bb768c8280e42",
+      "executed_contract_matches_final": true,
+      "prompt_id": "f8355d74-4bfa-4076-89f5-01f05da7c3fe",
+      "status": "success",
+      "execution_seconds": 743.916,
+      "supervisor_seconds": 750.815,
+      "cached_nodes": [
+        "87",
+        "117",
+        "118",
+        "288",
+        "324",
+        "386",
+        "387",
+        "389"
+      ],
+      "outputs": [
+        {
+          "path": "GameDev/Pixal3D/MultiView-PBR-Collision/asset_00001.glb",
+          "bytes": 1673504,
+          "sha256": "b4c85bc5bb850771ab85fcc237c5a5df5500afab54d8606bbc5c420293826085"
+        },
+        {
+          "path": "GameDev/Pixal3D/MultiView-PBR-Collision/asset_collision_00001.glb",
+          "bytes": 1168,
+          "sha256": "101eec4e39c33cd70fe10dffdec5636b3c97cda712fb17531f5ab1a67d47b0f8"
+        },
+        {
+          "path": "GameDev/Pixal3D/MultiView-PBR-Collision/asset_collision_9yozt7lv.json",
+          "bytes": 691,
+          "sha256": "6012a93a070a37651748e7c39b3e72769108f2a2941253e03bcdbfce246e2b6b"
+        },
+        {
+          "path": "GameDev/Pixal3D/MultiView-PBR-Collision/asset_collision_9yozt7lv.tscn",
+          "bytes": 609,
+          "sha256": "21528c3d07a9286b725a6d6c84eb21d1e944124e07a120f52292ab7c2008571e"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Game Development/Pixal3D_INT8-PBR-Collision.json",
+      "workflow_sha256": "85e7008c18db146c10dcf1426ba35d090930232871b21071115b719fff19785a",
+      "api_contract_sha256": "34ad4d570a4cf5d7b6dff409ad04b4b12e587277cd080c3d903a9e11559e99d4",
+      "executed_contract_matches_final": true,
+      "prompt_id": "92d9d88d-745b-4c95-9156-dde5c662fa8c",
+      "status": "success",
+      "execution_seconds": 27.23,
+      "supervisor_seconds": 30.053,
+      "cached_nodes": [
+        "3",
+        "15",
+        "18",
+        "23",
+        "55",
+        "56",
+        "87",
+        "91",
+        "92",
+        "94",
+        "108",
+        "117",
+        "119",
+        "122",
+        "125",
+        "126",
+        "186",
+        "192",
+        "193",
+        "199",
+        "202",
+        "241",
+        "242",
+        "248",
+        "279",
+        "298",
+        "302",
+        "303",
+        "312",
+        "319",
+        "324",
+        "388",
+        "389",
+        "390"
+      ],
+      "outputs": [
+        {
+          "path": "GameDev/Pixal3D/PBR-Collision/asset_00001.glb",
+          "bytes": 4455988,
+          "sha256": "d9eb45edbb7f495d7e0bd26b8a8f6b03da57276e37562f0349058d9c7d495f49"
+        },
+        {
+          "path": "GameDev/Pixal3D/PBR-Collision/asset_collision_00001.glb",
+          "bytes": 1168,
+          "sha256": "8a3037b67eeac35fa7ed244d7072b9bfeb6cc6e2790e025c951bcafddf2be01d"
+        },
+        {
+          "path": "GameDev/Pixal3D/PBR-Collision/asset_collision_hu4hv6vg.json",
+          "bytes": 680,
+          "sha256": "6fb9b814a7db49d2622be7ffbbd3d703e2235ba305a1091acfe0082bbbe3f21c"
+        },
+        {
+          "path": "GameDev/Pixal3D/PBR-Collision/asset_collision_hu4hv6vg.tscn",
+          "bytes": 613,
+          "sha256": "1a9b408730beeea5c49324d9c84a74ed8d555a28dcc710025faf33c6688110f6"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Game Development/Pixal3D_INT8-Shape-Collision.json",
+      "workflow_sha256": "c115a057914494d23213359fd07be57711a5db7aa9f201f230fb1b9af2db8ae4",
+      "api_contract_sha256": "312d6c16bbe5bab51198626ce321a86752abc4c1e1da90a996629c2881061f1a",
+      "executed_contract_matches_final": true,
+      "prompt_id": "d4efd9f5-10f6-4df0-bdd8-96c3e85f9f74",
+      "status": "success",
+      "execution_seconds": 189.597,
+      "supervisor_seconds": 190.35,
+      "cached_nodes": [],
+      "outputs": [
+        {
+          "path": "GameDev/Pixal3D/Shape-Collision/asset_00001.glb",
+          "bytes": 216344,
+          "sha256": "827cc3f714e1305a83733119a264d2b28d731a088215599015734ea98695162f"
+        },
+        {
+          "path": "GameDev/Pixal3D/Shape-Collision/asset_collision_00001.glb",
+          "bytes": 1168,
+          "sha256": "8a3037b67eeac35fa7ed244d7072b9bfeb6cc6e2790e025c951bcafddf2be01d"
+        },
+        {
+          "path": "GameDev/Pixal3D/Shape-Collision/asset_collision_zffsrt7_.json",
+          "bytes": 682,
+          "sha256": "185894e6b7860c0b9859b16fede85d152632b3e21bb1925ce33582231db2904e"
+        },
+        {
+          "path": "GameDev/Pixal3D/Shape-Collision/asset_collision_zffsrt7_.tscn",
+          "bytes": 613,
+          "sha256": "1a9b408730beeea5c49324d9c84a74ed8d555a28dcc710025faf33c6688110f6"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Game Development/TRELLIS2_INT8-PBR-Collision.json",
+      "workflow_sha256": "fbcb9f270a78c087071a45df9b9373a4b8adb5af8e9dcd65065b1967885a7b0e",
+      "api_contract_sha256": "8d06c1658d3d2d3d6ebaf9dd8c06e085fcd4c49796e458d1d4191fe19994406e",
+      "executed_contract_matches_final": true,
+      "prompt_id": "7da88e99-186e-4e38-bdf6-8d334f82fa6f",
+      "status": "success",
+      "execution_seconds": 28.571,
+      "supervisor_seconds": 30.069,
+      "cached_nodes": [
+        "3",
+        "15",
+        "18",
+        "23",
+        "87",
+        "91",
+        "92",
+        "94",
+        "108",
+        "117",
+        "119",
+        "122",
+        "125",
+        "126",
+        "186",
+        "192",
+        "193",
+        "199",
+        "202",
+        "241",
+        "248",
+        "279",
+        "303",
+        "312",
+        "319",
+        "324",
+        "326",
+        "385",
+        "386",
+        "387"
+      ],
+      "outputs": [
+        {
+          "path": "GameDev/TRELLIS2/PBR-Collision/asset_00001.glb",
+          "bytes": 4160116,
+          "sha256": "1dc1a170eddd7b9fd0d4c45848a072a03acd32d57755bbec6317f7f359ec7b8d"
+        },
+        {
+          "path": "GameDev/TRELLIS2/PBR-Collision/asset_collision_00001.glb",
+          "bytes": 1168,
+          "sha256": "8cc4f972f7bca22d4dd774aba6f775bedc677813e8822a99c87167d0c5c58f90"
+        },
+        {
+          "path": "GameDev/TRELLIS2/PBR-Collision/asset_collision_1jszm_he.json",
+          "bytes": 682,
+          "sha256": "4e7e1e880c7dd932e0b2281e238e4a17b1025550248a8bb10f2a8b20ece95bee"
+        },
+        {
+          "path": "GameDev/TRELLIS2/PBR-Collision/asset_collision_1jszm_he.tscn",
+          "bytes": 605,
+          "sha256": "39b6338d76a7be29635427024b15cf1b325af57ff15cb9c062fbdb9a692d7296"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Game Development/TRELLIS2_INT8-Shape-Collision.json",
+      "workflow_sha256": "22488f0456e538cee62293953dbbd00937e892770352577756ffc3f04eec1e45",
+      "api_contract_sha256": "5942786bd0cdef1399abf6a75b85c6b78fc8f113e6adc4a391966a0e541b0c2e",
+      "executed_contract_matches_final": true,
+      "prompt_id": "864805f1-721d-4868-90ca-fa4bd0ba86f5",
+      "status": "success",
+      "execution_seconds": 37.317,
+      "supervisor_seconds": 40.126,
+      "cached_nodes": [],
+      "outputs": [
+        {
+          "path": "GameDev/TRELLIS2/Shape-Collision/asset_00001.glb",
+          "bytes": 215936,
+          "sha256": "a7ae468f9c7afc350b71c96b3e1ee057c6c9408b0621bccfc6e98f55d7bce9a7"
+        },
+        {
+          "path": "GameDev/TRELLIS2/Shape-Collision/asset_collision_00001.glb",
+          "bytes": 1168,
+          "sha256": "8cc4f972f7bca22d4dd774aba6f775bedc677813e8822a99c87167d0c5c58f90"
+        },
+        {
+          "path": "GameDev/TRELLIS2/Shape-Collision/asset_collision_qst_wqd_.json",
+          "bytes": 684,
+          "sha256": "cfd27ec59322def64bd5bdc5a7b6a52c1318bab1754cec6decca63224b2eb15a"
+        },
+        {
+          "path": "GameDev/TRELLIS2/Shape-Collision/asset_collision_qst_wqd_.tscn",
+          "bytes": 605,
+          "sha256": "39b6338d76a7be29635427024b15cf1b325af57ff15cb9c062fbdb9a692d7296"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Music Generation/YuE2_3B_INT8-PRIVATE-ABC-to-Music.json",
+      "workflow_sha256": "0749d97be1861a8bbd9cf51e1ec37c9c3986c571cd0e6f79ccd15f392d26268e",
+      "api_contract_sha256": "fabcf0e1e050e5e45b08aa57d12ac9bb0b28bfbd7f5f5fcf2bcb65a25dab23ee",
+      "executed_contract_matches_final": true,
+      "prompt_id": "100616db-8bec-4c49-b159-7a3d7a574c2a",
+      "status": "success",
+      "execution_seconds": 64.562,
+      "supervisor_seconds": 70.163,
+      "cached_nodes": [
+        "1",
+        "2",
+        "3",
+        "24",
+        "25",
+        "26",
+        "27"
+      ],
+      "outputs": [
+        {
+          "path": "Music/PRIVATE_YuE2/ABC-to-Music_00001.flac",
+          "bytes": 11024414,
+          "sha256": "55933f5f97a5d499bcd7e0e1bf176d7c08ee93116eb8ec5e6ebc4fa9fbed758e"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Music Generation/YuE2_3B_INT8-PRIVATE-Audio-Cover.json",
+      "workflow_sha256": "c6d9c28aaaae89e104ed697e41441809aef51556f49ac023ab6b7075db528219",
+      "api_contract_sha256": "b97210499e12defaec724f0162d33f63546bb860f9580d6b59fa7a6e9b9c348e",
+      "executed_contract_matches_final": true,
+      "prompt_id": "7b3ab8ed-fa6c-47fa-a092-6f7fc371b6fe",
+      "status": "success",
+      "execution_seconds": 22.788,
+      "supervisor_seconds": 30.049,
+      "cached_nodes": [
+        "1",
+        "2",
+        "3",
+        "29",
+        "30",
+        "31",
+        "32"
+      ],
+      "outputs": [
+        {
+          "path": "Music/PRIVATE_YuE2/Audio-Cover_00001.flac",
+          "bytes": 2709409,
+          "sha256": "8ae9d11f79e525ce05550f1a954c61e2b5c7fbfab93c73f3046c3b2146014ba5"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Music Generation/YuE2_3B_INT8-PRIVATE-Text-to-Music.json",
+      "workflow_sha256": "1d12cffe9ee41c7a9322fb7aa968aebe34691580d33ab6dcc477d21be10086d4",
+      "api_contract_sha256": "64225cd0f42127e47e378c0bf48728122ea98cdd512350e902830bf98746c164",
+      "executed_contract_matches_final": true,
+      "prompt_id": "1aa2d87b-76c1-4bef-8782-af03c40895f7",
+      "status": "success",
+      "execution_seconds": 84.553,
+      "supervisor_seconds": 90.135,
+      "cached_nodes": [
+        "1",
+        "2",
+        "3",
+        "25",
+        "26",
+        "27",
+        "28"
+      ],
+      "outputs": [
+        {
+          "path": "Music/PRIVATE_YuE2/Text-to-Music_00002.flac",
+          "bytes": 11214871,
+          "sha256": "ee73fdad68192c099d25b2dbc8018f7f3cd0191e454651d868f1836e93918337"
+        }
+      ]
+    },
+    {
+      "workflow": "workflows/Text to Image/Cosmos_Predict2_2B-Text-to-Image.json",
+      "workflow_sha256": "95a4968b8d0cff1829174b86f98782f50ed979878da25be33d4ab4c3cfd5c476",
+      "api_contract_sha256": "8deaecf586db60f8dd804112de9aedc1c9167b28932c60ad07d5bac0d2684d7c",
+      "executed_contract_matches_final": true,
+      "prompt_id": "3f9d9651-d28c-4ede-b74c-091e8c8f376d",
+      "status": "success",
+      "execution_seconds": 23.557,
+      "supervisor_seconds": 30.097,
+      "cached_nodes": [],
+      "outputs": [
+        {
+          "path": "Physics/Cosmos2/Text-to-Image_00001_.png",
+          "bytes": 841255,
+          "sha256": "20c44e6881222ec86d619f94c2b958d2c9d9b04449ca2de29fda55c2abe8ba15"
+        }
+      ]
+    }
+  ],
+  "audio": [
+    {
+      "file": "ABC-to-Music_00001.flac",
+      "sample_rate": 48000,
+      "channels": 2,
+      "frames": 5107200,
+      "duration": 106.4,
+      "peak": 0.999969482421875,
+      "rms": 0.18763861406503227,
+      "finite": true,
+      "clipped_fraction": 9.790100250626567e-08,
+      "sha256": "55933f5f97a5d499bcd7e0e1bf176d7c08ee93116eb8ec5e6ebc4fa9fbed758e"
+    },
+    {
+      "file": "Audio-Cover_00001.flac",
+      "sample_rate": 48000,
+      "channels": 2,
+      "frames": 1486080,
+      "duration": 30.96,
+      "peak": 1.0,
+      "rms": 0.13143481040293378,
+      "finite": true,
+      "clipped_fraction": 6.056201550387597e-06,
+      "sha256": "8ae9d11f79e525ce05550f1a954c61e2b5c7fbfab93c73f3046c3b2146014ba5"
+    },
+    {
+      "file": "ManualABC-Test_00001.flac",
+      "sample_rate": 48000,
+      "channels": 2,
+      "frames": 1440000,
+      "duration": 30.0,
+      "peak": 0.95751953125,
+      "rms": 0.14006485213182607,
+      "finite": true,
+      "clipped_fraction": 0.0,
+      "sha256": "8a5da4efa9e813cc62d7cdf794d4428e3f53967c1a3100239a1c51b9d6c90d9f"
+    },
+    {
+      "file": "Text-to-Music_00001.flac",
+      "sample_rate": 48000,
+      "channels": 2,
+      "frames": 1440000,
+      "duration": 30.0,
+      "peak": 0.98388671875,
+      "rms": 0.14548318172591956,
+      "finite": true,
+      "clipped_fraction": 0.0,
+      "sha256": "7338336b02b2a1babb3c63266c0698d4690cec59ac867aec800395b1e5fd2e23"
+    },
+    {
+      "file": "Text-to-Music_00002.flac",
+      "sample_rate": 48000,
+      "channels": 2,
+      "frames": 5258880,
+      "duration": 109.56,
+      "peak": 0.99951171875,
+      "rms": 0.1559430394856251,
+      "finite": true,
+      "clipped_fraction": 0.0,
+      "sha256": "ee73fdad68192c099d25b2dbc8018f7f3cd0191e454651d868f1836e93918337"
+    }
+  ],
+  "cosmos": [
+    {
+      "file": "Physics/Cosmos2/First-Last-Frame_00001_.webm",
+      "sha256": "a446a0fe260f1cc573004d270290f79b1fa99cd02c8758e49dc6c81be47ff89d",
+      "bytes": 129730,
+      "frames": 93,
+      "fps": 16.0,
+      "seconds": 5.8125,
+      "width": 848,
+      "height": 480,
+      "mean": 141.19440642188522,
+      "std": 27.177060013147088,
+      "mean_adjacent_frame_difference": 0.829868534801978
+    },
+    {
+      "file": "Physics/Cosmos2/Image-to-Video_00001_.webm",
+      "sha256": "3571a8c05eff8b8e3499b4f884a4bad401e5628ddf3140b9be64d49c59912961",
+      "bytes": 113230,
+      "frames": 93,
+      "fps": 16.0,
+      "seconds": 5.8125,
+      "width": 848,
+      "height": 480,
+      "mean": 144.12389423740728,
+      "std": 26.714985573751385,
+      "mean_adjacent_frame_difference": 0.3486758503241501
+    },
+    {
+      "file": "Physics/Cosmos2/Text-to-Video_00001_.webm",
+      "sha256": "acd10a837c14d50caef7ea42e7f9d3577350cd5a91d8cea7be3494f4c9c7095d",
+      "bytes": 294982,
+      "frames": 93,
+      "fps": 16.0,
+      "seconds": 5.8125,
+      "width": 848,
+      "height": 480,
+      "mean": 94.60003167372523,
+      "std": 67.66156499618754,
+      "mean_adjacent_frame_difference": 1.4412232658115713
+    },
+    {
+      "file": "Physics/Cosmos2/Video-Continuation_00001_.webm",
+      "sha256": "138bbcd33139a6632999fda07f893a905b932b2bbc5aa50f99db67536799b382",
+      "bytes": 114481,
+      "frames": 93,
+      "fps": 16.0,
+      "seconds": 5.8125,
+      "width": 848,
+      "height": 480,
+      "mean": 144.04139295355154,
+      "std": 26.345563957693262,
+      "mean_adjacent_frame_difference": 0.29929898639025604
+    },
+    {
+      "file": "Physics/Cosmos2/Video-Continuation_00002_.webm",
+      "sha256": "a07bcc3e3c699f26a053e812922602afab0efffc91ec0ee1a67c19da72548c92",
+      "bytes": 110250,
+      "frames": 93,
+      "fps": 16.0,
+      "seconds": 5.8125,
+      "width": 848,
+      "height": 480,
+      "mean": 144.04139295355154,
+      "std": 26.345563957693262,
+      "mean_adjacent_frame_difference": 0.29929898639025604
+    },
+    {
+      "file": "Physics/Cosmos2/Text-to-Image_00001_.png",
+      "sha256": "20c44e6881222ec86d619f94c2b958d2c9d9b04449ca2de29fda55c2abe8ba15",
+      "bytes": 841255,
+      "width": 1024,
+      "height": 1024,
+      "mean": 107.5861136118571,
+      "std": 50.08630399103077
+    }
+  ],
+  "pbr_blender": [
+    {
+      "file": "GameDev/Pixal3D/PBR-Collision/asset_00001.glb",
+      "meshes": 1,
+      "triangles": 11972,
+      "vertices": 11052,
+      "uv_layers": [
+        1
+      ],
+      "bounds": [
+        [
+          -0.4399099349975586,
+          -0.0925012156367302,
+          -0.4630224108695984
+        ],
+        [
+          0.47326797246932983,
+          0.11496341228485107,
+          0.42645394802093506
+        ]
+      ],
+      "degenerate_faces": 0,
+      "images": [
+        {
+          "name": "Image_0",
+          "size": [
+            1024,
+            1024
+          ]
+        },
+        {
+          "name": "Image_1",
+          "size": [
+            1024,
+            1024
+          ]
+        },
+        {
+          "name": "Image_2",
+          "size": [
+            1024,
+            1024
+          ]
+        },
+        {
+          "name": "Image_1",
+          "size": [
+            1024,
+            1024
+          ]
+        }
+      ]
+    },
+    {
+      "file": "GameDev/TRELLIS2/PBR-Collision/asset_00001.glb",
+      "meshes": 1,
+      "triangles": 11940,
+      "vertices": 11430,
+      "uv_layers": [
+        1
+      ],
+      "bounds": [
+        [
+          -0.08712344616651535,
+          -0.5010226964950562,
+          -0.4952893555164337
+        ],
+        [
+          0.08756760507822037,
+          0.5021911859512329,
+          0.49138307571411133
+        ]
+      ],
+      "degenerate_faces": 0,
+      "images": [
+        {
+          "name": "Image_0.001",
+          "size": [
+            1024,
+            1024
+          ]
+        },
+        {
+          "name": "Image_1.001",
+          "size": [
+            1024,
+            1024
+          ]
+        },
+        {
+          "name": "Image_2.001",
+          "size": [
+            1024,
+            1024
+          ]
+        },
+        {
+          "name": "Image_1.001",
+          "size": [
+            1024,
+            1024
+          ]
+        }
+      ]
+    },
+    {
+      "file": "GameDev/Pixal3D/MultiView-PBR-Collision/asset_00001.glb",
+      "meshes": 1,
+      "triangles": 11998,
+      "vertices": 8414,
+      "uv_layers": [
+        1
+      ],
+      "bounds": [
+        [
+          -0.3773501515388489,
+          -0.37600934505462646,
+          -0.3297816514968872
+        ],
+        [
+          0.37795984745025635,
+          0.37487828731536865,
+          0.3315685987472534
+        ]
+      ],
+      "degenerate_faces": 0,
+      "images": [
+        {
+          "name": "Image_0.002",
+          "size": [
+            1024,
+            1024
+          ]
+        },
+        {
+          "name": "Image_1.002",
+          "size": [
+            1024,
+            1024
+          ]
+        },
+        {
+          "name": "Image_2.002",
+          "size": [
+            1024,
+            1024
+          ]
+        },
+        {
+          "name": "Image_1.002",
+          "size": [
+            1024,
+            1024
+          ]
+        }
+      ]
+    }
+  ],
+  "godot_fall_test": {
+    "collider_max_y": 0.428453952074051,
+    "collider_min_y": -0.465022414922714,
+    "final_y": 0.468494743108749,
+    "initial_y": 1.42845392227173,
+    "passed": true,
+    "scene": "res://collision.tscn",
+    "speed": 1.16005539894104e-05,
+    "vertices": 8
+  },
+  "regressions": {
+    "silent_video_cache": "VHS LazyAudioMap caused RAM-cache scan to kill prompt_worker after Video-Continuation. New DaWVideoFrames returns only bounded images. Silent continuation followed by Text-to-Video passed in the same restarted server. Core and VHS source files untouched.",
+    "builder_cache": "Generator restores shared OBJECT_INFO in try/finally; deterministic historical generators stay unchanged."
+  },
+  "limitations": [
+    "Cosmos First/Last end-frame color drift and Text-to-Video ghost fragments observed. No claim of exact gravity or two bounces.",
+    "YuE2 audio finite/non-silent, but no listening acceptance; rare full-scale samples in ABC/cover.",
+    "Single convex hull/box fills holes and concavities; no compound collider, rig or animation.",
+    "PBR-only follow-up timings reuse cached shapes; not cold full-pipeline times.",
+    "MultiView camera consistency is a user input requirement, not automatically established.",
+    "13 new workflows tested, not a new live certification of every historical workflow."
+  ],
+  "checks": {
+    "pytest_passed": 324,
+    "pytest_skipped": 1,
+    "pytest_subtests_passed": 326,
+    "collection": {
+      "files": 244,
+      "graphs": 297,
+      "nodes": 11114,
+      "notes": 5074,
+      "links": 7690,
+      "timers": 225
+    }
+  }
+}
