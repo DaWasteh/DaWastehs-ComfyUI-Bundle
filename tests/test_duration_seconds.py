@@ -32,10 +32,10 @@ class DurationSecondsTests(unittest.TestCase):
             self.assertEqual(marker.get("version"), DURATION_VERSION, path.name)
             self.assertEqual(marker.get("unit"), "seconds", path.name)
             modes[marker["mode"]] = modes.get(marker["mode"], 0) + 1
-        # v1.1.8: three YuE2 audio and four Cosmos video workflows.
-        self.assertEqual(checked, 60)
+        # v1.1.9 adds native YuE2 LoRA music with derived latent duration.
+        self.assertEqual(checked, 61)
         self.assertEqual(modes, {
-            "native-seconds": 34,
+            "native-seconds": 35,
             "explicit-seconds-to-model-valid-frames": 16,
             "explicit-seconds-dynamic-source-fps": 1,
             "source-media-duration": 9,

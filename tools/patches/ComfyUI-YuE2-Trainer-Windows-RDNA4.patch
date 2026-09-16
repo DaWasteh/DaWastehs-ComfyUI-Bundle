@@ -1,0 +1,280 @@
+diff --git a/nodes.py b/nodes.py
+index b95cf00..c677fa4 100644
+--- a/nodes.py
++++ b/nodes.py
+@@ -60,13 +60,30 @@ def _free_memory():
+ 
+ def _unload_comfy_models():
+     try:
+-        import model_management
++        import comfy.model_management as model_management
+         model_management.unload_all_models()
+         model_management.soft_empty_cache()
+-    except Exception:
++    except ImportError:
+         pass
+ 
+ 
++def _training_device(value):
++    import torch
++    import comfy.model_management as mm
++    device = mm.get_torch_device() if value == "default" else torch.device(value.replace("gpu:", "cuda:"))
++    if device.type != "cuda" or not torch.cuda.is_available():
++        raise ValueError("YuE2 training requires a BF16-capable CUDA/ROCm GPU")
++    index = torch.cuda.current_device() if device.index is None else device.index
++    if index >= torch.cuda.device_count():
++        raise ValueError(f"GPU not visible in this server: {value}")
++    return device
++
++
++def _device_input():
++    import torch
++    return ("COMBO", {"options": ["default"] + [f"gpu:{i}" for i in range(torch.cuda.device_count())], "default": "default"})
++
++
+ class YuE2TrainingDataset:
+     """Scan a folder of mp3/wav/flac (+ optional same-named .txt captions)
+     and encode everything to cached YuE2 VAE latents."""
+@@ -93,7 +110,12 @@ class YuE2TrainingDataset:
+             "force_reencode": ("BOOLEAN", {"default": False,
+                 "tooltip": "Ignore the latent cache and re-encode all files. Use after "
+                            "changing audio files without renaming them."}),
+-        }}
++        }, "optional": {"device": _device_input()}}
++
++    @classmethod
++    def IS_CHANGED(cls, **kwargs):
++        # Re-scan on every queue; the content-specific latent cache remains reusable.
++        return float("nan")
+ 
+     RETURN_TYPES = ("YUE2_TRAIN_DATASET", "STRING")
+     RETURN_NAMES = ("dataset", "summary")
+@@ -101,18 +123,28 @@ class YuE2TrainingDataset:
+     CATEGORY = CATEGORY
+ 
+     def build(self, checkpoint, audio_folder, clip_seconds, caption_mode,
+-              default_caption, cache_folder, force_reencode):
++              default_caption, cache_folder, force_reencode, device="default"):
+         import torch
+         from .trainer_core.vendor import import_yue2
+         from .trainer_core import data as data_mod, native_ckpt
+ 
+         ckpt_path = _resolve_yue2_checkpoint(checkpoint)
++        import hashlib
+         folder = Path(audio_folder.strip().strip('"'))
++        if not audio_folder.strip():
++            raise ValueError("Choose a training audio folder")
++        if not folder.is_absolute():
++            folder = Path(_folder_paths().get_input_directory()) / folder
++        data_mod.scan_folder(folder)  # Validate before allocating VRAM.
+         if cache_folder.strip():
+             cache_dir = Path(cache_folder.strip().strip('"'))
+         else:
+             fp = _folder_paths()
+             cache_dir = Path(fp.get_temp_directory()) / "yue2_latents"
++        # Isolate caches by checkpoint and dataset; never clear unrelated user files.
++        stat = ckpt_path.stat()
++        key = f"{ckpt_path.resolve()}|{stat.st_size}|{stat.st_mtime_ns}|{folder.resolve()}"
++        cache_dir = cache_dir / hashlib.sha256(key.encode()).hexdigest()[:24]
+         if force_reencode and cache_dir.is_dir():
+             for stale in cache_dir.glob("*.npy"):
+                 stale.unlink()
+@@ -122,7 +154,7 @@ class YuE2TrainingDataset:
+ 
+         def progress_cb(done, total):
+             try:
+-                import model_management
++                import comfy.model_management as model_management
+                 model_management.throw_exception_if_processing_interrupted()
+             except ImportError:
+                 pass
+@@ -135,7 +167,9 @@ class YuE2TrainingDataset:
+             if bar[0]:
+                 bar[0].update_absolute(done)
+ 
+-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
++        device = _training_device(device)
++        _unload_comfy_models()
++        _free_memory()
+         _, modeling_vae, _, _ = import_yue2()
+         vae = native_ckpt.build_vae_from_native(ckpt_path, modeling_vae, device=device)
+         try:
+@@ -187,7 +221,7 @@ class YuE2LoRATrainer:
+             "lora_name": ("STRING", {"default": "yue2_mystyle",
+                 "tooltip": "Output file name (<name>.safetensors) written into models/loras. "
+                            "With EMA on, <name>_raw.safetensors (non-EMA) is saved too."}),
+-            "seed": ("INT", {"default": 1234, "min": 0, "max": 2**63 - 1,
++            "seed": ("INT", {"default": 1234, "min": 0, "max": 2**63 - 1, "control_after_generate": True,
+                 "tooltip": "Random seed for clip choice, noise and timestep sampling. "
+                            "Change it (or set to randomize) for a different training run."}),
+             "optimizer": (["adamw", "adamw_8bit"], {
+@@ -220,7 +254,7 @@ class YuE2LoRATrainer:
+                 "tooltip": "Update a live loss/LR chart in the YuE2 Training Curve node "
+                            "while training runs (needs matplotlib; auto-disables with a "
+                            "log note if unavailable). No effect on training itself."}),
+-        }}
++        }, "optional": {"device": _device_input()}}
+ 
+     RETURN_TYPES = ("STRING", "STRING")
+     RETURN_NAMES = ("lora_path", "training_log")
+@@ -231,7 +265,7 @@ class YuE2LoRATrainer:
+               alpha, lora_dropout, target_preset, lora_name, seed, optimizer,
+               lr_scheduler, warmup_steps, grad_accum, caption_dropout,
+               t_sampling, max_grad_norm, log_every, save_every, ema_decay,
+-              live_curve):
++              live_curve, device="default"):
+         import torch
+         from .trainer_core.vendor import import_yue2
+         from .trainer_core import train as train_mod, native_ckpt
+@@ -244,6 +278,14 @@ class YuE2LoRATrainer:
+             raise ValueError("lora_name must be a valid file name (no path characters)")
+ 
+         ckpt_path = _resolve_yue2_checkpoint(checkpoint)
++        device = _training_device(device)
++        output_dir = Path(_folder_paths().get_folder_paths("loras")[0])
++        targets = [output_dir / f"{lora_name}.safetensors", output_dir / f"{lora_name}_raw.safetensors"]
++        if save_every > 0:
++            targets += [output_dir / f"{lora_name}_step{s}.safetensors"
++                        for s in range(save_every, steps, save_every)]
++        if any(p.exists() for p in targets):
++            raise FileExistsError("LoRA name already exists; choose a NEW lora_name (no overwrite/resume)")
+         _unload_comfy_models()
+         _free_memory()
+ 
+@@ -251,9 +293,9 @@ class YuE2LoRATrainer:
+         # training needs autograd, so explicitly re-enable grad mode for the
+         # model load and the whole training loop (all tensors created inside
+         # this block are normal, grad-capable tensors).
+-        with torch.inference_mode(False):
++        with torch.inference_mode(False), torch.enable_grad(), torch.random.fork_rng(devices=[device]):
++            torch.manual_seed(seed)
+             modeling_yue2, _, protocol, _ = import_yue2()
+-            device = "cuda" if torch.cuda.is_available() else "cpu"
+             model = native_ckpt.build_lm_from_native(
+                 ckpt_path, modeling_yue2, torch_dtype=torch.bfloat16)
+             tokenizer = native_ckpt.YuE2JsonTokenizer(
+diff --git a/trainer_core/data.py b/trainer_core/data.py
+index 0a01376..b246a7b 100644
+--- a/trainer_core/data.py
++++ b/trainer_core/data.py
+@@ -79,6 +79,8 @@ def load_audio(path: Path) -> torch.Tensor:
+     if rate != SAMPLE_RATE:
+         import torchaudio
+         wave = torchaudio.functional.resample(wave, rate, SAMPLE_RATE)
++    if not wave.numel() or not torch.isfinite(wave).all():
++        raise ValueError(f"Empty or non-finite training audio: {path}")
+     return wave.float().clamp(-1.0, 1.0)
+ 
+ 
+@@ -93,7 +95,7 @@ def scan_folder(folder: Path) -> list[tuple[Path, str]]:
+         caption_file = file.with_suffix(".txt")
+         caption = ""
+         if caption_file.is_file():
+-            caption = caption_file.read_text(encoding="utf-8", errors="replace").strip()
++            caption = caption_file.read_text(encoding="utf-8-sig").strip()
+         pairs.append((file, caption))
+     if not pairs:
+         raise FileNotFoundError(
+@@ -132,6 +134,8 @@ def encode_file_latents(vae, audio: torch.Tensor, device: torch.device,
+             pos = end
+     pieces = []
+     for lo, hi, out_lo, out_hi in chunks:
++        from .train import _check_interrupt
++        _check_interrupt()
+         seg = audio[:, lo:hi].to(device)
+         with torch.inference_mode():
+             encoded = vae.encode(seg.unsqueeze(0))
+@@ -175,7 +179,13 @@ def build_dataset(vae, folder: Path, cache_dir: Path, clip_seconds: float,
+             audio = load_audio(audio_path)
+             latents = encode_file_latents(vae, audio, device)
+             total_frames = latents.shape[0]
+-            np.save(latent_file, latents.astype(np.float16))
++            encoded = latents.astype(np.float16)
++            if not np.isfinite(encoded).all():
++                raise FloatingPointError(f"Non-finite VAE latents: {audio_path}")
++            import os
++            temporary = latent_file.with_suffix(".tmp.npy")
++            np.save(temporary, encoded)
++            os.replace(temporary, latent_file)
+             del audio, latents
+             if device.type == "cuda":
+                 torch.cuda.empty_cache()  # release the caching allocator between files
+@@ -198,6 +208,9 @@ def build_dataset(vae, folder: Path, cache_dir: Path, clip_seconds: float,
+ 
+ def load_clip_latents(item: DatasetItem) -> torch.Tensor:
+     """Return this clip's latents as float32 [frames, 64]."""
+-    latents = np.load(item.latent_path)
++    latents = np.load(item.latent_path, mmap_mode="r", allow_pickle=False)
+     start = item.clip_index * item.frames
+-    return torch.from_numpy(latents[start:start + item.frames].astype(np.float32))
++    clip = latents[start:start + item.frames].astype(np.float32)
++    if clip.shape != (item.frames, 64) or not np.isfinite(clip).all():
++        raise ValueError(f"Invalid latent cache: {item.latent_path}; force re-encode")
++    return torch.from_numpy(clip)
+diff --git a/trainer_core/native_ckpt.py b/trainer_core/native_ckpt.py
+index 121f43b..912224d 100644
+--- a/trainer_core/native_ckpt.py
++++ b/trainer_core/native_ckpt.py
+@@ -37,6 +37,13 @@ def is_native_yue2_checkpoint(path) -> bool:
+     try:
+         with safe_open(str(path), framework="pt", device="cpu") as handle:
+             keys = set(handle.keys())
++            if any("scale_weight" in k or "comfy_quant" in k for k in keys):
++                return False
++            for prefix in (TE_PREFIX + "layers.", DM_PREFIX + "model.layers."):
++                for key in keys:
++                    if key.startswith(prefix) and key.endswith(".weight"):
++                        if handle.get_slice(key).get_dtype() not in {"BF16", "F16", "F32"}:
++                            return False
+     except Exception:
+         return False
+     return (TOKENIZER_KEY in keys
+diff --git a/trainer_core/train.py b/trainer_core/train.py
+index b560075..ecb734b 100644
+--- a/trainer_core/train.py
++++ b/trainer_core/train.py
+@@ -45,7 +45,7 @@ def _comfy_progress(total):
+ 
+ def _check_interrupt():
+     try:
+-        import model_management
++        import comfy.model_management as model_management
+         model_management.throw_exception_if_processing_interrupted()
+     except ImportError:
+         return
+@@ -201,7 +201,8 @@ def run_training(model, tokenizer, protocol, dataset: data_mod.TrainDataset, cfg
+             optimizer = bnb.optim.AdamW8bit(params, lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
+         else:
+             optimizer = torch.optim.AdamW(params, lr=cfg.learning_rate,
+-                                          weight_decay=cfg.weight_decay, fused=device.type == "cuda")
++                                          weight_decay=cfg.weight_decay,
++                                          fused=device.type == "cuda" and not torch.version.hip)
+     except ImportError:
+         log_lines.append("bitsandbytes not available — falling back to torch AdamW")
+         optimizer = torch.optim.AdamW(params, lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
+@@ -281,13 +282,15 @@ def run_training(model, tokenizer, protocol, dataset: data_mod.TrainDataset, cfg
+ 
+         v_pred = training_velocity(model, cond_ids, x_t, raw_t, mask_cache, protocol)
+         loss = F.mse_loss(v_pred.float(), target) / cfg.grad_accum
++        if not torch.isfinite(loss):
++            raise FloatingPointError(f"Non-finite loss at step {step + 1}; no final adapter saved")
+         loss.backward()
+         running += loss.item() * cfg.grad_accum
+ 
+         if (step + 1) % cfg.grad_accum == 0 or step == cfg.steps - 1:
+             for group in optimizer.param_groups:
+                 group["lr"] = lr_at(step)
+-            torch.nn.utils.clip_grad_norm_(params, cfg.max_grad_norm)
++            torch.nn.utils.clip_grad_norm_(params, cfg.max_grad_norm, error_if_nonfinite=True)
+             optimizer.step()
+             optimizer.zero_grad(set_to_none=True)
+             if ema is not None:
+@@ -300,7 +303,7 @@ def run_training(model, tokenizer, protocol, dataset: data_mod.TrainDataset, cfg
+         running = history[-1]
+         if progress is not None:
+             progress.update(1)
+-        if (step + 1) % cfg.log_every == 0 or step == 0:
++        if (step + 1) % cfg.log_every == 0 or step == 0 or step == cfg.steps - 1:
+             window = history[-cfg.log_every:]
+             elapsed = time.time() - start_time
+             msg = (f"step {step + 1}/{cfg.steps}  loss={sum(window) / len(window):.5f}  "

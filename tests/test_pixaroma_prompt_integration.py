@@ -66,6 +66,8 @@ class PixaromaIntegrationTests(unittest.TestCase):
         }
         from tools.build_workflows_v118 import build_all, SCHEMAS
         generated_unmanaged.update(f"workflows/{key}" for key in build_all(json.loads(SCHEMAS.read_text(encoding="utf-8"))))
+        from tools.build_yue2_lora_workflows import build_all as build_v119
+        generated_unmanaged.update(f"workflows/{key}" for key in build_v119())
         self.assertEqual(
             paths - set(manifest_paths),
             {

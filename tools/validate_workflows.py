@@ -755,6 +755,7 @@ def main() -> int:
     paths = sorted(args.workflows.rglob("*.json"))
     errors: list[str] = []
     v118_additions = {}
+    v119_additions = {}
     if args.against_head:
         # Import lazily so historical validators and pure graph tests do not
         # acquire a generator dependency unless checking collection migration.
@@ -763,6 +764,11 @@ def main() -> int:
         except ModuleNotFoundError:
             from build_workflows_v118 import build_all as build_v118, SCHEMAS as V118_SCHEMAS
         v118_additions = build_v118(json.loads(V118_SCHEMAS.read_text(encoding="utf-8")))
+        try:
+            from tools.build_yue2_lora_workflows import build_all as build_v119
+        except ModuleNotFoundError:
+            from build_yue2_lora_workflows import build_all as build_v119
+        v119_additions = build_v119()
     if args.against_head and not args.skip_collection_totals:
         baseline_paths = git_baseline_workflow_paths()
         expected_paths = {
@@ -777,6 +783,7 @@ def main() -> int:
         expected_paths.update(f"workflows/{target}" for target in v095_addition_sources())
         expected_paths.update(f"workflows/{key}" for key in V113_ADDED_PATHS)
         expected_paths.update(f"workflows/{key}" for key in v118_additions)
+        expected_paths.update(f"workflows/{key}" for key in v119_additions)
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
@@ -832,7 +839,10 @@ def main() -> int:
                 key = _path_key(path).removeprefix("workflows/")
                 addition = next((item for item in ADDITIONS if item.path == key), None)
                 autosongwriter = next((item for item in V093_TARGET_WORKFLOWS if item.path == key), None)
-                if key in v118_additions:
+                if key in v119_additions:
+                    if v119_additions[key] != workflow:
+                        errors.append(f"{path}: differs from deterministic v1.1.9 YuE2 LoRA workflow")
+                elif key in v118_additions:
                     if v118_additions[key] != workflow:
                         errors.append(f"{path}: differs from deterministic v1.1.8 model workflow")
                 elif addition is not None:
@@ -880,7 +890,7 @@ def main() -> int:
         else:
             errors.extend(path_errors)
     # v1.1.8 adds 13 flat model workflows: +779 nodes, +368 notes, +547 links.
-    expected = {"files": 244, "graphs": 297, "nodes": 11114, "notes": 5074, "links": 7690, "timers": 225}
+    expected = {"files": 246, "graphs": 299, "nodes": 11162, "notes": 5095, "links": 7718, "timers": 227}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

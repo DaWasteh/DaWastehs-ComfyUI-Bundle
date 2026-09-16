@@ -1,0 +1,442 @@
+{
+  "release": "v1.1.9",
+  "date": "2026-09-16",
+  "scope": "Technical execution only; experimental NAR style/timbre adaptation, not a listening or voice-cloning acceptance.",
+  "system": {
+    "os": "win32",
+    "ram_total": 50860650496,
+    "ram_free": 27413991424,
+    "comfyui_version": "0.36.0",
+    "required_frontend_version": "1.52.7",
+    "installed_templates_version": "0.11.62",
+    "required_templates_version": "0.11.62",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.52.7",
+        "required": "1.52.7"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.62",
+        "required": "0.11.62"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.11",
+        "required": "0.5.11"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.34",
+        "required": "0.2.34"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.5.5",
+        "required": "0.5.5"
+      }
+    ],
+    "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "embedded_python": false,
+    "deploy_environment": "local-git"
+  },
+  "gpu": "AMD Radeon AI PRO R9700 32 GB; gpu:0 only visible",
+  "model": {
+    "repo": "Comfy-Org/YuE2",
+    "revision": "8e6fcf0f23252ed188b634bd50d44f4b01fba890",
+    "path": "checkpoints/yue2_3b_bf16.safetensors",
+    "size": 7799983228,
+    "sha256": "33765adbf9813c9a50318218760b2fd819a319862460a04884607581961c6fee",
+    "license": "CC-BY-NC-4.0"
+  },
+  "trainer": {
+    "repository": "https://github.com/Starnodes2024/ComfyUI-YuE2-Trainer",
+    "revision": "4578039513304149fdfd1c00a22783f06812997f",
+    "manifest_sha256": "184d82280744f54961d1bfe355ce08fb72dc6b2abc0b8de4cc9439840bf9fbbf",
+    "patch_sha256": "1ed13d409042019ff2bbc794403ae2ab912e12f1d41c9d194f2123adcf9d6858",
+    "clean_install_and_offline_verify_passed": true
+  },
+  "workflows": [
+    {
+      "path": "workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json",
+      "sha256": "d1e544718ab120d4c188980cd8a3a4976364466ebf53d9ae4f414f8849fa7a03",
+      "frontend_contract_sha256": "55294c1f3a5eb86f3c0c070b02fa67309021f95fa4f45bb65456ff052be86b33",
+      "runtime_workflow_hash_matches": true,
+      "frontend_contract_fixture": "tools/workflow_templates/yue2-lora/frontend-contracts.json"
+    },
+    {
+      "path": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "sha256": "a7a4aae17ad1aa773e753fb8c90ad326df8b30128c8a916a1d4ed820dc46665b",
+      "frontend_contract_sha256": "b9622dd41375308cc4ebe9963c2c7750b124734f057323feecae807e20f05810",
+      "runtime_workflow_hash_matches": true,
+      "frontend_contract_fixture": "tools/workflow_templates/yue2-lora/frontend-contracts.json"
+    }
+  ],
+  "runs": [
+    {
+      "name": "v119_synthetic_100",
+      "workflow": "workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json",
+      "prompt_id": "58994f74-e91b-465a-87ac-fe1d64575feb",
+      "status": "success",
+      "completed": true,
+      "server_seconds": 26.736,
+      "observed_wall_seconds": 27.523,
+      "cached_node_ids": [],
+      "executed_contract_matches_final_with_declared_overrides": true,
+      "overrides": [
+        {
+          "node_id": "1",
+          "class_type": "YuE2TrainingDataset",
+          "input": "audio_folder",
+          "default": "yue2_lora/my_style",
+          "executed": "yue2_lora/v119_synthetic_smoke"
+        },
+        {
+          "node_id": "2",
+          "class_type": "YuE2LoRATrainer",
+          "input": "lora_name",
+          "default": "yue2_my_style",
+          "executed": "yue2_v119_synthetic_100"
+        }
+      ],
+      "executed_prompt_sha256": "d96de4c9021915d7b2c4771712e9c9cb210e605d9ea71ced230848169a1783fe"
+    },
+    {
+      "name": "baseline",
+      "workflow": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "prompt_id": "1127b63c-00ae-40a8-9dd2-0b20e2b19a8c",
+      "status": "success",
+      "completed": true,
+      "server_seconds": 22.083,
+      "observed_wall_seconds": 24.077,
+      "cached_node_ids": [
+        "26"
+      ],
+      "executed_contract_matches_final_with_declared_overrides": true,
+      "overrides": [
+        {
+          "node_id": "11",
+          "class_type": "SaveAudioAdvanced",
+          "input": "filename_prefix",
+          "default": "Music/PRIVATE_YuE2/LoRA/song",
+          "executed": "Music/PRIVATE_YuE2/LoRA/v119_test_baseline"
+        },
+        {
+          "node_id": "2",
+          "class_type": "LoraLoaderModelOnly",
+          "input": "lora_name",
+          "default": "yue2_my_style.safetensors",
+          "executed": "yue2_v119_synthetic_100.safetensors"
+        },
+        {
+          "node_id": "2",
+          "class_type": "LoraLoaderModelOnly",
+          "input": "strength_model",
+          "default": 1,
+          "executed": 0.0
+        }
+      ],
+      "executed_prompt_sha256": "4c779bd75021cb044242ec445581daab269b91608c8cdfa152ecd38b9da2116e"
+    },
+    {
+      "name": "ema",
+      "workflow": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "prompt_id": "13a3b03d-423e-4649-9564-9bcdaf2e77e6",
+      "status": "success",
+      "completed": true,
+      "server_seconds": 3.921,
+      "observed_wall_seconds": 6.018,
+      "cached_node_ids": [
+        "1",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "23",
+        "24",
+        "25",
+        "26"
+      ],
+      "executed_contract_matches_final_with_declared_overrides": true,
+      "overrides": [
+        {
+          "node_id": "11",
+          "class_type": "SaveAudioAdvanced",
+          "input": "filename_prefix",
+          "default": "Music/PRIVATE_YuE2/LoRA/song",
+          "executed": "Music/PRIVATE_YuE2/LoRA/v119_test_ema"
+        },
+        {
+          "node_id": "2",
+          "class_type": "LoraLoaderModelOnly",
+          "input": "lora_name",
+          "default": "yue2_my_style.safetensors",
+          "executed": "yue2_v119_synthetic_100.safetensors"
+        }
+      ],
+      "executed_prompt_sha256": "d7d8865ede2874616a06f7ecbd76684db0ff7b51bf81970fb689c2fb69ddce30"
+    },
+    {
+      "name": "raw",
+      "workflow": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "prompt_id": "a95ec0b4-3089-4982-a9a9-1de91b5a4e5b",
+      "status": "success",
+      "completed": true,
+      "server_seconds": 3.027,
+      "observed_wall_seconds": 6.011,
+      "cached_node_ids": [
+        "1",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "23",
+        "24",
+        "25",
+        "26"
+      ],
+      "executed_contract_matches_final_with_declared_overrides": true,
+      "overrides": [
+        {
+          "node_id": "11",
+          "class_type": "SaveAudioAdvanced",
+          "input": "filename_prefix",
+          "default": "Music/PRIVATE_YuE2/LoRA/song",
+          "executed": "Music/PRIVATE_YuE2/LoRA/v119_test_raw"
+        },
+        {
+          "node_id": "2",
+          "class_type": "LoraLoaderModelOnly",
+          "input": "lora_name",
+          "default": "yue2_my_style.safetensors",
+          "executed": "yue2_v119_synthetic_100_raw.safetensors"
+        }
+      ],
+      "executed_prompt_sha256": "c1a33b30451596a6f9447e77e6b9131150c3d68aeae6dd664787b0cd876ae986"
+    },
+    {
+      "name": "baseline_restored",
+      "workflow": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "prompt_id": "78b61d9d-21d8-47c3-8c53-3e0f06ef3e0e",
+      "status": "success",
+      "completed": true,
+      "server_seconds": 19.28,
+      "observed_wall_seconds": 21.08,
+      "cached_node_ids": [
+        "26"
+      ],
+      "executed_contract_matches_final_with_declared_overrides": true,
+      "overrides": [
+        {
+          "node_id": "11",
+          "class_type": "SaveAudioAdvanced",
+          "input": "filename_prefix",
+          "default": "Music/PRIVATE_YuE2/LoRA/song",
+          "executed": "Music/PRIVATE_YuE2/LoRA/v119_test_baseline_restored"
+        },
+        {
+          "node_id": "2",
+          "class_type": "LoraLoaderModelOnly",
+          "input": "lora_name",
+          "default": "yue2_my_style.safetensors",
+          "executed": "yue2_v119_synthetic_100.safetensors"
+        },
+        {
+          "node_id": "2",
+          "class_type": "LoraLoaderModelOnly",
+          "input": "strength_model",
+          "default": 1,
+          "executed": 0.0
+        }
+      ],
+      "executed_prompt_sha256": "488401f20461290b60f8fdc4f7db15003cb7c850dcc2d13f5d5939f70dcfc61d"
+    }
+  ],
+  "contract_hash_normalization": "class_type + inputs; integral floats normalized to integers; UI metadata excluded",
+  "inspection": {
+    "audio": {
+      "baseline": {
+        "path": "output/Music/PRIVATE_YuE2/LoRA/v119_test_baseline_00001.flac",
+        "sha256": "05b239d10d4e801d97f35a9e9cb9a1d395e12fb787b78c5e24bc39f8f3fec051",
+        "pcm_sha256": "e4e604d3403d158f0677f536f8290f9298630be56a001b62182b09ca1d204bc1",
+        "sample_rate": 48000,
+        "channels": 2,
+        "frames": 1440000,
+        "duration_seconds": 30.0,
+        "finite": true,
+        "rms": 0.112522306503432,
+        "peak": 0.87451171875,
+        "full_scale_samples": 0
+      },
+      "ema": {
+        "path": "output/Music/PRIVATE_YuE2/LoRA/v119_test_ema_00001.flac",
+        "sha256": "ee0559cc45007a0364fc5cc7127d81ee8cf18a78696fffa09846ac758e2f618c",
+        "pcm_sha256": "b87f3e9a948207651df96c1e451daa789e8cf10a81972bd4e6d872f759d3ed17",
+        "sample_rate": 48000,
+        "channels": 2,
+        "frames": 1440000,
+        "duration_seconds": 30.0,
+        "finite": true,
+        "rms": 0.10945611132199055,
+        "peak": 0.86767578125,
+        "full_scale_samples": 0
+      },
+      "raw": {
+        "path": "output/Music/PRIVATE_YuE2/LoRA/v119_test_raw_00001.flac",
+        "sha256": "a338b56a0cf280f8369898555e9822dc4b765b30c83ef854138054be37b2a806",
+        "pcm_sha256": "06f6e83028ccb8b11edcc47e7b6eccec40adea90f841576aee2353b973e832f5",
+        "sample_rate": 48000,
+        "channels": 2,
+        "frames": 1440000,
+        "duration_seconds": 30.0,
+        "finite": true,
+        "rms": 0.10530227764076212,
+        "peak": 0.85888671875,
+        "full_scale_samples": 0
+      },
+      "baseline_restored": {
+        "path": "output/Music/PRIVATE_YuE2/LoRA/v119_test_baseline_restored_00001.flac",
+        "sha256": "b8f7f234d3882fc4942efc599f13593424e7dd5ec27d257e01163053bcf19bca",
+        "pcm_sha256": "e4e604d3403d158f0677f536f8290f9298630be56a001b62182b09ca1d204bc1",
+        "sample_rate": 48000,
+        "channels": 2,
+        "frames": 1440000,
+        "duration_seconds": 30.0,
+        "finite": true,
+        "rms": 0.112522306503432,
+        "peak": 0.87451171875,
+        "full_scale_samples": 0
+      }
+    },
+    "adapters": {
+      "ema": {
+        "path": "models/loras/yue2_v119_synthetic_100.safetensors",
+        "sha256": "b3a20fcd82c5db5aff168ff40bf9eaf7cc62d43a142d09be0b96ef31b0293400",
+        "bytes": 106474864,
+        "tensors": 336,
+        "nonzero_lora_up_tensors": 112,
+        "finite": true,
+        "metadata": {
+          "source_target_preset": "nar_attn_mlp",
+          "trigger_word": "my_style",
+          "base_model": "yue2_3b_bf16.safetensors",
+          "source_t_sampling": "logit_normal",
+          "source_learning_rate": "0.0001",
+          "format": "comfyui-native-lora",
+          "source_cot": "off",
+          "source_format": "yue2-lora-v1",
+          "source_file": "",
+          "source_alpha": "16.0",
+          "source_rank": "16",
+          "source_clip_seconds": "6.0",
+          "source_steps": "100"
+        }
+      },
+      "raw": {
+        "path": "models/loras/yue2_v119_synthetic_100_raw.safetensors",
+        "sha256": "d87fca5461fb61610bf159b3d4f7f4234d4aee9a1b09a326858857026e881dc3",
+        "bytes": 106474864,
+        "tensors": 336,
+        "nonzero_lora_up_tensors": 112,
+        "finite": true,
+        "metadata": {
+          "source_file": "",
+          "source_cot": "off",
+          "format": "comfyui-native-lora",
+          "trigger_word": "my_style",
+          "source_format": "yue2-lora-v1",
+          "base_model": "yue2_3b_bf16.safetensors",
+          "source_alpha": "16.0",
+          "source_rank": "16",
+          "source_target_preset": "nar_attn_mlp",
+          "source_clip_seconds": "6.0",
+          "source_steps": "100",
+          "source_t_sampling": "logit_normal",
+          "source_learning_rate": "0.0001"
+        }
+      }
+    },
+    "baseline_restored_pcm_identical": true,
+    "ema_changes_pcm": true,
+    "raw_changes_pcm": true,
+    "ema_differs_from_raw": true,
+    "curve": {
+      "path": "output/Music/PRIVATE_YuE2/LoRA/training_curve_00001_.png",
+      "sha256": "4e7484fc186bac08e3d7bae3886c124f0d554cf34610a9f167ee71702fc95ce9",
+      "size": [
+        1584,
+        879
+      ]
+    }
+  },
+  "training": {
+    "dataset_provenance": "Locally synthesized oscillators and electronic kick; no external recordings or identifiable voices.",
+    "source_files": 3,
+    "source_seconds_each": 12,
+    "clip_seconds": 6,
+    "clips": 6,
+    "steps": 100,
+    "trainable_parameters": 17432576,
+    "target_projections_before_fusion": 196,
+    "log": [
+      "step 1/100  loss=0.50915  lr=1.00e-05  t=0.278  [002.wav #0]  1.51s/it",
+      "step 10/100  loss=0.43892  lr=1.00e-04  t=0.524  [003.wav #1]  0.31s/it",
+      "step 20/100  loss=0.31193  lr=9.76e-05  t=0.370  [003.wav #0]  0.23s/it",
+      "step 30/100  loss=0.32688  lr=8.94e-05  t=0.288  [001.wav #1]  0.20s/it",
+      "step 40/100  loss=0.35677  lr=7.65e-05  t=0.393  [003.wav #0]  0.19s/it",
+      "step 50/100  loss=0.31354  lr=6.04e-05  t=0.634  [001.wav #1]  0.18s/it",
+      "step 60/100  loss=0.27193  lr=4.30e-05  t=0.465  [003.wav #1]  0.18s/it",
+      "step 70/100  loss=0.23939  lr=2.65e-05  t=0.718  [003.wav #0]  0.17s/it",
+      "step 80/100  loss=0.32448  lr=1.28e-05  t=0.583  [001.wav #0]  0.17s/it",
+      "step 90/100  loss=0.19763  lr=3.64e-06  t=0.268  [001.wav #0]  0.17s/it",
+      "step 100/100  loss=0.18985  lr=3.05e-08  t=0.687  [002.wav #1]  0.17s/it"
+    ],
+    "quality_limits": "100-step technical test only. No multi-thousand-step or real-vocal quality validation."
+  },
+  "negative_tests": [
+    {
+      "name": "existing_adapter_protected",
+      "prompt_id": "97626bae-a3f8-48c4-ad71-ee5d7fa198c1",
+      "expected_event": "execution_error",
+      "actual_event": "execution_error",
+      "node_type": "YuE2LoRATrainer",
+      "exception_type": "FileExistsError",
+      "passed": true,
+      "existing_adapter_sha256_unchanged": true
+    },
+    {
+      "name": "real_training_cancelled",
+      "prompt_id": "b94ac79e-9138-42f7-9a6c-efa1037f6b16",
+      "expected_event": "execution_interrupted",
+      "actual_event": "execution_interrupted",
+      "node_type": "YuE2LoRATrainer",
+      "exception_type": null,
+      "passed": true,
+      "no_final_adapter_created": true
+    }
+  ],
+  "post_interruption_followup_success": true,
+  "queue_idle": true,
+  "tests": {
+    "pytest_passed": 338,
+    "pytest_skipped": 1,
+    "pytest_subtests_passed": 330,
+    "backend_tests_included": true,
+    "collection": {
+      "files": 246,
+      "graphs": 299,
+      "nodes": 11162,
+      "notes": 5095,
+      "links": 7718,
+      "timers": 227
+    },
+    "workflow_validator_errors": 0
+  },
+  "known_unrelated_frontend_issue": "Installed LiveAvatar frontend requests missing holistic_solution_packed_assets.data; YuE2 graph import/export and queues succeed. No claim that unrelated node packs are fixed."
+}

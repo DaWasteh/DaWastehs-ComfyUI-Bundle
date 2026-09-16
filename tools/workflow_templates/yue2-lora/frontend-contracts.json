@@ -1,0 +1,301 @@
+{
+  "LoRA Generation/YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json": {
+    "1": {
+      "class_type": "YuE2TrainingDataset",
+      "inputs": {
+        "checkpoint": "yue2_3b_bf16.safetensors",
+        "audio_folder": "yue2_lora/my_style",
+        "clip_seconds": 6,
+        "caption_mode": "txt_file",
+        "default_caption": "",
+        "cache_folder": "",
+        "force_reencode": false,
+        "device": [
+          "17",
+          2
+        ]
+      }
+    },
+    "17": {
+      "class_type": "DaWMultiGPUDeviceControl",
+      "inputs": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      }
+    },
+    "2": {
+      "class_type": "YuE2LoRATrainer",
+      "inputs": {
+        "checkpoint": "yue2_3b_bf16.safetensors",
+        "trigger_word": "my_style",
+        "steps": 100,
+        "learning_rate": 0.0001,
+        "rank": 16,
+        "alpha": 16,
+        "lora_dropout": 0,
+        "target_preset": "nar_attn_mlp",
+        "lora_name": "yue2_my_style",
+        "seed": 119,
+        "optimizer": "adamw",
+        "lr_scheduler": "cosine",
+        "warmup_steps": 10,
+        "grad_accum": 1,
+        "caption_dropout": 0.1,
+        "t_sampling": "logit_normal",
+        "max_grad_norm": 1,
+        "log_every": 10,
+        "save_every": 0,
+        "ema_decay": 0.99,
+        "live_curve": true,
+        "device": [
+          "17",
+          0
+        ],
+        "dataset": [
+          "1",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "PreviewAny",
+      "inputs": {
+        "source": [
+          "1",
+          1
+        ]
+      }
+    },
+    "4": {
+      "class_type": "PreviewAny",
+      "inputs": {
+        "source": [
+          "2",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "PreviewAny",
+      "inputs": {
+        "source": [
+          "2",
+          1
+        ]
+      }
+    },
+    "6": {
+      "class_type": "YuE2TrainingCurve",
+      "inputs": {
+        "smooth": 3,
+        "show_raw": true,
+        "show_lr": true,
+        "training_log": [
+          "2",
+          1
+        ]
+      }
+    },
+    "7": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "Music/PRIVATE_YuE2/LoRA/training_curve",
+        "images": [
+          "6",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "PixaromaRunTimer",
+      "inputs": {}
+    }
+  },
+  "Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json": {
+    "1": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "yue2_3b_bf16.safetensors"
+      }
+    },
+    "10": {
+      "class_type": "VAEDecodeAudio",
+      "inputs": {
+        "samples": [
+          "9",
+          0
+        ],
+        "vae": [
+          "25",
+          0
+        ]
+      }
+    },
+    "11": {
+      "class_type": "SaveAudioAdvanced",
+      "inputs": {
+        "filename_prefix": "Music/PRIVATE_YuE2/LoRA/song",
+        "format": "flac",
+        "audio": [
+          "10",
+          0
+        ]
+      }
+    },
+    "13": {
+      "class_type": "PixaromaRunTimer",
+      "inputs": {}
+    },
+    "2": {
+      "class_type": "LoraLoaderModelOnly",
+      "inputs": {
+        "lora_name": "yue2_my_style.safetensors",
+        "strength_model": 1,
+        "model": [
+          "23",
+          0
+        ]
+      }
+    },
+    "23": {
+      "class_type": "SelectModelDevice",
+      "inputs": {
+        "device": [
+          "26",
+          0
+        ],
+        "model": [
+          "1",
+          0
+        ]
+      }
+    },
+    "24": {
+      "class_type": "SelectCLIPDevice",
+      "inputs": {
+        "device": [
+          "26",
+          1
+        ],
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "25": {
+      "class_type": "SelectVAEDevice",
+      "inputs": {
+        "device": [
+          "26",
+          2
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "26": {
+      "class_type": "DaWMultiGPUDeviceControl",
+      "inputs": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      }
+    },
+    "3": {
+      "class_type": "PixaromaPrompt",
+      "inputs": {
+        "PromptState": "{\"text\":\"my_style, instrumental, warm analog synthesizers, steady drums, 96 BPM, cinematic mysterious atmosphere\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+      }
+    },
+    "4": {
+      "class_type": "PixaromaPrompt",
+      "inputs": {
+        "PromptState": "{\"text\":\"\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+      }
+    },
+    "5": {
+      "class_type": "YuE2GenerateMusic",
+      "inputs": {
+        "style": [
+          "3",
+          0
+        ],
+        "lyrics": [
+          "4",
+          0
+        ],
+        "abc": "",
+        "seed": 119,
+        "mode": "full",
+        "max_duration": 30,
+        "temperature": 1,
+        "top_p": 0.95,
+        "top_k": 100,
+        "repetition_penalty": 1.2,
+        "clip": [
+          "24",
+          0
+        ]
+      }
+    },
+    "6": {
+      "class_type": "EmptyYuE2LatentAudio",
+      "inputs": {
+        "seconds": [
+          "5",
+          1
+        ],
+        "batch_size": 1
+      }
+    },
+    "7": {
+      "class_type": "PreviewAny",
+      "inputs": {
+        "source": [
+          "5",
+          1
+        ]
+      }
+    },
+    "8": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "KSampler",
+      "inputs": {
+        "seed": 119,
+        "steps": 32,
+        "cfg": 1,
+        "sampler_name": "dpm_2",
+        "scheduler": "sgm_uniform",
+        "denoise": 1,
+        "model": [
+          "2",
+          0
+        ],
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "8",
+          0
+        ],
+        "latent_image": [
+          "6",
+          0
+        ]
+      }
+    }
+  }
+}

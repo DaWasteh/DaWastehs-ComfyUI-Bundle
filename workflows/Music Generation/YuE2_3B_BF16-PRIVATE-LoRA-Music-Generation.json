@@ -1,0 +1,1648 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
+      "title": "YuE2 BF16 · dieselbe Basis wie beim Training",
+      "pos": [
+        1520.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "ckpt_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "ckpt_name"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            15
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            16
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "yue2_3b_bf16.safetensors"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoraLoaderModelOnly",
+      "title": "STIL-LoRA · 0 = Baseline / 1 = Startwert",
+      "pos": [
+        1520.0,
+        740.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "lora_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "lora_name"
+          }
+        },
+        {
+          "name": "strength_model",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "strength_model"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "yue2_my_style.safetensors",
+        1.0
+      ]
+    },
+    {
+      "id": 3,
+      "type": "PixaromaPrompt",
+      "title": "STYLE · zuerst dein trigger_word",
+      "pos": [
+        880.0,
+        80.0
+      ],
+      "size": [
+        480,
+        360
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text_in",
+          "type": "STRING",
+          "link": null,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixaromaPrompt",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "promptState": {
+          "text": "my_style, instrumental, warm analog synthesizers, steady drums, 96 BPM, cinematic mysterious atmosphere",
+          "order": "mine",
+          "sep": "\n",
+          "accent": null,
+          "showExpanded": true
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 4,
+      "type": "PixaromaPrompt",
+      "title": "LYRICS · optional, eigene singbare Texte",
+      "pos": [
+        880.0,
+        480.0
+      ],
+      "size": [
+        480,
+        360
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text_in",
+          "type": "STRING",
+          "link": null,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixaromaPrompt",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "promptState": {
+          "text": "",
+          "order": "mine",
+          "sep": "\n",
+          "accent": null,
+          "showExpanded": true
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 5,
+      "type": "YuE2GenerateMusic",
+      "title": "AR · komponiert weiterhin OHNE LoRA",
+      "pos": [
+        2100.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        },
+        {
+          "name": "style",
+          "type": "STRING",
+          "link": 3,
+          "widget": {
+            "name": "style"
+          }
+        },
+        {
+          "name": "lyrics",
+          "type": "STRING",
+          "link": 4,
+          "widget": {
+            "name": "lyrics"
+          }
+        },
+        {
+          "name": "abc",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "abc"
+          }
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "mode",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "mode"
+          }
+        },
+        {
+          "name": "max_duration",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "max_duration"
+          }
+        },
+        {
+          "name": "temperature",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "temperature"
+          }
+        },
+        {
+          "name": "top_p",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "top_p"
+          }
+        },
+        {
+          "name": "top_k",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "top_k"
+          }
+        },
+        {
+          "name": "repetition_penalty",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "repetition_penalty"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            7,
+            9
+          ]
+        },
+        {
+          "name": "seconds",
+          "type": "FLOAT",
+          "links": [
+            5,
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "YuE2GenerateMusic"
+      },
+      "widgets_values": [
+        "",
+        "",
+        "",
+        119,
+        "fixed",
+        "full",
+        30.0,
+        1.0,
+        0.95,
+        100,
+        1.2
+      ]
+    },
+    {
+      "id": 6,
+      "type": "EmptyYuE2LatentAudio",
+      "title": "Empty YuE2 Latent Audio",
+      "pos": [
+        3260.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "seconds",
+          "type": "FLOAT",
+          "link": 5,
+          "widget": {
+            "name": "seconds"
+          }
+        },
+        {
+          "name": "batch_size",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "batch_size"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyYuE2LatentAudio"
+      },
+      "widgets_values": [
+        120.0,
+        1
+      ]
+    },
+    {
+      "id": 7,
+      "type": "PreviewAny",
+      "title": "TATSÄCHLICHE DAUER · max_duration ist nur eine Obergrenze",
+      "pos": [
+        3260.0,
+        380.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 8,
+      "type": "ConditioningZeroOut",
+      "title": "Conditioning Zero Out",
+      "pos": [
+        2100.0,
+        380.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 9,
+      "type": "KSampler",
+      "title": "NAR · LoRA verändert die Klangerzeugung",
+      "pos": [
+        2680.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 8
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "steps",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "steps"
+          }
+        },
+        {
+          "name": "cfg",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "cfg"
+          }
+        },
+        {
+          "name": "sampler_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "sampler_name"
+          }
+        },
+        {
+          "name": "scheduler",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "scheduler"
+          }
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 9
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 10
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 11
+        },
+        {
+          "name": "denoise",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "denoise"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        119,
+        "fixed",
+        32,
+        1.0,
+        "dpm_2",
+        "sgm_uniform",
+        1.0
+      ]
+    },
+    {
+      "id": 10,
+      "type": "VAEDecodeAudio",
+      "title": "VAE Decode Audio",
+      "pos": [
+        3260.0,
+        680.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 12
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecodeAudio"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 11,
+      "type": "SaveAudioAdvanced",
+      "title": "AUDIO · 48-kHz-Stereo / PRIVATE",
+      "pos": [
+        3260.0,
+        980.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 14
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "filename_prefix"
+          }
+        },
+        {
+          "name": "format",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "link": null,
+          "widget": {
+            "name": "format"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveAudioAdvanced"
+      },
+      "widgets_values": [
+        "Music/PRIVATE_YuE2/LoRA/song",
+        "flac"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "MarkdownNote",
+      "title": "START HIER · YuE2 mit eigener Stil-LoRA / PRIVAT",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        680,
+        996
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "**CC-BY-NC-4.0 · ausschließlich privat/nichtkommerziell.** Experimentelles NAR-Stil-/Stimmfarben-LoRA, KEIN verlässliches Voice-Cloning, kein Echtzeit-Streaming. Für Streaming-Songs weiter ACE-Step.\n\n1. Zuerst den Trainings-Workflow ausführen oder einen kompatiblen nativen YuE2-NAR-Adapter installieren. Nach Training die LoRA-Liste aktualisieren/ComfyUI neu laden. yue2_my_style.safetensors ist der erwartete eigene Adapter, kein mitgeliefertes Qualitätsmodell.\n\n2. BF16-Basis wählen: yue2_3b_bf16.safetensors. LoraLoaderModelOnly wirkt nur auf MODEL/NAR. CLIP/AR und VAE bleiben unverändert. Keine YuE-v1-, ACE-Step-, FL-YuE2-AR- oder beliebigen Bild-LoRAs laden. INT8/convrot ist hier nicht als kompatible Basis freigegeben.\n\n3. trigger_word aus dem Training als ERSTES Wort in STYLE verwenden (Standard my_style). Danach Genre, Sprache, Instrumente, Stimmung. LYRICS leer für Instrumental oder eigene Lyrics mit [Verse]/[Chorus]. ABC bewusst leer lassen: Der Core schaltet automatisch cot=off; die sichtbare mode-Auswahl wird dann ignoriert. Kein ABC-Generator/Audio-Cover, um den Trainingsmodus nicht zusätzlich zu verändern.\n\n4. strength_model zuerst 1.0; für Baseline 0.0. Gleiche AR- und Sampler-Seeds, gleiche Prompts/Dauer benutzen, EMA und _raw vergleichen. Hohe Stärke kann dumpfen Klang/Artefakte erzeugen; 2.0 ist KEIN automatisch geprüfter Qualitätswert.\n\n5. max_duration=30s ist eine Obergrenze, KEINE exakte Länge. Tatsächlich generierte Sekunden sind direkt mit dem Latent verbunden. Nach kurzen Hörtests z.B. 120s einstellen. 32 DPM2/SGM-uniform-Schritte, CFG 1. Vollständige Stereo-FLAC wird erst nach der Queue gespeichert unter output/Music/PRIVATE_YuE2/LoRA/.\n\n6. R9700 gpu:0 für MODEL/CLIP/VAE. Keine zweite GPU erforderlich. SDPA / klassisches hipBLAS / kein torch.compile. Der Trainer braucht den separaten 7,80-GB-BF16-Checkpoint; vorhandenes INT8 bleibt unangetastet.\n\nKeine Audioaufnahmen oder privaten Adapter im öffentlichen Bundle. Nur eigene/freigegebene Daten nutzen. Technische Smoke-Tests mit synthetischem Audio bestätigen Training/Adapterladung/Ausgabe, nicht Stiltreue oder Stimmenähnlichkeit. Quellen und Anleitung: docs/YUE2_LORA_V119.md. RODENT Method: Nerdy Rodent."
+      ]
+    },
+    {
+      "id": 13,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        1120.0
+      ],
+      "size": [
+        226,
+        136
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 14,
+      "type": "MarkdownNote",
+      "pos": [
+        3840.0,
+        80.0
+      ],
+      "size": [
+        680,
+        600
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · YuE2 BF16 · dieselbe Basis wie beim Training · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 1,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · YuE2 BF16 · dieselbe Basis wie beim Training · Node 1\n\n**Zweck:** Loads a diffusion model checkpoint, diffusion models are used to denoise latents.\n\n**Einstellbare Werte**\n- `ckpt_name` = `yue2_3b_bf16.safetensors` — The name of the checkpoint (model) to load. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `ckpt_name` (COMBO, nicht verbunden): The name of the checkpoint (model) to load.\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): The model used for denoising latents.\n- `CLIP` (CLIP, 1 Verbindung(en)): The CLIP model used for encoding text prompts.\n- `VAE` (VAE, 1 Verbindung(en)): The VAE model used for encoding and decoding images to and from latent space."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 15,
+      "type": "MarkdownNote",
+      "pos": [
+        3840.0,
+        720.0
+      ],
+      "size": [
+        680,
+        644
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · STIL-LoRA · 0 = Baseline / 1 = Startwert · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · STIL-LoRA · 0 = Baseline / 1 = Startwert · Node 2\n\n**Zweck:** This LoRAs loader is used to modify the diffusion model, altering the way in which latents are denoised such as applying styles. Multiple LoRA nodes can be linked together.\n\n**Einstellbare Werte**\n- `lora_name` = `yue2_my_style.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `strength_model` = `1.0` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `strength_model` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): The modified diffusion model."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 16,
+      "type": "MarkdownNote",
+      "pos": [
+        3840.0,
+        1400.0
+      ],
+      "size": [
+        680,
+        1480
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · AR · komponiert weiterhin OHNE LoRA · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 5,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · AR · komponiert weiterhin OHNE LoRA · Node 5\n\n**Zweck:** Generates music tokens and acoustic conditioning from style, lyrics, and an ABC notation. Provide the generated seconds to the Empty YuE2 Latent Audio node. An empty ABC input ignores the selected mode.\n\n**Einstellbare Werte**\n- `style` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lyrics` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `abc` = `` — Connect the ABC generator or supply an edited score. Leave empty to use off mode automatically. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `119` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `mode` = `full` — full: generates melody and chords; melody: generates melody only, recommended for covers. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `max_duration` = `30.0` — Maximum duration in seconds. Automatically reduced for long prompts; generation can stop earlier. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `temperature` = `1.0` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `top_p` = `0.95` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `top_k` = `100` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `repetition_penalty` = `1.2` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n\n**Eingänge**\n- `clip` (CLIP, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `style` (STRING, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics` (STRING, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `abc` (STRING, nicht verbunden): Connect the ABC generator or supply an edited score. Leave empty to use off mode automatically.\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `mode` (COMBO, nicht verbunden): full: generates melody and chords; melody: generates melody only, recommended for covers.\n- `max_duration` (FLOAT, nicht verbunden): Maximum duration in seconds. Automatically reduced for long prompts; generation can stop earlier.\n- `temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_k` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `repetition_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `seconds` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 17,
+      "type": "MarkdownNote",
+      "pos": [
+        3840.0,
+        2920.0
+      ],
+      "size": [
+        680,
+        578
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Empty YuE2 Latent Audio · Node 6",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 6,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Empty YuE2 Latent Audio · Node 6\n\n**Zweck:** Erzeugt, kombiniert oder transformiert Daten im Latent-Raum vor Sampling oder Decoding.\n\n**Einstellbare Werte**\n- `seconds` = `120.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n\n**Eingänge**\n- `seconds` (FLOAT, Link 5): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `batch_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 18,
+      "type": "MarkdownNote",
+      "pos": [
+        4600.0,
+        80.0
+      ],
+      "size": [
+        680,
+        446
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · TATSÄCHLICHE DAUER · max_duration ist nur eine Obergrenze · Node 7",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 7,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · TATSÄCHLICHE DAUER · max_duration ist nur eine Obergrenze · Node 7\n\n**Zweck:** Preview any input value as text.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `source` (*, Link 6): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 19,
+      "type": "MarkdownNote",
+      "pos": [
+        4600.0,
+        560.0
+      ],
+      "size": [
+        680,
+        490
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Conditioning Zero Out · Node 8",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 8,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Conditioning Zero Out · Node 8\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `conditioning` (CONDITIONING, Link 7): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 20,
+      "type": "MarkdownNote",
+      "pos": [
+        4600.0,
+        1080.0
+      ],
+      "size": [
+        680,
+        1326
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · NAR · LoRA verändert die Klangerzeugung · Node 9",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 9,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · NAR · LoRA verändert die Klangerzeugung · Node 9\n\n**Zweck:** Uses the provided model, positive and negative conditioning to denoise the latent image.\n\n**Einstellbare Werte**\n- `seed` = `119` — The random seed used for creating the noise. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `steps` = `32` — The number of steps used in the denoising process. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `cfg` = `1.0` — The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will ne… Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `sampler_name` = `dpm_2` — The algorithm used when sampling, this can affect the quality, speed, and style of the generated output. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `scheduler` = `sgm_uniform` — The scheduler controls how noise is gradually removed to form the image. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `denoise` = `1.0` — The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 8): The model used for denoising the input latent.\n- `seed` (INT, nicht verbunden): The random seed used for creating the noise.\n- `steps` (INT, nicht verbunden): The number of steps used in the denoising process.\n- `cfg` (FLOAT, nicht verbunden): The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt h…\n- `sampler_name` (COMBO, nicht verbunden): The algorithm used when sampling, this can affect the quality, speed, and style of the generated output.\n- `scheduler` (COMBO, nicht verbunden): The scheduler controls how noise is gradually removed to form the image.\n- `positive` (CONDITIONING, Link 9): The conditioning describing the attributes you want to include in the image.\n- `negative` (CONDITIONING, Link 10): The conditioning describing the attributes you want to exclude from the image.\n- `latent_image` (LATENT, Link 11): The latent image to denoise.\n- `denoise` (FLOAT, nicht verbunden): The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling.\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): The denoised latent."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 21,
+      "type": "MarkdownNote",
+      "pos": [
+        4600.0,
+        2440.0
+      ],
+      "size": [
+        680,
+        490
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VAE Decode Audio · Node 10",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 10,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VAE Decode Audio · Node 10\n\n**Zweck:** Dekodiert Latents mit dem VAE zu sicht- oder hörbaren Mediendaten.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `samples` (LATENT, Link 12): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 13): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `AUDIO` (AUDIO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 22,
+      "type": "MarkdownNote",
+      "pos": [
+        5360.0,
+        80.0
+      ],
+      "size": [
+        680,
+        600
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · AUDIO · 48-kHz-Stereo / PRIVATE · Node 11",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 11,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · AUDIO · 48-kHz-Stereo / PRIVATE · Node 11\n\n**Zweck:** Saves the input audio to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `Music/PRIVATE_YuE2/LoRA/song` — The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd%. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `format` = `flac` — The file format in which to save the audio. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `audio` (AUDIO, Link 14): The audio to save.\n- `filename_prefix` (STRING, nicht verbunden): The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd%.\n- `format` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): The file format in which to save the audio.\n\n**Ausgänge**\n- `audio` (AUDIO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 23,
+      "type": "SelectModelDevice",
+      "pos": [
+        1520.0,
+        380.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 15
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectModelDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectModelDevice · central control",
+      "color": "#16334a",
+      "bgcolor": "#1d4968"
+    },
+    {
+      "id": 24,
+      "type": "SelectCLIPDevice",
+      "pos": [
+        1520.0,
+        500.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 16
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 0,
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectCLIPDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectCLIPDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 25,
+      "type": "SelectVAEDevice",
+      "pos": [
+        1520.0,
+        620.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 17
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectVAEDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectVAEDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 26,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1300.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            18
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": [
+            19
+          ]
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 27,
+      "type": "MarkdownNote",
+      "pos": [
+        5360.0,
+        720.0
+      ],
+      "size": [
+        680,
+        578
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectModelDevice · central control · Node 23",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 23,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectModelDevice · central control · Node 23\n\n**Zweck:** Place the diffusion model on a specific device (default / cpu / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader (even after a ↵   prior Select Model Device call). ↵ - \"cpu\" pins both the load and offload device to CPU. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   devic…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 15): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 18): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 28,
+      "type": "MarkdownNote",
+      "pos": [
+        5360.0,
+        1340.0
+      ],
+      "size": [
+        680,
+        578
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectCLIPDevice · central control · Node 24",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 24,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectCLIPDevice · central control · Node 24\n\n**Zweck:** Place the CLIP text encoder on a specific device (default / cpu / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"cpu\" pins both the load and offload device to CPU. ↵ - \"gpu:N\" pins the load device to the Nth available GPU. ↵  ↵ When the selected device does not exist on the current machine ↵…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 16): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 19): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 29,
+      "type": "MarkdownNote",
+      "pos": [
+        5360.0,
+        1960.0
+      ],
+      "size": [
+        680,
+        578
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectVAEDevice · central control · Node 25",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 25,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectVAEDevice · central control · Node 25\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 17): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 20): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 30,
+      "type": "MarkdownNote",
+      "pos": [
+        6120.0,
+        80.0
+      ],
+      "size": [
+        680,
+        666
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 26",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 26,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 26\n\n**Zweck:** Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector. ↵  ↵ Connect these COMBO outputs to the ``device`` input of ComfyUI's official ↵ Select Model Device, Select CLIP Device, and Select VAE Device nodes. The ↵ node chooses labels only; the official selectors remain responsible for ↵ validating…\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      23,
+      0,
+      2,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      24,
+      0,
+      5,
+      0,
+      "CLIP"
+    ],
+    [
+      3,
+      3,
+      0,
+      5,
+      1,
+      "STRING"
+    ],
+    [
+      4,
+      4,
+      0,
+      5,
+      2,
+      "STRING"
+    ],
+    [
+      5,
+      5,
+      1,
+      6,
+      0,
+      "FLOAT"
+    ],
+    [
+      6,
+      5,
+      1,
+      7,
+      0,
+      "FLOAT"
+    ],
+    [
+      7,
+      5,
+      0,
+      8,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      8,
+      2,
+      0,
+      9,
+      0,
+      "MODEL"
+    ],
+    [
+      9,
+      5,
+      0,
+      9,
+      6,
+      "CONDITIONING"
+    ],
+    [
+      10,
+      8,
+      0,
+      9,
+      7,
+      "CONDITIONING"
+    ],
+    [
+      11,
+      6,
+      0,
+      9,
+      8,
+      "LATENT"
+    ],
+    [
+      12,
+      9,
+      0,
+      10,
+      0,
+      "LATENT"
+    ],
+    [
+      13,
+      25,
+      0,
+      10,
+      1,
+      "VAE"
+    ],
+    [
+      14,
+      10,
+      0,
+      11,
+      0,
+      "AUDIO"
+    ],
+    [
+      15,
+      1,
+      0,
+      23,
+      0,
+      "MODEL"
+    ],
+    [
+      16,
+      1,
+      1,
+      24,
+      0,
+      "CLIP"
+    ],
+    [
+      17,
+      1,
+      2,
+      25,
+      0,
+      "VAE"
+    ],
+    [
+      18,
+      26,
+      0,
+      23,
+      1,
+      "COMBO"
+    ],
+    [
+      19,
+      26,
+      1,
+      24,
+      1,
+      "COMBO"
+    ],
+    [
+      20,
+      26,
+      2,
+      25,
+      1,
+      "COMBO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        760.0,
+        1520.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        840.0,
+        0.0,
+        560.0,
+        880.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1480.0,
+        0.0,
+        500.0,
+        1040.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "E1 · ENCODE & CONDITION",
+      "bounding": [
+        2060.0,
+        0.0,
+        500.0,
+        680.0
+      ],
+      "color": "#C68B31",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        2640.0,
+        0.0,
+        500.0,
+        380.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        3220.0,
+        0.0,
+        500.0,
+        1280.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 7,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        3800.0,
+        0.0,
+        3040.0,
+        3540.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "dawasteh_yue2_lora": {
+      "version": 1,
+      "release": "v1.1.9",
+      "branch": "NAR acoustic style/timbre; AR frozen",
+      "experimental": true,
+      "license": "CC-BY-NC-4.0",
+      "validation_report": "performance/rdna4/yue2-lora-v119-validation.json"
+    },
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 13,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ],
+      "placement_support": "official-selectors",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation",
+      "source": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 3,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_duration_seconds": {
+      "version": 1,
+      "unit": "seconds",
+      "mode": "native-seconds"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "4b01a8dfaf8afdd6e472b7ba4500e2057c68f371575a6ddb36f220a216e7ace2",
+      "exceptions": []
+    }
+  },
+  "version": 0.4,
+  "last_node_id": 30,
+  "last_link_id": 20,
+  "id": "a7beb89d-d704-57af-9980-83121541fdc7",
+  "revision": 0
+}

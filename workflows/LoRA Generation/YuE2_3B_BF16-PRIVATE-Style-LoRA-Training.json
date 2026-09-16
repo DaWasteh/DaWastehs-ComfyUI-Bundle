@@ -1,0 +1,1106 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "type": "YuE2TrainingDataset",
+      "title": "DATENSATZ · eigene Musik + optionale TXT-Captions",
+      "pos": [
+        880.0,
+        80.0
+      ],
+      "size": [
+        560,
+        430
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "checkpoint",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "checkpoint"
+          }
+        },
+        {
+          "name": "audio_folder",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "audio_folder"
+          }
+        },
+        {
+          "name": "clip_seconds",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "clip_seconds"
+          }
+        },
+        {
+          "name": "caption_mode",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "caption_mode"
+          }
+        },
+        {
+          "name": "default_caption",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "default_caption"
+          }
+        },
+        {
+          "name": "cache_folder",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "cache_folder"
+          }
+        },
+        {
+          "name": "force_reencode",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "force_reencode"
+          }
+        },
+        {
+          "name": "device",
+          "type": "COMBO",
+          "link": 7,
+          "shape": 7,
+          "widget": {
+            "name": "device"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "dataset",
+          "type": "YUE2_TRAIN_DATASET",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "summary",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "YuE2TrainingDataset"
+      },
+      "widgets_values": [
+        "yue2_3b_bf16.safetensors",
+        "yue2_lora/my_style",
+        6.0,
+        "txt_file",
+        "",
+        "",
+        false,
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "YuE2LoRATrainer",
+      "title": "TRAINING · BF16 / AdamW / NAR-Stil-LoRA",
+      "pos": [
+        880.0,
+        560.0
+      ],
+      "size": [
+        560,
+        860
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "dataset",
+          "type": "YUE2_TRAIN_DATASET",
+          "link": 1
+        },
+        {
+          "name": "checkpoint",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "checkpoint"
+          }
+        },
+        {
+          "name": "trigger_word",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "trigger_word"
+          }
+        },
+        {
+          "name": "steps",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "steps"
+          }
+        },
+        {
+          "name": "learning_rate",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "learning_rate"
+          }
+        },
+        {
+          "name": "rank",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "rank"
+          }
+        },
+        {
+          "name": "alpha",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "alpha"
+          }
+        },
+        {
+          "name": "lora_dropout",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "lora_dropout"
+          }
+        },
+        {
+          "name": "target_preset",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "target_preset"
+          }
+        },
+        {
+          "name": "lora_name",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "lora_name"
+          }
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "optimizer",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "optimizer"
+          }
+        },
+        {
+          "name": "lr_scheduler",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "lr_scheduler"
+          }
+        },
+        {
+          "name": "warmup_steps",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "warmup_steps"
+          }
+        },
+        {
+          "name": "grad_accum",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "grad_accum"
+          }
+        },
+        {
+          "name": "caption_dropout",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "caption_dropout"
+          }
+        },
+        {
+          "name": "t_sampling",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "t_sampling"
+          }
+        },
+        {
+          "name": "max_grad_norm",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "max_grad_norm"
+          }
+        },
+        {
+          "name": "log_every",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "log_every"
+          }
+        },
+        {
+          "name": "save_every",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "save_every"
+          }
+        },
+        {
+          "name": "ema_decay",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "ema_decay"
+          }
+        },
+        {
+          "name": "live_curve",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "live_curve"
+          }
+        },
+        {
+          "name": "device",
+          "type": "COMBO",
+          "link": 8,
+          "shape": 7,
+          "widget": {
+            "name": "device"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "lora_path",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "training_log",
+          "type": "STRING",
+          "links": [
+            4,
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "YuE2LoRATrainer"
+      },
+      "widgets_values": [
+        "yue2_3b_bf16.safetensors",
+        "my_style",
+        100,
+        0.0001,
+        16,
+        16.0,
+        0.0,
+        "nar_attn_mlp",
+        "yue2_my_style",
+        119,
+        "fixed",
+        "adamw",
+        "cosine",
+        10,
+        1,
+        0.1,
+        "logit_normal",
+        1.0,
+        10,
+        0,
+        0.99,
+        true,
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "PreviewAny",
+      "title": "DATENSATZ · Clips / Dauer / Captions",
+      "pos": [
+        1600.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 4,
+      "type": "PreviewAny",
+      "title": "ERGEBNIS · gespeicherter LoRA-Pfad",
+      "pos": [
+        1600.0,
+        380.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 5,
+      "type": "PreviewAny",
+      "title": "TRAININGSLOG · Loss / LR / Schritte",
+      "pos": [
+        1600.0,
+        680.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "YuE2TrainingCurve",
+      "title": "LOSS-KURVE · technisch, keine Qualitätsmessung",
+      "pos": [
+        880.0,
+        1460.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "training_log",
+          "type": "STRING",
+          "link": 5
+        },
+        {
+          "name": "smooth",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "smooth"
+          }
+        },
+        {
+          "name": "show_raw",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "show_raw"
+          }
+        },
+        {
+          "name": "show_lr",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "show_lr"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "chart",
+          "type": "IMAGE",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "YuE2TrainingCurve"
+      },
+      "widgets_values": [
+        3,
+        true,
+        true
+      ]
+    },
+    {
+      "id": 7,
+      "type": "SaveImage",
+      "title": "TRAININGSKURVE · PNG speichern",
+      "pos": [
+        1600.0,
+        980.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 6
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "filename_prefix"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "Music/PRIVATE_YuE2/LoRA/training_curve"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "MarkdownNote",
+      "title": "START HIER · YuE2 echtes Stil-LoRA-Training / PRIVAT",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        680,
+        1304
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "**YuE2 / CC-BY-NC-4.0: nur privat/nichtkommerziell, mit Quellenangabe.** Kein Streaming-/ACE-Step-Ersatz. Keine private Musik, Adapter oder Trainingsdaten ins öffentliche Repository laden.\n\n**Was wird gelernt?** Echte LoRA-Gewichte für die akustische NAR-Stufe: Klangstil, Instrumente, Stimmfarbe. AR-Komposition und Textmodell bleiben eingefroren. EXPERIMENTELL, kein verlässliches Voice-Cloning. Ein technischer Smoke-Test beweist keine musikalische Qualität.\n\n**1 · Installation:** tools/install_yue2_lora_node.py installiert den gepinnten Starnodes-Trainer mit RDNA4-Patch. tools/install_yue2_lora_model.py --accept-noncommercial installiert den verifizierten 7,80-GB-BF16-Checkpoint. ComfyUI neu starten. INT8/convrot ist KEINE Trainingsbasis. Beide checkpoint-Felder müssen BF16 wählen.\n\n**2 · Eigene Daten:** input/yue2_lora/my_style/ mit 001.wav + optional 001.txt, 002.flac + 002.txt. TXT enthält Genre/Instrumente/Stimmcharakter, NICHT das exakte Lyrics-Transkript. Nur eigene/freigegebene Aufnahmen. Keine Unterordner-Suche; WAV/FLAC bevorzugt. Relative Ordner beziehen sich auf ComfyUI/input; absolute Pfade funktionieren ebenfalls. 48 kHz Stereo wird automatisch vorbereitet. Dateien mindestens 6s lang; Reststücke unter clip_seconds werden verworfen. Fehlende Captions bleiben leer. Einheitliches Material, später etwa 5–30 geeignete Songs.\n\n**3 · Sicherstart:** 100 Schritte, 6s Clips, Rank/Alpha 16, LR 1e-4, AdamW, Accumulation 1, Warmup 10, Cosine, EMA 0.99. Das ist ein kurzer Funktionsstart, KEIN fertig trainierter Qualitätsadapter. Für einen Mini-Test steps=5, warmup_steps=0, log_every=1. Für echtes Training nach Hörvergleich z.B. 3000 Schritte, 10s, Rank/Alpha 32, Warmup 50, EMA 0.999; Speicherbedarf steigt. Nicht blind auf 5000 erhöhen.\n\n**4 · GPU:** R9700 / gpu:0, SDPA, kein FlashAttention, kein torch.compile, kein bitsandbytes. VAE-GPU steuert Datensatz-Encoding, MODEL-GPU das komplette AR/NAR-Trainingsmodell; CLIP-Auswahl hat hier keine Funktion. Der Patch entlädt bestehende Comfy-Modelle vor GPU-Arbeit. Exklusiv ausführen. Unsichtbare GPUs werden abgewiesen. Bei OOM Clipdauer/Rank senken, dann neu starten.\n\n**5 · Ergebnis:** models/loras/yue2_my_style.safetensors (EMA) und yue2_my_style_raw.safetensors. lora_name enthält KEINE Ordner. Vor jedem neuen Lauf einen neuen Namen wählen: vorhandene Adapter werden ausdrücklich NICHT überschrieben. Zwischenstände sind Adapter, KEIN Optimizer-Resume. Abbruch stoppt an Schritt-/Encoding-Grenzen; ein finaler Adapter entsteht erst nach erfolgreichem Training. Cache liegt standardmäßig unter temp/yue2_latents, nach Modell/Datensatz getrennt; force_reencode verwirft nur diesen Cache.\n\n**6 · Anwenden:** Musik-Workflow öffnen, LoRA-Liste aktualisieren, Adapter wählen, denselben trigger_word an den Anfang des Style-Prompts setzen. Stärke zuerst 1.0; 0 ist Baseline, danach vorsichtig vergleichen. ABC bleibt leer (cot=off). Loss und Kurve sind technische Diagnostik, keine Hörabnahme.\n\nQuellen: github.com/Starnodes2024/ComfyUI-YuE2-Trainer (MIT, Referenzcode Apache-2.0); huggingface.co/Comfy-Org/YuE2; m-a-p/YuE2-3B. RODENT Method: Nerdy Rodent. Details: docs/YUE2_LORA_V119.md."
+      ]
+    },
+    {
+      "id": 9,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        1420.0
+      ],
+      "size": [
+        226,
+        136
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 10,
+      "type": "MarkdownNote",
+      "pos": [
+        2180.0,
+        80.0
+      ],
+      "size": [
+        680,
+        1370
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · DATENSATZ · eigene Musik + optionale TXT-Captions · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 1,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · DATENSATZ · eigene Musik + optionale TXT-Captions · Node 1\n\n**Zweck:** Lädt, filtert oder bereitet Trainingsdaten für die weitere Verarbeitung auf.\n\n**Einstellbare Werte**\n- `checkpoint` = `yue2_3b_bf16.safetensors` — Native YuE2 all-in-one checkpoint (models/checkpoints) — its built-in VAE encodes your audio. Same file you use for generation. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `audio_folder` = `yue2_lora/my_style` — Absolute path to the folder with your training songs (mp3/wav/flac; optional .txt caption next to each file, same name). Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `clip_seconds` = `6.0` — Length of each training clip. 10s = 250 latent frames. Shorter = less VRAM. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `caption_mode` = `txt_file` — txt_file: use same-named .txt captions (empty if missing). default: one caption for every clip. none: trigger word only. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `default_caption` = `` — Used for every clip when caption_mode=default. Describe style/instruments/voice. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `cache_folder` = `` — Where to store encoded latents. Empty = <ComfyUI>/temp/yue2_latents. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `force_reencode` = `False` — Ignore the latent cache and re-encode all files. Use after changing audio files without renaming them. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `checkpoint` (COMBO, nicht verbunden): Native YuE2 all-in-one checkpoint (models/checkpoints) — its built-in VAE encodes your audio. Same file you use for generation.\n- `audio_folder` (STRING, nicht verbunden): Absolute path to the folder with your training songs (mp3/wav/flac; optional .txt caption next to each file, same name).\n- `clip_seconds` (FLOAT, nicht verbunden): Length of each training clip. 10s = 250 latent frames. Shorter = less VRAM.\n- `caption_mode` (COMBO, nicht verbunden): txt_file: use same-named .txt captions (empty if missing). default: one caption for every clip. none: trigger word only.\n- `default_caption` (STRING, nicht verbunden): Used for every clip when caption_mode=default. Describe style/instruments/voice.\n- `cache_folder` (STRING, nicht verbunden): Where to store encoded latents. Empty = <ComfyUI>/temp/yue2_latents.\n- `force_reencode` (BOOLEAN, nicht verbunden): Ignore the latent cache and re-encode all files. Use after changing audio files without renaming them.\n- `device` (COMBO, Link 7): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `dataset` (YUE2_TRAIN_DATASET, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `summary` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 11,
+      "type": "MarkdownNote",
+      "pos": [
+        2180.0,
+        1480.0
+      ],
+      "size": [
+        680,
+        3394
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · TRAINING · BF16 / AdamW / NAR-Stil-LoRA · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · TRAINING · BF16 / AdamW / NAR-Stil-LoRA · Node 2\n\n**Zweck:** Konfiguriert oder führt einen Trainingsschritt mit den bereitgestellten Daten und Modellen aus.\n\n**Einstellbare Werte**\n- `checkpoint` = `yue2_3b_bf16.safetensors` — Native YuE2 all-in-one checkpoint (models/checkpoints) the LoRA is trained on — pick the same file you generate with. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `trigger_word` = `my_style` — Token/word placed at the start of the style prompt. Use it in your style prompt at generation time (cot=off works best). Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `steps` = `100` — Total training steps (one random clip per step). 3000 is a good default for 5-30 songs; fewer steps = weaker style, more = risk of overfitting (muffled/repetitive output). Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `learning_rate` = `0.0001` — AdamW learning rate. 1e-4 works well for rank 16-64. If the LoRA has no audible effect, try 2e-4; if it overfits, try 5e-5. Höher lernt schneller, kann aber instabil werden/übersteuern; niedriger ist stabiler, benötigt mehr Schritte.\n- `rank` = `16` — LoRA rank (adapter capacity). 32 is the recommended default; lower = smaller file/less detail, higher = more capacity but easier to overfit. Höher erhöht Kapazität, Dateigröße und Speicherbedarf; niedriger ist kompakter, kann Details unterlernen.\n- `alpha` = `16.0` — LoRA alpha (scaling). Keep equal to rank (scaling = 1.0) unless you know you want a different baked-in strength. Höher skaliert den Adapter stärker; niedriger wirkt sanfter. Häufig wird Alpha passend zum Rank gewählt.\n- `lora_dropout` = `0.0` — Dropout on the LoRA input. 0.0 is usually fine; try 0.05-0.1 only if the LoRA overfits on few songs. Höher regularisiert stärker gegen Overfitting; niedriger passt sich enger an die Trainingsdaten an.\n- `target_preset` = `nar_attn_mlp` — Which NAR layers get LoRA. nar_attn_mlp is the recommended default; ..._proj also adapts the latent projections (more VRAM/params). Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `lora_name` = `yue2_my_style` — Output file name (<name>.safetensors) written into models/loras. With EMA on, <name>_raw.safetensors (non-EMA) is saved too. Ein anderer kompatibler Eintrag wechselt Modell/Adapter und verändert Stil, Qualität und Speicherbedarf.\n- `seed` = `119` — Random seed for clip choice, noise and timestep sampling. Change it (or set to randomize) for a different training run. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `optimizer` = `adamw` — adamw_8bit (bitsandbytes) saves VRAM; falls back to adamw if unavailable. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `lr_scheduler` = `cosine` — cosine (recommended): fades the learning rate to 0 over the run — more stable results. constant: keeps the full LR until the end. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `warmup_steps` = `10` — Linearly ramp the LR from 0 over the first N steps. 50 is a safe default; 0 disables warmup. Höher fährt die Lernrate länger sanft hoch und stabilisiert den Start, verkürzt aber die volle Lernphase; niedriger erreicht die Ziel-Lernrate früher.\n- `grad_accum` = `1` — Gradient accumulation steps (effective batch = accum x 1 clip). Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `caption_dropout` = `0.1` — Chance per step to train without trigger/caption (keeps the base style reachable). Höher regularisiert stärker gegen Overfitting; niedriger passt sich enger an die Trainingsdaten an.\n- `t_sampling` = `logit_normal` — Timestep sampling for flow matching. logit_normal (recommended) emphasizes mid-noise levels; uniform spreads evenly. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `max_grad_norm` = `1.0` — Gradient clipping threshold. 1.0 prevents loss spikes from destabilizing the LoRA; rarely needs changing. Niedriger begrenzt Gradientenspitzen stärker; höher greift seltener ein, kann aber Instabilität zulassen.\n- `log_every` = `10` — Print the averaged loss to the console / training_log every N steps. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `save_every` = `0` — Save an intermediate LoRA every N steps (0 = only the final one). Höher speichert seltener und spart Speicherplatz/I/O; niedriger erzeugt häufiger Zwischenstände.\n- `ema_decay` = `0.99` — EMA (smoothed) LoRA weights — strongly recommended, fixes 'hit and miss' results. The main file uses EMA weights; the raw copy is saved as <name>_raw.safetensors. 0 disables EMA. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `live_curve` = `True` — Update a live loss/LR chart in the YuE2 Training Curve node while training runs (needs matplotlib; auto-disables with a log note if unavailable). No effect on training itself. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `dataset` (YUE2_TRAIN_DATASET, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `checkpoint` (COMBO, nicht verbunden): Native YuE2 all-in-one checkpoint (models/checkpoints) the LoRA is trained on — pick the same file you generate with.\n- `trigger_word` (STRING, nicht verbunden): Token/word placed at the start of the style prompt. Use it in your style prompt at generation time (cot=off works best).\n- `steps` (INT, nicht verbunden): Total training steps (one random clip per step). 3000 is a good default for 5-30 songs; fewer steps = weaker style, more = risk of overfitting (muffl…\n- `learning_rate` (FLOAT, nicht verbunden): AdamW learning rate. 1e-4 works well for rank 16-64. If the LoRA has no audible effect, try 2e-4; if it overfits, try 5e-5.\n- `rank` (INT, nicht verbunden): LoRA rank (adapter capacity). 32 is the recommended default; lower = smaller file/less detail, higher = more capacity but easier to overfit.\n- `alpha` (FLOAT, nicht verbunden): LoRA alpha (scaling). Keep equal to rank (scaling = 1.0) unless you know you want a different baked-in strength.\n- `lora_dropout` (FLOAT, nicht verbunden): Dropout on the LoRA input. 0.0 is usually fine; try 0.05-0.1 only if the LoRA overfits on few songs.\n- `target_preset` (COMBO, nicht verbunden): Which NAR layers get LoRA. nar_attn_mlp is the recommended default; ..._proj also adapts the latent projections (more VRAM/params).\n- `lora_name` (STRING, nicht verbunden): Output file name (<name>.safetensors) written into models/loras. With EMA on, <name>_raw.safetensors (non-EMA) is saved too.\n- `seed` (INT, nicht verbunden): Random seed for clip choice, noise and timestep sampling. Change it (or set to randomize) for a different training run.\n- `optimizer` (COMBO, nicht verbunden): adamw_8bit (bitsandbytes) saves VRAM; falls back to adamw if unavailable.\n- `lr_scheduler` (COMBO, nicht verbunden): cosine (recommended): fades the learning rate to 0 over the run — more stable results. constant: keeps the full LR until the end.\n- `warmup_steps` (INT, nicht verbunden): Linearly ramp the LR from 0 over the first N steps. 50 is a safe default; 0 disables warmup.\n- `grad_accum` (INT, nicht verbunden): Gradient accumulation steps (effective batch = accum x 1 clip).\n- `caption_dropout` (FLOAT, nicht verbunden): Chance per step to train without trigger/caption (keeps the base style reachable).\n- `t_sampling` (COMBO, nicht verbunden): Timestep sampling for flow matching. logit_normal (recommended) emphasizes mid-noise levels; uniform spreads evenly.\n- `max_grad_norm` (FLOAT, nicht verbunden): Gradient clipping threshold. 1.0 prevents loss spikes from destabilizing the LoRA; rarely needs changing.\n- `log_every` (INT, nicht verbunden): Print the averaged loss to the console / training_log every N steps.\n- `save_every` (INT, nicht verbunden): Save an intermediate LoRA every N steps (0 = only the final one).\n- `ema_decay` (FLOAT, nicht verbunden): EMA (smoothed) LoRA weights — strongly recommended, fixes 'hit and miss' results. The main file uses EMA weights; the raw copy is saved as <name>_raw…\n- `live_curve` (BOOLEAN, nicht verbunden): Update a live loss/LR chart in the YuE2 Training Curve node while training runs (needs matplotlib; auto-disables with a log note if unavailable). No …\n- `device` (COMBO, Link 8): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `lora_path` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `training_log` (STRING, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 12,
+      "type": "MarkdownNote",
+      "pos": [
+        2940.0,
+        80.0
+      ],
+      "size": [
+        680,
+        446
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · DATENSATZ · Clips / Dauer / Captions · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 3,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · DATENSATZ · Clips / Dauer / Captions · Node 3\n\n**Zweck:** Preview any input value as text.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `source` (*, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "pos": [
+        2940.0,
+        560.0
+      ],
+      "size": [
+        680,
+        446
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · ERGEBNIS · gespeicherter LoRA-Pfad · Node 4",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 4,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · ERGEBNIS · gespeicherter LoRA-Pfad · Node 4\n\n**Zweck:** Preview any input value as text.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `source` (*, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 14,
+      "type": "MarkdownNote",
+      "pos": [
+        3700.0,
+        80.0
+      ],
+      "size": [
+        680,
+        446
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · TRAININGSLOG · Loss / LR / Schritte · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 5,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · TRAININGSLOG · Loss / LR / Schritte · Node 5\n\n**Zweck:** Preview any input value as text.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `source` (*, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 15,
+      "type": "MarkdownNote",
+      "pos": [
+        3700.0,
+        560.0
+      ],
+      "size": [
+        680,
+        798
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · LOSS-KURVE · technisch, keine Qualitätsmessung · Node 6",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 6,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · LOSS-KURVE · technisch, keine Qualitätsmessung · Node 6\n\n**Zweck:** Konfiguriert oder führt einen Trainingsschritt mit den bereitgestellten Daten und Modellen aus.\n\n**Einstellbare Werte**\n- `smooth` = `3` — Moving-average window (in logged points) for the bold loss curve. 1 = no smoothing. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `show_raw` = `True` — Show the unsmoothed loss as a faint trace behind the smoothed curve. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `show_lr` = `True` — Overlay the learning-rate schedule (orange, log scale, right axis). AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `training_log` (STRING, Link 5): Connect the training_log output of the YuE2 LoRA Trainer.\n- `smooth` (INT, nicht verbunden): Moving-average window (in logged points) for the bold loss curve. 1 = no smoothing.\n- `show_raw` (BOOLEAN, nicht verbunden): Show the unsmoothed loss as a faint trace behind the smoothed curve.\n- `show_lr` (BOOLEAN, nicht verbunden): Overlay the learning-rate schedule (orange, log scale, right axis).\n\n**Ausgänge**\n- `chart` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 16,
+      "type": "MarkdownNote",
+      "pos": [
+        4460.0,
+        80.0
+      ],
+      "size": [
+        680,
+        556
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · TRAININGSKURVE · PNG speichern · Node 7",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 7,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · TRAININGSKURVE · PNG speichern · Node 7\n\n**Zweck:** Saves the input images to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `Music/PRIVATE_YuE2/LoRA/training_curve` — The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `images` (IMAGE, Link 6): The images to save.\n- `filename_prefix` (STRING, nicht verbunden): The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values fr…\n\n**Ausgänge**\n- `images` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 17,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1600.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            8
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 18,
+      "type": "MarkdownNote",
+      "pos": [
+        4460.0,
+        680.0
+      ],
+      "size": [
+        680,
+        666
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 17",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 17,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 17\n\n**Zweck:** Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector. ↵  ↵ Connect these COMBO outputs to the ``device`` input of ComfyUI's official ↵ Select Model Device, Select CLIP Device, and Select VAE Device nodes. The ↵ node chooses labels only; the official selectors remain responsible for ↵ validating…\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "YUE2_TRAIN_DATASET"
+    ],
+    [
+      2,
+      1,
+      1,
+      3,
+      0,
+      "STRING"
+    ],
+    [
+      3,
+      2,
+      0,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      4,
+      2,
+      1,
+      5,
+      0,
+      "STRING"
+    ],
+    [
+      5,
+      2,
+      1,
+      6,
+      0,
+      "STRING"
+    ],
+    [
+      6,
+      6,
+      0,
+      7,
+      0,
+      "IMAGE"
+    ],
+    [
+      7,
+      17,
+      2,
+      1,
+      7,
+      "COMBO"
+    ],
+    [
+      8,
+      17,
+      0,
+      2,
+      22,
+      "COMBO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        760.0,
+        1800.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        840.0,
+        0.0,
+        640.0,
+        1760.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        1560.0,
+        0.0,
+        500.0,
+        1280.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        2140.0,
+        0.0,
+        3040.0,
+        4920.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "dawasteh_yue2_lora": {
+      "version": 1,
+      "release": "v1.1.9",
+      "branch": "NAR acoustic style/timbre; AR frozen",
+      "experimental": true,
+      "license": "CC-BY-NC-4.0",
+      "validation_report": "performance/rdna4/yue2-lora-v119-validation.json"
+    },
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 8,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [
+        "model_device",
+        "vae_device"
+      ],
+      "placement_support": "direct-training-device-inputs",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "YuE2_3B_BF16-PRIVATE-Style-LoRA-Training",
+      "source": "workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "VAE encoding then full AR/NAR training on selected GPU; CLIP control unused"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "d66961fe9fa654fec045cc5165aa4305f54c48e2c18075028d5eb9f7c242265c",
+      "exceptions": []
+    }
+  },
+  "version": 0.4,
+  "last_node_id": 18,
+  "last_link_id": 8,
+  "id": "68683256-3181-5a45-b159-fed739678e20",
+  "revision": 0
+}

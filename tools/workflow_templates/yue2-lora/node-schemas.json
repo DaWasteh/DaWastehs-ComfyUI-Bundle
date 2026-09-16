@@ -1,0 +1,1570 @@
+{
+  "CheckpointLoaderSimple": {
+    "input": {
+      "required": {
+        "ckpt_name": [
+          [
+            "yue2_3b_bf16.safetensors"
+          ],
+          {
+            "tooltip": "The name of the checkpoint (model) to load."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "ckpt_name"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL",
+      "CLIP",
+      "VAE"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "MODEL",
+      "CLIP",
+      "VAE"
+    ],
+    "name": "CheckpointLoaderSimple",
+    "display_name": "Load Checkpoint",
+    "description": "Loads a diffusion model checkpoint, diffusion models are used to denoise latents.",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The model used for denoising latents.",
+      "The CLIP model used for encoding text prompts.",
+      "The VAE model used for encoding and decoding images to and from latent space."
+    ],
+    "search_aliases": [
+      "load model",
+      "checkpoint",
+      "model loader",
+      "load checkpoint",
+      "ckpt",
+      "model"
+    ]
+  },
+  "PixaromaPrompt": {
+    "input": {
+      "required": {},
+      "optional": {
+        "text_in": [
+          "STRING",
+          {
+            "forceInput": true,
+            "tooltip": "Optional. Wire another prompt in and it is joined with your typed prompt (order + separator set on the node). Leave it unconnected to output just your prompt."
+          }
+        ]
+      },
+      "hidden": {
+        "PromptState": [
+          "STRING",
+          {
+            "default": "{}"
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [],
+      "optional": [
+        "text_in"
+      ],
+      "hidden": [
+        "PromptState"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "STRING"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "text"
+    ],
+    "name": "PixaromaPrompt",
+    "display_name": "Prompt Pixaroma",
+    "description": "Prompt Pixaroma - a prompt box with a single text output, plus a personal library of reusable @tags and an optional text input you can join with.\n\nType your prompt and drop in @tags for the parts you reuse a lot. Save a tag called oilpainting whose full text is a long 'oil painting, thick brush strokes, Rembrandt lighting, ...' and then just type @oilpainting. Type @ in the box for a searchable list grouped by category; known tags glow, unknown ones warn you of a typo. Each @tag is swapped for its full text at run time, so the box stays short. Turn on Show expanded to preview what is sent.\n\nWire a prompt into the text input and it is joined with yours - choose My prompt first or Wired first, and the separator. With nothing wired, the output is just your prompt.\n\nManage tags with the Tags button: a fullscreen library with categories. Your library is saved in ComfyUI's settings, so it stays private to you and survives updating the plugin; share it on purpose with Export / Import.",
+    "python_module": "custom_nodes.ComfyUI-Pixaroma",
+    "category": "\ud83d\udc51 Pixaroma/\ud83d\udcac Prompt & Text",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "Your prompt with every @tag expanded, joined with the wired text input if one is connected."
+    ],
+    "search_aliases": []
+  },
+  "YuE2GenerateMusic": {
+    "input": {
+      "required": {
+        "clip": [
+          "CLIP",
+          {}
+        ],
+        "style": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "lyrics": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "abc": [
+          "STRING",
+          {
+            "tooltip": "Connect the ABC generator or supply an edited score. Leave empty to use off mode automatically.",
+            "default": "",
+            "multiline": true
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 18446744073709551615,
+            "control_after_generate": true
+          }
+        ],
+        "mode": [
+          "COMBO",
+          {
+            "tooltip": "full: generates melody and chords; melody: generates melody only, recommended for covers.",
+            "multiselect": false,
+            "options": [
+              "full",
+              "melody"
+            ]
+          }
+        ],
+        "max_duration": [
+          "FLOAT",
+          {
+            "tooltip": "Maximum duration in seconds. Automatically reduced for long prompts; generation can stop earlier.",
+            "default": 360.0,
+            "min": 0.04,
+            "max": 900.0,
+            "step": 0.04
+          }
+        ],
+        "temperature": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 1.0,
+            "min": 0.0,
+            "max": 5.0,
+            "step": 0.05
+          }
+        ],
+        "top_p": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 0.95,
+            "min": 0.01,
+            "max": 1.0,
+            "step": 0.01
+          }
+        ],
+        "top_k": [
+          "INT",
+          {
+            "advanced": true,
+            "default": 100,
+            "min": 1,
+            "max": 32768
+          }
+        ],
+        "repetition_penalty": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 1.2,
+            "min": 0.01,
+            "max": 10.0,
+            "step": 0.01
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip",
+        "style",
+        "lyrics",
+        "abc",
+        "seed",
+        "mode",
+        "max_duration",
+        "temperature",
+        "top_p",
+        "top_k",
+        "repetition_penalty"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING",
+      "FLOAT"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "CONDITIONING",
+      "seconds"
+    ],
+    "output_tooltips": [
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "YuE2GenerateMusic",
+    "display_name": "YuE2 Generate Music",
+    "description": "Generates music tokens and acoustic conditioning from style, lyrics, and an ABC notation. Provide the generated seconds to the Empty YuE2 Latent Audio node. An empty ABC input ignores the selected mode.",
+    "python_module": "comfy_extras.nodes_yue2",
+    "category": "model/conditioning/yue2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "EmptyYuE2LatentAudio": {
+    "input": {
+      "required": {
+        "seconds": [
+          "FLOAT",
+          {
+            "default": 120.0,
+            "min": 0.04,
+            "max": 1000.0,
+            "step": 0.04
+          }
+        ],
+        "batch_size": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 4096
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "seconds",
+        "batch_size"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "LATENT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "LATENT"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "EmptyYuE2LatentAudio",
+    "display_name": "Empty YuE2 Latent Audio",
+    "description": "",
+    "python_module": "comfy_extras.nodes_yue2",
+    "category": "model/latent/yue2",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "ConditioningZeroOut": {
+    "input": {
+      "required": {
+        "conditioning": [
+          "CONDITIONING"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "conditioning"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "CONDITIONING"
+    ],
+    "name": "ConditioningZeroOut",
+    "display_name": "Conditioning Zero Out",
+    "description": "",
+    "python_module": "nodes",
+    "category": "model/conditioning/transform",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": [
+      "null conditioning",
+      "clear conditioning"
+    ]
+  },
+  "KSampler": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL",
+          {
+            "tooltip": "The model used for denoising the input latent."
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 18446744073709551615,
+            "control_after_generate": true,
+            "tooltip": "The random seed used for creating the noise."
+          }
+        ],
+        "steps": [
+          "INT",
+          {
+            "default": 20,
+            "min": 1,
+            "max": 10000,
+            "tooltip": "The number of steps used in the denoising process."
+          }
+        ],
+        "cfg": [
+          "FLOAT",
+          {
+            "default": 8.0,
+            "min": 0.0,
+            "max": 100.0,
+            "step": 0.1,
+            "round": 0.01,
+            "tooltip": "The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality."
+          }
+        ],
+        "sampler_name": [
+          [
+            "euler",
+            "euler_cfg_pp",
+            "euler_ancestral",
+            "euler_ancestral_cfg_pp",
+            "heun",
+            "heunpp2",
+            "exp_heun_2_x0",
+            "exp_heun_2_x0_sde",
+            "dpm_2",
+            "dpm_2_ancestral",
+            "lms",
+            "dpm_fast",
+            "dpm_adaptive",
+            "dpmpp_2s_ancestral",
+            "dpmpp_2s_ancestral_cfg_pp",
+            "dpmpp_sde",
+            "dpmpp_sde_gpu",
+            "dpmpp_2m",
+            "dpmpp_2m_cfg_pp",
+            "dpmpp_2m_sde",
+            "dpmpp_2m_sde_gpu",
+            "dpmpp_2m_sde_heun",
+            "dpmpp_2m_sde_heun_gpu",
+            "dpmpp_3m_sde",
+            "dpmpp_3m_sde_gpu",
+            "ddpm",
+            "lcm",
+            "ipndm",
+            "ipndm_v",
+            "deis",
+            "cfgpp_ud10_ab",
+            "res_multistep",
+            "res_multistep_cfg_pp",
+            "res_multistep_ancestral",
+            "res_multistep_ancestral_cfg_pp",
+            "gradient_estimation",
+            "gradient_estimation_cfg_pp",
+            "er_sde",
+            "seeds_2",
+            "seeds_3",
+            "sa_solver",
+            "sa_solver_pece",
+            "ddim",
+            "uni_pc",
+            "uni_pc_bh2",
+            "legacy_rk",
+            "rk",
+            "rk_beta",
+            "deis_3m_ode",
+            "deis_2m_ode",
+            "deis_3m",
+            "deis_2m",
+            "res_6s_ode",
+            "res_5s_ode",
+            "res_3s_ode",
+            "res_2s_ode",
+            "res_3m_ode",
+            "res_2m_ode",
+            "res_6s",
+            "res_5s",
+            "res_3s",
+            "res_2s",
+            "res_3m",
+            "res_2m"
+          ],
+          {
+            "tooltip": "The algorithm used when sampling, this can affect the quality, speed, and style of the generated output."
+          }
+        ],
+        "scheduler": [
+          [
+            "simple",
+            "sgm_uniform",
+            "karras",
+            "exponential",
+            "ddim_uniform",
+            "beta",
+            "normal",
+            "linear_quadratic",
+            "kl_optimal",
+            "bong_tangent",
+            "beta57"
+          ],
+          {
+            "tooltip": "The scheduler controls how noise is gradually removed to form the image."
+          }
+        ],
+        "positive": [
+          "CONDITIONING",
+          {
+            "tooltip": "The conditioning describing the attributes you want to include in the image."
+          }
+        ],
+        "negative": [
+          "CONDITIONING",
+          {
+            "tooltip": "The conditioning describing the attributes you want to exclude from the image."
+          }
+        ],
+        "latent_image": [
+          "LATENT",
+          {
+            "tooltip": "The latent image to denoise."
+          }
+        ],
+        "denoise": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.01,
+            "tooltip": "The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "seed",
+        "steps",
+        "cfg",
+        "sampler_name",
+        "scheduler",
+        "positive",
+        "negative",
+        "latent_image",
+        "denoise"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "LATENT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "LATENT"
+    ],
+    "name": "KSampler",
+    "display_name": "KSampler",
+    "description": "Uses the provided model, positive and negative conditioning to denoise the latent image.",
+    "python_module": "nodes",
+    "category": "model/sampling",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The denoised latent."
+    ],
+    "search_aliases": [
+      "sampler",
+      "sample",
+      "generate",
+      "denoise",
+      "diffuse",
+      "txt2img",
+      "img2img"
+    ]
+  },
+  "VAEDecodeAudio": {
+    "input": {
+      "required": {
+        "samples": [
+          "LATENT",
+          {}
+        ],
+        "vae": [
+          "VAE",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "samples",
+        "vae"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "AUDIO"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "AUDIO"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "VAEDecodeAudio",
+    "display_name": "VAE Decode Audio",
+    "description": "",
+    "python_module": "comfy_extras.nodes_audio",
+    "category": "model/latent",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "latent to audio"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SaveAudioAdvanced": {
+    "input": {
+      "required": {
+        "audio": [
+          "AUDIO",
+          {
+            "tooltip": "The audio to save."
+          }
+        ],
+        "filename_prefix": [
+          "STRING",
+          {
+            "tooltip": "The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd%.",
+            "default": "audio/ComfyUI",
+            "multiline": false
+          }
+        ],
+        "format": [
+          "COMFY_DYNAMICCOMBO_V3",
+          {
+            "tooltip": "The file format in which to save the audio.",
+            "options": [
+              {
+                "key": "flac",
+                "inputs": {
+                  "required": {}
+                }
+              },
+              {
+                "key": "mp3",
+                "inputs": {
+                  "required": {
+                    "quality": [
+                      "COMBO",
+                      {
+                        "default": "V0",
+                        "multiselect": false,
+                        "options": [
+                          "V0",
+                          "128k",
+                          "320k"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "key": "opus",
+                "inputs": {
+                  "required": {
+                    "quality": [
+                      "COMBO",
+                      {
+                        "default": "128k",
+                        "multiselect": false,
+                        "options": [
+                          "64k",
+                          "96k",
+                          "128k",
+                          "192k",
+                          "320k"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "hidden": {
+        "prompt": [
+          "PROMPT"
+        ],
+        "extra_pnginfo": [
+          "EXTRA_PNGINFO"
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "audio",
+        "filename_prefix",
+        "format"
+      ],
+      "hidden": [
+        "prompt",
+        "extra_pnginfo"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "AUDIO"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "audio"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SaveAudioAdvanced",
+    "display_name": "Save Audio (Advanced)",
+    "description": "Saves the input audio to your ComfyUI output directory.",
+    "python_module": "comfy_extras.nodes_audio",
+    "category": "audio",
+    "output_node": true,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "save audio",
+      "export audio",
+      "output audio",
+      "write audio",
+      "flac",
+      "mp3",
+      "opus"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "PreviewAny": {
+    "input": {
+      "required": {
+        "source": [
+          "*",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "source"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "STRING"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "STRING"
+    ],
+    "name": "PreviewAny",
+    "display_name": "Preview as Text",
+    "description": "Preview any input value as text.",
+    "python_module": "comfy_extras.nodes_preview_any",
+    "category": "utilities",
+    "output_node": true,
+    "has_intermediate_output": false,
+    "search_aliases": [
+      "preview",
+      "preview text",
+      "show output",
+      "inspect",
+      "debug",
+      "print value",
+      "show text"
+    ]
+  },
+  "LoraLoaderModelOnly": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL"
+        ],
+        "lora_name": [
+          [
+            "yue2_my_style.safetensors"
+          ]
+        ],
+        "strength_model": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": -100.0,
+            "max": 100.0,
+            "step": 0.01
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "lora_name",
+        "strength_model"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MODEL"
+    ],
+    "name": "LoraLoaderModelOnly",
+    "display_name": "Load LoRA",
+    "description": "This LoRAs loader is used to modify the diffusion model, altering the way in which latents are denoised such as applying styles. Multiple LoRA nodes can be linked together.",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The modified diffusion model.",
+      "The modified CLIP model."
+    ],
+    "search_aliases": [
+      "lora",
+      "load lora",
+      "apply lora",
+      "lora loader",
+      "lora model"
+    ],
+    "essentials_category": "Image Generation"
+  },
+  "YuE2TrainingDataset": {
+    "input": {
+      "required": {
+        "checkpoint": [
+          [
+            "yue2_3b_bf16.safetensors"
+          ],
+          {
+            "tooltip": "Native YuE2 all-in-one checkpoint (models/checkpoints) \u2014 its built-in VAE encodes your audio. Same file you use for generation."
+          }
+        ],
+        "audio_folder": [
+          "STRING",
+          {
+            "default": "",
+            "tooltip": "Absolute path to the folder with your training songs (mp3/wav/flac; optional .txt caption next to each file, same name)."
+          }
+        ],
+        "clip_seconds": [
+          "FLOAT",
+          {
+            "default": 10.0,
+            "min": 1.0,
+            "max": 60.0,
+            "step": 0.5,
+            "tooltip": "Length of each training clip. 10s = 250 latent frames. Shorter = less VRAM."
+          }
+        ],
+        "caption_mode": [
+          [
+            "txt_file",
+            "default",
+            "none"
+          ],
+          {
+            "tooltip": "txt_file: use same-named .txt captions (empty if missing). default: one caption for every clip. none: trigger word only."
+          }
+        ],
+        "default_caption": [
+          "STRING",
+          {
+            "multiline": true,
+            "default": "",
+            "tooltip": "Used for every clip when caption_mode=default. Describe style/instruments/voice."
+          }
+        ],
+        "cache_folder": [
+          "STRING",
+          {
+            "default": "",
+            "tooltip": "Where to store encoded latents. Empty = <ComfyUI>/temp/yue2_latents."
+          }
+        ],
+        "force_reencode": [
+          "BOOLEAN",
+          {
+            "default": false,
+            "tooltip": "Ignore the latent cache and re-encode all files. Use after changing audio files without renaming them."
+          }
+        ]
+      },
+      "optional": {
+        "device": [
+          "COMBO",
+          {
+            "options": [
+              "default",
+              "gpu:0"
+            ],
+            "default": "default"
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "checkpoint",
+        "audio_folder",
+        "clip_seconds",
+        "caption_mode",
+        "default_caption",
+        "cache_folder",
+        "force_reencode"
+      ],
+      "optional": [
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "YUE2_TRAIN_DATASET",
+      "STRING"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "dataset",
+      "summary"
+    ],
+    "name": "YuE2TrainingDataset",
+    "display_name": "YuE2 Training Dataset (audio folder)",
+    "description": "",
+    "python_module": "custom_nodes.ComfyUI-YuE2-Trainer",
+    "category": "YuE2/Training",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "YuE2LoRATrainer": {
+    "input": {
+      "required": {
+        "dataset": [
+          "YUE2_TRAIN_DATASET"
+        ],
+        "checkpoint": [
+          [
+            "yue2_3b_bf16.safetensors"
+          ],
+          {
+            "tooltip": "Native YuE2 all-in-one checkpoint (models/checkpoints) the LoRA is trained on \u2014 pick the same file you generate with."
+          }
+        ],
+        "trigger_word": [
+          "STRING",
+          {
+            "default": "mystyle",
+            "tooltip": "Token/word placed at the start of the style prompt. Use it in your style prompt at generation time (cot=off works best)."
+          }
+        ],
+        "steps": [
+          "INT",
+          {
+            "default": 3000,
+            "min": 1,
+            "max": 100000,
+            "tooltip": "Total training steps (one random clip per step). 3000 is a good default for 5-30 songs; fewer steps = weaker style, more = risk of overfitting (muffled/repetitive output)."
+          }
+        ],
+        "learning_rate": [
+          "FLOAT",
+          {
+            "default": 0.0001,
+            "min": 1e-07,
+            "max": 0.01,
+            "step": 1e-06,
+            "tooltip": "AdamW learning rate. 1e-4 works well for rank 16-64. If the LoRA has no audible effect, try 2e-4; if it overfits, try 5e-5."
+          }
+        ],
+        "rank": [
+          "INT",
+          {
+            "default": 32,
+            "min": 1,
+            "max": 256,
+            "tooltip": "LoRA rank (adapter capacity). 32 is the recommended default; lower = smaller file/less detail, higher = more capacity but easier to overfit."
+          }
+        ],
+        "alpha": [
+          "FLOAT",
+          {
+            "default": 32.0,
+            "min": 0.1,
+            "max": 512.0,
+            "step": 0.1,
+            "tooltip": "LoRA alpha (scaling). Keep equal to rank (scaling = 1.0) unless you know you want a different baked-in strength."
+          }
+        ],
+        "lora_dropout": [
+          "FLOAT",
+          {
+            "default": 0.0,
+            "min": 0.0,
+            "max": 0.9,
+            "step": 0.01,
+            "tooltip": "Dropout on the LoRA input. 0.0 is usually fine; try 0.05-0.1 only if the LoRA overfits on few songs."
+          }
+        ],
+        "target_preset": [
+          [
+            "nar_attn_mlp",
+            "nar_attn",
+            "nar_attn_mlp_proj"
+          ],
+          {
+            "tooltip": "Which NAR layers get LoRA. nar_attn_mlp is the recommended default; ..._proj also adapts the latent projections (more VRAM/params)."
+          }
+        ],
+        "lora_name": [
+          "STRING",
+          {
+            "default": "yue2_mystyle",
+            "tooltip": "Output file name (<name>.safetensors) written into models/loras. With EMA on, <name>_raw.safetensors (non-EMA) is saved too."
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 1234,
+            "min": 0,
+            "max": 9223372036854775807,
+            "tooltip": "Random seed for clip choice, noise and timestep sampling. Change it (or set to randomize) for a different training run.",
+            "control_after_generate": true
+          }
+        ],
+        "optimizer": [
+          [
+            "adamw",
+            "adamw_8bit"
+          ],
+          {
+            "tooltip": "adamw_8bit (bitsandbytes) saves VRAM; falls back to adamw if unavailable."
+          }
+        ],
+        "lr_scheduler": [
+          [
+            "cosine",
+            "constant"
+          ],
+          {
+            "tooltip": "cosine (recommended): fades the learning rate to 0 over the run \u2014 more stable results. constant: keeps the full LR until the end."
+          }
+        ],
+        "warmup_steps": [
+          "INT",
+          {
+            "default": 50,
+            "min": 0,
+            "max": 10000,
+            "tooltip": "Linearly ramp the LR from 0 over the first N steps. 50 is a safe default; 0 disables warmup."
+          }
+        ],
+        "grad_accum": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 64,
+            "tooltip": "Gradient accumulation steps (effective batch = accum x 1 clip)."
+          }
+        ],
+        "caption_dropout": [
+          "FLOAT",
+          {
+            "default": 0.1,
+            "min": 0.0,
+            "max": 0.9,
+            "step": 0.05,
+            "tooltip": "Chance per step to train without trigger/caption (keeps the base style reachable)."
+          }
+        ],
+        "t_sampling": [
+          [
+            "logit_normal",
+            "uniform"
+          ],
+          {
+            "tooltip": "Timestep sampling for flow matching. logit_normal (recommended) emphasizes mid-noise levels; uniform spreads evenly."
+          }
+        ],
+        "max_grad_norm": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": 0.01,
+            "max": 100.0,
+            "step": 0.01,
+            "tooltip": "Gradient clipping threshold. 1.0 prevents loss spikes from destabilizing the LoRA; rarely needs changing."
+          }
+        ],
+        "log_every": [
+          "INT",
+          {
+            "default": 10,
+            "min": 1,
+            "max": 1000,
+            "tooltip": "Print the averaged loss to the console / training_log every N steps."
+          }
+        ],
+        "save_every": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 100000,
+            "tooltip": "Save an intermediate LoRA every N steps (0 = only the final one)."
+          }
+        ],
+        "ema_decay": [
+          "FLOAT",
+          {
+            "default": 0.999,
+            "min": 0.0,
+            "max": 0.9999,
+            "step": 0.0001,
+            "tooltip": "EMA (smoothed) LoRA weights \u2014 strongly recommended, fixes 'hit and miss' results. The main file uses EMA weights; the raw copy is saved as <name>_raw.safetensors. 0 disables EMA."
+          }
+        ],
+        "live_curve": [
+          "BOOLEAN",
+          {
+            "default": true,
+            "tooltip": "Update a live loss/LR chart in the YuE2 Training Curve node while training runs (needs matplotlib; auto-disables with a log note if unavailable). No effect on training itself."
+          }
+        ]
+      },
+      "optional": {
+        "device": [
+          "COMBO",
+          {
+            "options": [
+              "default",
+              "gpu:0"
+            ],
+            "default": "default"
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "dataset",
+        "checkpoint",
+        "trigger_word",
+        "steps",
+        "learning_rate",
+        "rank",
+        "alpha",
+        "lora_dropout",
+        "target_preset",
+        "lora_name",
+        "seed",
+        "optimizer",
+        "lr_scheduler",
+        "warmup_steps",
+        "grad_accum",
+        "caption_dropout",
+        "t_sampling",
+        "max_grad_norm",
+        "log_every",
+        "save_every",
+        "ema_decay",
+        "live_curve"
+      ],
+      "optional": [
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "STRING",
+      "STRING"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "lora_path",
+      "training_log"
+    ],
+    "name": "YuE2LoRATrainer",
+    "display_name": "YuE2 LoRA Trainer",
+    "description": "",
+    "python_module": "custom_nodes.ComfyUI-YuE2-Trainer",
+    "category": "YuE2/Training",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "YuE2TrainingCurve": {
+    "input": {
+      "required": {
+        "training_log": [
+          "STRING",
+          {
+            "forceInput": true,
+            "tooltip": "Connect the training_log output of the YuE2 LoRA Trainer."
+          }
+        ],
+        "smooth": [
+          "INT",
+          {
+            "default": 25,
+            "min": 1,
+            "max": 500,
+            "tooltip": "Moving-average window (in logged points) for the bold loss curve. 1 = no smoothing."
+          }
+        ],
+        "show_raw": [
+          "BOOLEAN",
+          {
+            "default": true,
+            "tooltip": "Show the unsmoothed loss as a faint trace behind the smoothed curve."
+          }
+        ],
+        "show_lr": [
+          "BOOLEAN",
+          {
+            "default": true,
+            "tooltip": "Overlay the learning-rate schedule (orange, log scale, right axis)."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "training_log",
+        "smooth",
+        "show_raw",
+        "show_lr"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "chart"
+    ],
+    "name": "YuE2TrainingCurve",
+    "display_name": "YuE2 Training Curve (loss/LR chart)",
+    "description": "",
+    "python_module": "custom_nodes.ComfyUI-YuE2-Trainer",
+    "category": "YuE2/Training",
+    "output_node": true,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "SaveImage": {
+    "input": {
+      "required": {
+        "images": [
+          "IMAGE",
+          {
+            "tooltip": "The images to save."
+          }
+        ],
+        "filename_prefix": [
+          "STRING",
+          {
+            "default": "ComfyUI",
+            "tooltip": "The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes."
+          }
+        ]
+      },
+      "hidden": {
+        "prompt": "PROMPT",
+        "extra_pnginfo": "EXTRA_PNGINFO"
+      }
+    },
+    "input_order": {
+      "required": [
+        "images",
+        "filename_prefix"
+      ],
+      "hidden": [
+        "prompt",
+        "extra_pnginfo"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "images"
+    ],
+    "name": "SaveImage",
+    "display_name": "Save Image",
+    "description": "Saves the input images to your ComfyUI output directory.",
+    "python_module": "nodes",
+    "category": "image",
+    "output_node": true,
+    "has_intermediate_output": false,
+    "search_aliases": [
+      "save",
+      "save image",
+      "export image",
+      "output image",
+      "write image",
+      "download"
+    ],
+    "essentials_category": "Basics"
+  },
+  "DaWMultiGPUDeviceControl": {
+    "input": {
+      "required": {
+        "model_device": [
+          "COMBO",
+          {
+            "default": "gpu:0",
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ],
+        "clip_device": [
+          "COMBO",
+          {
+            "default": "gpu:1",
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ],
+        "vae_device": [
+          "COMBO",
+          {
+            "default": "gpu:1",
+            "multiselect": false,
+            "options": [
+              "default",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "COMBO",
+      "COMBO",
+      "COMBO"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "model_device",
+      "clip_device",
+      "vae_device"
+    ],
+    "output_tooltips": [
+      null,
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "DaWMultiGPUDeviceControl",
+    "display_name": "DaW Multi-GPU Device Control",
+    "description": "Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector.\n\nConnect these COMBO outputs to the ``device`` input of ComfyUI's official\nSelect Model Device, Select CLIP Device, and Select VAE Device nodes. The\nnode chooses labels only; the official selectors remain responsible for\nvalidating and moving the actual model objects.",
+    "python_module": "custom_nodes.ComfyUI-DaWasteh-MultiGPU-Control",
+    "category": "DaWasteh/multigpu",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SelectModelDevice": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL",
+          {}
+        ],
+        "device": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MODEL"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SelectModelDevice",
+    "display_name": "Select Model Device",
+    "description": "Place the diffusion model on a specific device (default / cpu / gpu:N).\n\n- \"default\" restores the device assigned by the loader (even after a\n  prior Select Model Device call).\n- \"cpu\" pins both the load and offload device to CPU.\n- \"gpu:N\" pins the load device to the Nth available GPU; the offload\n  device is restored to the loader's original choice.\n\nWhen the requested device differs from the device the input model is\nalready on, a fresh model is spawned via the loader's reload factory\n(cached_patcher_init) so the new patcher owns independent weights on\nthe new device. Loaders that don't support multigpu (no factory) will\ncause the node to pass through unchanged with a warning.\n\nIf the workflow already has MultiGPU CFG Split applied and the chosen\nGPU collides with one of the existing multigpu clones, that clone is\ndropped so two patchers don't end up bound to the same device.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the model through unchanged and logs a message\ninstead of failing.\n\nNOTE: Placing Select Model Device *after* a node that has already\nconsumed the same model (e.g. a KSampler that ran on this model on\nthe original device) is not recommended -- any state the prior\nconsumer mutated on the original model will be observed when the\nselected device matches the original (fast path). Place Select Model\nDevice before any consumer of the model.",
+    "python_module": "comfy_extras.nodes_multigpu",
+    "category": "advanced/multigpu",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SelectCLIPDevice": {
+    "input": {
+      "required": {
+        "clip": [
+          "CLIP",
+          {}
+        ],
+        "device": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip",
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CLIP"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "CLIP"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SelectCLIPDevice",
+    "display_name": "Select CLIP Device",
+    "description": "Place the CLIP text encoder on a specific device (default / cpu / gpu:N).\n\n- \"default\" restores the device assigned by the loader.\n- \"cpu\" pins both the load and offload device to CPU.\n- \"gpu:N\" pins the load device to the Nth available GPU.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the CLIP through unchanged and logs a message\ninstead of failing.",
+    "python_module": "comfy_extras.nodes_multigpu",
+    "category": "advanced/multigpu",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "SelectVAEDevice": {
+    "input": {
+      "required": {
+        "vae": [
+          "VAE",
+          {}
+        ],
+        "device": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [
+              "default"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "vae",
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "VAE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "VAE"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "SelectVAEDevice",
+    "display_name": "Select VAE Device",
+    "description": "Place the VAE on a specific device (default / gpu:N).\n\n- \"default\" restores the device assigned by the loader.\n- \"gpu:N\" pins the load device to the Nth available GPU; the offload\n  device is set to the standard VAE offload device.\n\nCPU is intentionally not exposed in the UI for the VAE; if a workflow\nsupplies \"cpu\" anyway (e.g. opened from another machine), the request\nis dropped with a log message and the VAE is passed through unchanged.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the VAE through unchanged and logs a message\ninstead of failing.",
+    "python_module": "comfy_extras.nodes_multigpu",
+    "category": "advanced/multigpu",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  }
+}

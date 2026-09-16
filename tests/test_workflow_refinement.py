@@ -155,6 +155,7 @@ class WidgetMappingTests(unittest.TestCase):
             if path.name not in {
                 "ACE-Step1_5_XL-Voice-LoRA-Training.json",
                 "Qwen3-TTS_0.6B-Voice-LoRA-Training.json",
+                "YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json",  # Dedicated NAR trainer, not Core TrainLoraNode.
             }
         ]
         self.assertEqual(len(generated), 5)

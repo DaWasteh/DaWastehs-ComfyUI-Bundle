@@ -9,3 +9,8 @@ workflows/**/YuE2_3B_INT8-PRIVATE-*.json text eol=lf
 workflows/**/Pixal3D_INT8-*-Collision.json text eol=lf
 workflows/**/TRELLIS2_INT8-*-Collision.json text eol=lf
 performance/rdna4/v118-validation.json text eol=lf
+# v1.1.9 hashes are portable across Windows and Linux.
+tools/workflow_templates/yue2-lora/* text eol=lf
+tools/patches/ComfyUI-YuE2-Trainer-Windows-RDNA4.patch text eol=lf
+workflows/**/YuE2_3B_BF16-PRIVATE-*.json text eol=lf
+performance/rdna4/yue2-lora-v119-validation.json text eol=lf
