@@ -600,6 +600,18 @@ def validate_integration_delta(
 
 def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tuple[int, int]:
     head_raw = git_head_json(path)
+    if current.get("extra", {}).get("dawasteh_yue2_lora", {}).get("release") == "v1.2.0":
+        try:
+            from tools.build_yue2_lora_workflows import build_all as build_yue2
+        except ModuleNotFoundError:
+            from build_yue2_lora_workflows import build_all as build_yue2
+        key = _path_key(path).removeprefix("workflows/")
+        if build_yue2().get(key) != current:
+            errors.append(f"{path}: differs from deterministic v1.2.0 YuE2 reliability update")
+        return (
+            sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head_raw)),
+            sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head_raw)),
+        )
     # v1.1.1 (RDNA4 performance pass): files carrying the v111 marker are compared against the
     # deterministic, idempotent v111 form of the baseline (see tools/upgrade_v111.py).
     v111_key = _path_key(path).removeprefix("workflows/")

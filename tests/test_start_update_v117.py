@@ -52,6 +52,10 @@ class UpdateV117Tests(unittest.TestCase):
             files.update({f"tools/{name}": (ROOT / "tools" / name).read_bytes() for name in (
                 "start-MultiGPU.ps1", "start-MultiGPU.bat", "update-comfyui-rdna4.ps1",
             )})
+            files["tools/scripts/windows_comfy_launcher.py"] = (ROOT / "tools/scripts/windows_comfy_launcher.py").read_bytes()
+            files["performance/rdna4/baseline_state/windows_comfy_launcher.py.orig"] = (ROOT / "performance/rdna4/baseline_state/windows_comfy_launcher.py.orig").read_bytes()
+            (install / "scripts").mkdir()
+            (install / "scripts/windows_comfy_launcher.py").write_bytes(files["performance/rdna4/baseline_state/windows_comfy_launcher.py.orig"])
             for relative, data in files.items():
                 path = own / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -136,6 +140,8 @@ function Invoke-NativeCommand {
                 manifest = json.loads((install / "config/dawasteh-bundle-sync-manifest.json").read_text(encoding="utf-8-sig"))
                 paths = {entry["path"] for entry in manifest["files"]}
                 self.assertIn("tools/start-MultiGPU.ps1", paths)
+                self.assertIn("tools/scripts/windows_comfy_launcher.py", paths)
+                self.assertEqual((install / "scripts/windows_comfy_launcher.py").read_bytes(), files["tools/scripts/windows_comfy_launcher.py"])
                 self.assertNotIn("tools/update-comfyui-rdna4.ps1", paths)
                 if personal_workflow and not tamper_preserved:
                     target = install / "ComfyUI/user/default/workflows/DaWasteh/example.json"

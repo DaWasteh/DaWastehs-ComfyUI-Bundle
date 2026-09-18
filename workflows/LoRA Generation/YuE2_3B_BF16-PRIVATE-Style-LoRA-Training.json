@@ -577,7 +577,7 @@
       ],
       "size": [
         680,
-        1304
+        1392
       ],
       "flags": {},
       "order": 0,
@@ -588,7 +588,7 @@
         "Node name for S&R": "MarkdownNote"
       },
       "widgets_values": [
-        "**YuE2 / CC-BY-NC-4.0: nur privat/nichtkommerziell, mit Quellenangabe.** Kein Streaming-/ACE-Step-Ersatz. Keine private Musik, Adapter oder Trainingsdaten ins öffentliche Repository laden.\n\n**Was wird gelernt?** Echte LoRA-Gewichte für die akustische NAR-Stufe: Klangstil, Instrumente, Stimmfarbe. AR-Komposition und Textmodell bleiben eingefroren. EXPERIMENTELL, kein verlässliches Voice-Cloning. Ein technischer Smoke-Test beweist keine musikalische Qualität.\n\n**1 · Installation:** tools/install_yue2_lora_node.py installiert den gepinnten Starnodes-Trainer mit RDNA4-Patch. tools/install_yue2_lora_model.py --accept-noncommercial installiert den verifizierten 7,80-GB-BF16-Checkpoint. ComfyUI neu starten. INT8/convrot ist KEINE Trainingsbasis. Beide checkpoint-Felder müssen BF16 wählen.\n\n**2 · Eigene Daten:** input/yue2_lora/my_style/ mit 001.wav + optional 001.txt, 002.flac + 002.txt. TXT enthält Genre/Instrumente/Stimmcharakter, NICHT das exakte Lyrics-Transkript. Nur eigene/freigegebene Aufnahmen. Keine Unterordner-Suche; WAV/FLAC bevorzugt. Relative Ordner beziehen sich auf ComfyUI/input; absolute Pfade funktionieren ebenfalls. 48 kHz Stereo wird automatisch vorbereitet. Dateien mindestens 6s lang; Reststücke unter clip_seconds werden verworfen. Fehlende Captions bleiben leer. Einheitliches Material, später etwa 5–30 geeignete Songs.\n\n**3 · Sicherstart:** 100 Schritte, 6s Clips, Rank/Alpha 16, LR 1e-4, AdamW, Accumulation 1, Warmup 10, Cosine, EMA 0.99. Das ist ein kurzer Funktionsstart, KEIN fertig trainierter Qualitätsadapter. Für einen Mini-Test steps=5, warmup_steps=0, log_every=1. Für echtes Training nach Hörvergleich z.B. 3000 Schritte, 10s, Rank/Alpha 32, Warmup 50, EMA 0.999; Speicherbedarf steigt. Nicht blind auf 5000 erhöhen.\n\n**4 · GPU:** R9700 / gpu:0, SDPA, kein FlashAttention, kein torch.compile, kein bitsandbytes. VAE-GPU steuert Datensatz-Encoding, MODEL-GPU das komplette AR/NAR-Trainingsmodell; CLIP-Auswahl hat hier keine Funktion. Der Patch entlädt bestehende Comfy-Modelle vor GPU-Arbeit. Exklusiv ausführen. Unsichtbare GPUs werden abgewiesen. Bei OOM Clipdauer/Rank senken, dann neu starten.\n\n**5 · Ergebnis:** models/loras/yue2_my_style.safetensors (EMA) und yue2_my_style_raw.safetensors. lora_name enthält KEINE Ordner. Vor jedem neuen Lauf einen neuen Namen wählen: vorhandene Adapter werden ausdrücklich NICHT überschrieben. Zwischenstände sind Adapter, KEIN Optimizer-Resume. Abbruch stoppt an Schritt-/Encoding-Grenzen; ein finaler Adapter entsteht erst nach erfolgreichem Training. Cache liegt standardmäßig unter temp/yue2_latents, nach Modell/Datensatz getrennt; force_reencode verwirft nur diesen Cache.\n\n**6 · Anwenden:** Musik-Workflow öffnen, LoRA-Liste aktualisieren, Adapter wählen, denselben trigger_word an den Anfang des Style-Prompts setzen. Stärke zuerst 1.0; 0 ist Baseline, danach vorsichtig vergleichen. ABC bleibt leer (cot=off). Loss und Kurve sind technische Diagnostik, keine Hörabnahme.\n\nQuellen: github.com/Starnodes2024/ComfyUI-YuE2-Trainer (MIT, Referenzcode Apache-2.0); huggingface.co/Comfy-Org/YuE2; m-a-p/YuE2-3B. RODENT Method: Nerdy Rodent. Details: docs/YUE2_LORA_V119.md."
+        "**YuE2 / CC-BY-NC-4.0: nur privat/nichtkommerziell, mit Quellenangabe.** Kein Streaming-/ACE-Step-Ersatz. Keine private Musik, Adapter oder Trainingsdaten ins öffentliche Repository laden.\n\n**Was wird gelernt?** Echte LoRA-Gewichte für die akustische NAR-Stufe: Klangstil, Instrumente, Stimmfarbe. AR-Komposition und Textmodell bleiben eingefroren. EXPERIMENTELL, kein verlässliches Voice-Cloning. Ein technischer Smoke-Test beweist keine musikalische Qualität.\n\n**1 · Installation:** tools/install_yue2_lora_node.py installiert den gepinnten Starnodes-Trainer mit RDNA4-Patch. tools/install_yue2_lora_model.py --accept-noncommercial installiert den verifizierten 7,80-GB-BF16-Checkpoint. ComfyUI neu starten. INT8/convrot ist KEINE Trainingsbasis. Beide checkpoint-Felder müssen BF16 wählen.\n\n**2 · Eigene Daten:** input/yue2_lora/my_style/ mit 001.wav + optional 001.txt, 002.flac + 002.txt. TXT enthält Genre/Instrumente/Stimmcharakter, NICHT das exakte Lyrics-Transkript. Nur eigene/freigegebene Aufnahmen. Keine Unterordner-Suche; WAV/FLAC bevorzugt. Relative Ordner beziehen sich auf ComfyUI/input; absolute Pfade funktionieren ebenfalls. 48 kHz Stereo wird automatisch vorbereitet. Dateien mindestens 6s lang; Reststücke unter clip_seconds werden verworfen. Fehlende Captions bleiben leer. Einheitliches Material, später etwa 5–30 geeignete Songs.\n\n**3 · Sicherstart:** 100 Schritte, 6s Clips, Rank/Alpha 16, LR 1e-4, AdamW, Accumulation 1, Warmup 10, Cosine, EMA 0.99. Das ist ein kurzer Funktionsstart, KEIN fertig trainierter Qualitätsadapter. Für einen Mini-Test steps=5, warmup_steps=0, log_every=1. Für echtes Training nach Hörvergleich z.B. 3000 Schritte, 10s, Rank/Alpha 32, Warmup 50, EMA 0.999; Speicherbedarf steigt. Nicht blind auf 5000 erhöhen.\n\n**4 · GPU:** R9700 / gpu:0, SDPA, kein FlashAttention, kein torch.compile, kein bitsandbytes. VAE-GPU steuert Datensatz-Encoding, MODEL-GPU das komplette AR/NAR-Trainingsmodell; CLIP-Auswahl hat hier keine Funktion. Der Patch entlädt bestehende Comfy-Modelle vor GPU-Arbeit. Exklusiv ausführen. Unsichtbare GPUs werden abgewiesen. Bei OOM Clipdauer/Rank senken, dann neu starten.\n\n**5 · Ergebnis:** models/loras/yue2_my_style.safetensors (EMA) und yue2_my_style_raw.safetensors. lora_name enthält KEINE Ordner. Vor jedem neuen Lauf einen neuen Namen wählen: vorhandene Adapter werden ausdrücklich NICHT überschrieben. Zwischenstände sind Adapter, KEIN Optimizer-Resume. Abbruch stoppt an Schritt-/Encoding-Grenzen; ein finaler Adapter entsteht erst nach erfolgreichem Training. Cache liegt dauerhaft unter training_cache/yue2_latents im ComfyUI-Root, nach Modell/Datensatz getrennt; force_reencode verwirft nur diesen Cache. Niemals temp als Cache wählen. v1.1.9-Trainer bei beendetem ComfyUI mit tools/install_yue2_lora_node.py --comfy-root <ComfyUI> --upgrade aktualisieren. Bei Decoderproblemen wird FFmpeg verwendet (PATH oder imageio-ffmpeg); Quelldateien werden nicht gelöscht.\n\n**6 · Anwenden:** Musik-Workflow öffnen, LoRA-Liste aktualisieren, Adapter wählen, denselben trigger_word an den Anfang des Style-Prompts setzen. Stärke zuerst 1.0; 0 ist Baseline, danach vorsichtig vergleichen. ABC bleibt leer (cot=off). Loss und Kurve sind technische Diagnostik, keine Hörabnahme.\n\nQuellen: github.com/Starnodes2024/ComfyUI-YuE2-Trainer (MIT, Referenzcode Apache-2.0); huggingface.co/Comfy-Org/YuE2; m-a-p/YuE2-3B. RODENT Method: Nerdy Rodent. Details: docs/YUE2_LORA_V119.md."
       ]
     },
     {
@@ -596,7 +596,7 @@
       "type": "PixaromaRunTimer",
       "pos": [
         40.0,
-        1420.0
+        1520.0
       ],
       "size": [
         226,
@@ -633,7 +633,7 @@
       ],
       "size": [
         680,
-        1370
+        1414
       ],
       "flags": {},
       "order": 9,
@@ -648,7 +648,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · DATENSATZ · eigene Musik + optionale TXT-Captions · Node 1\n\n**Zweck:** Lädt, filtert oder bereitet Trainingsdaten für die weitere Verarbeitung auf.\n\n**Einstellbare Werte**\n- `checkpoint` = `yue2_3b_bf16.safetensors` — Native YuE2 all-in-one checkpoint (models/checkpoints) — its built-in VAE encodes your audio. Same file you use for generation. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `audio_folder` = `yue2_lora/my_style` — Absolute path to the folder with your training songs (mp3/wav/flac; optional .txt caption next to each file, same name). Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `clip_seconds` = `6.0` — Length of each training clip. 10s = 250 latent frames. Shorter = less VRAM. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `caption_mode` = `txt_file` — txt_file: use same-named .txt captions (empty if missing). default: one caption for every clip. none: trigger word only. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `default_caption` = `` — Used for every clip when caption_mode=default. Describe style/instruments/voice. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `cache_folder` = `` — Where to store encoded latents. Empty = <ComfyUI>/temp/yue2_latents. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `force_reencode` = `False` — Ignore the latent cache and re-encode all files. Use after changing audio files without renaming them. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `checkpoint` (COMBO, nicht verbunden): Native YuE2 all-in-one checkpoint (models/checkpoints) — its built-in VAE encodes your audio. Same file you use for generation.\n- `audio_folder` (STRING, nicht verbunden): Absolute path to the folder with your training songs (mp3/wav/flac; optional .txt caption next to each file, same name).\n- `clip_seconds` (FLOAT, nicht verbunden): Length of each training clip. 10s = 250 latent frames. Shorter = less VRAM.\n- `caption_mode` (COMBO, nicht verbunden): txt_file: use same-named .txt captions (empty if missing). default: one caption for every clip. none: trigger word only.\n- `default_caption` (STRING, nicht verbunden): Used for every clip when caption_mode=default. Describe style/instruments/voice.\n- `cache_folder` (STRING, nicht verbunden): Where to store encoded latents. Empty = <ComfyUI>/temp/yue2_latents.\n- `force_reencode` (BOOLEAN, nicht verbunden): Ignore the latent cache and re-encode all files. Use after changing audio files without renaming them.\n- `device` (COMBO, Link 7): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `dataset` (YUE2_TRAIN_DATASET, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `summary` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · DATENSATZ · eigene Musik + optionale TXT-Captions · Node 1\n\n**Zweck:** Lädt, filtert oder bereitet Trainingsdaten für die weitere Verarbeitung auf.\n\n**Einstellbare Werte**\n- `checkpoint` = `yue2_3b_bf16.safetensors` — Native YuE2 all-in-one checkpoint (models/checkpoints) — its built-in VAE encodes your audio. Same file you use for generation. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `audio_folder` = `yue2_lora/my_style` — Absolute path to the folder with your training songs (mp3/wav/flac; optional .txt caption next to each file, same name). Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `clip_seconds` = `6.0` — Length of each training clip. 10s = 250 latent frames. Shorter = less VRAM. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `caption_mode` = `txt_file` — txt_file: use same-named .txt captions (empty if missing). default: one caption for every clip. none: trigger word only. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `default_caption` = `` — Used for every clip when caption_mode=default. Describe style/instruments/voice. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `cache_folder` = `` — Persistent latent cache. Empty = <ComfyUI>/training_cache/yue2_latents. Relative paths use the ComfyUI root; never use temp. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `force_reencode` = `False` — Ignore the latent cache and re-encode all files. Use after changing audio files without renaming them. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `checkpoint` (COMBO, nicht verbunden): Native YuE2 all-in-one checkpoint (models/checkpoints) — its built-in VAE encodes your audio. Same file you use for generation.\n- `audio_folder` (STRING, nicht verbunden): Absolute path to the folder with your training songs (mp3/wav/flac; optional .txt caption next to each file, same name).\n- `clip_seconds` (FLOAT, nicht verbunden): Length of each training clip. 10s = 250 latent frames. Shorter = less VRAM.\n- `caption_mode` (COMBO, nicht verbunden): txt_file: use same-named .txt captions (empty if missing). default: one caption for every clip. none: trigger word only.\n- `default_caption` (STRING, nicht verbunden): Used for every clip when caption_mode=default. Describe style/instruments/voice.\n- `cache_folder` (STRING, nicht verbunden): Persistent latent cache. Empty = <ComfyUI>/training_cache/yue2_latents. Relative paths use the ComfyUI root; never use temp.\n- `force_reencode` (BOOLEAN, nicht verbunden): Ignore the latent cache and re-encode all files. Use after changing audio files without renaming them.\n- `device` (COMBO, Link 7): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `dataset` (YUE2_TRAIN_DATASET, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `summary` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -658,7 +658,7 @@
       "type": "MarkdownNote",
       "pos": [
         2180.0,
-        1480.0
+        1540.0
       ],
       "size": [
         680,
@@ -832,7 +832,7 @@
       "type": "DaWMultiGPUDeviceControl",
       "pos": [
         40.0,
-        1600.0
+        1700.0
       ],
       "size": [
         380,
@@ -985,7 +985,7 @@
         0.0,
         0.0,
         760.0,
-        1800.0
+        1920.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -1024,7 +1024,7 @@
         2140.0,
         0.0,
         3040.0,
-        4920.0
+        4980.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -1035,11 +1035,11 @@
   "extra": {
     "dawasteh_yue2_lora": {
       "version": 1,
-      "release": "v1.1.9",
+      "release": "v1.2.0",
       "branch": "NAR acoustic style/timbre; AR frozen",
       "experimental": true,
       "license": "CC-BY-NC-4.0",
-      "validation_report": "performance/rdna4/yue2-lora-v119-validation.json"
+      "validation_report": "performance/rdna4/yue2-lora-v120-validation.json"
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
@@ -1094,7 +1094,7 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "d66961fe9fa654fec045cc5165aa4305f54c48e2c18075028d5eb9f7c242265c",
+      "topology_sha256": "e8a2c7c39746e11701db1f6727478d0f70ee5b5061b77cbce263ef2da64da9a9",
       "exceptions": []
     }
   },

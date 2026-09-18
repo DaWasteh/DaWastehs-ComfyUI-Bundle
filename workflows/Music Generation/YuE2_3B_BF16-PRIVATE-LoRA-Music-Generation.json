@@ -304,6 +304,15 @@
           "widget": {
             "name": "repetition_penalty"
           }
+        },
+        {
+          "name": "cfg_scale",
+          "type": "FLOAT",
+          "link": null,
+          "shape": 7,
+          "widget": {
+            "name": "cfg_scale"
+          }
         }
       ],
       "outputs": [
@@ -338,7 +347,8 @@
         1.0,
         0.95,
         100,
-        1.2
+        1.2,
+        1.0
       ]
     },
     {
@@ -786,7 +796,7 @@
       ],
       "size": [
         680,
-        1480
+        1634
       ],
       "flags": {},
       "order": 15,
@@ -801,7 +811,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · AR · komponiert weiterhin OHNE LoRA · Node 5\n\n**Zweck:** Generates music tokens and acoustic conditioning from style, lyrics, and an ABC notation. Provide the generated seconds to the Empty YuE2 Latent Audio node. An empty ABC input ignores the selected mode.\n\n**Einstellbare Werte**\n- `style` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lyrics` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `abc` = `` — Connect the ABC generator or supply an edited score. Leave empty to use off mode automatically. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `119` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `mode` = `full` — full: generates melody and chords; melody: generates melody only, recommended for covers. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `max_duration` = `30.0` — Maximum duration in seconds. Automatically reduced for long prompts; generation can stop earlier. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `temperature` = `1.0` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `top_p` = `0.95` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `top_k` = `100` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `repetition_penalty` = `1.2` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n\n**Eingänge**\n- `clip` (CLIP, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `style` (STRING, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics` (STRING, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `abc` (STRING, nicht verbunden): Connect the ABC generator or supply an edited score. Leave empty to use off mode automatically.\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `mode` (COMBO, nicht verbunden): full: generates melody and chords; melody: generates melody only, recommended for covers.\n- `max_duration` (FLOAT, nicht verbunden): Maximum duration in seconds. Automatically reduced for long prompts; generation can stop earlier.\n- `temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_k` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `repetition_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `seconds` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · AR · komponiert weiterhin OHNE LoRA · Node 5\n\n**Zweck:** Generates music tokens and acoustic conditioning from style, lyrics, and an ABC notation. Provide the generated seconds to the Empty YuE2 Latent Audio node. An empty ABC input ignores the selected mode.\n\n**Einstellbare Werte**\n- `style` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lyrics` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `abc` = `` — Connect the ABC generator or supply an edited score. Leave empty to use off mode automatically. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `119` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `mode` = `full` — full: generates melody and chords; melody: generates melody only, recommended for covers. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `max_duration` = `30.0` — Maximum duration in seconds. Automatically reduced for long prompts; generation can stop earlier. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `temperature` = `1.0` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `top_p` = `0.95` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `top_k` = `100` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `repetition_penalty` = `1.2` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n- `cfg_scale` = `1.0` — Autoregressive guidance for style and lyrics. 1.0 disables CFG, matching the ABC workflow. Use 1.01 to match the original off-mode guidance. Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n\n**Eingänge**\n- `clip` (CLIP, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `style` (STRING, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lyrics` (STRING, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `abc` (STRING, nicht verbunden): Connect the ABC generator or supply an edited score. Leave empty to use off mode automatically.\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `mode` (COMBO, nicht verbunden): full: generates melody and chords; melody: generates melody only, recommended for covers.\n- `max_duration` (FLOAT, nicht verbunden): Maximum duration in seconds. Automatically reduced for long prompts; generation can stop earlier.\n- `temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_k` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `repetition_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `cfg_scale` (FLOAT, nicht verbunden): Autoregressive guidance for style and lyrics. 1.0 disables CFG, matching the ABC workflow. Use 1.01 to match the original off-mode guidance.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `seconds` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -811,7 +821,7 @@
       "type": "MarkdownNote",
       "pos": [
         3840.0,
-        2920.0
+        3080.0
       ],
       "size": [
         680,
@@ -1560,7 +1570,7 @@
         3800.0,
         0.0,
         3040.0,
-        3540.0
+        3700.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -1571,11 +1581,11 @@
   "extra": {
     "dawasteh_yue2_lora": {
       "version": 1,
-      "release": "v1.1.9",
+      "release": "v1.2.0",
       "branch": "NAR acoustic style/timbre; AR frozen",
       "experimental": true,
       "license": "CC-BY-NC-4.0",
-      "validation_report": "performance/rdna4/yue2-lora-v119-validation.json"
+      "validation_report": "performance/rdna4/yue2-lora-v120-validation.json"
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
@@ -1636,7 +1646,7 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "4b01a8dfaf8afdd6e472b7ba4500e2057c68f371575a6ddb36f220a216e7ace2",
+      "topology_sha256": "95ae4ac636193ddcb9edcb4ffdbf6bb69b71eacededad8b12434851aeae85b50",
       "exceptions": []
     }
   },

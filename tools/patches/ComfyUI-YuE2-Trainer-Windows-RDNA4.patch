@@ -1,8 +1,8 @@
 diff --git a/nodes.py b/nodes.py
-index b95cf00..c677fa4 100644
+index b95cf00..cc8b3ef 100644
 --- a/nodes.py
 +++ b/nodes.py
-@@ -60,13 +60,30 @@ def _free_memory():
+@@ -60,13 +60,47 @@ def _free_memory():
  
  def _unload_comfy_models():
      try:
@@ -32,10 +32,32 @@ index b95cf00..c677fa4 100644
 +    return ("COMBO", {"options": ["default"] + [f"gpu:{i}" for i in range(torch.cuda.device_count())], "default": "default"})
 +
 +
++def _latent_cache_root(value: str) -> Path:
++    """Persistent cache independent of instance startup/shutdown cleanup."""
++    fp = _folder_paths()
++    base = Path(fp.base_path).resolve()
++    value = value.strip().strip('"')
++    cache = Path(value) if value else base / "training_cache" / "yue2_latents"
++    if not cache.is_absolute():
++        cache = base / cache
++    cache = cache.resolve()
++    # Reject both the active instance temp and the legacy shared temp tree.
++    for temp in (Path(fp.get_temp_directory()).resolve(), base / "temp"):
++        if cache == temp or cache.is_relative_to(temp):
++            raise ValueError("cache_folder must be outside ComfyUI temp directories; "
++                             "leave empty for the persistent training_cache/yue2_latents default")
++    return cache
++
++
  class YuE2TrainingDataset:
      """Scan a folder of mp3/wav/flac (+ optional same-named .txt captions)
      and encode everything to cached YuE2 VAE latents."""
-@@ -93,7 +110,12 @@ class YuE2TrainingDataset:
+@@ -89,11 +123,16 @@ class YuE2TrainingDataset:
+             "default_caption": ("STRING", {"multiline": True, "default": "",
+                 "tooltip": "Used for every clip when caption_mode=default. Describe style/instruments/voice."}),
+             "cache_folder": ("STRING", {"default": "",
+-                "tooltip": "Where to store encoded latents. Empty = <ComfyUI>/temp/yue2_latents."}),
++                "tooltip": "Persistent latent cache. Empty = <ComfyUI>/training_cache/yue2_latents. Relative paths use the ComfyUI root; never use temp."}),
              "force_reencode": ("BOOLEAN", {"default": False,
                  "tooltip": "Ignore the latent cache and re-encode all files. Use after "
                             "changing audio files without renaming them."}),
@@ -49,7 +71,7 @@ index b95cf00..c677fa4 100644
  
      RETURN_TYPES = ("YUE2_TRAIN_DATASET", "STRING")
      RETURN_NAMES = ("dataset", "summary")
-@@ -101,18 +123,28 @@ class YuE2TrainingDataset:
+@@ -101,18 +140,24 @@ class YuE2TrainingDataset:
      CATEGORY = CATEGORY
  
      def build(self, checkpoint, audio_folder, clip_seconds, caption_mode,
@@ -62,16 +84,17 @@ index b95cf00..c677fa4 100644
          ckpt_path = _resolve_yue2_checkpoint(checkpoint)
 +        import hashlib
          folder = Path(audio_folder.strip().strip('"'))
+-        if cache_folder.strip():
+-            cache_dir = Path(cache_folder.strip().strip('"'))
+-        else:
+-            fp = _folder_paths()
+-            cache_dir = Path(fp.get_temp_directory()) / "yue2_latents"
 +        if not audio_folder.strip():
 +            raise ValueError("Choose a training audio folder")
 +        if not folder.is_absolute():
 +            folder = Path(_folder_paths().get_input_directory()) / folder
 +        data_mod.scan_folder(folder)  # Validate before allocating VRAM.
-         if cache_folder.strip():
-             cache_dir = Path(cache_folder.strip().strip('"'))
-         else:
-             fp = _folder_paths()
-             cache_dir = Path(fp.get_temp_directory()) / "yue2_latents"
++        cache_dir = _latent_cache_root(cache_folder)
 +        # Isolate caches by checkpoint and dataset; never clear unrelated user files.
 +        stat = ckpt_path.stat()
 +        key = f"{ckpt_path.resolve()}|{stat.st_size}|{stat.st_mtime_ns}|{folder.resolve()}"
@@ -79,7 +102,7 @@ index b95cf00..c677fa4 100644
          if force_reencode and cache_dir.is_dir():
              for stale in cache_dir.glob("*.npy"):
                  stale.unlink()
-@@ -122,7 +154,7 @@ class YuE2TrainingDataset:
+@@ -122,7 +167,7 @@ class YuE2TrainingDataset:
  
          def progress_cb(done, total):
              try:
@@ -88,7 +111,7 @@ index b95cf00..c677fa4 100644
                  model_management.throw_exception_if_processing_interrupted()
              except ImportError:
                  pass
-@@ -135,7 +167,9 @@ class YuE2TrainingDataset:
+@@ -135,7 +180,9 @@ class YuE2TrainingDataset:
              if bar[0]:
                  bar[0].update_absolute(done)
  
@@ -99,7 +122,7 @@ index b95cf00..c677fa4 100644
          _, modeling_vae, _, _ = import_yue2()
          vae = native_ckpt.build_vae_from_native(ckpt_path, modeling_vae, device=device)
          try:
-@@ -187,7 +221,7 @@ class YuE2LoRATrainer:
+@@ -187,7 +234,7 @@ class YuE2LoRATrainer:
              "lora_name": ("STRING", {"default": "yue2_mystyle",
                  "tooltip": "Output file name (<name>.safetensors) written into models/loras. "
                             "With EMA on, <name>_raw.safetensors (non-EMA) is saved too."}),
@@ -108,7 +131,7 @@ index b95cf00..c677fa4 100644
                  "tooltip": "Random seed for clip choice, noise and timestep sampling. "
                             "Change it (or set to randomize) for a different training run."}),
              "optimizer": (["adamw", "adamw_8bit"], {
-@@ -220,7 +254,7 @@ class YuE2LoRATrainer:
+@@ -220,7 +267,7 @@ class YuE2LoRATrainer:
                  "tooltip": "Update a live loss/LR chart in the YuE2 Training Curve node "
                             "while training runs (needs matplotlib; auto-disables with a "
                             "log note if unavailable). No effect on training itself."}),
@@ -117,7 +140,7 @@ index b95cf00..c677fa4 100644
  
      RETURN_TYPES = ("STRING", "STRING")
      RETURN_NAMES = ("lora_path", "training_log")
-@@ -231,7 +265,7 @@ class YuE2LoRATrainer:
+@@ -231,7 +278,7 @@ class YuE2LoRATrainer:
                alpha, lora_dropout, target_preset, lora_name, seed, optimizer,
                lr_scheduler, warmup_steps, grad_accum, caption_dropout,
                t_sampling, max_grad_norm, log_every, save_every, ema_decay,
@@ -126,7 +149,7 @@ index b95cf00..c677fa4 100644
          import torch
          from .trainer_core.vendor import import_yue2
          from .trainer_core import train as train_mod, native_ckpt
-@@ -244,6 +278,14 @@ class YuE2LoRATrainer:
+@@ -244,6 +291,14 @@ class YuE2LoRATrainer:
              raise ValueError("lora_name must be a valid file name (no path characters)")
  
          ckpt_path = _resolve_yue2_checkpoint(checkpoint)
@@ -141,7 +164,7 @@ index b95cf00..c677fa4 100644
          _unload_comfy_models()
          _free_memory()
  
-@@ -251,9 +293,9 @@ class YuE2LoRATrainer:
+@@ -251,9 +306,9 @@ class YuE2LoRATrainer:
          # training needs autograd, so explicitly re-enable grad mode for the
          # model load and the whole training loop (all tensors created inside
          # this block are normal, grad-capable tensors).
@@ -154,10 +177,106 @@ index b95cf00..c677fa4 100644
                  ckpt_path, modeling_yue2, torch_dtype=torch.bfloat16)
              tokenizer = native_ckpt.YuE2JsonTokenizer(
 diff --git a/trainer_core/data.py b/trainer_core/data.py
-index 0a01376..b246a7b 100644
+index 0a01376..c8da7d8 100644
 --- a/trainer_core/data.py
 +++ b/trainer_core/data.py
-@@ -79,6 +79,8 @@ def load_audio(path: Path) -> torch.Tensor:
+@@ -11,6 +11,11 @@ from __future__ import annotations
+ 
+ import hashlib
+ import logging
++import os
++import shutil
++import subprocess
++import tempfile
++import time
+ from dataclasses import dataclass, field
+ from pathlib import Path
+ 
+@@ -61,15 +66,79 @@ class TrainDataset:
+         return "\n".join(lines)
+ 
+ 
++def _load_audio_ffmpeg(path: Path) -> tuple[torch.Tensor, int]:
++    """Last-resort CPU decoder; no TorchCodec/CUDA dependency or shell quoting."""
++    executable = shutil.which("ffmpeg")
++    if executable is None:
++        try:
++            import imageio_ffmpeg
++            executable = imageio_ffmpeg.get_ffmpeg_exe()
++        except (ImportError, RuntimeError) as exc:
++            raise RuntimeError("Install FFmpeg on PATH or imageio-ffmpeg in the ComfyUI venv") from exc
++    from .train import _check_interrupt
++    # File-backed stdout avoids a second full-song pipe buffer in RAM. Keep
++    # diagnostics bounded when reporting a damaged file; never modify its source.
++    with tempfile.TemporaryFile() as pcm, tempfile.TemporaryFile() as errors:
++        command = [executable, "-hide_banner", "-loglevel", "error", "-nostdin",
++                   "-i", str(path.resolve()), "-map", "0:a:0", "-vn", "-sn", "-dn",
++                   "-ac", "2", "-ar", str(SAMPLE_RATE), "-f", "f32le", "pipe:1"]
++        process = subprocess.Popen(command, stdout=pcm, stderr=errors,
++                                   creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
++        deadline = time.monotonic() + 600
++        try:
++            while True:
++                _check_interrupt()
++                if time.monotonic() >= deadline:
++                    raise TimeoutError(f"FFmpeg decode exceeded 600 seconds: {path}")
++                try:
++                    code = process.wait(timeout=0.25)
++                    break
++                except subprocess.TimeoutExpired:
++                    pass
++        finally:
++            if process.poll() is None:
++                process.kill()
++                process.wait()
++        errors.seek(0)
++        diagnostic = errors.read(4096).decode("utf-8", errors="replace").strip()
++        if code != 0:
++            raise RuntimeError(f"FFmpeg exit {code}: {diagnostic}")
++        if diagnostic:
++            log.warning("FFmpeg recovered audio errors in %s: %s", path, diagnostic)
++        size = pcm.tell()
++        if not size or size % 8:
++            raise ValueError(f"FFmpeg returned empty/misaligned stereo PCM: {path}")
++        pcm.seek(0)
++        data = np.fromfile(pcm, dtype="<f4").reshape(-1, 2)
++    return torch.from_numpy(data.T.copy()), SAMPLE_RATE
++
++
+ def load_audio(path: Path) -> torch.Tensor:
+-    """Load audio as float32 [2, samples] at 48 kHz."""
++    """Decode via SoundFile, TorchAudio, then FFmpeg, preserving all sources."""
++    failures = []
+     try:
+-        import torchaudio
+-        wave, rate = torchaudio.load(str(path))
+-    except Exception:
+         import soundfile as sf
+         data, rate = sf.read(str(path), dtype="float32", always_2d=True)
+         wave = torch.from_numpy(data.T.copy())
++    except Exception as exc:
++        failures.append(f"SoundFile: {type(exc).__name__}: {exc}")
++        try:
++            import torchaudio
++            wave, rate = torchaudio.load(str(path))
++        except Exception as exc:
++            failures.append(f"TorchAudio: {type(exc).__name__}: {exc}")
++            log.warning("Native audio decoders failed for %s; trying FFmpeg (%s)",
++                        path, "; ".join(failures))
++            # Keep cancellation outside generic decoder exception handling.
++            from .train import _check_interrupt
++            _check_interrupt()
++            try:
++                wave, rate = _load_audio_ffmpeg(path)
++            except (OSError, RuntimeError, ValueError) as exc:
++                raise RuntimeError(f"Cannot decode training audio {path}: "
++                                   + "; ".join(failures) + f"; FFmpeg: {exc}. "
++                                   "Source was not deleted; repair or move it and retry. "
++                                   "Completed latent caches remain reusable.") from exc
+     if wave.ndim == 1:
+         wave = wave.unsqueeze(0)
+     if wave.shape[0] == 1:
+@@ -79,6 +148,8 @@ def load_audio(path: Path) -> torch.Tensor:
      if rate != SAMPLE_RATE:
          import torchaudio
          wave = torchaudio.functional.resample(wave, rate, SAMPLE_RATE)
@@ -166,7 +285,7 @@ index 0a01376..b246a7b 100644
      return wave.float().clamp(-1.0, 1.0)
  
  
-@@ -93,7 +95,7 @@ def scan_folder(folder: Path) -> list[tuple[Path, str]]:
+@@ -93,7 +164,7 @@ def scan_folder(folder: Path) -> list[tuple[Path, str]]:
          caption_file = file.with_suffix(".txt")
          caption = ""
          if caption_file.is_file():
@@ -175,7 +294,7 @@ index 0a01376..b246a7b 100644
          pairs.append((file, caption))
      if not pairs:
          raise FileNotFoundError(
-@@ -132,6 +134,8 @@ def encode_file_latents(vae, audio: torch.Tensor, device: torch.device,
+@@ -132,6 +203,8 @@ def encode_file_latents(vae, audio: torch.Tensor, device: torch.device,
              pos = end
      pieces = []
      for lo, hi, out_lo, out_hi in chunks:
@@ -184,7 +303,7 @@ index 0a01376..b246a7b 100644
          seg = audio[:, lo:hi].to(device)
          with torch.inference_mode():
              encoded = vae.encode(seg.unsqueeze(0))
-@@ -175,7 +179,13 @@ def build_dataset(vae, folder: Path, cache_dir: Path, clip_seconds: float,
+@@ -175,7 +248,22 @@ def build_dataset(vae, folder: Path, cache_dir: Path, clip_seconds: float,
              audio = load_audio(audio_path)
              latents = encode_file_latents(vae, audio, device)
              total_frames = latents.shape[0]
@@ -192,14 +311,31 @@ index 0a01376..b246a7b 100644
 +            encoded = latents.astype(np.float16)
 +            if not np.isfinite(encoded).all():
 +                raise FloatingPointError(f"Non-finite VAE latents: {audio_path}")
-+            import os
-+            temporary = latent_file.with_suffix(".tmp.npy")
-+            np.save(temporary, encoded)
-+            os.replace(temporary, latent_file)
++            # Each writer owns its staging file; no shared <song>.tmp.npy race.
++            # Do not silently recreate a deleted cache: earlier dataset entries
++            # would still point to lost files.
++            temporary = None
++            try:
++                with tempfile.NamedTemporaryFile(dir=cache_dir, prefix=".latent-",
++                                                 suffix=".tmp", delete=False) as handle:
++                    temporary = Path(handle.name)
++                    np.save(handle, encoded, allow_pickle=False)
++                os.replace(temporary, latent_file)
++            finally:
++                if temporary is not None:
++                    temporary.unlink(missing_ok=True)
              del audio, latents
              if device.type == "cuda":
                  torch.cuda.empty_cache()  # release the caching allocator between files
-@@ -198,6 +208,9 @@ def build_dataset(vae, folder: Path, cache_dir: Path, clip_seconds: float,
+@@ -193,11 +281,17 @@ def build_dataset(vae, folder: Path, cache_dir: Path, clip_seconds: float,
+             progress_cb(file_index + 1, len(pairs))
+     if not items:
+         raise RuntimeError("All source files are shorter than one clip — lower clip_seconds.")
++    if any(not item.latent_path.is_file() for item in items):
++        raise FileNotFoundError("Latent cache disappeared during encoding. Use a persistent "
++                                "cache_folder outside all ComfyUI temp directories and retry.")
+     return TrainDataset(items, cache_dir, clip_seconds)
+ 
  
  def load_clip_latents(item: DatasetItem) -> torch.Tensor:
      """Return this clip's latents as float32 [frames, 64]."""

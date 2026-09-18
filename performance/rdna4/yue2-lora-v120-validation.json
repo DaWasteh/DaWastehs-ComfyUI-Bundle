@@ -1,0 +1,239 @@
+{
+  "release": "v1.2.0",
+  "date": "2026-09-18",
+  "scope": "Private 612-source dataset execution, cache reuse, full requested training and technical adapter/audio checks. No listening acceptance; no private media or song list published.",
+  "system": {
+    "os": "win32",
+    "ram_total": 50860650496,
+    "ram_free": 26840031232,
+    "comfyui_version": "0.36.0",
+    "required_frontend_version": "1.52.7",
+    "installed_templates_version": "0.11.62",
+    "required_templates_version": "0.11.62",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.52.7",
+        "required": "1.52.7"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.62",
+        "required": "0.11.62"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.11",
+        "required": "0.5.11"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.35",
+        "required": "0.2.35"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.5.5",
+        "required": "0.5.5"
+      }
+    ],
+    "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "embedded_python": false,
+    "deploy_environment": "local-git",
+    "argv": [
+      "L:\\ComfyUI\\ComfyUI\\main.py",
+      "--enable-manager",
+      "--listen",
+      "127.0.0.1",
+      "--port",
+      "8188",
+      "--database-url",
+      "sqlite:///L:/ComfyUI/ComfyUI/user/comfyui-multigpu.db",
+      "--default-device",
+      "0",
+      "--reserve-vram",
+      "4",
+      "--use-pytorch-cross-attention",
+      "--disable-dynamic-vram",
+      "--disable-async-offload",
+      "--disable-pinned-memory",
+      "--cache-ram",
+      "--temp-directory",
+      "L:\\ComfyUI\\tmp\\comfyui-8188-12000"
+    ]
+  },
+  "gpu": "AMD Radeon AI PRO R9700 32 GB, gpu:0; RX 9070 XT visible but not used for training",
+  "sources": [
+    {
+      "path": "tools/patches/ComfyUI-YuE2-Trainer-Windows-RDNA4.patch",
+      "sha256": "d746ac4b5a92d5e1a8891f3a2d99228f19385d7405d3adc738dabd0d8b75a5be"
+    },
+    {
+      "path": "tools/workflow_templates/yue2-lora/trainer-manifest.json",
+      "sha256": "6dfb4b9f5a9f6d1254bfd4de37b2262c73803a51c160e9772eb46a67542fe1da"
+    },
+    {
+      "path": "tools/workflow_templates/yue2-lora/trainer-manifest-v119.json",
+      "sha256": "184d82280744f54961d1bfe355ce08fb72dc6b2abc0b8de4cc9439840bf9fbbf"
+    },
+    {
+      "path": "tools/workflow_templates/yue2-lora/node-schemas.json",
+      "sha256": "a5a102297708ef27f7cf2c541707106206a12c4eae21e46e5d062767a8772246"
+    },
+    {
+      "path": "tools/workflow_templates/yue2-lora/frontend-contracts-v120.json",
+      "sha256": "d86b4f736707c82c9d40dfb2aa8020e59a4faaa593f68aa56690e3271421d3a3"
+    },
+    {
+      "path": "tools/build_yue2_lora_workflows.py",
+      "sha256": "d0606728a129fdbcd3b033dfc31a84d71b1edde4122ec3408d2a844584662ffa"
+    },
+    {
+      "path": "tools/install_yue2_lora_node.py",
+      "sha256": "456b8ff1b62c6b58bcb7d36497f5865d35de98c227a7b05640c60595c6eb247e"
+    },
+    {
+      "path": "tools/scripts/windows_comfy_launcher.py",
+      "sha256": "a9ec42111ec3c696374d50c3b840569db3a2d5c6d11b7a982fb4ba2d57c05840"
+    },
+    {
+      "path": "tools/update-comfyui-rdna4.ps1",
+      "sha256": "2c49defcb970cf20554f26890503db3816e6feef28bda2db8b261eb43eb16a5d"
+    },
+    {
+      "path": "tools/validate_workflows.py",
+      "sha256": "4a673ad537ff93428e70015b0a91512030f606609d092e67b40885bc9d684f48"
+    },
+    {
+      "path": "workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json",
+      "sha256": "5705d1effab75fdc5bb283724d2b2ff2d43a8bd4e5bd0c4cc51abdf7da903691"
+    },
+    {
+      "path": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "sha256": "ba99f309c8d84f1b049626606c5373a379a80c5ed86ea0a563dd07b3cd753c75"
+    }
+  ],
+  "dataset": {
+    "source_files_scanned": 612,
+    "source_files_used": 612,
+    "clips": 3386,
+    "clip_seconds": 42.0,
+    "retained_audio_minutes": 2370.2,
+    "newly_encoded_files": 407,
+    "reused_files_first_run": 205,
+    "files_deleted": 0,
+    "decoder_fallback_count": 6,
+    "cache_outside_temp": true,
+    "repeat_dataset_build_status": "success"
+  },
+  "training": {
+    "status": "success",
+    "steps_completed": 10000,
+    "rank": 64,
+    "alpha": 64,
+    "warmup_steps": 50,
+    "learning_rate": 0.0001,
+    "optimizer": "adamw",
+    "scheduler": "cosine",
+    "grad_accum": 1,
+    "ema_decay": 0.999,
+    "save_every": 1000,
+    "clip_seconds": 42,
+    "wall_seconds_including_dataset": 4864.117812156677,
+    "first_logged_loss": 1.17064,
+    "last_logged_50_step_mean_loss": 1.1274,
+    "frontend_export_matches_executed_prompt": true,
+    "sampling": "Random clips; does not imply each clip was sampled."
+  },
+  "adapters": [
+    {
+      "variant": "ema",
+      "bytes": 425766912,
+      "sha256": "2b19c45131df8517b50577836d45bf95662745912194dd192dbf0a40d6ce23fb",
+      "tensors": 336,
+      "nonzero_up_matrices": 112
+    },
+    {
+      "variant": "raw",
+      "bytes": 425766912,
+      "sha256": "85910ee819dda9e7c12df1b9b2e6a622f834189e385fc5a19b48ed2c3ce1243a",
+      "tensors": 336,
+      "nonzero_up_matrices": 112
+    }
+  ],
+  "samples": [
+    {
+      "variant": "baseline",
+      "sample_rate": 48000,
+      "frames": 1440000,
+      "channels": 2,
+      "pcm_sha256": "2c56b4364676b65884d9b47c603732e549739f58e22ee75b7e787420ffcf0b81",
+      "rms": 0.10520569410543769,
+      "peak": 0.8017578125,
+      "wall_seconds": 24.04629898071289,
+      "full_scale_samples": 0,
+      "full_scale_fraction": 0.0
+    },
+    {
+      "variant": "ema",
+      "sample_rate": 48000,
+      "frames": 1440000,
+      "channels": 2,
+      "pcm_sha256": "5ae83b129768970dec4295f7beac825458b6f945ac8f3fbc9fa1577528ecc6a1",
+      "rms": 0.12590612276295932,
+      "peak": 1.0,
+      "wall_seconds": 6.0048277378082275,
+      "full_scale_samples": 6,
+      "full_scale_fraction": 2.0833333333333334e-06
+    },
+    {
+      "variant": "restored",
+      "sample_rate": 48000,
+      "frames": 1440000,
+      "channels": 2,
+      "pcm_sha256": "2c56b4364676b65884d9b47c603732e549739f58e22ee75b7e787420ffcf0b81",
+      "rms": 0.10520569410543769,
+      "peak": 0.8017578125,
+      "wall_seconds": 6.0354392528533936,
+      "full_scale_samples": 0,
+      "full_scale_fraction": 0.0
+    }
+  ],
+  "inspection": {
+    "queue_idle": true,
+    "adapters_finite": true,
+    "baseline_restored_identical": true,
+    "ema_changes_pcm": true
+  },
+  "cleanup": {
+    "installed_cleanup_exercised": true,
+    "other_instance_sentinel_preserved": true,
+    "active_training_cache_sample_unchanged": true
+  },
+  "validation": {
+    "clean_git_clone_patch_and_hash_verification": true,
+    "installed_upgrade_with_backup": true,
+    "frontend_exports": [
+      "training",
+      "music",
+      "private_training"
+    ],
+    "workflow_validator_errors": 0,
+    "historical_v119_report_preserved": true,
+    "dependencies_changed": false,
+    "pytest_passed": 349,
+    "pytest_skipped": 1,
+    "pytest_subtests_passed": 330,
+    "pytest_warnings": "Existing Pillow palette transparency warning",
+    "workflow_count": 246,
+    "baseline_ref": "v1.1.9"
+  },
+  "limits": [
+    "Technical finite-output checks only, no listening or musical-quality acceptance.",
+    "GPU profile qualified on this R9700 only.",
+    "Whole source audio is decoded in host RAM; VAE is chunked.",
+    "Training cache is not an optimizer/RNG resume checkpoint.",
+    "Custom temp overrides and manual server starts require caller-managed exclusive paths."
+  ]
+}

@@ -1,4 +1,6 @@
-# YuE2 · privates Stil-LoRA-Training und Anwendung · v1.1.9
+# YuE2 · privates Stil-LoRA-Training und Anwendung · v1.2.0
+
+**v1.2.0:** Persistenter Latent-Cache statt löschbarem Temp-Ordner, FFmpeg-Fallback für problematische MP3s und getrennte Temp-Verzeichnisse pro ComfyUI-Prozess. [Änderungen und aktuelle Validierung](YUE2_RELIABILITY_V120.md).
 
 ## Was dieser Workflow kann
 
@@ -21,6 +23,10 @@ Im Bundle-Repository, während ComfyUI beendet ist:
 # Gepinnter Trainer mit geprüftem Windows-/RDNA4-Patch:
 L:/ComfyUI/.venv/Scripts/python.exe tools/install_yue2_lora_node.py --comfy-root L:/ComfyUI/ComfyUI
 
+# Bereits installierter, unveränderter v1.1.9-Trainer: geprüftes Upgrade mit Backup
+# (ComfyUI vorher beenden; lokal veränderte Trainer werden NICHT überschrieben):
+L:/ComfyUI/.venv/Scripts/python.exe tools/install_yue2_lora_node.py --comfy-root L:/ComfyUI/ComfyUI --upgrade
+
 # 7.799.983.228 Bytes, nur nach ausdrücklichem nichtkommerziellem Opt-in:
 L:/ComfyUI/.venv/Scripts/python.exe tools/install_yue2_lora_model.py --comfy-root L:/ComfyUI/ComfyUI --accept-noncommercial
 
@@ -31,7 +37,7 @@ L:/ComfyUI/.venv/Scripts/python.exe tools/install_yue2_lora_model.py --comfy-roo
 
 Die Installer installieren **keine Python-Pakete** und verändern keine Torch-/ROCm-Version. `soundfile`, `matplotlib`, `safetensors`, `tokenizers`, `transformers` und PyTorch waren lokal bereits vorhanden. Nur falls nötig die beiden zusätzlichen Pakete `soundfile matplotlib` mit der ComfyUI-Python-Umgebung installieren, ohne pauschales Upgrade. Kein bitsandbytes/FlashAttention/Triton nötig. Danach ComfyUI neu starten und die beiden JSON-Dateien öffnen; lokal liegen sie zusätzlich unter `user/default/workflows/DaWasteh/`.
 
-Der Trainer wird als revisions- und dateigeprüfter Snapshot **ohne `.git`** installiert. Allgemeine Upstream-Pulls können dadurch nicht versehentlich den getesteten Patch ersetzen. Er gehört nicht zu den automatisch aktualisierten eigenen Node-Packs. Ein späteres Trainer-Upgrade muss bewusst geprüft und installiert werden; vorhandene abweichende Dateien werden nicht überschrieben. Der normale Bundle-Updater verteilt die beiden Workflows, lädt aber weder Trainer noch Modell automatisch herunter.
+Der Trainer wird als revisions- und dateigeprüfter Snapshot **ohne `.git`** installiert. Allgemeine Upstream-Pulls können dadurch nicht versehentlich den getesteten Patch ersetzen. Er gehört nicht zu den automatisch aktualisierten eigenen Node-Packs. Ein Trainer-Upgrade muss bewusst mit `--upgrade` installiert werden: Nur der exakt bekannte v1.1.9-Snapshot wird nach vollständiger Staging-Prüfung ersetzt und außerhalb von `custom_nodes` gesichert. Andere abweichende Dateien werden nicht überschrieben. Der normale Bundle-Updater verteilt die beiden Workflows, lädt aber weder Trainer noch Modell automatisch herunter.
 
 ### Gepinnte Quellen
 
@@ -59,7 +65,7 @@ ComfyUI/input/yue2_lora/my_style/
 - Relative Ordnerangaben beziehen sich auf `ComfyUI/input`, absolute Ordner funktionieren ebenfalls.
 - TXT beschreibt **Stil/Instrumente/Stimmcharakter**, nicht zwingend das gesungene Transkript. Beispiel: `instrumental, warm analog synthesizer, pulsing bass, steady electronic drums, 96 BPM`.
 - UTF-8 und UTF-8-BOM sind unterstützt. Fehlende TXT-Dateien ergeben leere Captions; alternativ `caption_mode=default` mit einer gemeinsamen Beschreibung.
-- Keine rekursive Unterordner-Suche. WAV/FLAC bevorzugen; komprimierte Formate hängen von den installierten Audiodecodern ab.
+- Keine rekursive Unterordner-Suche. WAV/FLAC bevorzugen. SoundFile → TorchAudio → FFmpeg dienen als Decoderkette. FFmpeg wird auf PATH oder über `imageio-ffmpeg` gesucht; TorchCodec ist nicht verpflichtend. Scheitern alle Decoder, enthält der Fehler Dateipfad und Decoderdiagnosen. Keine automatische Löschung oder stilles Überspringen von Songs.
 - Der Loader bereitet 48-kHz-Stereo vor. Clips sind standardmäßig 6s lang; kürzere Dateien und kurze Reststücke werden verworfen. Bei vollständig zu kurzen Daten entsteht ein klarer Fehler.
 - Einheitliches, gut beschriebenes Material ist wichtiger als Menge. Für ernsthaftes Stiltraining später z.B. 5–30 geeignete Songs; die tatsächliche Datenmenge und Lizenz müssen selbst geprüft werden.
 
@@ -92,7 +98,7 @@ Ergebnis unter `models/loras/`:
 
 Loss-/LR-Kurve wird als PNG unter `output/Music/PRIVATE_YuE2/LoRA/` gespeichert; Datensatzübersicht, Pfad und Log sind im Workflow sichtbar. Abbruch funktioniert an Trainingsschritten und VAE-Chunk-Grenzen. Ohne erfolgreichen Abschluss wird kein finaler Adapter exportiert; bereits geschriebene Zwischenadapter bleiben erhalten.
 
-Der VAE-Cache liegt standardmäßig unter `temp/yue2_latents/`, getrennt nach Checkpoint und Datensatz. Jede Queue scannt den Ordner neu, vorhandene Latents können wiederverwendet werden. Bei Audioänderungen ohne verlässliche Größen-/Zeitstempeländerung `force_reencode` einschalten. Der Schalter löscht nur den zugeordneten `.npy`-Cache, keine fremden Dateien im übergeordneten Ordner. Ganze Audiodateien werden im RAM gelesen, die VAE-Verarbeitung ist GPU-seitig gechunkt; das ist **kein unbegrenzter Streaming-Dataset-Loader**.
+Der VAE-Cache liegt seit v1.2.0 dauerhaft unter `<ComfyUI>/training_cache/yue2_latents/`, getrennt nach Checkpoint und Datensatz. Relative `cache_folder`-Pfade beziehen sich auf den ComfyUI-Root. Ein eigener Cache außerhalb aller Temp-Verzeichnisse bleibt möglich; alte Temp-Caches werden nicht automatisch verschoben. `force_reencode=false` lässt vorhandene Dateien wiederverwenden, auch nach einem Decoderfehler. Jede Queue scannt den Ordner neu, vorhandene Latents können wiederverwendet werden. Bei Audioänderungen ohne verlässliche Größen-/Zeitstempeländerung `force_reencode` einschalten. Der Schalter löscht nur den zugeordneten `.npy`-Cache, keine fremden Dateien im übergeordneten Ordner. Ganze Audiodateien werden im RAM gelesen, die VAE-Verarbeitung ist GPU-seitig gechunkt; das ist **kein unbegrenzter Streaming-Dataset-Loader**.
 
 ## GPU und RDNA4-Schutz
 
@@ -108,7 +114,7 @@ Der lokale Patch behebt/ergänzt:
 - Quantisierte Checkpoints ablehnen; nichtendliche Audiodaten, Latents, Losses und Gradienten abweisen.
 - Cache-Namensräume, atomische Cache-Dateien und Schutz bestehender Adapter.
 
-Training exklusiv ausführen: vorherige Comfy-Modelle werden entladen. Bei OOM Clipdauer/Rank senken und nach schwerem HIP-Fehler den Server neu starten. Der globale Bundle-VRAM-Guard bleibt aktiv; weder Startskripte noch Core-Dateien werden durch diese Ergänzung verändert.
+Training exklusiv ausführen: vorherige Comfy-Modelle werden entladen. Bei OOM Clipdauer/Rank senken und nach schwerem HIP-Fehler den Server neu starten. Der globale Bundle-VRAM-Guard bleibt aktiv; Core-Dateien bleiben unverändert. Seit v1.2.0 isoliert der gemeinsame Windows-Konsolen-Supervisor die Temp-Verzeichnisse aller darüber gestarteten GPU-Profile.
 
 ## Adapter anwenden
 
@@ -123,7 +129,7 @@ Training exklusiv ausführen: vorherige Comfy-Modelle werden entladen. Bei OOM C
 
 ## Validierung und Reproduktion
 
-Die öffentlichen Nachweise stehen in [`performance/rdna4/yue2-lora-v119-validation.json`](../performance/rdna4/yue2-lora-v119-validation.json). Getestet auf Windows/R9700, ComfyUI **0.36.0**, Frontend **1.52.7**, PyTorch **2.13.0+rocm10.1.0a20260822**.
+Die folgenden **historischen v1.1.9-Nachweise** stehen unverändert in [`performance/rdna4/yue2-lora-v119-validation.json`](../performance/rdna4/yue2-lora-v119-validation.json). Die Hashes dort gehören zur damaligen Version, nicht zum v1.2.0-Backend. Aktuelle Nachweise: [v1.2.0](YUE2_RELIABILITY_V120.md). Getestet auf Windows/R9700, ComfyUI **0.36.0**, Frontend **1.52.7**, PyTorch **2.13.0+rocm10.1.0a20260822**.
 
 | Prüfung | Ergebnis |
 |---|---|

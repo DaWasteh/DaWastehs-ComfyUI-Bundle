@@ -204,6 +204,19 @@
             "step": 0.01
           }
         ]
+      },
+      "optional": {
+        "cfg_scale": [
+          "FLOAT",
+          {
+            "tooltip": "Autoregressive guidance for style and lyrics. 1.0 disables CFG, matching the ABC workflow. Use 1.01 to match the original off-mode guidance.",
+            "advanced": true,
+            "default": 1.0,
+            "min": 0.0,
+            "max": 100.0,
+            "step": 0.01
+          }
+        ]
       }
     },
     "input_order": {
@@ -219,6 +232,9 @@
         "top_p",
         "top_k",
         "repetition_penalty"
+      ],
+      "optional": [
+        "cfg_scale"
       ]
     },
     "is_input_list": false,
@@ -877,7 +893,7 @@
           "STRING",
           {
             "default": "",
-            "tooltip": "Where to store encoded latents. Empty = <ComfyUI>/temp/yue2_latents."
+            "tooltip": "Persistent latent cache. Empty = <ComfyUI>/training_cache/yue2_latents. Relative paths use the ComfyUI root; never use temp."
           }
         ],
         "force_reencode": [

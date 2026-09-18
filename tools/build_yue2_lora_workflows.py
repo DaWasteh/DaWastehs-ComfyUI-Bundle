@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministically build v1.1.9 native YuE2 NAR-LoRA training + inference graphs."""
+"""Deterministically build v1.2.0 native YuE2 NAR-LoRA training + inference graphs."""
 from __future__ import annotations
 
 import argparse
@@ -32,11 +32,11 @@ class LoRAGraph(Graph):
         self.w["revision"] = 0
         self.w.setdefault("extra", {})["dawasteh_yue2_lora"] = {
             "version": 1,
-            "release": "v1.1.9",
+            "release": "v1.2.0",
             "branch": "NAR acoustic style/timbre; AR frozen",
             "experimental": True,
             "license": "CC-BY-NC-4.0",
-            "validation_report": "performance/rdna4/yue2-lora-v119-validation.json",
+            "validation_report": "performance/rdna4/yue2-lora-v120-validation.json",
         }
         refine_workflow(self.w, self.schemas)
         previous = migration.OBJECT_INFO.copy()
@@ -109,7 +109,7 @@ def training(schemas):
 
 **4 · GPU:** R9700 / gpu:0, SDPA, kein FlashAttention, kein torch.compile, kein bitsandbytes. VAE-GPU steuert Datensatz-Encoding, MODEL-GPU das komplette AR/NAR-Trainingsmodell; CLIP-Auswahl hat hier keine Funktion. Der Patch entlädt bestehende Comfy-Modelle vor GPU-Arbeit. Exklusiv ausführen. Unsichtbare GPUs werden abgewiesen. Bei OOM Clipdauer/Rank senken, dann neu starten.
 
-**5 · Ergebnis:** models/loras/yue2_my_style.safetensors (EMA) und yue2_my_style_raw.safetensors. lora_name enthält KEINE Ordner. Vor jedem neuen Lauf einen neuen Namen wählen: vorhandene Adapter werden ausdrücklich NICHT überschrieben. Zwischenstände sind Adapter, KEIN Optimizer-Resume. Abbruch stoppt an Schritt-/Encoding-Grenzen; ein finaler Adapter entsteht erst nach erfolgreichem Training. Cache liegt standardmäßig unter temp/yue2_latents, nach Modell/Datensatz getrennt; force_reencode verwirft nur diesen Cache.
+**5 · Ergebnis:** models/loras/yue2_my_style.safetensors (EMA) und yue2_my_style_raw.safetensors. lora_name enthält KEINE Ordner. Vor jedem neuen Lauf einen neuen Namen wählen: vorhandene Adapter werden ausdrücklich NICHT überschrieben. Zwischenstände sind Adapter, KEIN Optimizer-Resume. Abbruch stoppt an Schritt-/Encoding-Grenzen; ein finaler Adapter entsteht erst nach erfolgreichem Training. Cache liegt dauerhaft unter training_cache/yue2_latents im ComfyUI-Root, nach Modell/Datensatz getrennt; force_reencode verwirft nur diesen Cache. Niemals temp als Cache wählen. v1.1.9-Trainer bei beendetem ComfyUI mit tools/install_yue2_lora_node.py --comfy-root <ComfyUI> --upgrade aktualisieren. Bei Decoderproblemen wird FFmpeg verwendet (PATH oder imageio-ffmpeg); Quelldateien werden nicht gelöscht.
 
 **6 · Anwenden:** Musik-Workflow öffnen, LoRA-Liste aktualisieren, Adapter wählen, denselben trigger_word an den Anfang des Style-Prompts setzen. Stärke zuerst 1.0; 0 ist Baseline, danach vorsichtig vergleichen. ABC bleibt leer (cot=off). Loss und Kurve sind technische Diagnostik, keine Hörabnahme.
 

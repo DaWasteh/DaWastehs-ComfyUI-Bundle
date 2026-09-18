@@ -325,6 +325,18 @@ function Test-KnownLauncherContent {
     if ($LASTEXITCODE -ne 0) { throw "Launcher-Historie konnte nicht gelesen werden: $TrackedFile" }
     $temporary = [IO.Path]::GetTempFileName()
     try {
+        # v1.2.0 adopts the shared console supervisor, used by all GPU profiles.
+        # Only the exact previously captured baseline is safe to auto-upgrade.
+        if ($TrackedFile -eq "tools/scripts/windows_comfy_launcher.py") {
+            $legacy = "performance/rdna4/baseline_state/windows_comfy_launcher.py.orig"
+            $legacyBlob = & git -C $OwnRepo rev-parse --verify "${DeploymentCommit}:$legacy" 2>$null
+            if ($LASTEXITCODE -eq 0) {
+                Export-GitBlob -BlobId $legacyBlob.Trim() -Destination $temporary
+                if ($installedText -ceq [IO.File]::ReadAllText($temporary).Replace("`r`n", "`n")) {
+                    return $true
+                }
+            }
+        }
         foreach ($commit in $commits) {
             $blob = & git -C $OwnRepo rev-parse --verify "${commit}:$TrackedFile"
             if ($LASTEXITCODE -ne 0) { throw "Launcher-Blob fehlt: ${commit}:$TrackedFile" }
@@ -996,6 +1008,11 @@ $launcherSync = Install-GitTrackedDirectory `
     -Target $Root `
     -BackupGroup "launchers" `
     -IncludeFiles @("tools/start-MultiGPU.ps1", "tools/start-MultiGPU.bat")
+$supervisorSync = Install-GitTrackedDirectory `
+    -RelativeSource "tools/scripts" `
+    -Target (Join-Path $Root "scripts") `
+    -BackupGroup "console-supervisor" `
+    -IncludeFiles @("tools/scripts/windows_comfy_launcher.py")
 Report-WorkflowMigration
 if ($DryRun) { Write-DryRun "wuerde das Sync-Manifest schreiben: $SyncManifestPath" } else { Export-SyncManifest }
 
@@ -1127,7 +1144,7 @@ node_roots = [repo / "custom_nodes" / name for name in node_names]
 if not node_roots:
     raise SystemExit("No custom-node packs were supplied for validation")
 
-launcher_paths = {"tools/start-MultiGPU.ps1", "tools/start-MultiGPU.bat"}
+launcher_paths = {"tools/start-MultiGPU.ps1", "tools/start-MultiGPU.bat", "tools/scripts/windows_comfy_launcher.py"}
 tracked_roots = ["workflows", *(f"custom_nodes/{name}" for name in node_names), *sorted(launcher_paths)]
 manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
 source_commit = manifest.get("source_commit")
@@ -1170,7 +1187,7 @@ for relative in tracked:
     if relative.startswith("workflows/"):
         target = workflows / Path(relative.removeprefix("workflows/"))
     elif relative in launcher_paths:
-        target = repo.parent / Path(relative).name
+        target = repo.parent / Path(relative.removeprefix("tools/"))
     else:
         matching_name = next(
             (name for name in node_names if relative.startswith(f"custom_nodes/{name}/")),
