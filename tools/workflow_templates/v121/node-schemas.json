@@ -1,0 +1,1127 @@
+{
+  "UNETLoader": {
+    "input": {
+      "required": {
+        "unet_name": [
+          [
+            "Qwen\\qwen_image_2.1_bf16.safetensors"
+          ]
+        ],
+        "weight_dtype": [
+          [
+            "default",
+            "fp8_e4m3fn",
+            "fp8_e4m3fn_fast",
+            "fp8_e5m2"
+          ],
+          {
+            "advanced": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "unet_name",
+        "weight_dtype"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MODEL"
+    ],
+    "name": "UNETLoader",
+    "display_name": "Load Diffusion Model",
+    "description": "",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "CLIPLoader": {
+    "input": {
+      "required": {
+        "clip_name": [
+          [
+            "Qwen\\qwen3vl_8b_int8_convrot.safetensors"
+          ]
+        ],
+        "type": [
+          [
+            "stable_diffusion",
+            "stable_cascade",
+            "sd3",
+            "stable_audio",
+            "mochi",
+            "ltxv",
+            "pixart",
+            "cosmos",
+            "lumina2",
+            "wan",
+            "hidream",
+            "chroma",
+            "ace",
+            "omnigen2",
+            "qwen_image",
+            "hunyuan_image",
+            "flux2",
+            "ovis",
+            "longcat_image",
+            "cogvideox",
+            "lens",
+            "pixeldit",
+            "ideogram4",
+            "boogu",
+            "krea2",
+            "joyimage",
+            "mage",
+            "minimax",
+            "yue2"
+          ]
+        ]
+      },
+      "optional": {
+        "device": [
+          [
+            "default",
+            "cpu"
+          ],
+          {
+            "advanced": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip_name",
+        "type"
+      ],
+      "optional": [
+        "device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CLIP"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "CLIP"
+    ],
+    "name": "CLIPLoader",
+    "display_name": "Load CLIP",
+    "description": "Recipes:\nsd: clip-l\nstable cascade: clip-g\nsd3: t5 xxl / clip-g / clip-l\nstable audio: t5 base\nmochi: t5 xxl\ncogvideox: t5 xxl (226-token padding)\ncosmos: old t5 xxl\nlumina2: gemma 2 2B\nwan: umt5 xxl\nhidream: llama-3.1 (Recommend) or t5\nomnigen2: qwen vl 2.5 3B\njoyimage: qwen3-vl 8B\nlens: gpt-oss-20b\npixeldit: gemma 2 2B elm\nminimax: MiniMax H3 Qwen3-VL or Music3 Qwen/RVQ",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "VAELoader": {
+    "input": {
+      "required": {
+        "vae_name": [
+          [
+            "qwen-image\\qwen_image_2.1_vae_bf16.safetensors"
+          ]
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "vae_name"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "VAE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "VAE"
+    ],
+    "name": "VAELoader",
+    "display_name": "Load VAE",
+    "description": "",
+    "python_module": "nodes",
+    "category": "model/loaders",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "TextEncodeQwenImage21": {
+    "input": {
+      "required": {
+        "clip": [
+          "CLIP",
+          {}
+        ],
+        "prompt": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "negative_prompt": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "resolution": [
+          "INT",
+          {
+            "tooltip": "Reference images are resized to about resolution x resolution pixels, at multiples of 32, preserving aspect ratio. 0 keeps each reference at its own size, rounded to a multiple of 32. ",
+            "default": 1024,
+            "min": 0,
+            "max": 4096,
+            "step": 32
+          }
+        ],
+        "images": [
+          "COMFY_AUTOGROW_V3",
+          {
+            "tooltip": "Reference images, seen by the text encoder and spliced into the sequence as VAE latents.",
+            "template": {
+              "input": {
+                "required": {
+                  "image": [
+                    "IMAGE",
+                    {}
+                  ]
+                }
+              },
+              "names": [
+                "image_1",
+                "image_2",
+                "image_3",
+                "image_4",
+                "image_5",
+                "image_6",
+                "image_7",
+                "image_8",
+                "image_9",
+                "image_10",
+                "image_11",
+                "image_12",
+                "image_13",
+                "image_14",
+                "image_15",
+                "image_16"
+              ],
+              "min": 0
+            }
+          }
+        ]
+      },
+      "optional": {
+        "vae": [
+          "VAE",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "clip",
+        "prompt",
+        "negative_prompt",
+        "resolution",
+        "images"
+      ],
+      "optional": [
+        "vae"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "CONDITIONING",
+      "CONDITIONING",
+      "LATENT"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "positive",
+      "negative",
+      "latent"
+    ],
+    "output_tooltips": [
+      null,
+      null,
+      "Empty latent on the first reference image's size, to match with sampling as any other size shifts the edit."
+    ],
+    "output_matchtypes": null,
+    "name": "TextEncodeQwenImage21",
+    "display_name": "Text Encode Qwen Image 2.1",
+    "description": "",
+    "python_module": "comfy_extras.nodes_qwen",
+    "category": "model/conditioning/qwen image",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "QwenImage21Cache": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL",
+          {}
+        ],
+        "device": [
+          "COMBO",
+          {
+            "tooltip": "auto uses spare VRAM, then RAM. cpu (RAM) is prefetched behind compute and costs little speed. off recomputes the prefix every step, which is slower but is the one way to rule the cache out.",
+            "default": "auto",
+            "multiselect": false,
+            "options": [
+              "auto",
+              "gpu",
+              "cpu",
+              "off"
+            ]
+          }
+        ],
+        "dtype": [
+          "COMBO",
+          {
+            "tooltip": "Storage precision. default is lossless. int8 halves the cache at about bf16 accuracy, int4 quarters it but roughly doubles the per-step error.",
+            "default": "default",
+            "multiselect": false,
+            "options": [
+              "default",
+              "int8",
+              "int4"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "device",
+        "dtype"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "MODEL"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "MODEL"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "QwenImage21Cache",
+    "display_name": "Qwen Image 2.1 Cache",
+    "description": "Allows setting the KV cache device and quantization, by default the model uses the auto -option. Quantization potentially speeds up edit workflows when memory starved ",
+    "python_module": "comfy_extras.nodes_qwen",
+    "category": "model/conditioning/qwen image",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": true,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "EmptyLatentImage": {
+    "input": {
+      "required": {
+        "width": [
+          "INT",
+          {
+            "default": 1024,
+            "min": 16,
+            "max": 16384,
+            "step": 8,
+            "tooltip": "The width of the latent images in pixels."
+          }
+        ],
+        "height": [
+          "INT",
+          {
+            "default": 1024,
+            "min": 16,
+            "max": 16384,
+            "step": 8,
+            "tooltip": "The height of the latent images in pixels."
+          }
+        ],
+        "batch_size": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 4096,
+            "tooltip": "The number of latent images in the batch."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "width",
+        "height",
+        "batch_size"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "LATENT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "LATENT"
+    ],
+    "name": "EmptyLatentImage",
+    "display_name": "Empty Latent Image",
+    "description": "Create a new batch of empty latent images to be denoised via sampling.",
+    "python_module": "nodes",
+    "category": "model/latent",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The empty latent image batch."
+    ],
+    "search_aliases": [
+      "empty",
+      "empty latent",
+      "new latent",
+      "create latent",
+      "blank latent",
+      "blank"
+    ]
+  },
+  "ComfySwitchNode": {
+    "input": {
+      "required": {
+        "switch": [
+          "BOOLEAN",
+          {}
+        ]
+      },
+      "optional": {
+        "on_false": [
+          "COMFY_MATCHTYPE_V3",
+          {
+            "lazy": true,
+            "template": {
+              "template_id": "switch",
+              "allowed_types": "*"
+            }
+          }
+        ],
+        "on_true": [
+          "COMFY_MATCHTYPE_V3",
+          {
+            "lazy": true,
+            "template": {
+              "template_id": "switch",
+              "allowed_types": "*"
+            }
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "switch"
+      ],
+      "optional": [
+        "on_false",
+        "on_true"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "COMFY_MATCHTYPE_V3"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "output"
+    ],
+    "output_tooltips": [
+      null
+    ],
+    "output_matchtypes": [
+      "switch"
+    ],
+    "name": "ComfySwitchNode",
+    "display_name": "If/Else Switch",
+    "description": "",
+    "python_module": "comfy_extras.nodes_logic",
+    "category": "utilities/logic",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": true,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": [
+      "if",
+      "then",
+      "switch",
+      "conditional",
+      "branch"
+    ],
+    "essentials_category": null,
+    "has_intermediate_output": false
+  },
+  "KSampler": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL",
+          {
+            "tooltip": "The model used for denoising the input latent."
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 18446744073709551615,
+            "control_after_generate": true,
+            "tooltip": "The random seed used for creating the noise."
+          }
+        ],
+        "steps": [
+          "INT",
+          {
+            "default": 20,
+            "min": 1,
+            "max": 10000,
+            "tooltip": "The number of steps used in the denoising process."
+          }
+        ],
+        "cfg": [
+          "FLOAT",
+          {
+            "default": 8.0,
+            "min": 0.0,
+            "max": 100.0,
+            "step": 0.1,
+            "round": 0.01,
+            "tooltip": "The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality."
+          }
+        ],
+        "sampler_name": [
+          [
+            "euler",
+            "euler_cfg_pp",
+            "euler_ancestral",
+            "euler_ancestral_cfg_pp",
+            "heun",
+            "heunpp2",
+            "exp_heun_2_x0",
+            "exp_heun_2_x0_sde",
+            "dpm_2",
+            "dpm_2_ancestral",
+            "lms",
+            "dpm_fast",
+            "dpm_adaptive",
+            "dpmpp_2s_ancestral",
+            "dpmpp_2s_ancestral_cfg_pp",
+            "dpmpp_sde",
+            "dpmpp_sde_gpu",
+            "dpmpp_2m",
+            "dpmpp_2m_cfg_pp",
+            "dpmpp_2m_sde",
+            "dpmpp_2m_sde_gpu",
+            "dpmpp_2m_sde_heun",
+            "dpmpp_2m_sde_heun_gpu",
+            "dpmpp_3m_sde",
+            "dpmpp_3m_sde_gpu",
+            "ddpm",
+            "lcm",
+            "ipndm",
+            "ipndm_v",
+            "deis",
+            "cfgpp_ud10_ab",
+            "res_multistep",
+            "res_multistep_cfg_pp",
+            "res_multistep_ancestral",
+            "res_multistep_ancestral_cfg_pp",
+            "gradient_estimation",
+            "gradient_estimation_cfg_pp",
+            "er_sde",
+            "seeds_2",
+            "seeds_3",
+            "sa_solver",
+            "sa_solver_pece",
+            "ddim",
+            "uni_pc",
+            "uni_pc_bh2",
+            "legacy_rk",
+            "rk",
+            "rk_beta",
+            "deis_3m_ode",
+            "deis_2m_ode",
+            "deis_3m",
+            "deis_2m",
+            "res_6s_ode",
+            "res_5s_ode",
+            "res_3s_ode",
+            "res_2s_ode",
+            "res_3m_ode",
+            "res_2m_ode",
+            "res_6s",
+            "res_5s",
+            "res_3s",
+            "res_2s",
+            "res_3m",
+            "res_2m"
+          ],
+          {
+            "tooltip": "The algorithm used when sampling, this can affect the quality, speed, and style of the generated output."
+          }
+        ],
+        "scheduler": [
+          [
+            "simple",
+            "sgm_uniform",
+            "karras",
+            "exponential",
+            "ddim_uniform",
+            "beta",
+            "normal",
+            "linear_quadratic",
+            "kl_optimal",
+            "bong_tangent",
+            "beta57"
+          ],
+          {
+            "tooltip": "The scheduler controls how noise is gradually removed to form the image."
+          }
+        ],
+        "positive": [
+          "CONDITIONING",
+          {
+            "tooltip": "The conditioning describing the attributes you want to include in the image."
+          }
+        ],
+        "negative": [
+          "CONDITIONING",
+          {
+            "tooltip": "The conditioning describing the attributes you want to exclude from the image."
+          }
+        ],
+        "latent_image": [
+          "LATENT",
+          {
+            "tooltip": "The latent image to denoise."
+          }
+        ],
+        "denoise": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.01,
+            "tooltip": "The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "seed",
+        "steps",
+        "cfg",
+        "sampler_name",
+        "scheduler",
+        "positive",
+        "negative",
+        "latent_image",
+        "denoise"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "LATENT"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "LATENT"
+    ],
+    "name": "KSampler",
+    "display_name": "KSampler",
+    "description": "Uses the provided model, positive and negative conditioning to denoise the latent image.",
+    "python_module": "nodes",
+    "category": "model/sampling",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The denoised latent."
+    ],
+    "search_aliases": [
+      "sampler",
+      "sample",
+      "generate",
+      "denoise",
+      "diffuse",
+      "txt2img",
+      "img2img"
+    ]
+  },
+  "VAEDecode": {
+    "input": {
+      "required": {
+        "samples": [
+          "LATENT",
+          {
+            "tooltip": "The latent to be decoded."
+          }
+        ],
+        "vae": [
+          "VAE",
+          {
+            "tooltip": "The VAE model used for decoding the latent."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "samples",
+        "vae"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "IMAGE"
+    ],
+    "name": "VAEDecode",
+    "display_name": "VAE Decode",
+    "description": "Decodes latent images back into pixel space images.",
+    "python_module": "nodes",
+    "category": "model/latent",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The decoded image."
+    ],
+    "search_aliases": [
+      "decode",
+      "decode latent",
+      "latent to image",
+      "render latent"
+    ]
+  },
+  "PixaromaPrompt": {
+    "input": {
+      "required": {},
+      "optional": {
+        "text_in": [
+          "STRING",
+          {
+            "forceInput": true,
+            "tooltip": "Optional. Wire another prompt in and it is joined with your typed prompt (order + separator set on the node). Leave it unconnected to output just your prompt."
+          }
+        ]
+      },
+      "hidden": {
+        "PromptState": [
+          "STRING",
+          {
+            "default": "{}"
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [],
+      "optional": [
+        "text_in"
+      ],
+      "hidden": [
+        "PromptState"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "STRING"
+    ],
+    "output_is_list": [
+      false
+    ],
+    "output_name": [
+      "text"
+    ],
+    "name": "PixaromaPrompt",
+    "display_name": "Prompt Pixaroma",
+    "description": "Prompt Pixaroma - a prompt box with a single text output, plus a personal library of reusable @tags and an optional text input you can join with.\n\nType your prompt and drop in @tags for the parts you reuse a lot. Save a tag called oilpainting whose full text is a long 'oil painting, thick brush strokes, Rembrandt lighting, ...' and then just type @oilpainting. Type @ in the box for a searchable list grouped by category; known tags glow, unknown ones warn you of a typo. Each @tag is swapped for its full text at run time, so the box stays short. Turn on Show expanded to preview what is sent.\n\nWire a prompt into the text input and it is joined with yours - choose My prompt first or Wired first, and the separator. With nothing wired, the output is just your prompt.\n\nManage tags with the Tags button: a fullscreen library with categories. Your library is saved in ComfyUI's settings, so it stays private to you and survives updating the plugin; share it on purpose with Export / Import.",
+    "python_module": "custom_nodes.ComfyUI-Pixaroma",
+    "category": "👑 Pixaroma/💬 Prompt & Text",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "Your prompt with every @tag expanded, joined with the wired text input if one is connected."
+    ],
+    "search_aliases": []
+  },
+  "PixaromaResolution": {
+    "input": {
+      "required": {},
+      "hidden": {
+        "ResolutionState": [
+          "STRING",
+          {
+            "default": "{\"mode\": \"preset\", \"ratio\": \"1:1\", \"w\": 1024, \"h\": 1024, \"custom_w\": 1024, \"custom_h\": 1024, \"custom_ratio_w\": 4, \"custom_ratio_h\": 3, \"snap\": 16}"
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [],
+      "hidden": [
+        "ResolutionState"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "INT",
+      "INT"
+    ],
+    "output_is_list": [
+      false,
+      false
+    ],
+    "output_name": [
+      "width",
+      "height"
+    ],
+    "name": "PixaromaResolution",
+    "display_name": "Resolution Pixaroma",
+    "description": "Resolution Pixaroma - a one-click resolution picker. The on-node UI shows a 3x3 ratio chip grid (1:1, 16:9, 9:16, 2:1, 3:2, 2:3, 4:3, 3:4, 4:5) with the 8 most-popular sizes for each ratio. Covers SDXL, AI video, and social-media-ready dimensions. Click a chip, click a size, done.\n\nCustom Ratio mode lets you type any W:H (21:9, 16:10, anything) and get auto-computed AI-friendly sizes. Custom Resolution mode lets you type exact dimensions; math expressions like '1024+128' or '512*2' work in the W / H fields. The Snap chips (16 / 32 / 64 / no snap) round outputs to multiples that VAE encoders prefer.\n\nOutputs width and height as INT. State saves and restores with the workflow.\n\nAll UI lives on the JS side; the only Python input is a hidden serialized state string that gets injected at execution time.",
+    "python_module": "custom_nodes.ComfyUI-Pixaroma",
+    "category": "👑 Pixaroma/🔢 Values",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The chosen width in pixels.",
+      "The chosen height in pixels."
+    ],
+    "search_aliases": []
+  },
+  "PixaromaLoadImage": {
+    "input": {
+      "required": {
+        "image": [
+          [
+            "portrait_model_denim.png",
+            "clothing_light_blue_denim_shirt.png"
+          ],
+          {
+            "image_upload": true,
+            "tooltip": "The image to load from ComfyUI's input folder. Use the Upload Image button, drag a file onto the node, paste from the clipboard, or pick one from the dropdown."
+          }
+        ]
+      },
+      "hidden": {
+        "LoadImagePixState": [
+          "STRING",
+          {
+            "default": "{\"version\": 1, \"mode\": \"off\", \"max_mp\": 1.0, \"longest_side\": 1024, \"scale_factor\": 1.0, \"fit_w\": 1024, \"fit_h\": 1024, \"cover_w\": 1024, \"cover_h\": 1024, \"ratio_preset\": \"1:1\", \"ratio_w\": 1, \"ratio_h\": 1, \"ratio_action\": \"crop\", \"pad_color\": \"#808080\", \"pad_top\": 0, \"pad_bottom\": 0, \"pad_left\": 0, \"pad_right\": 0, \"crop_anchor\": \"center\", \"crop_scale\": true, \"snap\": 0, \"resample\": \"auto\", \"allow_upscale\": true}"
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "image"
+      ],
+      "hidden": [
+        "LoadImagePixState"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "IMAGE",
+      "MASK",
+      "INT",
+      "INT",
+      "STRING",
+      "INT",
+      "INT"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "image",
+      "mask",
+      "width",
+      "height",
+      "filename",
+      "original_width",
+      "original_height"
+    ],
+    "name": "PixaromaLoadImage",
+    "display_name": "Load Image Pixaroma",
+    "description": "Load Image Pixaroma - native LoadImage parity (upload, drag-drop, paste, multi-frame, alpha to mask) plus inline resize: max megapixels, longest side, scale by, fit inside, crop to fill, match aspect ratio. Snap chips, resample picker, upscale guard. Outputs: image, mask, width, height, filename, original_width, original_height.\n\nEliminates the need for downstream Get Image Size + Image Scale + Image Resize chains in most workflows.",
+    "python_module": "custom_nodes.ComfyUI-Pixaroma",
+    "category": "👑 Pixaroma/🖼️ Image",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "output_tooltips": [
+      "The loaded image, after any resize.",
+      "The image's mask, from its alpha channel (blank if it has none).",
+      "Output width in pixels, after any resize.",
+      "Output height in pixels, after any resize.",
+      "The image's filename.",
+      "Width of the original image, before any resize.",
+      "Height of the original image, before any resize."
+    ],
+    "search_aliases": []
+  },
+  "PixaromaSaveImage": {
+    "input": {
+      "required": {
+        "images": [
+          "IMAGE",
+          {
+            "tooltip": "Image (or batch) to save. Every frame in a batch is written, with the counter increasing per file."
+          }
+        ]
+      },
+      "optional": {
+        "name": [
+          "STRING",
+          {
+            "forceInput": true,
+            "tooltip": "Optional text used by the %input% token in the filename, e.g. wire the filename output of Load Image Pixaroma here to keep the original name. To save into a folder named after this text, click the + Input folder chip. If the text already contains folders they become underscores, unless you turn on 'Keep folders from the wired name' in the settings."
+          }
+        ]
+      },
+      "hidden": {
+        "SaveImageState": "STRING",
+        "prompt": "PROMPT",
+        "extra_pnginfo": "EXTRA_PNGINFO",
+        "unique_id": "UNIQUE_ID"
+      }
+    },
+    "input_order": {
+      "required": [
+        "images"
+      ],
+      "optional": [
+        "name"
+      ],
+      "hidden": [
+        "SaveImageState",
+        "prompt",
+        "extra_pnginfo",
+        "unique_id"
+      ]
+    },
+    "is_input_list": false,
+    "output": [],
+    "output_is_list": [],
+    "output_name": [],
+    "name": "PixaromaSaveImage",
+    "display_name": "Save Image Pixaroma",
+    "description": "Save Image Pixaroma - save images to any folder on your computer, not just ComfyUI's output folder. Type or paste a path, or click Browse to pick a folder with your system's own folder dialog; leave the field empty to use the output folder. The filename field supports tokens and shows a live 'Will save as' preview of the exact file that will be written. Tokens: %input% (the wired name input, e.g. the filename from Load Image Pixaroma), %date:yyyy-MM-dd% (and any date/time format), %counter% (auto-incrementing, never overwrites), %width%, %height%, %batch_num%, plus node references like %Seed Pixaroma.seed%. Use / in the name to create subfolders. Three formats: PNG (lossless, keeps transparency, drags back into ComfyUI to reload the workflow), WebP (much smaller, keeps transparency, and it also drags back in to reload the workflow), or JPG (small and universal, no transparency, and ComfyUI cannot reload a workflow from it). Open the settings with the gear on the node or by right-clicking it: date style, counter digits, quality, WebP lossless, workflow embedding, Civitai generation info, which buttons the node shows, and whether folders in a wired name are kept. Batches save every frame with the counter increasing.\n\nAdd Civitai generation info (right-click) also writes the settings in the format Civitai reads, so an image posted there shows the checkpoint, the LoRAs and their strengths, plus steps, seed, sampler and size. The values are read from your workflow automatically, so nothing needs wiring into this node. The first save after adding a new model pauses briefly to fingerprint it, then it is remembered.\n\nSaved images show in a large preview on the node: one image fills the area, a batch shows as a grid. Click a picture in the grid to view it big, click it or hover for the arrows to flip through, and the X returns to the grid. Copy puts the shown image on the clipboard, Open shows it in a new browser tab. Resize the node to make the preview bigger. The Save and Preview pills switch between writing files on every run and only showing images on the node with nothing written to your folder, so it can double as a preview node. Folder shows the save location in your file explorer; the window can appear on the taskbar.",
+    "python_module": "custom_nodes.ComfyUI-Pixaroma",
+    "category": "👑 Pixaroma/🖼️ Image",
+    "output_node": true,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "PixaromaCompare": {
+    "input": {
+      "optional": {
+        "image1": [
+          "IMAGE",
+          {
+            "tooltip": "First image to compare (e.g. the 'before' image). Optional - if it isn't connected, or its branch is muted / bypassed, the node just shows the other image (or a note) instead of throwing an error."
+          }
+        ],
+        "image2": [
+          "IMAGE",
+          {
+            "tooltip": "Second image to compare (e.g. the 'after' image). Optional - the on-node viewer compares once BOTH images arrive; with only one connected it simply shows that one, and with neither it shows a short note."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "optional": [
+        "image1",
+        "image2"
+      ]
+    },
+    "is_input_list": false,
+    "output": [],
+    "output_is_list": [],
+    "output_name": [],
+    "name": "PixaromaCompare",
+    "display_name": "Image Compare Pixaroma",
+    "description": "Image Compare Pixaroma - the easiest way to see the difference between two images. Wire any two IMAGE outputs into image1 and image2 (e.g. before / after upscaling, original / inpainted, two checkpoint variants), then run the workflow.\n\nThe on-node viewer offers three modes: side-by-side with a draggable slider, overlap with adjustable opacity, or 'diff' which highlights exactly what changed between the two. The mode a new Compare node starts in is set in this node's own settings, opened with the gear button on the node toolbar or by right-clicking the node.\n\nBoth inputs are optional. If only one image is connected (for example when a branch feeding one input is muted or bypassed), the node just shows that image; if neither is connected it shows a short note - it never throws a system error, so it is safe to leave in a workflow that toggles between text-to-image and image-to-image.",
+    "python_module": "custom_nodes.ComfyUI-Pixaroma",
+    "category": "👑 Pixaroma/🖼️ Image",
+    "output_node": true,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "PixaromaRunTimer": {
+    "input": {
+      "required": {}
+    },
+    "input_order": {
+      "required": []
+    },
+    "is_input_list": false,
+    "output": [],
+    "output_is_list": [],
+    "output_name": [],
+    "name": "PixaromaRunTimer",
+    "display_name": "Run Timer Pixaroma",
+    "description": "Run Timer Pixaroma - a clock that times how long a workflow takes. It resets to zero when you press Run, counts up while the workflow is working, and freezes on the total time the moment it finishes, then plays a chime so you know it is done even when you are in another tab.\n\nThe node face shows only the clock. Right-click the node for settings: turn the chime on or off, pick the sound and volume (with a Preview button), choose how many decimals to show, and set the clock color.\n\nChime sounds are the same library as Notify Pixaroma - drop a .mp3, .wav, or .ogg with a simple name (letters, numbers, dashes) into assets/sounds/ to add more (restart ComfyUI to pick up new files). A master mute for every run timer chime sits at the top of this node's own settings, opened with the gear button on the node toolbar or by right-clicking the node.",
+    "python_module": "custom_nodes.ComfyUI-Pixaroma",
+    "category": "👑 Pixaroma/🔀 Logic & Flow",
+    "output_node": false,
+    "has_intermediate_output": false,
+    "search_aliases": []
+  },
+  "DaWMultiGPUDeviceControl": {
+    "input": {
+      "required": {
+        "model_device": [
+          "COMBO",
+          {
+            "default": "gpu:0",
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ],
+        "clip_device": [
+          "COMBO",
+          {
+            "default": "gpu:1",
+            "multiselect": false,
+            "options": [
+              "default",
+              "cpu",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ],
+        "vae_device": [
+          "COMBO",
+          {
+            "default": "gpu:1",
+            "multiselect": false,
+            "options": [
+              "default",
+              "gpu:0",
+              "gpu:1"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ]
+    },
+    "is_input_list": false,
+    "output": [
+      "COMBO",
+      "COMBO",
+      "COMBO"
+    ],
+    "output_is_list": [
+      false,
+      false,
+      false
+    ],
+    "output_name": [
+      "model_device",
+      "clip_device",
+      "vae_device"
+    ],
+    "output_tooltips": [
+      null,
+      null,
+      null
+    ],
+    "output_matchtypes": null,
+    "name": "DaWMultiGPUDeviceControl",
+    "display_name": "DaW Multi-GPU Device Control",
+    "description": "Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector.\n\nConnect these COMBO outputs to the ``device`` input of ComfyUI's official\nSelect Model Device, Select CLIP Device, and Select VAE Device nodes. The\nnode chooses labels only; the official selectors remain responsible for\nvalidating and moving the actual model objects.",
+    "python_module": "custom_nodes.ComfyUI-DaWasteh-MultiGPU-Control",
+    "category": "DaWasteh/multigpu",
+    "output_node": false,
+    "deprecated": false,
+    "experimental": false,
+    "dev_only": false,
+    "api_node": false,
+    "price_badge": null,
+    "search_aliases": null,
+    "essentials_category": null,
+    "has_intermediate_output": false
+  }
+}

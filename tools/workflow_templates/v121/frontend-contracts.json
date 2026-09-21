@@ -1,0 +1,1276 @@
+{
+  "t2i": {
+    "workflow": "workflows/Text to Image/Qwen_Image_2_1_BF16-Text-to-Image.json",
+    "case": "default",
+    "output": {
+      "1": {
+        "_meta": {
+          "title": "QWEN IMAGE 2.1 · BF16 · R9700"
+        },
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "Qwen\\qwen_image_2.1_bf16.safetensors",
+          "weight_dtype": "default"
+        }
+      },
+      "10": {
+        "_meta": {
+          "title": "DECODE · neuer 2.1-VAE · RGBA-Ausgabe"
+        },
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "9",
+            0
+          ],
+          "vae": [
+            "24",
+            0
+          ]
+        }
+      },
+      "11": {
+        "_meta": {
+          "title": "SPEICHERN · PNG + Workflow + Alpha"
+        },
+        "class_type": "PixaromaSaveImage",
+        "inputs": {
+          "SaveImageState": "{\"version\":1,\"folder\":\"\",\"pattern\":\"Qwen_Image_2_1/T2I_%counter%\",\"format\":\"png\",\"quality\":100,\"embedWorkflow\":true,\"civitaiMeta\":false,\"saveOnRun\":true,\"dateStyle\":\"yyyy-MM-dd\",\"counterDigits\":5,\"folded\":false,\"hideBarWhenFolded\":false,\"webpLossless\":false,\"inputSubfolders\":false,\"showOpen\":true,\"showCopy\":true,\"showFolder\":true,\"showPng\":true,\"showJpg\":true,\"showWebp\":true}",
+          "images": [
+            "10",
+            0
+          ]
+        }
+      },
+      "14": {
+        "_meta": {
+          "title": "Run Timer Pixaroma"
+        },
+        "class_type": "PixaromaRunTimer",
+        "inputs": {}
+      },
+      "2": {
+        "_meta": {
+          "title": "TEXTENCODER · Qwen3-VL 8B INT8 ConvRot"
+        },
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "Qwen\\qwen3vl_8b_int8_convrot.safetensors",
+          "device": "default",
+          "type": "qwen_image"
+        }
+      },
+      "22": {
+        "_meta": {
+          "title": "SelectModelDevice · central control"
+        },
+        "class_type": "SelectModelDevice",
+        "inputs": {
+          "device": [
+            "25",
+            0
+          ],
+          "model": [
+            "1",
+            0
+          ]
+        }
+      },
+      "23": {
+        "_meta": {
+          "title": "SelectCLIPDevice · central control"
+        },
+        "class_type": "SelectCLIPDevice",
+        "inputs": {
+          "clip": [
+            "2",
+            0
+          ],
+          "device": [
+            "25",
+            1
+          ]
+        }
+      },
+      "24": {
+        "_meta": {
+          "title": "SelectVAEDevice · central control"
+        },
+        "class_type": "SelectVAEDevice",
+        "inputs": {
+          "device": [
+            "25",
+            2
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        }
+      },
+      "25": {
+        "_meta": {
+          "title": "Central GPU Control · MODEL / CLIP / VAE"
+        },
+        "class_type": "DaWMultiGPUDeviceControl",
+        "inputs": {
+          "clip_device": "gpu:0",
+          "model_device": "gpu:0",
+          "vae_device": "gpu:0"
+        }
+      },
+      "3": {
+        "_meta": {
+          "title": "VAE · nur Qwen Image 2.1 · RGBA"
+        },
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen-image\\qwen_image_2.1_vae_bf16.safetensors"
+        }
+      },
+      "4": {
+        "_meta": {
+          "title": "PROMPT · Bildbeschreibung / gewünschter Text"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"Greyscale fashion editorial portrait of an avant-garde woman tilted upwards in profile, captured with striking high-contrast chiaroscuro lighting. She wears oversized, thick-rimmed circular black sunglasses with matte dark lenses, concealing her upward gaze. Her attire merges high couture with tactical abstraction: a high-necked structural dress tailored from heavyweight fabric featuring a disrupted optical camouflage pattern—interlocking oversized polka dots, pixelated stippling, and organic contour blotches in stark monochrome that mimic military disruptive patterns in a refined runway style. Around her shoulders, asymmetric pleated webbing and tailored cargo straps are integrated seamlessly into the garment’s architecture. In her gloved hand, she clutches a structured matte-leather geometric handbag accented with subtle tactical buckles, utility stitching, and dark brushed-metal hardware. Her skin texture is rendered with hyper-detailed clarity, sculpted by intense, razor-sharp studio key light and deep graphite shadows. The striking background is a vivid mixed-media graphic collage, composed of flat vibrant lime green planes, stark black and white overlapping circles, segmented semi-circles with bold zebra striping, dense micro-halftone dot matrices, and vector topographic contour lines. The clash between monochromatic disruptive camo elements on her clothing and the saturated, retro-futuristic pop-art backdrop creates an intense visual dissonance, emphasizing sharp silhouettes, paper cut-out edges, dynamic compositional balance, and clean graphic novel textures. Absolutely no text, no typography, no letters, no words, no numbers, no logos, no watermark, no captions, pure imagery only.\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "5": {
+        "_meta": {
+          "title": "NEGATIV · offiziell leer · CFG 1 ignoriert Negativprompt"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "6": {
+        "_meta": {
+          "title": "QWEN 2.1 · Referenzen + Positiv/Negativ + passendes Latent"
+        },
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "23",
+            0
+          ],
+          "negative_prompt": [
+            "5",
+            0
+          ],
+          "prompt": [
+            "4",
+            0
+          ],
+          "resolution": 1024
+        }
+      },
+      "7": {
+        "_meta": {
+          "title": "FORMAT · 1024² Start · 32px-Raster · 2048² optional"
+        },
+        "class_type": "PixaromaResolution",
+        "inputs": {
+          "ResolutionState": "{\"mode\": \"preset\", \"ratio\": \"1:1\", \"w\": 1024, \"h\": 1024, \"custom_w\": 1024, \"custom_h\": 1024, \"custom_ratio_w\": 1, \"custom_ratio_h\": 1, \"snap\": 32}"
+        }
+      },
+      "8": {
+        "_meta": {
+          "title": "LEERES LATENT · Ausgabeformat"
+        },
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "batch_size": 1,
+          "height": [
+            "7",
+            1
+          ],
+          "width": [
+            "7",
+            0
+          ]
+        }
+      },
+      "9": {
+        "_meta": {
+          "title": "SAMPLER · offiziell 25 / CFG 1 / Euler / Simple"
+        },
+        "class_type": "KSampler",
+        "inputs": {
+          "cfg": 1.0,
+          "denoise": 1.0,
+          "latent_image": [
+            "8",
+            0
+          ],
+          "model": [
+            "22",
+            0
+          ],
+          "negative": [
+            "6",
+            1
+          ],
+          "positive": [
+            "6",
+            0
+          ],
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "seed": 0,
+          "steps": 25
+        }
+      }
+    }
+  },
+  "edit": {
+    "workflow": "workflows/Image Editing/Qwen_Image_2_1_BF16-Multi-Image-Edit.json",
+    "case": "default",
+    "output": {
+      "1": {
+        "_meta": {
+          "title": "QWEN IMAGE 2.1 · BF16 · R9700"
+        },
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "Qwen\\qwen_image_2.1_bf16.safetensors",
+          "weight_dtype": "default"
+        }
+      },
+      "10": {
+        "_meta": {
+          "title": "BILD 2 · Kleidung / zusätzliche Referenz"
+        },
+        "class_type": "PixaromaLoadImage",
+        "inputs": {
+          "LoadImagePixState": "{\"version\":1,\"mode\":\"off\",\"snap\":0,\"orig_name\":\"clothing_light_blue_denim_shirt.png\"}",
+          "image": "clothing_light_blue_denim_shirt.png"
+        }
+      },
+      "11": {
+        "_meta": {
+          "title": "FREIE GRÖSSE · aus = Format von Bild 1 (empfohlen)"
+        },
+        "class_type": "ComfySwitchNode",
+        "inputs": {
+          "on_false": [
+            "6",
+            2
+          ],
+          "on_true": [
+            "8",
+            0
+          ],
+          "switch": false
+        }
+      },
+      "12": {
+        "_meta": {
+          "title": "EDIT KV-CACHE · auto / verlustfrei"
+        },
+        "class_type": "QwenImage21Cache",
+        "inputs": {
+          "device": "auto",
+          "dtype": "default",
+          "model": [
+            "29",
+            0
+          ]
+        }
+      },
+      "13": {
+        "_meta": {
+          "title": "SAMPLER · offiziell 25 / CFG 1 / Euler / Simple"
+        },
+        "class_type": "KSampler",
+        "inputs": {
+          "cfg": 1.0,
+          "denoise": 1.0,
+          "latent_image": [
+            "11",
+            0
+          ],
+          "model": [
+            "12",
+            0
+          ],
+          "negative": [
+            "6",
+            1
+          ],
+          "positive": [
+            "6",
+            0
+          ],
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "seed": 0,
+          "steps": 25
+        }
+      },
+      "14": {
+        "_meta": {
+          "title": "DECODE · neuer 2.1-VAE · RGBA-Ausgabe"
+        },
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "13",
+            0
+          ],
+          "vae": [
+            "31",
+            0
+          ]
+        }
+      },
+      "15": {
+        "_meta": {
+          "title": "SPEICHERN · PNG + Workflow + Alpha"
+        },
+        "class_type": "PixaromaSaveImage",
+        "inputs": {
+          "SaveImageState": "{\"version\":1,\"folder\":\"\",\"pattern\":\"Qwen_Image_2_1/Edit_%counter%\",\"format\":\"png\",\"quality\":100,\"embedWorkflow\":true,\"civitaiMeta\":false,\"saveOnRun\":true,\"dateStyle\":\"yyyy-MM-dd\",\"counterDigits\":5,\"folded\":false,\"hideBarWhenFolded\":false,\"webpLossless\":false,\"inputSubfolders\":false,\"showOpen\":true,\"showCopy\":true,\"showFolder\":true,\"showPng\":true,\"showJpg\":true,\"showWebp\":true}",
+          "images": [
+            "14",
+            0
+          ]
+        }
+      },
+      "16": {
+        "_meta": {
+          "title": "VERGLEICH · Bild 1 ↔ Ergebnis"
+        },
+        "class_type": "PixaromaCompare",
+        "inputs": {
+          "image1": [
+            "9",
+            0
+          ],
+          "image2": [
+            "14",
+            0
+          ]
+        }
+      },
+      "19": {
+        "_meta": {
+          "title": "Run Timer Pixaroma"
+        },
+        "class_type": "PixaromaRunTimer",
+        "inputs": {}
+      },
+      "2": {
+        "_meta": {
+          "title": "TEXTENCODER · Qwen3-VL 8B INT8 ConvRot"
+        },
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "Qwen\\qwen3vl_8b_int8_convrot.safetensors",
+          "device": "default",
+          "type": "qwen_image"
+        }
+      },
+      "29": {
+        "_meta": {
+          "title": "SelectModelDevice · central control"
+        },
+        "class_type": "SelectModelDevice",
+        "inputs": {
+          "device": [
+            "32",
+            0
+          ],
+          "model": [
+            "1",
+            0
+          ]
+        }
+      },
+      "3": {
+        "_meta": {
+          "title": "VAE · nur Qwen Image 2.1 · RGBA"
+        },
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen-image\\qwen_image_2.1_vae_bf16.safetensors"
+        }
+      },
+      "30": {
+        "_meta": {
+          "title": "SelectCLIPDevice · central control"
+        },
+        "class_type": "SelectCLIPDevice",
+        "inputs": {
+          "clip": [
+            "2",
+            0
+          ],
+          "device": [
+            "32",
+            1
+          ]
+        }
+      },
+      "31": {
+        "_meta": {
+          "title": "SelectVAEDevice · central control"
+        },
+        "class_type": "SelectVAEDevice",
+        "inputs": {
+          "device": [
+            "32",
+            2
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        }
+      },
+      "32": {
+        "_meta": {
+          "title": "Central GPU Control · MODEL / CLIP / VAE"
+        },
+        "class_type": "DaWMultiGPUDeviceControl",
+        "inputs": {
+          "clip_device": "gpu:0",
+          "model_device": "gpu:0",
+          "vae_device": "gpu:0"
+        }
+      },
+      "4": {
+        "_meta": {
+          "title": "EDIT · <image1> = Basis · <image2> = Referenz"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"Keep the character and pose in <image1> unchanged, put this light blue denim shirt from <image2> on the character, preserve the original facial features, hair, body shape and pose, the denim shirt fits naturally on body, realistic denim fabric texture, natural clothing folds, keep the original background and original lighting, high fashion editorial photography, sharp details\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "5": {
+        "_meta": {
+          "title": "NEGATIV · offiziell leer · CFG 1 ignoriert Negativprompt"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "6": {
+        "_meta": {
+          "title": "QWEN 2.1 · Referenzen + Positiv/Negativ + passendes Latent"
+        },
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "30",
+            0
+          ],
+          "images.image_1": [
+            "9",
+            0
+          ],
+          "images.image_2": [
+            "10",
+            0
+          ],
+          "negative_prompt": [
+            "5",
+            0
+          ],
+          "prompt": [
+            "4",
+            0
+          ],
+          "resolution": 0,
+          "vae": [
+            "31",
+            0
+          ]
+        }
+      },
+      "7": {
+        "_meta": {
+          "title": "FORMAT · nur bei FREIE GRÖSSE an"
+        },
+        "class_type": "PixaromaResolution",
+        "inputs": {
+          "ResolutionState": "{\"mode\": \"preset\", \"ratio\": \"1:1\", \"w\": 1024, \"h\": 1024, \"custom_w\": 1024, \"custom_h\": 1024, \"custom_ratio_w\": 1, \"custom_ratio_h\": 1, \"snap\": 32}"
+        }
+      },
+      "8": {
+        "_meta": {
+          "title": "LEERES LATENT · Ausgabeformat"
+        },
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "batch_size": 1,
+          "height": [
+            "7",
+            1
+          ],
+          "width": [
+            "7",
+            0
+          ]
+        }
+      },
+      "9": {
+        "_meta": {
+          "title": "BILD 1 · Basis / Ausgabeformat"
+        },
+        "class_type": "PixaromaLoadImage",
+        "inputs": {
+          "LoadImagePixState": "{\"version\":1,\"mode\":\"off\",\"snap\":0,\"orig_name\":\"portrait_model_denim.png\"}",
+          "image": "portrait_model_denim.png"
+        }
+      }
+    }
+  },
+  "alpha": {
+    "workflow": "workflows/Text to Image/Qwen_Image_2_1_BF16-Text-to-Image.json",
+    "case": "alpha",
+    "output": {
+      "1": {
+        "_meta": {
+          "title": "QWEN IMAGE 2.1 · BF16 · R9700"
+        },
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "Qwen\\qwen_image_2.1_bf16.safetensors",
+          "weight_dtype": "default"
+        }
+      },
+      "10": {
+        "_meta": {
+          "title": "DECODE · neuer 2.1-VAE · RGBA-Ausgabe"
+        },
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "9",
+            0
+          ],
+          "vae": [
+            "24",
+            0
+          ]
+        }
+      },
+      "11": {
+        "_meta": {
+          "title": "SPEICHERN · PNG + Workflow + Alpha"
+        },
+        "class_type": "PixaromaSaveImage",
+        "inputs": {
+          "SaveImageState": "{\"version\":1,\"folder\":\"\",\"pattern\":\"Qwen_Image_2_1/T2I_%counter%\",\"format\":\"png\",\"quality\":100,\"embedWorkflow\":true,\"civitaiMeta\":false,\"saveOnRun\":true,\"dateStyle\":\"yyyy-MM-dd\",\"counterDigits\":5,\"folded\":false,\"hideBarWhenFolded\":false,\"webpLossless\":false,\"inputSubfolders\":false,\"showOpen\":true,\"showCopy\":true,\"showFolder\":true,\"showPng\":true,\"showJpg\":true,\"showWebp\":true}",
+          "images": [
+            "10",
+            0
+          ]
+        }
+      },
+      "14": {
+        "_meta": {
+          "title": "Run Timer Pixaroma"
+        },
+        "class_type": "PixaromaRunTimer",
+        "inputs": {}
+      },
+      "2": {
+        "_meta": {
+          "title": "TEXTENCODER · Qwen3-VL 8B INT8 ConvRot"
+        },
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "Qwen\\qwen3vl_8b_int8_convrot.safetensors",
+          "device": "default",
+          "type": "qwen_image"
+        }
+      },
+      "22": {
+        "_meta": {
+          "title": "SelectModelDevice · central control"
+        },
+        "class_type": "SelectModelDevice",
+        "inputs": {
+          "device": [
+            "25",
+            0
+          ],
+          "model": [
+            "1",
+            0
+          ]
+        }
+      },
+      "23": {
+        "_meta": {
+          "title": "SelectCLIPDevice · central control"
+        },
+        "class_type": "SelectCLIPDevice",
+        "inputs": {
+          "clip": [
+            "2",
+            0
+          ],
+          "device": [
+            "25",
+            1
+          ]
+        }
+      },
+      "24": {
+        "_meta": {
+          "title": "SelectVAEDevice · central control"
+        },
+        "class_type": "SelectVAEDevice",
+        "inputs": {
+          "device": [
+            "25",
+            2
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        }
+      },
+      "25": {
+        "_meta": {
+          "title": "Central GPU Control · MODEL / CLIP / VAE"
+        },
+        "class_type": "DaWMultiGPUDeviceControl",
+        "inputs": {
+          "clip_device": "gpu:0",
+          "model_device": "gpu:0",
+          "vae_device": "gpu:0"
+        }
+      },
+      "3": {
+        "_meta": {
+          "title": "VAE · nur Qwen Image 2.1 · RGBA"
+        },
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen-image\\qwen_image_2.1_vae_bf16.safetensors"
+        }
+      },
+      "4": {
+        "_meta": {
+          "title": "PROMPT · Bildbeschreibung / gewünschter Text"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"This is an RGBA format image with transparency. A small red enamel robot, full body, isolated product illustration. The image has an alpha channel and a transparent background.\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "5": {
+        "_meta": {
+          "title": "NEGATIV · offiziell leer · CFG 1 ignoriert Negativprompt"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "6": {
+        "_meta": {
+          "title": "QWEN 2.1 · Referenzen + Positiv/Negativ + passendes Latent"
+        },
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "23",
+            0
+          ],
+          "negative_prompt": [
+            "5",
+            0
+          ],
+          "prompt": [
+            "4",
+            0
+          ],
+          "resolution": 1024
+        }
+      },
+      "7": {
+        "_meta": {
+          "title": "FORMAT · 1024² Start · 32px-Raster · 2048² optional"
+        },
+        "class_type": "PixaromaResolution",
+        "inputs": {
+          "ResolutionState": "{\"mode\": \"preset\", \"ratio\": \"1:1\", \"w\": 512, \"h\": 512, \"custom_w\": 512, \"custom_h\": 512, \"custom_ratio_w\": 1, \"custom_ratio_h\": 1, \"snap\": 32}"
+        }
+      },
+      "8": {
+        "_meta": {
+          "title": "LEERES LATENT · Ausgabeformat"
+        },
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "batch_size": 1,
+          "height": [
+            "7",
+            1
+          ],
+          "width": [
+            "7",
+            0
+          ]
+        }
+      },
+      "9": {
+        "_meta": {
+          "title": "SAMPLER · offiziell 25 / CFG 1 / Euler / Simple"
+        },
+        "class_type": "KSampler",
+        "inputs": {
+          "cfg": 1.0,
+          "denoise": 1.0,
+          "latent_image": [
+            "8",
+            0
+          ],
+          "model": [
+            "22",
+            0
+          ],
+          "negative": [
+            "6",
+            1
+          ],
+          "positive": [
+            "6",
+            0
+          ],
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "seed": 1,
+          "steps": 25
+        }
+      }
+    }
+  },
+  "single": {
+    "workflow": "workflows/Image Editing/Qwen_Image_2_1_BF16-Multi-Image-Edit.json",
+    "case": "single",
+    "output": {
+      "1": {
+        "_meta": {
+          "title": "QWEN IMAGE 2.1 · BF16 · R9700"
+        },
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "Qwen\\qwen_image_2.1_bf16.safetensors",
+          "weight_dtype": "default"
+        }
+      },
+      "11": {
+        "_meta": {
+          "title": "FREIE GRÖSSE · aus = Format von Bild 1 (empfohlen)"
+        },
+        "class_type": "ComfySwitchNode",
+        "inputs": {
+          "on_false": [
+            "6",
+            2
+          ],
+          "on_true": [
+            "8",
+            0
+          ],
+          "switch": true
+        }
+      },
+      "12": {
+        "_meta": {
+          "title": "EDIT KV-CACHE · auto / verlustfrei"
+        },
+        "class_type": "QwenImage21Cache",
+        "inputs": {
+          "device": "auto",
+          "dtype": "default",
+          "model": [
+            "29",
+            0
+          ]
+        }
+      },
+      "13": {
+        "_meta": {
+          "title": "SAMPLER · offiziell 25 / CFG 1 / Euler / Simple"
+        },
+        "class_type": "KSampler",
+        "inputs": {
+          "cfg": 1.0,
+          "denoise": 1.0,
+          "latent_image": [
+            "11",
+            0
+          ],
+          "model": [
+            "12",
+            0
+          ],
+          "negative": [
+            "6",
+            1
+          ],
+          "positive": [
+            "6",
+            0
+          ],
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "seed": 1,
+          "steps": 25
+        }
+      },
+      "14": {
+        "_meta": {
+          "title": "DECODE · neuer 2.1-VAE · RGBA-Ausgabe"
+        },
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "13",
+            0
+          ],
+          "vae": [
+            "31",
+            0
+          ]
+        }
+      },
+      "15": {
+        "_meta": {
+          "title": "SPEICHERN · PNG + Workflow + Alpha"
+        },
+        "class_type": "PixaromaSaveImage",
+        "inputs": {
+          "SaveImageState": "{\"version\":1,\"folder\":\"\",\"pattern\":\"Qwen_Image_2_1/Edit_%counter%\",\"format\":\"png\",\"quality\":100,\"embedWorkflow\":true,\"civitaiMeta\":false,\"saveOnRun\":true,\"dateStyle\":\"yyyy-MM-dd\",\"counterDigits\":5,\"folded\":false,\"hideBarWhenFolded\":false,\"webpLossless\":false,\"inputSubfolders\":false,\"showOpen\":true,\"showCopy\":true,\"showFolder\":true,\"showPng\":true,\"showJpg\":true,\"showWebp\":true}",
+          "images": [
+            "14",
+            0
+          ]
+        }
+      },
+      "16": {
+        "_meta": {
+          "title": "VERGLEICH · Bild 1 ↔ Ergebnis"
+        },
+        "class_type": "PixaromaCompare",
+        "inputs": {
+          "image1": [
+            "9",
+            0
+          ],
+          "image2": [
+            "14",
+            0
+          ]
+        }
+      },
+      "19": {
+        "_meta": {
+          "title": "Run Timer Pixaroma"
+        },
+        "class_type": "PixaromaRunTimer",
+        "inputs": {}
+      },
+      "2": {
+        "_meta": {
+          "title": "TEXTENCODER · Qwen3-VL 8B INT8 ConvRot"
+        },
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "Qwen\\qwen3vl_8b_int8_convrot.safetensors",
+          "device": "default",
+          "type": "qwen_image"
+        }
+      },
+      "29": {
+        "_meta": {
+          "title": "SelectModelDevice · central control"
+        },
+        "class_type": "SelectModelDevice",
+        "inputs": {
+          "device": [
+            "32",
+            0
+          ],
+          "model": [
+            "1",
+            0
+          ]
+        }
+      },
+      "3": {
+        "_meta": {
+          "title": "VAE · nur Qwen Image 2.1 · RGBA"
+        },
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen-image\\qwen_image_2.1_vae_bf16.safetensors"
+        }
+      },
+      "30": {
+        "_meta": {
+          "title": "SelectCLIPDevice · central control"
+        },
+        "class_type": "SelectCLIPDevice",
+        "inputs": {
+          "clip": [
+            "2",
+            0
+          ],
+          "device": [
+            "32",
+            1
+          ]
+        }
+      },
+      "31": {
+        "_meta": {
+          "title": "SelectVAEDevice · central control"
+        },
+        "class_type": "SelectVAEDevice",
+        "inputs": {
+          "device": [
+            "32",
+            2
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        }
+      },
+      "32": {
+        "_meta": {
+          "title": "Central GPU Control · MODEL / CLIP / VAE"
+        },
+        "class_type": "DaWMultiGPUDeviceControl",
+        "inputs": {
+          "clip_device": "gpu:0",
+          "model_device": "gpu:0",
+          "vae_device": "gpu:0"
+        }
+      },
+      "4": {
+        "_meta": {
+          "title": "EDIT · <image1> = Basis · <image2> = Referenz"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"In <image1>, change only the jacket color to bright red. Preserve the face, hair, pose and background.\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "5": {
+        "_meta": {
+          "title": "NEGATIV · offiziell leer · CFG 1 ignoriert Negativprompt"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "6": {
+        "_meta": {
+          "title": "QWEN 2.1 · Referenzen + Positiv/Negativ + passendes Latent"
+        },
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "30",
+            0
+          ],
+          "images.image_1": [
+            "9",
+            0
+          ],
+          "negative_prompt": [
+            "5",
+            0
+          ],
+          "prompt": [
+            "4",
+            0
+          ],
+          "resolution": 512,
+          "vae": [
+            "31",
+            0
+          ]
+        }
+      },
+      "7": {
+        "_meta": {
+          "title": "FORMAT · nur bei FREIE GRÖSSE an"
+        },
+        "class_type": "PixaromaResolution",
+        "inputs": {
+          "ResolutionState": "{\"mode\": \"preset\", \"ratio\": \"1:1\", \"w\": 512, \"h\": 512, \"custom_w\": 512, \"custom_h\": 512, \"custom_ratio_w\": 1, \"custom_ratio_h\": 1, \"snap\": 32}"
+        }
+      },
+      "8": {
+        "_meta": {
+          "title": "LEERES LATENT · Ausgabeformat"
+        },
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "batch_size": 1,
+          "height": [
+            "7",
+            1
+          ],
+          "width": [
+            "7",
+            0
+          ]
+        }
+      },
+      "9": {
+        "_meta": {
+          "title": "BILD 1 · Basis / Ausgabeformat"
+        },
+        "class_type": "PixaromaLoadImage",
+        "inputs": {
+          "LoadImagePixState": "{\"version\":1,\"mode\":\"off\",\"snap\":0,\"orig_name\":\"portrait_model_denim.png\"}",
+          "image": "portrait_model_denim.png"
+        }
+      }
+    }
+  },
+  "2k": {
+    "workflow": "workflows/Text to Image/Qwen_Image_2_1_BF16-Text-to-Image.json",
+    "case": "2k",
+    "output": {
+      "1": {
+        "_meta": {
+          "title": "QWEN IMAGE 2.1 · BF16 · R9700"
+        },
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "Qwen\\qwen_image_2.1_bf16.safetensors",
+          "weight_dtype": "default"
+        }
+      },
+      "10": {
+        "_meta": {
+          "title": "DECODE · neuer 2.1-VAE · RGBA-Ausgabe"
+        },
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "9",
+            0
+          ],
+          "vae": [
+            "24",
+            0
+          ]
+        }
+      },
+      "11": {
+        "_meta": {
+          "title": "SPEICHERN · PNG + Workflow + Alpha"
+        },
+        "class_type": "PixaromaSaveImage",
+        "inputs": {
+          "SaveImageState": "{\"version\":1,\"folder\":\"\",\"pattern\":\"Qwen_Image_2_1/T2I_%counter%\",\"format\":\"png\",\"quality\":100,\"embedWorkflow\":true,\"civitaiMeta\":false,\"saveOnRun\":true,\"dateStyle\":\"yyyy-MM-dd\",\"counterDigits\":5,\"folded\":false,\"hideBarWhenFolded\":false,\"webpLossless\":false,\"inputSubfolders\":false,\"showOpen\":true,\"showCopy\":true,\"showFolder\":true,\"showPng\":true,\"showJpg\":true,\"showWebp\":true}",
+          "images": [
+            "10",
+            0
+          ]
+        }
+      },
+      "14": {
+        "_meta": {
+          "title": "Run Timer Pixaroma"
+        },
+        "class_type": "PixaromaRunTimer",
+        "inputs": {}
+      },
+      "2": {
+        "_meta": {
+          "title": "TEXTENCODER · Qwen3-VL 8B INT8 ConvRot"
+        },
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "Qwen\\qwen3vl_8b_int8_convrot.safetensors",
+          "device": "default",
+          "type": "qwen_image"
+        }
+      },
+      "22": {
+        "_meta": {
+          "title": "SelectModelDevice · central control"
+        },
+        "class_type": "SelectModelDevice",
+        "inputs": {
+          "device": [
+            "25",
+            0
+          ],
+          "model": [
+            "1",
+            0
+          ]
+        }
+      },
+      "23": {
+        "_meta": {
+          "title": "SelectCLIPDevice · central control"
+        },
+        "class_type": "SelectCLIPDevice",
+        "inputs": {
+          "clip": [
+            "2",
+            0
+          ],
+          "device": [
+            "25",
+            1
+          ]
+        }
+      },
+      "24": {
+        "_meta": {
+          "title": "SelectVAEDevice · central control"
+        },
+        "class_type": "SelectVAEDevice",
+        "inputs": {
+          "device": [
+            "25",
+            2
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        }
+      },
+      "25": {
+        "_meta": {
+          "title": "Central GPU Control · MODEL / CLIP / VAE"
+        },
+        "class_type": "DaWMultiGPUDeviceControl",
+        "inputs": {
+          "clip_device": "gpu:0",
+          "model_device": "gpu:0",
+          "vae_device": "gpu:0"
+        }
+      },
+      "3": {
+        "_meta": {
+          "title": "VAE · nur Qwen Image 2.1 · RGBA"
+        },
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen-image\\qwen_image_2.1_vae_bf16.safetensors"
+        }
+      },
+      "4": {
+        "_meta": {
+          "title": "PROMPT · Bildbeschreibung / gewünschter Text"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"Greyscale fashion editorial portrait of an avant-garde woman tilted upwards in profile, captured with striking high-contrast chiaroscuro lighting. She wears oversized, thick-rimmed circular black sunglasses with matte dark lenses, concealing her upward gaze. Her attire merges high couture with tactical abstraction: a high-necked structural dress tailored from heavyweight fabric featuring a disrupted optical camouflage pattern—interlocking oversized polka dots, pixelated stippling, and organic contour blotches in stark monochrome that mimic military disruptive patterns in a refined runway style. Around her shoulders, asymmetric pleated webbing and tailored cargo straps are integrated seamlessly into the garment’s architecture. In her gloved hand, she clutches a structured matte-leather geometric handbag accented with subtle tactical buckles, utility stitching, and dark brushed-metal hardware. Her skin texture is rendered with hyper-detailed clarity, sculpted by intense, razor-sharp studio key light and deep graphite shadows. The striking background is a vivid mixed-media graphic collage, composed of flat vibrant lime green planes, stark black and white overlapping circles, segmented semi-circles with bold zebra striping, dense micro-halftone dot matrices, and vector topographic contour lines. The clash between monochromatic disruptive camo elements on her clothing and the saturated, retro-futuristic pop-art backdrop creates an intense visual dissonance, emphasizing sharp silhouettes, paper cut-out edges, dynamic compositional balance, and clean graphic novel textures. Absolutely no text, no typography, no letters, no words, no numbers, no logos, no watermark, no captions, pure imagery only.\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "5": {
+        "_meta": {
+          "title": "NEGATIV · offiziell leer · CFG 1 ignoriert Negativprompt"
+        },
+        "class_type": "PixaromaPrompt",
+        "inputs": {
+          "PromptState": "{\"text\":\"\",\"order\":\"mine\",\"sep\":\"\\n\"}"
+        }
+      },
+      "6": {
+        "_meta": {
+          "title": "QWEN 2.1 · Referenzen + Positiv/Negativ + passendes Latent"
+        },
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "23",
+            0
+          ],
+          "negative_prompt": [
+            "5",
+            0
+          ],
+          "prompt": [
+            "4",
+            0
+          ],
+          "resolution": 1024
+        }
+      },
+      "7": {
+        "_meta": {
+          "title": "FORMAT · 1024² Start · 32px-Raster · 2048² optional"
+        },
+        "class_type": "PixaromaResolution",
+        "inputs": {
+          "ResolutionState": "{\"mode\": \"preset\", \"ratio\": \"1:1\", \"w\": 2048, \"h\": 2048, \"custom_w\": 2048, \"custom_h\": 2048, \"custom_ratio_w\": 1, \"custom_ratio_h\": 1, \"snap\": 32}"
+        }
+      },
+      "8": {
+        "_meta": {
+          "title": "LEERES LATENT · Ausgabeformat"
+        },
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "batch_size": 1,
+          "height": [
+            "7",
+            1
+          ],
+          "width": [
+            "7",
+            0
+          ]
+        }
+      },
+      "9": {
+        "_meta": {
+          "title": "SAMPLER · offiziell 25 / CFG 1 / Euler / Simple"
+        },
+        "class_type": "KSampler",
+        "inputs": {
+          "cfg": 1.0,
+          "denoise": 1.0,
+          "latent_image": [
+            "8",
+            0
+          ],
+          "model": [
+            "22",
+            0
+          ],
+          "negative": [
+            "6",
+            1
+          ],
+          "positive": [
+            "6",
+            0
+          ],
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "seed": 2,
+          "steps": 25
+        }
+      }
+    }
+  }
+}

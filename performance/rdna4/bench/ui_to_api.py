@@ -19,7 +19,7 @@ from selenium import webdriver
 from selenium.webdriver.edge.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 
-JS = """
+JS = r"""
 const workflow = arguments[0];
 const done = arguments[arguments.length - 1];
 (async () => {
@@ -30,13 +30,38 @@ const done = arguments[arguments.length - 1];
       await new Promise(resolve => setTimeout(resolve, 250));
     }
     if (!app.graph || !app.canvas) throw new Error('Comfy app did not initialize');
-    await app.loadGraphData(workflow, true, true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // app.canvas can exist before the Vue canvas store is mounted (1.53.6:
+    // "getCanvas: canvas is null"). Let first-tab initialization settle too.
+    await new Promise(resolve => setTimeout(resolve, 15000));
+    // Recent frontends restore their initial tab asynchronously. That restore
+    // can overwrite loadGraphData and silently serialize the default graph.
+    // Require stable identity after loading; never submit an unrelated graph.
+    const identity = nodes => JSON.stringify(nodes.map(n => [String(n.id), n.type]).sort());
+    const expected = identity(workflow.nodes);
+    let ready = false;
+    for (let attempt = 0; attempt < 4 && !ready; attempt++) {
+      await app.loadGraphData(workflow, true, true);
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      ready = identity(app.graph._nodes) === expected;
+      if (ready) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        ready = identity(app.graph._nodes) === expected;
+      }
+    }
+    if (!ready) throw new Error('Requested workflow did not become the stable active graph');
+    const dialogs = [...document.querySelectorAll('[role="dialog"]')].map(d => d.innerText).join('\n');
+    if (/Loading aborted|error reloading workflow|Missing Node Types/i.test(dialogs)) {
+      throw new Error('Frontend load error: ' + dialogs);
+    }
     const missing = [];
     for (const node of app.graph._nodes) {
       if (node.has_errors || node.type === undefined) missing.push(String(node.id) + ':' + node.type);
     }
     const result = await app.graphToPrompt();
+    if (identity(result.workflow.nodes) !== expected || identity(app.graph._nodes) !== expected) {
+      throw new Error('Active graph changed during serialization');
+    }
+    if (missing.length) throw new Error('Missing/error nodes: ' + missing.join(', '));
     done({ok: true, result, missing});
   } catch (error) {
     done({ok: false, error: String(error), stack: error && error.stack});

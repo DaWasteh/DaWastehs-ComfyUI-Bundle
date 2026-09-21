@@ -21,3 +21,10 @@ tools/validate_workflows.py text eol=lf
 tools/build_yue2_lora_workflows.py text eol=lf
 tools/install_yue2_lora_node.py text eol=lf
 performance/rdna4/yue2-lora-v120-validation.json text eol=lf
+# v1.2.1: byte-exact source archives and portable workflow/evidence hashes.
+tools/workflow_templates/v121/* text eol=lf
+tools/workflow_templates/v121/image_qwen_image_2_1_*.json -text
+workflows/**/Qwen_Image_2_1_BF16-*.json text eol=lf
+tools/build_qwen_image21_workflows.py text eol=lf
+performance/rdna4/bench/ui_to_api.py text eol=lf
+performance/rdna4/qwen-image21-v121-validation.json text eol=lf

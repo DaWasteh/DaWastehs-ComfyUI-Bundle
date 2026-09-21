@@ -1,0 +1,288 @@
+{
+  "release": "v1.2.1",
+  "date": "2026-09-21",
+  "scope": "Five serial frontend-derived executions, all at 25 steps. Defaults unmodified. Only public official example inputs/prompts; no private media, weights or personal libraries published.",
+  "system": {
+    "os": "win32",
+    "ram_total": 50860650496,
+    "comfyui_version": "0.37.0",
+    "required_frontend_version": "1.53.6",
+    "installed_templates_version": "0.11.66",
+    "required_templates_version": "0.11.66",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.53.6",
+        "required": "1.53.6"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.66",
+        "required": "0.11.66"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.12",
+        "required": "0.5.12"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.35",
+        "required": "0.2.35"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.5.5",
+        "required": "0.5.5"
+      }
+    ],
+    "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "embedded_python": false,
+    "deploy_environment": "local-git"
+  },
+  "comfyui_commit": "c194dd00cd42aa18d9dbf27d977bf6b85d9ea565",
+  "pixaroma_commit": "a63a793842dfd59013d0df0e749ffd4441678307",
+  "gpu_defaults": {
+    "MODEL": "gpu:0 R9700 32GB",
+    "CLIP": "gpu:0 R9700 32GB",
+    "VAE": "gpu:0 R9700 32GB"
+  },
+  "model_verification": {
+    "all_three_existing_weights_match_huggingface_sha256": true,
+    "downloaded_model_bytes": 0,
+    "manifest": "tools/workflow_templates/v121/models.json"
+  },
+  "input_verification": {
+    "manifest": "tools/workflow_templates/v121/inputs.json",
+    "downloaded_official_example_images": 2
+  },
+  "frontend": {
+    "method": "headless Edge + app.loadGraphData + app.graphToPrompt",
+    "default_final_contracts_match_execution": true,
+    "missing_nodes": [],
+    "node_body_overlaps": {
+      "t2i": [],
+      "edit": []
+    },
+    "load_error_dialogs_after_startup_settled": [],
+    "startup_harness_fix": "Frontend initial-tab restore could race loadGraphData (default graph or getCanvas null dialog). Serializer now waits for mount, verifies stable node identity and rejects load-error dialogs. No core/custom-node patch."
+  },
+  "runs": [
+    {
+      "case": "default",
+      "workflow": "workflows/Text to Image/Qwen_Image_2_1_BF16-Text-to-Image.json",
+      "workflow_sha256": "227590249630484be08b6bb13aafc6446ba21868ad95b05f51f245829456d148",
+      "tested_ui_sha256": "85c3e5001bb4416ef059a4f5424d709a16b782790987f92e637e64c543626b82",
+      "prompt_id": "d1d1cc7b-75f5-420e-91b4-db646553f144",
+      "status": "success",
+      "api_contract_sha256": "57e98e63c519f78d4c910ee7958ed743d73b4a8cac7d3d784e2e6c9bd5554494",
+      "executed_contract_matches_final": true,
+      "steps": 25,
+      "seed": 0,
+      "outputs": [
+        {
+          "path": "output/Qwen_Image_2_1/T2I_00001.png",
+          "size": 2332204,
+          "sha256": "10bd28be94c1a3325f4ea86512a86a88973ed1999946d274a9f33dac3d8eb364",
+          "width": 1024,
+          "height": 1024,
+          "mode": "RGBA",
+          "rgb_stddev": 88.5326,
+          "alpha_min": 161,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.0,
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true
+        }
+      ],
+      "seconds": 54.086
+    },
+    {
+      "case": "default",
+      "workflow": "workflows/Image Editing/Qwen_Image_2_1_BF16-Multi-Image-Edit.json",
+      "workflow_sha256": "3c47cd961fd238f6136de459ef19c86531460c712c60d1752a018352b6e280b1",
+      "tested_ui_sha256": "0dcc956aa83c768cd1829b79b146b64b876345cdee2e6002626ad2f12e2530cc",
+      "prompt_id": "f97ee807-a92e-4589-8458-46e40f4d4a3b",
+      "status": "success",
+      "api_contract_sha256": "01287bb3d84cd92fde4290d0d48b1542cb01d1802e803bb8fc9d7a7e8c170697",
+      "executed_contract_matches_final": true,
+      "steps": 25,
+      "seed": 0,
+      "outputs": [
+        {
+          "path": "output/Qwen_Image_2_1/Edit_00001.png",
+          "size": 1795716,
+          "sha256": "9d2e07d304564fe1e69fbb6480bc08f0cc4bfebaa22f1b388df5da48a5500b96",
+          "width": 896,
+          "height": 1152,
+          "mode": "RGBA",
+          "rgb_stddev": 52.2296,
+          "alpha_min": 253,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.0,
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true
+        }
+      ],
+      "seconds": 85.58
+    },
+    {
+      "case": "alpha",
+      "workflow": "workflows/Text to Image/Qwen_Image_2_1_BF16-Text-to-Image.json",
+      "workflow_sha256": "227590249630484be08b6bb13aafc6446ba21868ad95b05f51f245829456d148",
+      "tested_ui_sha256": "afa8e6552e13a7df70f63b04dfc2cb1fa642f68cfa3e713e0fa7e10aa77b2e2d",
+      "prompt_id": "af393bd0-e5b5-4873-872f-96f4e76e5cc2",
+      "status": "success",
+      "api_contract_sha256": "a64850c75fd51c1196b9c29c5f4ec08fc7dd1ef96dd94be63b278c290432989b",
+      "executed_contract_matches_final": true,
+      "steps": 25,
+      "seed": 1,
+      "outputs": [
+        {
+          "path": "output/Qwen_Image_2_1/T2I_00002.png",
+          "size": 294696,
+          "sha256": "45c36c075d4facdcf1ff3429e052b961091325aa8056df0fee99f00a0b9596bd",
+          "width": 512,
+          "height": 512,
+          "mode": "RGBA",
+          "rgb_stddev": 70.7886,
+          "alpha_min": 0,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.791039,
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true
+        }
+      ],
+      "seconds": 9.12
+    },
+    {
+      "case": "single",
+      "workflow": "workflows/Image Editing/Qwen_Image_2_1_BF16-Multi-Image-Edit.json",
+      "workflow_sha256": "3c47cd961fd238f6136de459ef19c86531460c712c60d1752a018352b6e280b1",
+      "tested_ui_sha256": "f75b8eae3b89172aeec2b85043d589caf6ae4a79d0dfe31e10c260722d5ea0f3",
+      "prompt_id": "2bb78250-427b-4143-b349-5c9ffc662724",
+      "status": "success",
+      "api_contract_sha256": "481dac33647470db5a7dbadb80b080a9576edeb97e450c962c56a368c97f3f86",
+      "executed_contract_matches_final": true,
+      "steps": 25,
+      "seed": 1,
+      "outputs": [
+        {
+          "path": "output/Qwen_Image_2_1/Edit_00002.png",
+          "size": 420028,
+          "sha256": "b8ed62019360aa47805f17d307e71fd1ff5d71a3414df6cf07d13ffa67022f95",
+          "width": 512,
+          "height": 512,
+          "mode": "RGBA",
+          "rgb_stddev": 58.6807,
+          "alpha_min": 253,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.0,
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true
+        }
+      ],
+      "seconds": 20.913
+    },
+    {
+      "case": "2k",
+      "workflow": "workflows/Text to Image/Qwen_Image_2_1_BF16-Text-to-Image.json",
+      "workflow_sha256": "227590249630484be08b6bb13aafc6446ba21868ad95b05f51f245829456d148",
+      "tested_ui_sha256": "dacabfa83e0e2875c9f0d607b162168760ddef46cfec95c0423e5ce1524f369d",
+      "prompt_id": "e585c32a-b655-470f-89ee-6756c6e8acc2",
+      "status": "success",
+      "api_contract_sha256": "726f03270e026a713e6966c1a013158106956af3e2cec3aaf3901489e7add65f",
+      "executed_contract_matches_final": true,
+      "steps": 25,
+      "seed": 2,
+      "outputs": [
+        {
+          "path": "output/Qwen_Image_2_1/T2I_00003.png",
+          "size": 8839676,
+          "sha256": "be6ef2772fb6a458fd903a723b08fdd13be1397e14301ff9b2b587c17a1e9bce",
+          "width": 2048,
+          "height": 2048,
+          "mode": "RGBA",
+          "rgb_stddev": 88.5141,
+          "alpha_min": 240,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.0,
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true
+        }
+      ],
+      "seconds": 141.295
+    }
+  ],
+  "visual_review": {
+    "t2i": "Monochrome fashion portrait, lime graphic background and requested sunglasses/camouflage elements; plausible 1024px output.",
+    "edit": "Blue denim shirt replaces original dark jacket; face, downward gaze, pose and background visibly retained.",
+    "single": "Red jacket edit with one reference and free 512x512 canvas; expected reframing rather than claiming pixel-identical geometry.",
+    "alpha": "Red robot isolated; 79.10% of pixels have alpha below 128. Composited over light grey for inspection; fine edge halo remains a model-quality limitation.",
+    "2k": "Real 2048x2048 fashion portrait; no blank/NaN-looking output."
+  },
+  "queue_idle": true,
+  "unverified": [
+    "Other GPU placements",
+    "INT8 diffusion model / other text encoders",
+    "16 simultaneous references",
+    "Cache precision alternatives",
+    "Masked inpainting or input alpha roundtrip",
+    "Identity preservation for arbitrary images"
+  ],
+  "sources": [
+    {
+      "path": "tools/build_qwen_image21_workflows.py",
+      "sha256": "1bb543660b954dddd0f1fb262314961933012fa2d80bf8fa0eb2c2b73337f4df"
+    },
+    {
+      "path": "performance/rdna4/bench/ui_to_api.py",
+      "sha256": "3dedcf488935641d1f376700d1baad7ccdf02b383f9b3de3d51300a98b010920"
+    },
+    {
+      "path": "tools/workflow_templates/v121/node-schemas.json",
+      "sha256": "ccdfdd0ef40d8f0319e611945087a10388c98ce3e904d1445c3cd406cd1616c3"
+    },
+    {
+      "path": "tools/workflow_templates/v121/frontend-contracts.json",
+      "sha256": "4d456727caabe2b15719a65f7966c8fc30ce08d37c323dd4fafdf07467c95af1"
+    },
+    {
+      "path": "tools/workflow_templates/v121/models.json",
+      "sha256": "413c8177ce9215daf8160361ab24a24e5093b46987fc5aca7e329ca1d548012a"
+    },
+    {
+      "path": "tools/workflow_templates/v121/inputs.json",
+      "sha256": "7aed7ea58521c181b2541c66043bb60fada3e046a59aa38546a8690be27d2747"
+    },
+    {
+      "path": "tools/workflow_templates/v121/sources.json",
+      "sha256": "a95cf04c991ebe2a34f4e147d9935eeaba8b7af55e5279f2e16d1b66f6cf803e"
+    }
+  ],
+  "regression": {
+    "command": "YUE2_TRAINER_ROOT=L:/ComfyUI/ComfyUI/custom_nodes/ComfyUI-YuE2-Trainer L:/ComfyUI/.venv/Scripts/python.exe -m pytest -q -rs",
+    "passed": 358,
+    "skipped": 1,
+    "subtests_passed": 332,
+    "skip_reason": "Optional Live Avatar source not present",
+    "warnings": 1,
+    "warning": "Existing Pillow palette-transparency warning"
+  },
+  "collection_validation": {
+    "actual": {
+      "files": 248,
+      "graphs": 301,
+      "nodes": 11227,
+      "notes": 5119,
+      "links": 7762,
+      "timers": 229
+    },
+    "head": {
+      "nodes": 11162,
+      "links": 7718
+    },
+    "errors": 0
+  }
+}
