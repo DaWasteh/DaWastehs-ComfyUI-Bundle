@@ -14,6 +14,8 @@ import nodes as comfy_nodes
 import comfy.model_management
 from comfy_api.latest import ComfyExtension, io, ui
 
+from .nodes_v2 import V2_NODES
+
 from .core import (
     BOTH_REFERENCES,
     IDENTITY_LOCK,
@@ -621,6 +623,7 @@ class DaWastehH3MusicVideoExtension(ComfyExtension):
             DaWH3MusicVideoDirector, DaWH3MusicVideoDirectorDualGPU,
             DaWH3MusicVideoLoadSegment, DaWH3MusicVideoLoadImagePath,
             DaWH3MusicVideoSaveSegment, DaWH3MusicVideoFinalize,
+            *V2_NODES,
         ]
 
 

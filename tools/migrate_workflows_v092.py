@@ -237,6 +237,11 @@ def _curated_profiles() -> dict[str, tuple[str, dict[str, str], bool]]:
         if path in profiles:
             name, _devices, h3 = profiles[path]
             profiles[path] = (name, {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"}, h3)
+    # v1.2.2 (docs/H3_MUSIC_VIDEO_V122.md): the FastH3 extend pipeline replaced the one-node Director.
+    # Measured: the continuity encode allocates 7.2 GiB next to the 5 GiB video VAE, which exceeds the
+    # guarded 12.8 GiB of the RX 9070 XT (OOM) but fits on the R9700. No Director remains in the graph.
+    v122_path = "Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"
+    profiles[v122_path] = ("MiniMax FastH3 Music Video", {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"}, False)
     return profiles
 
 

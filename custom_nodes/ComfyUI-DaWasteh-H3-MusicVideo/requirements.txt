@@ -1,2 +1,3 @@
-# No extra pip packages are required beyond a current ComfyUI installation.
-# The extension uses ComfyUI's torch/numpy/Pillow stack and a working FFmpeg/ffprobe installation.
+# No extra pip packages are required beyond the ComfyUI bundle venv.
+# Uses ComfyUI's torch/numpy/Pillow stack, a working FFmpeg (imageio-ffmpeg or VideoHelperSuite)
+# and, for lyric timing in the v1.2.2 planner, openai-whisper (already part of the bundle venv).

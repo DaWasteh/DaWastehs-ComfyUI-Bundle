@@ -1,4 +1,33 @@
-# DaWasteh MiniMax H3 – Complete Song Music Video
+# DaWasteh MiniMax H3 – Song → Musikvideo (FastH3 · v1.2.2)
+
+Seit **v1.2.2** besteht der Workflow `MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` aus sichtbaren Schritten
+statt eines einzelnen Director-Nodes. Grundlage ist **FastH3** (FastVideo, 8 Schritte, VSA-Sparse-Attention).
+
+| Node | Aufgabe |
+|---|---|
+| `MV 1 · Song + Lyrics Planner` (`DaWMV2Planner`) | Dauer, Tempo/Energie, Lyrics-Timing per lokalem Whisper, Szenen mit variablen Längen an Abschnitts-/Zeilengrenzen |
+| `MV 2 · MiniMax Prompt Writer` (`DaWMV2PromptWriter`) | Qwen3.5 4B: Charaktersheets → Text, Produktionsbibel (Stil, Orte in Story-Reihenfolge), Handlung je Shot → MiniMax-Format mit `<d>`-Lyrics |
+| `MV 3 · H3-Textencoder` (`DaWMV2EncodeScenes`) | Qwen3-VL-32B encodiert alle Szenen einmal, danach vollständig freigegeben |
+| `MV 4 · Szene vorbereiten` (`DaWMV2SceneSetup`) | Original-Songausschnitt fest im Audio-Strom (Lippensync), bei Folgeszenen 22 eingefrorene Frames der Vorgängerszene (Extend) |
+| `MV 5 · Szene speichern` (`DaWMV2SaveScene`) | exakt die neuen Frames speichern, Übergangs-Latent für die nächste Szene, Vorschau mit Originalton, Resume |
+| `MV 6 · Fertiges Musikvideo` (`DaWMV2Finalize`) | Szenen verlustfrei aneinander, Originaldatei per `-c:a copy` darunter |
+
+Ablauf im Graph: Planung → Szene 1 → **Pixaroma Pause Image** (Freigabe) → **Pixaroma Loop** über die restlichen
+Szenen → Finale. Details, Messwerte und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`.
+
+Projektordner: `ComfyUI/output/DaWasteh_H3_MusicVideo_v2/<Projekt>_<Hash>/` (`plan.json`, `conditioning/`, `scenes/`,
+`preview/`). Fertiger Film: `ComfyUI/output/video/DaWasteh_MusicVideo/<Projekt>_<Zeit>.mp4|mkv`.
+
+Zusätzliche Abhängigkeit: `openai-whisper` (im Bundle-venv vorhanden; Modell `small` ≈ 460 MB wird beim ersten Lauf
+nach `~/.cache/whisper` geladen). Ohne Whisper verteilt der Planer die Zeilen über den Gesangsbereich.
+
+---
+
+# Legacy (bis v1.2.1): H3 Complete-Song Director
+
+Die folgenden Abschnitte beschreiben die weiterhin registrierten Alt-Nodes `DaWH3MusicVideoDirector*`. Sie bleiben
+für ältere gespeicherte Workflows ladbar, werden aber vom ausgelieferten Workflow nicht mehr verwendet.
+
 
 Ein einzelner sichtbarer ComfyUI-Master-Workflow für lange Musikvideos. Der Master analysiert den Song, plant beatnahe Szenen, erzeugt MiniMax-H3-Unterjobs nacheinander, speichert jeden Clip sofort, setzt alle Clips zusammen und muxxt den ursprünglichen Audiostream ohne Neukodierung ein.
 

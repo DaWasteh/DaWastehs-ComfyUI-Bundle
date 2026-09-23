@@ -192,7 +192,13 @@ def integrate_visible(workflow: dict[str, Any], label: str) -> None:
     workflow.setdefault("extra", {})["dawasteh_h3_turbo_lora"] = _marker()
 
 
+# v1.2.2 replaced the one-node Director graph with the FastH3 extend pipeline (tools/build_h3_music_video_v122.py).
+SUPERSEDED_MARKER = "dawasteh_h3_music_video_v122"
+
+
 def integrate_director(workflow: dict[str, Any]) -> None:
+    if workflow.get("extra", {}).get(SUPERSEDED_MARKER):
+        return
     directors = [
         node for node in workflow["nodes"]
         if node.get("type") in {"DaWH3MusicVideoDirector", "DaWH3MusicVideoDirectorDualGPU"}

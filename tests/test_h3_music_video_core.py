@@ -10,6 +10,16 @@ from pathlib import Path
 from unittest import mock
 
 
+def historical_director_workflow() -> dict:
+    """The one-node Director graph as released up to v1.2.1 (v1.2.2 replaced the file with the FastH3 pipeline)."""
+    import subprocess
+    raw = subprocess.run(
+        ["git", "show", "v1.2.1:workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"],
+        cwd=Path(__file__).resolve().parents[1], capture_output=True, check=True,
+    ).stdout
+    return json.loads(raw.decode("utf-8"))
+
+
 ROOT = Path(__file__).resolve().parents[1]
 CORE_PATH = ROOT / "custom_nodes" / "ComfyUI-DaWasteh-H3-MusicVideo" / "core.py"
 HAVE_COMFY_RUNTIME = importlib.util.find_spec("torch") is not None and importlib.util.find_spec("av") is not None
@@ -17,13 +27,7 @@ HAVE_COMFY_RUNTIME = importlib.util.find_spec("torch") is not None and importlib
 
 class H3WorkflowSerializationTests(unittest.TestCase):
     def test_director_seed_control_does_not_shift_following_widgets(self):
-        workflow_path = (
-            ROOT
-            / "workflows"
-            / "Reference to Video"
-            / "MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"
-        )
-        workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
+        workflow = historical_director_workflow()
         director = next(node for node in workflow["nodes"] if node["type"] == "DaWH3MusicVideoDirectorDualGPU")
         values = director["widgets_values"]
         input_names = [entry["name"] for entry in director["inputs"]]

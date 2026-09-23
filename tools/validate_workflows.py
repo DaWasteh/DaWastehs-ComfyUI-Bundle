@@ -612,6 +612,19 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
             sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head_raw)),
             sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head_raw)),
         )
+    if current.get("extra", {}).get("dawasteh_h3_music_video_v122", {}).get("version") == 1:
+        # v1.2.2 replaces the one-node H3 Director graph wholesale with the FastH3 extend pipeline.
+        try:
+            from tools.build_h3_music_video_v122 import build_all as build_v122
+        except ModuleNotFoundError:
+            from build_h3_music_video_v122 import build_all as build_v122
+        key = _path_key(path).removeprefix("workflows/")
+        if build_v122().get(key) != current:
+            errors.append(f"{path}: differs from deterministic v1.2.2 FastH3 music-video workflow")
+        return (
+            sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head_raw)),
+            sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head_raw)),
+        )
     # v1.1.1 (RDNA4 performance pass): files carrying the v111 marker are compared against the
     # deterministic, idempotent v111 form of the baseline (see tools/upgrade_v111.py).
     v111_key = _path_key(path).removeprefix("workflows/")
@@ -912,7 +925,8 @@ def main() -> int:
         else:
             errors.extend(path_errors)
     # v1.2.1 adds two flat Qwen Image 2.1 workflows: +65 nodes, +24 notes, +44 links.
-    expected = {"files": 248, "graphs": 301, "nodes": 11227, "notes": 5119, "links": 7762, "timers": 229}
+    # v1.2.2 replaces the one-node H3 Director graph with the FastH3 extend pipeline: +61 nodes, +24 notes, +57 links.
+    expected = {"files": 248, "graphs": 301, "nodes": 11288, "notes": 5143, "links": 7819, "timers": 229}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

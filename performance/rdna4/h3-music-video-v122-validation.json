@@ -1,0 +1,448 @@
+{
+  "release": "v1.2.2",
+  "date": "2026-09-23",
+  "scope": "One cold end-to-end run of the shipped workflow through the real frontend (headless Edge, app.graphToPrompt) and Pixaroma's own submit-time prune (js/pause_image/prune.mjs): Pause (plan + scene 1) then Continue (remaining scenes via Pixaroma Loop + final mux). Private user inputs (90 s MP3, lyrics, idea, one character sheet) were used locally only; no media, lyrics or prompts are published, only hashes and measurements.",
+  "system": {
+    "os": "win32",
+    "comfyui_version": "0.37.0",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+    "ram_total": 50860650496
+  },
+  "comfyui_commit": "b5cc8830279eae909a59de030af1e50761c36751",
+  "pixaroma_commit": "7a1cf573034fe14e29c1200d884531231a003e2e",
+  "profile": "performance/rdna4/profiles/v098_vramguard.json (bench port 8190, VRAM guard on)",
+  "gpu_defaults": {
+    "MODEL": "gpu:0 R9700 32GB",
+    "CLIP": "gpu:0 (text models self-loaded, released)",
+    "VAE": "gpu:0"
+  },
+  "model_verification": {
+    "local_sha256_matches_huggingface": true,
+    "manifest": "tools/workflow_templates/v122/models.json",
+    "files": [
+      {
+        "path": "diffusion_models/MiniMax H3/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors",
+        "size": 22128378696,
+        "sha256": "0922785978dc9bfe1adf27d8b291b0ca763f9f165f882e6cb297c72fbb6deda8"
+      },
+      {
+        "path": "text_encoders/MiniMax H3/qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+        "size": 27141342152,
+        "sha256": "bc2ced0fbea64757fa9acddccfc0b3f4819d1dcf1da6c124d690d368be283923"
+      },
+      {
+        "path": "vae/MiniMax H3/minimax_h3_video_vae_fp16.safetensors",
+        "size": 5207808496,
+        "sha256": "7c1f131492e7eddacaac9069a61b81bdd39de5cc96561e677c5eab1cdce5e522"
+      },
+      {
+        "path": "vae/MiniMax H3/minimax_h3_audio_vae_fp32.safetensors",
+        "size": 605254808,
+        "sha256": "8e505d95dd1561d47abd43d4238fd40d9bb1ae9e147ed0a4cba778d76ae4db48"
+      }
+    ],
+    "downloaded_model_bytes": 0
+  },
+  "workflow": {
+    "path": "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
+    "sha256": "c3ddaea61cff2d43e4fd52ac2737f49b3f0834a6b5e2bc27f506b1083ea199f5",
+    "tested_ui_sha256": "5156b1a28e2b83a7064549baca79b4af9b331ee096c6e2ce2b4c9e6e73bbd09f",
+    "tested_changes": [
+      "song/lyrics/idea set",
+      "character 1 sheet unmuted",
+      "project_name"
+    ],
+    "api_contract_sha256": "e667f8f15cd741777fd7f221d2345f81413466f0a93db213c7de855e97d3c2de",
+    "pause_contract_sha256": "1c76d04b6fb9960fecba781f93c5dfe3632b8de7323b06556f3ee81f2f27e84f",
+    "continue_contract_sha256": "f01db9e08afaa624f28042a8f78bb10e572d71d446917b65694ec37d3db7b77f",
+    "pause_node_classes": [
+      "BasicGuider",
+      "BasicScheduler",
+      "BlockSparseAttention",
+      "DaWMV2EncodeScenes",
+      "DaWMV2Planner",
+      "DaWMV2PromptWriter",
+      "DaWMV2SaveScene",
+      "DaWMV2SceneSetup",
+      "DaWMultiGPUDeviceControl",
+      "KSamplerSelect",
+      "MiniMaxH3SigmaShift",
+      "ModelAttentionBackend",
+      "PixaromaLoadImage",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "PixaromaShowText",
+      "PixaromaSizes",
+      "RandomNoise",
+      "SamplerCustomAdvanced",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "UNETLoader",
+      "VAELoader"
+    ],
+    "continue_node_classes": [
+      "BasicGuider",
+      "BasicScheduler",
+      "BlockSparseAttention",
+      "DaWMV2EncodeScenes",
+      "DaWMV2Finalize",
+      "DaWMV2Planner",
+      "DaWMV2PromptWriter",
+      "DaWMV2SaveScene",
+      "DaWMV2SceneSetup",
+      "DaWMultiGPUDeviceControl",
+      "KSamplerSelect",
+      "MiniMaxH3SigmaShift",
+      "ModelAttentionBackend",
+      "PixaromaLoadImage",
+      "PixaromaLoopEnd",
+      "PixaromaLoopStart",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "PixaromaSizes",
+      "RandomNoise",
+      "SamplerCustomAdvanced",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "UNETLoader",
+      "VAELoader"
+    ]
+  },
+  "plan": {
+    "duration_s": 90.0,
+    "scenes": 13,
+    "alignment": {
+      "method": "whisper-small",
+      "coverage": 0.8711,
+      "language": "en"
+    },
+    "scene_seconds": [
+      6.333,
+      6.5,
+      6.292,
+      6.708,
+      7.542,
+      7.417,
+      8.042,
+      5.25,
+      7.042,
+      7.917,
+      5.75,
+      6.708,
+      8.5
+    ],
+    "story_parts": 6,
+    "prompt_sources": [
+      "llm"
+    ]
+  },
+  "runs": {
+    "pause": {
+      "status": "success",
+      "seconds": 325.016
+    },
+    "continue": {
+      "status": "success",
+      "seconds": 2503.174
+    },
+    "total_seconds": 2828.2,
+    "scenes": [
+      {
+        "scene": 1,
+        "new_frames": 152,
+        "continuity_frames": 0,
+        "h3_frames": 175,
+        "latent_t": 52,
+        "sampling_mmss": "01:22",
+        "s_per_step": 9.33,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 2,
+        "new_frames": 156,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "latent_t": 62,
+        "sampling_mmss": "03:12",
+        "s_per_step": 22.72,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 3,
+        "new_frames": 151,
+        "continuity_frames": 22,
+        "h3_frames": 175,
+        "latent_t": 52,
+        "sampling_mmss": "01:28",
+        "s_per_step": 10.09,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 4,
+        "new_frames": 161,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "latent_t": 62,
+        "sampling_mmss": "02:37",
+        "s_per_step": 18.19,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 5,
+        "new_frames": 181,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "latent_t": 62,
+        "sampling_mmss": "01:51",
+        "s_per_step": 12.58,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 6,
+        "new_frames": 178,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "latent_t": 62,
+        "sampling_mmss": "01:50",
+        "s_per_step": 12.54,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 7,
+        "new_frames": 193,
+        "continuity_frames": 22,
+        "h3_frames": 243,
+        "latent_t": 72,
+        "sampling_mmss": "03:25",
+        "s_per_step": 23.9,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 8,
+        "new_frames": 126,
+        "continuity_frames": 22,
+        "h3_frames": 175,
+        "latent_t": 52,
+        "sampling_mmss": "01:27",
+        "s_per_step": 10.0,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 9,
+        "new_frames": 169,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "latent_t": 62,
+        "sampling_mmss": "01:50",
+        "s_per_step": 12.51,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 10,
+        "new_frames": 190,
+        "continuity_frames": 22,
+        "h3_frames": 243,
+        "latent_t": 72,
+        "sampling_mmss": "03:11",
+        "s_per_step": 22.09,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 11,
+        "new_frames": 138,
+        "continuity_frames": 22,
+        "h3_frames": 175,
+        "latent_t": 52,
+        "sampling_mmss": "02:14",
+        "s_per_step": 15.72,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 12,
+        "new_frames": 161,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "latent_t": 62,
+        "sampling_mmss": "01:50",
+        "s_per_step": 12.53,
+        "fasth3_load": "completely"
+      },
+      {
+        "scene": 13,
+        "new_frames": 204,
+        "continuity_frames": 22,
+        "h3_frames": 243,
+        "latent_t": 72,
+        "sampling_mmss": "03:54",
+        "s_per_step": 27.4,
+        "fasth3_load": "partially"
+      }
+    ]
+  },
+  "final_film": {
+    "width": 864,
+    "height": 480,
+    "fps": 24.0,
+    "frames": 2160,
+    "expected_frames": 2160,
+    "container_duration_s": 90.0,
+    "audio_codec": "mp3float",
+    "audio_packets_identical": true,
+    "seam_ratio_median": 1.05,
+    "seam_ratio_max": 1.74,
+    "audio_packets": 3751,
+    "seams": [
+      {
+        "frame": 152,
+        "mae_across": 21.8,
+        "mae_before": 9.77,
+        "mae_after": 15.34,
+        "ratio": 1.74
+      },
+      {
+        "frame": 308,
+        "mae_across": 23.9,
+        "mae_before": 24.33,
+        "mae_after": 25.82,
+        "ratio": 0.95
+      },
+      {
+        "frame": 459,
+        "mae_across": 16.84,
+        "mae_before": 16.77,
+        "mae_after": 17.09,
+        "ratio": 0.99
+      },
+      {
+        "frame": 620,
+        "mae_across": 11.74,
+        "mae_before": 10.03,
+        "mae_after": 11.69,
+        "ratio": 1.08
+      },
+      {
+        "frame": 801,
+        "mae_across": 15.02,
+        "mae_before": 13.54,
+        "mae_after": 14.7,
+        "ratio": 1.06
+      },
+      {
+        "frame": 979,
+        "mae_across": 26.33,
+        "mae_before": 25.04,
+        "mae_after": 25.6,
+        "ratio": 1.04
+      },
+      {
+        "frame": 1172,
+        "mae_across": 9.55,
+        "mae_before": 9.89,
+        "mae_after": 10.87,
+        "ratio": 0.92
+      },
+      {
+        "frame": 1298,
+        "mae_across": 15.31,
+        "mae_before": 15.48,
+        "mae_after": 14.65,
+        "ratio": 1.02
+      },
+      {
+        "frame": 1467,
+        "mae_across": 13.96,
+        "mae_before": 11.87,
+        "mae_after": 14.34,
+        "ratio": 1.07
+      },
+      {
+        "frame": 1657,
+        "mae_across": 8.03,
+        "mae_before": 5.73,
+        "mae_after": 9.18,
+        "ratio": 1.08
+      },
+      {
+        "frame": 1795,
+        "mae_across": 31.91,
+        "mae_before": 28.25,
+        "mae_after": 33.15,
+        "ratio": 1.04
+      },
+      {
+        "frame": 1956,
+        "mae_across": 20.68,
+        "mae_before": 15.27,
+        "mae_after": 23.34,
+        "ratio": 1.07
+      }
+    ]
+  },
+  "length_benchmark": {
+    "note": "isolated, same prompt/seed; 243/260/277 polluted by a resident text encoder (partial loads)",
+    "results": [
+      {
+        "frames": 209,
+        "latent_t": 62,
+        "s_per_it": 12.52,
+        "load": "completely"
+      },
+      {
+        "frames": 226,
+        "latent_t": 67,
+        "s_per_it": 18.86,
+        "load": null
+      },
+      {
+        "frames": 243,
+        "latent_t": 72,
+        "s_per_it": 31.56,
+        "load": "partially"
+      },
+      {
+        "frames": 192,
+        "latent_t": 57,
+        "s_per_it": 15.04,
+        "load": "completely"
+      },
+      {
+        "frames": 260,
+        "latent_t": 77,
+        "s_per_it": 35.24,
+        "load": "partially"
+      },
+      {
+        "frames": 277,
+        "latent_t": 82,
+        "s_per_it": 59.88,
+        "load": "partially"
+      }
+    ]
+  },
+  "visual_review": "Film 864x480, 90.00 s, 13 scenes: ruined neon street -> house -> rooms with peeling walls -> PC room -> rooftop over the skyline -> short return to the room -> rooftop finale over the dystopian city at dawn. Singer from the character sheet stays recognisable (blonde hair with pink ends, black/pink panda-print outfit, choker) across all scenes; singing close-ups follow the song. Worst seam (scene 1->2, ratio 1.74) inspected frame by frame: same framing, subject and street, mild detail step from the VAE round trip of the frozen frames during a fast singing close-up. Weak points: oversized panda holograms in the street scenes (from the LLM location text), occasional fishnet/extra accessories.",
+  "sources": [
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/mv2.py",
+      "sha256": "b0dcb11a7dcdd5aee2c03560414a2037e583300f3fc5c3f53d6120bc1fc8cd18"
+    },
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/nodes_v2.py",
+      "sha256": "70b0864bf0f074fbe454291fb66324d8f51b2f59ec27b8a4ad6166832f9f1aef"
+    },
+    {
+      "path": "tools/build_h3_music_video_v122.py",
+      "sha256": "1cc915837c647323fcd7c70e3836da49a11870c59d6056099f8f3df99c1c2c19"
+    },
+    {
+      "path": "tools/workflow_templates/v122/node-schemas.json",
+      "sha256": "aced8e6336926d9d01aaccd20fe120bbe84b2d5efa2802a2e3f9209535b9bded"
+    },
+    {
+      "path": "tools/workflow_templates/v122/models.json",
+      "sha256": "a55a7a747831c7b1771c856d96cf311d8c55a23f6e5b4d7bd79f877579366fde"
+    }
+  ]
+}

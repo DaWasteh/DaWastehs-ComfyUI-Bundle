@@ -7,6 +7,16 @@ from pathlib import Path
 
 from tools import upgrade_v113 as up
 
+
+def historical_director_workflow() -> dict:
+    """The one-node Director graph as released up to v1.2.1 (v1.2.2 replaced the file with the FastH3 pipeline)."""
+    import subprocess
+    raw = subprocess.run(
+        ["git", "show", "v1.2.1:workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"],
+        cwd=Path(__file__).resolve().parents[1], capture_output=True, check=True,
+    ).stdout
+    return json.loads(raw.decode("utf-8"))
+
 WORKFLOWS = Path("workflows")
 
 
@@ -106,7 +116,7 @@ class UpgradeV113Tests(unittest.TestCase):
 
     def test_director_carries_the_vendor_sampling_values(self):
         """Der Music-Video-Director traegt dieselben drei Abweichungen in eigenen Widgets."""
-        wf = load(up.DIRECTOR_WORKFLOW)
+        wf = historical_director_workflow()
         director = next(n for n in wf["nodes"] if str(n["type"]).startswith("DaWH3MusicVideoDirector"))
         wv = director["widgets_values"]
         self.assertEqual(wv[up.DIRECTOR_SHIFT_AUDIO_INDEX], up.SHIFT_AUDIO_VENDOR)

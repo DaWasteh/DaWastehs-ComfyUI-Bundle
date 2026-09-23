@@ -16,6 +16,16 @@ from tools.integrate_h3_turbo_lora import (
 )
 
 
+def historical_director_workflow() -> dict:
+    """The one-node Director graph as released up to v1.2.1 (v1.2.2 replaced the file with the FastH3 pipeline)."""
+    import subprocess
+    raw = subprocess.run(
+        ["git", "show", "v1.2.1:workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"],
+        cwd=Path(__file__).resolve().parents[1], capture_output=True, check=True,
+    ).stdout
+    return json.loads(raw.decode("utf-8"))
+
+
 ROOT = Path(__file__).resolve().parents[1]
 H3_DIR = ROOT / "workflows" / "Reference to Video"
 PROMPT_DIR = ROOT / "workflows" / "Prompt Enhancer"
@@ -59,7 +69,7 @@ class H3TurboWorkflowTests(unittest.TestCase):
             self.assertEqual((sigma_link[1], sigma_link[3]), (lora["id"], sigma["id"]))
 
     def test_complete_song_director_serializes_quality_turbo_defaults(self):
-        workflow = json.loads((H3_DIR / DIRECTOR_WORKFLOW).read_text(encoding="utf-8"))
+        workflow = historical_director_workflow()
         director = next(node for node in workflow["nodes"] if node["type"] == "DaWH3MusicVideoDirectorDualGPU")
         values = director["widgets_values"]
         self.assertEqual(values[12], 8)
