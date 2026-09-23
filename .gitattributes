@@ -28,3 +28,11 @@ workflows/**/Qwen_Image_2_1_BF16-*.json text eol=lf
 tools/build_qwen_image21_workflows.py text eol=lf
 performance/rdna4/bench/ui_to_api.py text eol=lf
 performance/rdna4/qwen-image21-v121-validation.json text eol=lf
+# v1.2.2: FastH3 music-video workflow, sources and evidence hashes are portable across Windows and Linux.
+workflows/**/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json text eol=lf
+tools/workflow_templates/v122/* text eol=lf
+tools/build_h3_music_video_v122.py text eol=lf
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/mv2.py text eol=lf
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/nodes_v2.py text eol=lf
+tests/test_h3_music_video_v122.py text eol=lf
+performance/rdna4/h3-music-video-v122-validation.json text eol=lf
