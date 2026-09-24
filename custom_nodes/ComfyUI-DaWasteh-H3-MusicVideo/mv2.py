@@ -30,7 +30,7 @@ import numpy as np
 FPS = 24
 H3_TRAINED_MAX_FRAMES = 362
 SCHEMA = "dawasteh-h3-mv2/1"
-PROMPT_VERSION = 9  # bump whenever a prompt template or the assembly changes
+PROMPT_VERSION = 10  # bump whenever a prompt template or the assembly changes
 
 LANGUAGE_TAGS = {
     "en": "English", "de": "German", "fr": "French", "es": "Spanish", "it": "Italian", "pt": "Portuguese",
@@ -657,7 +657,7 @@ def assemble_prompt(scene: dict[str, Any], bible: dict[str, Any], *, index: int,
             else:
                 text += f"A {size} in {place} "
         else:
-            text = f"[Shot {shot_index + 1}] At {fmt_ts(shot['start'])}, the camera cuts to a {size} in {location[0].lower() + location[1:] if location else 'the scene'} "
+            text = f"[Shot {shot_index + 1}] At {fmt_ts(shot['start'] + scene.get('prefix_frames', 0) / FPS)}, the camera cuts to a {size} in {location[0].lower() + location[1:] if location else 'the scene'} "
         text += f"{action} {camera}"
         if shot.get("lyrics"):
             who = "The singer" if not singer_introduced else "The same singer"

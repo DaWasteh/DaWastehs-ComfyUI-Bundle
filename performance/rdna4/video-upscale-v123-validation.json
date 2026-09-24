@@ -1,0 +1,707 @@
+{
+  "release": "v1.2.3",
+  "date": "2026-09-24",
+  "scope": "End-to-end runs of the three shipped upscale workflows through the real frontend (headless Edge, app.graphToPrompt) and Pixaroma's submit-time prune (Pause = plan + block 1, Continue = Pixaroma Loop + final mux) on one private 90 s 864x480 music video (the v1.2.2 test output). No media is published; only hashes and measurements.",
+  "source_video": {
+    "width": 864,
+    "height": 480,
+    "fps": 24,
+    "frames": 2160,
+    "audio": "mp3, 3751 packets"
+  },
+  "system": {
+    "os": "win32",
+    "comfyui_version": "0.37.0",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+    "ram_total": 50860650496
+  },
+  "commits": {
+    "comfyui": "b5cc8830279eae909a59de030af1e50761c36751",
+    "pixaroma": "7a1cf573034fe14e29c1200d884531231a003e2e",
+    "plaguekind_nodes": "d58d006a4ea32c25c06499f2ff104f0852a045a6",
+    "lbh_latent_upscaler": "40316cf008b2fd8663263270669eb4da23f89d2c"
+  },
+  "profile": "performance/rdna4/profiles/v098_vramguard.json (bench port 8190, VRAM guard on)",
+  "gpu_defaults": {
+    "MODEL": "gpu:0 R9700 32GB",
+    "CLIP": "gpu:0 (H3 text encoder self-loaded, released)",
+    "VAE": "gpu:0"
+  },
+  "model_verification": {
+    "local_sha256_matches_huggingface": true,
+    "manifest": "tools/workflow_templates/v123/models.json",
+    "files": [
+      {
+        "path": "diffusion_models/MiniMax H3/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors",
+        "size": 22128378696,
+        "sha256": "0922785978dc9bfe1adf27d8b291b0ca763f9f165f882e6cb297c72fbb6deda8"
+      },
+      {
+        "path": "text_encoders/MiniMax H3/qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+        "size": 27141342152,
+        "sha256": "bc2ced0fbea64757fa9acddccfc0b3f4819d1dcf1da6c124d690d368be283923"
+      },
+      {
+        "path": "vae/MiniMax H3/minimax_h3_video_vae_fp16.safetensors",
+        "size": 5207808496,
+        "sha256": "7c1f131492e7eddacaac9069a61b81bdd39de5cc96561e677c5eab1cdce5e522"
+      },
+      {
+        "path": "vae/MiniMax H3/minimax_h3_audio_vae_fp32.safetensors",
+        "size": 605254808,
+        "sha256": "8e505d95dd1561d47abd43d4238fd40d9bb1ae9e147ed0a4cba778d76ae4db48"
+      },
+      {
+        "path": "latent_upscale_models/minimax_h3_latent_upscaler_3d_conv_v1_bf16.safetensors",
+        "size": 690592992,
+        "sha256": "4f57821f5837f32f7142b67d815606dbd7550f194e5c769f7d6c3f83b146a5e6"
+      },
+      {
+        "path": "diffusion_models/SeedVR2/seedvr2_3b_int8_convrot.safetensors",
+        "size": 3458259704,
+        "sha256": "c3dec8bcc5916843a8a858572970597462e1f2dc598d6dfd818f6cd40f53a157"
+      },
+      {
+        "path": "vae/SeedVR2/seedvr2_ema_vae_fp16.safetensors",
+        "size": 501324814,
+        "sha256": "20678548f420d98d26f11442d3528f8b8c94e57ee046ef93dbb7633da8612ca1"
+      }
+    ],
+    "downloaded_model_bytes": 4650177510
+  },
+  "methods": {
+    "ultimate": {
+      "workflow": {
+        "path": "workflows/Video Upscaling/MiniMax_H3-Ultimate-Upscale-FastH3.json",
+        "sha256": "26a74154fb0edb98769c3304ff93c8a3a285f48f72ac0ee943d123238dc25dd5",
+        "tested_ui_sha256": "2489d1fcb2203beb6f7f89f544396d579204ab108a45c5aa773271865456b6e6",
+        "tested_changes": [
+          "video = private 90 s test film",
+          "project_name"
+        ],
+        "pause_contract_sha256": "7d5b2224f374ae50db5727653cb822cb56d910f2d9b3850e1686a0059085b318",
+        "continue_contract_sha256": "294b90510515d5c7882f675e4375190185c9a3f9845224b878dcb9c2dae1e73a",
+        "pause_node_classes": [
+          "BasicScheduler",
+          "BlockSparseAttention",
+          "DaWH3PromptOnce",
+          "DaWH3VideoToAVLatent",
+          "DaWMultiGPUDeviceControl",
+          "DaWVULoadBlock",
+          "DaWVUPlanner",
+          "DaWVUSaveBlock",
+          "KSamplerSelect",
+          "MMH3LatentUpscaleWithModelParams",
+          "MMH3SpatialSplitParams",
+          "MMH3TemporalSplitParams",
+          "MMH3UltimateUpscale",
+          "MiniMaxH3SigmaShift",
+          "ModelAttentionBackend",
+          "PixaromaPauseImage",
+          "PixaromaPrompt",
+          "PixaromaRunTimer",
+          "PixaromaShowText",
+          "RandomNoise",
+          "SelectModelDevice",
+          "SelectVAEDevice",
+          "UNETLoader",
+          "VAEDecode",
+          "VAELoader"
+        ],
+        "continue_node_classes": [
+          "BasicScheduler",
+          "BlockSparseAttention",
+          "DaWH3PromptOnce",
+          "DaWH3VideoToAVLatent",
+          "DaWMultiGPUDeviceControl",
+          "DaWVUFinalize",
+          "DaWVULoadBlock",
+          "DaWVUPlanner",
+          "DaWVUSaveBlock",
+          "KSamplerSelect",
+          "MMH3LatentUpscaleWithModelParams",
+          "MMH3SpatialSplitParams",
+          "MMH3TemporalSplitParams",
+          "MMH3UltimateUpscale",
+          "MiniMaxH3SigmaShift",
+          "ModelAttentionBackend",
+          "PixaromaLoopEnd",
+          "PixaromaLoopStart",
+          "PixaromaPauseImage",
+          "PixaromaPrompt",
+          "PixaromaRunTimer",
+          "RandomNoise",
+          "SelectModelDevice",
+          "SelectVAEDevice",
+          "UNETLoader",
+          "VAEDecode",
+          "VAELoader"
+        ]
+      },
+      "plan": {
+        "blocks": 13,
+        "hard_cuts": 7,
+        "blocks_starting_at_cut": 6,
+        "block_seconds": [
+          7.25,
+          7.5,
+          6.958,
+          6.167,
+          6.75,
+          7.083,
+          6.917,
+          5.667,
+          7.542,
+          8.792,
+          6.875,
+          5.917,
+          6.583
+        ],
+        "target": [
+          1280,
+          704
+        ]
+      },
+      "runs": {
+        "pause": {
+          "status": "success",
+          "seconds": 258.727
+        },
+        "continue": {
+          "status": "success",
+          "seconds": 948.782
+        },
+        "loop_block_seconds": [
+          239.3,
+          343.2,
+          204.6,
+          223.9,
+          219.2,
+          219.0,
+          178.2,
+          249.9,
+          23142.7,
+          223.9,
+          199.2,
+          198.7
+        ],
+        "interruption": "Windows Update rebooted the PC at 05:43 during Continue after 9/13 blocks. After restarting ComfyUI: Run (pause, block 1 skipped) + Continue rendered blocks 10-13 and the final film; blocks 1-9 were reused (resume).",
+        "resume_pause_seconds": 0.234,
+        "loop_block_seconds_note": "the gap before block 10 contains the reboot"
+      },
+      "final_film": {
+        "width": 1280,
+        "height": 704,
+        "fps": 24.0,
+        "frames": 2160,
+        "expected_frames": 2160,
+        "blocks": 13,
+        "hard_cuts": 7,
+        "audio_packets_identical": true,
+        "audio_packets": 3751,
+        "psnr_vs_source_db_median": 19.83,
+        "psnr_vs_source_db_min": 16.2,
+        "laplacian_var_upscaled_median": 166.6,
+        "laplacian_var_lanczos_median": 73.3,
+        "seams_within_shot": [
+          {
+            "frame": 174,
+            "ratio_upscaled": 1.78,
+            "ratio_source": 0.98
+          },
+          {
+            "frame": 354,
+            "ratio_upscaled": 1.27,
+            "ratio_source": 1.04
+          },
+          {
+            "frame": 669,
+            "ratio_upscaled": 1.58,
+            "ratio_source": 0.94
+          },
+          {
+            "frame": 831,
+            "ratio_upscaled": 1.4,
+            "ratio_source": 0.95
+          },
+          {
+            "frame": 1167,
+            "ratio_upscaled": 1.23,
+            "ratio_source": 0.93
+          },
+          {
+            "frame": 1860,
+            "ratio_upscaled": 0.97,
+            "ratio_source": 1.0
+          }
+        ],
+        "seam_excess_median": 0.37,
+        "seam_excess_max": 0.8
+      }
+    },
+    "latent3d": {
+      "workflow": {
+        "path": "workflows/Video Upscaling/MiniMax_H3-Latent-Upscaler-3D-FastH3.json",
+        "sha256": "e530afdce02aa28d2df62b84c32bdcaf8a24c2b0d453bb9c44f182bd39647714",
+        "tested_ui_sha256": "f8e245f89f54780ae042436d565ab3797c01744a1dc095d4a7c23f7732a101e1",
+        "tested_changes": [
+          "video = private 90 s test film",
+          "project_name"
+        ],
+        "pause_contract_sha256": "e37e3602fe488f3535f6a3332f742b56ba5e7e795fab94af13b88fea732e0bd9",
+        "continue_contract_sha256": "8f467898b0a67444976a20424fbeb7a4be6f594686d38fda9448a8ba7ce96e63",
+        "pause_node_classes": [
+          "BasicGuider",
+          "BasicScheduler",
+          "BlockSparseAttention",
+          "DaWH3PromptOnce",
+          "DaWH3VideoToAVLatent",
+          "DaWMultiGPUDeviceControl",
+          "DaWVULoadBlock",
+          "DaWVUPlanner",
+          "DaWVUSaveBlock",
+          "KSamplerSelect",
+          "LTXVConcatAVLatent",
+          "LTXVSeparateAVLatent",
+          "MiniMaxH3SigmaShift",
+          "MinimaxH3LatentUpscaler3D",
+          "ModelAttentionBackend",
+          "PixaromaPauseImage",
+          "PixaromaPrompt",
+          "PixaromaRunTimer",
+          "PixaromaShowText",
+          "RandomNoise",
+          "SamplerCustomAdvanced",
+          "SelectModelDevice",
+          "SelectVAEDevice",
+          "UNETLoader",
+          "VAEDecode",
+          "VAELoader"
+        ],
+        "continue_node_classes": [
+          "BasicGuider",
+          "BasicScheduler",
+          "BlockSparseAttention",
+          "DaWH3PromptOnce",
+          "DaWH3VideoToAVLatent",
+          "DaWMultiGPUDeviceControl",
+          "DaWVUFinalize",
+          "DaWVULoadBlock",
+          "DaWVUPlanner",
+          "DaWVUSaveBlock",
+          "KSamplerSelect",
+          "LTXVConcatAVLatent",
+          "LTXVSeparateAVLatent",
+          "MiniMaxH3SigmaShift",
+          "MinimaxH3LatentUpscaler3D",
+          "ModelAttentionBackend",
+          "PixaromaLoopEnd",
+          "PixaromaLoopStart",
+          "PixaromaPauseImage",
+          "PixaromaPrompt",
+          "PixaromaRunTimer",
+          "RandomNoise",
+          "SamplerCustomAdvanced",
+          "SelectModelDevice",
+          "SelectVAEDevice",
+          "UNETLoader",
+          "VAEDecode",
+          "VAELoader"
+        ]
+      },
+      "plan": {
+        "blocks": 22,
+        "hard_cuts": 7,
+        "blocks_starting_at_cut": 6,
+        "block_seconds": [
+          4.375,
+          4.375,
+          4.375,
+          4.25,
+          4.333,
+          3.917,
+          3.625,
+          3.875,
+          4.125,
+          4.458,
+          4.167,
+          4.125,
+          4.292,
+          3.708,
+          3.833,
+          4.417,
+          4.375,
+          4.125,
+          4.25,
+          4.417,
+          3.333,
+          3.25
+        ],
+        "target": [
+          1280,
+          704
+        ]
+      },
+      "runs": {
+        "pause": {
+          "status": "success",
+          "seconds": 94.587
+        },
+        "continue": {
+          "status": "success",
+          "seconds": 2624.433
+        },
+        "loop_block_seconds": [
+          133.2,
+          122.1,
+          122.0,
+          122.2,
+          121.8,
+          88.8,
+          140.7,
+          129.3,
+          144.4,
+          128.2,
+          132.4,
+          133.6,
+          91.6,
+          149.2,
+          139.6,
+          139.3,
+          128.5,
+          143.5,
+          127.6,
+          88.9,
+          88.7
+        ],
+        "total_seconds": 2719.0
+      },
+      "final_film": {
+        "width": 1280,
+        "height": 704,
+        "fps": 24.0,
+        "frames": 2160,
+        "expected_frames": 2160,
+        "blocks": 22,
+        "hard_cuts": 7,
+        "audio_packets_identical": true,
+        "audio_packets": 3751,
+        "psnr_vs_source_db_median": 20.08,
+        "psnr_vs_source_db_min": 16.65,
+        "laplacian_var_upscaled_median": 178.3,
+        "laplacian_var_lanczos_median": 73.3,
+        "seams_within_shot": [
+          {
+            "frame": 105,
+            "ratio_upscaled": 1.68,
+            "ratio_source": 1.08
+          },
+          {
+            "frame": 210,
+            "ratio_upscaled": 1.31,
+            "ratio_source": 0.87
+          },
+          {
+            "frame": 315,
+            "ratio_upscaled": 1.01,
+            "ratio_source": 0.97
+          },
+          {
+            "frame": 417,
+            "ratio_upscaled": 1.24,
+            "ratio_source": 0.9
+          },
+          {
+            "frame": 615,
+            "ratio_upscaled": 1.54,
+            "ratio_source": 0.91
+          },
+          {
+            "frame": 702,
+            "ratio_upscaled": 1.24,
+            "ratio_source": 0.99
+          },
+          {
+            "frame": 795,
+            "ratio_upscaled": 1.2,
+            "ratio_source": 0.94
+          },
+          {
+            "frame": 894,
+            "ratio_upscaled": 0.95,
+            "ratio_source": 0.97
+          },
+          {
+            "frame": 1101,
+            "ratio_upscaled": 1.3,
+            "ratio_source": 0.95
+          },
+          {
+            "frame": 1200,
+            "ratio_upscaled": 1.05,
+            "ratio_source": 0.96
+          },
+          {
+            "frame": 1392,
+            "ratio_upscaled": 2.27,
+            "ratio_source": 0.91
+          },
+          {
+            "frame": 1590,
+            "ratio_upscaled": 1.07,
+            "ratio_source": 1.05
+          },
+          {
+            "frame": 1794,
+            "ratio_upscaled": 1.01,
+            "ratio_source": 0.93
+          },
+          {
+            "frame": 1896,
+            "ratio_upscaled": 1.17,
+            "ratio_source": 0.94
+          },
+          {
+            "frame": 2082,
+            "ratio_upscaled": 1.43,
+            "ratio_source": 0.94
+          }
+        ],
+        "seam_excess_median": 0.26,
+        "seam_excess_max": 1.36
+      }
+    },
+    "seedvr2": {
+      "workflow": {
+        "path": "workflows/Video Upscaling/SeedVR2_3B_INT8-Video-Upscale.json",
+        "sha256": "b3cde79d193f2da78cc38f26038836a0ad1fab54c8624a673438673ea6e6ca8e",
+        "tested_ui_sha256": "cb0a2a4c8dd23d8b0676cad5eb5e70147fad41743d8cacdf7fd6c253879f8b8e",
+        "tested_changes": [
+          "video = private 90 s test film",
+          "project_name"
+        ],
+        "pause_contract_sha256": "b2bcd4d7e8ebffab067bf340b068a82fb51f7af09759f8533824eb94765e1b37",
+        "continue_contract_sha256": "0fcb4dfb542d0ccbe0a8694721198a00215a86042ef571e032d58419d50b784f",
+        "pause_node_classes": [
+          "DaWMultiGPUDeviceControl",
+          "DaWVULoadBlock",
+          "DaWVUPlanner",
+          "DaWVUSaveBlock",
+          "KSampler",
+          "PixaromaPauseImage",
+          "PixaromaRunTimer",
+          "PixaromaShowText",
+          "ResizeImageMaskNode",
+          "SeedVR2Conditioning",
+          "SeedVR2PostProcessing",
+          "SeedVR2Preprocess",
+          "SeedVR2TemporalChunk",
+          "SeedVR2TemporalMerge",
+          "SelectModelDevice",
+          "SelectVAEDevice",
+          "UNETLoader",
+          "VAEDecodeTiled",
+          "VAEEncodeTiled",
+          "VAELoader"
+        ],
+        "continue_node_classes": [
+          "DaWMultiGPUDeviceControl",
+          "DaWVUFinalize",
+          "DaWVULoadBlock",
+          "DaWVUPlanner",
+          "DaWVUSaveBlock",
+          "KSampler",
+          "PixaromaLoopEnd",
+          "PixaromaLoopStart",
+          "PixaromaPauseImage",
+          "PixaromaRunTimer",
+          "ResizeImageMaskNode",
+          "SeedVR2Conditioning",
+          "SeedVR2PostProcessing",
+          "SeedVR2Preprocess",
+          "SeedVR2TemporalChunk",
+          "SeedVR2TemporalMerge",
+          "SelectModelDevice",
+          "SelectVAEDevice",
+          "UNETLoader",
+          "VAEDecodeTiled",
+          "VAEEncodeTiled",
+          "VAELoader"
+        ]
+      },
+      "plan": {
+        "blocks": 13,
+        "hard_cuts": 7,
+        "blocks_starting_at_cut": 6,
+        "block_seconds": [
+          7.25,
+          7.5,
+          6.958,
+          6.167,
+          6.75,
+          7.083,
+          6.917,
+          5.667,
+          7.542,
+          8.792,
+          6.875,
+          5.917,
+          6.583
+        ],
+        "target": [
+          1280,
+          704
+        ]
+      },
+      "runs": {
+        "pause": {
+          "status": "success",
+          "seconds": 236.645
+        },
+        "continue": {
+          "status": "success",
+          "seconds": 2696.638
+        },
+        "loop_block_seconds": [
+          262.5,
+          227.8,
+          194.6,
+          215.3,
+          236.8,
+          229.3,
+          181.6,
+          238.1,
+          280.0,
+          218.0,
+          192.4,
+          212.7
+        ],
+        "total_seconds": 2933.3
+      },
+      "final_film": {
+        "width": 1280,
+        "height": 704,
+        "fps": 24.0,
+        "frames": 2160,
+        "expected_frames": 2160,
+        "blocks": 13,
+        "hard_cuts": 7,
+        "audio_packets_identical": true,
+        "audio_packets": 3751,
+        "psnr_vs_source_db_median": 25.48,
+        "psnr_vs_source_db_min": 21.0,
+        "laplacian_var_upscaled_median": 344.1,
+        "laplacian_var_lanczos_median": 73.3,
+        "seams_within_shot": [
+          {
+            "frame": 174,
+            "ratio_upscaled": 0.89,
+            "ratio_source": 0.98
+          },
+          {
+            "frame": 354,
+            "ratio_upscaled": 0.92,
+            "ratio_source": 1.04
+          },
+          {
+            "frame": 669,
+            "ratio_upscaled": 0.89,
+            "ratio_source": 0.94
+          },
+          {
+            "frame": 831,
+            "ratio_upscaled": 0.86,
+            "ratio_source": 0.95
+          },
+          {
+            "frame": 1167,
+            "ratio_upscaled": 0.85,
+            "ratio_source": 0.93
+          },
+          {
+            "frame": 1860,
+            "ratio_upscaled": 0.91,
+            "ratio_source": 1.0
+          }
+        ],
+        "seam_excess_median": -0.09,
+        "seam_excess_max": -0.05
+      }
+    }
+  },
+  "findings": {
+    "denoise_start_sigma_with_shift_10": {
+      "linear_quadratic_4_steps": {
+        "0.45": 0.975,
+        "0.25": 0.725
+      },
+      "beta_2_steps": {
+        "0.4": 0.851,
+        "0.25": 0.683
+      },
+      "observation": "Rodent's 0.45 re-invented the scene of the finished test video (block 1); 0.25 keeps person, composition and motion."
+    },
+    "ultimate_latent_upscale": {
+      "bicubic_denoise_0.25": "full 90 s run (13 blocks): latent blocks survive and FastH3 turns them into invented objects - glasses and glowing lines on the face, a cap, a logo sign instead of the moon, glitch lines over a close-up, blocky clouds; also with a detailed content prompt",
+      "learned_3d_model_denoise_0.25": "same blocks 1 and 10 with MMH3LatentUpscaleWithModelParams: clean, composition kept, new detail on signs and facades",
+      "block_seconds_model": [
+        280.9,
+        272.2
+      ],
+      "bicubic_first_run_psnr_vs_source_db_median": 16.75,
+      "model_placement": "PlagueKind's model params node lists only the top level of models/latent_upscale_models/"
+    },
+    "latent3d_block_length": {
+      "108_frames": "padded to 124 H3 frames (odd latent length), FastH3 loaded partially (800 MB offloaded), 26.7 s/step",
+      "107_frames": "fully loaded, 12-14 s/step",
+      "shipped_max_seconds": 4.45
+    },
+    "seedvr2_tiles_block3_167_frames_total_seconds": {
+      "decode_768_t64": 190.4,
+      "decode_768_t32": 308.8,
+      "decode_512_t64": 226.5,
+      "decode_640_t64": 224.4,
+      "note": "768/64 passed on a fresh server but failed in the first full run after two blocks (8.65 GiB single allocation, fragmented cache); 1024 decode exceeded the guard earlier",
+      "encode_1024_vs_512_seconds": [
+        94,
+        152
+      ]
+    }
+  },
+  "first_run_defects": {
+    "finalize_render_key": {
+      "symptom": "Finalize: 'Blocks not rendered yet' after all blocks were saved; resume re-rendered",
+      "cause": "render key hashed the whole block dict, which SaveBlock extends afterwards",
+      "first_run_continue_errors": {
+        "ultimate": "Blocks not rendered yet: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]\n",
+        "latent3d": "Blocks not rendered yet: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]\n",
+        "seedvr2": "CUDA out of memory. Tried to allocate 8.65 GiB. GPU 0 has a total capacity of 31.86 GiB of which 11.12 GiB is free. 28.6"
+      },
+      "fix": "hash only index/start/end/frames/starts_at_cut (test_render_key_survives_the_save_bookkeeping)"
+    },
+    "seedvr2_decode_oom": {
+      "symptom": "VAEDecodeTiled 768/64 requested 8.65 GiB at once on block 3 after two blocks",
+      "fix": "decode tile 512 (same speed as 640, ~44 % of the peak allocation)"
+    }
+  },
+  "visual_review": "Side-by-side crops at 1:1 (1280x704) on frames 60, 700, 1500, 2050 against the Lanczos-upscaled source. Latent 3D: faithful, visibly sharper, natural skin/teeth/hair detail, nothing invented. SeedVR2: most faithful and sharpest edges, slightly painted skin, practically no new detail. Ultimate (learned 3D latent upscale, denoise 0.25): clean, most new detail (clouds, lashes, facades, signs) but re-interprets freely (sign texts change, moon placed on a tower, slight re-framing). First run with Rodent's bicubic latent upscale: blocky clouds and invented objects (glasses, cap, logo sign, glitch lines) - replaced. Within-shot block borders: worst Latent 3D border (frame 1392, wide shot) shows small details of the singer switching (stockings/tattoos, hair strands); SeedVR2 shows no border jumps.",
+  "sources": [
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/upscale_nodes.py",
+      "sha256": "5275e3b8928091efd70f5f977d44071f054d5afed3a543c0bb5505a6271e1b62"
+    },
+    {
+      "path": "tools/build_video_upscale_v123.py",
+      "sha256": "5f8bf29f2c5d832ddb358f89c8cebc14265072412255245faffba1583e06acd3"
+    },
+    {
+      "path": "tools/workflow_templates/v123/node-schemas.json",
+      "sha256": "cf6fc82fd8e19a64b4f0024b46484954112a493e0df295c14c41c12c7aed4e84"
+    },
+    {
+      "path": "tools/workflow_templates/v123/models.json",
+      "sha256": "d3e350f4230a8ff28b41835cce9e046b61ed8947b82d84c25bef7ea651b4fe6f"
+    }
+  ]
+}

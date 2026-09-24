@@ -36,3 +36,10 @@ custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/mv2.py text eol=lf
 custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/nodes_v2.py text eol=lf
 tests/test_h3_music_video_v122.py text eol=lf
 performance/rdna4/h3-music-video-v122-validation.json text eol=lf
+# v1.2.3: video-upscale workflows, sources and evidence hashes are portable across Windows and Linux.
+workflows/Video?Upscaling/*.json text eol=lf
+tools/workflow_templates/v123/* text eol=lf
+tools/build_video_upscale_v123.py text eol=lf
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/upscale_nodes.py text eol=lf
+tests/test_video_upscale_v123.py text eol=lf
+performance/rdna4/video-upscale-v123-validation.json text eol=lf

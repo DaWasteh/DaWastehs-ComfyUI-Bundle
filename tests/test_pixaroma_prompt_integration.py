@@ -70,6 +70,8 @@ class PixaromaIntegrationTests(unittest.TestCase):
         generated_unmanaged.update(f"workflows/{key}" for key in build_v119())
         from tools.build_qwen_image21_workflows import build_all as build_v121
         generated_unmanaged.update(f"workflows/{key}" for key in build_v121())
+        from tools.build_video_upscale_v123 import build_all as build_v123
+        generated_unmanaged.update(f"workflows/{key}" for key in build_v123())
         self.assertEqual(
             paths - set(manifest_paths),
             {

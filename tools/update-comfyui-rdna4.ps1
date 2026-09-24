@@ -111,7 +111,9 @@ $PixaromaRepoUrl = "https://github.com/pixaroma/ComfyUI-Pixaroma.git"
 # the ComfyUI core instead of staying pinned to a Manager snapshot.
 $GitTrackedNodes = @(
     @{ Name = $PixaromaNodeName; Url = $PixaromaRepoUrl },
-    @{ Name = "comfyui-spectrum-minimax-h3"; Url = "https://github.com/xmarre/ComfyUI-Spectrum-MiniMax-H3.git" }
+    @{ Name = "comfyui-spectrum-minimax-h3"; Url = "https://github.com/xmarre/ComfyUI-Spectrum-MiniMax-H3.git" },
+    @{ Name = "Comfyui-PlagueKind-Nodes"; Url = "https://github.com/PlagueKind/Comfyui-PlagueKind-Nodes.git" },
+    @{ Name = "Comfyui_Minimax_h3_latent_Upscaler"; Url = "https://github.com/LBH-123-AI/Comfyui_Minimax_h3_latent_Upscaler.git" }
 )
 
 $BackupRoot = Join-Path $Root ("_update_backups\{0}" -f (Get-Date -Format "yyyyMMdd-HHmmss"))

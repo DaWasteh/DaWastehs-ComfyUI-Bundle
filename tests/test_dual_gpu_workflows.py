@@ -46,8 +46,8 @@ def paths() -> list[Path]:
 
 class DualGPUWorkflowTests(unittest.TestCase):
     def test_collection_has_one_central_control_per_workflow(self):
-        # v1.2.1: two Qwen Image workflows added; existing graphs unchanged.
-        self.assertEqual(len(paths()), 248)
+        # v1.2.3: three video-upscale workflows added; existing graphs unchanged.
+        self.assertEqual(len(paths()), 251)
         for path in paths():
             with self.subTest(path=path.relative_to(ROOT)):
                 workflow = json.loads(path.read_text(encoding="utf-8"))
@@ -76,8 +76,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 counts["all_r9700"] += 1
             self.assertEqual(defaults, expected, key)
             self.assertEqual(control["widgets_values"], [expected["MODEL"], expected["CLIP"], expected["VAE"]], key)
-        # v1.2.1 adds two R9700 defaults; existing curated assignments stay intact.
-        self.assertEqual(counts, {"all_r9700": 217, "curated_split": 31})
+        # v1.2.3 adds three R9700 defaults; existing curated assignments stay intact.
+        self.assertEqual(counts, {"all_r9700": 220, "curated_split": 31})
 
     def test_every_selector_is_driven_by_the_root_control_or_subgraph_interface(self):
         selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
@@ -154,6 +154,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
         expected.update(f"workflows/{key}" for key in build_v119())
         from tools.build_qwen_image21_workflows import build_all as build_v121
         expected.update(f"workflows/{key}" for key in build_v121())
+        from tools.build_video_upscale_v123 import build_all as build_v123
+        expected.update(f"workflows/{key}" for key in build_v123())
         actual = {path.relative_to(ROOT).as_posix() for path in paths()}
         self.assertEqual(actual, expected)
 

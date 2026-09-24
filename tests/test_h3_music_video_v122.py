@@ -169,7 +169,9 @@ class PromptTests(unittest.TestCase):
             self.assertIn("(S1)", prompt)
             self.assertIn("<d>[English] ", prompt)
         for number, shot in enumerate(self.scenes[1]["shots"][1:], start=2):
-            self.assertIn(f"[Shot {number}] At {mv2.fmt_ts(shot['start'])}, the camera cuts to", prompt)
+            # clip time = scene time + the frozen continuity frames at the start of an extended clip
+            clip_time = shot['start'] + self.scenes[1]['prefix_frames'] / 24
+            self.assertIn(f"[Shot {number}] At {mv2.fmt_ts(clip_time)}, the camera cuts to", prompt)
 
     def test_first_scene_has_no_continuity_clause(self):
         prompt = mv2.assemble_prompt(self.scenes[0], self.bible, index=0, total=len(self.scenes), language="English")
@@ -286,9 +288,13 @@ class LiveEvidenceTests(unittest.TestCase):
         cls.report = json.loads((ROOT / "performance/rdna4/h3-music-video-v122-validation.json").read_text(encoding="utf-8"))
 
     def test_report_pins_shipped_workflow_and_sources(self):
+        import hashlib
+        import subprocess
         self.assertEqual(self.report["workflow"]["sha256"], self.sha(self.report["workflow"]["path"]))
         for entry in self.report["sources"]:
-            self.assertEqual(self.sha(entry["path"]), entry["sha256"], entry["path"])
+            # v1.2.3 fixed the shot-cut timestamps in mv2.py; the evidence describes the v1.2.2 run.
+            data = subprocess.check_output(["git", "show", "v1.2.2:" + entry["path"]], cwd=ROOT)
+            self.assertEqual(hashlib.sha256(data).hexdigest(), entry["sha256"], entry["path"])
 
     def test_pause_then_continue_produced_the_full_film(self):
         runs = self.report["runs"]

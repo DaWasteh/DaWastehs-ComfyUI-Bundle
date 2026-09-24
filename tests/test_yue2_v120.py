@@ -64,9 +64,9 @@ class WorkflowReleaseTests(unittest.TestCase):
         self.assertEqual(report["dataset"]["source_files_scanned"], 612)
         for entry in report["sources"]:
             data = (ROOT / entry["path"]).read_bytes()
-            if entry["path"] == "tools/validate_workflows.py":
-                # v1.2.1 extends collection membership, not the YuE2 runtime.
-                # Preserve the historical evidence instead of rewriting its hash.
+            if entry["path"] in ("tools/validate_workflows.py", "tools/update-comfyui-rdna4.ps1"):
+                # v1.2.1 extends collection membership and v1.2.3 the updater's node list, not the
+                # YuE2 runtime. Preserve the historical evidence instead of rewriting its hash.
                 data = subprocess.check_output([
                     "git", "show", "651044e8c61b27df5fb043237eb65c4dc9104c65:" + entry["path"],
                 ], cwd=ROOT)

@@ -21,6 +21,22 @@ Projektordner: `ComfyUI/output/DaWasteh_H3_MusicVideo_v2/<Projekt>_<Hash>/` (`pl
 Zusätzliche Abhängigkeit: `openai-whisper` (im Bundle-venv vorhanden; Modell `small` ≈ 460 MB wird beim ersten Lauf
 nach `~/.cache/whisper` geladen). Ohne Whisper verteilt der Planer die Zeilen über den Gesangsbereich.
 
+## Video-Upscaling · v1.2.3
+
+`upscale_nodes.py` liefert den gemeinsamen Rahmen der drei Workflows in `workflows/Video Upscaling/`
+(Ultimate Upscale, Latent Upscaler 3D, SeedVR2):
+
+| Node | Aufgabe |
+|---|---|
+| `VU 1 · Video-Upscale Planer` (`DaWVUPlanner`) | Blöcke an harten Schnitten, Zielgröße = Quelle × `scale` auf 32 px, 24-fps-Arbeitskopie falls nötig |
+| `VU 2 · Block laden` (`DaWVULoadBlock`) | Frames eines Blocks, aufgefüllt auf das Raster der Methode, dazu der Tonausschnitt |
+| `H3 · Video + Originalton → AV-Latent` (`DaWH3VideoToAVLatent`) | H3-Video- und Audio-VAE-Encode mit Speicherfreigabe vorab |
+| `H3 · Prompt einmal encodieren` (`DaWH3PromptOnce`) | Qwen3-VL lädt nur beim ersten Mal, Ergebnis unter `_conditioning/` zwischengespeichert |
+| `VU 3 · Block speichern` (`DaWVUSaveBlock`) | Auffüllung abschneiden, Block speichern, Vorschau mit Originalton, Resume |
+| `VU 4 · Hochskaliertes Video` (`DaWVUFinalize`) | Blöcke verlustfrei verbinden, Original-Tonspur per `-c:a copy` |
+
+Details und Messwerte: `docs/VIDEO_UPSCALE_V123.md`.
+
 ---
 
 # Legacy (bis v1.2.1): H3 Complete-Song Director

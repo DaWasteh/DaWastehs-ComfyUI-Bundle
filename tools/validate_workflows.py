@@ -782,6 +782,7 @@ def main() -> int:
     v118_additions = {}
     v119_additions = {}
     v121_additions = {}
+    v123_additions = {}
     if args.against_head:
         # Import lazily so historical validators and pure graph tests do not
         # acquire a generator dependency unless checking collection migration.
@@ -800,6 +801,11 @@ def main() -> int:
         except ModuleNotFoundError:
             from build_qwen_image21_workflows import build_all as build_v121
         v121_additions = build_v121()
+        try:
+            from tools.build_video_upscale_v123 import build_all as build_v123
+        except ModuleNotFoundError:
+            from build_video_upscale_v123 import build_all as build_v123
+        v123_additions = build_v123()
     if args.against_head and not args.skip_collection_totals:
         baseline_paths = git_baseline_workflow_paths()
         expected_paths = {
@@ -816,6 +822,7 @@ def main() -> int:
         expected_paths.update(f"workflows/{key}" for key in v118_additions)
         expected_paths.update(f"workflows/{key}" for key in v119_additions)
         expected_paths.update(f"workflows/{key}" for key in v121_additions)
+        expected_paths.update(f"workflows/{key}" for key in v123_additions)
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
@@ -871,7 +878,10 @@ def main() -> int:
                 key = _path_key(path).removeprefix("workflows/")
                 addition = next((item for item in ADDITIONS if item.path == key), None)
                 autosongwriter = next((item for item in V093_TARGET_WORKFLOWS if item.path == key), None)
-                if key in v121_additions:
+                if key in v123_additions:
+                    if v123_additions[key] != workflow:
+                        errors.append(f"{path}: differs from deterministic v1.2.3 video-upscale workflow")
+                elif key in v121_additions:
                     if v121_additions[key] != workflow:
                         errors.append(f"{path}: differs from deterministic v1.2.1 Qwen Image workflow")
                 elif key in v119_additions:
@@ -926,7 +936,8 @@ def main() -> int:
             errors.extend(path_errors)
     # v1.2.1 adds two flat Qwen Image 2.1 workflows: +65 nodes, +24 notes, +44 links.
     # v1.2.2 replaces the one-node H3 Director graph with the FastH3 extend pipeline: +61 nodes, +24 notes, +57 links.
-    expected = {"files": 248, "graphs": 301, "nodes": 11288, "notes": 5143, "links": 7819, "timers": 229}
+    # v1.2.3 adds three flat video-upscale workflows (new category): +214 nodes, +94 notes, +187 links.
+    expected = {"files": 251, "graphs": 304, "nodes": 11502, "notes": 5237, "links": 8006, "timers": 232}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():
