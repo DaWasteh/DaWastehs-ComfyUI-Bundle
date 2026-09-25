@@ -1,0 +1,551 @@
+{
+ "release": "v1.2.5",
+ "date": "2026-09-26",
+ "purpose": "MV 5b scene review: every new scene shown with the original audio in the node, Weiter / Neu rendern / earlier take / Rest ohne Prüfung, decided by clicking the widget in the real ComfyUI frontend",
+ "workflow": {
+  "path": "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
+  "sha256": "f3dbff955e403d4f95b7bebce87a5fa669d328c2679b3276d0628c9537b52049"
+ },
+ "sources": [
+  {
+   "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/review.py",
+   "sha256": "e9166863f28562a6e899c8440a38a80bc6316cefd90a1b6b3713ecc5b1f3a38e"
+  },
+  {
+   "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/nodes_v2.py",
+   "sha256": "35040287101232c027289e7a9ff966c6968f23892cd54a5559f7b6edc033e7fd"
+  },
+  {
+   "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/mv2.py",
+   "sha256": "23b5a44bbcfc48a371ef1fa0434080dd15a7f0046a76d1deef156b22895ca8c9"
+  },
+  {
+   "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/web/mv2_review.js",
+   "sha256": "7cac528b39c6eeadfd739a6055e03b10f3d2e618e508ea6fabef4310177ae39b"
+  },
+  {
+   "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/__init__.py",
+   "sha256": "e4f782aea6d8ecfe6e03aa6c118f87c67a733eb649015010eb097c7a43edcbb6"
+  },
+  {
+   "path": "tools/build_h3_music_video_v122.py",
+   "sha256": "944d94a49f774a2504d10b62117dbd46f1096e622efa42e4240f1e07db2ad7d5"
+  }
+ ],
+ "environment": {
+  "comfyui": "0.37 (93810483, 2026-09-24)",
+  "frontend": "comfyui-frontend-package 1.53.6",
+  "gpu": "gpu:0 AMD Radeon AI PRO R9700 (render), gpu:1 RX 9070 XT (llama.cpp prompt writer)",
+  "server_args": "--reserve-vram 4 --use-pytorch-cross-attention --disable-dynamic-vram --disable-async-offload --disable-pinned-memory --cache-ram, VRAM guard 3 GiB",
+  "browser": "headless Edge (selenium): workflow loaded with app.loadGraphData, queued with app.queuePrompt, decisions by clicking the buttons and take tabs of the MV 5b widget"
+ },
+ "inputs": {
+  "song": "first 19.2 s of the private test song (Verse 1), LRC timestamps from the earlier Whisper alignment",
+  "idea": "the v1.2.2 test idea (walk through a ruined futuristic city)",
+  "character_sheets": 1,
+  "prompt_llm": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf",
+  "private": true
+ },
+ "resolution": [
+  1664,
+  928
+ ],
+ "run": {
+  "phases": {
+   "b": "first driver attached after a page reload while scene 1 rendered (widget fetched the state itself)",
+   "c": "fresh page, queued again after the cancel",
+   "d": "fresh page after the server restart with the fix"
+  },
+  "prompts": {
+   "b": {
+    "prompt_id": "febac12a-3ba3-493b-aa56-da9f8e80fc50",
+    "status": "error",
+    "messages": [
+     "execution_start",
+     "execution_cached",
+     "execution_interrupted"
+    ],
+    "interrupted_in": [
+     "DaWMV2ReviewScene"
+    ],
+    "source": "read from /history before the restart"
+   },
+   "c": {
+    "prompt_id": "1a70fe95-da87-4580-aa9a-4df1df6ee456",
+    "note": "interrupted by the tester (POST /interrupt) during sampling to restart the server with the clone fix; its history was not read before the restart"
+   },
+   "d": {
+    "prompt_id": "ad48f7b0-db22-40fa-a145-227d15e111b4",
+    "status": "success",
+    "messages": [
+     "execution_start",
+     "execution_cached",
+     "execution_success"
+    ],
+    "interrupted_in": []
+   }
+  },
+  "decisions": [
+   {
+    "phase": "b",
+    "scene": 1,
+    "take": 0,
+    "takes": [
+     0
+    ],
+    "prompt_id": "febac12a-3ba3-493b-aa56-da9f8e80fc50",
+    "video": {
+     "readyState": 4,
+     "duration": 6.333333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 1/3 prüfen · 00:00.000–00:06.333 · Verse 1 · Take 1",
+    "toast": true,
+    "action": "redo"
+   },
+   {
+    "phase": "b",
+    "scene": 1,
+    "take": 1,
+    "takes": [
+     0,
+     1
+    ],
+    "prompt_id": "febac12a-3ba3-493b-aa56-da9f8e80fc50",
+    "video": {
+     "readyState": 4,
+     "duration": 6.333333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [
+     "Take 1",
+     "Take 2 (neu)"
+    ],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 1/3 prüfen · 00:00.000–00:06.333 · Verse 1 · Take 2 von 2",
+    "toast": true,
+    "action": "pick take 1 + continue"
+   },
+   {
+    "phase": "b",
+    "scene": 2,
+    "take": 0,
+    "takes": [
+     0
+    ],
+    "prompt_id": "febac12a-3ba3-493b-aa56-da9f8e80fc50",
+    "video": {
+     "readyState": 4,
+     "duration": 7.458333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 2/3 prüfen · 00:06.333–00:13.792 · Verse 1 · Take 1",
+    "toast": true,
+    "action": "cancel + queue again",
+    "note": "Cancel through the frontend (api.interrupt); the prompt ended inside MV 5b while the scene waited"
+   },
+   {
+    "phase": "c",
+    "scene": 2,
+    "take": 0,
+    "takes": [
+     0
+    ],
+    "prompt_id": "1a70fe95-da87-4580-aa9a-4df1df6ee456",
+    "video": {
+     "readyState": 4,
+     "duration": 7.458333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 2/3 prüfen · 00:06.333–00:13.792 · Verse 1 · Take 1",
+    "toast": true,
+    "action": "redo",
+    "note": "first run of 'Neu rendern' inside the loop, code before the fix: the clone also re-ran scene 1's MV 5/MV 5b (Loop Start's value1 in round 0 is scene 1's token). Both skipped as done/approved; fixed in review.scene_chain (nearest Setup only)"
+   },
+   {
+    "phase": "c",
+    "action": "tester cancel + server restart with the fix + queue again",
+    "note": "POST /interrupt during the sampling of take 2; the take was rendered again after the restart"
+   },
+   {
+    "phase": "d",
+    "scene": 2,
+    "take": 1,
+    "takes": [
+     0,
+     1
+    ],
+    "prompt_id": "ad48f7b0-db22-40fa-a145-227d15e111b4",
+    "video": {
+     "readyState": 4,
+     "duration": 7.458333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [
+     "Take 1",
+     "Take 2 (neu)"
+    ],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 2/3 prüfen · 00:06.333–00:13.792 · Verse 1 · Take 2 von 2",
+    "toast": true,
+    "action": "redo",
+    "note": "fixed code: only scene 2's chain (Setup, noise, guider, sampler, MV 5, MV 5b) cloned"
+   },
+   {
+    "phase": "d",
+    "scene": 2,
+    "take": 2,
+    "takes": [
+     0,
+     1,
+     2
+    ],
+    "prompt_id": "ad48f7b0-db22-40fa-a145-227d15e111b4",
+    "video": {
+     "readyState": 4,
+     "duration": 7.458333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [
+     "Take 1",
+     "Take 2",
+     "Take 3 (neu)"
+    ],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 2/3 prüfen · 00:06.333–00:13.792 · Verse 1 · Take 3 von 3",
+    "toast": true,
+    "action": "continue_all"
+   }
+  ],
+  "browser": [
+   {
+    "phase": "b",
+    "t": 543.8,
+    "scene": 1,
+    "take": 0,
+    "takes": [
+     0
+    ],
+    "prompt_id": "febac12a-3ba3-493b-aa56-da9f8e80fc50",
+    "video": {
+     "readyState": 4,
+     "duration": 6.333333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 1/3 prüfen · 00:00.000–00:06.333 · Verse 1 · Take 1",
+    "toast": true
+   },
+   {
+    "phase": "b",
+    "t": 1147.6,
+    "scene": 1,
+    "take": 1,
+    "takes": [
+     0,
+     1
+    ],
+    "prompt_id": "febac12a-3ba3-493b-aa56-da9f8e80fc50",
+    "video": {
+     "readyState": 4,
+     "duration": 6.333333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [
+     "Take 1",
+     "Take 2 (neu)"
+    ],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 1/3 prüfen · 00:00.000–00:06.333 · Verse 1 · Take 2 von 2",
+    "toast": true
+   },
+   {
+    "phase": "b",
+    "t": 2176.1,
+    "scene": 2,
+    "take": 0,
+    "takes": [
+     0
+    ],
+    "prompt_id": "febac12a-3ba3-493b-aa56-da9f8e80fc50",
+    "video": {
+     "readyState": 4,
+     "duration": 7.458333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 2/3 prüfen · 00:06.333–00:13.792 · Verse 1 · Take 1",
+    "toast": true
+   },
+   {
+    "phase": "c",
+    "t": 24.6,
+    "scene": 2,
+    "take": 0,
+    "takes": [
+     0
+    ],
+    "prompt_id": "1a70fe95-da87-4580-aa9a-4df1df6ee456",
+    "video": {
+     "readyState": 4,
+     "duration": 7.458333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 2/3 prüfen · 00:06.333–00:13.792 · Verse 1 · Take 1",
+    "toast": true
+   },
+   {
+    "phase": "d",
+    "t": 809.4,
+    "scene": 2,
+    "take": 1,
+    "takes": [
+     0,
+     1
+    ],
+    "prompt_id": "ad48f7b0-db22-40fa-a145-227d15e111b4",
+    "video": {
+     "readyState": 4,
+     "duration": 7.458333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [
+     "Take 1",
+     "Take 2 (neu)"
+    ],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 2/3 prüfen · 00:06.333–00:13.792 · Verse 1 · Take 2 von 2",
+    "toast": true
+   },
+   {
+    "phase": "d",
+    "t": 1713.3,
+    "scene": 2,
+    "take": 2,
+    "takes": [
+     0,
+     1,
+     2
+    ],
+    "prompt_id": "ad48f7b0-db22-40fa-a145-227d15e111b4",
+    "video": {
+     "readyState": 4,
+     "duration": 7.458333,
+     "w": 1664,
+     "h": 928,
+     "error": null
+    },
+    "tabs": [
+     "Take 1",
+     "Take 2",
+     "Take 3 (neu)"
+    ],
+    "buttons": [
+     "↻ Neu rendern",
+     "✓ Weiter",
+     "⏩ Rest ohne Prüfung"
+    ],
+    "status": "Szene 2/3 prüfen · 00:06.333–00:13.792 · Verse 1 · Take 3 von 3",
+    "toast": true
+   }
+  ],
+  "scenes": [
+   {
+    "scene": 1,
+    "start": 0.0,
+    "end": 6.333333333333333,
+    "frames": 152,
+    "h3_frames": 175,
+    "take": 0,
+    "seed": 20260923,
+    "review": "approved",
+    "archived_takes": {
+     "1": {
+      "seed": 11400714819343459408,
+      "completed_at": 1790372893.3473573,
+      "video_sha256": "3cafbde61c60e8b13c1e653805a8d0e57e9986031078b2fb90ab10a50055d837",
+      "frames": 152,
+      "differs_from_film": true
+     }
+    },
+    "completed_at": 1790372289.4611263,
+    "reviewed_at": 1790372898.636839,
+    "video_sha256": "9f5d65c37bf425f012628de52dc054736b843c8553a678617e32af0c1d3593b6",
+    "pictures_identical_in_film": true
+   },
+   {
+    "scene": 2,
+    "start": 6.333333333333333,
+    "end": 13.791666666666666,
+    "frames": 179,
+    "h3_frames": 209,
+    "take": 2,
+    "seed": 4354685564958106280,
+    "review": "approved",
+    "archived_takes": {
+     "0": {
+      "seed": 21260926,
+      "completed_at": 1790373921.4205995,
+      "video_sha256": "98b35e947f98702041e20fded9028362568af9a9b9ac63486779fde58e1a48c5",
+      "frames": 179,
+      "differs_from_film": true
+     },
+     "1": {
+      "seed": 11400714819344459411,
+      "completed_at": 1790375190.8152215,
+      "video_sha256": "b9b816dfd7087e08883663aac6d8700b0599663b49e91d3638fe594e59d1886e",
+      "frames": 179,
+      "differs_from_film": true
+     }
+    },
+    "completed_at": 1790376094.8123958,
+    "reviewed_at": 1790376099.7974992,
+    "video_sha256": "cc04868a9e2a90635ec542b8bc18d8829a6f19c3c621f9478fc0bbf50f1f73d3",
+    "pictures_identical_in_film": true
+   },
+   {
+    "scene": 3,
+    "start": 13.791666666666666,
+    "end": 19.208333333333332,
+    "frames": 130,
+    "h3_frames": 175,
+    "take": 0,
+    "seed": 22260929,
+    "review": "approved",
+    "archived_takes": {},
+    "completed_at": 1790376698.7683024,
+    "reviewed_at": 1790376700.8703878,
+    "video_sha256": "a143f73815d84ef305eb5f8eed69ca036ddf6c4669410a9bbf7c06d11e9175c4",
+    "pictures_identical_in_film": true
+   }
+  ],
+  "resume": {
+   "scene": 2,
+   "take": 0,
+   "seconds_after_queue": 3.6,
+   "shown_again_without_render": true
+  },
+  "fixed_loop_redo_only_clones_its_scene": true,
+  "scene3_without_stop": true,
+  "film": {
+   "path": "Review_Test_1664_20260926-005144.mp4",
+   "frames": 461,
+   "expected_frames": 461,
+   "audio_packets": 801,
+   "audio_packets_identical": true,
+   "seam_ratios": [
+    0.929,
+    1.025
+   ]
+  },
+  "server_log": [
+   "[review1.out] Szene 1/3 · 00:00.000–00:06.333 · 152 neue Frames + 0 Übergang = 175 H3-Frames · Seed 20260923",
+   "[review1.out] Szene 1/3 gespeichert: L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Review_Test_1664_f701e8b6ef35\\scenes\\scene_0000.mp4 (152 Frames)",
+   "[review1.out] Szene 1/3 · Take 1 wartet auf Prüfung im Node MV 5b (Weiter / Neu rendern). Ohne Browser: POST /dawasteh/mv2/review {\"id\": \"b8fba11c13c2437d9427089b7cc50a06\", \"action\": \"continue|redo|continue_all\"}",
+   "[review1.out] Szene 1/3 wird neu gerendert: Take 2 · Seed 11400714819343459408",
+   "[review1.out] Szene 1/3 · 00:00.000–00:06.333 · 152 neue Frames + 0 Übergang = 175 H3-Frames · Seed 11400714819343459408",
+   "[review1.out] Szene 1/3 · Take 2 gespeichert: L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Review_Test_1664_f701e8b6ef35\\scenes\\scene_0000.mp4 (152 Frames)",
+   "[review1.out] Szene 1/3 · Take 2 wartet auf Prüfung im Node MV 5b (Weiter / Neu rendern). Ohne Browser: POST /dawasteh/mv2/review {\"id\": \"6417cc9dff2c4a3793caee41811c599e\", \"action\": \"continue|redo|continue_all\"}",
+   "[review1.out] Szene 1/3 · Take 1 · Seed 20260923 · freigegeben",
+   "[review1.out] Szene 2/3 · 00:06.333–00:13.792 · 179 neue Frames + 22 Übergang = 209 H3-Frames · Seed 21260926",
+   "[review1.out] Szene 2/3 gespeichert: L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Review_Test_1664_f701e8b6ef35\\scenes\\scene_0001.mp4 (179 Frames)",
+   "[review1.out] Szene 2/3 · Take 1 wartet auf Prüfung im Node MV 5b (Weiter / Neu rendern). Ohne Browser: POST /dawasteh/mv2/review {\"id\": \"6976f03ad1fe414e98cc365b9e55633b\", \"action\": \"continue|redo|continue_all\"}",
+   "[review1.out] Szene 1/3 bereits fertig (übersprungen): L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Review_Test_1664_f701e8b6ef35\\scenes\\scene_0000.mp4",
+   "[review1.out] Szene 2/3 · Take 1 wartet auf Prüfung im Node MV 5b (Weiter / Neu rendern). Ohne Browser: POST /dawasteh/mv2/review {\"id\": \"d7983c9407c14d77ac47d00f5ce56dca\", \"action\": \"continue|redo|continue_all\"}",
+   "[review1.out] Szene 2/3 wird neu gerendert: Take 2 · Seed 11400714819344459411",
+   "[review1.out] Szene 1/3 bereits fertig (übersprungen): L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Review_Test_1664_f701e8b6ef35\\scenes\\scene_0000.mp4",
+   "[review1.out] Szene 1/3 · Take 1 · Seed 20260923 · bereits freigegeben",
+   "[review1.out] Szene 2/3 · 00:06.333–00:13.792 · 179 neue Frames + 22 Übergang = 209 H3-Frames · Seed 11400714819344459411",
+   "[review2.out] Szene 1/3 bereits fertig (übersprungen): L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Review_Test_1664_f701e8b6ef35\\scenes\\scene_0000.mp4",
+   "[review2.out] Szene 1/3 · Take 1 · Seed 20260923 · bereits freigegeben",
+   "[review2.out] Szene 2/3 · 00:06.333–00:13.792 · 179 neue Frames + 22 Übergang = 209 H3-Frames · Seed 11400714819344459411",
+   "[review2.out] Szene 2/3 · Take 2 gespeichert: L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Review_Test_1664_f701e8b6ef35\\scenes\\scene_0001.mp4 (179 Frames)",
+   "[review2.out] Szene 2/3 · Take 2 wartet auf Prüfung im Node MV 5b (Weiter / Neu rendern). Ohne Browser: POST /dawasteh/mv2/review {\"id\": \"0f497e863fb4419b995d7bf583f5153c\", \"action\": \"continue|redo|continue_all\"}",
+   "[review2.out] Szene 2/3 wird neu gerendert: Take 3 · Seed 4354685564958106280",
+   "[review2.out] Szene 2/3 · 00:06.333–00:13.792 · 179 neue Frames + 22 Übergang = 209 H3-Frames · Seed 4354685564958106280",
+   "[review2.out] Szene 2/3 · Take 3 gespeichert: L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Review_Test_1664_f701e8b6ef35\\scenes\\scene_0001.mp4 (179 Frames)",
+   "[review2.out] Szene 2/3 · Take 3 wartet auf Prüfung im Node MV 5b (Weiter / Neu rendern). Ohne Browser: POST /dawasteh/mv2/review {\"id\": \"c8e3c2c124324517b7b16d84ca4914cb\", \"action\": \"continue|redo|continue_all\"}",
+   "[review2.out] Szene 2/3 · Take 3 · Seed 4354685564958106280 · freigegeben, Rest ohne Prüfung",
+   "[review2.out] Szene 3/3 · 00:13.792–00:19.208 · 130 neue Frames + 22 Übergang = 175 H3-Frames · Seed 22260929",
+   "[review2.out] Szene 3/3 gespeichert: L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Review_Test_1664_f701e8b6ef35\\scenes\\scene_0002.mp4 (130 Frames)",
+   "[review2.out] Szene 3/3 · Take 1 · Seed 22260929 · ohne Prüfung übernommen",
+   "[review2.out] COMPLETE L:\\ComfyUI\\ComfyUI\\output\\video\\DaWasteh_MusicVideo\\Review_Test_1664_20260926-005144.mp4 · 461 frames (19.21 s) · audio mp3float stream-copied"
+  ]
+ }
+}

@@ -14,10 +14,11 @@ import urllib.request
 from pathlib import Path
 
 TYPES = [
-    "DaWMV2Planner", "DaWMV2PromptWriter", "DaWMV2EncodeScenes", "DaWMV2SceneSetup", "DaWMV2SaveScene", "DaWMV2Finalize",
+    "DaWMV2Planner", "DaWMV2PromptWriter", "DaWMV2EncodeScenes", "DaWMV2LoadModel", "DaWMV2SceneSetup", "DaWMV2SaveScene",
+    "DaWMV2ReviewScene", "DaWMV2Finalize",
     "PixaromaPrompt", "PixaromaSizes", "PixaromaShowText", "PixaromaLoadImage", "UNETLoader", "VAELoader", "MiniMaxH3SigmaShift",
     "ModelAttentionBackend", "BlockSparseAttention", "KSamplerSelect", "BasicScheduler", "RandomNoise", "BasicGuider",
-    "SamplerCustomAdvanced", "PixaromaPauseImage", "PixaromaLoopStart", "PixaromaLoopEnd", "PixaromaRunTimer",
+    "SamplerCustomAdvanced", "PixaromaLoopStart", "PixaromaLoopEnd", "PixaromaRunTimer",
     "SelectModelDevice", "SelectCLIPDevice", "SelectVAEDevice", "DaWMultiGPUDeviceControl",
 ]
 BS = "\\"

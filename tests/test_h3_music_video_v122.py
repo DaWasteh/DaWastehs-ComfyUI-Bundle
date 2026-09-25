@@ -106,7 +106,7 @@ class PlanTests(unittest.TestCase):
                     self.assertEqual(s["prefix_frames"], 0 if s["index"] == 0 else 22)
                 if total > 9 * 24:
                     self.assertTrue(all(4 * 24 <= s["frames"] <= 9 * 24 for s in scenes))
-                    # 864x480 default: every clip fits FastH3 completely in VRAM (measured limit 243 H3 frames).
+                    # at 864x480 every clip fits FastH3 completely in VRAM (measured limit 243 H3 frames).
                     self.assertTrue(all(s["gen_frames"] <= 243 for s in scenes))
 
     def test_scene_count_scales_and_lengths_vary(self):
@@ -243,13 +243,15 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(len(self.node("SamplerCustomAdvanced")), 2)
         self.assertFalse(self.node("CLIPLoader"))
 
-    def test_gate_then_loop_then_final(self):
-        gate = self.node("PixaromaPauseImage")[0]
-        first_save, slot = self.source(gate, "image")
-        self.assertEqual((first_save["type"], slot), ("DaWMV2SaveScene", 1))
-        self.assertEqual(first_save["widgets_values"][:2], [0, 0])
+    def test_review_then_loop_then_final(self):
+        # v1.2.5: MV 5b (video review after every scene) replaced the Pixaroma image gate after scene 1
+        self.assertFalse(self.node("PixaromaPauseImage"))
         start = self.node("PixaromaLoopStart")[0]
-        self.assertEqual(self.source(start, "value1")[0]["id"], gate["id"])
+        first_review = self.source(start, "value1")[0]
+        self.assertEqual(first_review["type"], "DaWMV2ReviewScene")
+        first_save, slot = self.source(first_review, "scene")
+        self.assertEqual((first_save["type"], slot), ("DaWMV2SaveScene", 0))
+        self.assertEqual(first_save["widgets_values"][:2], [0, 0])
         planner, slot = self.source(start, "total")
         self.assertEqual((planner["type"], slot), ("DaWMV2Planner", 2))
         saves = self.node("DaWMV2SaveScene")
@@ -258,7 +260,9 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(loop_save["widgets_values"][1], 1)
         self.assertEqual(self.source(loop_save, "after"), (start, 0))
         end = self.node("PixaromaLoopEnd")[0]
-        self.assertEqual(self.source(end, "value1")[0]["id"], loop_save["id"])
+        loop_review = self.source(end, "value1")[0]
+        self.assertEqual(loop_review["type"], "DaWMV2ReviewScene")
+        self.assertEqual(self.source(loop_review, "scene"), (loop_save, 0))
         self.assertEqual(self.source(end, "loop"), (start, 5))
         final = self.node("DaWMV2Finalize")[0]
         self.assertEqual(self.source(final, "after")[0]["id"], end["id"])

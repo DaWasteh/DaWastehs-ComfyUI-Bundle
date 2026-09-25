@@ -30,7 +30,7 @@ import numpy as np
 FPS = 24
 H3_TRAINED_MAX_FRAMES = 362
 SCHEMA = "dawasteh-h3-mv2/1"
-PROMPT_VERSION = 10  # bump whenever a prompt template or the assembly changes
+PROMPT_VERSION = 11  # bump whenever a prompt template or the assembly changes (11: v1.2.5 section directions)
 
 LANGUAGE_TAGS = {
     "en": "English", "de": "German", "fr": "French", "es": "Spanish", "it": "Italian", "pt": "Portuguese",
@@ -66,6 +66,13 @@ def stable_hash(value: Any, length: int = 16) -> str:
 
 def scene_seed(base_seed: int, index: int) -> int:
     return (int(base_seed) + int(index) * 1000003) & 0xFFFFFFFFFFFFFFFF
+
+
+def take_seed(base_seed: int, index: int, take: int = 0) -> int:
+    """Seed of one render attempt (v1.2.5 review: 'Neu rendern'). Take 0 is the planner's seed, so existing
+    projects keep their resume keys; later takes jump far away from every other scene's seed."""
+    seed = scene_seed(base_seed, index)
+    return seed if not take else (seed + int(take) * 0x9E3779B97F4A7C15) & 0xFFFFFFFFFFFFFFFF
 
 
 # ---------------------------------------------------------------------------
@@ -790,7 +797,6 @@ def build_scene_shots(scene: dict[str, Any], lines: list[LyricLine], bible: dict
         early = [float(l.start) - start - 0.1 for l in lines if l.start is not None and 1.5 <= float(l.start) - start - 0.1 <= 3.5]
         cuts = [0.0, round(early[0] if early else 2.0, 3)]
     location_main = bible["locations"].get(scene["part"]) or next(iter(bible["locations"].values()), DEFAULT_LOCATIONS[0])
-    all_locations = list(dict.fromkeys(bible["locations"].values())) or DEFAULT_LOCATIONS
     shots = []
     camera = previous_camera
     for k, rel in enumerate(cuts):
@@ -805,13 +811,60 @@ def build_scene_shots(scene: dict[str, Any], lines: list[LyricLine], bible: dict
             action = SINGING_ACTIONS[(index + k) % len(SINGING_ACTIONS)]
         else:
             size = BROLL_SIZES[(index * 2 + k) % len(BROLL_SIZES)]
-            location = location_main if k == 0 else all_locations[(index + k) % len(all_locations)]
+            # v1.2.5: B-roll stays in the section's own place; cutaways to other sections' places pulled the
+            # following scenes there (the next scene starts where this one ended), e.g. a chorus into the verse-3 throne
+            location = location_main
             action = BROLL_ACTIONS[(index + k) % len(BROLL_ACTIONS)]
         if k == 0 and index > 0 and previous_location:
             location = previous_location
         shots.append({"start": round(rel, 3), "end": round(rel_end, 3), "size": size, "location": location,
                       "camera": camera + ".", "action": action, "lyrics": sung})
     return shots
+
+
+_SECTION_WORDS = r"(?:intro|pre-?chorus|chorus|verse(?:\s*\d+)?|bridge|guitar\s*solo|solo|instrumental(?:\s*break)?|breakdown|hook|drop|outro)"
+_DIRECTION_LINE = re.compile(
+    rf"^\s*(?:every|each|all|the|first|last)?\s*({_SECTION_WORDS}(?:\s*(?:and|&|/|,)\s*(?:every|each|the)?\s*{_SECTION_WORDS})*)\s*[-–—:]\s*(.+)$",
+    re.I)
+
+
+def _section_key(name: str) -> str:
+    return re.sub(r"\s+", " ", name.strip().lower().replace("-", ""))
+
+
+def section_directions(idea: str) -> list[tuple[list[str], str]]:
+    """Lines of the video idea written per song section ("Chorus - ...", "Intro and Verse 1: ...")."""
+    out = []
+    for line in (idea or "").splitlines():
+        match = _DIRECTION_LINE.match(line)
+        if match:
+            names = re.findall(_SECTION_WORDS, match.group(1), flags=re.I)
+            out.append(([_section_key(n) for n in names], match.group(2).strip()))
+    return out
+
+
+_SOLO_WORDS = ("solo", "instrumental", "breakdown")
+
+
+def directions_for(section: str, directions: list[tuple[list[str], str]]) -> str | None:
+    """The idea's direction for one planned section: exact name ("verse 2") beats the generic one ("verse"),
+    which beats the instrumental group (solo / instrumental / breakdown)."""
+    key = _section_key(section.split("/")[0])
+    base = re.sub(r"\s*\d+$", "", key)
+    best: tuple[int, str] | None = None
+    for names, text in directions:
+        for name in names:
+            if name == key:
+                rank = 3
+            elif name == base and not re.search(r"\d$", name):
+                rank = 2
+            elif any(w in name for w in _SOLO_WORDS) and any(w in key for w in _SOLO_WORDS):
+                rank = 1
+            else:
+                continue
+            if best is None or rank > best[0]:
+                best = (rank, text)
+    return best[1] if best else None
 
 
 def scene_llm_request(scene: dict[str, Any], bible: dict[str, Any], *, index: int, total: int,
@@ -822,8 +875,12 @@ def scene_llm_request(scene: dict[str, Any], bible: dict[str, Any], *, index: in
         rows.append(f"SHOT {k + 1}: {shot['end'] - shot['start']:.1f} s, {shot['size']}, location: {shot['location']}; "
                     f"lyrics sung here: {lyric}")
     cast = "\n".join(f"CHARACTER {k + 1}: {c}" for k, c in enumerate(bible.get("characters") or [])) or "CHARACTER 1: the lead singer"
+    direction = directions_for(scene["section"], section_directions(idea))
+    focus = (f"DIRECTIONS FOR THIS SECTION ({scene['section']}) - follow them for place, wardrobe and action, and ignore "
+             f"places and actions the idea gives for other sections: {direction}\n") if direction else ""
     return (
         f"Music video idea: {idea}\n"
+        f"{focus}"
         f"Visual style: {bible.get('style')}\n{cast}\n"
         f"Song part: scene {index + 1} of {total}, section '{scene['section']}', musical energy {scene['energy']:.2f} (0 calm .. 1 intense).\n"
         f"Previous scene (do NOT repeat its actions, continue the story from there): {previous_summary or 'none, this is the opening'}\n"

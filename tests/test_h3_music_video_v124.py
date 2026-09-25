@@ -278,7 +278,7 @@ class WorkflowV124Tests(unittest.TestCase):
         self.assertEqual((selector["type"], slot), ("SelectModelDevice", 0))
         self.assertEqual(self.source(selector, "model"), (loader, 0))
         marker = self.workflow["extra"]["dawasteh_h3_music_video_v122"]
-        self.assertEqual((marker["version"], marker["release"]), (1, "v1.2.4"))
+        self.assertEqual(marker["version"], 1)   # the release string is pinned by the newest release test
 
     def test_lora_is_pinned_in_the_download_manifest(self):
         models = json.loads((ROOT / "tools/workflow_templates/v122/models.json").read_text(encoding="utf-8"))
@@ -301,12 +301,16 @@ class LiveEvidenceV124Tests(unittest.TestCase):
         cls.sha = staticmethod(lambda p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest())
 
     def test_report_pins_the_shipped_workflow_and_sources(self):
+        import hashlib
+        import subprocess
+        # v1.2.5 changed MV 2 (prompt model, section directions); this evidence describes the v1.2.4 files.
+        released = lambda p: hashlib.sha256(subprocess.check_output(["git", "show", "v1.2.4:" + p], cwd=ROOT)).hexdigest()
         workflow = self.report["workflow"]
-        self.assertEqual(workflow["sha256"], self.sha(workflow["path"]))
+        self.assertEqual(workflow["sha256"], released(workflow["path"]))
         self.assertTrue(workflow["executed_contract_matches_final"])
         self.assertEqual(workflow["api_contract_sha256"], workflow["final_file_api_contract_sha256"])
         for entry in self.report["sources"]:
-            self.assertEqual(entry["sha256"], self.sha(entry["path"]), entry["path"])
+            self.assertEqual(entry["sha256"], released(entry["path"]), entry["path"])
         self.assertNotIn("PixaromaLoopStart", workflow["pause_node_classes"])
         self.assertIn("DaWMV2Finalize", workflow["continue_node_classes"])
         self.assertIn("DaWMV2LoadModel", workflow["pause_node_classes"])

@@ -1,0 +1,199 @@
+{
+  "release": "v1.2.5",
+  "date": "2026-09-25",
+  "scope": "MV 2 prompt writer of the FastH3 song-to-music-video workflow (DaWMV2PromptWriter, llm_backend.py)",
+  "host": {
+    "gpu_server": "RX 9070 XT 16 GB (HIP device 1, desktop attached)",
+    "gpu_render": "Radeon AI PRO R9700 32 GB",
+    "llama_cpp": "b11160 HIP build (llama-server, llama-perplexity)",
+    "os": "Windows 11 Pro 26200"
+  },
+  "chosen": {
+    "model": "models/LLM/Qwen3.8/Qwen3.8-27B-IQ4_XS-3.84bpw.gguf",
+    "mmproj": "models/LLM/Qwen3.8/mmproj-Qwen3.8-27B-IQ4_XS-3.84bpw-bf16.gguf",
+    "server_args": "-ngl 999 -c 8192 -fa on -np 1 --reasoning off --no-mmproj-offload --spec-type draft-mtp",
+    "draft": "built-in MTP head of the model (no separate draft model)"
+  },
+  "vram_fit_rx9070xt": {
+    "method": "Windows GPU Process Memory counters of the server process after load, after one character sheet and one text request",
+    "rows": [
+      {
+        "model": "Ridge-3.7bpw",
+        "ctx": 16384,
+        "mmproj": "gpu",
+        "ubatch": 512,
+        "dedicated_gib": 12.82,
+        "shared_gib": 2.31,
+        "tok_s": 40.9,
+        "sheet_s": 6.3
+      },
+      {
+        "model": "Ridge-3.7bpw",
+        "ctx": 8192,
+        "mmproj": "gpu",
+        "ubatch": 256,
+        "dedicated_gib": 13.14,
+        "shared_gib": 1.27,
+        "tok_s": 41.3,
+        "sheet_s": 6.2
+      },
+      {
+        "model": "Ridge-3.7bpw",
+        "ctx": 8192,
+        "mmproj": "cpu",
+        "ubatch": 512,
+        "dedicated_gib": 12.47,
+        "shared_gib": 0.34,
+        "tok_s": 40.5,
+        "sheet_s": 12.7
+      },
+      {
+        "model": "Ridge-3.7bpw",
+        "ctx": 8192,
+        "mmproj": "cpu",
+        "ubatch": 256,
+        "dedicated_gib": 12.34,
+        "shared_gib": 0.31,
+        "tok_s": 40.0,
+        "sheet_s": 13.7
+      },
+      {
+        "model": "IQ4_XS-3.84bpw",
+        "ctx": 8192,
+        "mmproj": "cpu",
+        "ubatch": 512,
+        "dedicated_gib": 12.68,
+        "shared_gib": 0.92,
+        "tok_s": 27.1,
+        "sheet_s": 14.6
+      },
+      {
+        "model": "IQ4_XS-3.84bpw",
+        "ctx": 8192,
+        "mmproj": "cpu",
+        "ubatch": 256,
+        "dedicated_gib": 12.55,
+        "shared_gib": 0.89,
+        "tok_s": 27.4,
+        "sheet_s": 15.0
+      },
+      {
+        "model": "IQ4_XS-3.84bpw",
+        "ctx": 6144,
+        "mmproj": "cpu",
+        "ubatch": 256,
+        "dedicated_gib": 12.54,
+        "shared_gib": 0.89,
+        "tok_s": 29.2,
+        "sheet_s": 15.7
+      },
+      {
+        "model": "IQ4_XS-3.84bpw",
+        "ctx": 8192,
+        "mmproj": "cpu",
+        "ubatch": 128,
+        "dedicated_gib": 12.48,
+        "shared_gib": 0.88,
+        "tok_s": 29.3,
+        "sheet_s": 15.4
+      }
+    ],
+    "note": "HIP reports no foreign VRAM use on Windows and --fit does not touch explicit -ngl/-c; the process gets ~12.5 GiB dedicated beside the desktop."
+  },
+  "perplexity_wikitext2": {
+    "command": "llama-perplexity -f wiki.test.raw -c 2048 --chunks 20 -fa on (HIP device 1)",
+    "rows": [
+      {
+        "file": "Qwen3.8-27B-Ridge-3.7bpw.gguf",
+        "gb": 12.6,
+        "ppl": 6.5926,
+        "err": 0.11143,
+        "ngl": 999
+      },
+      {
+        "file": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf",
+        "gb": 13.1,
+        "ppl": 6.2084,
+        "err": 0.10565,
+        "ngl": 999
+      },
+      {
+        "file": "Qwen3.8-27B-UD-Q4_K_XL.gguf",
+        "gb": 17.6,
+        "ppl": 5.9969,
+        "err": 0.10055,
+        "ngl": 46
+      }
+    ]
+  },
+  "prompt_quality": {
+    "method": "same plans, ideas, character sheets, temperature 0.7 and seeds as the 2026-09-25 comparison runs; keyword place check per section, repeated shot = difflib ratio > 0.75 to an earlier shot, outro wardrobe conflicts per escalation level",
+    "rows": [
+      {
+        "case": "outro villa",
+        "writer": "Qwen3.5 4B (ComfyUI)",
+        "place": 0.85,
+        "repeated": "6/18",
+        "wardrobe_conflicts": [
+          7,
+          12
+        ]
+      },
+      {
+        "case": "outro villa",
+        "writer": "Qwen3.8 27B Ridge",
+        "place": 1.0,
+        "repeated": "0/18",
+        "wardrobe_conflicts": [],
+        "seconds": 85
+      },
+      {
+        "case": "outro villa",
+        "writer": "Qwen3.8 27B IQ4_XS",
+        "place": 1.0,
+        "repeated": "0/18",
+        "wardrobe_conflicts": [],
+        "seconds": 103
+      },
+      {
+        "case": "intro idea 2",
+        "writer": "Qwen3.5 4B, best of seeds 7/8/9/11",
+        "place": 0.78,
+        "repeated": "22/56"
+      },
+      {
+        "case": "intro idea 2",
+        "writer": "Qwen3.8 27B Ridge, v1.2.4 B-roll",
+        "place": 0.88,
+        "repeated": "0/56",
+        "seconds": 196
+      },
+      {
+        "case": "intro idea 2",
+        "writer": "Qwen3.8 27B Ridge, v1.2.5",
+        "place": 1.0,
+        "repeated": "0/56",
+        "seconds": 196
+      },
+      {
+        "case": "intro idea 2",
+        "writer": "Qwen3.8 27B IQ4_XS, v1.2.5",
+        "place": 1.0,
+        "repeated": "0/56",
+        "seconds": 281
+      }
+    ],
+    "explicit_or_minor_terms": "none in any run"
+  },
+  "findings": {
+    "truncated_answer": "seed 107 of outro scene 1: the sampler drew 'SH' (p=0.043) instead of the token 'SHOT' (p=0.79), then the end token (p=0.76); identical with and without MTP -> MV 2 retries once with seed + 1000",
+    "broll_drift": "B-roll shots cut to other sections' places and the next scene starts in the last place; intro scenes 7-13 (chorus) stayed in the verse-3 throne hall with 4B and 27B -> B-roll stays in the section's own place"
+  },
+  "node_e2e": {
+    "method": "repo DaWMV2PromptWriter.execute in a ComfyUI 0.34 process that only sees HIP device 1, outro villa plan",
+    "auto_gguf_s": 101.3,
+    "cached_rerun_s": 0.0,
+    "fallback_missing_server": "Qwen3.5 4B, 58.6 s, own cache key",
+    "prompt_llm": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf"
+  }
+}

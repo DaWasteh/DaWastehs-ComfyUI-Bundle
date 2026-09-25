@@ -73,6 +73,17 @@ $VramGuard = $true                 # v1.1.2: per-process HIP allocator cap (DaWa
                                    # from TrainLoraNode). The cap turns that into a normal OOM error.
 $VramGuardReserveGib = 3           # VRAM left untouched per device (driver starts spilling ~2 GiB early)
 
+# ---- MV 2 prompt writer (v1.2.5) --------------------------------------------
+# The music-video prompt writer ("auto") starts this GGUF model through llama.cpp on
+# gpu:1 only while it writes prompts, then stops it. Qwen3.8 27B IQ4_XS with its built-in
+# MTP head, 8k context, vision projector on the CPU: ~28 tokens/s on the RX 9070 XT beside
+# the desktop (wikitext-2 perplexity 6.21; Ridge 3.7 bpw: 6.59 at 40 tokens/s).
+# Missing files = MV 2 keeps Qwen3.5 4B inside ComfyUI.
+# The vision projector (mmproj-*.gguf) is picked from the same folder.
+$PromptLlmGguf = Join-Path $ComfyPath "models\LLM\Qwen3.8\Qwen3.8-27B-IQ4_XS-3.84bpw.gguf"
+$LlamaServerExe = "L:\LAB\ai-local\b11160_hip_llama.cpp\build\bin\llama-server.exe"
+$LlamaHipDevice = "1"              # physical HIP index for the server: 1 = RX 9070 XT
+
 if (!(Test-Path -LiteralPath $ComfyPath)) { throw "ComfyUI folder not found: $ComfyPath" }
 if (!(Test-Path -LiteralPath $PythonExe)) { throw "Python venv not found: $PythonExe" }
 if (!(Test-Path -LiteralPath $Launcher)) { throw "Windows launcher not found: $Launcher" }
@@ -130,9 +141,20 @@ if ($DebugHipLaunchBlocking) {
     $env:CUDA_LAUNCH_BLOCKING = "1"
 }
 
+$PromptLlm = "Qwen3.5 4B (in ComfyUI)"
+if ((Test-Path -LiteralPath $PromptLlmGguf) -and (Test-Path -LiteralPath $LlamaServerExe)) {
+    $env:DAWASTEH_PROMPT_LLM_GGUF = $PromptLlmGguf
+    $env:DAWASTEH_LLAMA_SERVER = $LlamaServerExe
+    $env:DAWASTEH_LLAMA_HIP_DEVICE = $LlamaHipDevice
+    $PromptLlm = "$(Split-Path -Leaf $PromptLlmGguf) (llama.cpp, HIP device $LlamaHipDevice)"
+} else {
+    Remove-Item Env:DAWASTEH_PROMPT_LLM_GGUF -ErrorAction SilentlyContinue
+    Remove-Item Env:DAWASTEH_LLAMA_SERVER -ErrorAction SilentlyContinue
+}
+
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "ComfyUI Dual-GPU Launcher v1.1.7 (performance profile v0.9.8)" -ForegroundColor Cyan
+Write-Host "ComfyUI Dual-GPU Launcher v1.2.5 (performance profile v0.9.8)" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor DarkCyan
 Write-Host "ComfyUI: $ComfyPath"
 Write-Host "Port:    $Port"
@@ -145,6 +167,7 @@ Write-Host "Profile: DynamicVRAM=$EnableDynamicVram, async-offload=$AsyncOffload
 Write-Host "BLAS:    hipBLASLt=$PreferHipBlasLt"
 Write-Host "Opt-in:  ck-attention=$UseComfyKitchenAttention, fp8_matrix_mult=$FastFp8MatrixMult"
 Write-Host "Guard:   VRAM guard=$VramGuard (reserve $VramGuardReserveGib GiB per GPU, DAWASTEH_VRAM_GUARD)"
+Write-Host "MV 2:    prompt writer = $PromptLlm"
 Write-Host ""
 
 $ComfyArgs = @(

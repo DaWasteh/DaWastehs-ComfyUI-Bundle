@@ -52,3 +52,13 @@ tests/test_h3_music_video_v124.py text eol=lf
 tests/test_qwen_image21_background_remover_v124.py text eol=lf
 performance/rdna4/h3-music-video-v124-validation.json text eol=lf
 performance/rdna4/qwen-image21-background-removal-v124-validation.json text eol=lf
+# v1.2.5: llama.cpp prompt writer, its tests and the evidence file.
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/llm_backend.py text eol=lf
+tests/test_h3_music_video_v125.py text eol=lf
+performance/rdna4/h3-music-video-v125-prompt-writer.json text eol=lf
+# v1.2.5: MV 5b scene review (server logic, frontend extension, package init), its tests and the evidence file.
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/review.py text eol=lf
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/__init__.py text eol=lf
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/web/mv2_review.js text eol=lf
+tests/test_h3_music_video_v125_review.py text eol=lf
+performance/rdna4/h3-music-video-v125-review-validation.json text eol=lf

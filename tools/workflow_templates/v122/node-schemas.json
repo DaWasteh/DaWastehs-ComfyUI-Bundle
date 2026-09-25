@@ -32,7 +32,7 @@
     "width": [
      "INT",
      {
-      "default": 864,
+      "default": 1664,
       "min": 256,
       "max": 2048,
       "step": 32
@@ -41,7 +41,7 @@
     "height": [
      "INT",
      {
-      "default": 480,
+      "default": 928,
       "min": 256,
       "max": 2048,
       "step": 32
@@ -244,10 +244,11 @@
     "llm": [
      "COMBO",
      {
-      "tooltip": "Qwen3.5 (4B recommended, vision capable for character sheets). Loaded only while prompts are written, then freed.",
-      "default": "Qwen\\qwen3.5_4b_bf16.safetensors",
+      "tooltip": "auto: the GGUF model from the start profile (llama.cpp on the second GPU, e.g. Qwen3.8 27B), otherwise Qwen3.5 4B. Loaded only while prompts are written, then freed.",
+      "default": "auto (GGUF aus dem Startprofil, sonst Qwen3.5 4B)",
       "multiselect": false,
       "options": [
+       "auto (GGUF aus dem Startprofil, sonst Qwen3.5 4B)",
        "Qwen\\qwen3.5_4b_bf16.safetensors"
       ]
      }
@@ -322,7 +323,7 @@
   ],
   "output_matchtypes": null,
   "name": "DaWMV2PromptWriter",
-  "display_name": "MV 2 · MiniMax Prompt Writer (Qwen3.5 · Idee + Lyrics + Charaktere)",
+  "display_name": "MV 2 · MiniMax Prompt Writer (Qwen3.8 27B / Qwen3.5 · Idee + Lyrics + Charaktere)",
   "description": "Turns the video idea, the timed lyrics and up to three character sheets into one MiniMax H3 prompt per scene (integrated_multimodal_description / overall_soundscape / non_diegetic_music), with <d>-tagged lyrics for lip sync and varied shots, locations and camera moves.",
   "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
   "category": "DaWasteh/MiniMax H3/Music Video v2",
@@ -631,7 +632,7 @@
     "after": [
      "*",
      {
-      "tooltip": "Ordering token: the previous scene or the approval gate."
+      "tooltip": "Ordering token: the review of the previous scene (MV 5b)."
      }
     ]
    },
@@ -688,6 +689,75 @@
   "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
   "category": "DaWasteh/MiniMax H3/Music Video v2",
   "output_node": true,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "DaWMV2ReviewScene": {
+  "input": {
+   "required": {
+    "scene": [
+     "STRING",
+     {
+      "tooltip": "Token from MV 5 · Szene speichern.",
+      "forceInput": true,
+      "multiline": false
+     }
+    ],
+    "review": [
+     "BOOLEAN",
+     {
+      "tooltip": "Off: new scenes are accepted without stopping. Already accepted scenes never stop again.",
+      "default": true,
+      "label_on": "prüfen",
+      "label_off": "durchrendern"
+     }
+    ]
+   },
+   "hidden": {
+    "unique_id": [
+     "UNIQUE_ID"
+    ],
+    "dynprompt": [
+     "DYNPROMPT"
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "scene",
+    "review"
+   ],
+   "hidden": [
+    "unique_id",
+    "dynprompt"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "token"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWMV2ReviewScene",
+  "display_name": "MV 5b · Szene prüfen · Weiter oder neu rendern",
+  "description": "Shows the scene MV 5 just saved, with the original song audio, and holds the workflow until you decide: Weiter renders the next scene, Neu rendern renders this scene again with a new seed (earlier takes stay selectable), Rest ohne Prüfung accepts every further scene of this run.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Music Video v2",
+  "output_node": false,
   "deprecated": false,
   "experimental": false,
   "dev_only": false,
@@ -1738,63 +1808,6 @@
   "search_aliases": null,
   "essentials_category": null,
   "has_intermediate_output": false
- },
- "PixaromaPauseImage": {
-  "input": {
-   "required": {},
-   "optional": {
-    "image": [
-     "IMAGE",
-     {
-      "tooltip": "The image to gate. Wire your image source here; the same image flows out the output unchanged when the gate passes or continues."
-     }
-    ]
-   },
-   "hidden": {
-    "PauseState": [
-     "STRING",
-     {
-      "default": ""
-     }
-    ],
-    "unique_id": "UNIQUE_ID",
-    "prompt": "PROMPT",
-    "extra_pnginfo": "EXTRA_PNGINFO"
-   }
-  },
-  "input_order": {
-   "required": [],
-   "optional": [
-    "image"
-   ],
-   "hidden": [
-    "PauseState",
-    "unique_id",
-    "prompt",
-    "extra_pnginfo"
-   ]
-  },
-  "is_input_list": false,
-  "output": [
-   "IMAGE"
-  ],
-  "output_is_list": [
-   false
-  ],
-  "output_name": [
-   "image"
-  ],
-  "name": "PixaromaPauseImage",
-  "display_name": "Pause Image Pixaroma",
-  "description": "Pause Image Pixaroma - an inline gate that stops your workflow at this point so you can look at the image before running the expensive part that comes next (an upscale, a second pass, heavy post). Wire any IMAGE source into the input and your next node onto the output.\n\nWith the toggle on Pause, pressing Run stops here and shows the image; the rest of the workflow does not run. Press Continue and only the downstream runs, fed from the exact image you saw - the model, sampler and decode are skipped, so it is fast. Press Regenerate to roll a new image at this point (a different image if your sampler seed is on randomize). Flip the toggle to Pass to run the whole workflow end to end in one go.\n\nThe snapshot lives in ComfyUI's temp folder and is cleared when ComfyUI restarts, so after a restart pause once before using Continue.",
-  "python_module": "custom_nodes.ComfyUI-Pixaroma",
-  "category": "👑 Pixaroma/🖼️ Image",
-  "output_node": true,
-  "has_intermediate_output": false,
-  "output_tooltips": [
-   "The image continuing downstream - the live input in Pause/Pass mode, or the reloaded snapshot in Continue mode."
-  ],
-  "search_aliases": []
  },
  "PixaromaLoopStart": {
   "input": {

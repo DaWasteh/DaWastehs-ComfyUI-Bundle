@@ -2,15 +2,16 @@
 
 Graph contract (see tools/build_h3_music_video_v122.py):
 
-    Planner -> Prompt Writer (Qwen3.5) -> Encode Scenes (H3 text encoder, once)
-        -> Scene 1: Scene Setup -> sampler -> Save Scene -> Pixaroma Pause gate
-        -> Pixaroma Loop (scene_count - 1 rounds): Scene Setup -> sampler -> Save Scene
+    Planner -> Prompt Writer (Qwen3.8 27B via llama.cpp, or Qwen3.5) -> Encode Scenes (H3 text encoder, once)
+        -> Scene 1: Scene Setup -> sampler -> Save Scene -> Review Scene
+        -> Pixaroma Loop (scene_count - 1 rounds): Scene Setup -> sampler -> Save Scene -> Review Scene
         -> Finalize (joins scenes, stream-copies the original audio)
 
 Everything heavy is persisted in the project folder, so a restarted or resumed run skips
 finished work: Prompt Writer and Encode Scenes request their model lazily only when their
 results are missing, and Save Scene requests its latent (and therefore the whole sampler
-chain) only for scenes that are not rendered yet.
+chain) only for scenes that are not rendered yet. v1.2.5: Review Scene holds every new scene
+until the user continues or renders it again (review.py).
 """
 from __future__ import annotations
 
@@ -35,7 +36,8 @@ import comfy.utils
 import folder_paths
 from comfy_api.latest import io, ui
 
-from . import mv2
+from . import llm_backend, mv2
+from . import review as scene_review
 from .core import (
     atomic_write_json,
     count_video_frames,
@@ -149,8 +151,8 @@ class DaWMV2Planner(io.ComfyNode):
                                tooltip="MP3/WAV/FLAC/M4A/OGG. The original file is copied and later muxed back untouched."),
                 io.String.Input("lyrics", multiline=True, default="", tooltip="Lyrics with optional [Verse]/[Chorus] headers or [mm:ss.xx] timestamps. Empty = instrumental plan."),
                 io.String.Input("video_idea", multiline=True, default="", tooltip="Your idea for the video: story, look, locations, mood."),
-                io.Int.Input("width", default=864, min=256, max=2048, step=32),
-                io.Int.Input("height", default=480, min=256, max=2048, step=32),
+                io.Int.Input("width", default=1664, min=256, max=2048, step=32),   # v1.2.5: 1344x768 and below show lip/face artifacts
+                io.Int.Input("height", default=928, min=256, max=2048, step=32),
                 io.String.Input("project_name", default="Music_Video"),
                 io.Int.Input("seed", default=20260923, min=0, max=0xFFFFFFFFFFFFFFFF, control_after_generate=True,
                              tooltip="Base seed; every scene gets its own derived seed. Change it to re-roll the whole video."),
@@ -286,6 +288,23 @@ def _text_encoder_options(preferred: str) -> list[str]:
     return options
 
 
+def _llm_options() -> list[str]:
+    options = [llm_backend.AUTO]
+    gguf = llm_backend.gguf_option()
+    if gguf:
+        options.append(gguf)
+    return options + _text_encoder_options(DEFAULT_LLM)
+
+
+def _free_comfy_models_on(hip_device: str) -> None:
+    """Unload ComfyUI models that another workflow left on the GPU the llama server is about to use."""
+    index = llm_backend.comfy_device_index(hip_device)
+    if index is None or not torch.cuda.is_available() or index >= torch.cuda.device_count():
+        return
+    comfy.model_management.free_memory(1e30, torch.device("cuda", index))
+    comfy.model_management.soft_empty_cache()
+
+
 def _load_text_model(name: str, clip_type: str):
     """Load a text model privately. Only this node references it, so dropping the reference frees VRAM and
     host RAM at once; a cached CLIPLoader output would keep 8-26 GB alive (or offload it to host RAM)
@@ -302,6 +321,9 @@ def _release_text_model() -> None:
 
 def _llm(clip, prompt: str, *, image=None, max_length: int = 400, temperature: float = 0.7, seed: int = 0,
          system_prompt: str = "") -> str:
+    if getattr(clip, "is_llama_server", False):  # v1.2.5: GGUF model through llama.cpp (llm_backend.py)
+        return clip.generate(prompt, image=image, max_length=max_length, temperature=temperature, seed=seed,
+                             system_prompt=system_prompt)
     tokens = clip.tokenize(prompt, image=image, skip_template=False, min_length=1, thinking=False, system_prompt=system_prompt)
     ids = clip.generate(tokens, do_sample=True, max_length=max_length, temperature=temperature, top_k=64, top_p=0.95,
                         min_p=0.05, repetition_penalty=1.05, presence_penalty=0.0, seed=seed, mtp=True)
@@ -321,7 +343,7 @@ class DaWMV2PromptWriter(io.ComfyNode):
     def define_schema(cls):
         return io.Schema(
             node_id="DaWMV2PromptWriter",
-            display_name="MV 2 · MiniMax Prompt Writer (Qwen3.5 · Idee + Lyrics + Charaktere)",
+            display_name="MV 2 · MiniMax Prompt Writer (Qwen3.8 27B / Qwen3.5 · Idee + Lyrics + Charaktere)",
             category=CATEGORY,
             description=("Turns the video idea, the timed lyrics and up to three character sheets into one MiniMax H3 "
                          "prompt per scene (integrated_multimodal_description / overall_soundscape / non_diegetic_music), "
@@ -329,8 +351,9 @@ class DaWMV2PromptWriter(io.ComfyNode):
             inputs=[
                 io.String.Input("plan", force_input=True),
                 io.Combo.Input("mode", options=WRITER_MODES, default=WRITER_MODES[0]),
-                io.Combo.Input("llm", options=_text_encoder_options(DEFAULT_LLM), default=DEFAULT_LLM,
-                               tooltip="Qwen3.5 (4B recommended, vision capable for character sheets). Loaded only while prompts are written, then freed."),
+                io.Combo.Input("llm", options=_llm_options(), default=llm_backend.AUTO,
+                               tooltip="auto: the GGUF model from the start profile (llama.cpp on the second GPU, e.g. Qwen3.8 27B), "
+                                       "otherwise Qwen3.5 4B. Loaded only while prompts are written, then freed."),
                 io.Float.Input("temperature", default=0.7, min=0.1, max=1.5, step=0.05, advanced=True),
                 io.Int.Input("llm_seed", default=7, min=0, max=0xFFFFFFFF, advanced=True),
                 io.Image.Input("character_1", optional=True, tooltip="Character sheet of the lead singer (optional)."),
@@ -349,20 +372,39 @@ class DaWMV2PromptWriter(io.ComfyNode):
     def execute(cls, plan, mode, llm, temperature, llm_seed, character_1=None, character_2=None, character_3=None) -> io.NodeOutput:
         manifest = _manifest(plan)
         images = [character_1, character_2, character_3]
-        key = cls._key(manifest, mode, llm, temperature, llm_seed, images)
+        use_llm = mode == WRITER_MODES[0]
+        kind, name = llm_backend.resolve(llm, DEFAULT_LLM)
+        # the key names the model that really writes, so switching the model rewrites the prompts
+        key = cls._key(manifest, mode, llm_backend.GGUF_PREFIX + Path(name).name if kind == "gguf" else name,
+                       temperature, llm_seed, images)
         if manifest.get("prompts_key") == key:
             return io.NodeOutput(plan, _prompts_text(manifest))
-        use_llm = mode == WRITER_MODES[0]
-        llm_name = llm
-        llm = _load_text_model(llm_name, "stable_diffusion") if use_llm else None
+        if use_llm and kind == "gguf":
+            server = llm_backend.LlamaServer(name, log_dir=str(_project_dir(plan)))
+            _free_comfy_models_on(server.device)
+            try:
+                server.start()
+            except (OSError, RuntimeError) as exc:
+                _log(f"llama.cpp start failed, MV 2 falls back to {DEFAULT_LLM}: {exc}")
+                name = DEFAULT_LLM
+                key = cls._key(manifest, mode, name, temperature, llm_seed, images)
+                if manifest.get("prompts_key") == key:
+                    return io.NodeOutput(plan, _prompts_text(manifest))
+            else:
+                _log(f"MV 2 writes with {server.name} through llama.cpp on HIP device {server.device}")
+                try:
+                    return cls._write(plan, manifest, key, use_llm, server, images, temperature, llm_seed, server.name)
+                finally:
+                    server.stop()
+        llm = _load_text_model(name, "stable_diffusion") if use_llm else None
         try:
-            return cls._write(plan, manifest, key, use_llm, llm, images, temperature, llm_seed)
+            return cls._write(plan, manifest, key, use_llm, llm, images, temperature, llm_seed, Path(name).name)
         finally:
             del llm
             _release_text_model()
 
     @classmethod
-    def _write(cls, plan, manifest, key, use_llm, llm, images, temperature, llm_seed) -> io.NodeOutput:
+    def _write(cls, plan, manifest, key, use_llm, llm, images, temperature, llm_seed, llm_name) -> io.NodeOutput:
         scenes = manifest["scenes"]
         parts = mv2.story_parts(scenes)
         language = mv2.LANGUAGE_TAGS.get(manifest["alignment"].get("language", "en"), "English")
@@ -401,9 +443,14 @@ class DaWMV2PromptWriter(io.ComfyNode):
                                                 idea=manifest["video_idea"], previous_summary=previous_summary,
                                                 next_location=bible["locations"].get(upcoming["part"]) if upcoming else None)
                 try:
-                    raw = _llm(llm, request, max_length=160 + 110 * len(scene["shots"]), temperature=float(temperature),
-                               seed=int(llm_seed) + 100 + scene["index"], system_prompt=mv2.BIBLE_SYSTEM)
-                    actions = mv2.parse_shot_text(raw, len(scene["shots"]))
+                    # v1.2.5: second attempt with another seed - a sampled non-canonical first token ("SH" instead
+                    # of "SHOT", 4 % with Qwen3.8 27B) makes the model end its answer right there
+                    for attempt in range(2):
+                        raw = _llm(llm, request, max_length=160 + 110 * len(scene["shots"]), temperature=float(temperature),
+                                   seed=int(llm_seed) + 100 + scene["index"] + 1000 * attempt, system_prompt=mv2.BIBLE_SYSTEM)
+                        actions = mv2.parse_shot_text(raw, len(scene["shots"]))
+                        if any(actions):
+                            break
                     for shot, action in zip(scene["shots"], actions):
                         if action:
                             shot["action"] = action
@@ -417,6 +464,7 @@ class DaWMV2PromptWriter(io.ComfyNode):
             progress.update(1)
         manifest["bible"] = bible
         manifest["prompts_key"] = key
+        manifest["prompt_llm"] = llm_name if use_llm else "template"
         _save(plan, manifest)
         return io.NodeOutput(plan, _prompts_text(manifest))
 
@@ -714,13 +762,19 @@ def _pil_to_image(image: Image.Image) -> torch.Tensor:
     return torch.from_numpy(np.asarray(image.convert("RGB"), dtype=np.float32) / 255.0).unsqueeze(0)
 
 
-def _preview_ui(path: Path):
+def _output_ref(path: Path) -> dict[str, str] | None:
+    """/view reference of a file below the output folder."""
     try:
         relative = path.resolve().relative_to(Path(folder_paths.get_output_directory()).resolve())
-        sub = str(relative.parent).replace("\\", "/")
-        return ui.PreviewVideo([ui.SavedResult(relative.name, "" if sub == "." else sub, io.FolderType.output)])
     except Exception:
         return None
+    sub = str(relative.parent).replace("\\", "/")
+    return {"filename": relative.name, "subfolder": "" if sub == "." else sub, "type": "output"}
+
+
+def _preview_ui(path: Path):
+    ref = _output_ref(path)
+    return ui.PreviewVideo([ui.SavedResult(ref["filename"], ref["subfolder"], io.FolderType.output)]) if ref else None
 
 
 class DaWMV2SaveScene(io.ComfyNode):
@@ -739,7 +793,7 @@ class DaWMV2SaveScene(io.ComfyNode):
                 io.Int.Input("index_offset", default=0, min=0, max=100000, advanced=True),
                 io.Vae.Input("vae"),
                 io.Latent.Input("latent", lazy=True, optional=True),
-                io.AnyType.Input("after", optional=True, tooltip="Ordering token: the previous scene or the approval gate."),
+                io.AnyType.Input("after", optional=True, tooltip="Ordering token: the review of the previous scene (MV 5b)."),
             ],
             outputs=[io.String.Output("token"), io.Image.Output("preview"), io.String.Output("info")],
             is_output_node=True,
@@ -812,18 +866,123 @@ class DaWMV2SaveScene(io.ComfyNode):
             "-t", f"{new / mv2.FPS:.6f}", "-i", manifest["source_audio"], "-map", "0:v:0", "-map", "1:a:0",
             "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(files["preview"]),
         ], timeout=600)
-        scene.update({"render_key": _render_key(manifest, index), "verified_frames": verified, "completed_at": time.time()})
+        # v1.2.5: a fresh render waits for MV 5b (Weiter / neu rendern) until the user accepts it
+        scene.update({"render_key": _render_key(manifest, index), "verified_frames": verified, "completed_at": time.time(),
+                      "review": scene_review.PENDING})
         _save(plan, manifest)
         del used
         gc.collect()
         _unload_vaes(vae)
-        info = f"Szene {index + 1}/{total} gespeichert: {files['video']} ({verified} Frames)"
+        take = scene_review.take_of(scene)
+        info = f"Szene {index + 1}/{total}{f' · Take {take + 1}' if take else ''} gespeichert: {files['video']} ({verified} Frames)"
         _log(info)
         token = f"{plan}|{index}|{scene['render_key']}"
         ui_preview = _preview_ui(files["preview"])
         if ui_preview:
             return io.NodeOutput(token, _pil_to_image(sheet), info, ui=ui_preview)
         return io.NodeOutput(token, _pil_to_image(sheet), info)
+
+
+# ---------------------------------------------------------------------------
+# 5b · Review (v1.2.5)
+# ---------------------------------------------------------------------------
+
+def _current_prompt_id() -> str:
+    try:
+        from comfy_execution.utils import get_executing_context
+    except ImportError:
+        return ""
+    context = get_executing_context()
+    return context.prompt_id if context else ""
+
+
+def _send_review_event(event: str, data: dict[str, Any]) -> None:
+    try:
+        from server import PromptServer
+        PromptServer.instance.send_sync(event, data)
+    except Exception as exc:
+        _log(f"review event {event} not sent: {exc}")
+    if event == scene_review.EVENT:
+        _log(f"Szene {data['scene']}/{data['total']} · Take {data['take'] + 1} wartet auf Prüfung im Node MV 5b "
+             f"(Weiter / Neu rendern). Ohne Browser: POST {scene_review.ROUTE} "
+             f"{{\"id\": \"{data['id']}\", \"action\": \"continue|redo|continue_all\"}}")
+
+
+class DaWMV2ReviewScene(io.ComfyNode):
+    @classmethod
+    def define_schema(cls):
+        return io.Schema(
+            node_id="DaWMV2ReviewScene",
+            display_name="MV 5b · Szene prüfen · Weiter oder neu rendern",
+            category=CATEGORY,
+            description=("Shows the scene MV 5 just saved, with the original song audio, and holds the workflow until you "
+                         "decide: Weiter renders the next scene, Neu rendern renders this scene again with a new seed "
+                         "(earlier takes stay selectable), Rest ohne Prüfung accepts every further scene of this run."),
+            inputs=[
+                io.String.Input("scene", force_input=True, tooltip="Token from MV 5 · Szene speichern."),
+                io.Boolean.Input("review", default=True, label_on="prüfen", label_off="durchrendern",
+                                 tooltip="Off: new scenes are accepted without stopping. Already accepted scenes never stop again."),
+            ],
+            outputs=[io.String.Output("token")],
+            hidden=[io.Hidden.unique_id, io.Hidden.dynprompt],
+            enable_expand=True,
+        )
+
+    @classmethod
+    def _payload(cls, plan: str, manifest: dict[str, Any], index: int, prompt_id: str) -> dict[str, Any]:
+        scene = manifest["scenes"][index]
+        takes = [{"take": row["take"], "seed": row["seed"], "current": row["current"], "video": _output_ref(row["path"])}
+                 for row in scene_review.review_takes(scene, index, _scene_files(plan, index), _project_dir(plan))]
+        return {
+            "node": str(cls.hidden.dynprompt.get_display_node_id(cls.hidden.unique_id)), "prompt_id": prompt_id,
+            "project": manifest["project_name"], "scene": index + 1, "total": len(manifest["scenes"]),
+            "start": mv2.fmt_ts(scene["start"]), "end": mv2.fmt_ts(scene["end"]), "section": scene.get("section", ""),
+            "take": scene_review.take_of(scene), "takes": takes, "width": manifest["width"], "height": manifest["height"],
+            "shots": [f"{shot.get('camera', '')} {shot.get('action', '')}".strip() for shot in scene.get("shots", [])],
+        }
+
+    @classmethod
+    def execute(cls, scene, review=True) -> io.NodeOutput:
+        plan, index = scene_review.parse_token(scene)
+        if index is None:  # past the last scene
+            return io.NodeOutput(scene)
+        manifest = _manifest(plan)
+        total = len(manifest["scenes"])
+        if not _scene_done(plan, manifest, index):
+            raise RuntimeError(f"Scene {index + 1} is not rendered; MV 5 must save it before MV 5b can show it")
+        entry = manifest["scenes"][index]
+        prompt_id = _current_prompt_id()
+        if not scene_review.needs_review(entry):
+            how = "bereits freigegeben"
+        elif not review or scene_review.GATE.auto_active(plan, prompt_id):
+            how = "ohne Prüfung übernommen"
+        else:
+            decision = scene_review.GATE.wait(cls._payload(plan, manifest, index, prompt_id), _send_review_event,
+                                              comfy.model_management.throw_exception_if_processing_interrupted)
+            manifest = _manifest(plan)
+            entry = manifest["scenes"][index]
+            files = _scene_files(plan, index)
+            if decision["action"] == "redo":
+                take = scene_review.start_new_take(entry, index, files, _project_dir(plan),
+                                                   lambda t: mv2.take_seed(manifest["seed"], index, t))
+                _save(plan, manifest)
+                _log(f"Szene {index + 1}/{total} wird neu gerendert: Take {take + 1} · Seed {entry['seed']}")
+                graph, clone = scene_review.clone_scene_chain(cls.hidden.dynprompt, cls.hidden.unique_id, take)
+                return io.NodeOutput(clone.out(0), expand=graph.finalize())
+            if decision.get("take") is not None:
+                scene_review.restore_take(entry, index, decision["take"], files, _project_dir(plan))
+            if decision["action"] == "continue_all":
+                scene_review.GATE.set_auto(plan, prompt_id)
+            how = "freigegeben" + (", Rest ohne Prüfung" if decision["action"] == "continue_all" else "")
+        if scene_review.needs_review(entry) or "review" not in entry:
+            entry.update({"review": scene_review.APPROVED, "reviewed_at": time.time()})
+            _save(plan, manifest)
+        take = scene_review.take_of(entry)
+        info = f"Szene {index + 1}/{total} · Take {take + 1} · Seed {entry['seed']} · {how}"
+        _log(info)
+        shown = {"scene": index + 1, "total": total, "take": take, "text": info,
+                 "video": _output_ref(_scene_files(plan, index)["preview"])}
+        return io.NodeOutput(f"{plan}|{index}|{entry['render_key']}", ui={"dawmv2_review": [shown]})
 
 
 # ---------------------------------------------------------------------------
@@ -898,4 +1057,5 @@ class DaWMV2Finalize(io.ComfyNode):
 
 
 V2_NODES = [DaWMV2Planner, DaWMV2PromptWriter, DaWMV2EncodeScenes, DaWMV2LoadModel, DaWMV2SceneSetup, DaWMV2SaveScene,
-            DaWMV2Finalize]
+            DaWMV2ReviewScene, DaWMV2Finalize]
+scene_review.register_routes()

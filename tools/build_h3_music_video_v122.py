@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""Rebuild the FastH3 complete-song music-video workflow (v1.2.2, extended in v1.2.4); no runtime/model writes.
+"""Rebuild the FastH3 complete-song music-video workflow (v1.2.2, extended in v1.2.4/v1.2.5); no runtime/model writes.
 
 Flat RODENT graph: Pixaroma inputs -> DaW MV2 planner / prompt writer / one-time encoder ->
-scene 1 -> Pixaroma pause gate (approve the opening) -> Pixaroma loop over the remaining
-scenes (extend) -> final film with the original audio stream-copied.
+scene 1 -> MV 5b review -> Pixaroma loop over the remaining scenes (extend, MV 5b review after
+every scene) -> final film with the original audio stream-copied.
 
 v1.2.4: MV 0 loads FastH3 read-only with an optional realism LoRA (trigger word into MV 3, model signature
 into the resume keys) and keeps extend scenes at up to 1920x1088 inside VRAM and the Windows commit limit.
+v1.2.5: MV 2 "auto" writes with the GGUF model of the start profile (Qwen3.8 27B through llama.cpp on gpu:1,
+started only while prompts are written) and falls back to Qwen3.5 4B inside ComfyUI. MV 5b replaces the
+Pixaroma image gate: every new scene is shown as video with the song audio and waits for Weiter / Neu rendern.
 """
 from __future__ import annotations
 
@@ -39,11 +42,11 @@ MODEL = "MiniMax H3" + BS + "fastvideo_fasth3_8step_v2_pruned_int8_convrot.safet
 TEXT_ENCODER = "MiniMax H3" + BS + "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
 VIDEO_VAE = "MiniMax H3" + BS + "minimax_h3_video_vae_fp16.safetensors"
 AUDIO_VAE = "MiniMax H3" + BS + "minimax_h3_audio_vae_fp32.safetensors"
-LLM = "Qwen" + BS + "qwen3.5_4b_bf16.safetensors"
+LLM = "auto (GGUF aus dem Startprofil, sonst Qwen3.5 4B)"   # llm_backend.AUTO
 LORA = "MiniMax H3" + BS + "h3-realism-people-t2v-i2v-r2v.safetensors"
 LORA_STRENGTH = 0.8
 TRIGGER = "r34l1sm"
-RELEASE = "v1.2.4"
+RELEASE = "v1.2.5"
 DEVICES = {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"}  # measured v1.2.2 placement (migrate_workflows_v092)
 SAMPLING = {"steps": 8, "sampler": "res_multistep", "scheduler": "simple", "shift_video": 10.0, "shift_audio": 3.0,
             "attention": "comfy kitchen attention", "sparse": "vsa", "keep_percent": 10.0}
@@ -67,8 +70,8 @@ SIZES_STATE = {
     "version": 1,
     "sizes": [[864, 480], [960, 544], [1056, 608], [1152, 640], [1216, 672], [1280, 736], [1344, 768], [1376, 768],
               [1504, 832], [1664, 928], [1824, 1024], [1920, 1088]],
-    "selected": 0, "orientation": "landscape", "snap": 32, "accent": None, "collapsed": False,
-    "starred": ["864x480", "480x864", "1216x672", "672x1216"], "w": 864, "h": 480,
+    "selected": 9, "orientation": "landscape", "snap": 32, "accent": None, "collapsed": False,   # v1.2.5: 1664x928
+    "starred": ["1664x928", "928x1664", "1920x1088", "1088x1920", "864x480"], "w": 1664, "h": 928,
 }
 
 
@@ -101,12 +104,20 @@ def _scene_chain(g: Graph, label: str, plan, model, sampler, sigmas, vae, audio_
     return setup, save
 
 
+def _review(g: Graph, title: str, save):
+    """v1.2.5 MV 5b: the scene as video with the original audio; the run waits for Weiter / Neu rendern."""
+    review = g.add("DaWMV2ReviewScene", title, review=True)
+    review["size"] = [560, 640]
+    g.connect(save, 0, review, "scene")
+    return review
+
+
 def build(schemas: dict) -> dict:
     g = Graph(schemas)
     # --- Origin inputs ---------------------------------------------------------------------------
     lyrics = g.prompt("LYRICS · Songtext mit [Verse]/[Chorus] (oder [mm:ss.xx]-Zeitstempel)", LYRICS_PLACEHOLDER)
     idea = g.prompt("VIDEOIDEE · Story, Look, Orte, Stimmung (Deutsch oder Englisch)", IDEA_EXAMPLE)
-    sizes = g.add("PixaromaSizes", "VIDEOFORMAT · 864×480 Start · Hochformat per Klick")
+    sizes = g.add("PixaromaSizes", "VIDEOFORMAT · 1664×928 Standard · Hochformat per Klick")
     sizes["widgets_values"] = [copy.deepcopy(SIZES_STATE)]
     sizes["properties"]["sizesState"] = json.dumps(SIZES_STATE, separators=(",", ":"))
     sizes["size"] = [260, 480]
@@ -127,7 +138,7 @@ def build(schemas: dict) -> dict:
     g.connect(sizes, 1, planner, "height")
     plan_view = g.add("PixaromaShowText", "SZENENPLAN · Längen, Abschnitte, Lyrics je Szene")
     g.connect(planner, 3, plan_view, "source")
-    writer = g.add("DaWMV2PromptWriter", "MV 2 · MiniMax-Prompts · Qwen3.5 (Idee + Lyrics + Charaktere)", llm=LLM)
+    writer = g.add("DaWMV2PromptWriter", "MV 2 · MiniMax-Prompts · Qwen3.8 27B / Qwen3.5 (Idee + Lyrics + Charaktere)", llm=LLM)
     g.connect(planner, 0, writer, "plan")
     for k, load in enumerate(characters, 1):
         g.connect(load, 0, writer, f"character_{k}")
@@ -153,30 +164,27 @@ def build(schemas: dict) -> dict:
     sigmas = g.add("BasicScheduler", "SCHEDULER · simple · 8 Schritte", scheduler=SAMPLING["scheduler"], steps=SAMPLING["steps"], denoise=1.0)
     g.connect(sparse, 0, sigmas, "model")
 
-    # --- Scene 1 + approval gate ---------------------------------------------------------------------
+    # --- Scene 1 + review -----------------------------------------------------------------------------
     _, first_save = _scene_chain(g, "SZENE 1", encoder, sparse, sampler, sigmas, vae, audio_vae)
     g.connect(encoder, 0, first_save, "after")
-    gate = g.add("PixaromaPauseImage", "FREIGABE · Szene 1 ansehen → Continue rendert den Rest")
-    gate["widgets_values"] = [""]
-    gate["properties"]["pauseImageState"] = {"gate": "pause"}
-    gate["size"] = [420, 520]
-    g.connect(first_save, 1, gate, "image")
+    first_review = _review(g, "SZENE 1 · PRÜFEN · Video mit Originalton → Weiter / Neu rendern", first_save)
 
-    # --- Remaining scenes: Pixaroma loop, one extend per round ---------------------------------------
+    # --- Remaining scenes: Pixaroma loop, one extend + review per round ------------------------------
     loop_start = g.add("PixaromaLoopStart", "LOOP START · Runden = Szenen − 1 (aus dem Plan)", total=2)
     g.connect(planner, 2, loop_start, "total")
-    g.connect(gate, 0, loop_start, "value1")
+    g.connect(first_review, 0, loop_start, "value1")
     _, loop_save = _scene_chain(g, "LOOP", encoder, sparse, sampler, sigmas, vae, audio_vae,
                                 index_source=(loop_start, 6), offset=1)
     g.connect(loop_start, 0, loop_save, "after")
+    loop_review = _review(g, "LOOP · PRÜFEN · jede weitere Szene → Weiter / Neu rendern", loop_save)
     loop_end = g.add("PixaromaLoopEnd", "LOOP END · nächste Szene / Ende")
-    g.connect(loop_save, 0, loop_end, "value1")
+    g.connect(loop_review, 0, loop_end, "value1")
     g.connect(loop_start, 5, loop_end, "loop")
     final = g.add("DaWMV2Finalize", "MV 6 · FERTIGES MUSIKVIDEO · Originalton unverändert")
     g.connect(encoder, 0, final, "plan")
     g.connect(loop_end, 0, final, "after")
 
-    g.note("START HIER · Song → Musikvideo · FastH3 · v1.2.4", START_NOTE)
+    g.note("START HIER · Song → Musikvideo · FastH3 · v1.2.5", START_NOTE)
     g.note("ABLAUF · Planung, Freigabe, Extend-Schleife, Fortsetzen", FLOW_NOTE)
     model_lines = []
     for entry in json.loads((SOURCES / "models.json").read_text(encoding="utf-8")):
@@ -235,29 +243,35 @@ def finish(g: Graph, schemas: dict) -> dict:
     return g.w
 
 
-START_NOTE = """# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.4
+START_NOTE = """# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.5
 
 1. **MV 1** · Song wählen oder hochladen (MP3/WAV/FLAC/M4A/OGG, jede Länge).
 2. **LYRICS** einfügen – am besten mit `[Verse 1]`, `[Chorus]` …; `[mm:ss.xx]`-Zeitstempel werden direkt übernommen.
-3. **VIDEOIDEE** in eigenen Worten (Deutsch oder Englisch): Story, Orte, Look, Stimmung.
+3. **VIDEOIDEE** in eigenen Worten (Deutsch oder Englisch): Story, Orte, Look, Stimmung. Zeilen wie
+   `Chorus - …` oder `Verse 2: …` gelten gezielt für diesen Songabschnitt (Ort, Kleidung, Handlung).
 4. Optional **bis zu 3 Charaktersheets**: Loader mit **Strg+M** aktivieren, Bild wählen. Charakter 1 ist die Sängerin/der Sänger.
-5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen. 864×480 ist der schnelle Startwert; **1920×1088** ist getestet
-   und liefert die wenigsten Artefakte (90-s-Song ≈ 6 h statt ≈ 50 min auf der R9700).
+5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen. Standard ist **1664×928**: ab 1344×768 abwärts zeigen Gesicht und
+   Lippen erste Artefakte, 1920×1088 dauert fast doppelt so lange (R9700, 90-s-Song mit 13 Szenen: 1344×768 ≈ 1,7 h,
+   **1664×928 ≈ 3,4 h**, 1920×1088 ≈ 6 h). 864×480 nur für schnelle Tests.
 6. **MV 0 · Realismus-LoRA**: standardmäßig fal *Realism People* bei **0,8** mit Triggerwort `r34l1sm`
    (wird automatisch vor jeden Szenen-Prompt gesetzt). `lora_name = none` = reines FastH3.
-7. **Run**. Erst wird geplant, dann Szene 1 gerendert. Die Vorschau (MV 5) zeigt Szene 1 **mit Originalton**.
-8. Gefällt der Anfang: am **FREIGABE**-Node **Continue** drücken → alle weiteren Szenen laufen per Extend durch,
-   am Ende entsteht das fertige Video unter `output/video/DaWasteh_MusicVideo/`.
-   Nicht zufrieden: im MV-1-Node den **seed** ändern und erneut Run.
-   Ohne Zwischenstopp: FREIGABE-Node auf **Pass** stellen.
+7. **Run**. Erst wird geplant, dann Szene 1 gerendert. Nach **jeder** Szene hält der Lauf am Node
+   **PRÜFEN (MV 5b)**: Er spielt die Szene **mit Originalton** ab.
+   - **✓ Weiter** → die nächste Szene wird per Extend gerendert.
+   - **↻ Neu rendern** → dieselbe Szene mit neuem Seed noch einmal, im selben Lauf. Alle Takes bleiben als
+     Reiter wählbar; **Take N nehmen + weiter** übernimmt einen früheren Take.
+   - **⏩ Rest ohne Prüfung** → alle weiteren Szenen dieses Laufs ohne Halt (z. B. über Nacht).
+   Am Ende entsteht das fertige Video unter `output/video/DaWasteh_MusicVideo/`.
+   Ohne Zwischenstopp von Anfang an: beide PRÜFEN-Nodes auf **durchrendern** stellen.
 
 **Lippensynchron:** Jede Szene bekommt den echten Songausschnitt fest in den Audio-Strom von H3 (nicht verrauscht,
 nur das Bild wird erzeugt). Am Ende wird die Originaldatei **unverändert** (`-c:a copy`) unter das Video gelegt.
 
-**Abwechslung:** Qwen3.5 schreibt pro Songabschnitt eigene Orte in Story-Reihenfolge, pro Szene 1–3 Shots
-mit Schnitten, wechselnden Einstellungsgrößen und Kamerabewegungen. Jede Szene hat einen eigenen Seed.
+**Abwechslung:** Der Prompt Writer (MV 2, `auto`) schreibt pro Songabschnitt eigene Orte in Story-Reihenfolge,
+pro Szene 1–3 Shots mit Schnitten, wechselnden Einstellungsgrößen und Kamerabewegungen. Jede Szene hat einen eigenen Seed.
 
-Bedienung und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`; LoRA, 1920×1088 und Speicher: `docs/H3_MUSIC_VIDEO_V124.md`.
+Bedienung und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`; LoRA, 1920×1088 und Speicher: `docs/H3_MUSIC_VIDEO_V124.md`;
+Prompt Writer mit Qwen3.8 27B und Szenen-Prüfung (MV 5b): `docs/H3_MUSIC_VIDEO_V125.md`.
 """
 
 FLOW_NOTE = """# Wie der Workflow arbeitet
@@ -275,20 +289,25 @@ Commit-Limit (RAM + Auslagerungsdatei). Genau das lief bei 1920×1088 in den Ext
 „out of memory“ gemeldet. Eine andere LoRA, Stärke oder ein anderes Triggerwort rendert die Szenen neu,
 statt alte Ergebnisse fortzusetzen.
 
-**MV 2 · Prompt Writer** lädt Qwen3.5 4B nur so lange, wie Prompts fehlen: Charaktersheets → Textbeschreibung,
+**MV 2 · Prompt Writer** (`auto`) startet das GGUF-Modell aus dem Startprofil (Qwen3.8 27B über llama.cpp auf
+gpu:1, 12,5 GiB VRAM) bzw. ohne Eintrag Qwen3.5 4B – jeweils nur so lange, wie Prompts fehlen, danach ist der
+Speicher wieder frei. Ablauf: Charaktersheets → Textbeschreibung,
 Produktionsbibel (Stil, Orte je Abschnitt, Musik), dann pro Szene die Handlung. Ergebnis: MiniMax-Format
 `integrated_multimodal_description / overall_soundscape / non_diegetic_music` mit `<d>[English] …</d>`-Lyrics.
 
 **MV 3 · H3-Textencoder** encodiert **alle** Szenen-Prompts einmal und gibt den 26-GB-Encoder danach komplett frei.
 In der Render-Schleife bleibt nur FastH3 geladen.
 
-**Szene 1 → FREIGABE → LOOP**: Jede weitere Szene friert die letzten 22 Frames der Vorgängerszene am Anfang ein
-(nahtloser Extend) und fixiert den passenden Songausschnitt im Audio-Strom. Die Pixaroma-Schleife läuft
-`Szenen − 1` Runden; die Rundenzahl kommt automatisch aus dem Plan.
+**Szene 1 → PRÜFEN → LOOP (Szene → PRÜFEN)**: Jede weitere Szene friert die letzten 22 Frames der Vorgängerszene am
+Anfang ein (nahtloser Extend) und fixiert den passenden Songausschnitt im Audio-Strom. Die Pixaroma-Schleife läuft
+`Szenen − 1` Runden; die Rundenzahl kommt automatisch aus dem Plan. **Neu rendern** hängt die Kette
+Szene vorbereiten → Sampling → Speichern → Prüfen für dieselbe Szene noch einmal ein (neuer Seed), die Schleife zählt
+erst nach **Weiter** weiter. Verworfene Takes liegen unter `takes/` im Projektordner.
 
 **Fortsetzen:** Alles liegt unter `output/DaWasteh_H3_MusicVideo_v2/<Projekt>`. Ein erneuter Run mit gleichen Eingaben
-überspringt fertige Szenen ohne Sampling – auch nach Absturz oder Neustart. `resume_existing_scenes = aus`
-rendert bewusst alles neu.
+überspringt fertige Szenen ohne Sampling – auch nach Absturz oder Neustart. Freigegebene Szenen laufen ohne Halt
+durch; eine Szene, die beim Abbruch noch auf Prüfung wartete, wird sofort wieder gezeigt (ohne neu zu rendern).
+`resume_existing_scenes = aus` rendert bewusst alles neu.
 
 **FastH3-Grenzen:** FastH3 ist nur für Text-to-Video+Audio destilliert. Charaktersheets werden deshalb als Text
 beschrieben (nicht als Ref2VA-Bild eingespeist); die Identität trägt der Extend über die eingefrorenen Frames.
@@ -296,8 +315,9 @@ beschrieben (nicht als Ref2VA-Bild eingespeist); die Identität trägt der Exten
 
 DOWNLOAD_TAIL = """
 
-Qwen3.5 4B (`models/text_encoders/Qwen/qwen3.5_4b_bf16.safetensors`) und Whisper small werden aus den
-bereits vorhandenen Bundle-Installationen genutzt. Whisper lädt beim ersten Planer-Lauf ggf. ~460 MB nach `~/.cache/whisper`.
+Qwen3.5 4B (`models/text_encoders/Qwen/qwen3.5_4b_bf16.safetensors`, Rückfall für MV 2) und Whisper small werden
+aus den bereits vorhandenen Bundle-Installationen genutzt. Optional für MV 2: ein Qwen3.8-27B-GGUF plus
+`llama-server` (HIP oder Vulkan), eingetragen in `start-MultiGPU.ps1` (`$PromptLlmGguf`, `$LlamaServerExe`). Whisper lädt beim ersten Planer-Lauf ggf. ~460 MB nach `~/.cache/whisper`.
 
 Kein Cloud-API-Aufruf. Lizenz FastH3/MiniMax H3: siehe MiniMax-H3-Modellkarte (MiniMax Model License).
 """

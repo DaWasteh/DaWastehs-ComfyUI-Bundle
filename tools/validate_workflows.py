@@ -949,7 +949,9 @@ def main() -> int:
     # v1.2.3 adds three flat video-upscale workflows (new category): +214 nodes, +94 notes, +187 links.
     # v1.2.4 adds the Qwen Image 2.1 background remover (+37 nodes, +14 notes, +25 links) and links MV 0's
     # model_info into the music-video encoder (+1 link).
-    expected = {"files": 252, "graphs": 305, "nodes": 11539, "notes": 5251, "links": 8032, "timers": 233}
+    # v1.2.5 replaces the music video's Pixaroma image gate with two MV 5b review nodes (scene 1 and loop), each with its
+    # parameter note: +3 nodes, +2 notes, +1 link.
+    expected = {"files": 252, "graphs": 305, "nodes": 11542, "notes": 5253, "links": 8033, "timers": 233}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

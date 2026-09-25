@@ -97,7 +97,7 @@
     {
       "id": 3,
       "type": "PixaromaSizes",
-      "title": "VIDEOFORMAT · 864×480 Start · Hochformat per Klick",
+      "title": "VIDEOFORMAT · 1664×928 Standard · Hochformat per Klick",
       "pos": [
         880.0,
         880.0
@@ -128,7 +128,7 @@
       ],
       "properties": {
         "Node name for S&R": "PixaromaSizes",
-        "sizesState": "{\"version\":1,\"sizes\":[[864,480],[960,544],[1056,608],[1152,640],[1216,672],[1280,736],[1344,768],[1376,768],[1504,832],[1664,928],[1824,1024],[1920,1088]],\"selected\":0,\"orientation\":\"landscape\",\"snap\":32,\"accent\":null,\"collapsed\":false,\"starred\":[\"864x480\",\"480x864\",\"1216x672\",\"672x1216\"],\"w\":864,\"h\":480}"
+        "sizesState": "{\"version\":1,\"sizes\":[[864,480],[960,544],[1056,608],[1152,640],[1216,672],[1280,736],[1344,768],[1376,768],[1504,832],[1664,928],[1824,1024],[1920,1088]],\"selected\":9,\"orientation\":\"landscape\",\"snap\":32,\"accent\":null,\"collapsed\":false,\"starred\":[\"1664x928\",\"928x1664\",\"1920x1088\",\"1088x1920\",\"864x480\"],\"w\":1664,\"h\":928}"
       },
       "widgets_values": [
         {
@@ -183,19 +183,20 @@
               1088
             ]
           ],
-          "selected": 0,
+          "selected": 9,
           "orientation": "landscape",
           "snap": 32,
           "accent": null,
           "collapsed": false,
           "starred": [
-            "864x480",
-            "480x864",
-            "1216x672",
-            "672x1216"
+            "1664x928",
+            "928x1664",
+            "1920x1088",
+            "1088x1920",
+            "864x480"
           ],
-          "w": 864,
-          "h": 480
+          "w": 1664,
+          "h": 928
         }
       ]
     },
@@ -579,8 +580,8 @@
         "song.mp3",
         "",
         "",
-        864,
-        480,
+        1664,
+        928,
         "Music_Video",
         20260923,
         "fixed",
@@ -630,7 +631,7 @@
     {
       "id": 9,
       "type": "DaWMV2PromptWriter",
-      "title": "MV 2 · MiniMax-Prompts · Qwen3.5 (Idee + Lyrics + Charaktere)",
+      "title": "MV 2 · MiniMax-Prompts · Qwen3.8 27B / Qwen3.5 (Idee + Lyrics + Charaktere)",
       "pos": [
         3760.0,
         680.0
@@ -720,7 +721,7 @@
       },
       "widgets_values": [
         "Qwen3.5 LLM (empfohlen)",
-        "Qwen\\qwen3.5_4b_bf16.safetensors",
+        "auto (GGUF aus dem Startprofil, sonst Qwen3.5 4B)",
         0.7,
         7
       ]
@@ -805,7 +806,7 @@
             31,
             35,
             46,
-            54
+            55
           ]
         }
       ],
@@ -878,7 +879,7 @@
           "name": "model",
           "type": "MODEL",
           "links": [
-            56
+            57
           ]
         },
         {
@@ -1143,7 +1144,7 @@
           "name": "VAE",
           "type": "VAE",
           "links": [
-            57
+            58
           ]
         }
       ],
@@ -1184,7 +1185,7 @@
           "name": "VAE",
           "type": "VAE",
           "links": [
-            58
+            59
           ]
         }
       ],
@@ -1589,14 +1590,14 @@
         {
           "name": "token",
           "type": "STRING",
-          "links": []
+          "links": [
+            32
+          ]
         },
         {
           "name": "preview",
           "type": "IMAGE",
-          "links": [
-            32
-          ]
+          "links": []
         },
         {
           "name": "info",
@@ -1614,44 +1615,48 @@
     },
     {
       "id": 25,
-      "type": "PixaromaPauseImage",
-      "title": "FREIGABE · Szene 1 ansehen → Continue rendert den Rest",
+      "type": "DaWMV2ReviewScene",
+      "title": "SZENE 1 · PRÜFEN · Video mit Originalton → Weiter / Neu rendern",
       "pos": [
-        4260.0,
-        80.0
+        3760.0,
+        1580.0
       ],
       "size": [
-        420,
-        520
+        560,
+        640
       ],
       "flags": {},
       "order": 25,
       "mode": 0,
       "inputs": [
         {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 32,
-          "shape": 7
+          "name": "scene",
+          "type": "STRING",
+          "link": 32
+        },
+        {
+          "name": "review",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "review"
+          }
         }
       ],
       "outputs": [
         {
-          "name": "image",
-          "type": "IMAGE",
+          "name": "token",
+          "type": "STRING",
           "links": [
             34
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "PixaromaPauseImage",
-        "pauseImageState": {
-          "gate": "pause"
-        }
+        "Node name for S&R": "DaWMV2ReviewScene"
       },
       "widgets_values": [
-        ""
+        true
       ]
     },
     {
@@ -1659,8 +1664,8 @@
       "type": "PixaromaLoopStart",
       "title": "LOOP START · Runden = Szenen − 1 (aus dem Plan)",
       "pos": [
-        4260.0,
-        640.0
+        4400.0,
+        80.0
       ],
       "size": [
         420,
@@ -1741,7 +1746,7 @@
           "name": "loop",
           "type": "FLOW_CONTROL",
           "links": [
-            53
+            54
           ]
         },
         {
@@ -1993,8 +1998,8 @@
       "type": "DaWMV2SaveScene",
       "title": "LOOP · Szene speichern + Vorschau mit Originalton",
       "pos": [
-        4260.0,
-        940.0
+        4400.0,
+        380.0
       ],
       "size": [
         420,
@@ -2072,24 +2077,70 @@
     },
     {
       "id": 32,
-      "type": "PixaromaLoopEnd",
-      "title": "LOOP END · nächste Szene / Ende",
+      "type": "DaWMV2ReviewScene",
+      "title": "LOOP · PRÜFEN · jede weitere Szene → Weiter / Neu rendern",
       "pos": [
-        4260.0,
-        1240.0
+        4400.0,
+        680.0
       ],
       "size": [
-        420,
-        260
+        560,
+        640
       ],
       "flags": {},
       "order": 32,
       "mode": 0,
       "inputs": [
         {
+          "name": "scene",
+          "type": "STRING",
+          "link": 52
+        },
+        {
+          "name": "review",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "review"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "token",
+          "type": "STRING",
+          "links": [
+            53
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMV2ReviewScene"
+      },
+      "widgets_values": [
+        true
+      ]
+    },
+    {
+      "id": 33,
+      "type": "PixaromaLoopEnd",
+      "title": "LOOP END · nächste Szene / Ende",
+      "pos": [
+        4400.0,
+        1360.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [
+        {
           "name": "value1",
           "type": "*",
-          "link": 52,
+          "link": 53,
           "shape": 7
         },
         {
@@ -2119,7 +2170,7 @@
         {
           "name": "loop",
           "type": "FLOW_CONTROL",
-          "link": 53,
+          "link": 54,
           "shape": 7
         }
       ],
@@ -2128,7 +2179,7 @@
           "name": "value1",
           "type": "*",
           "links": [
-            55
+            56
           ]
         },
         {
@@ -2158,25 +2209,25 @@
       "widgets_values": []
     },
     {
-      "id": 33,
+      "id": 34,
       "type": "DaWMV2Finalize",
       "title": "MV 6 · FERTIGES MUSIKVIDEO · Originalton unverändert",
       "pos": [
-        4260.0,
-        1540.0
+        4400.0,
+        1660.0
       ],
       "size": [
         420,
         260
       ],
       "flags": {},
-      "order": 33,
+      "order": 34,
       "mode": 0,
       "inputs": [
         {
           "name": "plan",
           "type": "STRING",
-          "link": 54
+          "link": 55
         },
         {
           "name": "container",
@@ -2189,7 +2240,7 @@
         {
           "name": "after",
           "type": "*",
-          "link": 55,
+          "link": 56,
           "shape": 7
         }
       ],
@@ -2208,16 +2259,16 @@
       ]
     },
     {
-      "id": 34,
+      "id": 35,
       "type": "MarkdownNote",
-      "title": "START HIER · Song → Musikvideo · FastH3 · v1.2.4",
+      "title": "START HIER · Song → Musikvideo · FastH3 · v1.2.5",
       "pos": [
         40.0,
         80.0
       ],
       "size": [
         680,
-        974
+        1194
       ],
       "flags": {},
       "order": 0,
@@ -2228,44 +2279,20 @@
         "Node name for S&R": "MarkdownNote"
       },
       "widgets_values": [
-        "# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.4\n\n1. **MV 1** · Song wählen oder hochladen (MP3/WAV/FLAC/M4A/OGG, jede Länge).\n2. **LYRICS** einfügen – am besten mit `[Verse 1]`, `[Chorus]` …; `[mm:ss.xx]`-Zeitstempel werden direkt übernommen.\n3. **VIDEOIDEE** in eigenen Worten (Deutsch oder Englisch): Story, Orte, Look, Stimmung.\n4. Optional **bis zu 3 Charaktersheets**: Loader mit **Strg+M** aktivieren, Bild wählen. Charakter 1 ist die Sängerin/der Sänger.\n5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen. 864×480 ist der schnelle Startwert; **1920×1088** ist getestet\n   und liefert die wenigsten Artefakte (90-s-Song ≈ 6 h statt ≈ 50 min auf der R9700).\n6. **MV 0 · Realismus-LoRA**: standardmäßig fal *Realism People* bei **0,8** mit Triggerwort `r34l1sm`\n   (wird automatisch vor jeden Szenen-Prompt gesetzt). `lora_name = none` = reines FastH3.\n7. **Run**. Erst wird geplant, dann Szene 1 gerendert. Die Vorschau (MV 5) zeigt Szene 1 **mit Originalton**.\n8. Gefällt der Anfang: am **FREIGABE**-Node **Continue** drücken → alle weiteren Szenen laufen per Extend durch,\n   am Ende entsteht das fertige Video unter `output/video/DaWasteh_MusicVideo/`.\n   Nicht zufrieden: im MV-1-Node den **seed** ändern und erneut Run.\n   Ohne Zwischenstopp: FREIGABE-Node auf **Pass** stellen.\n\n**Lippensynchron:** Jede Szene bekommt den echten Songausschnitt fest in den Audio-Strom von H3 (nicht verrauscht,\nnur das Bild wird erzeugt). Am Ende wird die Originaldatei **unverändert** (`-c:a copy`) unter das Video gelegt.\n\n**Abwechslung:** Qwen3.5 schreibt pro Songabschnitt eigene Orte in Story-Reihenfolge, pro Szene 1–3 Shots\nmit Schnitten, wechselnden Einstellungsgrößen und Kamerabewegungen. Jede Szene hat einen eigenen Seed.\n\nBedienung und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`; LoRA, 1920×1088 und Speicher: `docs/H3_MUSIC_VIDEO_V124.md`.\n"
-      ]
-    },
-    {
-      "id": 35,
-      "type": "MarkdownNote",
-      "title": "ABLAUF · Planung, Freigabe, Extend-Schleife, Fortsetzen",
-      "pos": [
-        40.0,
-        1100.0
-      ],
-      "size": [
-        680,
-        1304
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "MarkdownNote"
-      },
-      "widgets_values": [
-        "# Wie der Workflow arbeitet\n\n**MV 1 · Planer** misst die Songdauer, erkennt Tempo/Energie und richtet die Lyrics mit lokalem\n**Whisper small** zeitlich aus. Daraus entstehen Szenen mit **unterschiedlichen Längen** (Standard 4–9 s,\nZiel 7 s), bevorzugt an Abschnitts- und Zeilengrenzen. Die Anzahl ergibt sich aus der Songlänge:\n30 s ≈ 5 Szenen, 90 s ≈ 12, 600 s ≈ 80. Ohne Lyrics plant er rein nach Beats und Energie.\nBis 9 s passt FastH3 bei 864×480 vollständig in den VRAM; längere Szenen oder größere Formate laden es\nteilweise (im Log: `loaded partially`). Ab ~65 000 Tokens (z. B. 1920×1088) hält MV 0 vor jedem Schritt\ngenug VRAM für die Aktivierungen frei; die Extend-Szenen laufen dadurch ohne OOM.\n\n**MV 0 · Modell** bildet FastH3 schreibgeschützt ab: Windows verbucht die 22-GB-Datei dann nicht auf das\nCommit-Limit (RAM + Auslagerungsdatei). Genau das lief bei 1920×1088 in den Extend-Szenen über und wurde als\n„out of memory“ gemeldet. Eine andere LoRA, Stärke oder ein anderes Triggerwort rendert die Szenen neu,\nstatt alte Ergebnisse fortzusetzen.\n\n**MV 2 · Prompt Writer** lädt Qwen3.5 4B nur so lange, wie Prompts fehlen: Charaktersheets → Textbeschreibung,\nProduktionsbibel (Stil, Orte je Abschnitt, Musik), dann pro Szene die Handlung. Ergebnis: MiniMax-Format\n`integrated_multimodal_description / overall_soundscape / non_diegetic_music` mit `<d>[English] …</d>`-Lyrics.\n\n**MV 3 · H3-Textencoder** encodiert **alle** Szenen-Prompts einmal und gibt den 26-GB-Encoder danach komplett frei.\nIn der Render-Schleife bleibt nur FastH3 geladen.\n\n**Szene 1 → FREIGABE → LOOP**: Jede weitere Szene friert die letzten 22 Frames der Vorgängerszene am Anfang ein\n(nahtloser Extend) und fixiert den passenden Songausschnitt im Audio-Strom. Die Pixaroma-Schleife läuft\n`Szenen − 1` Runden; die Rundenzahl kommt automatisch aus dem Plan.\n\n**Fortsetzen:** Alles liegt unter `output/DaWasteh_H3_MusicVideo_v2/<Projekt>`. Ein erneuter Run mit gleichen Eingaben\nüberspringt fertige Szenen ohne Sampling – auch nach Absturz oder Neustart. `resume_existing_scenes = aus`\nrendert bewusst alles neu.\n\n**FastH3-Grenzen:** FastH3 ist nur für Text-to-Video+Audio destilliert. Charaktersheets werden deshalb als Text\nbeschrieben (nicht als Ref2VA-Bild eingespeist); die Identität trägt der Extend über die eingefrorenen Frames.\n"
+        "# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.5\n\n1. **MV 1** · Song wählen oder hochladen (MP3/WAV/FLAC/M4A/OGG, jede Länge).\n2. **LYRICS** einfügen – am besten mit `[Verse 1]`, `[Chorus]` …; `[mm:ss.xx]`-Zeitstempel werden direkt übernommen.\n3. **VIDEOIDEE** in eigenen Worten (Deutsch oder Englisch): Story, Orte, Look, Stimmung. Zeilen wie\n   `Chorus - …` oder `Verse 2: …` gelten gezielt für diesen Songabschnitt (Ort, Kleidung, Handlung).\n4. Optional **bis zu 3 Charaktersheets**: Loader mit **Strg+M** aktivieren, Bild wählen. Charakter 1 ist die Sängerin/der Sänger.\n5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen. Standard ist **1664×928**: ab 1344×768 abwärts zeigen Gesicht und\n   Lippen erste Artefakte, 1920×1088 dauert fast doppelt so lange (R9700, 90-s-Song mit 13 Szenen: 1344×768 ≈ 1,7 h,\n   **1664×928 ≈ 3,4 h**, 1920×1088 ≈ 6 h). 864×480 nur für schnelle Tests.\n6. **MV 0 · Realismus-LoRA**: standardmäßig fal *Realism People* bei **0,8** mit Triggerwort `r34l1sm`\n   (wird automatisch vor jeden Szenen-Prompt gesetzt). `lora_name = none` = reines FastH3.\n7. **Run**. Erst wird geplant, dann Szene 1 gerendert. Nach **jeder** Szene hält der Lauf am Node\n   **PRÜFEN (MV 5b)**: Er spielt die Szene **mit Originalton** ab.\n   - **✓ Weiter** → die nächste Szene wird per Extend gerendert.\n   - **↻ Neu rendern** → dieselbe Szene mit neuem Seed noch einmal, im selben Lauf. Alle Takes bleiben als\n     Reiter wählbar; **Take N nehmen + weiter** übernimmt einen früheren Take.\n   - **⏩ Rest ohne Prüfung** → alle weiteren Szenen dieses Laufs ohne Halt (z. B. über Nacht).\n   Am Ende entsteht das fertige Video unter `output/video/DaWasteh_MusicVideo/`.\n   Ohne Zwischenstopp von Anfang an: beide PRÜFEN-Nodes auf **durchrendern** stellen.\n\n**Lippensynchron:** Jede Szene bekommt den echten Songausschnitt fest in den Audio-Strom von H3 (nicht verrauscht,\nnur das Bild wird erzeugt). Am Ende wird die Originaldatei **unverändert** (`-c:a copy`) unter das Video gelegt.\n\n**Abwechslung:** Der Prompt Writer (MV 2, `auto`) schreibt pro Songabschnitt eigene Orte in Story-Reihenfolge,\npro Szene 1–3 Shots mit Schnitten, wechselnden Einstellungsgrößen und Kamerabewegungen. Jede Szene hat einen eigenen Seed.\n\nBedienung und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`; LoRA, 1920×1088 und Speicher: `docs/H3_MUSIC_VIDEO_V124.md`;\nPrompt Writer mit Qwen3.8 27B und Szenen-Prüfung (MV 5b): `docs/H3_MUSIC_VIDEO_V125.md`.\n"
       ]
     },
     {
       "id": 36,
       "type": "MarkdownNote",
-      "title": "DOWNLOADS · Modelle / Zielordner",
+      "title": "ABLAUF · Planung, Freigabe, Extend-Schleife, Fortsetzen",
       "pos": [
         40.0,
-        2440.0
+        1320.0
       ],
       "size": [
         680,
-        930
+        1524
       ],
       "flags": {},
       "order": 0,
@@ -2276,22 +2303,46 @@
         "Node name for S&R": "MarkdownNote"
       },
       "widgets_values": [
-        "# Benötigte Dateien\n\n- [fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors](https://huggingface.co/FastVideo/FastVideo-FastH3-Comfy/resolve/ec1e3aa374a91c57b0b94a1623b7e657c0498cf2/diffusion_models/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors) → `ComfyUI/models/diffusion_models/MiniMax H3/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors`\n\n- [h3-realism-people-t2v-i2v-r2v.safetensors](https://huggingface.co/fal/MiniMax-H3-Realism-People-LoRA/resolve/039cc8579d7aa357a882d7f4111b25da4f72dccc/h3-realism-people-t2v-i2v-r2v.safetensors) → `ComfyUI/models/loras/MiniMax H3/h3-realism-people-t2v-i2v-r2v.safetensors`\n\n- [qwen3vl_32b_minimax_h3_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/text_encoders/qwen3vl_32b_minimax_h3_int8_convrot.safetensors) → `ComfyUI/models/text_encoders/MiniMax H3/qwen3vl_32b_minimax_h3_int8_convrot.safetensors`\n\n- [minimax_h3_video_vae_fp16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/vae/minimax_h3_video_vae_fp16.safetensors) → `ComfyUI/models/vae/MiniMax H3/minimax_h3_video_vae_fp16.safetensors`\n\n- [minimax_h3_audio_vae_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/vae/minimax_h3_audio_vae_fp32.safetensors) → `ComfyUI/models/vae/MiniMax H3/minimax_h3_audio_vae_fp32.safetensors`\n\nQwen3.5 4B (`models/text_encoders/Qwen/qwen3.5_4b_bf16.safetensors`) und Whisper small werden aus den\nbereits vorhandenen Bundle-Installationen genutzt. Whisper lädt beim ersten Planer-Lauf ggf. ~460 MB nach `~/.cache/whisper`.\n\nKein Cloud-API-Aufruf. Lizenz FastH3/MiniMax H3: siehe MiniMax-H3-Modellkarte (MiniMax Model License).\n"
+        "# Wie der Workflow arbeitet\n\n**MV 1 · Planer** misst die Songdauer, erkennt Tempo/Energie und richtet die Lyrics mit lokalem\n**Whisper small** zeitlich aus. Daraus entstehen Szenen mit **unterschiedlichen Längen** (Standard 4–9 s,\nZiel 7 s), bevorzugt an Abschnitts- und Zeilengrenzen. Die Anzahl ergibt sich aus der Songlänge:\n30 s ≈ 5 Szenen, 90 s ≈ 12, 600 s ≈ 80. Ohne Lyrics plant er rein nach Beats und Energie.\nBis 9 s passt FastH3 bei 864×480 vollständig in den VRAM; längere Szenen oder größere Formate laden es\nteilweise (im Log: `loaded partially`). Ab ~65 000 Tokens (z. B. 1920×1088) hält MV 0 vor jedem Schritt\ngenug VRAM für die Aktivierungen frei; die Extend-Szenen laufen dadurch ohne OOM.\n\n**MV 0 · Modell** bildet FastH3 schreibgeschützt ab: Windows verbucht die 22-GB-Datei dann nicht auf das\nCommit-Limit (RAM + Auslagerungsdatei). Genau das lief bei 1920×1088 in den Extend-Szenen über und wurde als\n„out of memory“ gemeldet. Eine andere LoRA, Stärke oder ein anderes Triggerwort rendert die Szenen neu,\nstatt alte Ergebnisse fortzusetzen.\n\n**MV 2 · Prompt Writer** (`auto`) startet das GGUF-Modell aus dem Startprofil (Qwen3.8 27B über llama.cpp auf\ngpu:1, 12,5 GiB VRAM) bzw. ohne Eintrag Qwen3.5 4B – jeweils nur so lange, wie Prompts fehlen, danach ist der\nSpeicher wieder frei. Ablauf: Charaktersheets → Textbeschreibung,\nProduktionsbibel (Stil, Orte je Abschnitt, Musik), dann pro Szene die Handlung. Ergebnis: MiniMax-Format\n`integrated_multimodal_description / overall_soundscape / non_diegetic_music` mit `<d>[English] …</d>`-Lyrics.\n\n**MV 3 · H3-Textencoder** encodiert **alle** Szenen-Prompts einmal und gibt den 26-GB-Encoder danach komplett frei.\nIn der Render-Schleife bleibt nur FastH3 geladen.\n\n**Szene 1 → PRÜFEN → LOOP (Szene → PRÜFEN)**: Jede weitere Szene friert die letzten 22 Frames der Vorgängerszene am\nAnfang ein (nahtloser Extend) und fixiert den passenden Songausschnitt im Audio-Strom. Die Pixaroma-Schleife läuft\n`Szenen − 1` Runden; die Rundenzahl kommt automatisch aus dem Plan. **Neu rendern** hängt die Kette\nSzene vorbereiten → Sampling → Speichern → Prüfen für dieselbe Szene noch einmal ein (neuer Seed), die Schleife zählt\nerst nach **Weiter** weiter. Verworfene Takes liegen unter `takes/` im Projektordner.\n\n**Fortsetzen:** Alles liegt unter `output/DaWasteh_H3_MusicVideo_v2/<Projekt>`. Ein erneuter Run mit gleichen Eingaben\nüberspringt fertige Szenen ohne Sampling – auch nach Absturz oder Neustart. Freigegebene Szenen laufen ohne Halt\ndurch; eine Szene, die beim Abbruch noch auf Prüfung wartete, wird sofort wieder gezeigt (ohne neu zu rendern).\n`resume_existing_scenes = aus` rendert bewusst alles neu.\n\n**FastH3-Grenzen:** FastH3 ist nur für Text-to-Video+Audio destilliert. Charaktersheets werden deshalb als Text\nbeschrieben (nicht als Ref2VA-Bild eingespeist); die Identität trägt der Extend über die eingefrorenen Frames.\n"
       ]
     },
     {
       "id": 37,
+      "type": "MarkdownNote",
+      "title": "DOWNLOADS · Modelle / Zielordner",
+      "pos": [
+        40.0,
+        2880.0
+      ],
+      "size": [
+        680,
+        996
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# Benötigte Dateien\n\n- [fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors](https://huggingface.co/FastVideo/FastVideo-FastH3-Comfy/resolve/ec1e3aa374a91c57b0b94a1623b7e657c0498cf2/diffusion_models/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors) → `ComfyUI/models/diffusion_models/MiniMax H3/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors`\n\n- [h3-realism-people-t2v-i2v-r2v.safetensors](https://huggingface.co/fal/MiniMax-H3-Realism-People-LoRA/resolve/039cc8579d7aa357a882d7f4111b25da4f72dccc/h3-realism-people-t2v-i2v-r2v.safetensors) → `ComfyUI/models/loras/MiniMax H3/h3-realism-people-t2v-i2v-r2v.safetensors`\n\n- [qwen3vl_32b_minimax_h3_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/text_encoders/qwen3vl_32b_minimax_h3_int8_convrot.safetensors) → `ComfyUI/models/text_encoders/MiniMax H3/qwen3vl_32b_minimax_h3_int8_convrot.safetensors`\n\n- [minimax_h3_video_vae_fp16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/vae/minimax_h3_video_vae_fp16.safetensors) → `ComfyUI/models/vae/MiniMax H3/minimax_h3_video_vae_fp16.safetensors`\n\n- [minimax_h3_audio_vae_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/vae/minimax_h3_audio_vae_fp32.safetensors) → `ComfyUI/models/vae/MiniMax H3/minimax_h3_audio_vae_fp32.safetensors`\n\nQwen3.5 4B (`models/text_encoders/Qwen/qwen3.5_4b_bf16.safetensors`, Rückfall für MV 2) und Whisper small werden\naus den bereits vorhandenen Bundle-Installationen genutzt. Optional für MV 2: ein Qwen3.8-27B-GGUF plus\n`llama-server` (HIP oder Vulkan), eingetragen in `start-MultiGPU.ps1` (`$PromptLlmGguf`, `$LlamaServerExe`). Whisper lädt beim ersten Planer-Lauf ggf. ~460 MB nach `~/.cache/whisper`.\n\nKein Cloud-API-Aufruf. Lizenz FastH3/MiniMax H3: siehe MiniMax-H3-Modellkarte (MiniMax Model License).\n"
+      ]
+    },
+    {
+      "id": 38,
       "type": "PixaromaRunTimer",
       "pos": [
         40.0,
-        3400.0
+        3920.0
       ],
       "size": [
         226,
         136
       ],
       "flags": {},
-      "order": 34,
+      "order": 35,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2313,10 +2364,10 @@
       "bgcolor": "#2a2a2a"
     },
     {
-      "id": 38,
+      "id": 39,
       "type": "MarkdownNote",
       "pos": [
-        4840.0,
+        5120.0,
         80.0
       ],
       "size": [
@@ -2324,7 +2375,7 @@
         1920
       ],
       "flags": {},
-      "order": 35,
+      "order": 36,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2336,36 +2387,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · MV 1 · Song + Lyrics → Dauer, Timing, Szenenplan · Node 7\n\n**Zweck:** Measures the song, aligns the lyrics to the vocals with local Whisper, and splits the song into scenes of different lengths at section and line boundaries. Any song length works.\n\n**Einstellbare Werte**\n- `song` = `song.mp3` — MP3/WAV/FLAC/M4A/OGG. The original file is copied and later muxed back untouched. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `lyrics` = `` — Lyrics with optional [Verse]/[Chorus] headers or [mm:ss.xx] timestamps. Empty = instrumental plan. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `video_idea` = `` — Your idea for the video: story, look, locations, mood. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `width` = `864` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `480` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `project_name` = `Music_Video` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `20260923` — Base seed; every scene gets its own derived seed. Change it to re-roll the whole video. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `target_scene_seconds` = `7.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `min_scene_seconds` = `4.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `max_scene_seconds` = `9.0` — 864x480: up to 9 s keeps FastH3 fully in VRAM (<=243 H3 frames). Longer scenes load it partially and sample 2-4x slower. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `continuity_frames` = `22` — Frames of the previous scene frozen at the start of the next one (22 = 0.92 s). Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `lyrics_language` = `auto` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `whisper_model` = `small` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `resume_existing_scenes` = `True` — On: finished scenes of the same plan are reused. Off: every scene is rendered again. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `song` (COMBO, nicht verbunden): MP3/WAV/FLAC/M4A/OGG. The original file is copied and later muxed back untouched.\n- `lyrics` (STRING, Link 1): Lyrics with optional [Verse]/[Chorus] headers or [mm:ss.xx] timestamps. Empty = instrumental plan.\n- `video_idea` (STRING, Link 2): Your idea for the video: story, look, locations, mood.\n- `width` (INT, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `project_name` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): Base seed; every scene gets its own derived seed. Change it to re-roll the whole video.\n- `target_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `min_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_scene_seconds` (FLOAT, nicht verbunden): 864x480: up to 9 s keeps FastH3 fully in VRAM (<=243 H3 frames). Longer scenes load it partially and sample 2-4x slower.\n- `continuity_frames` (COMBO, nicht verbunden): Frames of the previous scene frozen at the start of the next one (22 = 0.92 s).\n- `lyrics_language` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `whisper_model` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resume_existing_scenes` (BOOLEAN, nicht verbunden): On: finished scenes of the same plan are reused. Off: every scene is rendered again.\n\n**Ausgänge**\n- `plan` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `scene_count` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `loop_rounds` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `plan_text` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
-      ],
-      "color": "#1b2638",
-      "bgcolor": "#101722"
-    },
-    {
-      "id": 39,
-      "type": "MarkdownNote",
-      "pos": [
-        4840.0,
-        2040.0
-      ],
-      "size": [
-        680,
-        1018
-      ],
-      "flags": {},
-      "order": 36,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Erklärung · MV 2 · MiniMax-Prompts · Qwen3.5 (Idee + Lyrics + Charaktere) · Node 9",
-      "properties": {
-        "Node name for S&R": "MarkdownNote",
-        "cnr_id": "comfy-core",
-        "dawasteh_note_for": 9,
-        "dawasteh_generated_note": true
-      },
-      "widgets_values": [
-        "# Erklärung · MV 2 · MiniMax-Prompts · Qwen3.5 (Idee + Lyrics + Charaktere) · Node 9\n\n**Zweck:** Turns the video idea, the timed lyrics and up to three character sheets into one MiniMax H3 prompt per scene (integrated_multimodal_description / overall_soundscape / non_diegetic_music), with  -tagged lyrics for lip sync and varied shots, locations and camera moves.\n\n**Einstellbare Werte**\n- `mode` = `Qwen3.5 LLM (empfohlen)` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `llm` = `Qwen\\qwen3.5_4b_bf16.safetensors` — Qwen3.5 (4B recommended, vision capable for character sheets). Loaded only while prompts are written, then freed. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `temperature` = `0.7` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `llm_seed` = `7` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n\n**Eingänge**\n- `plan` (STRING, Link 6): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `llm` (COMBO, nicht verbunden): Qwen3.5 (4B recommended, vision capable for character sheets). Loaded only while prompts are written, then freed.\n- `temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `llm_seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `character_1` (IMAGE, Link 7): Character sheet of the lead singer (optional).\n- `character_2` (IMAGE, Link 8): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `character_3` (IMAGE, Link 9): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `plan` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `prompts` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · MV 1 · Song + Lyrics → Dauer, Timing, Szenenplan · Node 7\n\n**Zweck:** Measures the song, aligns the lyrics to the vocals with local Whisper, and splits the song into scenes of different lengths at section and line boundaries. Any song length works.\n\n**Einstellbare Werte**\n- `song` = `song.mp3` — MP3/WAV/FLAC/M4A/OGG. The original file is copied and later muxed back untouched. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `lyrics` = `` — Lyrics with optional [Verse]/[Chorus] headers or [mm:ss.xx] timestamps. Empty = instrumental plan. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `video_idea` = `` — Your idea for the video: story, look, locations, mood. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `width` = `1664` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `928` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `project_name` = `Music_Video` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `seed` = `20260923` — Base seed; every scene gets its own derived seed. Change it to re-roll the whole video. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `target_scene_seconds` = `7.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `min_scene_seconds` = `4.0` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `max_scene_seconds` = `9.0` — 864x480: up to 9 s keeps FastH3 fully in VRAM (<=243 H3 frames). Longer scenes load it partially and sample 2-4x slower. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `continuity_frames` = `22` — Frames of the previous scene frozen at the start of the next one (22 = 0.92 s). Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `lyrics_language` = `auto` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `whisper_model` = `small` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `resume_existing_scenes` = `True` — On: finished scenes of the same plan are reused. Off: every scene is rendered again. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `song` (COMBO, nicht verbunden): MP3/WAV/FLAC/M4A/OGG. The original file is copied and later muxed back untouched.\n- `lyrics` (STRING, Link 1): Lyrics with optional [Verse]/[Chorus] headers or [mm:ss.xx] timestamps. Empty = instrumental plan.\n- `video_idea` (STRING, Link 2): Your idea for the video: story, look, locations, mood.\n- `width` (INT, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `project_name` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): Base seed; every scene gets its own derived seed. Change it to re-roll the whole video.\n- `target_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `min_scene_seconds` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_scene_seconds` (FLOAT, nicht verbunden): 864x480: up to 9 s keeps FastH3 fully in VRAM (<=243 H3 frames). Longer scenes load it partially and sample 2-4x slower.\n- `continuity_frames` (COMBO, nicht verbunden): Frames of the previous scene frozen at the start of the next one (22 = 0.92 s).\n- `lyrics_language` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `whisper_model` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resume_existing_scenes` (BOOLEAN, nicht verbunden): On: finished scenes of the same plan are reused. Off: every scene is rendered again.\n\n**Ausgänge**\n- `plan` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `scene_count` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `loop_rounds` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `plan_text` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2374,15 +2396,44 @@
       "id": 40,
       "type": "MarkdownNote",
       "pos": [
-        4840.0,
-        3100.0
+        5120.0,
+        2040.0
+      ],
+      "size": [
+        680,
+        1062
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · MV 2 · MiniMax-Prompts · Qwen3.8 27B / Qwen3.5 (Idee + Lyrics + Charaktere) · Node 9",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 9,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · MV 2 · MiniMax-Prompts · Qwen3.8 27B / Qwen3.5 (Idee + Lyrics + Charaktere) · Node 9\n\n**Zweck:** Turns the video idea, the timed lyrics and up to three character sheets into one MiniMax H3 prompt per scene (integrated_multimodal_description / overall_soundscape / non_diegetic_music), with  -tagged lyrics for lip sync and varied shots, locations and camera moves.\n\n**Einstellbare Werte**\n- `mode` = `Qwen3.5 LLM (empfohlen)` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `llm` = `auto (GGUF aus dem Startprofil, sonst Qwen3.5 4B)` — auto: the GGUF model from the start profile (llama.cpp on the second GPU, e.g. Qwen3.8 27B), otherwise Qwen3.5 4B. Loaded only while prompts are written, then freed. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `temperature` = `0.7` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `llm_seed` = `7` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n\n**Eingänge**\n- `plan` (STRING, Link 6): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `llm` (COMBO, nicht verbunden): auto: the GGUF model from the start profile (llama.cpp on the second GPU, e.g. Qwen3.8 27B), otherwise Qwen3.5 4B. Loaded only while prompts are writ…\n- `temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `llm_seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `character_1` (IMAGE, Link 7): Character sheet of the lead singer (optional).\n- `character_2` (IMAGE, Link 8): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `character_3` (IMAGE, Link 9): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `plan` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `prompts` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 41,
+      "type": "MarkdownNote",
+      "pos": [
+        5120.0,
+        3140.0
       ],
       "size": [
         680,
         666
       ],
       "flags": {},
-      "order": 37,
+      "order": 38,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2400,18 +2451,18 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 41,
+      "id": 42,
       "type": "MarkdownNote",
       "pos": [
-        4840.0,
-        3800.0
+        5120.0,
+        3840.0
       ],
       "size": [
         680,
         1106
       ],
       "flags": {},
-      "order": 38,
+      "order": 39,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2429,18 +2480,18 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 42,
+      "id": 43,
       "type": "MarkdownNote",
       "pos": [
-        4840.0,
-        4940.0
+        5120.0,
+        4980.0
       ],
       "size": [
         680,
         622
       ],
       "flags": {},
-      "order": 39,
+      "order": 40,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2458,18 +2509,18 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 43,
+      "id": 44,
       "type": "MarkdownNote",
       "pos": [
-        4840.0,
-        5600.0
+        5120.0,
+        5640.0
       ],
       "size": [
         680,
         622
       ],
       "flags": {},
-      "order": 40,
+      "order": 41,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2487,18 +2538,18 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 44,
+      "id": 45,
       "type": "MarkdownNote",
       "pos": [
-        4840.0,
-        6260.0
+        5120.0,
+        6300.0
       ],
       "size": [
         680,
         1700
       ],
       "flags": {},
-      "order": 41,
+      "order": 42,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2516,10 +2567,10 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 45,
+      "id": 46,
       "type": "MarkdownNote",
       "pos": [
-        5600.0,
+        5880.0,
         80.0
       ],
       "size": [
@@ -2527,7 +2578,7 @@
         620
       ],
       "flags": {},
-      "order": 42,
+      "order": 43,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2545,10 +2596,10 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 46,
+      "id": 47,
       "type": "MarkdownNote",
       "pos": [
-        5600.0,
+        5880.0,
         740.0
       ],
       "size": [
@@ -2556,7 +2607,7 @@
         620
       ],
       "flags": {},
-      "order": 43,
+      "order": 44,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2574,10 +2625,10 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 47,
+      "id": 48,
       "type": "MarkdownNote",
       "pos": [
-        5600.0,
+        5880.0,
         1400.0
       ],
       "size": [
@@ -2585,7 +2636,7 @@
         620
       ],
       "flags": {},
-      "order": 44,
+      "order": 45,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2603,10 +2654,10 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 48,
+      "id": 49,
       "type": "MarkdownNote",
       "pos": [
-        5600.0,
+        5880.0,
         2060.0
       ],
       "size": [
@@ -2614,7 +2665,7 @@
         688
       ],
       "flags": {},
-      "order": 45,
+      "order": 46,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2632,10 +2683,10 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 49,
+      "id": 50,
       "type": "MarkdownNote",
       "pos": [
-        5600.0,
+        5880.0,
         2780.0
       ],
       "size": [
@@ -2643,7 +2694,7 @@
         820
       ],
       "flags": {},
-      "order": 46,
+      "order": 47,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2661,10 +2712,10 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 50,
+      "id": 51,
       "type": "MarkdownNote",
       "pos": [
-        5600.0,
+        5880.0,
         3640.0
       ],
       "size": [
@@ -2672,7 +2723,7 @@
         620
       ],
       "flags": {},
-      "order": 47,
+      "order": 48,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2690,10 +2741,10 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 51,
+      "id": 52,
       "type": "MarkdownNote",
       "pos": [
-        5600.0,
+        5880.0,
         4300.0
       ],
       "size": [
@@ -2701,7 +2752,7 @@
         620
       ],
       "flags": {},
-      "order": 48,
+      "order": 49,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2719,10 +2770,10 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 52,
+      "id": 53,
       "type": "MarkdownNote",
       "pos": [
-        6360.0,
+        6640.0,
         80.0
       ],
       "size": [
@@ -2730,7 +2781,7 @@
         666
       ],
       "flags": {},
-      "order": 49,
+      "order": 50,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2748,18 +2799,18 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 53,
+      "id": 54,
       "type": "MarkdownNote",
       "pos": [
-        6360.0,
+        6640.0,
         780.0
       ],
       "size": [
         680,
-        798
+        820
       ],
       "flags": {},
-      "order": 50,
+      "order": 51,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2771,24 +2822,53 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SZENE 1 · Szene speichern + Vorschau mit Originalton · Node 24\n\n**Zweck:** Decodes one scene, keeps exactly its new frames, stores the continuity frames for the next extend and shows a preview with the original song audio. Finished scenes of the same plan are skipped without sampling (resume).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 28): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 29): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 30): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 31): Ordering token: the previous scene or the approval gate.\n\n**Ausgänge**\n- `token` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `preview` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · SZENE 1 · Szene speichern + Vorschau mit Originalton · Node 24\n\n**Zweck:** Decodes one scene, keeps exactly its new frames, stores the continuity frames for the next extend and shows a preview with the original song audio. Finished scenes of the same plan are skipped without sampling (resume).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 28): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 29): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 30): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 31): Ordering token: the review of the previous scene (MV 5b).\n\n**Ausgänge**\n- `token` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `preview` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
     },
     {
-      "id": 54,
+      "id": 55,
       "type": "MarkdownNote",
       "pos": [
-        6360.0,
-        1620.0
+        6640.0,
+        1640.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 52,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SZENE 1 · PRÜFEN · Video mit Originalton → Weiter / Neu rendern · Node 25",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 25,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SZENE 1 · PRÜFEN · Video mit Originalton → Weiter / Neu rendern · Node 25\n\n**Zweck:** Shows the scene MV 5 just saved, with the original song audio, and holds the workflow until you decide: Weiter renders the next scene, Neu rendern renders this scene again with a new seed (earlier takes stay selectable), Rest ohne Prüfung accepts every further scene of this run.\n\n**Einstellbare Werte**\n- `review` = `True` — Off: new scenes are accepted without stopping. Already accepted scenes never stop again. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `scene` (STRING, Link 32): Token from MV 5 · Szene speichern.\n- `review` (BOOLEAN, nicht verbunden): Off: new scenes are accepted without stopping. Already accepted scenes never stop again.\n\n**Ausgänge**\n- `token` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 56,
+      "type": "MarkdownNote",
+      "pos": [
+        6640.0,
+        2300.0
       ],
       "size": [
         680,
         820
       ],
       "flags": {},
-      "order": 51,
+      "order": 53,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2806,18 +2886,18 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 55,
+      "id": 57,
       "type": "MarkdownNote",
       "pos": [
-        6360.0,
-        2480.0
+        6640.0,
+        3160.0
       ],
       "size": [
         680,
         620
       ],
       "flags": {},
-      "order": 52,
+      "order": 54,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2835,18 +2915,18 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 56,
+      "id": 58,
       "type": "MarkdownNote",
       "pos": [
-        6360.0,
-        3140.0
+        6640.0,
+        3820.0
       ],
       "size": [
         680,
         620
       ],
       "flags": {},
-      "order": 53,
+      "order": 55,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2864,18 +2944,18 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 57,
+      "id": 59,
       "type": "MarkdownNote",
       "pos": [
-        6360.0,
-        3800.0
+        6640.0,
+        4480.0
       ],
       "size": [
         680,
         666
       ],
       "flags": {},
-      "order": 54,
+      "order": 56,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2893,18 +2973,18 @@
       "bgcolor": "#101722"
     },
     {
-      "id": 58,
+      "id": 60,
       "type": "MarkdownNote",
       "pos": [
-        6360.0,
-        4500.0
+        7400.0,
+        80.0
       ],
       "size": [
         680,
-        798
+        820
       ],
       "flags": {},
-      "order": 55,
+      "order": 57,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -2916,42 +2996,71 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · LOOP · Szene speichern + Vorschau mit Originalton · Node 31\n\n**Zweck:** Decodes one scene, keeps exactly its new frames, stores the continuity frames for the next extend and shows a preview with the original song audio. Finished scenes of the same plan are skipped without sampling (resume).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 46): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, Link 50): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 47): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 48): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 51): Ordering token: the previous scene or the approval gate.\n\n**Ausgänge**\n- `token` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `preview` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · LOOP · Szene speichern + Vorschau mit Originalton · Node 31\n\n**Zweck:** Decodes one scene, keeps exactly its new frames, stores the continuity frames for the next extend and shows a preview with the original song audio. Finished scenes of the same plan are skipped without sampling (resume).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 46): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, Link 50): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 47): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 48): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 51): Ordering token: the review of the previous scene (MV 5b).\n\n**Ausgänge**\n- `token` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `preview` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
     },
     {
-      "id": 59,
+      "id": 61,
       "type": "MarkdownNote",
       "pos": [
-        7120.0,
-        80.0
+        7400.0,
+        940.0
       ],
       "size": [
         680,
         620
       ],
       "flags": {},
-      "order": 56,
+      "order": 58,
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · MV 6 · FERTIGES MUSIKVIDEO · Originalton unverändert · Node 33",
+      "title": "Erklärung · LOOP · PRÜFEN · jede weitere Szene → Weiter / Neu rendern · Node 32",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
-        "dawasteh_note_for": 33,
+        "dawasteh_note_for": 32,
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · MV 6 · FERTIGES MUSIKVIDEO · Originalton unverändert · Node 33\n\n**Zweck:** Joins all scenes without re-encoding and muxes the original song file stream-copied (-c:a copy), so the audio is bit-identical to the input. MP3/AAC go into MP4, other codecs into MKV.\n\n**Einstellbare Werte**\n- `container` = `auto` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `plan` (STRING, Link 54): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `container` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 55): Token of the last scene (Loop End).\n\n**Ausgänge**\n- `final_file` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · LOOP · PRÜFEN · jede weitere Szene → Weiter / Neu rendern · Node 32\n\n**Zweck:** Shows the scene MV 5 just saved, with the original song audio, and holds the workflow until you decide: Weiter renders the next scene, Neu rendern renders this scene again with a new seed (earlier takes stay selectable), Rest ohne Prüfung accepts every further scene of this run.\n\n**Einstellbare Werte**\n- `review` = `True` — Off: new scenes are accepted without stopping. Already accepted scenes never stop again. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `scene` (STRING, Link 52): Token from MV 5 · Szene speichern.\n- `review` (BOOLEAN, nicht verbunden): Off: new scenes are accepted without stopping. Already accepted scenes never stop again.\n\n**Ausgänge**\n- `token` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
     },
     {
-      "id": 60,
+      "id": 62,
+      "type": "MarkdownNote",
+      "pos": [
+        7400.0,
+        1600.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 59,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · MV 6 · FERTIGES MUSIKVIDEO · Originalton unverändert · Node 34",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 34,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · MV 6 · FERTIGES MUSIKVIDEO · Originalton unverändert · Node 34\n\n**Zweck:** Joins all scenes without re-encoding and muxes the original song file stream-copied (-c:a copy), so the audio is bit-identical to the input. MP3/AAC go into MP4, other codecs into MKV.\n\n**Einstellbare Werte**\n- `container` = `auto` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `plan` (STRING, Link 55): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `container` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 56): Token of the last scene (Loop End).\n\n**Ausgänge**\n- `final_file` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 63,
       "type": "SelectModelDevice",
       "pos": [
         1520.0,
@@ -2962,14 +3071,14 @@
         82
       ],
       "flags": {},
-      "order": 57,
+      "order": 60,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "model",
           "name": "model",
           "type": "MODEL",
-          "link": 56
+          "link": 57
         },
         {
           "localized_name": "device",
@@ -2978,7 +3087,7 @@
           "widget": {
             "name": "device"
           },
-          "link": 59
+          "link": 60
         }
       ],
       "outputs": [
@@ -3004,7 +3113,7 @@
       "bgcolor": "#1d4968"
     },
     {
-      "id": 61,
+      "id": 64,
       "type": "SelectVAEDevice",
       "pos": [
         1520.0,
@@ -3015,14 +3124,14 @@
         82
       ],
       "flags": {},
-      "order": 58,
+      "order": 61,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "vae",
           "name": "vae",
           "type": "VAE",
-          "link": 57
+          "link": 58
         },
         {
           "localized_name": "device",
@@ -3031,7 +3140,7 @@
           "widget": {
             "name": "device"
           },
-          "link": 60
+          "link": 61
         }
       ],
       "outputs": [
@@ -3060,7 +3169,7 @@
       "bgcolor": "#5a4322"
     },
     {
-      "id": 62,
+      "id": 65,
       "type": "SelectVAEDevice",
       "pos": [
         1520.0,
@@ -3071,14 +3180,14 @@
         82
       ],
       "flags": {},
-      "order": 59,
+      "order": 62,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "vae",
           "name": "vae",
           "type": "VAE",
-          "link": 58
+          "link": 59
         },
         {
           "localized_name": "device",
@@ -3087,7 +3196,7 @@
           "widget": {
             "name": "device"
           },
-          "link": 61
+          "link": 62
         }
       ],
       "outputs": [
@@ -3114,18 +3223,18 @@
       "bgcolor": "#5a4322"
     },
     {
-      "id": 63,
+      "id": 66,
       "type": "DaWMultiGPUDeviceControl",
       "pos": [
         40.0,
-        3580.0
+        4100.0
       ],
       "size": [
         380,
         170
       ],
       "flags": {},
-      "order": 60,
+      "order": 63,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -3135,7 +3244,7 @@
           "type": "COMBO",
           "slot_index": 0,
           "links": [
-            59
+            60
           ]
         },
         {
@@ -3151,8 +3260,8 @@
           "type": "COMBO",
           "slot_index": 2,
           "links": [
-            60,
-            61
+            61,
+            62
           ]
         }
       ],
@@ -3169,109 +3278,22 @@
       "bgcolor": "#205845"
     },
     {
-      "id": 64,
-      "type": "MarkdownNote",
-      "pos": [
-        7120.0,
-        740.0
-      ],
-      "size": [
-        680,
-        620
-      ],
-      "flags": {},
-      "order": 61,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Erklärung · SelectModelDevice · central control · Node 60",
-      "properties": {
-        "Node name for S&R": "MarkdownNote",
-        "cnr_id": "comfy-core",
-        "dawasteh_note_for": 60,
-        "dawasteh_generated_note": true
-      },
-      "widgets_values": [
-        "# Erklärung · SelectModelDevice · central control · Node 60\n\n**Zweck:** Place the diffusion model on a specific device (default / cpu / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader (even after a ↵   prior Select Model Device call). ↵ - \"cpu\" pins both the load and offload device to CPU. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   devic…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 56): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 59): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
-      ],
-      "color": "#1b2638",
-      "bgcolor": "#101722"
-    },
-    {
-      "id": 65,
-      "type": "MarkdownNote",
-      "pos": [
-        7120.0,
-        1400.0
-      ],
-      "size": [
-        680,
-        620
-      ],
-      "flags": {},
-      "order": 62,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Erklärung · SelectVAEDevice · central control · Node 61",
-      "properties": {
-        "Node name for S&R": "MarkdownNote",
-        "cnr_id": "comfy-core",
-        "dawasteh_note_for": 61,
-        "dawasteh_generated_note": true
-      },
-      "widgets_values": [
-        "# Erklärung · SelectVAEDevice · central control · Node 61\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 57): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 60): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 4 Verbindung(en)): Ergebnis dieses Nodes"
-      ],
-      "color": "#1b2638",
-      "bgcolor": "#101722"
-    },
-    {
-      "id": 66,
-      "type": "MarkdownNote",
-      "pos": [
-        7120.0,
-        2060.0
-      ],
-      "size": [
-        680,
-        620
-      ],
-      "flags": {},
-      "order": 63,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Erklärung · SelectVAEDevice · central control · Node 62",
-      "properties": {
-        "Node name for S&R": "MarkdownNote",
-        "cnr_id": "comfy-core",
-        "dawasteh_note_for": 62,
-        "dawasteh_generated_note": true
-      },
-      "widgets_values": [
-        "# Erklärung · SelectVAEDevice · central control · Node 62\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 58): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 61): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
-      ],
-      "color": "#1b2638",
-      "bgcolor": "#101722"
-    },
-    {
       "id": 67,
       "type": "MarkdownNote",
       "pos": [
-        7120.0,
-        2720.0
+        7400.0,
+        2260.0
       ],
       "size": [
         680,
-        666
+        620
       ],
       "flags": {},
       "order": 64,
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 63",
+      "title": "Erklärung · SelectModelDevice · central control · Node 63",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -3279,7 +3301,94 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 63\n\n**Zweck:** Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector. ↵  ↵ Connect these COMBO outputs to the ``device`` input of ComfyUI's official ↵ Select Model Device, Select CLIP Device, and Select VAE Device nodes. The ↵ node chooses labels only; the official selectors remain responsible for ↵ validating…\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SelectModelDevice · central control · Node 63\n\n**Zweck:** Place the diffusion model on a specific device (default / cpu / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader (even after a ↵   prior Select Model Device call). ↵ - \"cpu\" pins both the load and offload device to CPU. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   devic…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 57): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 60): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 68,
+      "type": "MarkdownNote",
+      "pos": [
+        7400.0,
+        2920.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 65,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectVAEDevice · central control · Node 64",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 64,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectVAEDevice · central control · Node 64\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 58): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 61): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 4 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 69,
+      "type": "MarkdownNote",
+      "pos": [
+        7400.0,
+        3580.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 66,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectVAEDevice · central control · Node 65",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 65,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectVAEDevice · central control · Node 65\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 59): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 62): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 70,
+      "type": "MarkdownNote",
+      "pos": [
+        7400.0,
+        4240.0
+      ],
+      "size": [
+        680,
+        666
+      ],
+      "flags": {},
+      "order": 67,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 66",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 66,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 66\n\n**Zweck:** Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector. ↵  ↵ Connect these COMBO outputs to the ``device`` input of ComfyUI's official ↵ Select Model Device, Select CLIP Device, and Select VAE Device nodes. The ↵ node chooses labels only; the official selectors remain responsible for ↵ validating…\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -3384,7 +3493,7 @@
     ],
     [
       13,
-      60,
+      63,
       0,
       13,
       0,
@@ -3424,7 +3533,7 @@
     ],
     [
       18,
-      61,
+      64,
       0,
       20,
       3,
@@ -3432,7 +3541,7 @@
     ],
     [
       19,
-      62,
+      65,
       0,
       20,
       4,
@@ -3512,7 +3621,7 @@
     ],
     [
       29,
-      61,
+      64,
       0,
       24,
       3,
@@ -3537,10 +3646,10 @@
     [
       32,
       24,
-      1,
+      0,
       25,
       0,
-      "IMAGE"
+      "STRING"
     ],
     [
       33,
@@ -3556,7 +3665,7 @@
       0,
       26,
       1,
-      "IMAGE"
+      "STRING"
     ],
     [
       35,
@@ -3568,7 +3677,7 @@
     ],
     [
       36,
-      61,
+      64,
       0,
       27,
       3,
@@ -3576,7 +3685,7 @@
     ],
     [
       37,
-      62,
+      65,
       0,
       27,
       4,
@@ -3656,7 +3765,7 @@
     ],
     [
       47,
-      61,
+      64,
       0,
       31,
       3,
@@ -3704,73 +3813,81 @@
     ],
     [
       53,
-      26,
-      5,
       32,
-      5,
-      "FLOW_CONTROL"
-    ],
-    [
-      54,
-      11,
       0,
       33,
       0,
       "STRING"
     ],
     [
-      55,
-      32,
-      0,
+      54,
+      26,
+      5,
       33,
+      5,
+      "FLOW_CONTROL"
+    ],
+    [
+      55,
+      11,
+      0,
+      34,
+      0,
+      "STRING"
+    ],
+    [
+      56,
+      33,
+      0,
+      34,
       2,
       "*"
     ],
     [
-      56,
+      57,
       12,
       0,
-      60,
+      63,
       0,
       "MODEL"
     ],
     [
-      57,
+      58,
       16,
       0,
-      61,
-      0,
-      "VAE"
-    ],
-    [
-      58,
-      17,
-      0,
-      62,
+      64,
       0,
       "VAE"
     ],
     [
       59,
-      63,
+      17,
       0,
+      65,
+      0,
+      "VAE"
+    ],
+    [
       60,
+      66,
+      0,
+      63,
       1,
       "COMBO"
     ],
     [
-      60,
-      63,
-      2,
       61,
+      66,
+      2,
+      64,
       1,
       "COMBO"
     ],
     [
-      61,
-      63,
-      2,
       62,
+      66,
+      2,
+      65,
       1,
       "COMBO"
     ]
@@ -3783,7 +3900,7 @@
         0.0,
         0.0,
         760.0,
-        3800.0
+        4320.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -3847,8 +3964,8 @@
       "bounding": [
         3720.0,
         0.0,
-        1000.0,
-        1840.0
+        1280.0,
+        2260.0
       ],
       "color": "#3F9E6D",
       "font_size": 24,
@@ -3858,10 +3975,10 @@
       "id": 7,
       "title": "R9 · PARAMETER REFERENCE",
       "bounding": [
-        4800.0,
+        5080.0,
         0.0,
         3040.0,
-        8000.0
+        8040.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -3872,7 +3989,7 @@
   "extra": {
     "dawasteh_h3_music_video_v122": {
       "version": 1,
-      "release": "v1.2.4",
+      "release": "v1.2.5",
       "model": "MiniMax H3\\fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors",
       "lora": {
         "name": "MiniMax H3\\h3-realism-people-t2v-i2v-r2v.safetensors",
@@ -3896,7 +4013,7 @@
     },
     "dawasteh_workflow_refinement": {
       "version": 1,
-      "generated_notes": 26,
+      "generated_notes": 28,
       "x_scale": 1.0,
       "y_scale": 1.0,
       "gap": 40.0,
@@ -3956,13 +4073,13 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "b3789a864fc2d7cdd356e1c1fd0bebd63de8aba5a87122ec8b32688d32a9a3c8",
+      "topology_sha256": "38a585deabf1ab8f8c1af77ae1420879af42acbb909d30acfa45c1f29b485a97",
       "exceptions": []
     }
   },
   "version": 0.4,
-  "last_node_id": 67,
-  "last_link_id": 61,
+  "last_node_id": 70,
+  "last_link_id": 62,
   "id": "53ccc740-0e86-5163-b0b3-46f1996ab0d2",
   "revision": 0
 }
