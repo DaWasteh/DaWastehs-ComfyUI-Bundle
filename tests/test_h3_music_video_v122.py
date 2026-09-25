@@ -233,7 +233,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertFalse(self.node("DaWH3MusicVideoDirectorDualGPU"))
 
     def test_fasth3_profile_matches_local_test(self):
-        unet = self.node("UNETLoader")[0]
+        unet = self.node("DaWMV2LoadModel")[0]  # v1.2.4: read-only FastH3 loader with optional LoRA (MV 0)
         self.assertIn("fastvideo_fasth3_8step_v2_pruned_int8_convrot", unet["widgets_values"][0])
         self.assertEqual(self.node("MiniMaxH3SigmaShift")[0]["widgets_values"], [10.0, 3.0])
         self.assertEqual(self.node("ModelAttentionBackend")[0]["widgets_values"], ["comfy kitchen attention"])
@@ -290,7 +290,9 @@ class LiveEvidenceTests(unittest.TestCase):
     def test_report_pins_shipped_workflow_and_sources(self):
         import hashlib
         import subprocess
-        self.assertEqual(self.report["workflow"]["sha256"], self.sha(self.report["workflow"]["path"]))
+        # v1.2.4 rebuilt the workflow around MV 0; this evidence describes the v1.2.2 file (see the v1.2.4 report).
+        shipped = subprocess.check_output(["git", "show", "v1.2.2:" + self.report["workflow"]["path"]], cwd=ROOT)
+        self.assertEqual(self.report["workflow"]["sha256"], hashlib.sha256(shipped).hexdigest())
         for entry in self.report["sources"]:
             # v1.2.3 fixed the shot-cut timestamps in mv2.py; the evidence describes the v1.2.2 run.
             data = subprocess.check_output(["git", "show", "v1.2.2:" + entry["path"]], cwd=ROOT)

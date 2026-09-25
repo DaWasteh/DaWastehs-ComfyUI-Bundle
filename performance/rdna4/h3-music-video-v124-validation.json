@@ -1,0 +1,662 @@
+{
+  "release": "v1.2.4",
+  "date": "2026-09-25",
+  "scope": "One cold end-to-end run of the music-video workflow with the user's Outro-Song inputs at 1920x1088 and the fal Realism People LoRA (0.8, trigger r34l1sm), serialized by the real frontend (headless Edge, app.graphToPrompt) and pruned by Pixaroma's own prune.mjs (pause, then continue). Bench port 8190 with the start profile (reserve-vram 4, VRAM guard 3 GiB) plus a measurement-only probe (per-forward/per-block timing, memory monitor).",
+  "system": {
+    "os": "win32",
+    "comfyui_version": "0.37.0",
+    "comfyui_commit": "93810483a4739a1588236919a3128d3070244146",
+    "frontend": "1.53.6",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "python_version": "3.13.13",
+    "pixaroma_commit": "7a1cf573034fe14e29c1200d884531231a003e2e",
+    "gpu": "gpu:0 AMD Radeon AI PRO R9700 32 GB",
+    "commit_limit_gib": 103.6
+  },
+  "lora": {
+    "file": "loras/MiniMax H3/h3-realism-people-t2v-i2v-r2v.safetensors",
+    "repo_id": "fal/MiniMax-H3-Realism-People-LoRA",
+    "sha256": "acc529601d2da117fb81179e76c56e488a3beab1171659d305f04fa3655b787e",
+    "strength": 0.8,
+    "trigger": "r34l1sm"
+  },
+  "workflow": {
+    "path": "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
+    "sha256": "f35fd8d107d044004fb20fa8101c69c29ea311c291bb60b0a1054a0f5829799c",
+    "tested_ui_sha256": "9e84ffb337109c89149f0dbcae198b5871dab46fc28c76e38213b04ba611d30f",
+    "tested_changes": [
+      "lyrics + video idea (from the user's earlier 1920x1088 plan)",
+      "Pixaroma size 1920x1088",
+      "character sheet 1 unmuted: Sheets/DaWasteh-Girl1-Sheet-II.png",
+      "song mvg_test/Outro-Song.mp3",
+      "project name Outro-Song_v124"
+    ],
+    "api_contract_sha256": "89f57848a5e31227a0707c7285f732401cd7408fa0b6e234132aacae10c21dff",
+    "final_file_api_contract_sha256": "89f57848a5e31227a0707c7285f732401cd7408fa0b6e234132aacae10c21dff",
+    "executed_contract_matches_final": true,
+    "pause_contract_sha256": "cc170c9bfb1257e4776721c510220fd2006bf2233ebaab6a1e38e318c914a06b",
+    "continue_contract_sha256": "cbf089e75d9cf0fe799b448752cd7910e1fef5fceaf8bc7f32146ac9c6317dd0",
+    "pause_node_classes": [
+      "BasicGuider",
+      "BasicScheduler",
+      "BlockSparseAttention",
+      "DaWMV2EncodeScenes",
+      "DaWMV2LoadModel",
+      "DaWMV2Planner",
+      "DaWMV2PromptWriter",
+      "DaWMV2SaveScene",
+      "DaWMV2SceneSetup",
+      "DaWMultiGPUDeviceControl",
+      "KSamplerSelect",
+      "MiniMaxH3SigmaShift",
+      "ModelAttentionBackend",
+      "PixaromaLoadImage",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "PixaromaShowText",
+      "PixaromaSizes",
+      "RandomNoise",
+      "SamplerCustomAdvanced",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "VAELoader"
+    ],
+    "continue_node_classes": [
+      "BasicGuider",
+      "BasicScheduler",
+      "BlockSparseAttention",
+      "DaWMV2EncodeScenes",
+      "DaWMV2Finalize",
+      "DaWMV2LoadModel",
+      "DaWMV2Planner",
+      "DaWMV2PromptWriter",
+      "DaWMV2SaveScene",
+      "DaWMV2SceneSetup",
+      "DaWMultiGPUDeviceControl",
+      "KSamplerSelect",
+      "MiniMaxH3SigmaShift",
+      "ModelAttentionBackend",
+      "PixaromaLoadImage",
+      "PixaromaLoopEnd",
+      "PixaromaLoopStart",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "PixaromaSizes",
+      "RandomNoise",
+      "SamplerCustomAdvanced",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "VAELoader"
+    ]
+  },
+  "runs": {
+    "pause": {
+      "status": "success",
+      "seconds": 1242.2
+    },
+    "continue_attempt1": {
+      "status": "error",
+      "seconds": 8080.9,
+      "note": "scenes 2-6 saved, then OOM in step 2 of scene 7 (243 H3 frames): the first activation-reserve calibration (86.5 kB x 1.35 per token) left 0.8 GiB; recalibrated to 112 kB x 1.2 from the measured block peaks, server restarted"
+    },
+    "pause_resume": {
+      "status": "success",
+      "seconds": 20.0
+    },
+    "continue": {
+      "status": "success",
+      "seconds": 11540.0,
+      "note": "resume: scenes 1-6 skipped, 7-13 rendered, film finalized"
+    },
+    "render_seconds_total": 20883.1,
+    "scenes": [
+      {
+        "scene": 1,
+        "new_frames": 152,
+        "continuity_frames": 0,
+        "h3_frames": 175,
+        "attempt": "final",
+        "forwards_s": [
+          179.2,
+          170.4,
+          86.6,
+          204.0,
+          95.0,
+          64.8,
+          64.7,
+          64.6
+        ],
+        "attention_peak_gib": 11.31,
+        "tokens": 107007,
+        "latent_t": 52,
+        "sampling_s": 929.3,
+        "steps": 8
+      },
+      {
+        "scene": 2,
+        "new_frames": 156,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "attempt": "final",
+        "forwards_s": [
+          280.4,
+          343.4,
+          109.0,
+          150.2,
+          117.7,
+          117.9,
+          117.8,
+          147.5
+        ],
+        "attention_peak_gib": 13.47,
+        "tokens": 127538,
+        "latent_t": 62,
+        "sampling_s": 1383.9,
+        "steps": 8
+      },
+      {
+        "scene": 3,
+        "new_frames": 151,
+        "continuity_frames": 22,
+        "h3_frames": 175,
+        "attempt": "final",
+        "forwards_s": [
+          170.0,
+          169.9,
+          106.0,
+          158.0,
+          89.2,
+          159.3,
+          89.2,
+          161.8
+        ],
+        "attention_peak_gib": 11.31,
+        "tokens": 107030,
+        "latent_t": 52,
+        "sampling_s": 1103.4,
+        "steps": 8
+      },
+      {
+        "scene": 4,
+        "new_frames": 161,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "attempt": "final",
+        "forwards_s": [
+          276.3,
+          339.5,
+          155.9,
+          164.4,
+          157.7,
+          132.1,
+          155.9,
+          134.8
+        ],
+        "attention_peak_gib": 13.48,
+        "tokens": 127655,
+        "latent_t": 62,
+        "sampling_s": 1516.6,
+        "steps": 8
+      },
+      {
+        "scene": 5,
+        "new_frames": 181,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "attempt": "final",
+        "forwards_s": [
+          281.6,
+          363.5,
+          139.6,
+          157.1,
+          134.8,
+          153.2,
+          152.4,
+          156.8
+        ],
+        "attention_peak_gib": 13.49,
+        "tokens": 127569,
+        "latent_t": 62,
+        "sampling_s": 1539.0,
+        "steps": 8
+      },
+      {
+        "scene": 6,
+        "new_frames": 178,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "attempt": "final",
+        "forwards_s": [
+          277.0,
+          362.9,
+          106.3,
+          84.5,
+          84.5,
+          84.6,
+          84.5,
+          84.6
+        ],
+        "attention_peak_gib": 13.49,
+        "tokens": 127565,
+        "latent_t": 62,
+        "sampling_s": 1168.9,
+        "steps": 8
+      },
+      {
+        "scene": 7,
+        "new_frames": 193,
+        "continuity_frames": 22,
+        "h3_frames": 243,
+        "attempt": "final2",
+        "forwards_s": [
+          392.6,
+          308.2,
+          136.8,
+          108.6,
+          109.2,
+          109.3,
+          108.5,
+          108.4
+        ],
+        "attention_peak_gib": 12.56,
+        "tokens": 148188,
+        "latent_t": 72,
+        "sampling_s": 1381.6,
+        "steps": 8
+      },
+      {
+        "scene": 8,
+        "new_frames": 126,
+        "continuity_frames": 22,
+        "h3_frames": 175,
+        "attempt": "final2",
+        "forwards_s": [
+          174.8,
+          173.2,
+          88.5,
+          67.3,
+          67.4,
+          67.1,
+          67.4,
+          67.3
+        ],
+        "attention_peak_gib": 11.31,
+        "tokens": 107032,
+        "latent_t": 52,
+        "sampling_s": 773.0,
+        "steps": 8
+      },
+      {
+        "scene": 9,
+        "new_frames": 169,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "attempt": "final2",
+        "forwards_s": [
+          264.1,
+          372.3,
+          143.4,
+          151.2,
+          151.6,
+          121.0,
+          151.5,
+          121.1
+        ],
+        "attention_peak_gib": 13.13,
+        "tokens": 127574,
+        "latent_t": 62,
+        "sampling_s": 1476.2,
+        "steps": 8
+      },
+      {
+        "scene": 10,
+        "new_frames": 190,
+        "continuity_frames": 22,
+        "h3_frames": 243,
+        "attempt": "final2",
+        "forwards_s": [
+          480.5,
+          506.4,
+          184.8,
+          175.2,
+          170.1,
+          148.2,
+          147.9,
+          151.7
+        ],
+        "attention_peak_gib": 12.71,
+        "tokens": 148192,
+        "latent_t": 72,
+        "sampling_s": 1964.8,
+        "steps": 8
+      },
+      {
+        "scene": 11,
+        "new_frames": 138,
+        "continuity_frames": 22,
+        "h3_frames": 175,
+        "attempt": "final2",
+        "forwards_s": [
+          173.0,
+          173.9,
+          112.4,
+          177.0,
+          93.6,
+          168.6,
+          92.9,
+          160.4
+        ],
+        "attention_peak_gib": 11.32,
+        "tokens": 107153,
+        "latent_t": 52,
+        "sampling_s": 1151.8,
+        "steps": 8
+      },
+      {
+        "scene": 12,
+        "new_frames": 161,
+        "continuity_frames": 22,
+        "h3_frames": 209,
+        "attempt": "final2",
+        "forwards_s": [
+          316.0,
+          341.1,
+          147.5,
+          159.2,
+          154.1,
+          124.2,
+          154.0,
+          123.0
+        ],
+        "attention_peak_gib": 13.12,
+        "tokens": 127534,
+        "latent_t": 62,
+        "sampling_s": 1519.1,
+        "steps": 8
+      },
+      {
+        "scene": 13,
+        "new_frames": 204,
+        "continuity_frames": 22,
+        "h3_frames": 243,
+        "attempt": "final2",
+        "forwards_s": [
+          514.7,
+          535.8,
+          238.9,
+          206.2,
+          166.6,
+          161.5,
+          155.8,
+          153.2
+        ],
+        "attention_peak_gib": 12.72,
+        "tokens": 148216,
+        "latent_t": 72,
+        "sampling_s": 2132.7,
+        "steps": 8
+      }
+    ]
+  },
+  "plan": {
+    "path": "L:\\ComfyUI\\ComfyUI\\output\\DaWasteh_H3_MusicVideo_v2\\Outro-Song_v124_276f60cbbddd\\plan.json",
+    "duration_s": 90.0,
+    "scenes": 13,
+    "alignment": {
+      "method": "whisper-small",
+      "coverage": 0.8711,
+      "language": "en"
+    },
+    "scene_seconds": [
+      6.333,
+      6.5,
+      6.292,
+      6.708,
+      7.542,
+      7.417,
+      8.042,
+      5.25,
+      7.042,
+      7.917,
+      5.75,
+      6.708,
+      8.5
+    ],
+    "prompt_sources": [
+      "llm"
+    ],
+    "prompt_prefix": "r34l1sm, ",
+    "model_key": "afbc53cf15fa796e",
+    "width": 1920,
+    "height": 1088
+  },
+  "memory": {
+    "commit_peak_gib": 97.51,
+    "commit_headroom_min_gib": 7.86,
+    "commit_headroom_min_render_loop_gib": 20.97,
+    "private_peak_render_loop_gib": 41.29,
+    "alloc_peak_gib": 27.99,
+    "reserved_peak_gib": 28.69,
+    "out_of_memory_events": 0,
+    "out_of_memory_events_attempt1": 1,
+    "weights_moved_for_reserve": [
+      [
+        "147783",
+        "18.5",
+        "15.7",
+        "2.93"
+      ],
+      [
+        "147783",
+        "18.5",
+        "18.5",
+        "0.14"
+      ],
+      [
+        "147783",
+        "18.5",
+        "18.4",
+        "0.14"
+      ],
+      [
+        "127226",
+        "15.9",
+        "15.8",
+        "0.21"
+      ],
+      [
+        "127226",
+        "15.9",
+        "15.9",
+        "0.14"
+      ],
+      [
+        "147787",
+        "18.5",
+        "15.7",
+        "2.78"
+      ],
+      [
+        "147787",
+        "18.5",
+        "18.4",
+        "0.14"
+      ],
+      [
+        "147787",
+        "18.5",
+        "18.4",
+        "0.14"
+      ],
+      [
+        "127186",
+        "15.9",
+        "15.8",
+        "0.21"
+      ],
+      [
+        "127186",
+        "15.9",
+        "15.9",
+        "0.14"
+      ],
+      [
+        "147811",
+        "18.5",
+        "15.7",
+        "2.93"
+      ],
+      [
+        "147811",
+        "18.5",
+        "18.4",
+        "0.14"
+      ]
+    ]
+  },
+  "final_film": {
+    "path": "L:\\ComfyUI\\ComfyUI\\output\\video\\DaWasteh_MusicVideo\\Outro-Song_v124_20260925-040333.mp4",
+    "width": 1920,
+    "height": 1088,
+    "fps": 24.0,
+    "frames": 2160,
+    "expected_frames": 2160,
+    "container_duration_s": 90.0,
+    "audio_codec": "mp3float",
+    "audio_packets": 3751,
+    "audio_packets_identical": true,
+    "audio_sha256": "10d219c07d97131b17b118d02a82a9b567842c871fb7ba1a32bb98eb918107b2",
+    "seam_ratio_median": 1.005,
+    "seam_ratio_max": 1.16,
+    "seams": [
+      {
+        "frame": 152,
+        "mae_across": 10.14,
+        "mae_before": 10.69,
+        "mae_after": 8.12,
+        "ratio": 1.08
+      },
+      {
+        "frame": 308,
+        "mae_across": 19.6,
+        "mae_before": 19.94,
+        "mae_after": 20.02,
+        "ratio": 0.98
+      },
+      {
+        "frame": 459,
+        "mae_across": 15.1,
+        "mae_before": 16.72,
+        "mae_after": 14.59,
+        "ratio": 0.96
+      },
+      {
+        "frame": 620,
+        "mae_across": 5.6,
+        "mae_before": 5.52,
+        "mae_after": 4.35,
+        "ratio": 1.13
+      },
+      {
+        "frame": 801,
+        "mae_across": 9.1,
+        "mae_before": 6.2,
+        "mae_after": 9.53,
+        "ratio": 1.16
+      },
+      {
+        "frame": 979,
+        "mae_across": 14.64,
+        "mae_before": 14.82,
+        "mae_after": 15.25,
+        "ratio": 0.97
+      },
+      {
+        "frame": 1172,
+        "mae_across": 15.67,
+        "mae_before": 14.77,
+        "mae_after": 16.76,
+        "ratio": 0.99
+      },
+      {
+        "frame": 1298,
+        "mae_across": 10.74,
+        "mae_before": 9.43,
+        "mae_after": 13.68,
+        "ratio": 0.93
+      },
+      {
+        "frame": 1467,
+        "mae_across": 31.63,
+        "mae_before": 28.54,
+        "mae_after": 34.64,
+        "ratio": 1.0
+      },
+      {
+        "frame": 1657,
+        "mae_across": 13.33,
+        "mae_before": 10.98,
+        "mae_after": 15.15,
+        "ratio": 1.02
+      },
+      {
+        "frame": 1795,
+        "mae_across": 20.24,
+        "mae_before": 16.48,
+        "mae_after": 23.78,
+        "ratio": 1.01
+      },
+      {
+        "frame": 1956,
+        "mae_across": 11.42,
+        "mae_before": 7.89,
+        "mae_after": 12.09,
+        "ratio": 1.14
+      }
+    ]
+  },
+  "readonly_loader_checks": {
+    "text_encoder": "MV 3 re-encoded the 13 acceptance prompts with the read-only H3 text encoder in a fresh server process: 13/13 conditionings bit-identical to the copy-on-write run (after sorting the keys like safetensors; header order gave identical weights but 4e-6 relative output differences through a different VRAM layout / GEMM kernel choice).",
+    "text_encoder_commit": {
+      "copy_on_write": {
+        "private_peak_gib": 29.64,
+        "commit_peak_gib": 77.14
+      },
+      "read_only": {
+        "private_peak_gib": 2.9,
+        "commit_peak_gib": 54.4
+      }
+    },
+    "fasth3_below_threshold": "1344x768 scene 1 (175 H3 frames, 63.8k tokens) rendered with the core UNETLoader and with MV 0 (read-only, sorted keys, no LoRA) in the same server: continuity latents bit-identical (max diff 0.0). A render from an earlier server session differed from both by the same amount (environment, not loader).",
+    "acceptance_run_loader": "The acceptance run used MV 0 before the key sort (identical weights, header order); the sort changes only floating-point rounding through kernel selection."
+  },
+  "visual_review": "Film 1920x1088, 90.00 s, 13 scenes following the idea: ruined neon street (singer walks, camera tilts up from the boots), house interior, night alley, rusty rooftop, skyline with a panda flag, burning city, sparking server racks, phone close-up and fade, singer in a roof hatch. Faces photoreal with the fal LoRA (natural skin, no plastic look), outfit and hair consistent across all scenes; the face drifts slightly between distant scenes (text-only identity). Lettering on jackets and signs stays garbled (H3 limitation). Seams invisible at normal playback; lip movement follows the vocals.",
+  "sources": [
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/h3_highres.py",
+      "sha256": "a50f6b14891ce8de73c957a0fc616360549a2caed828679bc083aab32dcd188f"
+    },
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/nodes_v2.py",
+      "sha256": "480c4e354948518327fe3f5b1a912821f1b59c0304749a5bd21f3c87b92d6203"
+    },
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/mv2.py",
+      "sha256": "20e7afeebb488189708ad5d62ed67ab15bc4dc4d3bcb8cbd26e7a0284fba09b8"
+    },
+    {
+      "path": "tools/build_h3_music_video_v122.py",
+      "sha256": "aace56ec45855a1503493c40f631f6e1fbe13b8a7aebe60fefe26d528da6e226"
+    },
+    {
+      "path": "tools/workflow_templates/v122/models.json",
+      "sha256": "c64f52e8c40378489d0c9131cf673a4392a8b6f2caac89aefd0dbd543d6e3cac"
+    },
+    {
+      "path": "tools/workflow_templates/v122/node-schemas.json",
+      "sha256": "4a4ffa783e5f3c7c1d7b99af0fad39919b81344871da14b77d72ccca85c3258a"
+    }
+  ]
+}

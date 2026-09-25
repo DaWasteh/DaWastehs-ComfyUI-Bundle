@@ -561,7 +561,7 @@
           "name": "loop_rounds",
           "type": "INT",
           "links": [
-            32
+            33
           ]
         },
         {
@@ -787,6 +787,12 @@
           "widget": {
             "name": "text_encoder"
           }
+        },
+        {
+          "name": "model_info",
+          "type": "STRING",
+          "link": 12,
+          "shape": 7
         }
       ],
       "outputs": [
@@ -794,12 +800,12 @@
           "name": "plan",
           "type": "STRING",
           "links": [
-            16,
-            27,
-            30,
-            34,
-            45,
-            53
+            17,
+            28,
+            31,
+            35,
+            46,
+            54
           ]
         }
       ],
@@ -812,8 +818,8 @@
     },
     {
       "id": 12,
-      "type": "UNETLoader",
-      "title": "FASTH3 · MiniMax H3 8-Step V2 · INT8 ConvRot · R9700",
+      "type": "DaWMV2LoadModel",
+      "title": "MV 0 · FASTH3 + REALISMUS-LORA · RAM-schonend · bis 1920×1088",
       "pos": [
         1520.0,
         80.0
@@ -835,29 +841,63 @@
           }
         },
         {
-          "name": "weight_dtype",
+          "name": "lora_name",
           "type": "COMBO",
           "link": null,
           "widget": {
-            "name": "weight_dtype"
+            "name": "lora_name"
+          }
+        },
+        {
+          "name": "lora_strength",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "lora_strength"
+          }
+        },
+        {
+          "name": "trigger_word",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "trigger_word"
+          }
+        },
+        {
+          "name": "high_resolution_memory",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "high_resolution_memory"
           }
         }
       ],
       "outputs": [
         {
-          "name": "MODEL",
+          "name": "model",
           "type": "MODEL",
           "links": [
-            55
+            56
+          ]
+        },
+        {
+          "name": "model_info",
+          "type": "STRING",
+          "links": [
+            12
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "UNETLoader"
+        "Node name for S&R": "DaWMV2LoadModel"
       },
       "widgets_values": [
         "MiniMax H3\\fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors",
-        "default"
+        "MiniMax H3\\h3-realism-people-t2v-i2v-r2v.safetensors",
+        0.8,
+        "r34l1sm",
+        true
       ]
     },
     {
@@ -879,7 +919,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 12
+          "link": 13
         },
         {
           "name": "shift_video",
@@ -903,7 +943,7 @@
           "name": "MODEL",
           "type": "MODEL",
           "links": [
-            13
+            14
           ]
         }
       ],
@@ -934,7 +974,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 13
+          "link": 14
         },
         {
           "name": "attention",
@@ -950,7 +990,7 @@
           "name": "model",
           "type": "MODEL",
           "links": [
-            14
+            15
           ]
         }
       ],
@@ -980,7 +1020,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 14
+          "link": 15
         },
         {
           "name": "selection",
@@ -1052,9 +1092,9 @@
           "name": "model",
           "type": "MODEL",
           "links": [
-            15,
-            20,
-            38
+            16,
+            21,
+            39
           ]
         }
       ],
@@ -1103,7 +1143,7 @@
           "name": "VAE",
           "type": "VAE",
           "links": [
-            56
+            57
           ]
         }
       ],
@@ -1144,7 +1184,7 @@
           "name": "VAE",
           "type": "VAE",
           "links": [
-            57
+            58
           ]
         }
       ],
@@ -1185,8 +1225,8 @@
           "name": "SAMPLER",
           "type": "SAMPLER",
           "links": [
-            24,
-            42
+            25,
+            43
           ]
         }
       ],
@@ -1216,7 +1256,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 15
+          "link": 16
         },
         {
           "name": "scheduler",
@@ -1248,8 +1288,8 @@
           "name": "SIGMAS",
           "type": "SIGMAS",
           "links": [
-            25,
-            43
+            26,
+            44
           ]
         }
       ],
@@ -1281,7 +1321,7 @@
         {
           "name": "plan",
           "type": "STRING",
-          "link": 16
+          "link": 17
         },
         {
           "name": "scene_index",
@@ -1302,12 +1342,12 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 17
+          "link": 18
         },
         {
           "name": "audio_vae",
           "type": "VAE",
-          "link": 18
+          "link": 19
         }
       ],
       "outputs": [
@@ -1315,21 +1355,21 @@
           "name": "positive",
           "type": "CONDITIONING",
           "links": [
-            21
+            22
           ]
         },
         {
           "name": "latent",
           "type": "LATENT",
           "links": [
-            26
+            27
           ]
         },
         {
           "name": "seed",
           "type": "INT",
           "links": [
-            19
+            20
           ]
         },
         {
@@ -1365,7 +1405,7 @@
         {
           "name": "noise_seed",
           "type": "INT",
-          "link": 19,
+          "link": 20,
           "widget": {
             "name": "noise_seed"
           }
@@ -1376,7 +1416,7 @@
           "name": "NOISE",
           "type": "NOISE",
           "links": [
-            22
+            23
           ]
         }
       ],
@@ -1407,12 +1447,12 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 20
+          "link": 21
         },
         {
           "name": "conditioning",
           "type": "CONDITIONING",
-          "link": 21
+          "link": 22
         }
       ],
       "outputs": [
@@ -1420,7 +1460,7 @@
           "name": "GUIDER",
           "type": "GUIDER",
           "links": [
-            23
+            24
           ]
         }
       ],
@@ -1448,27 +1488,27 @@
         {
           "name": "noise",
           "type": "NOISE",
-          "link": 22
+          "link": 23
         },
         {
           "name": "guider",
           "type": "GUIDER",
-          "link": 23
+          "link": 24
         },
         {
           "name": "sampler",
           "type": "SAMPLER",
-          "link": 24
+          "link": 25
         },
         {
           "name": "sigmas",
           "type": "SIGMAS",
-          "link": 25
+          "link": 26
         },
         {
           "name": "latent_image",
           "type": "LATENT",
-          "link": 26
+          "link": 27
         }
       ],
       "outputs": [
@@ -1476,7 +1516,7 @@
           "name": "output",
           "type": "LATENT",
           "links": [
-            29
+            30
           ]
         },
         {
@@ -1509,7 +1549,7 @@
         {
           "name": "plan",
           "type": "STRING",
-          "link": 27
+          "link": 28
         },
         {
           "name": "scene_index",
@@ -1530,18 +1570,18 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 28
+          "link": 29
         },
         {
           "name": "latent",
           "type": "LATENT",
-          "link": 29,
+          "link": 30,
           "shape": 7
         },
         {
           "name": "after",
           "type": "*",
-          "link": 30,
+          "link": 31,
           "shape": 7
         }
       ],
@@ -1555,7 +1595,7 @@
           "name": "preview",
           "type": "IMAGE",
           "links": [
-            31
+            32
           ]
         },
         {
@@ -1591,7 +1631,7 @@
         {
           "name": "image",
           "type": "IMAGE",
-          "link": 31,
+          "link": 32,
           "shape": 7
         }
       ],
@@ -1600,7 +1640,7 @@
           "name": "image",
           "type": "IMAGE",
           "links": [
-            33
+            34
           ]
         }
       ],
@@ -1633,7 +1673,7 @@
         {
           "name": "total",
           "type": "INT",
-          "link": 32,
+          "link": 33,
           "widget": {
             "name": "total"
           }
@@ -1641,7 +1681,7 @@
         {
           "name": "value1",
           "type": "*",
-          "link": 33,
+          "link": 34,
           "shape": 7
         },
         {
@@ -1674,7 +1714,7 @@
           "name": "value1",
           "type": "*",
           "links": [
-            50
+            51
           ]
         },
         {
@@ -1701,15 +1741,15 @@
           "name": "loop",
           "type": "FLOW_CONTROL",
           "links": [
-            52
+            53
           ]
         },
         {
           "name": "index",
           "type": "INT",
           "links": [
-            48,
-            49
+            49,
+            50
           ]
         }
       ],
@@ -1739,12 +1779,12 @@
         {
           "name": "plan",
           "type": "STRING",
-          "link": 34
+          "link": 35
         },
         {
           "name": "scene_index",
           "type": "INT",
-          "link": 48,
+          "link": 49,
           "widget": {
             "name": "scene_index"
           }
@@ -1760,12 +1800,12 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 35
+          "link": 36
         },
         {
           "name": "audio_vae",
           "type": "VAE",
-          "link": 36
+          "link": 37
         }
       ],
       "outputs": [
@@ -1773,21 +1813,21 @@
           "name": "positive",
           "type": "CONDITIONING",
           "links": [
-            39
+            40
           ]
         },
         {
           "name": "latent",
           "type": "LATENT",
           "links": [
-            44
+            45
           ]
         },
         {
           "name": "seed",
           "type": "INT",
           "links": [
-            37
+            38
           ]
         },
         {
@@ -1823,7 +1863,7 @@
         {
           "name": "noise_seed",
           "type": "INT",
-          "link": 37,
+          "link": 38,
           "widget": {
             "name": "noise_seed"
           }
@@ -1834,7 +1874,7 @@
           "name": "NOISE",
           "type": "NOISE",
           "links": [
-            40
+            41
           ]
         }
       ],
@@ -1865,12 +1905,12 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 38
+          "link": 39
         },
         {
           "name": "conditioning",
           "type": "CONDITIONING",
-          "link": 39
+          "link": 40
         }
       ],
       "outputs": [
@@ -1878,7 +1918,7 @@
           "name": "GUIDER",
           "type": "GUIDER",
           "links": [
-            41
+            42
           ]
         }
       ],
@@ -1906,27 +1946,27 @@
         {
           "name": "noise",
           "type": "NOISE",
-          "link": 40
+          "link": 41
         },
         {
           "name": "guider",
           "type": "GUIDER",
-          "link": 41
+          "link": 42
         },
         {
           "name": "sampler",
           "type": "SAMPLER",
-          "link": 42
+          "link": 43
         },
         {
           "name": "sigmas",
           "type": "SIGMAS",
-          "link": 43
+          "link": 44
         },
         {
           "name": "latent_image",
           "type": "LATENT",
-          "link": 44
+          "link": 45
         }
       ],
       "outputs": [
@@ -1934,7 +1974,7 @@
           "name": "output",
           "type": "LATENT",
           "links": [
-            47
+            48
           ]
         },
         {
@@ -1967,12 +2007,12 @@
         {
           "name": "plan",
           "type": "STRING",
-          "link": 45
+          "link": 46
         },
         {
           "name": "scene_index",
           "type": "INT",
-          "link": 49,
+          "link": 50,
           "widget": {
             "name": "scene_index"
           }
@@ -1988,18 +2028,18 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 46
+          "link": 47
         },
         {
           "name": "latent",
           "type": "LATENT",
-          "link": 47,
+          "link": 48,
           "shape": 7
         },
         {
           "name": "after",
           "type": "*",
-          "link": 50,
+          "link": 51,
           "shape": 7
         }
       ],
@@ -2008,7 +2048,7 @@
           "name": "token",
           "type": "STRING",
           "links": [
-            51
+            52
           ]
         },
         {
@@ -2049,7 +2089,7 @@
         {
           "name": "value1",
           "type": "*",
-          "link": 51,
+          "link": 52,
           "shape": 7
         },
         {
@@ -2079,7 +2119,7 @@
         {
           "name": "loop",
           "type": "FLOW_CONTROL",
-          "link": 52,
+          "link": 53,
           "shape": 7
         }
       ],
@@ -2088,7 +2128,7 @@
           "name": "value1",
           "type": "*",
           "links": [
-            54
+            55
           ]
         },
         {
@@ -2136,7 +2176,7 @@
         {
           "name": "plan",
           "type": "STRING",
-          "link": 53
+          "link": 54
         },
         {
           "name": "container",
@@ -2149,7 +2189,7 @@
         {
           "name": "after",
           "type": "*",
-          "link": 54,
+          "link": 55,
           "shape": 7
         }
       ],
@@ -2170,14 +2210,14 @@
     {
       "id": 34,
       "type": "MarkdownNote",
-      "title": "START HIER · Song → Musikvideo · FastH3 · v1.2.2",
+      "title": "START HIER · Song → Musikvideo · FastH3 · v1.2.4",
       "pos": [
         40.0,
         80.0
       ],
       "size": [
         680,
-        820
+        974
       ],
       "flags": {},
       "order": 0,
@@ -2188,7 +2228,7 @@
         "Node name for S&R": "MarkdownNote"
       },
       "widgets_values": [
-        "# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.2\n\n1. **MV 1** · Song wählen oder hochladen (MP3/WAV/FLAC/M4A/OGG, jede Länge).\n2. **LYRICS** einfügen – am besten mit `[Verse 1]`, `[Chorus]` …; `[mm:ss.xx]`-Zeitstempel werden direkt übernommen.\n3. **VIDEOIDEE** in eigenen Worten (Deutsch oder Englisch): Story, Orte, Look, Stimmung.\n4. Optional **bis zu 3 Charaktersheets**: Loader mit **Strg+M** aktivieren, Bild wählen. Charakter 1 ist die Sängerin/der Sänger.\n5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen (864×480 ist der getestete Startwert).\n6. **Run**. Erst wird geplant, dann Szene 1 gerendert. Die Vorschau (MV 5) zeigt Szene 1 **mit Originalton**.\n7. Gefällt der Anfang: am **FREIGABE**-Node **Continue** drücken → alle weiteren Szenen laufen per Extend durch,\n   am Ende entsteht das fertige Video unter `output/video/DaWasteh_MusicVideo/`.\n   Nicht zufrieden: im MV-1-Node den **seed** ändern und erneut Run.\n   Ohne Zwischenstopp: FREIGABE-Node auf **Pass** stellen.\n\n**Lippensynchron:** Jede Szene bekommt den echten Songausschnitt fest in den Audio-Strom von H3 (nicht verrauscht,\nnur das Bild wird erzeugt). Am Ende wird die Originaldatei **unverändert** (`-c:a copy`) unter das Video gelegt.\n\n**Abwechslung:** Qwen3.5 schreibt pro Songabschnitt eigene Orte in Story-Reihenfolge, pro Szene 1–3 Shots\nmit Schnitten, wechselnden Einstellungsgrößen und Kamerabewegungen. Jede Szene hat einen eigenen Seed.\n\nBedienung, Messwerte und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`.\n"
+        "# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.4\n\n1. **MV 1** · Song wählen oder hochladen (MP3/WAV/FLAC/M4A/OGG, jede Länge).\n2. **LYRICS** einfügen – am besten mit `[Verse 1]`, `[Chorus]` …; `[mm:ss.xx]`-Zeitstempel werden direkt übernommen.\n3. **VIDEOIDEE** in eigenen Worten (Deutsch oder Englisch): Story, Orte, Look, Stimmung.\n4. Optional **bis zu 3 Charaktersheets**: Loader mit **Strg+M** aktivieren, Bild wählen. Charakter 1 ist die Sängerin/der Sänger.\n5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen. 864×480 ist der schnelle Startwert; **1920×1088** ist getestet\n   und liefert die wenigsten Artefakte (90-s-Song ≈ 6 h statt ≈ 50 min auf der R9700).\n6. **MV 0 · Realismus-LoRA**: standardmäßig fal *Realism People* bei **0,8** mit Triggerwort `r34l1sm`\n   (wird automatisch vor jeden Szenen-Prompt gesetzt). `lora_name = none` = reines FastH3.\n7. **Run**. Erst wird geplant, dann Szene 1 gerendert. Die Vorschau (MV 5) zeigt Szene 1 **mit Originalton**.\n8. Gefällt der Anfang: am **FREIGABE**-Node **Continue** drücken → alle weiteren Szenen laufen per Extend durch,\n   am Ende entsteht das fertige Video unter `output/video/DaWasteh_MusicVideo/`.\n   Nicht zufrieden: im MV-1-Node den **seed** ändern und erneut Run.\n   Ohne Zwischenstopp: FREIGABE-Node auf **Pass** stellen.\n\n**Lippensynchron:** Jede Szene bekommt den echten Songausschnitt fest in den Audio-Strom von H3 (nicht verrauscht,\nnur das Bild wird erzeugt). Am Ende wird die Originaldatei **unverändert** (`-c:a copy`) unter das Video gelegt.\n\n**Abwechslung:** Qwen3.5 schreibt pro Songabschnitt eigene Orte in Story-Reihenfolge, pro Szene 1–3 Shots\nmit Schnitten, wechselnden Einstellungsgrößen und Kamerabewegungen. Jede Szene hat einen eigenen Seed.\n\nBedienung und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`; LoRA, 1920×1088 und Speicher: `docs/H3_MUSIC_VIDEO_V124.md`.\n"
       ]
     },
     {
@@ -2197,11 +2237,11 @@
       "title": "ABLAUF · Planung, Freigabe, Extend-Schleife, Fortsetzen",
       "pos": [
         40.0,
-        940.0
+        1100.0
       ],
       "size": [
         680,
-        1062
+        1304
       ],
       "flags": {},
       "order": 0,
@@ -2212,7 +2252,7 @@
         "Node name for S&R": "MarkdownNote"
       },
       "widgets_values": [
-        "# Wie der Workflow arbeitet\n\n**MV 1 · Planer** misst die Songdauer, erkennt Tempo/Energie und richtet die Lyrics mit lokalem\n**Whisper small** zeitlich aus. Daraus entstehen Szenen mit **unterschiedlichen Längen** (Standard 4–9 s,\nZiel 7 s), bevorzugt an Abschnitts- und Zeilengrenzen. Die Anzahl ergibt sich aus der Songlänge:\n30 s ≈ 5 Szenen, 90 s ≈ 12, 600 s ≈ 80. Ohne Lyrics plant er rein nach Beats und Energie.\nBis 9 s passt FastH3 bei 864×480 vollständig in den VRAM; längere Szenen oder größere Formate laden es\nteilweise und sampeln 2–4× langsamer (im Log: `loaded partially`).\n\n**MV 2 · Prompt Writer** lädt Qwen3.5 4B nur so lange, wie Prompts fehlen: Charaktersheets → Textbeschreibung,\nProduktionsbibel (Stil, Orte je Abschnitt, Musik), dann pro Szene die Handlung. Ergebnis: MiniMax-Format\n`integrated_multimodal_description / overall_soundscape / non_diegetic_music` mit `<d>[English] …</d>`-Lyrics.\n\n**MV 3 · H3-Textencoder** encodiert **alle** Szenen-Prompts einmal und gibt den 26-GB-Encoder danach komplett frei.\nIn der Render-Schleife bleibt nur FastH3 geladen.\n\n**Szene 1 → FREIGABE → LOOP**: Jede weitere Szene friert die letzten 22 Frames der Vorgängerszene am Anfang ein\n(nahtloser Extend) und fixiert den passenden Songausschnitt im Audio-Strom. Die Pixaroma-Schleife läuft\n`Szenen − 1` Runden; die Rundenzahl kommt automatisch aus dem Plan.\n\n**Fortsetzen:** Alles liegt unter `output/DaWasteh_H3_MusicVideo_v2/<Projekt>`. Ein erneuter Run mit gleichen Eingaben\nüberspringt fertige Szenen ohne Sampling – auch nach Absturz oder Neustart. `resume_existing_scenes = aus`\nrendert bewusst alles neu.\n\n**FastH3-Grenzen:** FastH3 ist nur für Text-to-Video+Audio destilliert. Charaktersheets werden deshalb als Text\nbeschrieben (nicht als Ref2VA-Bild eingespeist); die Identität trägt der Extend über die eingefrorenen Frames.\n"
+        "# Wie der Workflow arbeitet\n\n**MV 1 · Planer** misst die Songdauer, erkennt Tempo/Energie und richtet die Lyrics mit lokalem\n**Whisper small** zeitlich aus. Daraus entstehen Szenen mit **unterschiedlichen Längen** (Standard 4–9 s,\nZiel 7 s), bevorzugt an Abschnitts- und Zeilengrenzen. Die Anzahl ergibt sich aus der Songlänge:\n30 s ≈ 5 Szenen, 90 s ≈ 12, 600 s ≈ 80. Ohne Lyrics plant er rein nach Beats und Energie.\nBis 9 s passt FastH3 bei 864×480 vollständig in den VRAM; längere Szenen oder größere Formate laden es\nteilweise (im Log: `loaded partially`). Ab ~65 000 Tokens (z. B. 1920×1088) hält MV 0 vor jedem Schritt\ngenug VRAM für die Aktivierungen frei; die Extend-Szenen laufen dadurch ohne OOM.\n\n**MV 0 · Modell** bildet FastH3 schreibgeschützt ab: Windows verbucht die 22-GB-Datei dann nicht auf das\nCommit-Limit (RAM + Auslagerungsdatei). Genau das lief bei 1920×1088 in den Extend-Szenen über und wurde als\n„out of memory“ gemeldet. Eine andere LoRA, Stärke oder ein anderes Triggerwort rendert die Szenen neu,\nstatt alte Ergebnisse fortzusetzen.\n\n**MV 2 · Prompt Writer** lädt Qwen3.5 4B nur so lange, wie Prompts fehlen: Charaktersheets → Textbeschreibung,\nProduktionsbibel (Stil, Orte je Abschnitt, Musik), dann pro Szene die Handlung. Ergebnis: MiniMax-Format\n`integrated_multimodal_description / overall_soundscape / non_diegetic_music` mit `<d>[English] …</d>`-Lyrics.\n\n**MV 3 · H3-Textencoder** encodiert **alle** Szenen-Prompts einmal und gibt den 26-GB-Encoder danach komplett frei.\nIn der Render-Schleife bleibt nur FastH3 geladen.\n\n**Szene 1 → FREIGABE → LOOP**: Jede weitere Szene friert die letzten 22 Frames der Vorgängerszene am Anfang ein\n(nahtloser Extend) und fixiert den passenden Songausschnitt im Audio-Strom. Die Pixaroma-Schleife läuft\n`Szenen − 1` Runden; die Rundenzahl kommt automatisch aus dem Plan.\n\n**Fortsetzen:** Alles liegt unter `output/DaWasteh_H3_MusicVideo_v2/<Projekt>`. Ein erneuter Run mit gleichen Eingaben\nüberspringt fertige Szenen ohne Sampling – auch nach Absturz oder Neustart. `resume_existing_scenes = aus`\nrendert bewusst alles neu.\n\n**FastH3-Grenzen:** FastH3 ist nur für Text-to-Video+Audio destilliert. Charaktersheets werden deshalb als Text\nbeschrieben (nicht als Ref2VA-Bild eingespeist); die Identität trägt der Extend über die eingefrorenen Frames.\n"
       ]
     },
     {
@@ -2221,11 +2261,11 @@
       "title": "DOWNLOADS · Modelle / Zielordner",
       "pos": [
         40.0,
-        2040.0
+        2440.0
       ],
       "size": [
         680,
-        820
+        930
       ],
       "flags": {},
       "order": 0,
@@ -2236,7 +2276,7 @@
         "Node name for S&R": "MarkdownNote"
       },
       "widgets_values": [
-        "# Benötigte Dateien\n\n- [fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors](https://huggingface.co/FastVideo/FastVideo-FastH3-Comfy/resolve/ec1e3aa374a91c57b0b94a1623b7e657c0498cf2/diffusion_models/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors) → `ComfyUI/models/diffusion_models/MiniMax H3/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors`\n\n- [qwen3vl_32b_minimax_h3_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/text_encoders/qwen3vl_32b_minimax_h3_int8_convrot.safetensors) → `ComfyUI/models/text_encoders/MiniMax H3/qwen3vl_32b_minimax_h3_int8_convrot.safetensors`\n\n- [minimax_h3_video_vae_fp16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/vae/minimax_h3_video_vae_fp16.safetensors) → `ComfyUI/models/vae/MiniMax H3/minimax_h3_video_vae_fp16.safetensors`\n\n- [minimax_h3_audio_vae_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/vae/minimax_h3_audio_vae_fp32.safetensors) → `ComfyUI/models/vae/MiniMax H3/minimax_h3_audio_vae_fp32.safetensors`\n\nQwen3.5 4B (`models/text_encoders/Qwen/qwen3.5_4b_bf16.safetensors`) und Whisper small werden aus den\nbereits vorhandenen Bundle-Installationen genutzt. Whisper lädt beim ersten Planer-Lauf ggf. ~460 MB nach `~/.cache/whisper`.\n\nKein Cloud-API-Aufruf. Lizenz FastH3/MiniMax H3: siehe MiniMax-H3-Modellkarte (MiniMax Model License).\n"
+        "# Benötigte Dateien\n\n- [fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors](https://huggingface.co/FastVideo/FastVideo-FastH3-Comfy/resolve/ec1e3aa374a91c57b0b94a1623b7e657c0498cf2/diffusion_models/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors) → `ComfyUI/models/diffusion_models/MiniMax H3/fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors`\n\n- [h3-realism-people-t2v-i2v-r2v.safetensors](https://huggingface.co/fal/MiniMax-H3-Realism-People-LoRA/resolve/039cc8579d7aa357a882d7f4111b25da4f72dccc/h3-realism-people-t2v-i2v-r2v.safetensors) → `ComfyUI/models/loras/MiniMax H3/h3-realism-people-t2v-i2v-r2v.safetensors`\n\n- [qwen3vl_32b_minimax_h3_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/text_encoders/qwen3vl_32b_minimax_h3_int8_convrot.safetensors) → `ComfyUI/models/text_encoders/MiniMax H3/qwen3vl_32b_minimax_h3_int8_convrot.safetensors`\n\n- [minimax_h3_video_vae_fp16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/vae/minimax_h3_video_vae_fp16.safetensors) → `ComfyUI/models/vae/MiniMax H3/minimax_h3_video_vae_fp16.safetensors`\n\n- [minimax_h3_audio_vae_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/1c41cfca8ebba91d0af792a05c5761fb2c3a7975/vae/minimax_h3_audio_vae_fp32.safetensors) → `ComfyUI/models/vae/MiniMax H3/minimax_h3_audio_vae_fp32.safetensors`\n\nQwen3.5 4B (`models/text_encoders/Qwen/qwen3.5_4b_bf16.safetensors`) und Whisper small werden aus den\nbereits vorhandenen Bundle-Installationen genutzt. Whisper lädt beim ersten Planer-Lauf ggf. ~460 MB nach `~/.cache/whisper`.\n\nKein Cloud-API-Aufruf. Lizenz FastH3/MiniMax H3: siehe MiniMax-H3-Modellkarte (MiniMax Model License).\n"
       ]
     },
     {
@@ -2244,7 +2284,7 @@
       "type": "PixaromaRunTimer",
       "pos": [
         40.0,
-        2900.0
+        3400.0
       ],
       "size": [
         226,
@@ -2339,7 +2379,7 @@
       ],
       "size": [
         680,
-        620
+        666
       ],
       "flags": {},
       "order": 37,
@@ -2354,7 +2394,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · MV 3 · H3-Textencoder · alle Szenen einmal, danach freigegeben · Node 11\n\n**Zweck:** Encodes every scene prompt once with the Qwen3-VL-32B H3 text encoder and stores the conditioning on disk. The render loop then never needs the 26 GB text encoder again.\n\n**Einstellbare Werte**\n- `text_encoder` = `MiniMax H3\\qwen3vl_32b_minimax_h3_int8_convrot.safetensors` — MiniMax H3 Qwen3-VL-32B text encoder. Loaded once for all scenes, then freed completely. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `plan` (STRING, Link 11): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text_encoder` (COMBO, nicht verbunden): MiniMax H3 Qwen3-VL-32B text encoder. Loaded once for all scenes, then freed completely.\n\n**Ausgänge**\n- `plan` (STRING, 6 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · MV 3 · H3-Textencoder · alle Szenen einmal, danach freigegeben · Node 11\n\n**Zweck:** Encodes every scene prompt once with the Qwen3-VL-32B H3 text encoder and stores the conditioning on disk. The render loop then never needs the 26 GB text encoder again.\n\n**Einstellbare Werte**\n- `text_encoder` = `MiniMax H3\\qwen3vl_32b_minimax_h3_int8_convrot.safetensors` — MiniMax H3 Qwen3-VL-32B text encoder. Loaded once for all scenes, then freed completely. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `plan` (STRING, Link 11): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text_encoder` (COMBO, nicht verbunden): MiniMax H3 Qwen3-VL-32B text encoder. Loaded once for all scenes, then freed completely.\n- `model_info` (STRING, Link 12): From MV 0: the LoRA trigger word is put in front of every scene prompt, and a different model/LoRA/strength re-renders the scenes instead of resuming…\n\n**Ausgänge**\n- `plan` (STRING, 6 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2364,18 +2404,18 @@
       "type": "MarkdownNote",
       "pos": [
         4840.0,
-        3760.0
+        3800.0
       ],
       "size": [
         680,
-        620
+        1106
       ],
       "flags": {},
       "order": 38,
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Erklärung · FASTH3 · MiniMax H3 8-Step V2 · INT8 ConvRot · R9700 · Node 12",
+      "title": "Erklärung · MV 0 · FASTH3 + REALISMUS-LORA · RAM-schonend · bis 1920×1088 · Node 12",
       "properties": {
         "Node name for S&R": "MarkdownNote",
         "cnr_id": "comfy-core",
@@ -2383,7 +2423,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · FASTH3 · MiniMax H3 8-Step V2 · INT8 ConvRot · R9700 · Node 12\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `MiniMax H3\\fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · MV 0 · FASTH3 + REALISMUS-LORA · RAM-schonend · bis 1920×1088 · Node 12\n\n**Zweck:** Loads FastH3 from a read-only file mapping (Windows does not charge the 22 GB file to the commit limit), applies an optional LoRA and, above ~65k tokens (e.g. 1920x1088), keeps enough VRAM free for the activations of every extend scene.\n\n**Einstellbare Werte**\n- `unet_name` = `MiniMax H3\\fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `lora_name` = `MiniMax H3\\h3-realism-people-t2v-i2v-r2v.safetensors` — MiniMax H3 LoRA (models/loras). 'none' = plain FastH3. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `lora_strength` = `0.8` — fal Realism People: 1.0 intended, 0.6-0.8 lighter. FastH3 is an 8-step distillate, the LoRA was trained on H3 FL2VA. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n- `trigger_word` = `r34l1sm` — Put in front of every scene prompt while a LoRA is active (fal Realism People: r34l1sm). Empty = no trigger. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `high_resolution_memory` = `True` — Above 65k tokens: allocator without fragmentation, MLP in token chunks, weights moved out of VRAM when the activations need the space. 864x480 is not affected. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_name` (COMBO, nicht verbunden): MiniMax H3 LoRA (models/loras). 'none' = plain FastH3.\n- `lora_strength` (FLOAT, nicht verbunden): fal Realism People: 1.0 intended, 0.6-0.8 lighter. FastH3 is an 8-step distillate, the LoRA was trained on H3 FL2VA.\n- `trigger_word` (STRING, nicht verbunden): Put in front of every scene prompt while a LoRA is active (fal Realism People: r34l1sm). Empty = no trigger.\n- `high_resolution_memory` (BOOLEAN, nicht verbunden): Above 65k tokens: allocator without fragmentation, MLP in token chunks, weights moved out of VRAM when the activations need the space. 864x480 is not…\n\n**Ausgänge**\n- `model` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `model_info` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2393,7 +2433,7 @@
       "type": "MarkdownNote",
       "pos": [
         4840.0,
-        4420.0
+        4940.0
       ],
       "size": [
         680,
@@ -2412,7 +2452,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · FASTH3 · Sigma-Shift Video 10 / Audio 3 · Node 13\n\n**Zweck:** Set the video/audio flow shifts.\n\n**Einstellbare Werte**\n- `shift_video` = `10.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n- `shift_audio` = `3.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 12): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_video` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_audio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · FASTH3 · Sigma-Shift Video 10 / Audio 3 · Node 13\n\n**Zweck:** Set the video/audio flow shifts.\n\n**Einstellbare Werte**\n- `shift_video` = `10.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n- `shift_audio` = `3.0` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 13): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_video` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift_audio` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2422,7 +2462,7 @@
       "type": "MarkdownNote",
       "pos": [
         4840.0,
-        5080.0
+        5600.0
       ],
       "size": [
         680,
@@ -2441,7 +2481,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · FASTH3 · Comfy Kitchen Attention · Node 14\n\n**Zweck:** Selects the dense attention implementation for the model. When used with Block Sparse Attention, this backend is used whenever sparse attention is inactive or unsupported.\n\n**Einstellbare Werte**\n- `attention` = `comfy kitchen attention` — The dense attention backend. Comfy Kitchen attention uses quantized INT8 attention and is available only on Nvidia and AMD GPUs. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 13): The model to patch.\n- `attention` (COMBO, nicht verbunden): The dense attention backend. Comfy Kitchen attention uses quantized INT8 attention and is available only on Nvidia and AMD GPUs.\n\n**Ausgänge**\n- `model` (MODEL, 1 Verbindung(en)): The model with the selected attention backend."
+        "# Erklärung · FASTH3 · Comfy Kitchen Attention · Node 14\n\n**Zweck:** Selects the dense attention implementation for the model. When used with Block Sparse Attention, this backend is used whenever sparse attention is inactive or unsupported.\n\n**Einstellbare Werte**\n- `attention` = `comfy kitchen attention` — The dense attention backend. Comfy Kitchen attention uses quantized INT8 attention and is available only on Nvidia and AMD GPUs. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 14): The model to patch.\n- `attention` (COMBO, nicht verbunden): The dense attention backend. Comfy Kitchen attention uses quantized INT8 attention and is available only on Nvidia and AMD GPUs.\n\n**Ausgänge**\n- `model` (MODEL, 1 Verbindung(en)): The model with the selected attention backend."
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2451,7 +2491,7 @@
       "type": "MarkdownNote",
       "pos": [
         4840.0,
-        5740.0
+        6260.0
       ],
       "size": [
         680,
@@ -2470,7 +2510,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · FASTH3 · VSA Sparse Attention · 10 % (trainiertes FastH3-Muster) · Node 15\n\n**Zweck:** Applies block-sparse attention to eligible model attention layers, reducing compute for long sequences. The speed gain grows with sequence length since short sequences are usually faster dense. Outside the start/end_percent, dense_blocks and under min_tokens, the model uses the dense model attention backend. Use the n…\n\n**Einstellbare Werte**\n- `selection` = `vsa` — Method used to choose key blocks for full token-level attention. sol-attn: Sparsifying Online Attention uses a training-free adaptive threshold for each attention head and query b… Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `keep_percent` = `10.0` — Percent of video cubes each query cube keeps; FastH3-VSA checkpoints are trained at 10. Uses the model's to_gate_compress layers for the coarse branch when present. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `start_percent` = `0.2` — Percentage point when sparse attention begins. Before this point, attention stays dense. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `end_percent` = `1.0` — Percentage point when sparse attention ends. After this point, attention returns to dense. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `dense_blocks` = `` — Transformer blocks that always run dense, e.g. '0, 1, 47-49'. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `min_tokens` = `12288` — Sequences shorter than this stay dense. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `extra_tokens` = `256` — Extra top-scoring tokens each query block attends beyond its selected blocks. Closer to dense for more attention time; 256 recommended, 0 disables. Ignored for VSA. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `sink_conditioning` = `exact_kv_and_rows` — MiniMax-H3 only. exact_kv: every query attends the packed text/audio/reference rows exactly (~3% cost). exact_kv_and_rows: additionally runs the target-audio query rows dense (kee… Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `verbose` = `False` — Logs whether each attention shape used sparse attention or why it stayed dense. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `model` (MODEL, Link 14): The model to patch.\n- `selection` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): Method used to choose key blocks for full token-level attention. sol-attn: Sparsifying Online Attention uses a training-free adaptive threshold for e…\n- `start_percent` (FLOAT, nicht verbunden): Percentage point when sparse attention begins. Before this point, attention stays dense.\n- `end_percent` (FLOAT, nicht verbunden): Percentage point when sparse attention ends. After this point, attention returns to dense.\n- `dense_blocks` (STRING, nicht verbunden): Transformer blocks that always run dense, e.g. '0, 1, 47-49'.\n- `min_tokens` (INT, nicht verbunden): Sequences shorter than this stay dense.\n- `extra_tokens` (INT, nicht verbunden): Extra top-scoring tokens each query block attends beyond its selected blocks. Closer to dense for more attention time; 256 recommended, 0 disables. I…\n- `sink_conditioning` (COMBO, nicht verbunden): MiniMax-H3 only. exact_kv: every query attends the packed text/audio/reference rows exactly (~3% cost). exact_kv_and_rows: additionally runs the targ…\n- `verbose` (BOOLEAN, nicht verbunden): Logs whether each attention shape used sparse attention or why it stayed dense.\n\n**Ausgänge**\n- `model` (MODEL, 3 Verbindung(en)): The model with block-sparse attention applied."
+        "# Erklärung · FASTH3 · VSA Sparse Attention · 10 % (trainiertes FastH3-Muster) · Node 15\n\n**Zweck:** Applies block-sparse attention to eligible model attention layers, reducing compute for long sequences. The speed gain grows with sequence length since short sequences are usually faster dense. Outside the start/end_percent, dense_blocks and under min_tokens, the model uses the dense model attention backend. Use the n…\n\n**Einstellbare Werte**\n- `selection` = `vsa` — Method used to choose key blocks for full token-level attention. sol-attn: Sparsifying Online Attention uses a training-free adaptive threshold for each attention head and query b… Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `keep_percent` = `10.0` — Percent of video cubes each query cube keeps; FastH3-VSA checkpoints are trained at 10. Uses the model's to_gate_compress layers for the coarse branch when present. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `start_percent` = `0.2` — Percentage point when sparse attention begins. Before this point, attention stays dense. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `end_percent` = `1.0` — Percentage point when sparse attention ends. After this point, attention returns to dense. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `dense_blocks` = `` — Transformer blocks that always run dense, e.g. '0, 1, 47-49'. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `min_tokens` = `12288` — Sequences shorter than this stay dense. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `extra_tokens` = `256` — Extra top-scoring tokens each query block attends beyond its selected blocks. Closer to dense for more attention time; 256 recommended, 0 disables. Ignored for VSA. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `sink_conditioning` = `exact_kv_and_rows` — MiniMax-H3 only. exact_kv: every query attends the packed text/audio/reference rows exactly (~3% cost). exact_kv_and_rows: additionally runs the target-audio query rows dense (kee… Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `verbose` = `False` — Logs whether each attention shape used sparse attention or why it stayed dense. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `model` (MODEL, Link 15): The model to patch.\n- `selection` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): Method used to choose key blocks for full token-level attention. sol-attn: Sparsifying Online Attention uses a training-free adaptive threshold for e…\n- `start_percent` (FLOAT, nicht verbunden): Percentage point when sparse attention begins. Before this point, attention stays dense.\n- `end_percent` (FLOAT, nicht verbunden): Percentage point when sparse attention ends. After this point, attention returns to dense.\n- `dense_blocks` (STRING, nicht verbunden): Transformer blocks that always run dense, e.g. '0, 1, 47-49'.\n- `min_tokens` (INT, nicht verbunden): Sequences shorter than this stay dense.\n- `extra_tokens` (INT, nicht verbunden): Extra top-scoring tokens each query block attends beyond its selected blocks. Closer to dense for more attention time; 256 recommended, 0 disables. I…\n- `sink_conditioning` (COMBO, nicht verbunden): MiniMax-H3 only. exact_kv: every query attends the packed text/audio/reference rows exactly (~3% cost). exact_kv_and_rows: additionally runs the targ…\n- `verbose` (BOOLEAN, nicht verbunden): Logs whether each attention shape used sparse attention or why it stayed dense.\n\n**Ausgänge**\n- `model` (MODEL, 3 Verbindung(en)): The model with block-sparse attention applied."
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2586,7 +2626,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SCHEDULER · simple · 8 Schritte · Node 19\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `scheduler` = `simple` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `steps` = `8` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `denoise` = `1.0` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 15): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `denoise` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `SIGMAS` (SIGMAS, 2 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SCHEDULER · simple · 8 Schritte · Node 19\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `scheduler` = `simple` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n- `steps` = `8` — Steuert diesen Parameter. Höher erhöht Laufzeit und mögliche Ausarbeitung, kann aber übertrainieren; niedriger ist schneller.\n- `denoise` = `1.0` — Steuert diesen Parameter. Höher verstärkt den Einfluss bzw. die Veränderung; niedriger bewahrt Eingang/Grundmodell stärker.\n\n**Eingänge**\n- `model` (MODEL, Link 16): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scheduler` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `steps` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `denoise` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `SIGMAS` (SIGMAS, 2 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2615,7 +2655,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SZENE 1 · Szene vorbereiten · Song-Audio fixiert · Node 20\n\n**Zweck:** Loads the pre-encoded prompt of one scene and builds its H3 latent: the original song audio of the scene is frozen in the audio stream (lip sync), and for every scene after the first the last frames of the previous scene are frozen at the start of the video stream (seamless extend).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 16): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 17): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio_vae` (VAE, Link 18): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `positive` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `seed` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · SZENE 1 · Szene vorbereiten · Song-Audio fixiert · Node 20\n\n**Zweck:** Loads the pre-encoded prompt of one scene and builds its H3 latent: the original song audio of the scene is frozen in the audio stream (lip sync), and for every scene after the first the last frames of the previous scene are frozen at the start of the video stream (seamless extend).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 17): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 18): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio_vae` (VAE, Link 19): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `positive` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `seed` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2644,7 +2684,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SZENE 1 · Rauschen · Seed pro Szene aus dem Plan · Node 21\n\n**Zweck:** Erzeugt oder verändert das Start-Rauschen, das die Variation des generierten Ergebnisses bestimmt.\n\n**Einstellbare Werte**\n- `noise_seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `noise_seed` (INT, Link 19): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `NOISE` (NOISE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SZENE 1 · Rauschen · Seed pro Szene aus dem Plan · Node 21\n\n**Zweck:** Erzeugt oder verändert das Start-Rauschen, das die Variation des generierten Ergebnisses bestimmt.\n\n**Einstellbare Werte**\n- `noise_seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `noise_seed` (INT, Link 20): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `NOISE` (NOISE, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2673,7 +2713,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SZENE 1 · Guider · CFG 1 (FastH3 destilliert) · Node 22\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `model` (MODEL, Link 20): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `conditioning` (CONDITIONING, Link 21): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `GUIDER` (GUIDER, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SZENE 1 · Guider · CFG 1 (FastH3 destilliert) · Node 22\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `model` (MODEL, Link 21): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `conditioning` (CONDITIONING, Link 22): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `GUIDER` (GUIDER, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2702,7 +2742,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SZENE 1 · FastH3 Sampling · 8 Schritte · Node 23\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `noise` (NOISE, Link 22): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `guider` (GUIDER, Link 23): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler` (SAMPLER, Link 24): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sigmas` (SIGMAS, Link 25): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent_image` (LATENT, Link 26): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `denoised_output` (LATENT, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · SZENE 1 · FastH3 Sampling · 8 Schritte · Node 23\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `noise` (NOISE, Link 23): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `guider` (GUIDER, Link 24): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler` (SAMPLER, Link 25): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sigmas` (SIGMAS, Link 26): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent_image` (LATENT, Link 27): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `denoised_output` (LATENT, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2731,7 +2771,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SZENE 1 · Szene speichern + Vorschau mit Originalton · Node 24\n\n**Zweck:** Decodes one scene, keeps exactly its new frames, stores the continuity frames for the next extend and shows a preview with the original song audio. Finished scenes of the same plan are skipped without sampling (resume).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 27): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 28): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 29): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 30): Ordering token: the previous scene or the approval gate.\n\n**Ausgänge**\n- `token` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `preview` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · SZENE 1 · Szene speichern + Vorschau mit Originalton · Node 24\n\n**Zweck:** Decodes one scene, keeps exactly its new frames, stores the continuity frames for the next extend and shows a preview with the original song audio. Finished scenes of the same plan are skipped without sampling (resume).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 28): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 29): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 30): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 31): Ordering token: the previous scene or the approval gate.\n\n**Ausgänge**\n- `token` (STRING, nicht verbunden): Ergebnis dieses Nodes\n- `preview` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2760,7 +2800,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · LOOP · Szene vorbereiten · Song-Audio fixiert + Extend · Node 27\n\n**Zweck:** Loads the pre-encoded prompt of one scene and builds its H3 latent: the original song audio of the scene is frozen in the audio stream (lip sync), and for every scene after the first the last frames of the previous scene are frozen at the start of the video stream (seamless extend).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 34): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, Link 48): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 35): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio_vae` (VAE, Link 36): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `positive` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `seed` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · LOOP · Szene vorbereiten · Song-Audio fixiert + Extend · Node 27\n\n**Zweck:** Loads the pre-encoded prompt of one scene and builds its H3 latent: the original song audio of the scene is frozen in the audio stream (lip sync), and for every scene after the first the last frames of the previous scene are frozen at the start of the video stream (seamless extend).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 35): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, Link 49): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 36): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio_vae` (VAE, Link 37): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `positive` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `latent` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `seed` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2789,7 +2829,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · LOOP · Rauschen · Seed pro Szene aus dem Plan · Node 28\n\n**Zweck:** Erzeugt oder verändert das Start-Rauschen, das die Variation des generierten Ergebnisses bestimmt.\n\n**Einstellbare Werte**\n- `noise_seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `noise_seed` (INT, Link 37): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `NOISE` (NOISE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · LOOP · Rauschen · Seed pro Szene aus dem Plan · Node 28\n\n**Zweck:** Erzeugt oder verändert das Start-Rauschen, das die Variation des generierten Ergebnisses bestimmt.\n\n**Einstellbare Werte**\n- `noise_seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `noise_seed` (INT, Link 38): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `NOISE` (NOISE, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2818,7 +2858,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · LOOP · Guider · CFG 1 (FastH3 destilliert) · Node 29\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `model` (MODEL, Link 38): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `conditioning` (CONDITIONING, Link 39): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `GUIDER` (GUIDER, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · LOOP · Guider · CFG 1 (FastH3 destilliert) · Node 29\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `model` (MODEL, Link 39): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `conditioning` (CONDITIONING, Link 40): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `GUIDER` (GUIDER, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2847,7 +2887,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · LOOP · FastH3 Sampling · 8 Schritte · Node 30\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `noise` (NOISE, Link 40): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `guider` (GUIDER, Link 41): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler` (SAMPLER, Link 42): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sigmas` (SIGMAS, Link 43): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent_image` (LATENT, Link 44): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `denoised_output` (LATENT, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · LOOP · FastH3 Sampling · 8 Schritte · Node 30\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `noise` (NOISE, Link 41): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `guider` (GUIDER, Link 42): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler` (SAMPLER, Link 43): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sigmas` (SIGMAS, Link 44): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent_image` (LATENT, Link 45): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `denoised_output` (LATENT, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2876,7 +2916,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · LOOP · Szene speichern + Vorschau mit Originalton · Node 31\n\n**Zweck:** Decodes one scene, keeps exactly its new frames, stores the continuity frames for the next extend and shows a preview with the original song audio. Finished scenes of the same plan are skipped without sampling (resume).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 45): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, Link 49): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 46): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 47): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 50): Ordering token: the previous scene or the approval gate.\n\n**Ausgänge**\n- `token` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `preview` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · LOOP · Szene speichern + Vorschau mit Originalton · Node 31\n\n**Zweck:** Decodes one scene, keeps exactly its new frames, stores the continuity frames for the next extend and shows a preview with the original song audio. Finished scenes of the same plan are skipped without sampling (resume).\n\n**Einstellbare Werte**\n- `scene_index` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `index_offset` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `plan` (STRING, Link 46): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scene_index` (INT, Link 50): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `index_offset` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 47): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent` (LATENT, Link 48): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 51): Ordering token: the previous scene or the approval gate.\n\n**Ausgänge**\n- `token` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `preview` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `info` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2905,7 +2945,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · MV 6 · FERTIGES MUSIKVIDEO · Originalton unverändert · Node 33\n\n**Zweck:** Joins all scenes without re-encoding and muxes the original song file stream-copied (-c:a copy), so the audio is bit-identical to the input. MP3/AAC go into MP4, other codecs into MKV.\n\n**Einstellbare Werte**\n- `container` = `auto` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `plan` (STRING, Link 53): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `container` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 54): Token of the last scene (Loop End).\n\n**Ausgänge**\n- `final_file` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+        "# Erklärung · MV 6 · FERTIGES MUSIKVIDEO · Originalton unverändert · Node 33\n\n**Zweck:** Joins all scenes without re-encoding and muxes the original song file stream-copied (-c:a copy), so the audio is bit-identical to the input. MP3/AAC go into MP4, other codecs into MKV.\n\n**Einstellbare Werte**\n- `container` = `auto` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `plan` (STRING, Link 54): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `container` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `after` (*, Link 55): Token of the last scene (Loop End).\n\n**Ausgänge**\n- `final_file` (STRING, nicht verbunden): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -2929,7 +2969,7 @@
           "localized_name": "model",
           "name": "model",
           "type": "MODEL",
-          "link": 55
+          "link": 56
         },
         {
           "localized_name": "device",
@@ -2938,7 +2978,7 @@
           "widget": {
             "name": "device"
           },
-          "link": 58
+          "link": 59
         }
       ],
       "outputs": [
@@ -2948,7 +2988,7 @@
           "type": "MODEL",
           "slot_index": 0,
           "links": [
-            12
+            13
           ]
         }
       ],
@@ -2982,7 +3022,7 @@
           "localized_name": "vae",
           "name": "vae",
           "type": "VAE",
-          "link": 56
+          "link": 57
         },
         {
           "localized_name": "device",
@@ -2991,7 +3031,7 @@
           "widget": {
             "name": "device"
           },
-          "link": 59
+          "link": 60
         }
       ],
       "outputs": [
@@ -3001,10 +3041,10 @@
           "type": "VAE",
           "slot_index": 0,
           "links": [
-            17,
-            28,
-            35,
-            46
+            18,
+            29,
+            36,
+            47
           ]
         }
       ],
@@ -3038,7 +3078,7 @@
           "localized_name": "vae",
           "name": "vae",
           "type": "VAE",
-          "link": 57
+          "link": 58
         },
         {
           "localized_name": "device",
@@ -3047,7 +3087,7 @@
           "widget": {
             "name": "device"
           },
-          "link": 60
+          "link": 61
         }
       ],
       "outputs": [
@@ -3057,8 +3097,8 @@
           "type": "VAE",
           "slot_index": 0,
           "links": [
-            18,
-            36
+            19,
+            37
           ]
         }
       ],
@@ -3078,7 +3118,7 @@
       "type": "DaWMultiGPUDeviceControl",
       "pos": [
         40.0,
-        3080.0
+        3580.0
       ],
       "size": [
         380,
@@ -3095,7 +3135,7 @@
           "type": "COMBO",
           "slot_index": 0,
           "links": [
-            58
+            59
           ]
         },
         {
@@ -3111,8 +3151,8 @@
           "type": "COMBO",
           "slot_index": 2,
           "links": [
-            59,
-            60
+            60,
+            61
           ]
         }
       ],
@@ -3152,7 +3192,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SelectModelDevice · central control · Node 60\n\n**Zweck:** Place the diffusion model on a specific device (default / cpu / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader (even after a ↵   prior Select Model Device call). ↵ - \"cpu\" pins both the load and offload device to CPU. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   devic…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 55): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 58): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SelectModelDevice · central control · Node 60\n\n**Zweck:** Place the diffusion model on a specific device (default / cpu / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader (even after a ↵   prior Select Model Device call). ↵ - \"cpu\" pins both the load and offload device to CPU. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   devic…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 56): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 59): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -3181,7 +3221,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SelectVAEDevice · central control · Node 61\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 56): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 59): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 4 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SelectVAEDevice · central control · Node 61\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 57): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 60): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 4 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -3210,7 +3250,7 @@
         "dawasteh_generated_note": true
       },
       "widgets_values": [
-        "# Erklärung · SelectVAEDevice · central control · Node 62\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 57): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 60): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
+        "# Erklärung · SelectVAEDevice · central control · Node 62\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 58): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 61): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 2 Verbindung(en)): Ergebnis dieses Nodes"
       ],
       "color": "#1b2638",
       "bgcolor": "#101722"
@@ -3336,6 +3376,14 @@
     ],
     [
       12,
+      12,
+      1,
+      11,
+      2,
+      "STRING"
+    ],
+    [
+      13,
       60,
       0,
       13,
@@ -3343,7 +3391,7 @@
       "MODEL"
     ],
     [
-      13,
+      14,
       13,
       0,
       14,
@@ -3351,7 +3399,7 @@
       "MODEL"
     ],
     [
-      14,
+      15,
       14,
       0,
       15,
@@ -3359,7 +3407,7 @@
       "MODEL"
     ],
     [
-      15,
+      16,
       15,
       0,
       19,
@@ -3367,7 +3415,7 @@
       "MODEL"
     ],
     [
-      16,
+      17,
       11,
       0,
       20,
@@ -3375,7 +3423,7 @@
       "STRING"
     ],
     [
-      17,
+      18,
       61,
       0,
       20,
@@ -3383,7 +3431,7 @@
       "VAE"
     ],
     [
-      18,
+      19,
       62,
       0,
       20,
@@ -3391,7 +3439,7 @@
       "VAE"
     ],
     [
-      19,
+      20,
       20,
       2,
       21,
@@ -3399,7 +3447,7 @@
       "INT"
     ],
     [
-      20,
+      21,
       15,
       0,
       22,
@@ -3407,7 +3455,7 @@
       "MODEL"
     ],
     [
-      21,
+      22,
       20,
       0,
       22,
@@ -3415,7 +3463,7 @@
       "CONDITIONING"
     ],
     [
-      22,
+      23,
       21,
       0,
       23,
@@ -3423,7 +3471,7 @@
       "NOISE"
     ],
     [
-      23,
+      24,
       22,
       0,
       23,
@@ -3431,7 +3479,7 @@
       "GUIDER"
     ],
     [
-      24,
+      25,
       18,
       0,
       23,
@@ -3439,7 +3487,7 @@
       "SAMPLER"
     ],
     [
-      25,
+      26,
       19,
       0,
       23,
@@ -3447,7 +3495,7 @@
       "SIGMAS"
     ],
     [
-      26,
+      27,
       20,
       1,
       23,
@@ -3455,7 +3503,7 @@
       "LATENT"
     ],
     [
-      27,
+      28,
       11,
       0,
       24,
@@ -3463,7 +3511,7 @@
       "STRING"
     ],
     [
-      28,
+      29,
       61,
       0,
       24,
@@ -3471,7 +3519,7 @@
       "VAE"
     ],
     [
-      29,
+      30,
       23,
       0,
       24,
@@ -3479,7 +3527,7 @@
       "LATENT"
     ],
     [
-      30,
+      31,
       11,
       0,
       24,
@@ -3487,7 +3535,7 @@
       "STRING"
     ],
     [
-      31,
+      32,
       24,
       1,
       25,
@@ -3495,7 +3543,7 @@
       "IMAGE"
     ],
     [
-      32,
+      33,
       7,
       2,
       26,
@@ -3503,7 +3551,7 @@
       "INT"
     ],
     [
-      33,
+      34,
       25,
       0,
       26,
@@ -3511,7 +3559,7 @@
       "IMAGE"
     ],
     [
-      34,
+      35,
       11,
       0,
       27,
@@ -3519,7 +3567,7 @@
       "STRING"
     ],
     [
-      35,
+      36,
       61,
       0,
       27,
@@ -3527,7 +3575,7 @@
       "VAE"
     ],
     [
-      36,
+      37,
       62,
       0,
       27,
@@ -3535,7 +3583,7 @@
       "VAE"
     ],
     [
-      37,
+      38,
       27,
       2,
       28,
@@ -3543,7 +3591,7 @@
       "INT"
     ],
     [
-      38,
+      39,
       15,
       0,
       29,
@@ -3551,7 +3599,7 @@
       "MODEL"
     ],
     [
-      39,
+      40,
       27,
       0,
       29,
@@ -3559,7 +3607,7 @@
       "CONDITIONING"
     ],
     [
-      40,
+      41,
       28,
       0,
       30,
@@ -3567,7 +3615,7 @@
       "NOISE"
     ],
     [
-      41,
+      42,
       29,
       0,
       30,
@@ -3575,7 +3623,7 @@
       "GUIDER"
     ],
     [
-      42,
+      43,
       18,
       0,
       30,
@@ -3583,7 +3631,7 @@
       "SAMPLER"
     ],
     [
-      43,
+      44,
       19,
       0,
       30,
@@ -3591,7 +3639,7 @@
       "SIGMAS"
     ],
     [
-      44,
+      45,
       27,
       1,
       30,
@@ -3599,7 +3647,7 @@
       "LATENT"
     ],
     [
-      45,
+      46,
       11,
       0,
       31,
@@ -3607,7 +3655,7 @@
       "STRING"
     ],
     [
-      46,
+      47,
       61,
       0,
       31,
@@ -3615,7 +3663,7 @@
       "VAE"
     ],
     [
-      47,
+      48,
       30,
       0,
       31,
@@ -3623,7 +3671,7 @@
       "LATENT"
     ],
     [
-      48,
+      49,
       26,
       6,
       27,
@@ -3631,7 +3679,7 @@
       "INT"
     ],
     [
-      49,
+      50,
       26,
       6,
       31,
@@ -3639,7 +3687,7 @@
       "INT"
     ],
     [
-      50,
+      51,
       26,
       0,
       31,
@@ -3647,7 +3695,7 @@
       "*"
     ],
     [
-      51,
+      52,
       31,
       0,
       32,
@@ -3655,7 +3703,7 @@
       "STRING"
     ],
     [
-      52,
+      53,
       26,
       5,
       32,
@@ -3663,7 +3711,7 @@
       "FLOW_CONTROL"
     ],
     [
-      53,
+      54,
       11,
       0,
       33,
@@ -3671,7 +3719,7 @@
       "STRING"
     ],
     [
-      54,
+      55,
       32,
       0,
       33,
@@ -3679,7 +3727,7 @@
       "*"
     ],
     [
-      55,
+      56,
       12,
       0,
       60,
@@ -3687,7 +3735,7 @@
       "MODEL"
     ],
     [
-      56,
+      57,
       16,
       0,
       61,
@@ -3695,7 +3743,7 @@
       "VAE"
     ],
     [
-      57,
+      58,
       17,
       0,
       62,
@@ -3703,7 +3751,7 @@
       "VAE"
     ],
     [
-      58,
+      59,
       63,
       0,
       60,
@@ -3711,7 +3759,7 @@
       "COMBO"
     ],
     [
-      59,
+      60,
       63,
       2,
       61,
@@ -3719,7 +3767,7 @@
       "COMBO"
     ],
     [
-      60,
+      61,
       63,
       2,
       62,
@@ -3735,7 +3783,7 @@
         0.0,
         0.0,
         760.0,
-        3280.0
+        3800.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -3813,7 +3861,7 @@
         4800.0,
         0.0,
         3040.0,
-        7480.0
+        8000.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -3824,7 +3872,13 @@
   "extra": {
     "dawasteh_h3_music_video_v122": {
       "version": 1,
+      "release": "v1.2.4",
       "model": "MiniMax H3\\fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors",
+      "lora": {
+        "name": "MiniMax H3\\h3-realism-people-t2v-i2v-r2v.safetensors",
+        "strength": 0.8,
+        "trigger": "r34l1sm"
+      },
       "sampling": {
         "steps": 8,
         "sampler": "res_multistep",
@@ -3836,7 +3890,8 @@
         "keep_percent": 10.0
       },
       "source_manifest": "tools/workflow_templates/v122/models.json",
-      "validation_report": "performance/rdna4/h3-music-video-v122-validation.json",
+      "validation_report": "performance/rdna4/h3-music-video-v124-validation.json",
+      "validation_report_v122": "performance/rdna4/h3-music-video-v122-validation.json",
       "replaces": "v0.8.x-v1.2.1 DaWH3MusicVideoDirectorDualGPU one-node director"
     },
     "dawasteh_workflow_refinement": {
@@ -3901,13 +3956,13 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "f5ebb8a37aee955ef6470d222adf25986d7c5a39ebd7576b12fb924f976e8a4d",
+      "topology_sha256": "b3789a864fc2d7cdd356e1c1fd0bebd63de8aba5a87122ec8b32688d32a9a3c8",
       "exceptions": []
     }
   },
   "version": 0.4,
   "last_node_id": 67,
-  "last_link_id": 60,
+  "last_link_id": 61,
   "id": "53ccc740-0e86-5163-b0b3-46f1996ab0d2",
   "revision": 0
 }

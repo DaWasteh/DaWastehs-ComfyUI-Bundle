@@ -357,12 +357,25 @@
       ]
      }
     ]
+   },
+   "optional": {
+    "model_info": [
+     "STRING",
+     {
+      "tooltip": "From MV 0: the LoRA trigger word is put in front of every scene prompt, and a different model/LoRA/strength re-renders the scenes instead of resuming them.",
+      "forceInput": true,
+      "multiline": false
+     }
+    ]
    }
   },
   "input_order": {
    "required": [
     "plan",
     "text_encoder"
+   ],
+   "optional": [
+    "model_info"
    ]
   },
   "is_input_list": false,
@@ -382,6 +395,101 @@
   "name": "DaWMV2EncodeScenes",
   "display_name": "MV 3 · H3 Text Encoder · alle Szenen einmal",
   "description": "Encodes every scene prompt once with the Qwen3-VL-32B H3 text encoder and stores the conditioning on disk. The render loop then never needs the 26 GB text encoder again.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Music Video v2",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "DaWMV2LoadModel": {
+  "input": {
+   "required": {
+    "unet_name": [
+     "COMBO",
+     {
+      "default": "MiniMax H3\\fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors",
+      "multiselect": false,
+      "options": [
+       "MiniMax H3\\fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors"
+      ]
+     }
+    ],
+    "lora_name": [
+     "COMBO",
+     {
+      "tooltip": "MiniMax H3 LoRA (models/loras). 'none' = plain FastH3.",
+      "default": "MiniMax H3\\h3-realism-people-t2v-i2v-r2v.safetensors",
+      "multiselect": false,
+      "options": [
+       "none",
+       "MiniMax H3\\h3-realism-people-t2v-i2v-r2v.safetensors"
+      ]
+     }
+    ],
+    "lora_strength": [
+     "FLOAT",
+     {
+      "tooltip": "fal Realism People: 1.0 intended, 0.6-0.8 lighter. FastH3 is an 8-step distillate, the LoRA was trained on H3 FL2VA.",
+      "default": 0.8,
+      "min": -2.0,
+      "max": 2.0,
+      "step": 0.05
+     }
+    ],
+    "trigger_word": [
+     "STRING",
+     {
+      "tooltip": "Put in front of every scene prompt while a LoRA is active (fal Realism People: r34l1sm). Empty = no trigger.",
+      "default": "r34l1sm",
+      "multiline": false
+     }
+    ],
+    "high_resolution_memory": [
+     "BOOLEAN",
+     {
+      "tooltip": "Above 65k tokens: allocator without fragmentation, MLP in token chunks, weights moved out of VRAM when the activations need the space. 864x480 is not affected.",
+      "advanced": true,
+      "default": true
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "unet_name",
+    "lora_name",
+    "lora_strength",
+    "trigger_word",
+    "high_resolution_memory"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "MODEL",
+   "STRING"
+  ],
+  "output_is_list": [
+   false,
+   false
+  ],
+  "output_name": [
+   "model",
+   "model_info"
+  ],
+  "output_tooltips": [
+   null,
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWMV2LoadModel",
+  "display_name": "MV 0 · FastH3 + Realismus-LoRA (RAM-schonend, hohe Auflösung)",
+  "description": "Loads FastH3 from a read-only file mapping (Windows does not charge the 22 GB file to the commit limit), applies an optional LoRA and, above ~65k tokens (e.g. 1920x1088), keeps enough VRAM free for the activations of every extend scene.",
   "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
   "category": "DaWasteh/MiniMax H3/Music Video v2",
   "output_node": false,

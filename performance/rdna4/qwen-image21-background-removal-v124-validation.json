@@ -1,0 +1,202 @@
+{
+  "release": "v1.2.4",
+  "date": "2026-09-24",
+  "scope": "Shipped background-remover workflow serialized by the real frontend (headless Edge, app.graphToPrompt via performance/rdna4/bench/ui_to_api.py) and executed on the bench server; one variant changes only the input image, one also the instruction text.",
+  "system": {
+    "os": "win32",
+    "comfyui_version": "0.37.0",
+    "comfyui_commit": "93810483a4739a1588236919a3128d3070244146",
+    "frontend": "1.53.6",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "python_version": "3.13.13",
+    "pixaroma_commit": "7a1cf573034fe14e29c1200d884531231a003e2e",
+    "gpu": "gpu:0 AMD Radeon AI PRO R9700 32 GB",
+    "profile": "start-MultiGPU.ps1 v0.9.8 profile on port 8190 (reserve-vram 4, VRAM guard 3 GiB)"
+  },
+  "workflow": {
+    "path": "workflows/Image Editing/Qwen_Image_2_1_BF16-Background-Remover.json",
+    "sha256": "9c2e3b65c1d2f53f7c1fe9568aa08397864b8f69adfdcc3c2bbdc6809794c8ea",
+    "builder": "tools/build_qwen_image21_background_removal_v124.py"
+  },
+  "sources": [
+    {
+      "path": "tools/workflow_templates/v124/image_qwen_image_2_1_background_removal.json",
+      "sha256": "642e700e358fd47911d35f61c545945821fd516c898b793e9f58f5a92439aa72"
+    },
+    {
+      "path": "tools/workflow_templates/v124/sources.json",
+      "sha256": "d7358b5adafb6b2bd886ff4f6717e570b673740c8b65040332f6d28a93333f06"
+    },
+    {
+      "path": "tools/workflow_templates/v124/inputs.json",
+      "sha256": "86c8d83bd42b9ec552ac3166792835581a6c9845bd96c14457bdc0ec19575d68"
+    },
+    {
+      "path": "tools/workflow_templates/v121/models.json",
+      "sha256": "413c8177ce9215daf8160361ab24a24e5093b46987fc5aca7e329ca1d548012a"
+    }
+  ],
+  "models": "tools/workflow_templates/v121/models.json (the three v1.2.1 files, SHA-256 verified in v1.2.1; no new download)",
+  "runs": [
+    {
+      "case": "default",
+      "image": "angry_broccoli.png",
+      "status": "success",
+      "seconds": 45.21,
+      "steps": 25,
+      "api_contract_sha256": "03678e008162c974d4c62a3e01c33c6b8845b67764bbf036d447d695567d08d1",
+      "executed_contract_matches_final": true,
+      "outputs": [
+        {
+          "kind": "mask",
+          "file": "BG_Mask_00007.png",
+          "mode": "RGB",
+          "width": 896,
+          "height": 1152,
+          "size": 236234,
+          "sha256": "b384d472bc9f73a3e0f4694129a5245653acecba93319a6fceba5781fdd1754c",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_present": true
+        },
+        {
+          "kind": "removed",
+          "file": "BG_Removed_00007.png",
+          "mode": "RGBA",
+          "width": 896,
+          "height": 1152,
+          "size": 1203989,
+          "sha256": "92a229e67d8b7acf965a66804d9f765c449a4b57c6562b1c5875969d2814bcae",
+          "alpha_min": 0,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.5777,
+          "alpha_partial_fraction": 0.0072,
+          "workflow_metadata_matches": true,
+          "prompt_metadata_present": true
+        }
+      ],
+      "errors": [],
+      "visual_review": "Official example: clean cut-out, stem and florets intact, no red fringe.",
+      "instruction": "official"
+    },
+    {
+      "case": "portrait_hair",
+      "image": "portrait_model_denim.png",
+      "status": "success",
+      "seconds": 48.15,
+      "steps": 25,
+      "api_contract_sha256": "64e3985061fe4d6298f8c99fb5b2435daf4c5565e00f280bdeacfb676be30bbd",
+      "executed_contract_matches_final": true,
+      "outputs": [
+        {
+          "kind": "mask",
+          "file": "BG_Mask_00008.png",
+          "mode": "RGB",
+          "width": 896,
+          "height": 1152,
+          "size": 206168,
+          "sha256": "bc89201d8eb4aebe490d88e4fd8148baa200a8905c0b245e753cb43c27554938",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_present": true
+        },
+        {
+          "kind": "removed",
+          "file": "BG_Removed_00008.png",
+          "mode": "RGBA",
+          "width": 896,
+          "height": 1152,
+          "size": 1226690,
+          "sha256": "34a02ff5815d74aa7c84d16f55b17ea860b80841af6ead9025d2fb6c0ea56ae6",
+          "alpha_min": 0,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.4121,
+          "alpha_partial_fraction": 0.0117,
+          "workflow_metadata_matches": true,
+          "prompt_metadata_present": true
+        }
+      ],
+      "errors": [],
+      "visual_review": "Public Comfy-Org portrait: hair outline and jacket edges clean; 1.2 % semi-transparent edge pixels.",
+      "instruction": "official"
+    },
+    {
+      "case": "character_sheet_local",
+      "image": "private local character sheet (not distributed)",
+      "status": "success",
+      "seconds": 87.27,
+      "steps": 25,
+      "api_contract_sha256": "e08764a45cce4b55a37680bb2a2079dcb0108feae80d8d30d83d5f653a2a37ef",
+      "executed_contract_matches_final": true,
+      "outputs": [
+        {
+          "kind": "mask",
+          "file": "BG_Mask_00009.png",
+          "mode": "RGB",
+          "width": 1440,
+          "height": 1088,
+          "size": 206109,
+          "sha256": "3c54a5a633f4590e71efd1ffa53f0bdca28a40dbee50da27db4850cdfeb3740a",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_present": true
+        },
+        {
+          "kind": "removed",
+          "file": "BG_Removed_00009.png",
+          "mode": "RGBA",
+          "width": 1440,
+          "height": 1088,
+          "size": 883302,
+          "sha256": "9f6458b227b27f64a1dca49052d531f61ec6c6543c777aceb7c19bfcba4fb6e2",
+          "alpha_min": 0,
+          "alpha_max": 4,
+          "alpha_below_128_fraction": 1.0,
+          "alpha_partial_fraction": 0.0,
+          "workflow_metadata_matches": true,
+          "prompt_metadata_present": true
+        }
+      ],
+      "errors": [],
+      "visual_review": "Private character sheet (collage of poses, crops, text panels), not in the repository: the official instruction treats everything as background (alpha max 4 = empty result). Documented limitation.",
+      "instruction": "official"
+    },
+    {
+      "case": "character_sheet_local_collage_prompt",
+      "image": "private local character sheet (not distributed)",
+      "status": "success",
+      "seconds": 89.35,
+      "steps": 25,
+      "api_contract_sha256": "76d947892d745d6ba6d3529b5f2d2b6497a566bdde005bfff4406c7e6a6fe618",
+      "executed_contract_matches_final": true,
+      "outputs": [
+        {
+          "kind": "mask",
+          "file": "BG_Mask_00010.png",
+          "mode": "RGB",
+          "width": 1440,
+          "height": 1088,
+          "size": 682618,
+          "sha256": "9ba3894034d734795c2b51e366e7f219de0f33b4a4b5af5e99bd45021d1373c8",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_present": true
+        },
+        {
+          "kind": "removed",
+          "file": "BG_Removed_00010.png",
+          "mode": "RGBA",
+          "width": 1440,
+          "height": 1088,
+          "size": 3003321,
+          "sha256": "460affc026fee9933a7763c93f14fb42f30dbc44a28b438f443e18c6e0d74696",
+          "alpha_min": 0,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.4351,
+          "alpha_partial_fraction": 0.0801,
+          "workflow_metadata_matches": true,
+          "prompt_metadata_present": true
+        }
+      ],
+      "errors": [],
+      "visual_review": "Same private sheet with the collage instruction from the START note: every figure, crop, text and drawn element kept, only the plain background removed.",
+      "instruction": "collage"
+    }
+  ]
+}

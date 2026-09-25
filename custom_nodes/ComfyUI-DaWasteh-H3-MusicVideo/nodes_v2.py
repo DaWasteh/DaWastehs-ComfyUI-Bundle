@@ -289,9 +289,9 @@ def _text_encoder_options(preferred: str) -> list[str]:
 def _load_text_model(name: str, clip_type: str):
     """Load a text model privately. Only this node references it, so dropping the reference frees VRAM and
     host RAM at once; a cached CLIPLoader output would keep 8-26 GB alive (or offload it to host RAM)
-    for the whole render loop."""
-    import nodes as comfy_nodes
-    return comfy_nodes.CLIPLoader().load_clip(name, clip_type)[0]
+    for the whole render loop. v1.2.4: read-only file mapping (no commit charge for the file itself)."""
+    from . import h3_highres
+    return h3_highres.load_clip_readonly(folder_paths.get_full_path_or_raise("text_encoders", name), clip_type)
 
 
 def _release_text_model() -> None:
@@ -433,8 +433,21 @@ def _prompts_text(manifest: dict[str, Any]) -> str:
 # 3 · Encode all scene prompts once
 # ---------------------------------------------------------------------------
 
-def _cond_key(scene: dict[str, Any], text_encoder: str) -> str:
-    return mv2.stable_hash({"prompt": scene["prompt"], "te": text_encoder, "v": 1})
+def _cond_key(scene: dict[str, Any], text_encoder: str, prefix: str = "") -> str:
+    payload = {"prompt": scene["prompt"], "te": text_encoder, "v": 1}
+    if prefix:  # v1.2.4 LoRA trigger; without one the v1.2.2 keys stay valid
+        payload["prefix"] = prefix
+    return mv2.stable_hash(payload)
+
+
+def _model_prefix(model_info: str | None) -> tuple[str, str]:
+    """model_info JSON from MV 0 -> (prompt prefix for the LoRA trigger word, model signature for resume keys)."""
+    if not model_info:
+        return "", ""
+    info = json.loads(model_info)
+    trigger = str(info.get("trigger") or "").strip()
+    prefix = f"{trigger}, " if trigger and info.get("lora") else ""
+    return prefix, mv2.stable_hash(info)
 
 
 def _cond_path(plan: str, index: int) -> Path:
@@ -454,38 +467,44 @@ class DaWMV2EncodeScenes(io.ComfyNode):
                 io.String.Input("plan", force_input=True),
                 io.Combo.Input("text_encoder", options=_text_encoder_options(DEFAULT_H3_TE), default=DEFAULT_H3_TE,
                                tooltip="MiniMax H3 Qwen3-VL-32B text encoder. Loaded once for all scenes, then freed completely."),
+                io.String.Input("model_info", force_input=True, optional=True,
+                                tooltip="From MV 0: the LoRA trigger word is put in front of every scene prompt, and a "
+                                        "different model/LoRA/strength re-renders the scenes instead of resuming them."),
             ],
             outputs=[io.String.Output("plan")],
         )
 
     @classmethod
-    def _missing(cls, plan: str, text_encoder: str) -> list[int]:
+    def _missing(cls, plan: str, text_encoder: str, prefix: str = "") -> list[int]:
         manifest = _manifest(plan)
         return [s["index"] for s in manifest["scenes"]
-                if s.get("cond_key") != _cond_key(s, text_encoder) or not _cond_path(plan, s["index"]).is_file()]
+                if s.get("cond_key") != _cond_key(s, text_encoder, prefix) or not _cond_path(plan, s["index"]).is_file()]
 
     @classmethod
-    def execute(cls, plan, text_encoder) -> io.NodeOutput:
-        missing = cls._missing(plan, text_encoder)
+    def execute(cls, plan, text_encoder, model_info=None) -> io.NodeOutput:
+        prefix, model_key = _model_prefix(model_info)
+        missing = cls._missing(plan, text_encoder, prefix)
+        manifest = _manifest(plan)
         if missing:
             clip = _load_text_model(text_encoder, "minimax")
-            manifest = _manifest(plan)
             progress = comfy.utils.ProgressBar(len(missing))
             for index in missing:
                 scene = manifest["scenes"][index]
-                cond = clip.encode_from_tokens_scheduled(clip.tokenize(scene["prompt"]))
+                cond = clip.encode_from_tokens_scheduled(clip.tokenize(prefix + scene["prompt"]))
                 cond = [[c[0].detach().cpu(), {k: (v.detach().cpu() if torch.is_tensor(v) else v) for k, v in c[1].items()}] for c in cond]
                 path = _cond_path(plan, index)
                 path.parent.mkdir(parents=True, exist_ok=True)
                 torch.save(cond, str(path) + ".tmp")
                 os.replace(str(path) + ".tmp", path)
-                scene["cond_key"] = _cond_key(scene, text_encoder)
+                scene["cond_key"] = _cond_key(scene, text_encoder, prefix)
                 progress.update(1)
-            manifest["text_encoder"] = text_encoder
-            _save(plan, manifest)
-            _log(f"Encoded {len(missing)} scene prompts; releasing the text encoder")
+            _log(f"Encoded {len(missing)} scene prompts{' with trigger ' + prefix.strip(', ') if prefix else ''}; releasing the text encoder")
             del clip
             _release_text_model()
+        if missing or manifest.get("text_encoder") != text_encoder or manifest.get("prompt_prefix", "") != prefix \
+                or manifest.get("model_key", "") != model_key:
+            manifest.update({"text_encoder": text_encoder, "prompt_prefix": prefix, "model_key": model_key})
+            _save(plan, manifest)
         return io.NodeOutput(plan)
 
 
@@ -496,11 +515,14 @@ class DaWMV2EncodeScenes(io.ComfyNode):
 def _render_key(manifest: dict[str, Any], index: int) -> str:
     scene = manifest["scenes"][index]
     previous = _render_key(manifest, index - 1) if index > 0 and scene["prefix_frames"] else ""
-    return mv2.stable_hash({
+    payload = {
         "prompt": scene["prompt"], "seed": scene["seed"], "w": manifest["width"], "h": manifest["height"],
         "gen": scene["gen_frames"], "prefix": scene["prefix_frames"], "audio": scene["audio_start_frame"],
         "frames": scene["frames"], "previous": previous, "nonce": manifest.get("render_nonce", 0),
-    })
+    }
+    if manifest.get("model_key"):  # v1.2.4: another model / LoRA / strength / trigger renders the scenes again
+        payload.update({"model": manifest["model_key"], "prompt_prefix": manifest.get("prompt_prefix", "")})
+    return mv2.stable_hash(payload)
 
 
 def _scene_files(plan: str, index: int) -> dict[str, Path]:
@@ -534,6 +556,71 @@ def _resolve_index(manifest: dict[str, Any], scene_index: int, index_offset: int
     return int(scene_index) + int(index_offset)
 
 
+DEFAULT_FASTH3 = "MiniMax H3\\fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors"
+DEFAULT_REALISM_LORA = "MiniMax H3\\h3-realism-people-t2v-i2v-r2v.safetensors"
+DEFAULT_TRIGGER = "r34l1sm"
+NO_LORA = "none"
+
+
+def _file_options(folder: str, preferred: str, first: list[str] | None = None) -> list[str]:
+    try:
+        options = list(folder_paths.get_filename_list(folder))
+    except Exception:
+        options = []
+    if preferred not in options and preferred != NO_LORA:
+        options.insert(0, preferred)
+    return (first or []) + options
+
+
+class DaWMV2LoadModel(io.ComfyNode):
+    @classmethod
+    def define_schema(cls):
+        return io.Schema(
+            node_id="DaWMV2LoadModel",
+            display_name="MV 0 · FastH3 + Realismus-LoRA (RAM-schonend, hohe Auflösung)",
+            category=CATEGORY,
+            description=("Loads FastH3 from a read-only file mapping (Windows does not charge the 22 GB file to the "
+                         "commit limit), applies an optional LoRA and, above ~65k tokens (e.g. 1920x1088), keeps "
+                         "enough VRAM free for the activations of every extend scene."),
+            inputs=[
+                io.Combo.Input("unet_name", options=_file_options("diffusion_models", DEFAULT_FASTH3), default=DEFAULT_FASTH3),
+                io.Combo.Input("lora_name", options=_file_options("loras", DEFAULT_REALISM_LORA, [NO_LORA]),
+                               default=DEFAULT_REALISM_LORA,
+                               tooltip="MiniMax H3 LoRA (models/loras). 'none' = plain FastH3."),
+                io.Float.Input("lora_strength", default=0.8, min=-2.0, max=2.0, step=0.05,
+                               tooltip="fal Realism People: 1.0 intended, 0.6-0.8 lighter. FastH3 is an 8-step "
+                                       "distillate, the LoRA was trained on H3 FL2VA."),
+                io.String.Input("trigger_word", default=DEFAULT_TRIGGER,
+                                tooltip="Put in front of every scene prompt while a LoRA is active (fal Realism People: r34l1sm). "
+                                        "Empty = no trigger."),
+                io.Boolean.Input("high_resolution_memory", default=True, advanced=True,
+                                 tooltip="Above 65k tokens: allocator without fragmentation, MLP in token chunks, "
+                                         "weights moved out of VRAM when the activations need the space. "
+                                         "864x480 is not affected."),
+            ],
+            outputs=[io.Model.Output("model"), io.String.Output("model_info")],
+        )
+
+    @classmethod
+    def execute(cls, unet_name, lora_name, lora_strength, trigger_word, high_resolution_memory) -> io.NodeOutput:
+        import nodes as comfy_nodes
+        from . import h3_highres
+
+        path = folder_paths.get_full_path_or_raise("diffusion_models", unet_name)
+        model = h3_highres.load_diffusion_model_readonly(path)
+        use_lora = lora_name != NO_LORA and float(lora_strength) != 0.0
+        if use_lora:
+            model = comfy_nodes.LoraLoaderModelOnly().load_lora_model_only(model, lora_name, float(lora_strength))[0]
+        if high_resolution_memory:
+            h3_highres.install_patches()
+            model = h3_highres.attach(model)
+        info = {"model": unet_name, "lora": lora_name if use_lora else None,
+                "strength": round(float(lora_strength), 4) if use_lora else 0.0,
+                "trigger": trigger_word.strip() if use_lora else ""}
+        _log(f"MV 0: {unet_name} read-only" + (f" + LoRA {lora_name} @ {lora_strength}" if use_lora else ""))
+        return io.NodeOutput(model, json.dumps(info, sort_keys=True))
+
+
 class DaWMV2SceneSetup(io.ComfyNode):
     @classmethod
     def define_schema(cls):
@@ -563,7 +650,8 @@ class DaWMV2SceneSetup(io.ComfyNode):
             raise IndexError(f"Scene {index + 1} does not exist; the plan has {len(manifest['scenes'])} scenes")
         scene = manifest["scenes"][index]
         cond_file = _cond_path(plan, index)
-        if scene.get("cond_key") != _cond_key(scene, manifest.get("text_encoder", "")) or not cond_file.is_file():
+        if scene.get("cond_key") != _cond_key(scene, manifest.get("text_encoder", ""), manifest.get("prompt_prefix", "")) \
+                or not cond_file.is_file():
             raise RuntimeError(f"Scene {index + 1} has no current conditioning; run 'MV 3 · H3 Text Encoder' first")
         positive = torch.load(str(cond_file), map_location="cpu", weights_only=False)
 
@@ -809,4 +897,5 @@ class DaWMV2Finalize(io.ComfyNode):
         return io.NodeOutput(str(final), ui=preview) if preview else io.NodeOutput(str(final))
 
 
-V2_NODES = [DaWMV2Planner, DaWMV2PromptWriter, DaWMV2EncodeScenes, DaWMV2SceneSetup, DaWMV2SaveScene, DaWMV2Finalize]
+V2_NODES = [DaWMV2Planner, DaWMV2PromptWriter, DaWMV2EncodeScenes, DaWMV2LoadModel, DaWMV2SceneSetup, DaWMV2SaveScene,
+            DaWMV2Finalize]

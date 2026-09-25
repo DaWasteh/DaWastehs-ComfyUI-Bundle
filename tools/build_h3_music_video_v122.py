@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Rebuild the v1.2.2 FastH3 complete-song music-video workflow; no runtime/model writes.
+"""Rebuild the FastH3 complete-song music-video workflow (v1.2.2, extended in v1.2.4); no runtime/model writes.
 
 Flat RODENT graph: Pixaroma inputs -> DaW MV2 planner / prompt writer / one-time encoder ->
 scene 1 -> Pixaroma pause gate (approve the opening) -> Pixaroma loop over the remaining
 scenes (extend) -> final film with the original audio stream-copied.
+
+v1.2.4: MV 0 loads FastH3 read-only with an optional realism LoRA (trigger word into MV 3, model signature
+into the resume keys) and keeps extend scenes at up to 1920x1088 inside VRAM and the Windows commit limit.
 """
 from __future__ import annotations
 
@@ -37,6 +40,10 @@ TEXT_ENCODER = "MiniMax H3" + BS + "qwen3vl_32b_minimax_h3_int8_convrot.safetens
 VIDEO_VAE = "MiniMax H3" + BS + "minimax_h3_video_vae_fp16.safetensors"
 AUDIO_VAE = "MiniMax H3" + BS + "minimax_h3_audio_vae_fp32.safetensors"
 LLM = "Qwen" + BS + "qwen3.5_4b_bf16.safetensors"
+LORA = "MiniMax H3" + BS + "h3-realism-people-t2v-i2v-r2v.safetensors"
+LORA_STRENGTH = 0.8
+TRIGGER = "r34l1sm"
+RELEASE = "v1.2.4"
 DEVICES = {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"}  # measured v1.2.2 placement (migrate_workflows_v092)
 SAMPLING = {"steps": 8, "sampler": "res_multistep", "scheduler": "simple", "shift_video": 10.0, "shift_audio": 3.0,
             "attention": "comfy kitchen attention", "sparse": "vsa", "keep_percent": 10.0}
@@ -131,7 +138,9 @@ def build(schemas: dict) -> dict:
     g.connect(writer, 0, encoder, "plan")
 
     # --- Model chain (FastH3 profile as tested locally) ------------------------------------------
-    unet = g.add("UNETLoader", "FASTH3 · MiniMax H3 8-Step V2 · INT8 ConvRot · R9700", unet_name=MODEL)
+    unet = g.add("DaWMV2LoadModel", "MV 0 · FASTH3 + REALISMUS-LORA · RAM-schonend · bis 1920×1088", unet_name=MODEL,
+                 lora_name=LORA, lora_strength=LORA_STRENGTH, trigger_word=TRIGGER, high_resolution_memory=True)
+    g.connect(unet, 1, encoder, "model_info")
     shift = g.add("MiniMaxH3SigmaShift", "FASTH3 · Sigma-Shift Video 10 / Audio 3", shift_video=10.0, shift_audio=3.0)
     attention = g.add("ModelAttentionBackend", "FASTH3 · Comfy Kitchen Attention", attention=SAMPLING["attention"])
     sparse = _block_sparse(g)
@@ -167,7 +176,7 @@ def build(schemas: dict) -> dict:
     g.connect(encoder, 0, final, "plan")
     g.connect(loop_end, 0, final, "after")
 
-    g.note("START HIER · Song → Musikvideo · FastH3 · v1.2.2", START_NOTE)
+    g.note("START HIER · Song → Musikvideo · FastH3 · v1.2.4", START_NOTE)
     g.note("ABLAUF · Planung, Freigabe, Extend-Schleife, Fortsetzen", FLOW_NOTE)
     model_lines = []
     for entry in json.loads((SOURCES / "models.json").read_text(encoding="utf-8")):
@@ -183,10 +192,13 @@ def finish(g: Graph, schemas: dict) -> dict:
     g.w["revision"] = 0
     g.w["extra"][MARKER] = {
         "version": 1,
+        "release": RELEASE,
         "model": MODEL,
+        "lora": {"name": LORA, "strength": LORA_STRENGTH, "trigger": TRIGGER},
         "sampling": SAMPLING,
         "source_manifest": "tools/workflow_templates/v122/models.json",
-        "validation_report": "performance/rdna4/h3-music-video-v122-validation.json",
+        "validation_report": "performance/rdna4/h3-music-video-v124-validation.json",
+        "validation_report_v122": "performance/rdna4/h3-music-video-v122-validation.json",
         "replaces": "v0.8.x-v1.2.1 DaWH3MusicVideoDirectorDualGPU one-node director",
     }
     refine_workflow(g.w, schemas)
@@ -223,15 +235,18 @@ def finish(g: Graph, schemas: dict) -> dict:
     return g.w
 
 
-START_NOTE = """# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.2
+START_NOTE = """# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.4
 
 1. **MV 1** · Song wählen oder hochladen (MP3/WAV/FLAC/M4A/OGG, jede Länge).
 2. **LYRICS** einfügen – am besten mit `[Verse 1]`, `[Chorus]` …; `[mm:ss.xx]`-Zeitstempel werden direkt übernommen.
 3. **VIDEOIDEE** in eigenen Worten (Deutsch oder Englisch): Story, Orte, Look, Stimmung.
 4. Optional **bis zu 3 Charaktersheets**: Loader mit **Strg+M** aktivieren, Bild wählen. Charakter 1 ist die Sängerin/der Sänger.
-5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen (864×480 ist der getestete Startwert).
-6. **Run**. Erst wird geplant, dann Szene 1 gerendert. Die Vorschau (MV 5) zeigt Szene 1 **mit Originalton**.
-7. Gefällt der Anfang: am **FREIGABE**-Node **Continue** drücken → alle weiteren Szenen laufen per Extend durch,
+5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen. 864×480 ist der schnelle Startwert; **1920×1088** ist getestet
+   und liefert die wenigsten Artefakte (90-s-Song ≈ 6 h statt ≈ 50 min auf der R9700).
+6. **MV 0 · Realismus-LoRA**: standardmäßig fal *Realism People* bei **0,8** mit Triggerwort `r34l1sm`
+   (wird automatisch vor jeden Szenen-Prompt gesetzt). `lora_name = none` = reines FastH3.
+7. **Run**. Erst wird geplant, dann Szene 1 gerendert. Die Vorschau (MV 5) zeigt Szene 1 **mit Originalton**.
+8. Gefällt der Anfang: am **FREIGABE**-Node **Continue** drücken → alle weiteren Szenen laufen per Extend durch,
    am Ende entsteht das fertige Video unter `output/video/DaWasteh_MusicVideo/`.
    Nicht zufrieden: im MV-1-Node den **seed** ändern und erneut Run.
    Ohne Zwischenstopp: FREIGABE-Node auf **Pass** stellen.
@@ -242,7 +257,7 @@ nur das Bild wird erzeugt). Am Ende wird die Originaldatei **unverändert** (`-c
 **Abwechslung:** Qwen3.5 schreibt pro Songabschnitt eigene Orte in Story-Reihenfolge, pro Szene 1–3 Shots
 mit Schnitten, wechselnden Einstellungsgrößen und Kamerabewegungen. Jede Szene hat einen eigenen Seed.
 
-Bedienung, Messwerte und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`.
+Bedienung und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`; LoRA, 1920×1088 und Speicher: `docs/H3_MUSIC_VIDEO_V124.md`.
 """
 
 FLOW_NOTE = """# Wie der Workflow arbeitet
@@ -252,7 +267,13 @@ FLOW_NOTE = """# Wie der Workflow arbeitet
 Ziel 7 s), bevorzugt an Abschnitts- und Zeilengrenzen. Die Anzahl ergibt sich aus der Songlänge:
 30 s ≈ 5 Szenen, 90 s ≈ 12, 600 s ≈ 80. Ohne Lyrics plant er rein nach Beats und Energie.
 Bis 9 s passt FastH3 bei 864×480 vollständig in den VRAM; längere Szenen oder größere Formate laden es
-teilweise und sampeln 2–4× langsamer (im Log: `loaded partially`).
+teilweise (im Log: `loaded partially`). Ab ~65 000 Tokens (z. B. 1920×1088) hält MV 0 vor jedem Schritt
+genug VRAM für die Aktivierungen frei; die Extend-Szenen laufen dadurch ohne OOM.
+
+**MV 0 · Modell** bildet FastH3 schreibgeschützt ab: Windows verbucht die 22-GB-Datei dann nicht auf das
+Commit-Limit (RAM + Auslagerungsdatei). Genau das lief bei 1920×1088 in den Extend-Szenen über und wurde als
+„out of memory“ gemeldet. Eine andere LoRA, Stärke oder ein anderes Triggerwort rendert die Szenen neu,
+statt alte Ergebnisse fortzusetzen.
 
 **MV 2 · Prompt Writer** lädt Qwen3.5 4B nur so lange, wie Prompts fehlen: Charaktersheets → Textbeschreibung,
 Produktionsbibel (Stil, Orte je Abschnitt, Musik), dann pro Szene die Handlung. Ergebnis: MiniMax-Format

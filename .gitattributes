@@ -43,3 +43,12 @@ tools/build_video_upscale_v123.py text eol=lf
 custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/upscale_nodes.py text eol=lf
 tests/test_video_upscale_v123.py text eol=lf
 performance/rdna4/video-upscale-v123-validation.json text eol=lf
+# v1.2.4: MV 0 / high-resolution memory module, background remover and evidence hashes are portable.
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/h3_highres.py text eol=lf
+tools/workflow_templates/v124/* text eol=lf
+tools/workflow_templates/v124/image_qwen_image_2_1_*.json -text
+tools/build_qwen_image21_background_removal_v124.py text eol=lf
+tests/test_h3_music_video_v124.py text eol=lf
+tests/test_qwen_image21_background_remover_v124.py text eol=lf
+performance/rdna4/h3-music-video-v124-validation.json text eol=lf
+performance/rdna4/qwen-image21-background-removal-v124-validation.json text eol=lf
