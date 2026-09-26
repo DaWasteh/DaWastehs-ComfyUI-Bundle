@@ -1,0 +1,311 @@
+{
+ "release": "v1.2.7",
+ "date": "2026-09-26",
+ "scope": "MV 5c: optional upscale of every accepted music-video scene (four methods), upscaled film + comparison",
+ "system": {
+  "gpu": "R9700 (gpu:0), RX 9070 XT unused",
+  "profile": "start-MultiGPU.ps1: reserve-vram 4, VRAM guard 3 GiB, --cache-ram, --disable-dynamic-vram, pinned memory off",
+  "server": "headless test instance on port 8190"
+ },
+ "workflow": {
+  "path": "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
+  "sha256": "355dcad4df5ecc336cb56e83f5f651ff7c581f69579cb3f34ba8d68f95470ad4"
+ },
+ "sources": [
+  {
+   "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/upscale_mv.py",
+   "sha256": "51ab07a41bb825f09bccc113dd315319ca87c2064d2d6f7e4e44d53e3efb76e9"
+  },
+  {
+   "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/nodes_v2.py",
+   "sha256": "74933f9804f04077f3cb125449bf2f1906a00de8cb931f2b6a30dc9620b312de"
+  },
+  {
+   "path": "tools/build_h3_music_video_v122.py",
+   "sha256": "42085e33a2f1b40163aaa2d230ebf82fd8c4629fa59742eba5a5f21c7747b18f"
+  },
+  {
+   "path": "tools/workflow_templates/v122/node-schemas.json",
+   "sha256": "9d308e9241f2981d4f748ba0bb5daacfdb30a9c9d66768dfe4909f7354e3dbf1"
+  }
+ ],
+ "method_comparison": {
+  "scene": "scene 3 of the 19.2-s excerpt, 130 frames (5.4 s), 960x544 -> 1920x1088, one API prompt per method, cold model",
+  "metrics": "PSNR against the Lanczos-upscaled original (median of every 4th frame), Laplacian variance (median)",
+  "lanczos_laplacian_var_median": 10.3,
+  "methods": {
+   "latent3d_1920x1088": {
+    "frames": 130,
+    "psnr_vs_lanczos_db_median": 23.94,
+    "psnr_frame0": 25.07,
+    "laplacian_var_median": 29.0,
+    "seconds": 296.0,
+    "verdict": "fastest, very sharp, but re-draws expression and pose (mouth closed instead of open in frame 125)"
+   },
+   "seedvr2_1920x1088": {
+    "frames": 130,
+    "psnr_vs_lanczos_db_median": 28.5,
+    "psnr_frame0": 30.96,
+    "laplacian_var_median": 124.1,
+    "seconds": 491.5,
+    "note": "colour correction 'none' (v1.2.3 setting); MV 5c now ships 'lab'",
+    "verdict": "sharp edges but painted look at x2: spiky hair tips, blotchy skin, colour smears with 'none'"
+   },
+   "ultimate_1920x1088": {
+    "frames": 130,
+    "psnr_vs_lanczos_db_median": 22.89,
+    "psnr_frame0": 24.4,
+    "laplacian_var_median": 27.7,
+    "seconds": 459.1,
+    "verdict": "second FastH3 pass in tiles, re-draws most freely"
+   },
+   "wan22_1920x1088": {
+    "frames": 130,
+    "psnr_vs_lanczos_db_median": 26.24,
+    "psnr_frame0": 27.53,
+    "laplacian_var_median": 15.8,
+    "seconds": 776.0,
+    "verdict": "stays with the original: face, mouth shape and pose; clean skin, hair and fabric detail (default)"
+   }
+  },
+  "temporal_offset": "none: every method matches the original best at shift 0 (grey MAE at 480x272)"
+ },
+ "seedvr2": {
+  "mv5c_vs_v123_graph": "bit-identical (PSNR inf on all compared frames): MV 5c with the read-only loader vs the unchanged v1.2.3 block chain with core UNETLoader, same scene, x2",
+  "color_correction_x2": {
+   "none": {
+    "psnr_db": 26.26,
+    "chroma_error": 3.0
+   },
+   "lab": {
+    "psnr_db": 28.94,
+    "chroma_error": 1.96
+   },
+   "shipped": "lab"
+  }
+ },
+ "end_to_end": {
+  "setting": {
+   "enabled": true,
+   "method": "wan22",
+   "size": [
+    1920,
+    1088
+   ],
+   "tag": "wan22_1920x1088"
+  },
+  "decisions": [
+   {
+    "scene": 1,
+    "take_shown": 0,
+    "takes": [
+     0
+    ],
+    "tabs": [],
+    "click": "clicked ↻ Neu rendern"
+   },
+   {
+    "scene": 1,
+    "take_shown": 1,
+    "takes": [
+     0,
+     1
+    ],
+    "tabs": [
+     {
+      "active": false,
+      "text": "Take 1"
+     },
+     {
+      "active": true,
+      "text": "Take 2 (neu)"
+     }
+    ],
+    "click": "clicked ✓ Weiter"
+   },
+   {
+    "scene": 2,
+    "take_shown": 2,
+    "takes": [
+     2
+    ],
+    "tabs": [],
+    "click": "clicked ✓ Weiter"
+   },
+   {
+    "scene": 3,
+    "take_shown": 0,
+    "takes": [
+     0
+    ],
+    "tabs": [],
+    "click": "clicked ↻ Neu rendern"
+   },
+   {
+    "scene": 3,
+    "take_shown": 1,
+    "takes": [
+     0,
+     1
+    ],
+    "tabs": [
+     {
+      "active": false,
+      "text": "Take 1"
+     },
+     {
+      "active": true,
+      "text": "Take 2 (neu)"
+     }
+    ],
+    "click": "clicked ✓ Take 1 nehmen + weiter"
+   }
+  ],
+  "scenes": [
+   {
+    "scene": 1,
+    "take": 1,
+    "upscaled_take": 1,
+    "review": "approved",
+    "frames": 152,
+    "expected": 152,
+    "mae_to_accepted": 7.76,
+    "archived": {
+     "0": {
+      "mae_to_upscale": 58.98,
+      "mae_to_accepted": 59.21
+     }
+    },
+    "upscale_is_the_accepted_take": true
+   },
+   {
+    "scene": 2,
+    "take": 2,
+    "upscaled_take": 2,
+    "review": "approved",
+    "frames": 179,
+    "expected": 179,
+    "mae_to_accepted": 6.71,
+    "archived": {},
+    "upscale_is_the_accepted_take": true
+   },
+   {
+    "scene": 3,
+    "take": 0,
+    "upscaled_take": 0,
+    "review": "approved",
+    "frames": 130,
+    "expected": 130,
+    "mae_to_accepted": 8.78,
+    "archived": {
+     "1": {
+      "mae_to_upscale": 56.64,
+      "mae_to_accepted": 56.32
+     }
+    },
+    "upscale_is_the_accepted_take": true
+   }
+  ],
+  "ordering": [
+   {
+    "scene": 1,
+    "upscaled_at": 1790443832.1968238,
+    "upscale_seconds": 882.9,
+    "next_review_at": 1790444099.969,
+    "upscale_before_next_review": true
+   },
+   {
+    "scene": 2,
+    "upscaled_at": 1790445129.294912,
+    "upscale_seconds": 1025.6,
+    "next_review_at": 1790445342.449,
+    "upscale_before_next_review": true
+   },
+   {
+    "scene": 3,
+    "upscaled_at": 1790446258.9018302,
+    "upscale_seconds": 750.0,
+    "next_review_at": null,
+    "upscale_before_next_review": true
+   }
+  ],
+  "films": {
+   "original": {
+    "path": "L:\\ComfyUI\\ComfyUI\\output\\video\\DaWasteh_MusicVideo\\UpscaleE2E_960x544_20260926-201101.mp4",
+    "frames": 461,
+    "size": [
+     960,
+     544
+    ],
+    "audio_packets": 801,
+    "audio_packets_identical": true
+   },
+   "upscaled": {
+    "path": "L:\\ComfyUI\\ComfyUI\\output\\video\\DaWasteh_MusicVideo\\UpscaleE2E_960x544_20260926-201101_upscale_wan22_1920x1088.mp4",
+    "frames": 461,
+    "size": [
+     1920,
+     1088
+    ],
+    "audio_packets": 801,
+    "audio_packets_identical": true
+   },
+   "comparison": {
+    "path": "L:\\ComfyUI\\ComfyUI\\output\\video\\DaWasteh_MusicVideo\\UpscaleE2E_960x544_20260926-201101_vergleich_original_vs_wan22.mp4",
+    "frames": 461,
+    "size": [
+     3840,
+     1088
+    ],
+    "audio_packets": 801,
+    "audio_packets_identical": true
+   },
+   "expected_frames": 461
+  },
+  "seams": {
+   "original": [
+    {
+     "frame": 152,
+     "diff": 18.37,
+     "ratio": 1.08
+    },
+    {
+     "frame": 331,
+     "diff": 15.54,
+     "ratio": 1.06
+    }
+   ],
+   "upscaled": [
+    {
+     "frame": 152,
+     "diff": 21.93,
+     "ratio": 1.2
+    },
+    {
+     "frame": 331,
+     "diff": 20.12,
+     "ratio": 1.27
+    }
+   ]
+  },
+  "memory": {
+   "samples": 272,
+   "peak_private_gb": 42.04,
+   "peak_commit_gb": 95.59,
+   "commit_limit_gb": 97.37,
+   "note": "system commit incl. VRAM (charged 1:1 on this driver); peaks during the WAN decodes of scenes 1 and 2"
+  },
+  "run_seconds": {
+   "first_review_after": 171.2,
+   "attached_driver": 3472.4,
+   "total_compute": 3643.6,
+   "note": "the first driver crashed on a variable clash while scene 1 waited; the fixed driver attached to the same running prompt"
+  },
+  "project": "UpscaleE2E_960x544 (19.2-s excerpt, 3 scenes, prompts/seeds as the v1.2.5 test)"
+ },
+ "findings": [
+  "ComfyUI's --cache-ram (start-profile default) is keyed by input signature, not by expansion parent; --cache-classic gives every expansion its own subcache. MV 5c's model node therefore hands out one weakly held copy per run.",
+  "A module cache holding SeedVR2/WAN strongly kept 14 GB (WAN) in RAM after switching to an H3 method; on the test server private memory reached 58.7 GB with 26.6 GB resident and the next decode crawled. Replaced by weak references.",
+  "WanContextWindowsManual gained the required input split_conds_to_windows; MV 5c fills missing required widgets with their schema defaults so a core update does not break the expansion."
+ ]
+}

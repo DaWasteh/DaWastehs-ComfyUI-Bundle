@@ -247,7 +247,10 @@ class WorkflowTests(unittest.TestCase):
         # v1.2.5: MV 5b (video review after every scene) replaced the Pixaroma image gate after scene 1
         self.assertFalse(self.node("PixaromaPauseImage"))
         start = self.node("PixaromaLoopStart")[0]
-        first_review = self.source(start, "value1")[0]
+        # v1.2.7: MV 5c (upscale of the accepted take) sits between the review and the loop
+        first_upscale = self.source(start, "value1")[0]
+        self.assertEqual(first_upscale["type"], "DaWMV2UpscaleScene")
+        first_review = self.source(first_upscale, "scene")[0]
         self.assertEqual(first_review["type"], "DaWMV2ReviewScene")
         first_save, slot = self.source(first_review, "scene")
         self.assertEqual((first_save["type"], slot), ("DaWMV2SaveScene", 0))
@@ -260,7 +263,9 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(loop_save["widgets_values"][1], 1)
         self.assertEqual(self.source(loop_save, "after"), (start, 0))
         end = self.node("PixaromaLoopEnd")[0]
-        loop_review = self.source(end, "value1")[0]
+        loop_upscale = self.source(end, "value1")[0]
+        self.assertEqual(loop_upscale["type"], "DaWMV2UpscaleScene")
+        loop_review = self.source(loop_upscale, "scene")[0]
         self.assertEqual(loop_review["type"], "DaWMV2ReviewScene")
         self.assertEqual(self.source(loop_review, "scene"), (loop_save, 0))
         self.assertEqual(self.source(end, "loop"), (start, 5))

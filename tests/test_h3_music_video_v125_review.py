@@ -350,8 +350,11 @@ class LiveEvidenceTests(unittest.TestCase):
 
     def test_report_pins_the_shipped_workflow_and_sources(self):
         import hashlib
+        import subprocess
+        # v1.2.7 added MV 5c (upscale) to these files; this evidence describes the v1.2.5 release.
+        released = lambda p: hashlib.sha256(subprocess.check_output(["git", "show", "v1.2.5:" + p], cwd=ROOT)).hexdigest()
         for entry in [self.report["workflow"], *self.report["sources"]]:
-            self.assertEqual(hashlib.sha256((ROOT / entry["path"]).read_bytes()).hexdigest(), entry["sha256"], entry["path"])
+            self.assertEqual(released(entry["path"]), entry["sha256"], entry["path"])
 
     def test_every_decision_path_ran_through_the_widget(self):
         run = self.report["run"]

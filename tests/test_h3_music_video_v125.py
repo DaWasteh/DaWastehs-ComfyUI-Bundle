@@ -312,21 +312,23 @@ class WorkflowV125Tests(unittest.TestCase):
         writer = next(n for n in shipped["nodes"] if n["type"] == "DaWMV2PromptWriter")
         self.assertEqual(writer["widgets_values"][1], backend.AUTO)
         marker = shipped["extra"]["dawasteh_h3_music_video_v122"]
-        self.assertEqual((marker["version"], marker["release"], RELEASE), (1, "v1.2.5", "v1.2.5"))
+        self.assertEqual((marker["version"], marker["release"]), (1, RELEASE))   # v1.2.5, later releases keep MV 2
         schema = json.loads((ROOT / "tools/workflow_templates/v122/node-schemas.json").read_text(encoding="utf-8"))
         llm = schema["DaWMV2PromptWriter"]["input"]["required"]["llm"][1]
         self.assertEqual((llm["default"], llm["options"][0]), (backend.AUTO, backend.AUTO))
         self.assertIn("Qwen\\qwen3.5_4b_bf16.safetensors", llm["options"])   # the fallback stays selectable
 
     def test_default_resolution_is_1664x928(self):
-        """1344x768 and below showed lip/face artifacts; 1920x1088 takes ~1.8x longer than 1664x928."""
+        """1344x768 and below showed lip/face artifacts; 1920x1088 takes ~1.8x longer than 1664x928. v1.2.7: the
+        workflow selects the user's 960x544 (rendered, then upscaled by MV 5c); 1664x928 stays in the list and is
+        still the planner's own default."""
         sys.path.insert(0, str(ROOT))
         from tools.build_h3_music_video_v122 import PATH
         shipped = json.loads((ROOT / "workflows" / PATH).read_text(encoding="utf-8"))
         sizes = next(n for n in shipped["nodes"] if n["type"] == "PixaromaSizes")
         for state in (sizes["widgets_values"][0], json.loads(sizes["properties"]["sizesState"])):
-            self.assertEqual(state["sizes"][state["selected"]], [1664, 928])
-            self.assertEqual((state["w"], state["h"]), (1664, 928))
+            self.assertIn([1664, 928], state["sizes"])
+            self.assertIn("928x1664", state["starred"])
         planner = next(n for n in shipped["nodes"] if n["type"] == "DaWMV2Planner")
         self.assertEqual(planner["widgets_values"][3:5], [1664, 928])
         source = (PACK / "nodes_v2.py").read_text(encoding="utf-8")

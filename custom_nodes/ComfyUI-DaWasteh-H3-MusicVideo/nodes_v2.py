@@ -7,6 +7,9 @@ Graph contract (see tools/build_h3_music_video_v122.py):
         -> Pixaroma Loop (scene_count - 1 rounds): Scene Setup -> sampler -> Save Scene -> Review Scene
         -> Finalize (joins scenes, stream-copies the original audio)
 
+v1.2.7: Upscale Scene (MV 5c) follows every Review Scene and upscales the accepted take before the next scene
+(upscale_mv.py); Finalize then also writes the upscaled film and a side-by-side comparison.
+
 Everything heavy is persisted in the project folder, so a restarted or resumed run skips
 finished work: Prompt Writer and Encode Scenes request their model lazily only when their
 results are missing, and Save Scene requests its latent (and therefore the whole sampler
@@ -36,7 +39,7 @@ import comfy.utils
 import folder_paths
 from comfy_api.latest import io, ui
 
-from . import llm_backend, mv2
+from . import llm_backend, mv2, upscale_mv
 from . import review as scene_review
 from .core import (
     atomic_write_json,
@@ -986,6 +989,274 @@ class DaWMV2ReviewScene(io.ComfyNode):
 
 
 # ---------------------------------------------------------------------------
+# 5c · Upscale the accepted take (v1.2.7)
+# ---------------------------------------------------------------------------
+
+UpscaleSetting = io.Custom("DAW_MV2_UPSCALE")
+
+
+def _upscale_target(manifest: dict[str, Any], target_long_side: int) -> tuple[int, int]:
+    return upscale_mv.target_for(manifest["width"], manifest["height"], target_long_side)
+
+
+class DaWMV2UpscaleSettings(io.ComfyNode):
+    @classmethod
+    def define_schema(cls):
+        return io.Schema(
+            node_id="DaWMV2UpscaleSettings",
+            display_name="MV 5c · Upscale an/aus + Methode (SeedVR2 / WAN 2.2 / H3 Latent 3D / H3 Ultimate)",
+            category=CATEGORY,
+            description=("One switch for the whole music video: off, or one of the four live-tested upscale methods and the "
+                         "target size. Feeds every 'MV 5c · Szene hochskalieren' node (scene 1 and the loop)."),
+            inputs=[
+                io.Boolean.Input("upscale", default=True, label_on="hochskalieren", label_off="aus",
+                                 tooltip="Off: scenes pass straight through, MV 6 writes only the original film."),
+                io.Combo.Input("method", options=upscale_mv.LABELS, default=upscale_mv.LABELS[0],
+                               tooltip="WAN 2.2 (default): keeps faces, mouth shapes and pose, adds skin/hair/fabric "
+                                       "detail, slowest. SeedVR2: sharp but looks painted at x2. H3 Latent 3D: fastest, "
+                                       "re-draws expressions. H3 Ultimate: re-draws most freely."),
+                io.Int.Input("target_long_side", default=1920, min=256, max=4096, step=32,
+                             tooltip="Long side of the upscaled video, on the 32-px grid: 960x544 -> 1920x1088, "
+                                     "1280x704 -> 1920x1056. Never smaller than the render."),
+            ],
+            outputs=[UpscaleSetting.Output("upscale")],
+        )
+
+    @classmethod
+    def execute(cls, upscale, method, target_long_side) -> io.NodeOutput:
+        return io.NodeOutput({"enabled": bool(upscale), "method": upscale_mv.method_key(method),
+                              "target_long_side": int(target_long_side)})
+
+
+class DaWMV2UpscaleScene(io.ComfyNode):
+    @classmethod
+    def define_schema(cls):
+        return io.Schema(
+            node_id="DaWMV2UpscaleScene",
+            display_name="MV 5c · Szene hochskalieren (nach der Freigabe, vor der nächsten Szene)",
+            category=CATEGORY,
+            description=("Upscales the scene MV 5b has just accepted, before the next scene is rendered. Rejected takes never "
+                         "arrive here. The method and the switch come from 'MV 5c · Upscale an/aus + Methode'. The H3 "
+                         "methods re-sample with the running FastH3 chain and the scene's own prompt."),
+            inputs=[
+                io.String.Input("scene", force_input=True, tooltip="Token from MV 5b: only accepted takes arrive here."),
+                UpscaleSetting.Input("upscale", tooltip="From 'MV 5c · Upscale an/aus + Methode'."),
+                io.Model.Input("model", optional=True, lazy=True, tooltip="FastH3 chain; only the two H3 methods use it."),
+                io.Vae.Input("vae", optional=True, lazy=True, tooltip="H3 video VAE (H3 methods)."),
+                io.Vae.Input("audio_vae", optional=True, lazy=True, tooltip="H3 audio VAE (H3 methods)."),
+            ],
+            outputs=[io.String.Output("token")],
+            hidden=[io.Hidden.unique_id, io.Hidden.dynprompt],
+            enable_expand=True,
+        )
+
+    @classmethod
+    def check_lazy_status(cls, scene, upscale, model=None, vae=None, audio_vae=None):
+        return []   # the expansion links the FastH3 chain itself; MV 5c never needs the objects
+
+    @classmethod
+    def fingerprint_inputs(cls, scene=None, upscale=None, **kwargs):
+        # A finished upscale can be cached; a missing one (deleted, failed) must run again.
+        try:
+            plan, index = scene_review.parse_token(scene)
+            if index is None or not upscale["enabled"]:
+                return "pass"
+            manifest = _manifest(plan)
+            key = upscale["method"]
+            w, h = _upscale_target(manifest, upscale["target_long_side"])
+            entry = manifest["scenes"][index]
+            return upscale_mv.upscaled_done(_project_dir(plan), entry, upscale_mv.tag_for(key, w, h),
+                                            upscale_mv.upscale_key(entry, key, w, h))
+        except Exception:
+            return float("nan")
+
+    @classmethod
+    def execute(cls, scene, upscale, model=None, vae=None, audio_vae=None) -> io.NodeOutput:
+        plan, index = scene_review.parse_token(scene)
+        if index is None:  # past the last scene
+            return io.NodeOutput(scene)
+        manifest = _manifest(plan)
+        key = upscale_mv.method_key(upscale["method"])
+        width, height = _upscale_target(manifest, upscale["target_long_side"])
+        tag = upscale_mv.tag_for(key, width, height)
+        enabled = bool(upscale["enabled"])
+        setting = {"enabled": True, "method": key, "size": [width, height], "tag": tag} if enabled else {"enabled": False}
+        if manifest.get("upscale") != setting:   # MV 6 builds the upscaled film from this setting
+            manifest["upscale"] = setting
+            _save(plan, manifest)
+        if not enabled:
+            upscale_mv.release_upscale_models()
+            return io.NodeOutput(scene)
+        if not _scene_done(plan, manifest, index):
+            raise RuntimeError(f"Scene {index + 1} is not rendered; MV 5c needs the token of MV 5b")
+        entry = manifest["scenes"][index]
+        if scene_review.needs_review(entry):
+            raise RuntimeError(f"Scene {index + 1} is not accepted yet; wire MV 5c behind MV 5b (Szene prüfen), "
+                               "so rejected takes are never upscaled")
+        total = len(manifest["scenes"])
+        files = upscale_mv.upscaled_files(_project_dir(plan), index, tag)
+        if upscale_mv.upscaled_done(_project_dir(plan), entry, tag, upscale_mv.upscale_key(entry, key, width, height)):
+            _log(f"Szene {index + 1}/{total} · Upscale {tag} bereits fertig (übersprungen)")
+            preview = _preview_ui(files["preview"]) if files["preview"].is_file() else None
+            return io.NodeOutput(scene, ui=preview) if preview else io.NodeOutput(scene)
+
+        import nodes as comfy_nodes
+        from comfy_execution.graph_utils import GraphBuilder, is_link
+
+        problems = upscale_mv.missing_requirements(key, comfy_nodes.NODE_CLASS_MAPPINGS,
+                                                   lambda folder, name: folder_paths.get_full_path(folder, name))
+        dynprompt = cls.hidden.dynprompt
+        links = {name: dynprompt.get_node(cls.hidden.unique_id)["inputs"].get(name) for name in ("model", "vae", "audio_vae")}
+        if upscale_mv.METHODS[key]["h3"]:
+            problems += [f"Eingang {name} ist nicht verbunden (FastH3-Kette / H3-VAE)" for name, link in links.items()
+                         if not is_link(link)]
+        if problems:
+            raise RuntimeError(f"MV 5c · {upscale_mv.METHODS[key]['label']}: " + "; ".join(problems))
+
+        graph = GraphBuilder()
+        source = graph.node("DaWMV2UpscaleSource", scene=scene, method=key)
+        models = graph.node("DaWMV2UpscaleModels", method=key) if key in upscale_mv.MODEL_METHODS else None
+        images = upscale_mv.build_chain(graph, key, source, models, links, width, height)
+        save = graph.node("DaWMV2UpscaleSave", scene=scene, images=images, lead=source.out(3), method=key,
+                          width=width, height=height, key=upscale_mv.upscale_key(entry, key, width, height),
+                          started=time.time())
+        filled = upscale_mv.fill_defaults(graph.nodes.values(), lambda kind: comfy_nodes.NODE_CLASS_MAPPINGS[kind].INPUT_TYPES())
+        if filled:
+            _log(f"MV 5c: schema defaults for {', '.join(filled)}")
+        display = dynprompt.get_display_node_id(cls.hidden.unique_id)
+        for node in graph.nodes.values():   # progress and the preview show up on MV 5c
+            node.set_override_display_id(display)
+        _log(f"Szene {index + 1}/{total} · Take {scene_review.take_of(entry) + 1} wird hochskaliert: "
+             f"{upscale_mv.METHODS[key]['label']} · {manifest['width']}×{manifest['height']} → {width}×{height}")
+        return io.NodeOutput(save.out(0), expand=graph.finalize())
+
+
+class DaWMV2UpscaleSource(io.ComfyNode):
+    @classmethod
+    def define_schema(cls):
+        return io.Schema(
+            node_id="DaWMV2UpscaleSource",
+            display_name="MV 5c · intern · Szene für den Upscale laden",
+            category=CATEGORY + "/intern",
+            description=("Part of MV 5c's expansion: the frames of the accepted take plus the method's lead-in (real frames "
+                         "from the end of the previous scene) and padding, the song audio and the scene's H3 conditioning."),
+            inputs=[io.String.Input("scene"), io.Combo.Input("method", options=list(upscale_mv.METHODS))],
+            outputs=[io.Image.Output("images"), io.Audio.Output("audio"), io.Conditioning.Output("conditioning"),
+                     io.Int.Output("lead"), io.String.Output("info")],
+        )
+
+    @classmethod
+    def execute(cls, scene, method) -> io.NodeOutput:
+        from .upscale_nodes import _read_frames, align_count
+
+        plan, index = scene_review.parse_token(scene)
+        manifest = _manifest(plan)
+        entry = manifest["scenes"][index]
+        width, height, count = manifest["width"], manifest["height"], int(entry["frames"])
+        previous = int(manifest["scenes"][index - 1]["frames"]) if index > 0 else 0
+        real, repeat = upscale_mv.lead_frames(method, index, previous)
+        ffmpeg = find_ffmpeg()
+        images = _read_frames(ffmpeg, str(_scene_files(plan, index)["video"]), 0, count, width, height)
+        if real:
+            before = _read_frames(ffmpeg, str(_scene_files(plan, index - 1)["video"]), previous - real, real, width, height)
+            images = torch.cat([before, images], dim=0)
+        if repeat:
+            images = torch.cat([images[:1].repeat(repeat, 1, 1, 1), images], dim=0)
+        lead = real + repeat
+        padded = align_count(lead + count, upscale_mv.METHODS[method]["align"])
+        if padded > lead + count:
+            images = torch.cat([images, images[-1:].repeat(padded - lead - count, 1, 1, 1)], dim=0)
+        waveform = _decode_window(ffmpeg, manifest["source_audio"], (entry["start_frame"] - lead) / mv2.FPS, padded / mv2.FPS)
+        conditioning = torch.load(str(_cond_path(plan, index)), map_location="cpu", weights_only=False)
+        info = (f"Szene {index + 1}/{len(manifest['scenes'])} · {count} Frames"
+                + (f" + {lead} Vorlauf" if lead else "") + (f" + {padded - lead - count} Auffüllung" if padded > lead + count else ""))
+        _log(info)
+        return io.NodeOutput(images, {"waveform": waveform, "sample_rate": 48000}, conditioning, lead, info)
+
+
+class DaWMV2UpscaleModels(io.ComfyNode):
+    @classmethod
+    def define_schema(cls):
+        return io.Schema(
+            node_id="DaWMV2UpscaleModels",
+            display_name="MV 5c · intern · SeedVR2-/WAN-Modelle (einmal pro Lauf)",
+            category=CATEGORY + "/intern",
+            description=("Part of MV 5c's expansion: loads the SeedVR2 or WAN models read-only once and hands the same "
+                         "objects to every scene of the run (the WAN prompt is encoded once, UMT5 is freed right away)."),
+            inputs=[io.Combo.Input("method", options=upscale_mv.MODEL_METHODS)],
+            outputs=[io.Model.Output("model"), io.Vae.Output("vae"), io.Conditioning.Output("positive"),
+                     io.Conditioning.Output("negative")],
+        )
+
+    @classmethod
+    def execute(cls, method) -> io.NodeOutput:
+        return io.NodeOutput(*upscale_mv.load_upscale_models(method))
+
+
+class DaWMV2UpscaleSave(io.ComfyNode):
+    @classmethod
+    def define_schema(cls):
+        return io.Schema(
+            node_id="DaWMV2UpscaleSave",
+            display_name="MV 5c · intern · hochskalierte Szene speichern",
+            category=CATEGORY + "/intern",
+            description=("Part of MV 5c's expansion: drops lead-in and padding, stores the upscaled scene under "
+                         "upscaled/<method>_<W>x<H>/ and shows it with the song audio."),
+            inputs=[
+                io.String.Input("scene"), io.Image.Input("images"), io.Int.Input("lead", default=0, min=0, max=1024),
+                io.Combo.Input("method", options=list(upscale_mv.METHODS)),
+                io.Int.Input("width", default=1920, min=32, max=8192), io.Int.Input("height", default=1088, min=32, max=8192),
+                io.String.Input("key"), io.Float.Input("started", default=0.0, min=0.0, max=1e12, optional=True),
+            ],
+            outputs=[io.String.Output("token")],
+        )
+
+    @classmethod
+    def execute(cls, scene, images, lead, method, width, height, key, started=0.0) -> io.NodeOutput:
+        plan, index = scene_review.parse_token(scene)
+        manifest = _manifest(plan)
+        entry = manifest["scenes"][index]
+        count, lead = int(entry["frames"]), int(lead)
+        if images.shape[0] < lead + count:
+            raise RuntimeError(f"Scene {index + 1}: the upscale returned {images.shape[0]} frames, need {lead} lead-in + {count}")
+        used = images[lead:lead + count, ..., :3]
+        h, w = int(used.shape[1]) // 2 * 2, int(used.shape[2]) // 2 * 2
+        used = used[:, :h, :w]
+        tag = upscale_mv.tag_for(method, width, height)
+        files = upscale_mv.upscaled_files(_project_dir(plan), index, tag)
+        ffmpeg = find_ffmpeg()
+        files["preview"].parent.mkdir(parents=True, exist_ok=True)
+        encode_images_to_h264(ffmpeg, used, count, str(files["video"]), crf=upscale_mv.UPSCALE_CRF, preset="medium")
+        verified = count_video_frames(ffmpeg, str(files["video"]))
+        if verified != count:
+            raise RuntimeError(f"Scene {index + 1}: encoded {verified} upscaled frames instead of {count}")
+        _contact_sheet(used).save(files["sheet"])
+        run_command([
+            ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-i", str(files["video"]), "-ss", f"{entry['start']:.6f}",
+            "-t", f"{count / mv2.FPS:.6f}", "-i", manifest["source_audio"], "-map", "0:v:0", "-map", "1:a:0",
+            "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(files["preview"]),
+        ], timeout=600)
+        seconds = time.time() - float(started) if started else None
+        manifest = _manifest(plan)   # re-read: nothing else writes during the upscale, but stay on the safe side
+        entry = manifest["scenes"][index]
+        entry.setdefault("upscaled", {})[tag] = {
+            "key": key, "method": method, "take": scene_review.take_of(entry), "verified_frames": verified,
+            "size": [w, h], "completed_at": time.time(), "seconds": round(seconds, 1) if seconds else None,
+        }
+        _save(plan, manifest)
+        del used, images
+        gc.collect()
+        if method in upscale_mv.MODEL_METHODS:
+            upscale_mv.unload_cached_from_vram()
+        comfy.model_management.soft_empty_cache()
+        info = (f"Szene {index + 1}/{len(manifest['scenes'])} hochskaliert ({upscale_mv.METHODS[method]['label']}, "
+                f"{w}×{h}, {verified} Frames" + (f", {seconds / 60:.1f} min" if seconds else "") + f"): {files['video']}")
+        _log(info)
+        preview = _preview_ui(files["preview"])
+        return io.NodeOutput(scene, ui=preview) if preview else io.NodeOutput(scene)
+
+
+# ---------------------------------------------------------------------------
 # 6 · Finalize
 # ---------------------------------------------------------------------------
 
@@ -1006,18 +1277,23 @@ class DaWMV2Finalize(io.ComfyNode):
             display_name="MV 6 · Fertiges Musikvideo · Originalton unverändert",
             category=CATEGORY,
             description=("Joins all scenes without re-encoding and muxes the original song file stream-copied "
-                         "(-c:a copy), so the audio is bit-identical to the input. MP3/AAC go into MP4, other codecs into MKV."),
+                         "(-c:a copy), so the audio is bit-identical to the input. MP3/AAC go into MP4, other codecs into MKV. "
+                         "v1.2.7: when MV 5c upscaled the scenes, a second film from the upscaled scenes (same audio) and "
+                         "optionally a side-by-side comparison (left the original scaled up, right the upscale)."),
             inputs=[
                 io.String.Input("plan", force_input=True),
                 io.AnyType.Input("after", optional=True, tooltip="Token of the last scene (Loop End)."),
                 io.Combo.Input("container", options=["auto", "mp4", "mkv"], default="auto"),
+                io.Combo.Input("comparison", options=upscale_mv.COMPARE_OPTIONS, default=upscale_mv.COMPARE_OPTIONS[0],
+                               optional=True, tooltip="With MV 5c on: an extra video with the original (left, scaled up with "
+                                                      "Lanczos) next to the upscale (right), same audio."),
             ],
-            outputs=[io.String.Output("final_file")],
+            outputs=[io.String.Output("final_file"), io.String.Output("upscaled_file"), io.String.Output("comparison_file")],
             is_output_node=True,
         )
 
     @classmethod
-    def execute(cls, plan, container, after=None) -> io.NodeOutput:
+    def execute(cls, plan, container, after=None, comparison=upscale_mv.COMPARE_OPTIONS[0]) -> io.NodeOutput:
         manifest = _manifest(plan)
         missing = [s["index"] + 1 for s in manifest["scenes"] if not _scene_done(plan, manifest, s["index"])]
         if missing:
@@ -1050,12 +1326,31 @@ class DaWMV2Finalize(io.ComfyNode):
         manifest["final_output"] = str(final)
         manifest["final_frames"] = frames
         manifest["completed_at"] = time.time()
+        manifest.pop("final_upscaled", None)
         _save(plan, manifest)
         _log(f"COMPLETE {final} · {frames} frames ({frames / mv2.FPS:.2f} s) · audio {codec} stream-copied")
-        preview = _preview_ui(final)
-        return io.NodeOutput(str(final), ui=preview) if preview else io.NodeOutput(str(final))
+        shown = [final]
+        upscaled = compare = ""
+        if (manifest.get("upscale") or {}).get("enabled"):
+            # v1.2.7: the upscaled scenes as a second film (and the side-by-side comparison); raises after the
+            # original film is written when a scene has no upscale of the current MV 5c setting
+            result = upscale_mv.join_upscaled(plan, manifest, ffmpeg, stamp, final.suffix.lstrip("."), final.parent, silent,
+                                              comparison != upscale_mv.COMPARE_OFF, run_command, count_video_frames)
+            if result["upscaled_frames"] != frames:
+                raise RuntimeError(f"Upscaled film has {result['upscaled_frames']} frames, the original {frames}")
+            manifest["final_upscaled"] = result
+            _save(plan, manifest)
+            upscaled, compare = result["upscaled"], result["comparison"]
+            shown = [Path(p) for p in (compare, upscaled) if p] + shown
+            _log(f"COMPLETE {upscaled} · {result['size'][0]}×{result['size'][1]}" + (f" · Vergleich {compare}" if compare else ""))
+        upscale_mv.release_upscale_models()
+        refs = [ref for ref in (_output_ref(p) for p in shown) if ref]
+        preview = ui.PreviewVideo([ui.SavedResult(r["filename"], r["subfolder"], io.FolderType.output) for r in refs]) if refs else None
+        outputs = (str(final), upscaled, compare)
+        return io.NodeOutput(*outputs, ui=preview) if preview else io.NodeOutput(*outputs)
 
 
 V2_NODES = [DaWMV2Planner, DaWMV2PromptWriter, DaWMV2EncodeScenes, DaWMV2LoadModel, DaWMV2SceneSetup, DaWMV2SaveScene,
-            DaWMV2ReviewScene, DaWMV2Finalize]
+            DaWMV2ReviewScene, DaWMV2UpscaleSettings, DaWMV2UpscaleScene, DaWMV2UpscaleSource, DaWMV2UpscaleModels,
+            DaWMV2UpscaleSave, DaWMV2Finalize]
 scene_review.register_routes()

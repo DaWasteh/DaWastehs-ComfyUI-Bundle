@@ -767,6 +767,174 @@
   "essentials_category": null,
   "has_intermediate_output": false
  },
+ "DaWMV2UpscaleSettings": {
+  "input": {
+   "required": {
+    "upscale": [
+     "BOOLEAN",
+     {
+      "tooltip": "Off: scenes pass straight through, MV 6 writes only the original film.",
+      "default": true,
+      "label_on": "hochskalieren",
+      "label_off": "aus"
+     }
+    ],
+    "method": [
+     "COMBO",
+     {
+      "tooltip": "WAN 2.2 (default): keeps faces, mouth shapes and pose, adds skin/hair/fabric detail, slowest. SeedVR2: sharp but looks painted at x2. H3 Latent 3D: fastest, re-draws expressions. H3 Ultimate: re-draws most freely.",
+      "default": "WAN 2.2 Low-Noise · treu + neue Details (Standard)",
+      "multiselect": false,
+      "options": [
+       "WAN 2.2 Low-Noise · treu + neue Details (Standard)",
+       "SeedVR2 3B · scharf, bei ×2 malerisch",
+       "H3 Latent Upscaler 3D · am schnellsten, zeichnet Mimik neu",
+       "H3 Ultimate Upscale · zeichnet am freiesten neu"
+      ]
+     }
+    ],
+    "target_long_side": [
+     "INT",
+     {
+      "tooltip": "Long side of the upscaled video, on the 32-px grid: 960x544 -> 1920x1088, 1280x704 -> 1920x1056. Never smaller than the render.",
+      "default": 1920,
+      "min": 256,
+      "max": 4096,
+      "step": 32
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "upscale",
+    "method",
+    "target_long_side"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "DAW_MV2_UPSCALE"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "upscale"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWMV2UpscaleSettings",
+  "display_name": "MV 5c · Upscale an/aus + Methode (SeedVR2 / WAN 2.2 / H3 Latent 3D / H3 Ultimate)",
+  "description": "One switch for the whole music video: off, or one of the four live-tested upscale methods and the target size. Feeds every 'MV 5c · Szene hochskalieren' node (scene 1 and the loop).",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Music Video v2",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "DaWMV2UpscaleScene": {
+  "input": {
+   "required": {
+    "scene": [
+     "STRING",
+     {
+      "tooltip": "Token from MV 5b: only accepted takes arrive here.",
+      "forceInput": true,
+      "multiline": false
+     }
+    ],
+    "upscale": [
+     "DAW_MV2_UPSCALE",
+     {
+      "tooltip": "From 'MV 5c · Upscale an/aus + Methode'."
+     }
+    ]
+   },
+   "optional": {
+    "model": [
+     "MODEL",
+     {
+      "tooltip": "FastH3 chain; only the two H3 methods use it.",
+      "lazy": true
+     }
+    ],
+    "vae": [
+     "VAE",
+     {
+      "tooltip": "H3 video VAE (H3 methods).",
+      "lazy": true
+     }
+    ],
+    "audio_vae": [
+     "VAE",
+     {
+      "tooltip": "H3 audio VAE (H3 methods).",
+      "lazy": true
+     }
+    ]
+   },
+   "hidden": {
+    "unique_id": [
+     "UNIQUE_ID"
+    ],
+    "dynprompt": [
+     "DYNPROMPT"
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "scene",
+    "upscale"
+   ],
+   "optional": [
+    "model",
+    "vae",
+    "audio_vae"
+   ],
+   "hidden": [
+    "unique_id",
+    "dynprompt"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "token"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWMV2UpscaleScene",
+  "display_name": "MV 5c · Szene hochskalieren (nach der Freigabe, vor der nächsten Szene)",
+  "description": "Upscales the scene MV 5b has just accepted, before the next scene is rendered. Rejected takes never arrive here. The method and the switch come from 'MV 5c · Upscale an/aus + Methode'. The H3 methods re-sample with the running FastH3 chain and the scene's own prompt.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Music Video v2",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
  "DaWMV2Finalize": {
   "input": {
    "required": {
@@ -796,6 +964,18 @@
      {
       "tooltip": "Token of the last scene (Loop End)."
      }
+    ],
+    "comparison": [
+     "COMBO",
+     {
+      "tooltip": "With MV 5c on: an extra video with the original (left, scaled up with Lanczos) next to the upscale (right), same audio.",
+      "default": "nebeneinander",
+      "multiselect": false,
+      "options": [
+       "nebeneinander",
+       "aus"
+      ]
+     }
     ]
    },
    "hidden": {
@@ -813,7 +993,8 @@
     "container"
    ],
    "optional": [
-    "after"
+    "after",
+    "comparison"
    ],
    "hidden": [
     "prompt",
@@ -822,21 +1003,29 @@
   },
   "is_input_list": false,
   "output": [
+   "STRING",
+   "STRING",
    "STRING"
   ],
   "output_is_list": [
+   false,
+   false,
    false
   ],
   "output_name": [
-   "final_file"
+   "final_file",
+   "upscaled_file",
+   "comparison_file"
   ],
   "output_tooltips": [
+   null,
+   null,
    null
   ],
   "output_matchtypes": null,
   "name": "DaWMV2Finalize",
   "display_name": "MV 6 · Fertiges Musikvideo · Originalton unverändert",
-  "description": "Joins all scenes without re-encoding and muxes the original song file stream-copied (-c:a copy), so the audio is bit-identical to the input. MP3/AAC go into MP4, other codecs into MKV.",
+  "description": "Joins all scenes without re-encoding and muxes the original song file stream-copied (-c:a copy), so the audio is bit-identical to the input. MP3/AAC go into MP4, other codecs into MKV. v1.2.7: when MV 5c upscaled the scenes, a second film from the upscaled scenes (same audio) and optionally a side-by-side comparison (left the original scaled up, right the upscale).",
   "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
   "category": "DaWasteh/MiniMax H3/Music Video v2",
   "output_node": true,

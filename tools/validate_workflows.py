@@ -962,7 +962,9 @@ def main() -> int:
     # v1.2.5 replaces the music video's Pixaroma image gate with two MV 5b review nodes (scene 1 and loop), each with its
     # parameter note: +3 nodes, +2 notes, +1 link.
     # v1.2.6 adds the flat WAN 2.2 video-upscale workflow: +1 file, +64 nodes, +27 notes, +52 links, +1 timer.
-    expected = {"files": 253, "graphs": 306, "nodes": 11606, "notes": 5280, "links": 8085, "timers": 234}
+    # v1.2.7 adds MV 5c to the music video (one upscale switch, two upscale nodes behind the reviews, the UPSCALE note
+    # and their parameter notes): +7 nodes, +3 notes, +10 links.
+    expected = {"files": 253, "graphs": 306, "nodes": 11613, "notes": 5283, "links": 8095, "timers": 234}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
-"""Rebuild the FastH3 complete-song music-video workflow (v1.2.2, extended in v1.2.4/v1.2.5); no runtime/model writes.
+"""Rebuild the FastH3 complete-song music-video workflow (v1.2.2, extended in v1.2.4/v1.2.5/v1.2.7); no runtime/model writes.
 
 Flat RODENT graph: Pixaroma inputs -> DaW MV2 planner / prompt writer / one-time encoder ->
-scene 1 -> MV 5b review -> Pixaroma loop over the remaining scenes (extend, MV 5b review after
-every scene) -> final film with the original audio stream-copied.
+scene 1 -> MV 5b review -> MV 5c upscale -> Pixaroma loop over the remaining scenes (extend, MV 5b review and
+MV 5c upscale after every scene) -> original film + upscaled film + comparison, original audio stream-copied.
 
 v1.2.4: MV 0 loads FastH3 read-only with an optional realism LoRA (trigger word into MV 3, model signature
 into the resume keys) and keeps extend scenes at up to 1920x1088 inside VRAM and the Windows commit limit.
 v1.2.5: MV 2 "auto" writes with the GGUF model of the start profile (Qwen3.8 27B through llama.cpp on gpu:1,
 started only while prompts are written) and falls back to Qwen3.5 4B inside ComfyUI. MV 5b replaces the
 Pixaroma image gate: every new scene is shown as video with the song audio and waits for Weiter / Neu rendern.
+v1.2.7: MV 5c upscales every accepted take before the next scene (one switch node: off, SeedVR2, WAN 2.2, H3 Latent
+Upscaler 3D or H3 Ultimate Upscale); MV 6 also writes the upscaled film and a side-by-side comparison. The size list
+gets the user's favourites 960x544 and 1280x704 (both reach ~1920 px wide on the 32-px grid); 960x544 is selected.
 """
 from __future__ import annotations
 
@@ -46,7 +49,7 @@ LLM = "auto (GGUF aus dem Startprofil, sonst Qwen3.5 4B)"   # llm_backend.AUTO
 LORA = "MiniMax H3" + BS + "h3-realism-people-t2v-i2v-r2v.safetensors"
 LORA_STRENGTH = 0.8
 TRIGGER = "r34l1sm"
-RELEASE = "v1.2.5"
+RELEASE = "v1.2.7"
 DEVICES = {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"}  # measured v1.2.2 placement (migrate_workflows_v092)
 SAMPLING = {"steps": 8, "sampler": "res_multistep", "scheduler": "simple", "shift_video": 10.0, "shift_audio": 3.0,
             "attention": "comfy kitchen attention", "sparse": "vsa", "keep_percent": 10.0}
@@ -66,13 +69,16 @@ Letzte Zeile"""
 IDEA_EXAMPLE = ("The singer from the character sheet walks through a futuristic, ruined city street, enters a house, "
                 "picks something up in a room, climbs through a roof hatch onto the roof, and the song ends with a "
                 "drone flight over the dystopian landscape.")
+# v1.2.7: the user's own list from the live workflow (2026-09-26): 1280x704 added, 960x544 selected, 960x544 and
+# 1280x704 starred (Pixaroma stores stars orientation-free as "short x long")
 SIZES_STATE = {
     "version": 1,
-    "sizes": [[864, 480], [960, 544], [1056, 608], [1152, 640], [1216, 672], [1280, 736], [1344, 768], [1376, 768],
-              [1504, 832], [1664, 928], [1824, 1024], [1920, 1088]],
-    "selected": 9, "orientation": "landscape", "snap": 32, "accent": None, "collapsed": False,   # v1.2.5: 1664x928
-    "starred": ["1664x928", "928x1664", "1920x1088", "1088x1920", "864x480"], "w": 1664, "h": 928,
+    "sizes": [[864, 480], [960, 544], [1056, 608], [1152, 640], [1216, 672], [1280, 704], [1280, 736], [1344, 768],
+              [1376, 768], [1504, 832], [1664, 928], [1824, 1024], [1920, 1088]],
+    "selected": 1, "orientation": "landscape", "snap": 32, "accent": None, "collapsed": False,
+    "starred": ["1664x928", "928x1664", "1920x1088", "1088x1920", "864x480", "544x960", "704x1280"], "w": 960, "h": 544,
 }
+UPSCALE = {"upscale": True, "method": "WAN 2.2 Low-Noise · treu + neue Details (Standard)", "target_long_side": 1920}
 
 
 def _block_sparse(g: Graph) -> dict:
@@ -112,12 +118,21 @@ def _review(g: Graph, title: str, save):
     return review
 
 
+def _upscale(g: Graph, title: str, review, settings, model, vae, audio_vae):
+    """v1.2.7 MV 5c: upscales the take MV 5b has accepted before the next scene is rendered."""
+    node = g.add("DaWMV2UpscaleScene", title)
+    node["size"] = [480, 420]
+    for src, name in ((review, "scene"), (settings, "upscale"), (model, "model"), (vae, "vae"), (audio_vae, "audio_vae")):
+        g.connect(src, 0, node, name)
+    return node
+
+
 def build(schemas: dict) -> dict:
     g = Graph(schemas)
     # --- Origin inputs ---------------------------------------------------------------------------
     lyrics = g.prompt("LYRICS · Songtext mit [Verse]/[Chorus] (oder [mm:ss.xx]-Zeitstempel)", LYRICS_PLACEHOLDER)
     idea = g.prompt("VIDEOIDEE · Story, Look, Orte, Stimmung (Deutsch oder Englisch)", IDEA_EXAMPLE)
-    sizes = g.add("PixaromaSizes", "VIDEOFORMAT · 1664×928 Standard · Hochformat per Klick")
+    sizes = g.add("PixaromaSizes", "VIDEOFORMAT · ★ 960×544 / 1280×704 + Upscale · Hochformat per Klick")
     sizes["widgets_values"] = [copy.deepcopy(SIZES_STATE)]
     sizes["properties"]["sizesState"] = json.dumps(SIZES_STATE, separators=(",", ":"))
     sizes["size"] = [260, 480]
@@ -164,34 +179,58 @@ def build(schemas: dict) -> dict:
     sigmas = g.add("BasicScheduler", "SCHEDULER · simple · 8 Schritte", scheduler=SAMPLING["scheduler"], steps=SAMPLING["steps"], denoise=1.0)
     g.connect(sparse, 0, sigmas, "model")
 
-    # --- Scene 1 + review -----------------------------------------------------------------------------
+    # --- Upscale switch (v1.2.7): one node for scene 1 and the loop -------------------------------------
+    upscale = g.add("DaWMV2UpscaleSettings", "MV 5c · UPSCALE AN/AUS + METHODE · nach jeder Freigabe", **UPSCALE)
+    upscale["size"] = [460, 200]
+
+    # --- Scene 1 + review + upscale ---------------------------------------------------------------------
     _, first_save = _scene_chain(g, "SZENE 1", encoder, sparse, sampler, sigmas, vae, audio_vae)
     g.connect(encoder, 0, first_save, "after")
     first_review = _review(g, "SZENE 1 · PRÜFEN · Video mit Originalton → Weiter / Neu rendern", first_save)
+    first_upscale = _upscale(g, "SZENE 1 · HOCHSKALIEREN (MV 5c) · nur der freigegebene Take", first_review, upscale,
+                             sparse, vae, audio_vae)
 
-    # --- Remaining scenes: Pixaroma loop, one extend + review per round ------------------------------
+    # --- Remaining scenes: Pixaroma loop, one extend + review + upscale per round --------------------------
     loop_start = g.add("PixaromaLoopStart", "LOOP START · Runden = Szenen − 1 (aus dem Plan)", total=2)
     g.connect(planner, 2, loop_start, "total")
-    g.connect(first_review, 0, loop_start, "value1")
+    g.connect(first_upscale, 0, loop_start, "value1")
     _, loop_save = _scene_chain(g, "LOOP", encoder, sparse, sampler, sigmas, vae, audio_vae,
                                 index_source=(loop_start, 6), offset=1)
     g.connect(loop_start, 0, loop_save, "after")
     loop_review = _review(g, "LOOP · PRÜFEN · jede weitere Szene → Weiter / Neu rendern", loop_save)
+    loop_upscale = _upscale(g, "LOOP · HOCHSKALIEREN (MV 5c) · jede freigegebene Szene vor der nächsten", loop_review,
+                            upscale, sparse, vae, audio_vae)
     loop_end = g.add("PixaromaLoopEnd", "LOOP END · nächste Szene / Ende")
-    g.connect(loop_review, 0, loop_end, "value1")
+    g.connect(loop_upscale, 0, loop_end, "value1")
     g.connect(loop_start, 5, loop_end, "loop")
-    final = g.add("DaWMV2Finalize", "MV 6 · FERTIGES MUSIKVIDEO · Originalton unverändert")
+    final = g.add("DaWMV2Finalize", "MV 6 · FERTIGES MUSIKVIDEO · Original + Upscale + Vergleich · Originalton unverändert")
     g.connect(encoder, 0, final, "plan")
     g.connect(loop_end, 0, final, "after")
 
-    g.note("START HIER · Song → Musikvideo · FastH3 · v1.2.5", START_NOTE)
-    g.note("ABLAUF · Planung, Freigabe, Extend-Schleife, Fortsetzen", FLOW_NOTE)
+    g.note("START HIER · Song → Musikvideo · FastH3 · v1.2.7", START_NOTE)
+    g.note("ABLAUF · Planung, Freigabe, Upscale, Extend-Schleife, Fortsetzen", FLOW_NOTE)
+    g.note("UPSCALE · MV 5c · vier Methoden im Vergleich", UPSCALE_NOTE)
     model_lines = []
     for entry in json.loads((SOURCES / "models.json").read_text(encoding="utf-8")):
         url = f"https://huggingface.co/{entry['repo_id']}/resolve/{entry['revision']}/{entry['source_path']}"
         model_lines.append(f"- [{Path(entry['source_path']).name}]({url}) → `ComfyUI/models/{entry['path']}`")
-    g.note("DOWNLOADS · Modelle / Zielordner", "# Benötigte Dateien\n\n" + "\n\n".join(model_lines) + DOWNLOAD_TAIL)
+    g.note("DOWNLOADS · Modelle / Zielordner", "# Benötigte Dateien\n\n" + "\n\n".join(model_lines) +
+           "\n\n# Nur für MV 5c (je nach gewählter Methode)\n\n" + "\n\n".join(_upscale_model_lines()) + DOWNLOAD_TAIL)
     return finish(g, schemas)
+
+
+def _upscale_model_lines() -> list[str]:
+    """Files MV 5c needs beyond FastH3 and the H3 VAEs, from the v1.2.3 / v1.2.6 upscale manifests."""
+    own = {entry["path"] for entry in json.loads((SOURCES / "models.json").read_text(encoding="utf-8"))}
+    labels = {"seedvr2": "SeedVR2", "latent3d": "H3 Latent 3D + H3 Ultimate"}
+    lines = []
+    for folder in ("v123", "v126"):
+        for entry in json.loads((ROOT / "tools/workflow_templates" / folder / "models.json").read_text(encoding="utf-8")):
+            used = [labels[m] for m in entry.get("methods", []) if m in labels] if folder == "v123" else ["WAN 2.2"]
+            if used and entry["path"] not in own:
+                url = f"https://huggingface.co/{entry['repo_id']}/resolve/{entry['revision']}/{entry['source_path']}"
+                lines.append(f"- {used[0]}: [{Path(entry['source_path']).name}]({url}) → `ComfyUI/models/{entry['path']}`")
+    return lines
 
 
 def finish(g: Graph, schemas: dict) -> dict:
@@ -243,25 +282,29 @@ def finish(g: Graph, schemas: dict) -> dict:
     return g.w
 
 
-START_NOTE = """# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.5
+START_NOTE = """# Song → komplettes Musikvideo · MiniMax FastH3 · v1.2.7
 
 1. **MV 1** · Song wählen oder hochladen (MP3/WAV/FLAC/M4A/OGG, jede Länge).
 2. **LYRICS** einfügen – am besten mit `[Verse 1]`, `[Chorus]` …; `[mm:ss.xx]`-Zeitstempel werden direkt übernommen.
 3. **VIDEOIDEE** in eigenen Worten (Deutsch oder Englisch): Story, Orte, Look, Stimmung. Zeilen wie
    `Chorus - …` oder `Verse 2: …` gelten gezielt für diesen Songabschnitt (Ort, Kleidung, Handlung).
 4. Optional **bis zu 3 Charaktersheets**: Loader mit **Strg+M** aktivieren, Bild wählen. Charakter 1 ist die Sängerin/der Sänger.
-5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen. Standard ist **1664×928**: ab 1344×768 abwärts zeigen Gesicht und
-   Lippen erste Artefakte, 1920×1088 dauert fast doppelt so lange (R9700, 90-s-Song mit 13 Szenen: 1344×768 ≈ 1,7 h,
-   **1664×928 ≈ 3,4 h**, 1920×1088 ≈ 6 h). 864×480 nur für schnelle Tests.
+5. **VIDEOFORMAT** im Pixaroma-Sizes-Node wählen. Favoriten (★): **960×544** (Standard) und **1280×704** – beide
+   landen mit dem Upscale (MV 5c) bei ~1920 px Breite. Ohne Upscale **1664×928**: ab 1344×768 abwärts zeigen Gesicht
+   und Lippen erste Artefakte, 1920×1088 dauert fast doppelt so lange. Sampling pro 7-s-Szene auf der R9700:
+   960×544 ≈ 2 min, 1280×704 ≈ 4–5 min, 1664×928 ≈ 8–15 min.
 6. **MV 0 · Realismus-LoRA**: standardmäßig fal *Realism People* bei **0,8** mit Triggerwort `r34l1sm`
    (wird automatisch vor jeden Szenen-Prompt gesetzt). `lora_name = none` = reines FastH3.
-7. **Run**. Erst wird geplant, dann Szene 1 gerendert. Nach **jeder** Szene hält der Lauf am Node
+7. **MV 5c · UPSCALE**: eine Node für das ganze Video – **aus** oder eine der vier Methoden (Standard **WAN 2.2**,
+   dazu SeedVR2, H3 Latent Upscaler 3D, H3 Ultimate) und die Ziel-Langseite (Standard 1920: 960×544 → 1920×1088).
+8. **Run**. Erst wird geplant, dann Szene 1 gerendert. Nach **jeder** Szene hält der Lauf am Node
    **PRÜFEN (MV 5b)**: Er spielt die Szene **mit Originalton** ab.
-   - **✓ Weiter** → die nächste Szene wird per Extend gerendert.
+   - **✓ Weiter** → MV 5c skaliert genau diesen Take hoch, dann wird die nächste Szene per Extend gerendert.
    - **↻ Neu rendern** → dieselbe Szene mit neuem Seed noch einmal, im selben Lauf. Alle Takes bleiben als
      Reiter wählbar; **Take N nehmen + weiter** übernimmt einen früheren Take.
    - **⏩ Rest ohne Prüfung** → alle weiteren Szenen dieses Laufs ohne Halt (z. B. über Nacht).
-   Am Ende entsteht das fertige Video unter `output/video/DaWasteh_MusicVideo/`.
+   Verworfene Takes werden nie hochskaliert. Am Ende legt MV 6 unter `output/video/DaWasteh_MusicVideo/` das
+   **Original**, den **Upscale** und ein **Vergleichsvideo** (links Original, rechts Upscale) ab – alle mit Originalton.
    Ohne Zwischenstopp von Anfang an: beide PRÜFEN-Nodes auf **durchrendern** stellen.
 
 **Lippensynchron:** Jede Szene bekommt den echten Songausschnitt fest in den Audio-Strom von H3 (nicht verrauscht,
@@ -271,7 +314,8 @@ nur das Bild wird erzeugt). Am Ende wird die Originaldatei **unverändert** (`-c
 pro Szene 1–3 Shots mit Schnitten, wechselnden Einstellungsgrößen und Kamerabewegungen. Jede Szene hat einen eigenen Seed.
 
 Bedienung und Grenzen: `docs/H3_MUSIC_VIDEO_V122.md`; LoRA, 1920×1088 und Speicher: `docs/H3_MUSIC_VIDEO_V124.md`;
-Prompt Writer mit Qwen3.8 27B und Szenen-Prüfung (MV 5b): `docs/H3_MUSIC_VIDEO_V125.md`.
+Prompt Writer mit Qwen3.8 27B und Szenen-Prüfung (MV 5b): `docs/H3_MUSIC_VIDEO_V125.md`;
+Upscale nach jeder Freigabe (MV 5c): `docs/H3_MUSIC_VIDEO_V127.md`.
 """
 
 FLOW_NOTE = """# Wie der Workflow arbeitet
@@ -298,19 +342,53 @@ Produktionsbibel (Stil, Orte je Abschnitt, Musik), dann pro Szene die Handlung. 
 **MV 3 · H3-Textencoder** encodiert **alle** Szenen-Prompts einmal und gibt den 26-GB-Encoder danach komplett frei.
 In der Render-Schleife bleibt nur FastH3 geladen.
 
-**Szene 1 → PRÜFEN → LOOP (Szene → PRÜFEN)**: Jede weitere Szene friert die letzten 22 Frames der Vorgängerszene am
+**Szene 1 → PRÜFEN → HOCHSKALIEREN → LOOP (Szene → PRÜFEN → HOCHSKALIEREN)**: Jede weitere Szene friert die letzten
+22 Frames der Vorgängerszene (des Originals, nicht des Upscales) am
 Anfang ein (nahtloser Extend) und fixiert den passenden Songausschnitt im Audio-Strom. Die Pixaroma-Schleife läuft
 `Szenen − 1` Runden; die Rundenzahl kommt automatisch aus dem Plan. **Neu rendern** hängt die Kette
 Szene vorbereiten → Sampling → Speichern → Prüfen für dieselbe Szene noch einmal ein (neuer Seed), die Schleife zählt
 erst nach **Weiter** weiter. Verworfene Takes liegen unter `takes/` im Projektordner.
 
+**MV 5c · Hochskalieren** bekommt nur, was MV 5b freigegeben hat, und skaliert es vor der nächsten Szene hoch
+(`upscaled/<Methode>_<B>x<H>/` im Projektordner). Die Extend-Kette bleibt beim Original; der Upscale ist eine
+zweite Fassung jeder Szene. Einstellungen und Messwerte: Notiz **UPSCALE**.
+
 **Fortsetzen:** Alles liegt unter `output/DaWasteh_H3_MusicVideo_v2/<Projekt>`. Ein erneuter Run mit gleichen Eingaben
 überspringt fertige Szenen ohne Sampling – auch nach Absturz oder Neustart. Freigegebene Szenen laufen ohne Halt
 durch; eine Szene, die beim Abbruch noch auf Prüfung wartete, wird sofort wieder gezeigt (ohne neu zu rendern).
-`resume_existing_scenes = aus` rendert bewusst alles neu.
+`resume_existing_scenes = aus` rendert bewusst alles neu. Fertige Upscales werden ebenso übersprungen; eine andere
+Methode oder Zielgröße skaliert nur die fertigen Szenen neu (eigener Ordner, frühere Upscales bleiben).
 
 **FastH3-Grenzen:** FastH3 ist nur für Text-to-Video+Audio destilliert. Charaktersheets werden deshalb als Text
 beschrieben (nicht als Ref2VA-Bild eingespeist); die Identität trägt der Extend über die eingefrorenen Frames.
+"""
+
+UPSCALE_NOTE = """# MV 5c · Upscale nach jeder Freigabe
+
+Eine Node (**MV 5c · UPSCALE AN/AUS + METHODE**) schaltet den Upscale für das ganze Video: **aus** oder eine der
+vier Methoden aus `Video Upscaling/` – dieselben Nodes und Einstellungen wie dort. Hochskaliert wird genau der Take,
+den du in MV 5b mit **Weiter** freigibst, noch bevor die nächste Szene gerendert wird. Verworfene Takes
+(**Neu rendern**) kommen nie bei MV 5c an.
+
+Gemessen an einer 5,4-s-Szene, 960×544 → 1920×1088, R9700 (Nachweis und Bilder: `docs/H3_MUSIC_VIDEO_V127.md`):
+
+| Methode | Ergebnis | Zeit pro Szene | ≈ 90-s-Song |
+|---|---|---|---|
+| **WAN 2.2 Low-Noise** (Standard) | bleibt am Original (Gesicht, Mundform, Pose), neue Haut-, Haar- und Stoffdetails | 12,9 min | 3,6 h |
+| **SeedVR2 3B** | scharfe Kanten, wirkt bei ×2 gemalt (Haarspitzen, Hautflecken) | 8,2 min | 2,3 h |
+| **H3 Latent Upscaler 3D** | am schnellsten und sehr scharf, zeichnet aber Mimik und Pose neu (Lippensync prüfen) | 4,9 min | 1,4 h |
+| **H3 Ultimate Upscale** | zweiter FastH3-Durchgang in Kacheln, zeichnet am freiesten neu | 7,6 min | 2,1 h |
+
+Dazu kommt das Rendern selbst (960×544: ≈ 2 min pro Szene). Alle vier rechnen in der Zielgröße; 1280×704 →
+1920×1056 kostet beim Upscale deshalb etwa gleich viel, nur das Rendern dauert länger.
+
+- Die beiden **H3-Methoden** rechnen mit dem laufenden FastH3 (inkl. LoRA) und dem **eigenen Prompt der Szene** nach –
+  kein zweites großes Modell im Speicher. **SeedVR2** und **WAN** laden ihre Modelle einmal pro Lauf.
+- **Ziel-Langseite** 1920 (Standard): 960×544 → 1920×1088, 1280×704 → 1920×1056, 1664×928 → 1920×1056.
+- Methode oder Zielgröße wechseln geht jederzeit: Ein neuer Run rendert keine Szene neu, sondern skaliert nur die
+  fertigen Szenen (eigener Ordner je Methode und Größe, frühere Upscales bleiben erhalten).
+- **MV 6** schreibt das Original, den Upscale (beide mit unverändertem Originalton) und bei
+  `comparison = nebeneinander` ein Vergleichsvideo: links das Original (Lanczos auf Zielgröße), rechts der Upscale.
 """
 
 DOWNLOAD_TAIL = """
