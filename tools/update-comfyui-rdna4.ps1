@@ -99,7 +99,8 @@ $CustomNodeNames = @(
     "ComfyUI-DaWasteh-H3-MusicVideo",
     "ComfyUI-DaWasteh-LiveAvatar",
     "ComfyUI-DaWasteh-MultiGPU-Control",
-    "ComfyUI-DaWasteh-Qwen3TTS-LoRA"
+    "ComfyUI-DaWasteh-Qwen3TTS-LoRA",
+    "ComfyUI-DaWasteh-VisionTools"
 )
 
 $PixaromaNodeName = "ComfyUI-Pixaroma"

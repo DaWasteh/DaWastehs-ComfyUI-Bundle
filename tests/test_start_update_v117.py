@@ -44,7 +44,7 @@ class UpdateV117Tests(unittest.TestCase):
             python.touch()  # Never executed: native commands are recorded, not run.
             nodes = [
                 "AutoSongwriter", "GamePhysics", "H3-AutoLength", "H3-MusicVideo", "LiveAvatar",
-                "MultiGPU-Control", "Qwen3TTS-LoRA",
+                "MultiGPU-Control", "Qwen3TTS-LoRA", "VisionTools",
             ]
             files = {"workflows/example.json": b"{}\n"}
             files.update({f"custom_nodes/ComfyUI-DaWasteh-{name}/__init__.py": b"# fixture\n" for name in nodes})

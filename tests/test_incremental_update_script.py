@@ -69,6 +69,7 @@ class IncrementalUpdateScriptTests(unittest.TestCase):
             "ComfyUI-DaWasteh-LiveAvatar",
             "ComfyUI-DaWasteh-MultiGPU-Control",
             "ComfyUI-DaWasteh-Qwen3TTS-LoRA",
+            "ComfyUI-DaWasteh-VisionTools",
         ):
             self.assertIn(f'"{name}"', self.source)
 

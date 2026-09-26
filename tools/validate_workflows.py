@@ -785,6 +785,7 @@ def main() -> int:
     v123_additions = {}
     v124_additions = {}
     v126_additions = {}
+    v128_additions = {}
     if args.against_head:
         # Import lazily so historical validators and pure graph tests do not
         # acquire a generator dependency unless checking collection migration.
@@ -818,6 +819,11 @@ def main() -> int:
         except ModuleNotFoundError:
             from build_video_upscale_wan_v126 import build_all as build_v126
         v126_additions = build_v126()
+        try:
+            from tools.build_vision_workflows_v128 import build_all as build_v128
+        except ModuleNotFoundError:
+            from build_vision_workflows_v128 import build_all as build_v128
+        v128_additions = build_v128()
     if args.against_head and not args.skip_collection_totals:
         baseline_paths = git_baseline_workflow_paths()
         expected_paths = {
@@ -837,6 +843,7 @@ def main() -> int:
         expected_paths.update(f"workflows/{key}" for key in v123_additions)
         expected_paths.update(f"workflows/{key}" for key in v124_additions)
         expected_paths.update(f"workflows/{key}" for key in v126_additions)
+        expected_paths.update(f"workflows/{key}" for key in v128_additions)
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
@@ -892,7 +899,10 @@ def main() -> int:
                 key = _path_key(path).removeprefix("workflows/")
                 addition = next((item for item in ADDITIONS if item.path == key), None)
                 autosongwriter = next((item for item in V093_TARGET_WORKFLOWS if item.path == key), None)
-                if key in v126_additions:
+                if key in v128_additions:
+                    if v128_additions[key] != workflow:
+                        errors.append(f"{path}: differs from deterministic v1.2.8 inpaint/pose/depth workflow")
+                elif key in v126_additions:
                     if v126_additions[key] != workflow:
                         errors.append(f"{path}: differs from deterministic v1.2.6 WAN video-upscale workflow")
                 elif key in v124_additions:
@@ -964,7 +974,9 @@ def main() -> int:
     # v1.2.6 adds the flat WAN 2.2 video-upscale workflow: +1 file, +64 nodes, +27 notes, +52 links, +1 timer.
     # v1.2.7 adds MV 5c to the music video (one upscale switch, two upscale nodes behind the reviews, the UPSCALE note
     # and their parameter notes): +7 nodes, +3 notes, +10 links.
-    expected = {"files": 253, "graphs": 306, "nodes": 11613, "notes": 5283, "links": 8095, "timers": 234}
+    # v1.2.8 adds five flat workflows (Qwen Image 2.1 mask inpaint; SDPose pose and Depth Anything 3 depth from image
+    # and video, new category "Pose & Depth"): +5 files, +157 nodes, +65 notes, +109 links, +5 timers.
+    expected = {"files": 258, "graphs": 311, "nodes": 11770, "notes": 5348, "links": 8204, "timers": 239}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

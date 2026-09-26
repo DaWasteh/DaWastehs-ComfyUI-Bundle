@@ -1,0 +1,1768 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
+      "title": "SDPOSE · Wholebody fp16 · 133 Punkte",
+      "pos": [
+        880.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "ckpt_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "ckpt_name"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            19
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": []
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "SDPose\\sdpose_wholebody_fp16.safetensors"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "UNETLoader",
+      "title": "PERSONEN-DETEKTOR · RT-DETR v4-x fp16",
+      "pos": [
+        880.0,
+        380.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "unet_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "unet_name"
+          }
+        },
+        {
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "weight_dtype"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "SDPose\\rt_detr_v4-x-hgnet_fp16.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "PixaromaLoadImage",
+      "title": "BILD · Person, deren Pose extrahiert wird",
+      "pos": [
+        1460.0,
+        80.0
+      ],
+      "size": [
+        480,
+        620
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "image"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            2,
+            4,
+            7,
+            13,
+            17
+          ]
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": []
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": []
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": []
+        },
+        {
+          "name": "filename",
+          "type": "STRING",
+          "links": []
+        },
+        {
+          "name": "original_width",
+          "type": "INT",
+          "links": []
+        },
+        {
+          "name": "original_height",
+          "type": "INT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixaromaLoadImage",
+        "loadImagePixState": "{\"version\": 1, \"mode\": \"off\", \"snap\": 0}"
+      },
+      "widgets_values": [
+        "dancer.png"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "RTDETR_detect",
+      "title": "PERSONEN FINDEN · max. 1 (für Gruppen erhöhen)",
+      "pos": [
+        2100.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 2
+        },
+        {
+          "name": "threshold",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "threshold"
+          }
+        },
+        {
+          "name": "class_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "class_name"
+          }
+        },
+        {
+          "name": "max_detections",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "max_detections"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "bboxes",
+          "type": "BOUNDING_BOX",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RTDETR_detect"
+      },
+      "widgets_values": [
+        0.5,
+        "person",
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "type": "DaWPoseBoxes",
+      "title": "PERSONENRAHMEN · auf 3:4 + 25 % Rand (unverzerrter SDPose-Ausschnitt)",
+      "pos": [
+        1460.0,
+        740.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "bboxes",
+          "type": "BOUNDING_BOX",
+          "link": 3
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 4
+        },
+        {
+          "name": "scale",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "scale"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "bboxes",
+          "type": "BOUNDING_BOX",
+          "links": [
+            8,
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWPoseBoxes"
+      },
+      "widgets_values": [
+        1.25
+      ]
+    },
+    {
+      "id": 6,
+      "type": "SDPoseKeypointExtractor",
+      "title": "SDPOSE · Keypoints je Person (Ausschnitt 768×1024)",
+      "pos": [
+        1460.0,
+        1040.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 6
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 7
+        },
+        {
+          "name": "batch_size",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "batch_size"
+          }
+        },
+        {
+          "name": "bboxes",
+          "type": "BOUNDING_BOX",
+          "link": 8,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "keypoints",
+          "type": "POSE_KEYPOINT",
+          "links": [
+            9,
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SDPoseKeypointExtractor"
+      },
+      "widgets_values": [
+        16
+      ]
+    },
+    {
+      "id": 7,
+      "type": "SDPoseDrawKeypoints",
+      "title": "POSE-KARTE · Körper, Hände, Gesicht, Füße (OpenPose-Farben)",
+      "pos": [
+        1460.0,
+        1340.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "keypoints",
+          "type": "POSE_KEYPOINT",
+          "link": 9
+        },
+        {
+          "name": "draw_body",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "draw_body"
+          }
+        },
+        {
+          "name": "draw_hands",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "draw_hands"
+          }
+        },
+        {
+          "name": "draw_face",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "draw_face"
+          }
+        },
+        {
+          "name": "draw_feet",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "draw_feet"
+          }
+        },
+        {
+          "name": "stick_width",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "stick_width"
+          }
+        },
+        {
+          "name": "face_point_size",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "face_point_size"
+          }
+        },
+        {
+          "name": "score_threshold",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "score_threshold"
+          }
+        },
+        {
+          "name": "draw_head",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "draw_head"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            10,
+            15,
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SDPoseDrawKeypoints"
+      },
+      "widgets_values": [
+        true,
+        true,
+        true,
+        true,
+        4,
+        2,
+        0.5,
+        true
+      ]
+    },
+    {
+      "id": 8,
+      "type": "PixaromaSaveImage",
+      "title": "SPEICHERN · Pose-Karte · PNG (für ControlNet / Pose-Video)",
+      "pos": [
+        2680.0,
+        680.0
+      ],
+      "size": [
+        500,
+        820
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 10
+        },
+        {
+          "name": "name",
+          "type": "STRING",
+          "link": null,
+          "shape": 7
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaSaveImage",
+        "saveImageState": "{\"version\": 1, \"folder\": \"\", \"pattern\": \"Pose/Pose_%counter%\", \"format\": \"png\", \"quality\": 100, \"embedWorkflow\": true, \"civitaiMeta\": false, \"saveOnRun\": true, \"counterDigits\": 5}"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 9,
+      "type": "SavePoseKpsAsJsonFile",
+      "title": "SPEICHERN · Keypoints als OpenPose-JSON",
+      "pos": [
+        2680.0,
+        380.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pose_kps",
+          "type": "POSE_KEYPOINT",
+          "link": 11
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "filename_prefix"
+          }
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SavePoseKpsAsJsonFile"
+      },
+      "widgets_values": [
+        "Pose/Pose_Keypoints"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "DrawBBoxes",
+      "title": "KONTROLLE · Personenrahmen (3:4) ins Bild",
+      "pos": [
+        2680.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "bboxes",
+          "type": "BOUNDING_BOX",
+          "link": 12
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 13,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "out_image",
+          "type": "IMAGE",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DrawBBoxes"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 11,
+      "type": "ImageBlend",
+      "title": "KONTROLLE · Pose über das Bild legen (screen)",
+      "pos": [
+        2680.0,
+        1540.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image1",
+          "type": "IMAGE",
+          "link": 14
+        },
+        {
+          "name": "image2",
+          "type": "IMAGE",
+          "link": 15
+        },
+        {
+          "name": "blend_factor",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "blend_factor"
+          }
+        },
+        {
+          "name": "blend_mode",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "blend_mode"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageBlend"
+      },
+      "widgets_values": [
+        1.0,
+        "screen"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "PreviewImage",
+      "title": "KONTROLLE · Pose + Rahmen über dem Bild",
+      "pos": [
+        2680.0,
+        2520.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 13,
+      "type": "PixaromaCompare",
+      "title": "VERGLEICH · Bild ↔ Pose-Karte",
+      "pos": [
+        2680.0,
+        1840.0
+      ],
+      "size": [
+        540,
+        640
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image1",
+          "type": "IMAGE",
+          "link": 17,
+          "shape": 7
+        },
+        {
+          "name": "image2",
+          "type": "IMAGE",
+          "link": 18,
+          "shape": 7
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaCompare"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 14,
+      "type": "MarkdownNote",
+      "title": "START HIER · Pose aus Bild · SDPose · v1.2.8",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        680,
+        732
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# Pose aus einem Bild · SDPose Wholebody\n\n1. **BILD** wählen (Pixaroma Load Image, Resize **off**).\n2. **Queue**. Ergebnisse unter **output/Pose/**:\n   - `Pose_*.png`: Pose-Karte (Skelett auf Schwarz, gleiche Größe wie das Bild)\n   - `Pose_Keypoints_*.json`: alle Punkte im OpenPose-JSON-Format (Pixelkoordinaten + Konfidenz)\n3. **KONTROLLE** legt Pose und Personenrahmen über das Bild, **VERGLEICH** zeigt Bild ↔ Pose-Karte.\n\n**So arbeitet der Graph:** RT-DETR findet die Person, der Rahmen wird unverzerrt auf 3:4 plus 25 % Rand\nerweitert, SDPose Wholebody schätzt im Personenausschnitt 133 Punkte (Körper, Füße, 68 Gesichtspunkte, beide Hände). Die Pose-Karte ist im OpenPose-Farbschema auf Schwarz,\nin **Originalauflösung**, deckungsgleich mit dem Quellbild, direkt nutzbar für OpenPose-ControlNets und Pose-gesteuerte\nVideo-Workflows.\n\n**Eine Person:** `max_detections` = 1 nimmt die sicherste Person. Für Gruppen erhöhen (z. B. 5). Findet der Detektor\nniemanden (z. B. stark stilisierte Figuren), rechnet SDPose auf dem ganzen Bild.\n**Zeichnen:** Hände/Gesicht/Füße einzeln abschaltbar; `score_threshold` 0,5 blendet unsichere Punkte aus.\n\nBedienung und Messwerte: `docs/POSE_DEPTH_V128.md`.\n"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "MarkdownNote",
+      "title": "DOWNLOADS · Modelle / Zielordner",
+      "pos": [
+        40.0,
+        860.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# Benötigte Dateien\n\n- [sdpose_wholebody_fp16.safetensors](https://huggingface.co/Comfy-Org/SDPose/resolve/acb43fbe8142b54d9ebd52b720b81dd4e14c8d81/checkpoints/sdpose_wholebody_fp16.safetensors) → `ComfyUI/models/checkpoints/SDPose/sdpose_wholebody_fp16.safetensors` (1.79 GiB)\n\n- [rt_detr_v4-x-hgnet_fp16.safetensors](https://huggingface.co/Comfy-Org/SDPose/resolve/acb43fbe8142b54d9ebd52b720b81dd4e14c8d81/diffusion_models/rt_detr_v4-x-hgnet_fp16.safetensors) → `ComfyUI/models/diffusion_models/SDPose/rt_detr_v4-x-hgnet_fp16.safetensors` (0.12 GiB)\n\n- [dancer.png](https://raw.githubusercontent.com/Comfy-Org/workflow_templates/25ff90a51cc8f6ee56bd78ec3b11f294925fb36d/input/dancer.png) → `ComfyUI/input/dancer.png` (Beispiel)\n\nSDPose (MIT) und RT-DETR sind Comfy-Orgs Umpackungen, beide laufen mit Core-Nodes von ComfyUI.\nKein Cloud-API-Aufruf, keine zusätzliche Node-Installation.\n"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        1520.0
+      ],
+      "size": [
+        226,
+        136
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 17,
+      "type": "MarkdownNote",
+      "pos": [
+        3380.0,
+        80.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SDPOSE · Wholebody fp16 · 133 Punkte · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 1,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SDPOSE · Wholebody fp16 · 133 Punkte · Node 1\n\n**Zweck:** Loads a diffusion model checkpoint, diffusion models are used to denoise latents.\n\n**Einstellbare Werte**\n- `ckpt_name` = `SDPose\\sdpose_wholebody_fp16.safetensors` — The name of the checkpoint (model) to load. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `ckpt_name` (COMBO, nicht verbunden): The name of the checkpoint (model) to load.\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): The model used for denoising latents.\n- `CLIP` (CLIP, nicht verbunden): The CLIP model used for encoding text prompts.\n- `VAE` (VAE, 1 Verbindung(en)): The VAE model used for encoding and decoding images to and from latent space."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 18,
+      "type": "MarkdownNote",
+      "pos": [
+        3380.0,
+        740.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · PERSONEN-DETEKTOR · RT-DETR v4-x fp16 · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · PERSONEN-DETEKTOR · RT-DETR v4-x fp16 · Node 2\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `SDPose\\rt_detr_v4-x-hgnet_fp16.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 19,
+      "type": "MarkdownNote",
+      "pos": [
+        3380.0,
+        1400.0
+      ],
+      "size": [
+        680,
+        798
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · PERSONEN FINDEN · max. 1 (für Gruppen erhöhen) · Node 4",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 4,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · PERSONEN FINDEN · max. 1 (für Gruppen erhöhen) · Node 4\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `RTDETR_detect` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `threshold` = `0.5` — threshold Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `class_name` = `person` — Filter detections by class. Set to 'all' to disable filtering. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `max_detections` = `1` — Maximum number of detections to return per image. In order of descending confidence score. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `model` (MODEL, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `threshold` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `class_name` (COMBO, nicht verbunden): Filter detections by class. Set to 'all' to disable filtering.\n- `max_detections` (INT, nicht verbunden): Maximum number of detections to return per image. In order of descending confidence score.\n\n**Ausgänge**\n- `bboxes` (BOUNDING_BOX, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 20,
+      "type": "MarkdownNote",
+      "pos": [
+        3380.0,
+        2240.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · PERSONENRAHMEN · auf 3:4 + 25 % Rand (unverzerrter SDPose-Ausschnitt) · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 5,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · PERSONENRAHMEN · auf 3:4 + 25 % Rand (unverzerrter SDPose-Ausschnitt) · Node 5\n\n**Zweck:** Grows RT-DETR person boxes around their centre to the 3:4 aspect SDPose runs at (768x1024) plus a margin, clipped to the image. SDPose Keypoint Extractor stretches boxes without keeping the aspect ratio, so a standing person would be squeezed about 2x sideways.\n\n**Einstellbare Werte**\n- `scale` = `1.25` — Margin around the person. Höher vergrößert das Ergebnis proportional und erhöht Pixelzahl, Zeit und VRAM; unter 1 verkleinert es.\n\n**Eingänge**\n- `bboxes` (BOUNDING_BOX, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `scale` (FLOAT, nicht verbunden): Margin around the person.\n\n**Ausgänge**\n- `bboxes` (BOUNDING_BOX, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 21,
+      "type": "MarkdownNote",
+      "pos": [
+        4140.0,
+        80.0
+      ],
+      "size": [
+        680,
+        622
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SDPOSE · Keypoints je Person (Ausschnitt 768×1024) · Node 6",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 6,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SDPOSE · Keypoints je Person (Ausschnitt 768×1024) · Node 6\n\n**Zweck:** Extract pose keypoints from images using the SDPose model: https://huggingface.co/Comfy-Org/SDPose/tree/main/checkpoints\n\n**Einstellbare Werte**\n- `batch_size` = `16` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n\n**Eingänge**\n- `model` (MODEL, Link 5): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, Link 6): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 7): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `batch_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `bboxes` (BOUNDING_BOX, Link 8): Optional bounding boxes for more accurate detections. Required for multi-person detection.\n\n**Ausgänge**\n- `keypoints` (POSE_KEYPOINT, 2 Verbindung(en)): Keypoints in OpenPose frame format (canvas_width, canvas_height, people)"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 22,
+      "type": "MarkdownNote",
+      "pos": [
+        4140.0,
+        740.0
+      ],
+      "size": [
+        680,
+        1216
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · POSE-KARTE · Körper, Hände, Gesicht, Füße (OpenPose-Farben) · Node 7",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 7,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · POSE-KARTE · Körper, Hände, Gesicht, Füße (OpenPose-Farben) · Node 7\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `SDPoseDrawKeypoints` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `draw_body` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `draw_hands` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `draw_face` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `draw_feet` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `stick_width` = `4` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `face_point_size` = `2` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `score_threshold` = `0.5` — Steuert diesen Parameter. Eine empfindlichere/niedrigere Schwelle erkennt mehr schwache Treffer, aber auch Fehlalarme; eine strengere/höhere Schwelle liefert weniger, sicherere Treffer.\n- `draw_head` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `keypoints` (POSE_KEYPOINT, Link 9): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `draw_body` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `draw_hands` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `draw_face` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `draw_feet` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `stick_width` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `face_point_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `score_threshold` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `draw_head` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 3 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 23,
+      "type": "MarkdownNote",
+      "pos": [
+        4140.0,
+        2000.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SPEICHERN · Keypoints als OpenPose-JSON · Node 9",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 9,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SPEICHERN · Keypoints als OpenPose-JSON · Node 9\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `filename_prefix` = `Pose/Pose_Keypoints` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `pose_kps` (POSE_KEYPOINT, Link 11): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 24,
+      "type": "MarkdownNote",
+      "pos": [
+        4140.0,
+        2660.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · KONTROLLE · Personenrahmen (3:4) ins Bild · Node 10",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 10,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · KONTROLLE · Personenrahmen (3:4) ins Bild · Node 10\n\n**Zweck:** Erkennt, segmentiert oder verfolgt Motive und liefert Masken bzw. Begrenzungsboxen.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `bboxes` (BOUNDING_BOX, Link 12): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 13): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `out_image` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 25,
+      "type": "MarkdownNote",
+      "pos": [
+        4900.0,
+        80.0
+      ],
+      "size": [
+        680,
+        688
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · KONTROLLE · Pose über das Bild legen (screen) · Node 11",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 11,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · KONTROLLE · Pose über das Bild legen (screen) · Node 11\n\n**Zweck:** Erzeugt oder verarbeitet Bilddaten, etwa durch Skalierung, Zuschnitt, Maskierung oder Kombination.\n\n**Einstellbare Werte**\n- `blend_factor` = `1.0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `blend_mode` = `screen` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n\n**Eingänge**\n- `image1` (IMAGE, Link 14): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image2` (IMAGE, Link 15): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `blend_factor` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `blend_mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 26,
+      "type": "MarkdownNote",
+      "pos": [
+        4900.0,
+        800.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · KONTROLLE · Pose + Rahmen über dem Bild · Node 12",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 12,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · KONTROLLE · Pose + Rahmen über dem Bild · Node 12\n\n**Zweck:** Preview the images without saving them to the ComfyUI output directory.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `images` (IMAGE, Link 16): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `images` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 27,
+      "type": "SelectModelDevice",
+      "pos": [
+        880.0,
+        680.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 19
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectModelDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectModelDevice · central control",
+      "color": "#16334a",
+      "bgcolor": "#1d4968"
+    },
+    {
+      "id": 28,
+      "type": "SelectVAEDevice",
+      "pos": [
+        880.0,
+        800.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 20
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectVAEDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectVAEDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 29,
+      "type": "SelectModelDevice",
+      "pos": [
+        880.0,
+        920.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 21
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectModelDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectModelDevice · central control",
+      "color": "#16334a",
+      "bgcolor": "#1d4968"
+    },
+    {
+      "id": 30,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1700.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            22,
+            24
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 31,
+      "type": "MarkdownNote",
+      "pos": [
+        4900.0,
+        1460.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectModelDevice · central control · Node 27",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 27,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectModelDevice · central control · Node 27\n\n**Zweck:** Place the diffusion model on a specific device (default / cpu / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader (even after a ↵   prior Select Model Device call). ↵ - \"cpu\" pins both the load and offload device to CPU. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   devic…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 19): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 22): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 32,
+      "type": "MarkdownNote",
+      "pos": [
+        4900.0,
+        2120.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectVAEDevice · central control · Node 28",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 28,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectVAEDevice · central control · Node 28\n\n**Zweck:** Place the VAE on a specific device (default / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   device is set to the standard VAE offload device. ↵  ↵ CPU is intentionally not exposed in the UI for the VAE; if a workflow ↵ su…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 20): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 23): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 33,
+      "type": "MarkdownNote",
+      "pos": [
+        5660.0,
+        80.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectModelDevice · central control · Node 29",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 29,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectModelDevice · central control · Node 29\n\n**Zweck:** Place the diffusion model on a specific device (default / cpu / gpu:N). ↵  ↵ - \"default\" restores the device assigned by the loader (even after a ↵   prior Select Model Device call). ↵ - \"cpu\" pins both the load and offload device to CPU. ↵ - \"gpu:N\" pins the load device to the Nth available GPU; the offload ↵   devic…\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 21): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 24): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 34,
+      "type": "MarkdownNote",
+      "pos": [
+        5660.0,
+        740.0
+      ],
+      "size": [
+        680,
+        666
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 30",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 30,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 30\n\n**Zweck:** Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector. ↵  ↵ Connect these COMBO outputs to the ``device`` input of ComfyUI's official ↵ Select Model Device, Select CLIP Device, and Select VAE Device nodes. The ↵ node chooses labels only; the official selectors remain responsible for ↵ validating…\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      29,
+      0,
+      4,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      3,
+      0,
+      4,
+      1,
+      "IMAGE"
+    ],
+    [
+      3,
+      4,
+      0,
+      5,
+      0,
+      "BOUNDING_BOX"
+    ],
+    [
+      4,
+      3,
+      0,
+      5,
+      1,
+      "IMAGE"
+    ],
+    [
+      5,
+      27,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      6,
+      28,
+      0,
+      6,
+      1,
+      "VAE"
+    ],
+    [
+      7,
+      3,
+      0,
+      6,
+      2,
+      "IMAGE"
+    ],
+    [
+      8,
+      5,
+      0,
+      6,
+      4,
+      "BOUNDING_BOX"
+    ],
+    [
+      9,
+      6,
+      0,
+      7,
+      0,
+      "POSE_KEYPOINT"
+    ],
+    [
+      10,
+      7,
+      0,
+      8,
+      0,
+      "IMAGE"
+    ],
+    [
+      11,
+      6,
+      0,
+      9,
+      0,
+      "POSE_KEYPOINT"
+    ],
+    [
+      12,
+      5,
+      0,
+      10,
+      0,
+      "BOUNDING_BOX"
+    ],
+    [
+      13,
+      3,
+      0,
+      10,
+      1,
+      "IMAGE"
+    ],
+    [
+      14,
+      10,
+      0,
+      11,
+      0,
+      "IMAGE"
+    ],
+    [
+      15,
+      7,
+      0,
+      11,
+      1,
+      "IMAGE"
+    ],
+    [
+      16,
+      11,
+      0,
+      12,
+      0,
+      "IMAGE"
+    ],
+    [
+      17,
+      3,
+      0,
+      13,
+      0,
+      "IMAGE"
+    ],
+    [
+      18,
+      7,
+      0,
+      13,
+      1,
+      "IMAGE"
+    ],
+    [
+      19,
+      1,
+      0,
+      27,
+      0,
+      "MODEL"
+    ],
+    [
+      20,
+      1,
+      2,
+      28,
+      0,
+      "VAE"
+    ],
+    [
+      21,
+      2,
+      0,
+      29,
+      0,
+      "MODEL"
+    ],
+    [
+      22,
+      30,
+      0,
+      27,
+      1,
+      "COMBO"
+    ],
+    [
+      23,
+      30,
+      2,
+      28,
+      1,
+      "COMBO"
+    ],
+    [
+      24,
+      30,
+      0,
+      29,
+      1,
+      "COMBO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        760.0,
+        1920.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        840.0,
+        0.0,
+        500.0,
+        1040.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "E1 · ENCODE & CONDITION",
+      "bounding": [
+        1420.0,
+        0.0,
+        560.0,
+        1640.0
+      ],
+      "color": "#C68B31",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        2060.0,
+        0.0,
+        500.0,
+        380.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2640.0,
+        0.0,
+        620.0,
+        2820.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        3340.0,
+        0.0,
+        3040.0,
+        3320.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "dawasteh_vision_v128": {
+      "version": 1,
+      "kind": "pose_image",
+      "source_manifest": "tools/workflow_templates/v128/sources.json",
+      "model_manifest": "tools/workflow_templates/v128/models.json",
+      "validation_report": "performance/rdna4/vision-workflows-v128-validation.json"
+    },
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 14,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [
+        "model_device",
+        "vae_device"
+      ],
+      "placement_support": "official-selectors",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "SDPose-Pose-from-Image",
+      "source": "workflows/Pose & Depth/SDPose-Pose-from-Image.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 3,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "47b0a10cb670254ff7145a7dda4cc0da1cdeb73f1bc3cf777421b2bcff3196a8",
+      "exceptions": []
+    }
+  },
+  "version": 0.4,
+  "last_node_id": 34,
+  "last_link_id": 24,
+  "id": "e6f47638-233d-54ac-b646-c6c303ea5d56",
+  "revision": 0
+}

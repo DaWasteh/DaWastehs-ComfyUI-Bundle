@@ -73,3 +73,12 @@ performance/rdna4/video-upscale-wan-v126-validation.json text eol=lf
 custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/upscale_mv.py text eol=lf
 tests/test_h3_music_video_v127_upscale.py text eol=lf
 performance/rdna4/h3-music-video-v127-upscale-validation.json text eol=lf
+# v1.2.8: Qwen Image 2.1 mask inpaint + pose/depth (builder, pinned templates/manifests, VisionTools pack), tests and evidence.
+tools/workflow_templates/v128/* text eol=lf
+tools/build_vision_workflows_v128.py text eol=lf
+workflows/**/SDPose-*.json text eol=lf
+workflows/**/DepthAnything3-*.json text eol=lf
+custom_nodes/ComfyUI-DaWasteh-VisionTools/* text eol=lf
+tests/test_vision_workflows_v128.py text eol=lf
+tests/test_vision_tools_nodes_v128.py text eol=lf
+performance/rdna4/vision-workflows-v128-validation.json text eol=lf

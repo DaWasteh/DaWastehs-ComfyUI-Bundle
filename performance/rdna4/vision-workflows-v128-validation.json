@@ -1,0 +1,1710 @@
+{
+ "release": "v1.2.8",
+ "date": "2026-09-26",
+ "scope": "Qwen Image 2.1 mask inpaint; SDPose pose and Depth Anything 3 depth from image and video",
+ "system": {
+  "os": "win32",
+  "comfyui_version": "0.37.0",
+  "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+  "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+  "ram_total": 50860650496
+ },
+ "frontend": "1.53.6 (headless Edge, app.graphToPrompt via performance/rdna4/bench/ui_to_api.py)",
+ "profile": "start-MultiGPU.ps1 R9700 profile on test port 8192 (reserve-vram 4, VRAM guard 3 GiB, hipBLASLt, cache-ram)",
+ "gpu_defaults": {
+  "MODEL": "gpu:0 R9700 32GB",
+  "CLIP": "gpu:0",
+  "VAE": "gpu:0"
+ },
+ "model_verification": {
+  "manifest": "tools/workflow_templates/v128/models.json",
+  "files": [
+   {
+    "path": "geometry_estimation/DepthAnything3/depth_anything_3_mono_large.safetensors",
+    "size": 1336748056,
+    "sha256": "9b44eda5bedba5b4e125686fdb79d1db309c1b9785277576eb930f885b008f96",
+    "verified": true
+   },
+   {
+    "path": "checkpoints/SDPose/sdpose_wholebody_fp16.safetensors",
+    "size": 1916645792,
+    "sha256": "63d01f9a7494560693b24767f4469d59c9d3266b31ff0a253e74d1e611442721",
+    "verified": true
+   },
+   {
+    "path": "diffusion_models/SDPose/rt_detr_v4-x-hgnet_fp16.safetensors",
+    "size": 123968978,
+    "sha256": "581f9af9bbabb664d1891cbccd823308b176ecd409146f954dfa39af3bec2476",
+    "verified": true
+   }
+  ]
+ },
+ "workflows": {
+  "Image Inpainting/Qwen_Image_2_1_BF16-Mask-Inpaint.json": {
+   "sha256": "b7b74350d4bc2d3b58e1250ae13747e306441f62bf11800145a9d3ceb9122cb0"
+  },
+  "Pose & Depth/SDPose-Pose-from-Image.json": {
+   "sha256": "ca65038ffc4ca45608bb396f94a1074bf04268223eac99bd0108cfc61f8fb8f2"
+  },
+  "Pose & Depth/SDPose-Pose-from-Video.json": {
+   "sha256": "af8186a056e27a1a1e27f4fd0c827eeaa2eb3f6e2fe89131091edc609067b21e"
+  },
+  "Pose & Depth/DepthAnything3-Depth-from-Image.json": {
+   "sha256": "49280e0a896f0410ce53c0f12f9a59f821b74b6cd78619204d4fdc706ff83677"
+  },
+  "Pose & Depth/DepthAnything3-Depth-from-Video.json": {
+   "sha256": "24ed464bfb3afb9d9e49564fab74e86b0522ae649ece24e53f7fd3698fd21ead"
+  }
+ },
+ "runs": [
+  {
+   "case": "final_qwen_inpaint",
+   "final": true,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 66.9,
+   "memory": {
+    "peak_commit_gib": 81.98,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 3.26,
+    "peak_vram0_used_gib": 26.54,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00015.png",
+    "size": [
+     896,
+     1152
+    ],
+    "source_size": [
+     896,
+     1152
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 74.68,
+    "embedded_workflow": true
+   }
+  },
+  {
+   "case": "final_qwen_empty_mask",
+   "final": true,
+   "status": "error",
+   "prompts": 1,
+   "statuses": [
+    "error"
+   ],
+   "elapsed_s": 1.1,
+   "memory": {
+    "peak_commit_gib": 64.76,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 26.82,
+    "peak_vram0_used_gib": 24.76,
+    "peak_vram1_used_gib": 0.15
+   },
+   "error": "Keine Maske gemalt: Bitte im Knoten 'MASKE MALEN · Inpaint Crop' den Editor öffnen und den Bereich übermalen, der verändert werden soll (oder am BILD-Knoten Rechtsklick → Open in MaskEditor). Ohne Maske würde das Bild unverändert zurückkommen. / No mask painted: paint the area to change first. (gemalte Pixel: 0, Minimum: 16)\n",
+   "error_node": "DaWRequireMask",
+   "expected_status": "error"
+  },
+  {
+   "case": "final_pose_image",
+   "final": true,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 4.3,
+   "memory": {
+    "peak_commit_gib": 66.72,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 25.0,
+    "peak_vram0_used_gib": 24.76,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Pose_00006.png"
+   ]
+  },
+  {
+   "case": "final_pose_video",
+   "final": true,
+   "status": "success",
+   "prompts": 2,
+   "statuses": [
+    "success",
+    "success"
+   ],
+   "elapsed_s": 44.7,
+   "memory": {
+    "peak_commit_gib": 47.42,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 25.96,
+    "peak_vram0_used_gib": 3.92,
+    "peak_vram1_used_gib": 0.15
+   },
+   "jitter": {
+    "frames": 121,
+    "frames_without_person": 0,
+    "triples": 119,
+    "median_height_px": 431.6,
+    "jitter_median_pct_height": 0.173,
+    "jitter_p90_pct_height": 0.532,
+    "motion_median_pct_height": 0.531,
+    "confident_body_points_mean": 10.21,
+    "confident_leg_points_mean": 0.5
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\man_in_the_rain.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.05,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Pose\\Pose_Video_00014-audio.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.042,
+    "audio": [
+     "aac"
+    ]
+   }
+  },
+  {
+   "case": "final_depth_image",
+   "final": true,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 3.1,
+   "memory": {
+    "peak_commit_gib": 44.43,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.16,
+    "peak_vram0_used_gib": 2.68,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Depth_00004.png",
+    "Depth16_00004_.png"
+   ]
+  },
+  {
+   "case": "final_depth_video",
+   "final": true,
+   "status": "success",
+   "prompts": 2,
+   "statuses": [
+    "success",
+    "success"
+   ],
+   "elapsed_s": 24.4,
+   "memory": {
+    "peak_commit_gib": 49.37,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 24.82,
+    "peak_vram0_used_gib": 2.27,
+    "peak_vram1_used_gib": 0.15
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\empty_room_assembly.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 120,
+    "duration": 5.0,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Depth\\Depth_Video_00006-audio.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 120,
+    "duration": 5.0,
+    "audio": [
+     "aac"
+    ]
+   }
+  },
+  {
+   "case": "q_empty",
+   "final": false,
+   "status": "error",
+   "prompts": 1,
+   "statuses": [
+    "error"
+   ],
+   "elapsed_s": 1.1,
+   "memory": {
+    "peak_commit_gib": 32.01,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 31.38,
+    "peak_vram0_used_gib": 0.17,
+    "peak_vram1_used_gib": 0.15
+   },
+   "error": "Keine Maske gemalt: Bitte im Knoten 'MASKE MALEN · Inpaint Crop' den Editor öffnen und den Bereich übermalen, der verändert werden soll (oder am BILD-Knoten Rechtsklick → Open in MaskEditor). Ohne Maske würde das Bild unverändert zurückkommen. / No mask painted: paint the area to change first. (gemalte Pixel: 0, Minimum: 16)\n",
+   "error_node": "DaWRequireMask",
+   "expected_status": "error"
+  },
+  {
+   "case": "q_sweater",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 61.5,
+   "memory": {
+    "peak_commit_gib": 75.96,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 5.7,
+    "peak_vram0_used_gib": 24.78,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00001.png",
+    "size": [
+     896,
+     1152
+    ],
+    "source_size": [
+     896,
+     1152
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 74.63,
+    "embedded_workflow": true
+   }
+  },
+  {
+   "case": "q_plant",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 23.2,
+   "memory": {
+    "peak_commit_gib": 60.44,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 29.23,
+    "peak_vram0_used_gib": 24.8,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00002.png",
+    "size": [
+     896,
+     1152
+    ],
+    "source_size": [
+     896,
+     1152
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 37.58,
+    "embedded_workflow": true
+   }
+  },
+  {
+   "case": "q_car",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 21.3,
+   "memory": {
+    "peak_commit_gib": 60.69,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 29.09,
+    "peak_vram0_used_gib": 24.41,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00003.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 38.52,
+    "embedded_workflow": true
+   },
+   "note": "tight user-like mask: bumpers and wheel bottoms outside the mask stay in the image (documented)"
+  },
+  {
+   "case": "q_car2",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 21.2,
+   "memory": {
+    "peak_commit_gib": 62.8,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.15,
+    "peak_vram0_used_gib": 24.8,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00012.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 34.96,
+    "embedded_workflow": true
+   },
+   "variant": {
+    "native": false,
+    "crop": null,
+    "seed": null
+   }
+  },
+  {
+   "case": "q_cone",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 41.4,
+   "memory": {
+    "peak_commit_gib": 62.95,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.55,
+    "peak_vram0_used_gib": 25.81,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00004.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 10.88,
+    "embedded_workflow": true
+   }
+  },
+  {
+   "case": "q_editor",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 36.3,
+   "memory": {
+    "peak_commit_gib": 62.59,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.91,
+    "peak_vram0_used_gib": 25.56,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00005.png",
+    "size": [
+     896,
+     1152
+    ],
+    "source_size": [
+     896,
+     1152
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 74.63,
+    "embedded_workflow": true
+   },
+   "note": "same sweater mask posted through /pixaroma/api/inpaint/save_mask + state_json (Pixaroma editor path)"
+  },
+  {
+   "case": "qv_car_native",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 21.3,
+   "memory": {
+    "peak_commit_gib": 61.69,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.7,
+    "peak_vram0_used_gib": 24.6,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00006.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 40.72,
+    "embedded_workflow": true
+   },
+   "variant": {
+    "native": true,
+    "crop": null,
+    "seed": null
+   },
+   "note": "rejected: Qwen's empty edit latent instead of the noise mask (visible brighter seam)"
+  },
+  {
+   "case": "qv_car_ctx160",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 24.2,
+   "memory": {
+    "peak_commit_gib": 67.66,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 21.88,
+    "peak_vram0_used_gib": 24.73,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00007.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 41.2,
+    "embedded_workflow": true
+   },
+   "variant": {
+    "native": false,
+    "crop": {
+     "context_px": 160
+    },
+    "seed": null
+   },
+   "note": "context 160 px"
+  },
+  {
+   "case": "qv_car_native_ctx160",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 16.1,
+   "memory": {
+    "peak_commit_gib": 63.51,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.52,
+    "peak_vram0_used_gib": 24.48,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00008.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 45.06,
+    "embedded_workflow": true
+   },
+   "variant": {
+    "native": true,
+    "crop": {
+     "context_px": 160
+    },
+    "seed": null
+   },
+   "note": "rejected: native latent + 160 px context"
+  },
+  {
+   "case": "qv_sweater_native",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 51.4,
+   "memory": {
+    "peak_commit_gib": 67.36,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 23.19,
+    "peak_vram0_used_gib": 25.56,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00009.png",
+    "size": [
+     896,
+     1152
+    ],
+    "source_size": [
+     896,
+     1152
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 76.72,
+    "embedded_workflow": true
+   },
+   "variant": {
+    "native": true,
+    "crop": null,
+    "seed": null
+   },
+   "note": "rejected: native latent"
+  },
+  {
+   "case": "qv_cone_native",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 50.9,
+   "memory": {
+    "peak_commit_gib": 68.09,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 23.66,
+    "peak_vram0_used_gib": 25.72,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00010.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 12.66,
+    "embedded_workflow": true
+   },
+   "variant": {
+    "native": true,
+    "crop": null,
+    "seed": null
+   },
+   "note": "rejected: native latent"
+  },
+  {
+   "case": "qv_car_seed1",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 24.7,
+   "memory": {
+    "peak_commit_gib": 63.95,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 25.94,
+    "peak_vram0_used_gib": 24.78,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00011.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 41.01,
+    "embedded_workflow": true
+   },
+   "variant": {
+    "native": false,
+    "crop": null,
+    "seed": 1
+   },
+   "note": "seed 1"
+  },
+  {
+   "case": "q_car2_ctx160",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 24.3,
+   "memory": {
+    "peak_commit_gib": 63.24,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.16,
+    "peak_vram0_used_gib": 24.74,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00013.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 34.12,
+    "embedded_workflow": true
+   },
+   "variant": {
+    "native": false,
+    "crop": {
+     "context_px": 160
+    },
+    "seed": null
+   },
+   "note": "generous mask, 160 px context (adds a bush)"
+  },
+  {
+   "case": "q_car2_t1536",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 61.7,
+   "memory": {
+    "peak_commit_gib": 64.23,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 25.1,
+    "peak_vram0_used_gib": 23.89,
+    "peak_vram1_used_gib": 0.15
+   },
+   "check": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Qwen_Image_2_1\\Inpaint_00014.png",
+    "size": [
+     2048,
+     2048
+    ],
+    "source_size": [
+     2048,
+     2048
+    ],
+    "outside_max_abs_diff": 0,
+    "outside_changed_pixels": 0,
+    "inside_mean_abs_diff": 36.03,
+    "embedded_workflow": true
+   },
+   "variant": {
+    "native": false,
+    "crop": {
+     "target": 1536
+    },
+    "seed": null
+   },
+   "note": "generous mask, 1536 px crop (no visible gain, 3x time)"
+  },
+  {
+   "case": "p_img",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 6.1,
+   "memory": {
+    "peak_commit_gib": 62.97,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 24.2,
+    "peak_vram0_used_gib": 23.14,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Pose_00001.png"
+   ],
+   "note": "before DaWPoseBoxes (core boxes)"
+  },
+  {
+   "case": "p_group1",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 2.0,
+   "memory": {
+    "peak_commit_gib": 41.48,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.72,
+    "peak_vram0_used_gib": 3.08,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Pose_00002.png"
+   ],
+   "note": "before DaWPoseBoxes"
+  },
+  {
+   "case": "p_group5",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 3.1,
+   "memory": {
+    "peak_commit_gib": 41.36,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.79,
+    "peak_vram0_used_gib": 3.12,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Pose_00003.png"
+   ],
+   "note": "before DaWPoseBoxes, max_detections 5"
+  },
+  {
+   "case": "pb_img",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 1.3,
+   "memory": {
+    "peak_commit_gib": 42.92,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 25.89,
+    "peak_vram0_used_gib": 2.59,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Pose_00004.png"
+   ],
+   "note": "DaWPoseBoxes inserted (shipped variant)"
+  },
+  {
+   "case": "pb_group5",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 3.1,
+   "memory": {
+    "peak_commit_gib": 41.21,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.78,
+    "peak_vram0_used_gib": 2.78,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Pose_00005.png"
+   ],
+   "note": "DaWPoseBoxes, max_detections 5"
+  },
+  {
+   "case": "p_vid",
+   "final": false,
+   "status": "success",
+   "prompts": 2,
+   "statuses": [
+    "success",
+    "success"
+   ],
+   "elapsed_s": 44.8,
+   "memory": {
+    "peak_commit_gib": 45.79,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 23.96,
+    "peak_vram0_used_gib": 3.25,
+    "peak_vram1_used_gib": 0.15
+   },
+   "jitter": {
+    "frames": 121,
+    "frames_without_person": 0,
+    "triples": 119,
+    "median_height_px": 380.2,
+    "jitter_median_pct_height": 0.194,
+    "jitter_p90_pct_height": 0.569,
+    "motion_median_pct_height": 0.582,
+    "confident_body_points_mean": 9.47,
+    "confident_leg_points_mean": 0.0
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\man_in_the_rain.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.05,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Pose\\Pose_Video_00011-audio.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.042,
+    "audio": [
+     "aac"
+    ]
+   },
+   "note": "core boxes, DaW loader"
+  },
+  {
+   "case": "p_vid_silent",
+   "final": false,
+   "status": "success",
+   "prompts": 2,
+   "statuses": [
+    "success",
+    "success"
+   ],
+   "elapsed_s": 43.7,
+   "memory": {
+    "peak_commit_gib": 44.35,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 25.9,
+    "peak_vram0_used_gib": 4.24,
+    "peak_vram1_used_gib": 0.15
+   },
+   "jitter": {
+    "frames": 121,
+    "frames_without_person": 0,
+    "triples": 119,
+    "median_height_px": 380.2,
+    "jitter_median_pct_height": 0.194,
+    "jitter_p90_pct_height": 0.569,
+    "motion_median_pct_height": 0.582
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\v128_silent_rain.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.042,
+    "audio": []
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Pose\\Pose_Video_00005.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.042,
+    "audio": []
+   },
+   "note": "silent input, DaW loader (VHS loader failed: 'VHS failed to extract audio')"
+  },
+  {
+   "case": "p_vid_after_cancel",
+   "final": false,
+   "status": "success",
+   "prompts": 2,
+   "statuses": [
+    "success",
+    "success"
+   ],
+   "elapsed_s": 44.6,
+   "memory": {
+    "peak_commit_gib": 46.03,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 24.03,
+    "peak_vram0_used_gib": 3.22,
+    "peak_vram1_used_gib": 0.15
+   },
+   "jitter": {
+    "frames": 121,
+    "frames_without_person": 0,
+    "triples": 119,
+    "median_height_px": 380.2,
+    "jitter_median_pct_height": 0.194,
+    "jitter_p90_pct_height": 0.569,
+    "motion_median_pct_height": 0.582
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\man_in_the_rain.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.05,
+    "audio": [
+     "aac"
+    ]
+   },
+   "cancelled_status": "error (execution_interrupted in batch 1 of the dance video, prompt 81509c92)",
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Pose\\Pose_Video_00007-audio.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.042,
+    "audio": [
+     "aac"
+    ]
+   },
+   "note": "run directly after the dance video was interrupted in its first meta batch"
+  },
+  {
+   "case": "p_vid_dance",
+   "final": false,
+   "status": "success",
+   "prompts": 7,
+   "statuses": [
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success"
+   ],
+   "elapsed_s": 132.6,
+   "memory": {
+    "peak_commit_gib": 44.06,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 25.96,
+    "peak_vram0_used_gib": 3.35,
+    "peak_vram1_used_gib": 0.15
+   },
+   "jitter": {
+    "frames": 392,
+    "frames_without_person": 0,
+    "triples": 202,
+    "median_height_px": 138.7,
+    "jitter_median_pct_height": 3.503,
+    "jitter_p90_pct_height": 19.904,
+    "motion_median_pct_height": 2.953,
+    "confident_body_points_mean": 7.68,
+    "confident_leg_points_mean": 1.24
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\GimmeMore_DanceChallenge.mp4",
+    "width": 480,
+    "height": 854,
+    "fps": 30.0,
+    "frames": 392,
+    "duration": 13.119,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Pose\\Pose_Video_00009-audio.mp4",
+    "width": 480,
+    "height": 854,
+    "fps": 30.0,
+    "frames": 392,
+    "duration": 13.067,
+    "audio": [
+     "aac"
+    ]
+   },
+   "note": "core boxes"
+  },
+  {
+   "case": "pb_vid",
+   "final": false,
+   "status": "success",
+   "prompts": 2,
+   "statuses": [
+    "success",
+    "success"
+   ],
+   "elapsed_s": 44.7,
+   "memory": {
+    "peak_commit_gib": 46.37,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 24.2,
+    "peak_vram0_used_gib": 3.36,
+    "peak_vram1_used_gib": 0.15
+   },
+   "jitter": {
+    "frames": 121,
+    "frames_without_person": 0,
+    "triples": 119,
+    "median_height_px": 431.6,
+    "jitter_median_pct_height": 0.173,
+    "jitter_p90_pct_height": 0.537,
+    "motion_median_pct_height": 0.531,
+    "confident_body_points_mean": 10.21,
+    "confident_leg_points_mean": 0.5
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\man_in_the_rain.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.05,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Pose\\Pose_Video_00012-audio.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.042,
+    "audio": [
+     "aac"
+    ]
+   },
+   "note": "DaWPoseBoxes"
+  },
+  {
+   "case": "pb_vid_dance",
+   "final": false,
+   "status": "success",
+   "prompts": 7,
+   "statuses": [
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success"
+   ],
+   "elapsed_s": 130.0,
+   "memory": {
+    "peak_commit_gib": 44.0,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 26.21,
+    "peak_vram0_used_gib": 3.43,
+    "peak_vram1_used_gib": 0.15
+   },
+   "jitter": {
+    "frames": 392,
+    "frames_without_person": 0,
+    "triples": 386,
+    "median_height_px": 370.3,
+    "jitter_median_pct_height": 1.929,
+    "jitter_p90_pct_height": 7.221,
+    "motion_median_pct_height": 1.542,
+    "confident_body_points_mean": 15.6,
+    "confident_leg_points_mean": 5.14
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\GimmeMore_DanceChallenge.mp4",
+    "width": 480,
+    "height": 854,
+    "fps": 30.0,
+    "frames": 392,
+    "duration": 13.119,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Pose\\Pose_Video_00010-audio.mp4",
+    "width": 480,
+    "height": 854,
+    "fps": 30.0,
+    "frames": 392,
+    "duration": 13.067,
+    "audio": [
+     "aac"
+    ]
+   },
+   "note": "DaWPoseBoxes (shipped variant)"
+  },
+  {
+   "case": "p_long",
+   "final": false,
+   "status": "success",
+   "prompts": 23,
+   "statuses": [
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success"
+   ],
+   "elapsed_s": 630.6,
+   "memory": {
+    "peak_commit_gib": 55.7,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 16.73,
+    "peak_vram0_used_gib": 5.16,
+    "peak_vram1_used_gib": 0.15
+   },
+   "jitter": {
+    "frames": 1429,
+    "frames_without_person": 0,
+    "triples": 1427,
+    "median_height_px": 649.2,
+    "jitter_median_pct_height": 0.18,
+    "jitter_p90_pct_height": 0.537,
+    "motion_median_pct_height": 0.533,
+    "confident_body_points_mean": 10.22,
+    "confident_leg_points_mean": 0.5
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\v128_long_1080p.mp4",
+    "width": 1920,
+    "height": 1080,
+    "fps": 23.816666666666666,
+    "frames": 1429,
+    "duration": 60.0,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Pose\\Pose_Video_00013-audio.mp4",
+    "width": 1920,
+    "height": 1080,
+    "fps": 23.816666666666666,
+    "frames": 1429,
+    "duration": 60.0,
+    "audio": [
+     "aac"
+    ]
+   },
+   "note": "60 s 1920x1080 loop of man_in_the_rain, shipped graph with DaWPoseBoxes"
+  },
+  {
+   "case": "d_img",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 2.1,
+   "memory": {
+    "peak_commit_gib": 43.65,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.23,
+    "peak_vram0_used_gib": 2.59,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Depth_00001.png",
+    "Depth16_00001_.png"
+   ]
+  },
+  {
+   "case": "d_img_504",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 1.0,
+   "memory": {
+    "peak_commit_gib": 41.02,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.71,
+    "peak_vram0_used_gib": 1.36,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Depth_00002.png",
+    "Depth16_00002_.png"
+   ]
+  },
+  {
+   "case": "d_img_1512",
+   "final": false,
+   "status": "success",
+   "prompts": 1,
+   "statuses": [
+    "success"
+   ],
+   "elapsed_s": 2.0,
+   "memory": {
+    "peak_commit_gib": 50.11,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 27.76,
+    "peak_vram0_used_gib": 1.44,
+    "peak_vram1_used_gib": 0.15
+   },
+   "files": [
+    "Depth_00003.png",
+    "Depth16_00003_.png"
+   ]
+  },
+  {
+   "case": "d_vid",
+   "final": false,
+   "status": "success",
+   "prompts": 2,
+   "statuses": [
+    "success",
+    "success"
+   ],
+   "elapsed_s": 24.4,
+   "memory": {
+    "peak_commit_gib": 47.63,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 22.38,
+    "peak_vram0_used_gib": 1.73,
+    "peak_vram1_used_gib": 0.15
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\empty_room_assembly.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 120,
+    "duration": 5.0,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Depth\\Depth_Video_00001-audio.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 120,
+    "duration": 5.0,
+    "audio": [
+     "aac"
+    ]
+   }
+  },
+  {
+   "case": "d_vid_rain",
+   "final": false,
+   "status": "success",
+   "prompts": 2,
+   "statuses": [
+    "success",
+    "success"
+   ],
+   "elapsed_s": 24.8,
+   "memory": {
+    "peak_commit_gib": 45.25,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 22.42,
+    "peak_vram0_used_gib": 1.82,
+    "peak_vram1_used_gib": 0.15
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\man_in_the_rain.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.05,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Depth\\Depth_Video_00002-audio.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.042,
+    "audio": [
+     "aac"
+    ]
+   }
+  },
+  {
+   "case": "d_vid_dance",
+   "final": false,
+   "status": "success",
+   "prompts": 7,
+   "statuses": [
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success"
+   ],
+   "elapsed_s": 56.7,
+   "memory": {
+    "peak_commit_gib": 42.41,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 25.23,
+    "peak_vram0_used_gib": 2.02,
+    "peak_vram1_used_gib": 0.15
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\GimmeMore_DanceChallenge.mp4",
+    "width": 480,
+    "height": 854,
+    "fps": 30.0,
+    "frames": 392,
+    "duration": 13.119,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Depth\\Depth_Video_00003-audio.mp4",
+    "width": 480,
+    "height": 854,
+    "fps": 30.0,
+    "frames": 392,
+    "duration": 13.067,
+    "audio": [
+     "aac"
+    ]
+   }
+  },
+  {
+   "case": "d_vid_silent",
+   "final": false,
+   "status": "success",
+   "prompts": 2,
+   "statuses": [
+    "success",
+    "success"
+   ],
+   "elapsed_s": 24.5,
+   "memory": {
+    "peak_commit_gib": 43.93,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 23.45,
+    "peak_vram0_used_gib": 1.74,
+    "peak_vram1_used_gib": 0.15
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\v128_silent_rain.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.042,
+    "audio": []
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Depth\\Depth_Video_00004.mp4",
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 121,
+    "duration": 5.042,
+    "audio": []
+   }
+  },
+  {
+   "case": "d_long",
+   "final": false,
+   "status": "success",
+   "prompts": 23,
+   "statuses": [
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success",
+    "success"
+   ],
+   "elapsed_s": 445.3,
+   "memory": {
+    "peak_commit_gib": 54.99,
+    "peak_commit_limit_gib": 97.37,
+    "min_ram_avail_gib": 13.01,
+    "peak_vram0_used_gib": 2.0,
+    "peak_vram1_used_gib": 0.15
+   },
+   "source": {
+    "file": "L:\\ComfyUI\\ComfyUI\\input\\v128_long_1080p.mp4",
+    "width": 1920,
+    "height": 1080,
+    "fps": 23.816666666666666,
+    "frames": 1429,
+    "duration": 60.0,
+    "audio": [
+     "aac"
+    ]
+   },
+   "video": {
+    "file": "L:\\ComfyUI\\ComfyUI\\output\\Depth\\Depth_Video_00005-audio.mp4",
+    "width": 1920,
+    "height": 1080,
+    "fps": 23.816666666666666,
+    "frames": 1429,
+    "duration": 60.0,
+    "audio": [
+     "aac"
+    ]
+   },
+   "note": "60 s 1920x1080 loop of man_in_the_rain"
+  }
+ ],
+ "depth_flicker": {
+  "depth_flicker_empty_room_assembly": {
+   "video": "empty_room_assembly.mp4",
+   "frames": 120,
+   "size": [
+    720,
+    1280
+   ],
+   "resolution": 504,
+   "variants": {
+    "mono_per_frame_v2_style": {
+     "static_mean_abs_diff": 0.01283,
+     "p95": 0.06928,
+     "max": 0.16827,
+     "static_fraction": 0.871
+    },
+    "mono_per_frame_min_max": {
+     "static_mean_abs_diff": 0.01286,
+     "p95": 0.06048,
+     "max": 0.1627,
+     "static_fraction": 0.871
+    },
+    "mono_clip_global": {
+     "static_mean_abs_diff": 0.01214,
+     "p95": 0.04832,
+     "max": 0.20613,
+     "static_fraction": 0.871
+    },
+    "mono_aligned_inverse": {
+     "static_mean_abs_diff": 0.00585,
+     "p95": 0.00648,
+     "max": 0.40748,
+     "static_fraction": 0.871
+    },
+    "base_multiview_16_per_frame_v2": {
+     "static_mean_abs_diff": 0.0064,
+     "p95": 0.02503,
+     "max": 0.13718,
+     "static_fraction": 0.871
+    },
+    "base_multiview_16_clip_global": {
+     "static_mean_abs_diff": 0.00356,
+     "p95": 0.00784,
+     "max": 0.05616,
+     "static_fraction": 0.871
+    },
+    "base_multiview_32_per_frame_v2": {
+     "static_mean_abs_diff": 0.00616,
+     "p95": 0.01903,
+     "max": 0.14079,
+     "static_fraction": 0.871
+    },
+    "base_multiview_32_clip_global": {
+     "static_mean_abs_diff": 0.00292,
+     "p95": 0.00568,
+     "max": 0.05502,
+     "static_fraction": 0.871
+    }
+   },
+   "mono_seconds": 11.11,
+   "v2_style_rerun_mean_abs_diff": 0.00043,
+   "multiview_16_seconds": 14.79,
+   "multiview_32_seconds": 13.57,
+   "peak_vram_gib": 9.57
+  },
+  "depth_flicker_man_in_the_rain": {
+   "video": "man_in_the_rain.mp4",
+   "frames": 121,
+   "size": [
+    720,
+    1280
+   ],
+   "resolution": 504,
+   "variants": {
+    "mono_per_frame_v2_style": {
+     "static_mean_abs_diff": 0.00643,
+     "p95": 0.01157,
+     "max": 0.01497,
+     "static_fraction": 0.66
+    },
+    "mono_per_frame_min_max": {
+     "static_mean_abs_diff": 0.0064,
+     "p95": 0.01196,
+     "max": 0.02096,
+     "static_fraction": 0.66
+    },
+    "mono_clip_global": {
+     "static_mean_abs_diff": 0.00525,
+     "p95": 0.00792,
+     "max": 0.01047,
+     "static_fraction": 0.66
+    },
+    "mono_aligned_inverse": {
+     "static_mean_abs_diff": 0.00376,
+     "p95": 0.00708,
+     "max": 0.00783,
+     "static_fraction": 0.66
+    },
+    "base_multiview_16_per_frame_v2": {
+     "static_mean_abs_diff": 0.01032,
+     "p95": 0.04751,
+     "max": 0.08864,
+     "static_fraction": 0.66
+    },
+    "base_multiview_16_clip_global": {
+     "static_mean_abs_diff": 0.00703,
+     "p95": 0.01828,
+     "max": 0.08931,
+     "static_fraction": 0.66
+    },
+    "base_multiview_32_per_frame_v2": {
+     "static_mean_abs_diff": 0.00927,
+     "p95": 0.0122,
+     "max": 0.14567,
+     "static_fraction": 0.66
+    },
+    "base_multiview_32_clip_global": {
+     "static_mean_abs_diff": 0.00764,
+     "p95": 0.01131,
+     "max": 0.13384,
+     "static_fraction": 0.66
+    }
+   },
+   "mono_seconds": 11.27,
+   "v2_style_rerun_mean_abs_diff": 0.00061,
+   "multiview_16_seconds": 14.54,
+   "multiview_32_seconds": 13.49,
+   "peak_vram_gib": 9.57
+  }
+ },
+ "inpaint_check": "outside = pixels farther than 48 px from the painted mask; compared with the untouched source PNG",
+ "findings": [
+  {
+   "topic": "VHS Load Video with a silent input",
+   "observed": "prompt error in VHS_LoadVideo: 'VHS failed to extract audio' (v128_silent_rain.mp4, audio output linked)",
+   "cause": "ComfyUI 0.37 execution_list.cache_update -> PromptModelTracker.add iterates every linked output; VHS returns a LazyAudioMap whose iteration runs ffmpeg on a file without audio",
+   "fix": "DaWLoadVideoBatches returns no audio for files without an audio stream (p_vid_silent, d_vid_silent succeed)"
+  },
+  {
+   "topic": "VHS meta batch after a failed/cancelled first batch",
+   "observed": "the next run's first output was the remaining 57 frames (1280x720) of the previous video; after an interrupt in batch 1 of the dance video the same stale generator stayed open",
+   "cause": "VHS_BatchManager only resets when it executes with requeue 0; after a first-batch failure its output is cached (same inputs)",
+   "fix": "DaWLoadVideoBatches resets an open meta batch at a fresh run (requeue 0); p_vid_after_cancel renders only the new video, log 'closed a meta batch left open by a cancelled or failed run'"
+  },
+  {
+   "topic": "SDPose box aspect",
+   "observed": "SDPoseKeypointExtractor stretches each box to 768x1024 without keeping the aspect ratio",
+   "fix": "DaWPoseBoxes (3:4, 1.25 margin): dance video 7.68 -> 15.6 confident body points, 1.24 -> 5.14 leg points, jitter p90 19.9 -> 7.2 % of body height (p_vid_dance vs pb_vid_dance)"
+  },
+  {
+   "topic": "DA3 multi-view (Base) for video depth",
+   "observed": "pose_method cam_dec with fp16 weights fails: 'mat1 and mat2 must have the same dtype, but got Float and Half'; with ray_pose it runs but is not consistently steadier than per-frame Mono Large (see depth_flicker)",
+   "decision": "ship per-frame DA3 Mono Large (official template path); DA3 Base not shipped"
+  }
+ ]
+}

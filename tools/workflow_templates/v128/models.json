@@ -1,0 +1,29 @@
+[
+  {
+    "role": "Depth Anything 3 Mono Large (relative depth + sky, image and video default)",
+    "repo_id": "Comfy-Org/Depth-Anything-3",
+    "revision": "1aaeea516f22fb2f4c7fae761c8ed470c6cf9f93",
+    "source_path": "geometry_estimation/depth_anything_3_mono_large.safetensors",
+    "path": "geometry_estimation/DepthAnything3/depth_anything_3_mono_large.safetensors",
+    "size": 1336748056,
+    "sha256": "9b44eda5bedba5b4e125686fdb79d1db309c1b9785277576eb930f885b008f96"
+  },
+  {
+    "role": "SDPose Wholebody (133 keypoints: body, feet, face, hands)",
+    "repo_id": "Comfy-Org/SDPose",
+    "revision": "acb43fbe8142b54d9ebd52b720b81dd4e14c8d81",
+    "source_path": "checkpoints/sdpose_wholebody_fp16.safetensors",
+    "path": "checkpoints/SDPose/sdpose_wholebody_fp16.safetensors",
+    "size": 1916645792,
+    "sha256": "63d01f9a7494560693b24767f4469d59c9d3266b31ff0a253e74d1e611442721"
+  },
+  {
+    "role": "RT-DETR v4-x person detector (crops each person for SDPose)",
+    "repo_id": "Comfy-Org/SDPose",
+    "revision": "acb43fbe8142b54d9ebd52b720b81dd4e14c8d81",
+    "source_path": "diffusion_models/rt_detr_v4-x-hgnet_fp16.safetensors",
+    "path": "diffusion_models/SDPose/rt_detr_v4-x-hgnet_fp16.safetensors",
+    "size": 123968978,
+    "sha256": "581f9af9bbabb664d1891cbccd823308b176ecd409146f954dfa39af3bec2476"
+  }
+]
