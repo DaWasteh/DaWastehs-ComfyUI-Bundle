@@ -25,21 +25,23 @@ Projektordner: `ComfyUI/output/DaWasteh_H3_MusicVideo_v2/<Projekt>_<Hash>/` (`pl
 Zusätzliche Abhängigkeit: `openai-whisper` (im Bundle-venv vorhanden; Modell `small` ≈ 460 MB wird beim ersten Lauf
 nach `~/.cache/whisper` geladen). Ohne Whisper verteilt der Planer die Zeilen über den Gesangsbereich.
 
-## Video-Upscaling · v1.2.3
+## Video-Upscaling · v1.2.3, erweitert in v1.2.6
 
-`upscale_nodes.py` liefert den gemeinsamen Rahmen der drei Workflows in `workflows/Video Upscaling/`
-(Ultimate Upscale, Latent Upscaler 3D, SeedVR2):
+`upscale_nodes.py` liefert den gemeinsamen Rahmen der Workflows in `workflows/Video Upscaling/`
+(Ultimate Upscale, Latent Upscaler 3D, SeedVR2; v1.2.6: WAN 2.2 Low-Noise):
 
 | Node | Aufgabe |
 |---|---|
 | `VU 1 · Video-Upscale Planer` (`DaWVUPlanner`) | Blöcke an harten Schnitten, Zielgröße = Quelle × `scale` auf 32 px, 24-fps-Arbeitskopie falls nötig |
-| `VU 2 · Block laden` (`DaWVULoadBlock`) | Frames eines Blocks, aufgefüllt auf das Raster der Methode, dazu der Tonausschnitt |
+| `VU 2 · Block laden` (`DaWVULoadBlock`) | Frames eines Blocks, aufgefüllt auf das Raster der Methode (H3 `17k+5`, SeedVR2/WAN `4k+1`), dazu der Tonausschnitt. v1.2.6: optionaler Vorlauf `lead_frames` (echte Frames derselben Einstellung, an Schnitten der wiederholte erste Frame), den `VU 3` wieder verwirft |
 | `H3 · Video + Originalton → AV-Latent` (`DaWH3VideoToAVLatent`) | H3-Video- und Audio-VAE-Encode mit Speicherfreigabe vorab |
 | `H3 · Prompt einmal encodieren` (`DaWH3PromptOnce`) | Qwen3-VL lädt nur beim ersten Mal, Ergebnis unter `_conditioning/` zwischengespeichert |
-| `VU 3 · Block speichern` (`DaWVUSaveBlock`) | Auffüllung abschneiden, Block speichern, Vorschau mit Originalton, Resume |
+| `VU 3 · Block speichern` (`DaWVUSaveBlock`) | Vorlauf und Auffüllung abschneiden, Block speichern, Vorschau mit Originalton, Resume |
 | `VU 4 · Hochskaliertes Video` (`DaWVUFinalize`) | Blöcke verlustfrei verbinden, Original-Tonspur per `-c:a copy` |
+| `VU · Räumliche Kacheln` (`DaWVUSpatialTiles`, `spatial_tiles.py`) | v1.2.6: Modell-Patch, rechnet große Frames in überlappenden Kacheln nativer Größe und überblendet sie bei jedem Schritt (MultiDiffusion); arbeitet mit WANs zeitlichen Context-Windows zusammen |
+| `VU · Diffusion-Modell laden (RAM-schonend)` / `VU · Textencoder laden (RAM-schonend)` (`DaWVUReadOnlyUNETLoader`, `DaWVUReadOnlyCLIPLoader`, `readonly_loaders.py`) | v1.2.6: wie `UNETLoader`/`CLIPLoader`, aber mit schreibgeschützter Dateiabbildung (Funktionen aus `h3_highres.py`): Windows rechnet die Datei nicht auf das Commit-Limit an, Ergebnis bitidentisch |
 
-Details und Messwerte: `docs/VIDEO_UPSCALE_V123.md`.
+Details und Messwerte: `docs/VIDEO_UPSCALE_V123.md`, WAN: `docs/VIDEO_UPSCALE_WAN_V126.md`.
 
 ---
 

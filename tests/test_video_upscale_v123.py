@@ -50,7 +50,9 @@ class PlanningTests(unittest.TestCase):
             self.assertEqual((sv - 1) % 4, 0)
             self.assertTrue(0 <= sv - frames < 4)
             self.assertEqual(H["align_count"](frames, "none"), frames)
-        self.assertEqual(H["ALIGN_MODES"], ["h3 (17k+5)", "seedvr2 (4k+1)", "none"])
+            self.assertEqual(H["align_count"](frames, "wan (4k+1)"), sv)
+        # v1.2.6 appended the WAN mode; the v1.2.3 values keep their positions.
+        self.assertEqual(H["ALIGN_MODES"], ["h3 (17k+5)", "seedvr2 (4k+1)", "none", "wan (4k+1)"])
 
     def test_target_size_is_on_the_32_px_grid(self):
         self.assertEqual(H["target_size"](864, 480, 1.5), (1280, 704))
@@ -196,12 +198,16 @@ class LiveEvidenceTests(unittest.TestCase):
         cls.report = json.loads((ROOT / "performance/rdna4/video-upscale-v123-validation.json").read_text(encoding="utf-8"))
 
     def test_report_pins_shipped_workflows_sources_and_models(self):
+        import hashlib
+        import subprocess
+        # v1.2.6 appended the WAN alignment to upscale_nodes.py; this evidence describes the v1.2.3 files.
+        released = lambda p: hashlib.sha256(subprocess.check_output(["git", "show", "v1.2.3:" + p], cwd=ROOT)).hexdigest()
         self.assertEqual(set(self.report["methods"]), set(METHOD_FILES))
         for method, entry in self.report["methods"].items():
             self.assertEqual(entry["workflow"]["path"], "workflows/" + METHOD_FILES[method])
             self.assertEqual(entry["workflow"]["sha256"], self.sha(entry["workflow"]["path"]), method)
         for entry in self.report["sources"]:
-            self.assertEqual(self.sha(entry["path"]), entry["sha256"], entry["path"])
+            self.assertEqual(released(entry["path"]), entry["sha256"], entry["path"])
         manifest = json.loads((ROOT / "tools/workflow_templates/v123/models.json").read_text(encoding="utf-8"))
         self.assertEqual([m["sha256"] for m in manifest], [m["sha256"] for m in self.report["model_verification"]["files"]])
 

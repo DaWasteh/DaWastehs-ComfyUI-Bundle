@@ -1,0 +1,2299 @@
+{
+ "DaWVUPlanner": {
+  "input": {
+   "required": {
+    "video": [
+     "COMBO",
+     {
+      "tooltip": "Video from ComfyUI/input (subfolders allowed). Its audio stream is muxed back untouched.",
+      "multiselect": false,
+      "options": [
+       "video.mp4"
+      ],
+      "video_upload": true
+     }
+    ],
+    "video_path_override": [
+     "STRING",
+     {
+      "tooltip": "Optional absolute path (e.g. a finished music video in output/). Wins over 'video'.",
+      "default": "",
+      "multiline": false
+     }
+    ],
+    "project_name": [
+     "STRING",
+     {
+      "default": "Upscale",
+      "multiline": false
+     }
+    ],
+    "scale": [
+     "FLOAT",
+     {
+      "default": 1.5,
+      "min": 1.0,
+      "max": 4.0,
+      "step": 0.05
+     }
+    ],
+    "target_block_seconds": [
+     "FLOAT",
+     {
+      "default": 7.0,
+      "min": 1.0,
+      "max": 30.0,
+      "step": 0.25
+     }
+    ],
+    "min_block_seconds": [
+     "FLOAT",
+     {
+      "advanced": true,
+      "default": 2.0,
+      "min": 0.5,
+      "max": 30.0,
+      "step": 0.25
+     }
+    ],
+    "max_block_seconds": [
+     "FLOAT",
+     {
+      "tooltip": "Upper block length. H3 re-sampling per block must fit in VRAM; the workflow default is measured.",
+      "default": 10.0,
+      "min": 1.0,
+      "max": 60.0,
+      "step": 0.25
+     }
+    ],
+    "cut_threshold": [
+     "FLOAT",
+     {
+      "tooltip": "Mean grey-level change (0-255) between two frames that counts as a hard cut.",
+      "advanced": true,
+      "default": 18.0,
+      "min": 1.0,
+      "max": 128.0,
+      "step": 0.5
+     }
+    ],
+    "method_tag": [
+     "STRING",
+     {
+      "tooltip": "Part of the project folder; keeps results of different methods apart.",
+      "advanced": true,
+      "default": "upscale",
+      "multiline": false
+     }
+    ],
+    "resume_existing_blocks": [
+     "BOOLEAN",
+     {
+      "advanced": true,
+      "default": true
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "video",
+    "video_path_override",
+    "project_name",
+    "scale",
+    "target_block_seconds",
+    "min_block_seconds",
+    "max_block_seconds",
+    "cut_threshold",
+    "method_tag",
+    "resume_existing_blocks"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING",
+   "INT",
+   "INT",
+   "INT",
+   "INT",
+   "STRING"
+  ],
+  "output_is_list": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "output_name": [
+   "plan",
+   "block_count",
+   "loop_rounds",
+   "target_width",
+   "target_height",
+   "plan_text"
+  ],
+  "output_tooltips": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWVUPlanner",
+  "display_name": "VU 1 · Video-Upscale Planer (Blöcke an Schnitten, Zielgröße)",
+  "description": "Splits a video of any length into blocks for upscaling. Block borders are placed on hard cuts when possible; the target size is the source size times 'scale', snapped to 32 px.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Video Upscale",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "DaWVULoadBlock": {
+  "input": {
+   "required": {
+    "plan": [
+     "STRING",
+     {
+      "forceInput": true,
+      "multiline": false
+     }
+    ],
+    "block_index": [
+     "INT",
+     {
+      "default": 0,
+      "min": 0,
+      "max": 100000
+     }
+    ],
+    "index_offset": [
+     "INT",
+     {
+      "advanced": true,
+      "default": 0,
+      "min": 0,
+      "max": 100000
+     }
+    ],
+    "frame_alignment": [
+     "COMBO",
+     {
+      "default": "h3 (17k+5)",
+      "multiselect": false,
+      "options": [
+       "h3 (17k+5)",
+       "seedvr2 (4k+1)",
+       "none",
+       "wan (4k+1)"
+      ]
+     }
+    ]
+   },
+   "optional": {
+    "lead_frames": [
+     "INT",
+     {
+      "tooltip": "v1.2.6: frames in front of the block that the model renders along and VU 3 drops again. WAN re-draws the first frames of a clip more strongly (the first latent stands for a single frame); a lead-in moves that into frames nobody sees. Real frames of the same shot are used, at a hard cut or the video start the first frame is repeated. 0 = off (H3, SeedVR2).",
+      "advanced": true,
+      "default": 0,
+      "min": 0,
+      "max": 64
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "plan",
+    "block_index",
+    "index_offset",
+    "frame_alignment"
+   ],
+   "optional": [
+    "lead_frames"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "IMAGE",
+   "AUDIO",
+   "INT",
+   "STRING"
+  ],
+  "output_is_list": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "output_name": [
+   "images",
+   "audio",
+   "frames",
+   "info"
+  ],
+  "output_tooltips": [
+   null,
+   null,
+   null,
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWVULoadBlock",
+  "display_name": "VU 2 · Block laden (Frames + Originalton)",
+  "description": "Loads the frames and the original audio of one block. The frame count is padded (last frame repeated) to the grid of the method: H3 17k+5, SeedVR2 and WAN 4k+1. VU 3 removes the padding again.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Video Upscale",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "DaWVUSaveBlock": {
+  "input": {
+   "required": {
+    "plan": [
+     "STRING",
+     {
+      "forceInput": true,
+      "multiline": false
+     }
+    ],
+    "block_index": [
+     "INT",
+     {
+      "default": 0,
+      "min": 0,
+      "max": 100000
+     }
+    ],
+    "index_offset": [
+     "INT",
+     {
+      "advanced": true,
+      "default": 0,
+      "min": 0,
+      "max": 100000
+     }
+    ]
+   },
+   "optional": {
+    "images": [
+     "IMAGE",
+     {
+      "lazy": true
+     }
+    ],
+    "after": [
+     "*",
+     {
+      "tooltip": "Ordering token: previous block or the approval gate."
+     }
+    ]
+   },
+   "hidden": {
+    "prompt": [
+     "PROMPT"
+    ],
+    "extra_pnginfo": [
+     "EXTRA_PNGINFO"
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "plan",
+    "block_index",
+    "index_offset"
+   ],
+   "optional": [
+    "images",
+    "after"
+   ],
+   "hidden": [
+    "prompt",
+    "extra_pnginfo"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING",
+   "IMAGE",
+   "STRING"
+  ],
+  "output_is_list": [
+   false,
+   false,
+   false
+  ],
+  "output_name": [
+   "token",
+   "preview",
+   "info"
+  ],
+  "output_tooltips": [
+   null,
+   null,
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWVUSaveBlock",
+  "display_name": "VU 3 · Block speichern · Vorschau mit Originalton",
+  "description": "Keeps exactly the block's frames (padding removed), stores the block and shows it with the original audio. Finished blocks are skipped without re-sampling (resume).",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Video Upscale",
+  "output_node": true,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "DaWVUFinalize": {
+  "input": {
+   "required": {
+    "plan": [
+     "STRING",
+     {
+      "forceInput": true,
+      "multiline": false
+     }
+    ],
+    "container": [
+     "COMBO",
+     {
+      "default": "auto",
+      "multiselect": false,
+      "options": [
+       "auto",
+       "mp4",
+       "mkv"
+      ]
+     }
+    ]
+   },
+   "optional": {
+    "after": [
+     "*",
+     {}
+    ]
+   },
+   "hidden": {
+    "prompt": [
+     "PROMPT"
+    ],
+    "extra_pnginfo": [
+     "EXTRA_PNGINFO"
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "plan",
+    "container"
+   ],
+   "optional": [
+    "after"
+   ],
+   "hidden": [
+    "prompt",
+    "extra_pnginfo"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "final_file"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWVUFinalize",
+  "display_name": "VU 4 · Hochskaliertes Video · Originalton unverändert",
+  "description": "Joins all blocks without re-encoding and stream-copies the source's audio (-c:a copy). MP3/AAC go into MP4, other codecs into MKV.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Video Upscale",
+  "output_node": true,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "PixaromaPrompt": {
+  "input": {
+   "required": {},
+   "optional": {
+    "text_in": [
+     "STRING",
+     {
+      "forceInput": true,
+      "tooltip": "Optional. Wire another prompt in and it is joined with your typed prompt (order + separator set on the node). Leave it unconnected to output just your prompt."
+     }
+    ]
+   },
+   "hidden": {
+    "PromptState": [
+     "STRING",
+     {
+      "default": "{}"
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [],
+   "optional": [
+    "text_in"
+   ],
+   "hidden": [
+    "PromptState"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "text"
+  ],
+  "name": "PixaromaPrompt",
+  "display_name": "Prompt Pixaroma",
+  "description": "Prompt Pixaroma - a prompt box with a single text output, plus a personal library of reusable @tags and an optional text input you can join with.\n\nType your prompt and drop in @tags for the parts you reuse a lot. Save a tag called oilpainting whose full text is a long 'oil painting, thick brush strokes, Rembrandt lighting, ...' and then just type @oilpainting. Type @ in the box for a searchable list grouped by category; known tags glow, unknown ones warn you of a typo. Each @tag is swapped for its full text at run time, so the box stays short. Turn on Show expanded to preview what is sent.\n\nWire a prompt into the text input and it is joined with yours - choose My prompt first or Wired first, and the separator. With nothing wired, the output is just your prompt.\n\nManage tags with the Tags button: a fullscreen library with categories. Your library is saved in ComfyUI's settings, so it stays private to you and survives updating the plugin; share it on purpose with Export / Import.",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/💬 Prompt & Text",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "Your prompt with every @tag expanded, joined with the wired text input if one is connected."
+  ],
+  "search_aliases": []
+ },
+ "PixaromaShowText": {
+  "input": {
+   "required": {
+    "source": [
+     "*",
+     {
+      "tooltip": "Anything to inspect. Tensors are summarized as shape / dtype / min / max; latents show their sample shape; everything else uses str(value). The string representation is also passed through unchanged to the 'text' output."
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "source"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "text"
+  ],
+  "name": "PixaromaShowText",
+  "display_name": "Show Text Pixaroma",
+  "description": "Show Text Pixaroma - inspect what's flowing through your nodes in a real read-only text box you can select and copy from. Wire ANYTHING into source - strings, ints, floats, latents, IMAGE tensors, even unknown types - and the node prints a compact human-readable form:\n\n- Tensors: shape, dtype, min, max\n- Latents: sample shape\n- Anything else: str(value)\n\nResize the node freely; long text scrolls with a scrollbar instead of forcing the node to grow. The same string is also passed through to the 'text' STRING output, so you can chain it into other nodes (useful for inspecting a prompt before passing it through).",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/💬 Prompt & Text",
+  "output_node": true,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "The same text shown in the box, passed through so you can keep chaining it."
+  ],
+  "search_aliases": []
+ },
+ "DaWVUReadOnlyUNETLoader": {
+  "input": {
+   "required": {
+    "unet_name": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "WAN\\wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
+      ]
+     }
+    ],
+    "weight_dtype": [
+     "COMBO",
+     {
+      "advanced": true,
+      "default": "default",
+      "multiselect": false,
+      "options": [
+       "default",
+       "fp8_e4m3fn",
+       "fp8_e4m3fn_fast",
+       "fp8_e5m2"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "unet_name",
+    "weight_dtype"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "MODEL"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "model"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWVUReadOnlyUNETLoader",
+  "display_name": "VU · Diffusion-Modell laden (RAM-schonend)",
+  "description": "Like 'Load Diffusion Model', but the file is mapped read-only: Windows does not charge the whole checkpoint to the commit limit (WAN 14B: ~14 GB less).",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Video Upscale",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "LoraLoaderModelOnly": {
+  "input": {
+   "required": {
+    "model": [
+     "MODEL"
+    ],
+    "lora_name": [
+     [
+      "WAN\\wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors"
+     ]
+    ],
+    "strength_model": [
+     "FLOAT",
+     {
+      "default": 1.0,
+      "min": -100.0,
+      "max": 100.0,
+      "step": 0.01
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "model",
+    "lora_name",
+    "strength_model"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "MODEL"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "MODEL"
+  ],
+  "name": "LoraLoaderModelOnly",
+  "display_name": "Load LoRA",
+  "description": "This LoRAs loader is used to modify the diffusion model, altering the way in which latents are denoised such as applying styles. Multiple LoRA nodes can be linked together.",
+  "python_module": "nodes",
+  "category": "model/loaders",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "The modified diffusion model.",
+   "The modified CLIP model."
+  ],
+  "search_aliases": [
+   "lora",
+   "load lora",
+   "apply lora",
+   "lora loader",
+   "lora model"
+  ],
+  "essentials_category": "Image Generation"
+ },
+ "ModelSamplingSD3": {
+  "input": {
+   "required": {
+    "model": [
+     "MODEL"
+    ],
+    "shift": [
+     "FLOAT",
+     {
+      "default": 3.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.01
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "model",
+    "shift"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "MODEL"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "MODEL"
+  ],
+  "name": "ModelSamplingSD3",
+  "display_name": "ModelSamplingSD3",
+  "description": "",
+  "python_module": "comfy_extras.nodes_model_advanced",
+  "category": "model/patch/stable diffusion",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "search_aliases": []
+ },
+ "DaWVUSpatialTiles": {
+  "input": {
+   "required": {
+    "model": [
+     "MODEL",
+     {}
+    ],
+    "tile_width": [
+     "INT",
+     {
+      "tooltip": "Tile width in pixels. WAN 14B: 832 (480p tiles, most detail) or 1280 (720p).",
+      "default": 832,
+      "min": 256,
+      "max": 4096,
+      "step": 16
+     }
+    ],
+    "tile_height": [
+     "INT",
+     {
+      "tooltip": "Tile height in pixels.",
+      "default": 480,
+      "min": 256,
+      "max": 4096,
+      "step": 16
+     }
+    ],
+    "overlap": [
+     "INT",
+     {
+      "tooltip": "Minimum overlap in pixels; tiles are spread evenly, so the real overlap is often larger.",
+      "default": 128,
+      "min": 0,
+      "max": 1024,
+      "step": 16
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "model",
+    "tile_width",
+    "tile_height",
+    "overlap"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "MODEL"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "model"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWVUSpatialTiles",
+  "display_name": "VU · Räumliche Kacheln für Video-Modelle (MultiDiffusion)",
+  "description": "Denoises large frames in overlapping tiles of the model's native size and blends them at every step (MultiDiffusion). Gives native-scale detail at 1080p+ and needs VRAM for one tile only. Composes with WAN Context Windows (time) - use both for long, large videos.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Video Upscale",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "WanContextWindowsManual": {
+  "input": {
+   "required": {
+    "model": [
+     "MODEL",
+     {
+      "tooltip": "The model to apply context windows to during sampling."
+     }
+    ],
+    "context_length": [
+     "INT",
+     {
+      "tooltip": "The length of the context window in real frames. Must be 4*n + 1.",
+      "default": 81,
+      "min": 1,
+      "max": 16384,
+      "step": 4
+     }
+    ],
+    "context_overlap": [
+     "INT",
+     {
+      "tooltip": "The overlap of the context window in real frames.",
+      "default": 30,
+      "min": 0
+     }
+    ],
+    "context_schedule": [
+     "COMBO",
+     {
+      "tooltip": "Step-dependent scheduling algorithm for context windows.",
+      "default": "standard_uniform",
+      "multiselect": false,
+      "options": [
+       "standard_static",
+       "standard_uniform",
+       "looped_uniform",
+       "batched"
+      ]
+     }
+    ],
+    "context_stride": [
+     "INT",
+     {
+      "tooltip": "The stride of the context window; only applicable to uniform schedules.",
+      "advanced": true,
+      "default": 1,
+      "min": 1
+     }
+    ],
+    "closed_loop": [
+     "BOOLEAN",
+     {
+      "tooltip": "Whether to close the context window loop; only applicable to looped schedules.",
+      "advanced": true,
+      "default": false
+     }
+    ],
+    "fuse_method": [
+     "COMBO",
+     {
+      "tooltip": "The method to use to fuse the context windows.",
+      "default": "pyramid",
+      "multiselect": false,
+      "options": [
+       "pyramid",
+       "relative",
+       "flat",
+       "overlap-linear"
+      ]
+     }
+    ],
+    "freenoise": [
+     "BOOLEAN",
+     {
+      "tooltip": "Whether to apply FreeNoise noise shuffling, improves window blending.",
+      "advanced": true,
+      "default": true
+     }
+    ],
+    "retain_first_frame": [
+     "BOOLEAN",
+     {
+      "tooltip": "Retain the first I2V frame in every context window (may help retain initial reference).",
+      "default": false
+     }
+    ],
+    "split_conds_to_windows": [
+     "BOOLEAN",
+     {
+      "tooltip": "Whether to split multiple conditionings (created by ConditionCombine) to each window based on region index.",
+      "advanced": true,
+      "default": false
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "model",
+    "context_length",
+    "context_overlap",
+    "context_schedule",
+    "context_stride",
+    "closed_loop",
+    "fuse_method",
+    "freenoise",
+    "retain_first_frame",
+    "split_conds_to_windows"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "MODEL"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "MODEL"
+  ],
+  "output_tooltips": [
+   "The model with context windows applied during sampling."
+  ],
+  "output_matchtypes": null,
+  "name": "WanContextWindowsManual",
+  "display_name": "Wan Context Windows",
+  "description": "Set context windows for Wan-like models.",
+  "python_module": "comfy_extras.nodes_context_windows",
+  "category": "model/patch/wan",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": true,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "DaWVUReadOnlyCLIPLoader": {
+  "input": {
+   "required": {
+    "clip_name": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "UMT5\\umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+      ]
+     }
+    ],
+    "type": [
+     "COMBO",
+     {
+      "default": "wan",
+      "multiselect": false,
+      "options": [
+       "stable_diffusion",
+       "stable_cascade",
+       "sd3",
+       "stable_audio",
+       "mochi",
+       "ltxv",
+       "pixart",
+       "cosmos",
+       "lumina2",
+       "wan",
+       "hidream",
+       "chroma",
+       "ace",
+       "omnigen2",
+       "qwen_image",
+       "hunyuan_image",
+       "flux2",
+       "ovis",
+       "longcat_image",
+       "cogvideox",
+       "lens",
+       "pixeldit",
+       "ideogram4",
+       "boogu",
+       "krea2",
+       "joyimage",
+       "mage",
+       "minimax",
+       "yue2"
+      ]
+     }
+    ],
+    "device": [
+     "COMBO",
+     {
+      "advanced": true,
+      "default": "default",
+      "multiselect": false,
+      "options": [
+       "default",
+       "cpu"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "clip_name",
+    "type",
+    "device"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "CLIP"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "clip"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWVUReadOnlyCLIPLoader",
+  "display_name": "VU · Textencoder laden (RAM-schonend)",
+  "description": "Like 'Load CLIP', but the file is mapped read-only (UMT5-XXL fp8: ~6.7 GB less commit charge).",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-H3-MusicVideo",
+  "category": "DaWasteh/MiniMax H3/Video Upscale",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "CLIPTextEncode": {
+  "input": {
+   "required": {
+    "text": [
+     "STRING",
+     {
+      "multiline": true,
+      "dynamicPrompts": true,
+      "tooltip": "The text to be encoded."
+     }
+    ],
+    "clip": [
+     "CLIP",
+     {
+      "tooltip": "The CLIP model used for encoding the text."
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "text",
+    "clip"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "CONDITIONING"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "CONDITIONING"
+  ],
+  "name": "CLIPTextEncode",
+  "display_name": "CLIP Text Encode (Prompt)",
+  "description": "Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.",
+  "python_module": "nodes",
+  "category": "model/conditioning",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "A conditioning containing the embedded text used to guide the diffusion model."
+  ],
+  "search_aliases": [
+   "text",
+   "prompt",
+   "text prompt",
+   "positive prompt",
+   "negative prompt",
+   "encode text",
+   "text encoder",
+   "encode prompt"
+  ]
+ },
+ "VAELoader": {
+  "input": {
+   "required": {
+    "vae_name": [
+     [
+      "WAN\\wan_2.1_vae.safetensors"
+     ]
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "vae_name"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "VAE"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "VAE"
+  ],
+  "name": "VAELoader",
+  "display_name": "Load VAE",
+  "description": "",
+  "python_module": "nodes",
+  "category": "model/loaders",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "search_aliases": []
+ },
+ "ResizeImageMaskNode": {
+  "input": {
+   "required": {
+    "input": [
+     "COMFY_MATCHTYPE_V3",
+     {
+      "template": {
+       "template_id": "input_type",
+       "allowed_types": "IMAGE,MASK"
+      }
+     }
+    ],
+    "resize_type": [
+     "COMFY_DYNAMICCOMBO_V3",
+     {
+      "tooltip": "Select how to resize: by exact dimensions, scale factor, matching another image, etc.",
+      "options": [
+       {
+        "key": "scale dimensions",
+        "inputs": {
+         "required": {
+          "width": [
+           "INT",
+           {
+            "tooltip": "Target width in pixels. Set to 0 to auto-calculate from height while preserving aspect ratio.",
+            "default": 512,
+            "min": 0,
+            "max": 16384,
+            "step": 1
+           }
+          ],
+          "height": [
+           "INT",
+           {
+            "tooltip": "Target height in pixels. Set to 0 to auto-calculate from width while preserving aspect ratio.",
+            "default": 512,
+            "min": 0,
+            "max": 16384,
+            "step": 1
+           }
+          ],
+          "crop": [
+           "COMBO",
+           {
+            "tooltip": "How to handle aspect ratio mismatch: 'disabled' stretches to fit, 'center' crops to maintain aspect ratio.",
+            "default": "center",
+            "multiselect": false,
+            "options": [
+             "disabled",
+             "center"
+            ]
+           }
+          ]
+         }
+        }
+       },
+       {
+        "key": "scale by multiplier",
+        "inputs": {
+         "required": {
+          "multiplier": [
+           "FLOAT",
+           {
+            "tooltip": "Scale factor (e.g., 2.0 doubles size, 0.5 halves size).",
+            "default": 1.0,
+            "min": 0.01,
+            "max": 8.0,
+            "step": 0.01
+           }
+          ]
+         }
+        }
+       },
+       {
+        "key": "scale longer dimension",
+        "inputs": {
+         "required": {
+          "longer_size": [
+           "INT",
+           {
+            "tooltip": "The longer edge will be resized to this value. Aspect ratio is preserved.",
+            "default": 512,
+            "min": 0,
+            "max": 16384,
+            "step": 1
+           }
+          ]
+         }
+        }
+       },
+       {
+        "key": "scale shorter dimension",
+        "inputs": {
+         "required": {
+          "shorter_size": [
+           "INT",
+           {
+            "tooltip": "The shorter edge will be resized to this value. Aspect ratio is preserved.",
+            "default": 512,
+            "min": 0,
+            "max": 16384,
+            "step": 1
+           }
+          ]
+         }
+        }
+       },
+       {
+        "key": "scale width",
+        "inputs": {
+         "required": {
+          "width": [
+           "INT",
+           {
+            "tooltip": "Target width in pixels. Height auto-adjusts to preserve aspect ratio.",
+            "default": 512,
+            "min": 0,
+            "max": 16384,
+            "step": 1
+           }
+          ]
+         }
+        }
+       },
+       {
+        "key": "scale height",
+        "inputs": {
+         "required": {
+          "height": [
+           "INT",
+           {
+            "tooltip": "Target height in pixels. Width auto-adjusts to preserve aspect ratio.",
+            "default": 512,
+            "min": 0,
+            "max": 16384,
+            "step": 1
+           }
+          ]
+         }
+        }
+       },
+       {
+        "key": "scale total pixels",
+        "inputs": {
+         "required": {
+          "megapixels": [
+           "FLOAT",
+           {
+            "tooltip": "Target total megapixels (e.g., 1.0 ≈ 1024×1024). Aspect ratio is preserved.",
+            "default": 1.0,
+            "min": 0.01,
+            "max": 16.0,
+            "step": 0.01
+           }
+          ]
+         }
+        }
+       },
+       {
+        "key": "match size",
+        "inputs": {
+         "required": {
+          "match": [
+           "IMAGE,MASK",
+           {
+            "tooltip": "Resize input to match the dimensions of this reference image or mask."
+           }
+          ],
+          "crop": [
+           "COMBO",
+           {
+            "tooltip": "How to handle aspect ratio mismatch: 'disabled' stretches to fit, 'center' crops to maintain aspect ratio.",
+            "default": "center",
+            "multiselect": false,
+            "options": [
+             "disabled",
+             "center"
+            ]
+           }
+          ]
+         }
+        }
+       },
+       {
+        "key": "scale to multiple",
+        "inputs": {
+         "required": {
+          "multiple": [
+           "INT",
+           {
+            "tooltip": "Resize so width and height are divisible by this number. Useful for latent alignment (e.g., 8 or 64).",
+            "default": 8,
+            "min": 1,
+            "max": 16384,
+            "step": 1
+           }
+          ]
+         }
+        }
+       }
+      ]
+     }
+    ],
+    "scale_method": [
+     "COMBO",
+     {
+      "tooltip": "Interpolation algorithm. 'area' is best for downscaling, 'lanczos' for upscaling, 'nearest-exact' for pixel art.",
+      "default": "area",
+      "multiselect": false,
+      "options": [
+       "nearest-exact",
+       "bilinear",
+       "area",
+       "bicubic",
+       "lanczos"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "input",
+    "resize_type",
+    "scale_method"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "COMFY_MATCHTYPE_V3"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "resized"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": [
+   "input_type"
+  ],
+  "name": "ResizeImageMaskNode",
+  "display_name": "Resize Image/Mask",
+  "description": "Resize an image or mask using various scaling methods.",
+  "python_module": "comfy_extras.nodes_post_processing",
+  "category": "image/transform",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": [
+   "resize",
+   "resize image",
+   "resize mask",
+   "scale",
+   "scale image",
+   "scale mask",
+   "image resize",
+   "change size",
+   "dimensions",
+   "shrink",
+   "enlarge"
+  ],
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "VAEEncodeTiled": {
+  "input": {
+   "required": {
+    "pixels": [
+     "IMAGE"
+    ],
+    "vae": [
+     "VAE"
+    ],
+    "tile_size": [
+     "INT",
+     {
+      "default": 512,
+      "min": 64,
+      "max": 4096,
+      "step": 64,
+      "advanced": true
+     }
+    ],
+    "overlap": [
+     "INT",
+     {
+      "default": 64,
+      "min": 0,
+      "max": 4096,
+      "step": 32,
+      "advanced": true
+     }
+    ],
+    "temporal_size": [
+     "INT",
+     {
+      "default": 64,
+      "min": 8,
+      "max": 4096,
+      "step": 4,
+      "tooltip": "Only used for video VAEs: Amount of frames to encode at a time.",
+      "advanced": true
+     }
+    ],
+    "temporal_overlap": [
+     "INT",
+     {
+      "default": 8,
+      "min": 4,
+      "max": 4096,
+      "step": 4,
+      "tooltip": "Only used for video VAEs: Amount of frames to overlap.",
+      "advanced": true
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "pixels",
+    "vae",
+    "tile_size",
+    "overlap",
+    "temporal_size",
+    "temporal_overlap"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "LATENT"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "LATENT"
+  ],
+  "name": "VAEEncodeTiled",
+  "display_name": "VAE Encode (Tiled)",
+  "description": "",
+  "python_module": "nodes",
+  "category": "model/latent",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "search_aliases": []
+ },
+ "KSampler": {
+  "input": {
+   "required": {
+    "model": [
+     "MODEL",
+     {
+      "tooltip": "The model used for denoising the input latent."
+     }
+    ],
+    "seed": [
+     "INT",
+     {
+      "default": 0,
+      "min": 0,
+      "max": 18446744073709551615,
+      "control_after_generate": true,
+      "tooltip": "The random seed used for creating the noise."
+     }
+    ],
+    "steps": [
+     "INT",
+     {
+      "default": 20,
+      "min": 1,
+      "max": 10000,
+      "tooltip": "The number of steps used in the denoising process."
+     }
+    ],
+    "cfg": [
+     "FLOAT",
+     {
+      "default": 8.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.1,
+      "round": 0.01,
+      "tooltip": "The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality."
+     }
+    ],
+    "sampler_name": [
+     [
+      "euler",
+      "euler_cfg_pp",
+      "euler_ancestral",
+      "euler_ancestral_cfg_pp",
+      "heun",
+      "heunpp2",
+      "exp_heun_2_x0",
+      "exp_heun_2_x0_sde",
+      "dpm_2",
+      "dpm_2_ancestral",
+      "lms",
+      "dpm_fast",
+      "dpm_adaptive",
+      "dpmpp_2s_ancestral",
+      "dpmpp_2s_ancestral_cfg_pp",
+      "dpmpp_sde",
+      "dpmpp_sde_gpu",
+      "dpmpp_2m",
+      "dpmpp_2m_cfg_pp",
+      "dpmpp_2m_sde",
+      "dpmpp_2m_sde_gpu",
+      "dpmpp_2m_sde_heun",
+      "dpmpp_2m_sde_heun_gpu",
+      "dpmpp_3m_sde",
+      "dpmpp_3m_sde_gpu",
+      "ddpm",
+      "lcm",
+      "ipndm",
+      "ipndm_v",
+      "deis",
+      "cfgpp_ud10_ab",
+      "res_multistep",
+      "res_multistep_cfg_pp",
+      "res_multistep_ancestral",
+      "res_multistep_ancestral_cfg_pp",
+      "gradient_estimation",
+      "gradient_estimation_cfg_pp",
+      "er_sde",
+      "seeds_2",
+      "seeds_3",
+      "sa_solver",
+      "sa_solver_pece",
+      "ddim",
+      "uni_pc",
+      "uni_pc_bh2",
+      "legacy_rk",
+      "rk",
+      "rk_beta",
+      "deis_3m_ode",
+      "deis_2m_ode",
+      "deis_3m",
+      "deis_2m",
+      "res_6s_ode",
+      "res_5s_ode",
+      "res_3s_ode",
+      "res_2s_ode",
+      "res_3m_ode",
+      "res_2m_ode",
+      "res_6s",
+      "res_5s",
+      "res_3s",
+      "res_2s",
+      "res_3m",
+      "res_2m"
+     ],
+     {
+      "tooltip": "The algorithm used when sampling, this can affect the quality, speed, and style of the generated output."
+     }
+    ],
+    "scheduler": [
+     [
+      "simple",
+      "sgm_uniform",
+      "karras",
+      "exponential",
+      "ddim_uniform",
+      "beta",
+      "normal",
+      "linear_quadratic",
+      "kl_optimal",
+      "bong_tangent",
+      "beta57"
+     ],
+     {
+      "tooltip": "The scheduler controls how noise is gradually removed to form the image."
+     }
+    ],
+    "positive": [
+     "CONDITIONING",
+     {
+      "tooltip": "The conditioning describing the attributes you want to include in the image."
+     }
+    ],
+    "negative": [
+     "CONDITIONING",
+     {
+      "tooltip": "The conditioning describing the attributes you want to exclude from the image."
+     }
+    ],
+    "latent_image": [
+     "LATENT",
+     {
+      "tooltip": "The latent image to denoise."
+     }
+    ],
+    "denoise": [
+     "FLOAT",
+     {
+      "default": 1.0,
+      "min": 0.0,
+      "max": 1.0,
+      "step": 0.01,
+      "tooltip": "The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling."
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "model",
+    "seed",
+    "steps",
+    "cfg",
+    "sampler_name",
+    "scheduler",
+    "positive",
+    "negative",
+    "latent_image",
+    "denoise"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "LATENT"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "LATENT"
+  ],
+  "name": "KSampler",
+  "display_name": "KSampler",
+  "description": "Uses the provided model, positive and negative conditioning to denoise the latent image.",
+  "python_module": "nodes",
+  "category": "model/sampling",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "The denoised latent."
+  ],
+  "search_aliases": [
+   "sampler",
+   "sample",
+   "generate",
+   "denoise",
+   "diffuse",
+   "txt2img",
+   "img2img"
+  ]
+ },
+ "VAEDecodeTiled": {
+  "input": {
+   "required": {
+    "samples": [
+     "LATENT"
+    ],
+    "vae": [
+     "VAE"
+    ],
+    "tile_size": [
+     "INT",
+     {
+      "default": 512,
+      "min": 64,
+      "max": 4096,
+      "step": 32,
+      "advanced": true
+     }
+    ],
+    "overlap": [
+     "INT",
+     {
+      "default": 64,
+      "min": 0,
+      "max": 4096,
+      "step": 32,
+      "advanced": true
+     }
+    ],
+    "temporal_size": [
+     "INT",
+     {
+      "default": 64,
+      "min": 8,
+      "max": 4096,
+      "step": 4,
+      "tooltip": "Only used for video VAEs: Amount of frames to decode at a time.",
+      "advanced": true
+     }
+    ],
+    "temporal_overlap": [
+     "INT",
+     {
+      "default": 8,
+      "min": 4,
+      "max": 4096,
+      "step": 4,
+      "tooltip": "Only used for video VAEs: Amount of frames to overlap.",
+      "advanced": true
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "samples",
+    "vae",
+    "tile_size",
+    "overlap",
+    "temporal_size",
+    "temporal_overlap"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "IMAGE"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "IMAGE"
+  ],
+  "name": "VAEDecodeTiled",
+  "display_name": "VAE Decode (Tiled)",
+  "description": "",
+  "python_module": "nodes",
+  "category": "model/latent",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "search_aliases": []
+ },
+ "PixaromaPauseImage": {
+  "input": {
+   "required": {},
+   "optional": {
+    "image": [
+     "IMAGE",
+     {
+      "tooltip": "The image to gate. Wire your image source here; the same image flows out the output unchanged when the gate passes or continues."
+     }
+    ]
+   },
+   "hidden": {
+    "PauseState": [
+     "STRING",
+     {
+      "default": ""
+     }
+    ],
+    "unique_id": "UNIQUE_ID",
+    "prompt": "PROMPT",
+    "extra_pnginfo": "EXTRA_PNGINFO"
+   }
+  },
+  "input_order": {
+   "required": [],
+   "optional": [
+    "image"
+   ],
+   "hidden": [
+    "PauseState",
+    "unique_id",
+    "prompt",
+    "extra_pnginfo"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "IMAGE"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "image"
+  ],
+  "name": "PixaromaPauseImage",
+  "display_name": "Pause Image Pixaroma",
+  "description": "Pause Image Pixaroma - an inline gate that stops your workflow at this point so you can look at the image before running the expensive part that comes next (an upscale, a second pass, heavy post). Wire any IMAGE source into the input and your next node onto the output.\n\nWith the toggle on Pause, pressing Run stops here and shows the image; the rest of the workflow does not run. Press Continue and only the downstream runs, fed from the exact image you saw - the model, sampler and decode are skipped, so it is fast. Press Regenerate to roll a new image at this point (a different image if your sampler seed is on randomize). Flip the toggle to Pass to run the whole workflow end to end in one go.\n\nThe snapshot lives in ComfyUI's temp folder and is cleared when ComfyUI restarts, so after a restart pause once before using Continue.",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/🖼️ Image",
+  "output_node": true,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "The image continuing downstream - the live input in Pause/Pass mode, or the reloaded snapshot in Continue mode."
+  ],
+  "search_aliases": []
+ },
+ "PixaromaLoopStart": {
+  "input": {
+   "required": {
+    "total": [
+     "INT",
+     {
+      "default": 2,
+      "min": 1,
+      "max": 100000,
+      "step": 1,
+      "tooltip": "How many times the section between Loop Start and Loop End runs."
+     }
+    ]
+   },
+   "optional": {
+    "value1": [
+     "*",
+     {
+      "tooltip": "Starting value carried into round 0. After that, the matching slot from Loop End takes over each round. Optional."
+     }
+    ],
+    "value2": [
+     "*",
+     {
+      "tooltip": "Starting value carried into round 0. After that, the matching slot from Loop End takes over each round. Optional."
+     }
+    ],
+    "value3": [
+     "*",
+     {
+      "tooltip": "Starting value carried into round 0. After that, the matching slot from Loop End takes over each round. Optional."
+     }
+    ],
+    "value4": [
+     "*",
+     {
+      "tooltip": "Starting value carried into round 0. After that, the matching slot from Loop End takes over each round. Optional."
+     }
+    ],
+    "value5": [
+     "*",
+     {
+      "tooltip": "Starting value carried into round 0. After that, the matching slot from Loop End takes over each round. Optional."
+     }
+    ]
+   },
+   "hidden": {
+    "start_index": [
+     "*"
+    ],
+    "prompt": "PROMPT",
+    "unique_id": "UNIQUE_ID"
+   }
+  },
+  "input_order": {
+   "required": [
+    "total"
+   ],
+   "optional": [
+    "value1",
+    "value2",
+    "value3",
+    "value4",
+    "value5"
+   ],
+   "hidden": [
+    "start_index",
+    "prompt",
+    "unique_id"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "*",
+   "*",
+   "*",
+   "*",
+   "*",
+   "FLOW_CONTROL",
+   "INT"
+  ],
+  "output_is_list": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "output_name": [
+   "value1",
+   "value2",
+   "value3",
+   "value4",
+   "value5",
+   "loop",
+   "index"
+  ],
+  "name": "PixaromaLoopStart",
+  "display_name": "Loop Start Pixaroma",
+  "description": "Opening bracket of a loop. Put your nodes between Loop Start and Loop End and the whole section repeats. Set 'total' to the number of rounds. 'index' counts the rounds starting at 0. The value slots are things you want to carry from one round into the next (for example the frames built so far, or a running counter) - wire the matching Loop End value slots back so each round picks up where the last left off. Leave the value slots empty if your loop does not need to carry anything.",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/🔀 Logic & Flow",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "Carried value 1 for this round.",
+   "Carried value 2 for this round.",
+   "Carried value 3 for this round.",
+   "Carried value 4 for this round.",
+   "Carried value 5 for this round.",
+   "Wire this into Loop End's loop input to pair the two brackets.",
+   "Which round we are on, starting at 0 (0, 1, 2 ...)."
+  ],
+  "search_aliases": []
+ },
+ "PixaromaLoopEnd": {
+  "input": {
+   "required": {},
+   "optional": {
+    "value1": [
+     "*",
+     {
+      "rawLink": true,
+      "tooltip": "The updated carried value to hand to the next round. Wire the matching Loop Start value slot's downstream result here. Optional."
+     }
+    ],
+    "value2": [
+     "*",
+     {
+      "rawLink": true,
+      "tooltip": "The updated carried value to hand to the next round. Wire the matching Loop Start value slot's downstream result here. Optional."
+     }
+    ],
+    "value3": [
+     "*",
+     {
+      "rawLink": true,
+      "tooltip": "The updated carried value to hand to the next round. Wire the matching Loop Start value slot's downstream result here. Optional."
+     }
+    ],
+    "value4": [
+     "*",
+     {
+      "rawLink": true,
+      "tooltip": "The updated carried value to hand to the next round. Wire the matching Loop Start value slot's downstream result here. Optional."
+     }
+    ],
+    "value5": [
+     "*",
+     {
+      "rawLink": true,
+      "tooltip": "The updated carried value to hand to the next round. Wire the matching Loop Start value slot's downstream result here. Optional."
+     }
+    ],
+    "loop": [
+     "FLOW_CONTROL",
+     {
+      "rawLink": true,
+      "tooltip": "Wire this from Loop Start's loop output. Required for the loop to run."
+     }
+    ]
+   },
+   "hidden": {
+    "dynprompt": "DYNPROMPT",
+    "unique_id": "UNIQUE_ID"
+   }
+  },
+  "input_order": {
+   "required": [],
+   "optional": [
+    "value1",
+    "value2",
+    "value3",
+    "value4",
+    "value5",
+    "loop"
+   ],
+   "hidden": [
+    "dynprompt",
+    "unique_id"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "*",
+   "*",
+   "*",
+   "*",
+   "*"
+  ],
+  "output_is_list": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "output_name": [
+   "value1",
+   "value2",
+   "value3",
+   "value4",
+   "value5"
+  ],
+  "name": "PixaromaLoopEnd",
+  "display_name": "Loop End Pixaroma",
+  "description": "Closing bracket of a loop. Wire 'loop' from Loop Start. Feed the values you want to carry to the next round into the value slots (for example a Combine node that piles up each round's frames). When all rounds are done, the value slots output the final carried values. Everything between Loop Start and Loop End is what repeats.",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/🔀 Logic & Flow",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "Final carried value 1, after the last round.",
+   "Final carried value 2, after the last round.",
+   "Final carried value 3, after the last round.",
+   "Final carried value 4, after the last round.",
+   "Final carried value 5, after the last round."
+  ],
+  "search_aliases": []
+ },
+ "PixaromaRunTimer": {
+  "input": {
+   "required": {}
+  },
+  "input_order": {
+   "required": []
+  },
+  "is_input_list": false,
+  "output": [],
+  "output_is_list": [],
+  "output_name": [],
+  "name": "PixaromaRunTimer",
+  "display_name": "Run Timer Pixaroma",
+  "description": "Run Timer Pixaroma - a clock that times how long a workflow takes. It resets to zero when you press Run, counts up while the workflow is working, and freezes on the total time the moment it finishes, then plays a chime so you know it is done even when you are in another tab.\n\nThe node face shows only the clock. Right-click the node for settings: turn the chime on or off, pick the sound and volume (with a Preview button), choose how many decimals to show, and set the clock color.\n\nChime sounds are the same library as Notify Pixaroma - drop a .mp3, .wav, or .ogg with a simple name (letters, numbers, dashes) into assets/sounds/ to add more (restart ComfyUI to pick up new files). A master mute for every run timer chime sits at the top of this node's own settings, opened with the gear button on the node toolbar or by right-clicking the node.",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/🔀 Logic & Flow",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "search_aliases": []
+ },
+ "SelectModelDevice": {
+  "input": {
+   "required": {
+    "model": [
+     "MODEL",
+     {}
+    ],
+    "device": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "default",
+       "cpu",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "model",
+    "device"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "MODEL"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "MODEL"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "SelectModelDevice",
+  "display_name": "Select Model Device",
+  "description": "Place the diffusion model on a specific device (default / cpu / gpu:N).\n\n- \"default\" restores the device assigned by the loader (even after a\n  prior Select Model Device call).\n- \"cpu\" pins both the load and offload device to CPU.\n- \"gpu:N\" pins the load device to the Nth available GPU; the offload\n  device is restored to the loader's original choice.\n\nWhen the requested device differs from the device the input model is\nalready on, a fresh model is spawned via the loader's reload factory\n(cached_patcher_init) so the new patcher owns independent weights on\nthe new device. Loaders that don't support multigpu (no factory) will\ncause the node to pass through unchanged with a warning.\n\nIf the workflow already has MultiGPU CFG Split applied and the chosen\nGPU collides with one of the existing multigpu clones, that clone is\ndropped so two patchers don't end up bound to the same device.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the model through unchanged and logs a message\ninstead of failing.\n\nNOTE: Placing Select Model Device *after* a node that has already\nconsumed the same model (e.g. a KSampler that ran on this model on\nthe original device) is not recommended -- any state the prior\nconsumer mutated on the original model will be observed when the\nselected device matches the original (fast path). Place Select Model\nDevice before any consumer of the model.",
+  "python_module": "comfy_extras.nodes_multigpu",
+  "category": "advanced/multigpu",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "SelectCLIPDevice": {
+  "input": {
+   "required": {
+    "clip": [
+     "CLIP",
+     {}
+    ],
+    "device": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "default",
+       "cpu",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "clip",
+    "device"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "CLIP"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "CLIP"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "SelectCLIPDevice",
+  "display_name": "Select CLIP Device",
+  "description": "Place the CLIP text encoder on a specific device (default / cpu / gpu:N).\n\n- \"default\" restores the device assigned by the loader.\n- \"cpu\" pins both the load and offload device to CPU.\n- \"gpu:N\" pins the load device to the Nth available GPU.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the CLIP through unchanged and logs a message\ninstead of failing.",
+  "python_module": "comfy_extras.nodes_multigpu",
+  "category": "advanced/multigpu",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "SelectVAEDevice": {
+  "input": {
+   "required": {
+    "vae": [
+     "VAE",
+     {}
+    ],
+    "device": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "default",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "vae",
+    "device"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "VAE"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "VAE"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "SelectVAEDevice",
+  "display_name": "Select VAE Device",
+  "description": "Place the VAE on a specific device (default / gpu:N).\n\n- \"default\" restores the device assigned by the loader.\n- \"gpu:N\" pins the load device to the Nth available GPU; the offload\n  device is set to the standard VAE offload device.\n\nCPU is intentionally not exposed in the UI for the VAE; if a workflow\nsupplies \"cpu\" anyway (e.g. opened from another machine), the request\nis dropped with a log message and the VAE is passed through unchanged.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the VAE through unchanged and logs a message\ninstead of failing.",
+  "python_module": "comfy_extras.nodes_multigpu",
+  "category": "advanced/multigpu",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "DaWMultiGPUDeviceControl": {
+  "input": {
+   "required": {
+    "model_device": [
+     "COMBO",
+     {
+      "default": "gpu:0",
+      "multiselect": false,
+      "options": [
+       "default",
+       "cpu",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ],
+    "clip_device": [
+     "COMBO",
+     {
+      "default": "gpu:1",
+      "multiselect": false,
+      "options": [
+       "default",
+       "cpu",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ],
+    "vae_device": [
+     "COMBO",
+     {
+      "default": "gpu:1",
+      "multiselect": false,
+      "options": [
+       "default",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "model_device",
+    "clip_device",
+    "vae_device"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "COMBO",
+   "COMBO",
+   "COMBO"
+  ],
+  "output_is_list": [
+   false,
+   false,
+   false
+  ],
+  "output_name": [
+   "model_device",
+   "clip_device",
+   "vae_device"
+  ],
+  "output_tooltips": [
+   null,
+   null,
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWMultiGPUDeviceControl",
+  "display_name": "DaW Multi-GPU Device Control",
+  "description": "Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector.\n\nConnect these COMBO outputs to the ``device`` input of ComfyUI's official\nSelect Model Device, Select CLIP Device, and Select VAE Device nodes. The\nnode chooses labels only; the official selectors remain responsible for\nvalidating and moving the actual model objects.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-MultiGPU-Control",
+  "category": "DaWasteh/multigpu",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ }
+}

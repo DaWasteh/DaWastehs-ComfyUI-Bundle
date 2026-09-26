@@ -784,6 +784,7 @@ def main() -> int:
     v121_additions = {}
     v123_additions = {}
     v124_additions = {}
+    v126_additions = {}
     if args.against_head:
         # Import lazily so historical validators and pure graph tests do not
         # acquire a generator dependency unless checking collection migration.
@@ -812,6 +813,11 @@ def main() -> int:
         except ModuleNotFoundError:
             from build_qwen_image21_background_removal_v124 import build_all as build_v124
         v124_additions = build_v124()
+        try:
+            from tools.build_video_upscale_wan_v126 import build_all as build_v126
+        except ModuleNotFoundError:
+            from build_video_upscale_wan_v126 import build_all as build_v126
+        v126_additions = build_v126()
     if args.against_head and not args.skip_collection_totals:
         baseline_paths = git_baseline_workflow_paths()
         expected_paths = {
@@ -830,6 +836,7 @@ def main() -> int:
         expected_paths.update(f"workflows/{key}" for key in v121_additions)
         expected_paths.update(f"workflows/{key}" for key in v123_additions)
         expected_paths.update(f"workflows/{key}" for key in v124_additions)
+        expected_paths.update(f"workflows/{key}" for key in v126_additions)
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
@@ -885,7 +892,10 @@ def main() -> int:
                 key = _path_key(path).removeprefix("workflows/")
                 addition = next((item for item in ADDITIONS if item.path == key), None)
                 autosongwriter = next((item for item in V093_TARGET_WORKFLOWS if item.path == key), None)
-                if key in v124_additions:
+                if key in v126_additions:
+                    if v126_additions[key] != workflow:
+                        errors.append(f"{path}: differs from deterministic v1.2.6 WAN video-upscale workflow")
+                elif key in v124_additions:
                     if v124_additions[key] != workflow:
                         errors.append(f"{path}: differs from deterministic v1.2.4 Qwen Image background remover")
                 elif key in v123_additions:
@@ -951,7 +961,8 @@ def main() -> int:
     # model_info into the music-video encoder (+1 link).
     # v1.2.5 replaces the music video's Pixaroma image gate with two MV 5b review nodes (scene 1 and loop), each with its
     # parameter note: +3 nodes, +2 notes, +1 link.
-    expected = {"files": 252, "graphs": 305, "nodes": 11542, "notes": 5253, "links": 8033, "timers": 233}
+    # v1.2.6 adds the flat WAN 2.2 video-upscale workflow: +1 file, +64 nodes, +27 notes, +52 links, +1 timer.
+    expected = {"files": 253, "graphs": 306, "nodes": 11606, "notes": 5280, "links": 8085, "timers": 234}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

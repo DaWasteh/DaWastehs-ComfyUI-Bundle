@@ -1,0 +1,567 @@
+{
+  "release": "v1.2.6",
+  "date": "2026-09-26",
+  "scope": "End-to-end runs of the shipped WAN 2.2 upscale workflow through the real frontend (headless Edge, app.graphToPrompt) and Pixaroma's submit-time prune (Pause = plan + block 1, Continue = Pixaroma Loop + final mux) on one private FastH3 music-video scene. No media is published; only hashes and measurements.",
+  "source_video": {
+    "width": 1344,
+    "height": 768,
+    "fps": 24.0,
+    "frames": 152,
+    "audio": "aac, 48000 Hz, 298 packets",
+    "audio_packets_sha256": "cff99cb56b6cf408c310673049e8b7294238960465e6956c6ea5b95913dedec7",
+    "kind": "FastH3 music-video scene (v1.2.4/1.2.5 test project), one continuous shot"
+  },
+  "system": {
+    "os": "win32",
+    "comfyui_version": "0.37.0",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+    "ram_total": 50860650496
+  },
+  "commits": {
+    "comfyui": "93810483a4739a1588236919a3128d3070244146",
+    "pixaroma": "7a1cf573034fe14e29c1200d884531231a003e2e"
+  },
+  "profile": "start-MultiGPU.ps1 R9700 profile on test port 8191 (reserve-vram 4, VRAM guard 3 GiB, hipBLASLt)",
+  "gpu_defaults": {
+    "MODEL": "gpu:0 R9700 32GB",
+    "CLIP": "gpu:0",
+    "VAE": "gpu:0"
+  },
+  "model_verification": {
+    "manifest": "tools/workflow_templates/v126/models.json",
+    "files": [
+      {
+        "path": "diffusion_models/WAN/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors",
+        "size": 14293923632,
+        "sha256": "e71b96d7c82e638694c5e7fb98fac4bfb0e4ddc5fbbb4b1df40da8f0f1278a97",
+        "verified": true
+      },
+      {
+        "path": "loras/WAN/wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors",
+        "size": 1226977424,
+        "sha256": "ec95216e614b3c132c11bfb387b11feedf62163150ccc9068bca8a189771e75a",
+        "verified": true
+      },
+      {
+        "path": "text_encoders/UMT5/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "size": 6735906897,
+        "sha256": "c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68",
+        "verified": true
+      },
+      {
+        "path": "vae/WAN/wan_2.1_vae.safetensors",
+        "size": 253815318,
+        "sha256": "2fc39d31359a4b0a64f55876d8ff7fa8d780956ae2cb13463b0223e15148976b",
+        "verified": true
+      }
+    ]
+  },
+  "workflow": {
+    "path": "workflows/Video Upscaling/WAN22_14B_LowNoise-Video-Upscale.json",
+    "sha256": "a7ea1bc0ea5f1cba4f629fa7bcd7876babbd8a320fa67a1167a7d710e7366dd7",
+    "tested_changes": [
+      "video_path_override = private test scene",
+      "project_name"
+    ],
+    "tested_ui_sha256": "284fc0e4260ae6f140bf3eb675a542bed5bec0b8b8411207616f9e3c86c89a57",
+    "pause_contract_sha256": "4db742c9ad8fb40ea4a98f0617c4abac7c7da9325f30ebcf72615d911a9d4465",
+    "continue_contract_sha256": "71629d8809fad0671621ba964e49a56b4c1e42d0e2c33247ba13eefd8d2f4f26",
+    "pause_node_classes": [
+      "CLIPTextEncode",
+      "DaWMultiGPUDeviceControl",
+      "DaWVULoadBlock",
+      "DaWVUPlanner",
+      "DaWVUReadOnlyCLIPLoader",
+      "DaWVUReadOnlyUNETLoader",
+      "DaWVUSaveBlock",
+      "DaWVUSpatialTiles",
+      "KSampler",
+      "LoraLoaderModelOnly",
+      "ModelSamplingSD3",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "PixaromaShowText",
+      "ResizeImageMaskNode",
+      "SelectCLIPDevice",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "VAEDecodeTiled",
+      "VAEEncodeTiled",
+      "VAELoader",
+      "WanContextWindowsManual"
+    ],
+    "continue_node_classes": [
+      "CLIPTextEncode",
+      "DaWMultiGPUDeviceControl",
+      "DaWVUFinalize",
+      "DaWVULoadBlock",
+      "DaWVUPlanner",
+      "DaWVUReadOnlyCLIPLoader",
+      "DaWVUReadOnlyUNETLoader",
+      "DaWVUSaveBlock",
+      "DaWVUSpatialTiles",
+      "KSampler",
+      "LoraLoaderModelOnly",
+      "ModelSamplingSD3",
+      "PixaromaLoopEnd",
+      "PixaromaLoopStart",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "ResizeImageMaskNode",
+      "SelectCLIPDevice",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "VAEDecodeTiled",
+      "VAEEncodeTiled",
+      "VAELoader",
+      "WanContextWindowsManual"
+    ]
+  },
+  "plan": {
+    "blocks": 1,
+    "hard_cuts": 0,
+    "block_frames": [
+      152
+    ],
+    "lead_frames": [
+      5
+    ],
+    "target": [
+      2016,
+      1152
+    ]
+  },
+  "runs": {
+    "pause": {
+      "status": "success",
+      "seconds": 890.449
+    },
+    "continue": {
+      "status": "success",
+      "seconds": 1.795
+    },
+    "total_seconds": 892.2
+  },
+  "memory": {
+    "commit_peak_gb": 77.54,
+    "r9700_dedicated_peak_gb": 23.25,
+    "r9700_shared_peak_gb": 1.9,
+    "commit_limit_gb": 105.4,
+    "samples": 289
+  },
+  "final_film": {
+    "file_name_pattern": "output/video/DaWasteh_VideoUpscale/<project>_wan22_<W>x<H>_<time>.mp4",
+    "frames": 152,
+    "expected_frames": 152,
+    "width": 2016,
+    "height": 1152,
+    "video_codec": "h264",
+    "audio_packets": 298,
+    "audio_packets_source": 298,
+    "audio_packets_identical": true,
+    "audio_sha256": "cff99cb56b6cf408c310673049e8b7294238960465e6956c6ea5b95913dedec7",
+    "metrics": {
+      "frames": [
+        152,
+        152
+      ],
+      "size": [
+        2016,
+        1152
+      ],
+      "psnr_median": 20.580368041992188,
+      "psnr_min": 19.390281677246094,
+      "sharp_up": 73.85401153564453,
+      "sharp_lanczos": 78.28987121582031,
+      "flicker_rel_median": -0.08759069442749023,
+      "flicker_rel_max": 2.20992374420166,
+      "flicker_rel_argmax": 148
+    }
+  },
+  "loop_run": {
+    "tested_changes": [
+      "video_path_override = private test scene",
+      "project_name",
+      "target/min/max block seconds 3/2/4 (two blocks inside one shot)"
+    ],
+    "tested_ui_sha256": "d295ae37134ada30b5dd02b5da278379f0a307ce00e7e56cc1e703d5e6684d98",
+    "pause_contract_sha256": "ed1508ddd86b17c363daab9e902bc2d8ea3b27b0d528be018fc7792ac6b7b0a6",
+    "continue_contract_sha256": "7d53e5ad728ccb63d82c70d5714c94ccca352edc28e22849d92139166683a671",
+    "pause_node_classes": [
+      "CLIPTextEncode",
+      "DaWMultiGPUDeviceControl",
+      "DaWVULoadBlock",
+      "DaWVUPlanner",
+      "DaWVUReadOnlyCLIPLoader",
+      "DaWVUReadOnlyUNETLoader",
+      "DaWVUSaveBlock",
+      "DaWVUSpatialTiles",
+      "KSampler",
+      "LoraLoaderModelOnly",
+      "ModelSamplingSD3",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "PixaromaShowText",
+      "ResizeImageMaskNode",
+      "SelectCLIPDevice",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "VAEDecodeTiled",
+      "VAEEncodeTiled",
+      "VAELoader",
+      "WanContextWindowsManual"
+    ],
+    "continue_node_classes": [
+      "CLIPTextEncode",
+      "DaWMultiGPUDeviceControl",
+      "DaWVUFinalize",
+      "DaWVULoadBlock",
+      "DaWVUPlanner",
+      "DaWVUReadOnlyCLIPLoader",
+      "DaWVUReadOnlyUNETLoader",
+      "DaWVUSaveBlock",
+      "DaWVUSpatialTiles",
+      "KSampler",
+      "LoraLoaderModelOnly",
+      "ModelSamplingSD3",
+      "PixaromaLoopEnd",
+      "PixaromaLoopStart",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "ResizeImageMaskNode",
+      "SelectCLIPDevice",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "VAEDecodeTiled",
+      "VAEEncodeTiled",
+      "VAELoader",
+      "WanContextWindowsManual"
+    ],
+    "plan": {
+      "blocks": 2,
+      "hard_cuts": 0,
+      "block_frames": [
+        72,
+        80
+      ],
+      "lead_frames": [
+        5,
+        5
+      ],
+      "target": [
+        2016,
+        1152
+      ]
+    },
+    "runs": {
+      "pause": {
+        "status": "success",
+        "seconds": 453.163
+      },
+      "continue": {
+        "status": "success",
+        "seconds": 447.14
+      },
+      "total_seconds": 900.3
+    },
+    "final_film": {
+      "file_name_pattern": "output/video/DaWasteh_VideoUpscale/<project>_wan22_<W>x<H>_<time>.mp4",
+      "frames": 152,
+      "expected_frames": 152,
+      "width": 2016,
+      "height": 1152,
+      "video_codec": "h264",
+      "audio_packets": 298,
+      "audio_packets_source": 298,
+      "audio_packets_identical": true,
+      "audio_sha256": "cff99cb56b6cf408c310673049e8b7294238960465e6956c6ea5b95913dedec7",
+      "metrics": {
+        "frames": [
+          152,
+          152
+        ],
+        "size": [
+          2016,
+          1152
+        ],
+        "psnr_median": 20.71056842803955,
+        "psnr_min": 19.335100173950195,
+        "sharp_up": 82.02350616455078,
+        "sharp_lanczos": 78.28987121582031,
+        "flicker_rel_median": 0.019437789916992188,
+        "flicker_rel_max": 6.480888366699219,
+        "flicker_rel_argmax": 72
+      },
+      "block_border": {
+        "border_frame": 72,
+        "ratio_upscaled": 1.3854502345774478,
+        "ratio_source": 0.8115799336972843,
+        "seam_excess": 0.5738703008801634,
+        "jump_upscaled": 16.239850997924805,
+        "jump_source": 9.731240272521973,
+        "within_block_excess_median": -0.0049996026115018966
+      }
+    },
+    "memory": {
+      "commit_peak_gb": 80.87,
+      "r9700_dedicated_peak_gb": 26.51,
+      "r9700_shared_peak_gb": 1.9,
+      "commit_limit_gb": 105.4,
+      "samples": 292
+    }
+  },
+  "memory_run": {
+    "tested_changes": [
+      "video_path_override = private 8.5 s scene at 1664x928 (current music-video default)",
+      "project_name"
+    ],
+    "tested_ui_sha256": "73ce38f552355e98784fe5f0fed472f6f845187d97b9455164c87cb88706a9dc",
+    "pause_contract_sha256": "73cb90858058b0a7d19c1ed2832a5151755f4cea8b28f59bc075bb8c3b4b9403",
+    "continue_contract_sha256": "de82e25771415191e61cae7057c52d9569a40e9541fe0613492b126ac81fceb6",
+    "pause_node_classes": [
+      "CLIPTextEncode",
+      "DaWMultiGPUDeviceControl",
+      "DaWVULoadBlock",
+      "DaWVUPlanner",
+      "DaWVUReadOnlyCLIPLoader",
+      "DaWVUReadOnlyUNETLoader",
+      "DaWVUSaveBlock",
+      "DaWVUSpatialTiles",
+      "KSampler",
+      "LoraLoaderModelOnly",
+      "ModelSamplingSD3",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "PixaromaShowText",
+      "ResizeImageMaskNode",
+      "SelectCLIPDevice",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "VAEDecodeTiled",
+      "VAEEncodeTiled",
+      "VAELoader",
+      "WanContextWindowsManual"
+    ],
+    "continue_node_classes": [
+      "CLIPTextEncode",
+      "DaWMultiGPUDeviceControl",
+      "DaWVUFinalize",
+      "DaWVULoadBlock",
+      "DaWVUPlanner",
+      "DaWVUReadOnlyCLIPLoader",
+      "DaWVUReadOnlyUNETLoader",
+      "DaWVUSaveBlock",
+      "DaWVUSpatialTiles",
+      "KSampler",
+      "LoraLoaderModelOnly",
+      "ModelSamplingSD3",
+      "PixaromaLoopEnd",
+      "PixaromaLoopStart",
+      "PixaromaPauseImage",
+      "PixaromaPrompt",
+      "PixaromaRunTimer",
+      "ResizeImageMaskNode",
+      "SelectCLIPDevice",
+      "SelectModelDevice",
+      "SelectVAEDevice",
+      "VAEDecodeTiled",
+      "VAEEncodeTiled",
+      "VAELoader",
+      "WanContextWindowsManual"
+    ],
+    "plan": {
+      "blocks": 1,
+      "hard_cuts": 1,
+      "block_frames": [
+        204
+      ],
+      "lead_frames": [
+        5
+      ],
+      "target": [
+        2496,
+        1408
+      ]
+    },
+    "runs": {
+      "pause": {
+        "status": "success",
+        "seconds": 1983.354
+      },
+      "continue": {
+        "status": "success",
+        "seconds": 3.281
+      },
+      "total_seconds": 1986.6
+    },
+    "final_film": {
+      "file_name_pattern": "output/video/DaWasteh_VideoUpscale/<project>_wan22_<W>x<H>_<time>.mp4",
+      "frames": 204,
+      "expected_frames": 204,
+      "width": 2496,
+      "height": 1408,
+      "video_codec": "h264",
+      "audio_packets": 400,
+      "audio_packets_source": 400,
+      "audio_packets_identical": true,
+      "audio_sha256": "906e759e1eaa71daf2920c4a53f4c70bf3965459ad91e062cbbddf7833524155",
+      "metrics": {
+        "frames": [
+          204,
+          204
+        ],
+        "size": [
+          2496,
+          1408
+        ],
+        "psnr_median": 23.472073554992676,
+        "psnr_min": 21.030044555664062,
+        "sharp_up": 50.44023132324219,
+        "sharp_lanczos": 37.41563034057617,
+        "flicker_rel_median": 0.8490543365478516,
+        "flicker_rel_max": 2.978200912475586,
+        "flicker_rel_argmax": 12
+      }
+    },
+    "memory": {
+      "commit_peak_gb": 97.15,
+      "r9700_dedicated_peak_gb": 26.29,
+      "r9700_shared_peak_gb": 2.15,
+      "commit_limit_gb": 105.4,
+      "samples": 644
+    }
+  },
+  "experiments": {
+    "setup": "Excerpts of the test scene (1344x768 -> 2016x1152, 24 fps): 2 s = 48 frames (sweep_2s) and 33 frames = one context window (sweep_33). WAN 2.2 T2V A14B low-noise fp8 + lightx2v 4-step LoRA v1.1 (low noise), shift 5, euler/simple, CFG 1, R9700, VRAM guard. PSNR after Lanczos downscale to 1344x768; sharpness = median Laplacian variance (Lanczos upscale of the source = 38).",
+    "runs": [
+      {
+        "id": "A",
+        "config": "whole frame, denoise 0.30, 4 steps, windows 33/8 standard_uniform, 48 frames",
+        "s_per_step": 280.6,
+        "psnr_db": 16.4,
+        "sharpness": 66,
+        "result": "re-draws the scene: face identity, sign lettering and the pink bear change (start sigma 0.69)"
+      },
+      {
+        "id": "W1_d0.15",
+        "config": "whole frame, denoise 0.15, 4 steps, 33 frames",
+        "s_per_step": 95.4,
+        "psnr_db": 20.3,
+        "sharpness": 58
+      },
+      {
+        "id": "W1_d0.20",
+        "config": "whole frame, denoise 0.20, 4 steps, 33 frames",
+        "s_per_step": 95.8,
+        "psnr_db": 18.7,
+        "sharpness": 62
+      },
+      {
+        "id": "T1",
+        "config": "832x480 tiles, denoise 0.20, 4 steps",
+        "s_per_step": 43.0,
+        "psnr_db": 19.9,
+        "sharpness": 66,
+        "result": "no visible tile seams; finer facade detail than the whole frame; 2.2x faster"
+      },
+      {
+        "id": "T2",
+        "config": "1280x720 tiles, denoise 0.20, 4 steps",
+        "s_per_step": 73.1,
+        "psnr_db": 19.8,
+        "sharpness": 63
+      },
+      {
+        "id": "T3",
+        "config": "832x480 tiles, denoise 0.15, 4 steps",
+        "s_per_step": 43.0,
+        "psnr_db": 21.4,
+        "sharpness": 61,
+        "median_abs_error": 14.1
+      },
+      {
+        "id": "T4 (shipped sampling)",
+        "config": "832x480 tiles, denoise 0.15, 2 steps",
+        "s_per_step": 43.1,
+        "psnr_db": 21.5,
+        "sharpness": 63,
+        "median_abs_error": 14.0,
+        "result": "visually equal to 4 steps at half the time"
+      },
+      {
+        "id": "T6",
+        "config": "832x480 tiles, denoise 0.10, 2 steps",
+        "s_per_step": 43.1,
+        "psnr_db": 23.9,
+        "sharpness": 55,
+        "median_abs_error": 10.6,
+        "result": "most faithful (sign lettering kept), less new detail"
+      },
+      {
+        "id": "T7",
+        "config": "as T4 with a descriptive prompt (eye colour, make-up, clothing)",
+        "psnr_db": 21.5,
+        "sharpness": 63,
+        "result": "no visible difference to the generic prompt at this denoise"
+      },
+      {
+        "id": "V21",
+        "config": "as T4 with WAN 2.1 T2V 14B fp8 + lightx2v T2V 14B cfg/step-distill v2 LoRA",
+        "s_per_step": 51.3,
+        "psnr_db": 27.4,
+        "sharpness": 49,
+        "result": "same graph works; 2.1 changes much less (keeps the blue eyes and sign text) and adds less detail than the 2.2 low-noise expert"
+      }
+    ],
+    "first_frame": {
+      "finding": "WAN re-draws the start of every clip more strongly: abs. error to the source 24.9 at frame 0 falling to ~17 by frame 8 (T1); the plain VAE round trip (denoise 0.01) is flat at 3.4 - the sampler, not the VAE, causes it (the first latent stands for a single frame).",
+      "fix": "5 lead-in frames rendered along and dropped (DaWVULoadBlock lead_frames): frame 0 error 24.9 -> 15.4, jump into frame 1 +3.8 -> +1.0, clip median 17.0 -> 14.4 (T5 vs T1, same settings)."
+    },
+    "memory": {
+      "core_loaders": "UNETLoader/CLIPLoader: main run 39.9 -> 90.7 GB commit (UMT5 +12, model file mapping + frames +25, model to GPU +10, decode +5); 2496x1408 run already 93.5 GB before the decode (run stopped, ~109 GB expected)",
+      "read_only_loaders": "DaWVUReadOnlyUNETLoader/DaWVUReadOnlyCLIPLoader (h3_highres read-only mapping): bit-identical film; commit peak main 77.5 GB, two blocks 80.9 GB, 2496x1408 / 209 frames 97.2 GB (baseline 34.9 GB)",
+      "second_model": "101.2 of 105.4 GB while a second 14B model (the I2V speed probe) stayed cached in RAM next to the T2V model",
+      "tiles_vram": "whole-frame windows loaded the model partially (845 MB lowvram); with 832x480 tiles the VRAM budget is per tile and the model loads completely"
+    },
+    "speed_probe_i2v": "WAN 2.2 I2V low-noise used only as a speed proxy before the T2V download finished: 232-242 s per step for 2 whole-frame windows; interrupted",
+    "block_border": "two blocks inside one shot (3/2/4 s): face consistent, blurry neon lettering changes letters (seam excess +0.57); existing music-video scenes: mean 7.0 s, 70 of 126 > 7 s, none > 10 s -> shipped blocks 7/2/10 s",
+    "mouth": "2496x1408 run: mouth opening/closing in sync with the source, a lopsided talking mouth becomes a symmetric smile (frames 96-102)"
+  },
+  "visual_review": "1:1 crops (frames 38/76/114 of the main run; 51/102/153 of the memory run): clearly more detail than Lanczos - balcony railings, window frames, ivy, bricks, skin texture, single hair strands; the motion-blurred face of the source (frame 76) becomes sharp. Sign lettering is kept (INAAG); lips and irises become more saturated/darker. Mouth opening and closing stays in sync with the source, but a lopsided talking mouth becomes a symmetric smile (memory run, frames 96-102). Two-block run: the face stays consistent across the block border, blurry neon lettering changes letters (seam excess +0.57, inside a block ~0).",
+  "sources": [
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/upscale_nodes.py",
+      "sha256": "02d0f2dfcbc6a12f72eab7fb7887c77365f9b7ff1dbcfbb91a44489ebe0b4d1d"
+    },
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/spatial_tiles.py",
+      "sha256": "94ab8502d73a4af8c266a51b572ccf3bb2f9b8d75731b0c18d2bc367fddcb0ee"
+    },
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/readonly_loaders.py",
+      "sha256": "87078a9a836560c6b35147fc52f2066281b73d31ce3969dd4add212649729866"
+    },
+    {
+      "path": "custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/h3_highres.py",
+      "sha256": "a50f6b14891ce8de73c957a0fc616360549a2caed828679bc083aab32dcd188f"
+    },
+    {
+      "path": "tools/build_video_upscale_wan_v126.py",
+      "sha256": "bce0eefbc45c1fc8ce113f31e70b5d159482ef374767819f1d5ae6b64e551acf"
+    },
+    {
+      "path": "tools/workflow_templates/v126/node-schemas.json",
+      "sha256": "22c1114cd950dc06ab7ce74788b19222a6c028d371de43b922f322cdbfa25bb2"
+    },
+    {
+      "path": "tools/workflow_templates/v126/models.json",
+      "sha256": "8ccbc3fd171a233ff7aedaf13f48d21188d2b5166fdc87ef62f8e08642de07e3"
+    }
+  ]
+}

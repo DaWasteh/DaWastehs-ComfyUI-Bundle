@@ -62,3 +62,10 @@ custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/__init__.py text eol=lf
 custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/web/mv2_review.js text eol=lf
 tests/test_h3_music_video_v125_review.py text eol=lf
 performance/rdna4/h3-music-video-v125-review-validation.json text eol=lf
+# v1.2.6: WAN video upscale (builder, schemas/manifest, spatial tiles), its tests and the evidence file.
+tools/workflow_templates/v126/* text eol=lf
+tools/build_video_upscale_wan_v126.py text eol=lf
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/spatial_tiles.py text eol=lf
+custom_nodes/ComfyUI-DaWasteh-H3-MusicVideo/readonly_loaders.py text eol=lf
+tests/test_video_upscale_wan_v126.py text eol=lf
+performance/rdna4/video-upscale-wan-v126-validation.json text eol=lf

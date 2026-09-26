@@ -1,7 +1,7 @@
 """v1.2.3 video upscaling frame: plan blocks at hard cuts, load/encode a block, save it, join with the original audio.
 
-The three upscale workflows (Nerdy Rodent's MiniMax H3 methods: PlagueKind MMH3 Ultimate Upscale,
-LBH Latent Upscaler 3D, native SeedVR2) share this frame:
+The upscale workflows (Nerdy Rodent's MiniMax H3 methods: PlagueKind MMH3 Ultimate Upscale, LBH Latent
+Upscaler 3D, native SeedVR2; v1.2.6: WAN 2.2 low-noise with spatial tiles) share this frame:
 
     VU 1 Planner -> VU 2 Load Block -> [method] -> VU 3 Save Block -> Pixaroma Pause gate
                  -> Pixaroma Loop (blocks - 1 rounds) -> VU 4 Finalize
@@ -32,6 +32,8 @@ import folder_paths
 from comfy_api.latest import io, ui
 
 from . import mv2
+from .readonly_loaders import READONLY_NODES
+from .spatial_tiles import TILE_NODES
 from .core import (
     atomic_write_json,
     count_video_frames,
@@ -60,7 +62,7 @@ CATEGORY = "DaWasteh/MiniMax H3/Video Upscale"
 SCHEMA = "dawasteh-video-upscale/1"
 PROJECTS = "DaWasteh_VideoUpscale"
 VIDEO_EXTENSIONS = {".mp4", ".mkv", ".mov", ".webm", ".avi", ".m4v"}
-ALIGN_MODES = ["h3 (17k+5)", "seedvr2 (4k+1)", "none"]
+ALIGN_MODES = ["h3 (17k+5)", "seedvr2 (4k+1)", "none", "wan (4k+1)"]  # v1.2.6: appended, older workflows keep their value
 FPS = 24
 TAG = "[DaWasteh VideoUpscale]"
 
@@ -92,9 +94,22 @@ def _save_plan(path: str, plan: dict[str, Any]) -> None:
 def align_count(frames: int, mode: str) -> int:
     if mode.startswith("h3"):
         return mv2.align_frames(frames)
-    if mode.startswith("seedvr2"):
+    if mode.startswith(("seedvr2", "wan")):
         return frames + ((1 - frames) % 4)
     return frames
+
+
+def lead_split(start: int, lead: int, cut_frames: list[int], starts_at_cut: bool) -> tuple[int, int]:
+    """v1.2.6: (real frames from before the block, copies of its first frame) for `lead` lead-in frames.
+    Real frames come from the block's own shot only: never before frame 0 and never across a hard cut
+    (cut c = frame c starts a new shot)."""
+    if lead <= 0:
+        return 0, 0
+    if starts_at_cut:
+        return 0, lead
+    shot_start = max([int(c) for c in cut_frames if int(c) <= start], default=0)
+    real = max(0, min(lead, start - shot_start))
+    return real, lead - real
 
 
 def target_size(width: int, height: int, scale: float, multiple: int = 32) -> tuple[int, int]:
@@ -230,6 +245,7 @@ class DaWVUPlanner(io.ComfyNode):
             "project_dir": str(project), "source": source, "working_video": working, "fps": FPS, "source_fps": info["fps"],
             "width": info["width"], "height": info["height"], "scale": float(scale), "target_width": tw, "target_height": th,
             "total_frames": total, "has_audio": info["has_audio"], "audio_codec": info["audio_codec"], "hard_cuts": len(cuts),
+            "cut_frames": [int(c) for c in cuts],  # v1.2.6: lead-in frames never reach back across a cut
             "blocks": [{"index": k, "start_frame": a, "end_frame": b, "frames": b - a, "starts_at_cut": a in cut_set}
                        for k, (a, b) in enumerate(frames)],
             "render_nonce": 0 if resume_existing_blocks else time.time_ns(),
@@ -278,35 +294,50 @@ class DaWVULoadBlock(io.ComfyNode):
             display_name="VU 2 · Block laden (Frames + Originalton)",
             category=CATEGORY,
             description=("Loads the frames and the original audio of one block. The frame count is padded (last frame "
-                         "repeated) to the grid of the method: H3 17k+5, SeedVR2 4k+1. VU 3 removes the padding again."),
+                         "repeated) to the grid of the method: H3 17k+5, SeedVR2 and WAN 4k+1. VU 3 removes the padding again."),
             inputs=[
                 io.String.Input("plan", force_input=True),
                 io.Int.Input("block_index", default=0, min=0, max=100000),
                 io.Int.Input("index_offset", default=0, min=0, max=100000, advanced=True),
                 io.Combo.Input("frame_alignment", options=ALIGN_MODES, default=ALIGN_MODES[0]),
+                io.Int.Input("lead_frames", default=0, min=0, max=64, optional=True, advanced=True,
+                             tooltip=("v1.2.6: frames in front of the block that the model renders along and VU 3 drops "
+                                      "again. WAN re-draws the first frames of a clip more strongly (the first latent "
+                                      "stands for a single frame); a lead-in moves that into frames nobody sees. Real "
+                                      "frames of the same shot are used, at a hard cut or the video start the first frame "
+                                      "is repeated. 0 = off (H3, SeedVR2).")),
             ],
             outputs=[io.Image.Output("images"), io.Audio.Output("audio"), io.Int.Output("frames"), io.String.Output("info")],
         )
 
     @classmethod
-    def execute(cls, plan, block_index, index_offset, frame_alignment) -> io.NodeOutput:
+    def execute(cls, plan, block_index, index_offset, frame_alignment, lead_frames=0) -> io.NodeOutput:
         manifest = _plan(plan)
         index, block = _block(manifest, block_index, index_offset)
         if block is None:
             raise IndexError(f"Block {index + 1} does not exist; the plan has {len(manifest['blocks'])} blocks")
         ffmpeg = find_ffmpeg()
         count = block["frames"]
-        padded = align_count(count, frame_alignment)
-        images = _read_frames(ffmpeg, manifest["working_video"], block["start_frame"], count, manifest["width"], manifest["height"])
-        if padded > count:
-            images = torch.cat([images, images[-1:].repeat(padded - count, 1, 1, 1)], dim=0)
+        real, repeat = lead_split(block["start_frame"], int(lead_frames or 0), manifest.get("cut_frames", []), block["starts_at_cut"])
+        lead = real + repeat
+        padded = align_count(lead + count, frame_alignment)
+        images = _read_frames(ffmpeg, manifest["working_video"], block["start_frame"] - real, real + count,
+                              manifest["width"], manifest["height"])
+        if repeat:
+            images = torch.cat([images[real:real + 1].repeat(repeat, 1, 1, 1), images], dim=0)
+        if padded > lead + count:
+            images = torch.cat([images, images[-1:].repeat(padded - lead - count, 1, 1, 1)], dim=0)
+        if block.get("lead_frames", 0) != lead:
+            block["lead_frames"] = lead  # VU 3 drops exactly these frames again
+            _save_plan(plan, manifest)
         start = block["start_frame"] / FPS
+        audio_frames = padded - lead  # the audio always starts at the block (H3 runs without lead-in)
         if manifest["has_audio"]:
-            waveform = _decode_window(ffmpeg, manifest["source"], start, padded / FPS)
+            waveform = _decode_window(ffmpeg, manifest["source"], start, audio_frames / FPS)
         else:
-            waveform = torch.zeros(1, 2, int(round(padded / FPS * 48000)))
+            waveform = torch.zeros(1, 2, int(round(audio_frames / FPS * 48000)))
         info = (f"Block {index + 1}/{len(manifest['blocks'])} · Frames {block['start_frame']}–{block['end_frame'] - 1} · "
-                f"{count} Frames (+{padded - count} Auffüllung)")
+                f"{count} Frames (+{padded - lead - count} Auffüllung" + (f", +{lead} Vorlauf" if lead else "") + ")")
         _log(info)
         return io.NodeOutput(images, {"waveform": waveform, "sample_rate": 48000}, count, info)
 
@@ -464,9 +495,10 @@ class DaWVUSaveBlock(io.ComfyNode):
             token = f"{plan}|{index}|{block['render_key']}"
             return io.NodeOutput(token, _pil_to_image(sheet), info, ui=preview) if preview else io.NodeOutput(token, _pil_to_image(sheet), info)
         count = int(block["frames"])
-        if images.shape[0] < count:
-            raise RuntimeError(f"Block {index + 1}: got {images.shape[0]} frames, need {count}")
-        used = images[:count, ..., :3]
+        lead = int(block.get("lead_frames", 0))  # v1.2.6: lead-in rendered along by VU 2, dropped here
+        if images.shape[0] < lead + count:
+            raise RuntimeError(f"Block {index + 1}: got {images.shape[0]} frames, need {lead} lead-in + {count}")
+        used = images[lead:lead + count, ..., :3]
         h, w = int(used.shape[1]) // 2 * 2, int(used.shape[2]) // 2 * 2
         used = used[:, :h, :w]
         ffmpeg = find_ffmpeg()
@@ -556,4 +588,5 @@ class DaWVUFinalize(io.ComfyNode):
         return io.NodeOutput(str(final), ui=preview) if preview else io.NodeOutput(str(final))
 
 
-UPSCALE_NODES = [DaWVUPlanner, DaWVULoadBlock, DaWH3VideoToAVLatent, DaWH3PromptOnce, DaWVUSaveBlock, DaWVUFinalize]
+UPSCALE_NODES = [DaWVUPlanner, DaWVULoadBlock, DaWH3VideoToAVLatent, DaWH3PromptOnce, DaWVUSaveBlock, DaWVUFinalize,
+                 *TILE_NODES, *READONLY_NODES]

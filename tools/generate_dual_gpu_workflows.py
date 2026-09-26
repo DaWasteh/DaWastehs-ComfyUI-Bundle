@@ -117,6 +117,8 @@ BASE_LOADER_TYPES = {
     "CheckpointLoaderSimple",
     "CLIPLoader",
     "DaWMV2LoadModel",  # v1.2.4 FastH3 loader (read-only mapping + optional LoRA) of the music-video workflow
+    "DaWVUReadOnlyCLIPLoader",  # v1.2.6 read-only drop-ins of the WAN video upscale
+    "DaWVUReadOnlyUNETLoader",
     "DualCLIPLoader",
     "TripleCLIPLoader",
     "ImageOnlyCheckpointLoader",
