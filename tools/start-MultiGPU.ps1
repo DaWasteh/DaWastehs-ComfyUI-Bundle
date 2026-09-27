@@ -81,8 +81,13 @@ $VramGuardReserveGib = 3           # VRAM left untouched per device (driver star
 # Missing files = MV 2 keeps Qwen3.5 4B inside ComfyUI.
 # The vision projector (mmproj-*.gguf) is picked from the same folder.
 $PromptLlmGguf = Join-Path $ComfyPath "models\LLM\Qwen3.8\Qwen3.8-27B-IQ4_XS-3.84bpw.gguf"
-$LlamaServerExe = "L:\LAB\ai-local\b11160_hip_llama.cpp\build\bin\llama-server.exe"
+# v1.2.9: "auto" = newest b<build>_hip_llama.cpp\build\bin\llama-server.exe below $LlamaBuildRoot.
+# The fixed b11160 path of v1.2.5 disappeared with the next llama.cpp rebuild and silently
+# turned the GGUF prompt writers off. A full path here pins one build again.
+$LlamaServerExe = "auto"
+$LlamaBuildRoot = "L:\LAB\ai-local"
 $LlamaHipDevice = "1"              # physical HIP index for the server: 1 = RX 9070 XT
+# Ming Image (v1.2.9) uses the same GGUF and server for its official prompt rewriters.
 
 if (!(Test-Path -LiteralPath $ComfyPath)) { throw "ComfyUI folder not found: $ComfyPath" }
 if (!(Test-Path -LiteralPath $PythonExe)) { throw "Python venv not found: $PythonExe" }
@@ -141,12 +146,23 @@ if ($DebugHipLaunchBlocking) {
     $env:CUDA_LAUNCH_BLOCKING = "1"
 }
 
+if (($LlamaServerExe -eq "auto" -or !(Test-Path -LiteralPath $LlamaServerExe)) -and (Test-Path -LiteralPath $LlamaBuildRoot)) {
+    $NewestLlamaBuild = Get-ChildItem -LiteralPath $LlamaBuildRoot -Directory -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -match '^b(\d+)_hip_llama\.cpp$' -and
+                       (Test-Path -LiteralPath (Join-Path $_.FullName "build\bin\llama-server.exe")) } |
+        Sort-Object { [int]($_.Name -replace '^b(\d+)_hip_llama\.cpp$', '$1') } -Descending |
+        Select-Object -First 1
+    if ($NewestLlamaBuild) {
+        $LlamaServerExe = Join-Path $NewestLlamaBuild.FullName "build\bin\llama-server.exe"
+    }
+}
+
 $PromptLlm = "Qwen3.5 4B (in ComfyUI)"
 if ((Test-Path -LiteralPath $PromptLlmGguf) -and (Test-Path -LiteralPath $LlamaServerExe)) {
     $env:DAWASTEH_PROMPT_LLM_GGUF = $PromptLlmGguf
     $env:DAWASTEH_LLAMA_SERVER = $LlamaServerExe
     $env:DAWASTEH_LLAMA_HIP_DEVICE = $LlamaHipDevice
-    $PromptLlm = "$(Split-Path -Leaf $PromptLlmGguf) (llama.cpp, HIP device $LlamaHipDevice)"
+    $PromptLlm = "$(Split-Path -Leaf $PromptLlmGguf) (llama.cpp $(Split-Path -Leaf (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $LlamaServerExe)))), HIP device $LlamaHipDevice)"
 } else {
     Remove-Item Env:DAWASTEH_PROMPT_LLM_GGUF -ErrorAction SilentlyContinue
     Remove-Item Env:DAWASTEH_LLAMA_SERVER -ErrorAction SilentlyContinue
@@ -154,7 +170,7 @@ if ((Test-Path -LiteralPath $PromptLlmGguf) -and (Test-Path -LiteralPath $LlamaS
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "ComfyUI Dual-GPU Launcher v1.2.5 (performance profile v0.9.8)" -ForegroundColor Cyan
+Write-Host "ComfyUI Dual-GPU Launcher v1.2.9 (performance profile v0.9.8)" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor DarkCyan
 Write-Host "ComfyUI: $ComfyPath"
 Write-Host "Port:    $Port"
@@ -167,7 +183,7 @@ Write-Host "Profile: DynamicVRAM=$EnableDynamicVram, async-offload=$AsyncOffload
 Write-Host "BLAS:    hipBLASLt=$PreferHipBlasLt"
 Write-Host "Opt-in:  ck-attention=$UseComfyKitchenAttention, fp8_matrix_mult=$FastFp8MatrixMult"
 Write-Host "Guard:   VRAM guard=$VramGuard (reserve $VramGuardReserveGib GiB per GPU, DAWASTEH_VRAM_GUARD)"
-Write-Host "MV 2:    prompt writer = $PromptLlm"
+Write-Host "LLM:     MV 2 / Ming prompt writer = $PromptLlm"
 Write-Host ""
 
 $ComfyArgs = @(

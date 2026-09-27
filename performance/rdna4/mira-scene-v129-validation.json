@@ -1,0 +1,1027 @@
+{
+  "release": "v1.2.9",
+  "date": "2026-09-27",
+  "scope": "Mira-Scene single image -> 3D scene (SAM 3.1, MoGe-2, Mira CCM, TRELLIS.2 per object, Mira placement); fast voxel layout preview",
+  "system": {
+    "os": "win32",
+    "comfyui_version": "0.37.0",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+    "ram_total": 50860650496
+  },
+  "frontend": "1.53.6 (headless Edge, app.graphToPrompt via performance/rdna4/bench/ui_to_api.py)",
+  "profile": "start-MultiGPU.ps1 R9700 profile on test port 8192 (reserve-vram 4, VRAM guard 3 GiB, hipBLASLt, cache-ram, pytorch attention)",
+  "gpu_defaults": {
+    "MODEL": "gpu:0 R9700 32GB",
+    "CLIP": "gpu:0",
+    "VAE": "gpu:0",
+    "Mira CCM": "ComfyUI torch device (gpu:0)"
+  },
+  "mira_code": {
+    "repository": "https://github.com/VAST-AI-Research/Mira-Scene",
+    "commit": "18f42656f3b6f96ef61d9b291c93d1036bdaa016",
+    "license": "none (upstream issue #4 'Request: add LICENSE'); private use, not redistributed"
+  },
+  "model_verification": {
+    "manifest": "tools/workflow_templates/v129/mira-models.json",
+    "files": [
+      {
+        "path": "diffusers/Mira-Scene/pipeline/model_index.json",
+        "sha256": "a8f09e756bbb42fd3570184e4b3ac7de602634aa446969dfd66a26dc2a1e34d8",
+        "matches_manifest": true
+      },
+      {
+        "path": "diffusers/Mira-Scene/pipeline/feature_extractor/preprocessor_config.json",
+        "sha256": "2516d6317972de942f7a6425ca534e74d4858e717fa8956fe80753858dfc5047",
+        "matches_manifest": true
+      },
+      {
+        "path": "diffusers/Mira-Scene/pipeline/image_encoder/config.json",
+        "sha256": "6c0121e084ff3b5a8dd5979b1fddf23d1d39b1940428c63115ef17d0c4a2baa5",
+        "matches_manifest": true
+      },
+      {
+        "path": "diffusers/Mira-Scene/pipeline/image_encoder/model.safetensors",
+        "sha256": "edccedab2c4e164e80833096de89a32a6e8d7365870499a066a61dbc8894b42b",
+        "matches_manifest": true
+      },
+      {
+        "path": "diffusers/Mira-Scene/pipeline/scheduler/scheduler_config.json",
+        "sha256": "08623cb104b1a1877d83376895fbecc5cfd978b211ed66ee9cb4c39396e3ee3a",
+        "matches_manifest": true
+      },
+      {
+        "path": "diffusers/Mira-Scene/pipeline/transformer/config.json",
+        "sha256": "0ff5134724e9a82a6042a02c0b57014352597234fd3a3cb56337b37dff2273d4",
+        "matches_manifest": true
+      },
+      {
+        "path": "diffusers/Mira-Scene/pipeline/transformer/diffusion_pytorch_model.safetensors",
+        "sha256": "e87cf9d4121234f7efb85d5e7e115af7056e61934428c45c123688c5d30655e8",
+        "matches_manifest": true
+      },
+      {
+        "path": "diffusers/Mira-Scene/pipeline/vae/config.json",
+        "sha256": "21bed3704feaa77eabad99b6464fe13fd8d3556de9c0937df3017726ba087694",
+        "matches_manifest": true
+      },
+      {
+        "path": "diffusers/Mira-Scene/pipeline/vae/diffusion_pytorch_model.safetensors",
+        "sha256": "a63173dd9bf962b3b2fba7b11704e625b9225628102a08258ef39769dfd00e26",
+        "matches_manifest": true
+      },
+      {
+        "path": "checkpoints/SAM3/sam3.1_multiplex_fp16.safetensors",
+        "sha256": "9ba99c92703c2e8b4f47de2d34a539bb8e18923049e238b780d70dbe6368eb03",
+        "matches_manifest": true
+      },
+      {
+        "path": "geometry_estimation/moge_2_vitl_normal_fp16.safetensors",
+        "sha256": "cb1a692d03235671e959e81360d7b4d9f44aefadb1f852d6ca6aa17799d5e31f",
+        "matches_manifest": true
+      },
+      {
+        "path": "diffusion_models/trellis_2_int8_convrot.safetensors",
+        "sha256": "d01952ad137213f6a868f86b6b877026276f84af5eec23069217475a0bad3a31",
+        "matches_manifest": true
+      },
+      {
+        "path": "clip_vision/dino_v3_vit_l.safetensors",
+        "sha256": "5cb785e458de7c460579082418af81f5c62380c181599344bdc60898c63468ee",
+        "matches_manifest": true
+      },
+      {
+        "path": "vae/trellis_2_shape_vae_bf16.safetensors",
+        "sha256": "de0cb4949a76c59ee5c091a995a69bcc8c51d5aeda939f0c641a50d2a72341f4",
+        "matches_manifest": true
+      },
+      {
+        "path": "vae/trellis_2_texture_vae_bf16.safetensors",
+        "sha256": "714e5ebf094a610e12a8e3b5175c18a62f37f6ea4218acb6073644456b73ab0e",
+        "matches_manifest": true
+      }
+    ]
+  },
+  "workflows": {
+    "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Scene.json": {
+      "sha256": "be6fe5b9e83412b1f88a99136bf115fb4de022b38b3ceb8a19a89a5fc5970d4d"
+    },
+    "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json": {
+      "sha256": "08420dba82a18cd0b9fb86c8b7820edaf93d08c892dc3463e9bd6e789fdf1561"
+    }
+  },
+  "pack": {
+    "nodes.py": "6f75a9fddd5d4d14b430ec1a89c55686610f0a7d0aa7b4bc5736f3559b1cf735",
+    "helpers.py": "ef3089ff4cbe263c61c0326af7315058a86488ab2a6a7e1440e86787d868311e",
+    "mira_runtime.py": "83f46d992c07d7738d6d2925678f1f17c2cecbb1e76b70f01906f62165d26ea9"
+  },
+  "runs": [
+    {
+      "case": "mira_final_layout",
+      "final": true,
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json",
+      "input": "modern_living_room.png",
+      "status": "success",
+      "elapsed_s": 197.0,
+      "exec_ms": 195636,
+      "memory": {
+        "peak_commit_gib": 57.06,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 23.37,
+        "peak_vram0_used_gib": 16.6,
+        "peak_vram1_used_gib": 4.94,
+        "seconds": 199.1
+      },
+      "check": {
+        "errors": [],
+        "glb": "Mira_Scene\\layout_00004.glb",
+        "glb_mib": 9.19,
+        "objects_in_glb": 10,
+        "floor": true,
+        "photo_camera": true,
+        "faces_per_object": [
+          29556,
+          82782,
+          44532,
+          51992,
+          51994,
+          62326,
+          66606,
+          12124,
+          34134,
+          36074
+        ],
+        "objects_kept": 10,
+        "fov_x_deg": 66.41,
+        "floor_fit": {
+          "inliers": 5930,
+          "median_residual_m": 0.004,
+          "normal_camera": [
+            -0.0138,
+            0.9998,
+            -0.0127
+          ]
+        },
+        "floor_side_m": 5.609,
+        "aabb_overlaps": 3,
+        "placement": [
+          {
+            "object": 0,
+            "upright": true,
+            "tilt_deg": 13.9,
+            "scale_m": 3.148,
+            "size_m": [
+              2.877,
+              0.886,
+              3.313
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 1,
+            "upright": true,
+            "tilt_deg": 1.4,
+            "scale_m": 1.487,
+            "size_m": [
+              1.603,
+              0.465,
+              1.737
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 2,
+            "upright": true,
+            "tilt_deg": 0.9,
+            "scale_m": 1.195,
+            "size_m": [
+              0.548,
+              0.822,
+              1.083
+            ],
+            "bottom_y_m": 0.889,
+            "support": null
+          },
+          {
+            "object": 3,
+            "upright": true,
+            "tilt_deg": 3.0,
+            "scale_m": 0.758,
+            "size_m": [
+              0.509,
+              0.758,
+              0.567
+            ],
+            "bottom_y_m": 0.12,
+            "support": null
+          },
+          {
+            "object": 4,
+            "upright": true,
+            "tilt_deg": 3.1,
+            "scale_m": 0.684,
+            "size_m": [
+              0.597,
+              0.684,
+              0.492
+            ],
+            "bottom_y_m": 0.466,
+            "support": null
+          },
+          {
+            "object": 5,
+            "upright": true,
+            "tilt_deg": 6.6,
+            "scale_m": 0.688,
+            "size_m": [
+              0.643,
+              0.656,
+              0.557
+            ],
+            "bottom_y_m": 0.458,
+            "support": null
+          },
+          {
+            "object": 6,
+            "upright": true,
+            "tilt_deg": 16.5,
+            "scale_m": 1.193,
+            "size_m": [
+              0.827,
+              1.193,
+              0.984
+            ],
+            "bottom_y_m": 0.625,
+            "support": null
+          },
+          {
+            "object": 7,
+            "upright": true,
+            "tilt_deg": 23.1,
+            "scale_m": 0.359,
+            "size_m": [
+              0.338,
+              0.281,
+              0.322
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 8,
+            "upright": true,
+            "tilt_deg": 7.8,
+            "scale_m": 0.338,
+            "size_m": [
+              0.283,
+              0.338,
+              0.283
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 9,
+            "upright": true,
+            "tilt_deg": 1.1,
+            "scale_m": 0.59,
+            "size_m": [
+              0.358,
+              0.59,
+              0.358
+            ],
+            "bottom_y_m": 0.505,
+            "support": null
+          }
+        ],
+        "peak_commit_gib": 57.06
+      },
+      "note": "frontend-serialized Mira_Scene-Layout-Preview.json"
+    },
+    {
+      "case": "mira_final_scene",
+      "final": true,
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Scene.json",
+      "input": "modern_living_room.png",
+      "status": "success",
+      "elapsed_s": 1029.8,
+      "exec_ms": 1029135,
+      "memory": {
+        "peak_commit_gib": 67.22,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 17.68,
+        "peak_vram0_used_gib": 21.71,
+        "peak_vram1_used_gib": 5.03,
+        "seconds": 1031.6
+      },
+      "check": {
+        "errors": [],
+        "glb": "Mira_Scene\\scene_00002.glb",
+        "glb_mib": 35.02,
+        "objects_in_glb": 10,
+        "floor": true,
+        "photo_camera": true,
+        "faces_per_object": [
+          59998,
+          59196,
+          59992,
+          59462,
+          59598,
+          59542,
+          59863,
+          59996,
+          59946,
+          59520
+        ],
+        "object_glbs": 10,
+        "objects_kept": 10,
+        "fov_x_deg": 66.41,
+        "floor_fit": {
+          "inliers": 5930,
+          "median_residual_m": 0.004,
+          "normal_camera": [
+            -0.0138,
+            0.9998,
+            -0.0127
+          ]
+        },
+        "floor_side_m": 5.614,
+        "aabb_overlaps": 3,
+        "placement": [
+          {
+            "object": 0,
+            "upright": true,
+            "tilt_deg": 13.9,
+            "scale_m": 3.148,
+            "size_m": [
+              2.873,
+              0.819,
+              3.329
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 1,
+            "upright": true,
+            "tilt_deg": 1.4,
+            "scale_m": 1.487,
+            "size_m": [
+              1.585,
+              0.466,
+              1.722
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 2,
+            "upright": true,
+            "tilt_deg": 0.9,
+            "scale_m": 1.195,
+            "size_m": [
+              0.545,
+              0.802,
+              1.092
+            ],
+            "bottom_y_m": 0.897,
+            "support": null
+          },
+          {
+            "object": 3,
+            "upright": true,
+            "tilt_deg": 3.0,
+            "scale_m": 0.758,
+            "size_m": [
+              0.499,
+              0.761,
+              0.536
+            ],
+            "bottom_y_m": 0.118,
+            "support": null
+          },
+          {
+            "object": 4,
+            "upright": true,
+            "tilt_deg": 3.1,
+            "scale_m": 0.684,
+            "size_m": [
+              0.576,
+              0.685,
+              0.476
+            ],
+            "bottom_y_m": 0.464,
+            "support": null
+          },
+          {
+            "object": 5,
+            "upright": true,
+            "tilt_deg": 6.6,
+            "scale_m": 0.688,
+            "size_m": [
+              0.633,
+              0.645,
+              0.541
+            ],
+            "bottom_y_m": 0.469,
+            "support": null
+          },
+          {
+            "object": 6,
+            "upright": true,
+            "tilt_deg": 16.5,
+            "scale_m": 1.193,
+            "size_m": [
+              0.827,
+              1.199,
+              0.958
+            ],
+            "bottom_y_m": 0.621,
+            "support": null
+          },
+          {
+            "object": 7,
+            "upright": true,
+            "tilt_deg": 23.1,
+            "scale_m": 0.359,
+            "size_m": [
+              0.328,
+              0.275,
+              0.313
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 8,
+            "upright": true,
+            "tilt_deg": 7.8,
+            "scale_m": 0.338,
+            "size_m": [
+              0.277,
+              0.323,
+              0.278
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 9,
+            "upright": true,
+            "tilt_deg": 1.1,
+            "scale_m": 0.59,
+            "size_m": [
+              0.332,
+              0.593,
+              0.333
+            ],
+            "bottom_y_m": 0.504,
+            "support": null
+          }
+        ],
+        "peak_commit_gib": 67.22
+      },
+      "note": "frontend-serialized Mira_Scene-Image-to-3D-Scene.json"
+    },
+    {
+      "case": "mira_layout_office",
+      "final": false,
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json",
+      "input": "mira_test_home_office.png",
+      "status": "success",
+      "elapsed_s": 112.3,
+      "exec_ms": 111924,
+      "memory": {
+        "peak_commit_gib": 56.59,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 23.66,
+        "peak_vram0_used_gib": 12.75,
+        "peak_vram1_used_gib": 5.12,
+        "seconds": 114.1
+      },
+      "check": {
+        "errors": [],
+        "glb": "Mira_Scene\\layout_00005.glb",
+        "glb_mib": 3.64,
+        "objects_in_glb": 6,
+        "floor": true,
+        "photo_camera": true,
+        "faces_per_object": [
+          62986,
+          5840,
+          34048,
+          31060,
+          29746,
+          14228
+        ],
+        "objects_kept": 6,
+        "fov_x_deg": 50.81,
+        "floor_fit": {
+          "inliers": 27063,
+          "median_residual_m": 0.0012,
+          "normal_camera": [
+            0.0098,
+            0.9999,
+            0.0134
+          ]
+        },
+        "floor_side_m": 3.631,
+        "aabb_overlaps": 3,
+        "placement": [
+          {
+            "object": 0,
+            "upright": true,
+            "tilt_deg": 2.3,
+            "scale_m": 1.531,
+            "size_m": [
+              1.144,
+              0.67,
+              1.598
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 1,
+            "upright": true,
+            "tilt_deg": 2.2,
+            "scale_m": 0.976,
+            "size_m": [
+              0.656,
+              0.976,
+              0.691
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 2,
+            "upright": true,
+            "tilt_deg": 2.7,
+            "scale_m": 2.208,
+            "size_m": [
+              1.332,
+              2.208,
+              0.796
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 3,
+            "upright": true,
+            "tilt_deg": 1.2,
+            "scale_m": 1.144,
+            "size_m": [
+              1.179,
+              0.751,
+              0.808
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 4,
+            "upright": true,
+            "tilt_deg": 16.6,
+            "scale_m": 1.233,
+            "size_m": [
+              0.956,
+              1.233,
+              0.669
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 5,
+            "upright": true,
+            "tilt_deg": 3.0,
+            "scale_m": 0.323,
+            "size_m": [
+              0.288,
+              0.233,
+              0.298
+            ],
+            "bottom_y_m": 0.751,
+            "support": "object_003 (applied, object_contact)"
+          }
+        ],
+        "peak_commit_gib": 56.59
+      },
+      "note": "frontend-serialized Mira_Scene-Layout-Preview.json"
+    },
+    {
+      "case": "mira_scene_lobby",
+      "final": false,
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Scene.json",
+      "input": "mira_test_hotel_lobby.png",
+      "status": "success",
+      "elapsed_s": 734.5,
+      "exec_ms": 734040,
+      "memory": {
+        "peak_commit_gib": 67.44,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 22.23,
+        "peak_vram0_used_gib": 24.21,
+        "peak_vram1_used_gib": 5.01,
+        "seconds": 736.4
+      },
+      "check": {
+        "errors": [],
+        "glb": "Mira_Scene\\scene_00003.glb",
+        "glb_mib": 21.28,
+        "objects_in_glb": 7,
+        "floor": true,
+        "photo_camera": true,
+        "faces_per_object": [
+          59763,
+          59542,
+          59964,
+          59998,
+          59928,
+          59938,
+          59975
+        ],
+        "object_glbs": 7,
+        "objects_kept": 7,
+        "fov_x_deg": 50.2,
+        "floor_fit": {
+          "inliers": 39513,
+          "median_residual_m": 0.0018,
+          "normal_camera": [
+            0.0012,
+            0.9965,
+            0.0835
+          ]
+        },
+        "floor_side_m": 5.523,
+        "aabb_overlaps": 3,
+        "placement": [
+          {
+            "object": 0,
+            "upright": true,
+            "tilt_deg": 2.1,
+            "scale_m": 2.17,
+            "size_m": [
+              2.156,
+              0.812,
+              2.273
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 1,
+            "upright": true,
+            "tilt_deg": 5.0,
+            "scale_m": 0.87,
+            "size_m": [
+              1.05,
+              0.833,
+              1.065
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 2,
+            "upright": true,
+            "tilt_deg": 4.1,
+            "scale_m": 0.848,
+            "size_m": [
+              0.751,
+              0.853,
+              0.832
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 3,
+            "upright": true,
+            "tilt_deg": 4.2,
+            "scale_m": 1.179,
+            "size_m": [
+              1.31,
+              0.442,
+              1.316
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 4,
+            "upright": true,
+            "tilt_deg": 3.2,
+            "scale_m": 0.5,
+            "size_m": [
+              0.532,
+              0.503,
+              0.531
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 5,
+            "upright": true,
+            "tilt_deg": 1.7,
+            "scale_m": 2.241,
+            "size_m": [
+              1.273,
+              2.249,
+              1.281
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 6,
+            "upright": true,
+            "tilt_deg": 15.4,
+            "scale_m": 0.603,
+            "size_m": [
+              0.404,
+              0.606,
+              0.404
+            ],
+            "bottom_y_m": 1.008,
+            "support": null
+          }
+        ],
+        "peak_commit_gib": 67.44
+      },
+      "note": "frontend-serialized Mira_Scene-Image-to-3D-Scene.json"
+    },
+    {
+      "case": "mira_layout_nofloor",
+      "final": false,
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json",
+      "input": "mira_test_home_office.png",
+      "status": "success",
+      "elapsed_s": 108.5,
+      "exec_ms": 108067,
+      "memory": {
+        "peak_commit_gib": 56.73,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 23.69,
+        "peak_vram0_used_gib": 14.09,
+        "peak_vram1_used_gib": 4.92,
+        "seconds": 110.1
+      },
+      "check": {
+        "errors": [],
+        "glb": "Mira_Scene\\layout_00006.glb",
+        "glb_mib": 3.39,
+        "objects_in_glb": 6,
+        "floor": true,
+        "photo_camera": true,
+        "faces_per_object": [
+          62986,
+          5840,
+          34048,
+          31060,
+          29746,
+          14228
+        ],
+        "objects_kept": 6,
+        "fov_x_deg": 50.81,
+        "floor_fit": "no floor mask / fit failed: camera up axis, floor under the lowest object",
+        "floor_side_m": 3.623,
+        "aabb_overlaps": 3,
+        "placement": [
+          {
+            "object": 0,
+            "upright": true,
+            "tilt_deg": 3.2,
+            "scale_m": 1.431,
+            "size_m": [
+              1.017,
+              0.626,
+              1.502
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 1,
+            "upright": true,
+            "tilt_deg": 2.7,
+            "scale_m": 0.976,
+            "size_m": [
+              0.657,
+              0.976,
+              0.691
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 2,
+            "upright": true,
+            "tilt_deg": 3.7,
+            "scale_m": 2.222,
+            "size_m": [
+              1.343,
+              2.222,
+              0.786
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 3,
+            "upright": true,
+            "tilt_deg": 1.3,
+            "scale_m": 1.15,
+            "size_m": [
+              1.18,
+              0.754,
+              0.83
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 4,
+            "upright": true,
+            "tilt_deg": 16.0,
+            "scale_m": 1.233,
+            "size_m": [
+              0.94,
+              1.233,
+              0.691
+            ],
+            "bottom_y_m": 0.0,
+            "support": "floor (applied, floor_contact)"
+          },
+          {
+            "object": 5,
+            "upright": true,
+            "tilt_deg": 2.5,
+            "scale_m": 0.324,
+            "size_m": [
+              0.288,
+              0.233,
+              0.299
+            ],
+            "bottom_y_m": 0.754,
+            "support": "object_003 (applied, object_contact)"
+          }
+        ],
+        "peak_commit_gib": 56.73
+      },
+      "note": "frontend-serialized Mira_Scene-Layout-Preview.json"
+    },
+    {
+      "case": "mira_layout_noobjects",
+      "final": false,
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json",
+      "input": "mira_test_home_office.png",
+      "status": "error",
+      "elapsed_s": 2.0,
+      "exec_ms": null,
+      "memory": {
+        "peak_commit_gib": 52.72,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 23.77,
+        "peak_vram0_used_gib": 9.05,
+        "peak_vram1_used_gib": 4.91,
+        "seconds": 4.0
+      },
+      "check": {
+        "errors": [
+          "Keine Objekte gefunden: SAM3 hat nichts erkannt oder alles war zu klein. Objektliste anpassen (englisch, kommagetrennt, z. B. 'chair, table, lamp') oder threshold senken. / No objects left after cleaning.\n"
+        ],
+        "peak_commit_gib": 52.72
+      },
+      "note": "frontend-serialized Mira_Scene-Layout-Preview.json",
+      "expected_status": "error"
+    }
+  ],
+  "experiments": {
+    "trellis_batched_vs_sequential": {
+      "input": "modern_living_room.png, 10 objects (sofa, coffee table, television, potted plant:4, lamp:3)",
+      "batched_native_nodes": {
+        "elapsed_s": 2114.8,
+        "peak_commit_gib": 91.05,
+        "peak_vram0_gib": 29.55,
+        "note": "one Trellis2 batch padded to the largest object: 92 s per 1024 detail step, 47 s per texture step"
+      },
+      "sequential_DaWMiraTrellisObjects": {
+        "elapsed_s": 1053.4,
+        "peak_commit_gib": 66.0,
+        "peak_vram0_gib": 21.08,
+        "note": "same native chain per object; ~1.75 s per 1024 detail step for a typical object"
+      },
+      "decision": "sequential per-object node (2x faster, 25 GB less commit)"
+    },
+    "v3_hidden_inputs": "calling RemeshMesh.execute directly failed ('NoneType' object has no attribute 'unique_id'); native V3 nodes are called through PREPARE_CLASS_CLONE(None)",
+    "gravity_solver_inference_mode": "Mira's solve_similarity_transforms_gravity optimises with Adam; ComfyUI runs nodes under torch.inference_mode -> 'element 0 of tensors does not require grad'; DaWMiraAssembleScene runs under inference_mode(False) + enable_grad",
+    "floor_fit": {
+      "office_median_residual_m": 0.0012,
+      "living_room_median_residual_m": 0.004,
+      "settings": "Mira 4_estimate_floor: threshold 0.03 m, 1000 RANSAC iterations, >=500 inliers, <=50000 points"
+    },
+    "trellis_on_mira_voxels": "Mira's 64^3 voxels are reduced to TRELLIS.2's 32^3 structure (unique(coords // 2)) and replace TRELLIS's own stage 1; ComfyUI's Trellis decode rotates Z-up to Y-up (x, z, -y), undone by R_x(+90 deg) before Mira's canonical transforms"
+  },
+  "experiment_runs": [
+    {
+      "case": "mira_layout_office",
+      "status": "error",
+      "elapsed_s": 102.4,
+      "memory": {
+        "peak_commit_gib": 52.42,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 24.15,
+        "peak_vram0_used_gib": 12.08,
+        "peak_vram1_used_gib": 3.41,
+        "seconds": 104.1
+      },
+      "note": "layout only",
+      "errors": [
+        "element 0 of tensors does not require grad and does not have a grad_fn\n"
+      ]
+    },
+    {
+      "case": "mira_layout_office",
+      "status": "success",
+      "elapsed_s": 102.3,
+      "memory": {
+        "peak_commit_gib": 52.56,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 26.1,
+        "peak_vram0_used_gib": 12.11,
+        "peak_vram1_used_gib": 3.4,
+        "seconds": 104.1
+      },
+      "note": "layout only",
+      "errors": []
+    },
+    {
+      "case": "mira_full_office",
+      "status": "success",
+      "elapsed_s": 411.5,
+      "memory": {
+        "peak_commit_gib": 79.58,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 11.2,
+        "peak_vram0_used_gib": 26.39,
+        "peak_vram1_used_gib": 3.74,
+        "seconds": 413.2
+      },
+      "note": "full TRELLIS",
+      "errors": []
+    },
+    {
+      "case": "mira_full_living",
+      "status": "success",
+      "elapsed_s": 2114.8,
+      "memory": {
+        "peak_commit_gib": 91.05,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 7.94,
+        "peak_vram0_used_gib": 29.55,
+        "peak_vram1_used_gib": 5.36,
+        "seconds": 2117.2
+      },
+      "note": "full TRELLIS, living room",
+      "errors": []
+    },
+    {
+      "case": "mira_seq_living",
+      "status": "error",
+      "elapsed_s": 244.7,
+      "memory": {
+        "peak_commit_gib": 62.14,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 17.86,
+        "peak_vram0_used_gib": 14.34,
+        "peak_vram1_used_gib": 5.24,
+        "seconds": 246.1
+      },
+      "note": "sequential TRELLIS, living room",
+      "errors": [
+        "'NoneType' object has no attribute 'unique_id'\n"
+      ]
+    },
+    {
+      "case": "mira_seq_living",
+      "status": "success",
+      "elapsed_s": 1053.4,
+      "memory": {
+        "peak_commit_gib": 66.0,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 18.57,
+        "peak_vram0_used_gib": 21.08,
+        "peak_vram1_used_gib": 5.32,
+        "seconds": 1055.6
+      },
+      "note": "sequential TRELLIS, living room",
+      "errors": []
+    }
+  ]
+}

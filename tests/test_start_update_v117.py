@@ -43,7 +43,7 @@ class UpdateV117Tests(unittest.TestCase):
             python.parent.mkdir(parents=True)
             python.touch()  # Never executed: native commands are recorded, not run.
             nodes = [
-                "AutoSongwriter", "GamePhysics", "H3-AutoLength", "H3-MusicVideo", "LiveAvatar",
+                "AutoSongwriter", "GamePhysics", "H3-AutoLength", "H3-MusicVideo", "LiveAvatar", "MingImage", "MiraScene",
                 "MultiGPU-Control", "Qwen3TTS-LoRA", "VisionTools",
             ]
             files = {"workflows/example.json": b"{}\n"}

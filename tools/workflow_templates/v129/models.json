@@ -1,0 +1,56 @@
+[
+  {
+    "role": "Ming Image 0.1 Design DiT (6B, INT8 ConvRot; text to image, transparent, edit)",
+    "repo_id": "Comfy-Org/Ming-Image",
+    "revision": "53654871e47a5d2daed7b3a986cbf1010ef81c78",
+    "source_path": "diffusion_models/ming_image_0.1_design_int8_convrot.safetensors",
+    "path": "diffusion_models/Ming/ming_image_0.1_design_int8_convrot.safetensors",
+    "size": 6175239953,
+    "sha256": "0d3f5bcc6d2cb830578ea6d0925b30b9fb66058bcb651cc8633e60760dceb1d0"
+  },
+  {
+    "role": "Ming Image 0.1 Design-Layer DiT (6B, INT8 ConvRot; layer decomposition)",
+    "repo_id": "Comfy-Org/Ming-Image",
+    "revision": "53654871e47a5d2daed7b3a986cbf1010ef81c78",
+    "source_path": "diffusion_models/ming_image_0.1_design_layer_int8_convrot.safetensors",
+    "path": "diffusion_models/Ming/ming_image_0.1_design_layer_int8_convrot.safetensors",
+    "size": 6175255481,
+    "sha256": "ef3f306c7981ac477f1fc28693144338ea35fb3f17cb0954c570553f53727a92"
+  },
+  {
+    "role": "Ling-mini-2.0 text encoder (MoE + Qwen2 vision tower, INT8 ConvRot) for Design",
+    "repo_id": "Comfy-Org/Ming-Image",
+    "revision": "53654871e47a5d2daed7b3a986cbf1010ef81c78",
+    "source_path": "text_encoders/ming_image_0.1_ling_mini_2.0_int8_convrot.safetensors",
+    "path": "text_encoders/Ming/ming_image_0.1_ling_mini_2.0_int8_convrot.safetensors",
+    "size": 19507670525,
+    "sha256": "9d9f31cfce37c24ae1589287f5c33bd9dda80e14ddf773b5e17a0bb69c8cc4b1"
+  },
+  {
+    "role": "Ling-mini-2.0 text encoder for Design-Layer (INT8 ConvRot)",
+    "repo_id": "Comfy-Org/Ming-Image",
+    "revision": "53654871e47a5d2daed7b3a986cbf1010ef81c78",
+    "source_path": "text_encoders/ming_image_0.1_ling_mini_2.0_layer_int8_convrot.safetensors",
+    "path": "text_encoders/Ming/ming_image_0.1_ling_mini_2.0_layer_int8_convrot.safetensors",
+    "size": 19507670525,
+    "sha256": "086324b766a04844dc918866e48e40b5cede499d869ac3fa05ceaa87ad7c6850"
+  },
+  {
+    "role": "Ming Image VAE (RGBA, shared by all four workflows)",
+    "repo_id": "Comfy-Org/Ming-Image",
+    "revision": "53654871e47a5d2daed7b3a986cbf1010ef81c78",
+    "source_path": "vae/ming_image_vae_bf16.safetensors",
+    "path": "vae/Ming/ming_image_vae_bf16.safetensors",
+    "size": 253816696,
+    "sha256": "7f5bed402dc8c77dc2e0ab1929a85d4df433b7cf7b599dfa8c353da98db0b90a"
+  },
+  {
+    "role": "BiRefNet background removal (alpha fallback of the transparent workflow; same file as v1.1.8)",
+    "repo_id": "Comfy-Org/BiRefNet",
+    "revision": "5a1bd8ae750548f8cd42e3c8afa854fd3eba0fb1",
+    "source_path": "background_removal/birefnet.safetensors",
+    "path": "background_removal/birefnet.safetensors",
+    "size": 444473596,
+    "sha256": "9ab37426bf4de0567af6b5d21b16151357149139362e6e8992021b8ce356a154"
+  }
+]

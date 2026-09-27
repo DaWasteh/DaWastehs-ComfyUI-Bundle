@@ -82,3 +82,21 @@ custom_nodes/ComfyUI-DaWasteh-VisionTools/* text eol=lf
 tests/test_vision_workflows_v128.py text eol=lf
 tests/test_vision_tools_nodes_v128.py text eol=lf
 performance/rdna4/vision-workflows-v128-validation.json text eol=lf
+# v1.2.9: Ming Image and Mira-Scene (builders, pinned template/manifests, MingImage/MiraScene packs), start profile, tests and evidence.
+tools/workflow_templates/v129/* text eol=lf
+tools/workflow_templates/v129/image_ming_image_01_design_t2i.json -text
+tools/build_ming_image_workflows_v129.py text eol=lf
+workflows/**/Ming_Image_0_1_*.json text eol=lf
+custom_nodes/ComfyUI-DaWasteh-MingImage/* text eol=lf
+custom_nodes/ComfyUI-DaWasteh-MingImage/prompts/* text eol=lf
+tests/test_ming_image_workflows_v129.py text eol=lf
+tests/test_ming_image_nodes_v129.py text eol=lf
+performance/rdna4/ming-image-v129-validation.json text eol=lf
+docs/MING_IMAGE_V129.md text eol=lf
+tools/build_mira_scene_workflows_v129.py text eol=lf
+workflows/**/Mira_Scene-*.json text eol=lf
+custom_nodes/ComfyUI-DaWasteh-MiraScene/* text eol=lf
+tests/test_mira_scene_workflows_v129.py text eol=lf
+tests/test_mira_scene_nodes_v129.py text eol=lf
+performance/rdna4/mira-scene-v129-validation.json text eol=lf
+docs/MIRA_SCENE_V129.md text eol=lf

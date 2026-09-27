@@ -67,6 +67,8 @@ class IncrementalUpdateScriptTests(unittest.TestCase):
             "ComfyUI-DaWasteh-H3-AutoLength",
             "ComfyUI-DaWasteh-H3-MusicVideo",
             "ComfyUI-DaWasteh-LiveAvatar",
+            "ComfyUI-DaWasteh-MingImage",
+            "ComfyUI-DaWasteh-MiraScene",
             "ComfyUI-DaWasteh-MultiGPU-Control",
             "ComfyUI-DaWasteh-Qwen3TTS-LoRA",
             "ComfyUI-DaWasteh-VisionTools",

@@ -1,0 +1,19 @@
+{
+  "repository": "https://github.com/VAST-AI-Research/Mira-Scene",
+  "commit": "18f42656f3b6f96ef61d9b291c93d1036bdaa016",
+  "commit_date": "2026-09-26T10:44:04+08:00",
+  "license": "none (upstream issue #4 'Request: add LICENSE'); private use, not redistributed",
+  "installed_by": "tools/update-comfyui-rdna4.ps1 (Ensure-PinnedCheckout) to <ComfyUI root>/third_party/Mira-Scene",
+  "used_modules": [
+    "Mira-CCM/src/miraccm (CCMVoxelPipeline and its model classes)",
+    "UniDataset/src/UniDataset/utils/img_and_mask_transforms.py (crop_around_mask)",
+    "infer_scripts/utils/solve_transform.py",
+    "infer_scripts/utils/scene_placement.py",
+    "infer_scripts/4_estimate_floor.py (fit_floor_plane, make_floor_transform)"
+  ],
+  "stubbed_imports": [
+    "spconv.pytorch (sparse convolution, unused by the dense CCM path)",
+    "open3d (imported by UniDataset.utils.pcd_utils only)"
+  ],
+  "paper": "https://arxiv.org/abs/2609.23796"
+}

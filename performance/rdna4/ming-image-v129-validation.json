@@ -1,0 +1,1436 @@
+{
+  "release": "v1.2.9",
+  "date": "2026-09-27",
+  "scope": "Ming Image 0.1 Design text to image, transparent RGBA, image edit; Design-Layer decomposition",
+  "system": {
+    "os": "win32",
+    "comfyui_version": "0.37.0",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+    "ram_total": 50860650496
+  },
+  "frontend": "1.53.6 (headless Edge, app.graphToPrompt via performance/rdna4/bench/ui_to_api.py)",
+  "profile": "start-MultiGPU.ps1 R9700 profile on test port 8192 (reserve-vram 4, VRAM guard 3 GiB, hipBLASLt, cache-ram, pytorch attention); prompt writer: llama.cpp b11209 HIP, Qwen3.8-27B-IQ4_XS on the RX 9070 XT",
+  "gpu_defaults": {
+    "MODEL": "gpu:0 R9700 32GB",
+    "CLIP": "gpu:0",
+    "VAE": "gpu:0",
+    "prompt_writer": "llama-server, HIP device 1"
+  },
+  "model_verification": {
+    "manifest": "tools/workflow_templates/v129/models.json",
+    "files": [
+      {
+        "path": "diffusion_models/Ming/ming_image_0.1_design_int8_convrot.safetensors",
+        "size": 6175239953,
+        "sha256": "0d3f5bcc6d2cb830578ea6d0925b30b9fb66058bcb651cc8633e60760dceb1d0",
+        "verified": true
+      },
+      {
+        "path": "diffusion_models/Ming/ming_image_0.1_design_layer_int8_convrot.safetensors",
+        "size": 6175255481,
+        "sha256": "ef3f306c7981ac477f1fc28693144338ea35fb3f17cb0954c570553f53727a92",
+        "verified": true
+      },
+      {
+        "path": "text_encoders/Ming/ming_image_0.1_ling_mini_2.0_int8_convrot.safetensors",
+        "size": 19507670525,
+        "sha256": "9d9f31cfce37c24ae1589287f5c33bd9dda80e14ddf773b5e17a0bb69c8cc4b1",
+        "verified": true
+      },
+      {
+        "path": "text_encoders/Ming/ming_image_0.1_ling_mini_2.0_layer_int8_convrot.safetensors",
+        "size": 19507670525,
+        "sha256": "086324b766a04844dc918866e48e40b5cede499d869ac3fa05ceaa87ad7c6850",
+        "verified": true
+      },
+      {
+        "path": "vae/Ming/ming_image_vae_bf16.safetensors",
+        "size": 253816696,
+        "sha256": "7f5bed402dc8c77dc2e0ab1929a85d4df433b7cf7b599dfa8c353da98db0b90a",
+        "verified": true
+      },
+      {
+        "path": "background_removal/birefnet.safetensors",
+        "size": 444473596,
+        "sha256": "9ab37426bf4de0567af6b5d21b16151357149139362e6e8992021b8ce356a154",
+        "verified": true
+      }
+    ]
+  },
+  "workflows": {
+    "Text to Image/Ming_Image_0_1_Design_INT8-Text-to-Image.json": {
+      "sha256": "325fe0f2c59897c5d96c776399aeb0efcd65488e7d5eb8759b3b60319b716a96"
+    },
+    "Text to Image/Ming_Image_0_1_Design_INT8-Transparent-RGBA.json": {
+      "sha256": "ca022d09b60a3d830e4b0963dde43a1b3f780260b770dbfbc708ca6fe94832ea"
+    },
+    "Image Editing/Ming_Image_0_1_Design_INT8-Image-Edit.json": {
+      "sha256": "21fbee0a6a4f1809f85dd8cb420d86806b9269af38f15eeaec4200ff85dcbc7a"
+    },
+    "Image Utilities/Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose.json": {
+      "sha256": "24a20e191e89b7930c2210795fc6c421202588ee1401fca72bb8d0e3f88706a1"
+    }
+  },
+  "runs": [
+    {
+      "case": "final_t2i",
+      "final": true,
+      "workflow": "Text to Image/Ming_Image_0_1_Design_INT8-Text-to-Image.json",
+      "status": "success",
+      "elapsed_s": 114.4,
+      "memory": {
+        "peak_commit_gib": 80.65,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.34,
+        "peak_vram0_used_gib": 31.09,
+        "peak_vram1_used_gib": 15.3,
+        "seconds": 116.1
+      },
+      "check": {
+        "file": "L:\\ComfyUI\\ComfyUI\\output\\Ming_Image\\Design_00002.png",
+        "mode": "RGB",
+        "size": [
+          2048,
+          2048
+        ],
+        "embedded_workflow": true,
+        "prompt_chars": 4090,
+        "prompt_is_json": true,
+        "prompt_head": "{\n  \"canvas_settings\": {\n    \"aspect_ratio\": \"1:1\",\n    \"ambient_lighting\": \"Warm golden hour sunlight with soft orange "
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Text-to-Image.json"
+    },
+    {
+      "case": "final_transparent",
+      "final": true,
+      "workflow": "Text to Image/Ming_Image_0_1_Design_INT8-Transparent-RGBA.json",
+      "status": "success",
+      "elapsed_s": 72.3,
+      "memory": {
+        "peak_commit_gib": 84.09,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.01,
+        "peak_vram0_used_gib": 31.4,
+        "peak_vram1_used_gib": 15.73,
+        "seconds": 74.0
+      },
+      "check": {
+        "file": "L:\\ComfyUI\\ComfyUI\\output\\Ming_Image\\Transparent_00002.png",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "embedded_workflow": true,
+        "transparent_share": 0.701,
+        "alpha_source": "ming",
+        "prompt_chars": 3636,
+        "prompt_is_json": true,
+        "prompt_head": "transparent canvas, not white, not checkerboard\n{\n  \"canvas_settings\": {\n    \"aspect_ratio\": \"1:1\",\n    \"ambient_lightin"
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Transparent-RGBA.json"
+    },
+    {
+      "case": "final_edit",
+      "final": true,
+      "workflow": "Image Editing/Ming_Image_0_1_Design_INT8-Image-Edit.json",
+      "status": "success",
+      "elapsed_s": 26.1,
+      "memory": {
+        "peak_commit_gib": 69.64,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 23.07,
+        "peak_vram0_used_gib": 31.21,
+        "peak_vram1_used_gib": 2.87,
+        "seconds": 28.0
+      },
+      "check": {
+        "file": "L:\\ComfyUI\\ComfyUI\\output\\Ming_Image\\Edit_00002.png",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "embedded_workflow": true,
+        "source_size": [
+          1024,
+          1024
+        ],
+        "prompt_chars": 0,
+        "prompt_is_json": false,
+        "prompt_head": ""
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Image-Edit.json"
+    },
+    {
+      "case": "final_layers",
+      "final": true,
+      "workflow": "Image Utilities/Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose.json",
+      "status": "success",
+      "elapsed_s": 287.0,
+      "memory": {
+        "peak_commit_gib": 79.92,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.15,
+        "peak_vram0_used_gib": 26.33,
+        "peak_vram1_used_gib": 15.52,
+        "seconds": 289.2
+      },
+      "check": {
+        "layer_files": 6,
+        "layers_requested": 6,
+        "modes": [
+          "RGBA",
+          "RGBA",
+          "RGBA",
+          "RGBA",
+          "RGBA",
+          "RGBA"
+        ],
+        "size": [
+          1024,
+          1024
+        ],
+        "recomposed_psnr_db": 30.56,
+        "transparent_share_per_layer": [
+          0.94,
+          0.975,
+          0.935,
+          0.838,
+          0.227,
+          0.0
+        ],
+        "spec_chars": 1158,
+        "spec_head": "Decompose this image into 6 layers with the following specifications:\n\nNumber of layers: 6\nLayer 1: All typography elements, including \"WORLD\" in bold gold capi",
+        "embedded_workflow": true
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose.json"
+    },
+    {
+      "case": "t2i_writer_off_1024",
+      "final": false,
+      "workflow": "Text to Image/Ming_Image_0_1_Design_INT8-Text-to-Image.json",
+      "status": "success",
+      "elapsed_s": 36.1,
+      "memory": {
+        "peak_commit_gib": 69.87,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 6.4,
+        "peak_vram0_used_gib": 31.34,
+        "peak_vram1_used_gib": 2.98,
+        "seconds": 38.0
+      },
+      "check": {
+        "file": "L:\\ComfyUI\\ComfyUI\\output\\Ming_Image\\Design_00003.png",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "embedded_workflow": true,
+        "prompt_chars": 193,
+        "prompt_is_json": false,
+        "prompt_head": "Poster für ein Sommerfest am See: großer Titel \"SEEFEST 2026\", darunter \"Samstag, 12. Juli · ab 16 Uhr\", Live-Musik, Foo"
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Text-to-Image.json"
+    },
+    {
+      "case": "transparent_cat",
+      "final": false,
+      "workflow": "Text to Image/Ming_Image_0_1_Design_INT8-Transparent-RGBA.json",
+      "status": "success",
+      "elapsed_s": 64.3,
+      "memory": {
+        "peak_commit_gib": 85.69,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.2,
+        "peak_vram0_used_gib": 31.43,
+        "peak_vram1_used_gib": 15.7,
+        "seconds": 66.0
+      },
+      "check": {
+        "file": "L:\\ComfyUI\\ComfyUI\\output\\Ming_Image\\Transparent_00003.png",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "embedded_workflow": true,
+        "transparent_share": 0.287,
+        "alpha_source": "mask",
+        "prompt_chars": 1582,
+        "prompt_is_json": true,
+        "prompt_head": "transparent canvas, not white, not checkerboard\n{\n  \"canvas_settings\": {\n    \"aspect_ratio\": \"1:1\",\n    \"ambient_lightin"
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Transparent-RGBA.json"
+    },
+    {
+      "case": "edit_portrait",
+      "final": false,
+      "workflow": "Image Editing/Ming_Image_0_1_Design_INT8-Image-Edit.json",
+      "status": "success",
+      "elapsed_s": 20.1,
+      "memory": {
+        "peak_commit_gib": 71.38,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 15.02,
+        "peak_vram0_used_gib": 31.2,
+        "peak_vram1_used_gib": 3.21,
+        "seconds": 22.0
+      },
+      "check": {
+        "file": "L:\\ComfyUI\\ComfyUI\\output\\Ming_Image\\Edit_00003.png",
+        "mode": "RGB",
+        "size": [
+          896,
+          1152
+        ],
+        "embedded_workflow": true,
+        "source_size": [
+          896,
+          1152
+        ],
+        "prompt_chars": 0,
+        "prompt_is_json": false,
+        "prompt_head": ""
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Image-Edit.json"
+    },
+    {
+      "case": "layers_plain_4",
+      "final": false,
+      "workflow": "Image Utilities/Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose.json",
+      "status": "success",
+      "elapsed_s": 182.5,
+      "memory": {
+        "peak_commit_gib": 75.55,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.42,
+        "peak_vram0_used_gib": 27.02,
+        "peak_vram1_used_gib": 3.31,
+        "seconds": 184.1
+      },
+      "check": {
+        "layer_files": 4,
+        "layers_requested": 4,
+        "modes": [
+          "RGBA",
+          "RGBA",
+          "RGBA",
+          "RGBA"
+        ],
+        "size": [
+          1024,
+          1024
+        ],
+        "recomposed_psnr_db": 30.89,
+        "transparent_share_per_layer": [
+          0.876,
+          0.969,
+          0.226,
+          0.0
+        ],
+        "spec_chars": 35,
+        "spec_head": "Decompose this image into 4 layers.",
+        "embedded_workflow": true
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose.json"
+    },
+    {
+      "case": "t2i_no_gguf",
+      "final": false,
+      "workflow": "Text to Image/Ming_Image_0_1_Design_INT8-Text-to-Image.json",
+      "status": "success",
+      "elapsed_s": 76.2,
+      "memory": {
+        "peak_commit_gib": 84.26,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.71,
+        "peak_vram0_used_gib": 31.11,
+        "peak_vram1_used_gib": 3.29,
+        "seconds": 78.0
+      },
+      "check": {
+        "file": "L:\\ComfyUI\\ComfyUI\\output\\Ming_Image\\Design_00004.png",
+        "mode": "RGB",
+        "size": [
+          2048,
+          2048
+        ],
+        "embedded_workflow": true,
+        "prompt_chars": 193,
+        "prompt_is_json": false,
+        "prompt_head": "Poster für ein Sommerfest am See: großer Titel \"SEEFEST 2026\", darunter \"Samstag, 12. Juli · ab 16 Uhr\", Live-Musik, Foo"
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Text-to-Image.json"
+    },
+    {
+      "case": "layers_no_gguf",
+      "final": false,
+      "workflow": "Image Utilities/Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose.json",
+      "status": "success",
+      "elapsed_s": 259.0,
+      "memory": {
+        "peak_commit_gib": 77.33,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.0,
+        "peak_vram0_used_gib": 24.36,
+        "peak_vram1_used_gib": 3.39,
+        "seconds": 261.1
+      },
+      "check": {
+        "layer_files": 6,
+        "layers_requested": 6,
+        "modes": [
+          "RGBA",
+          "RGBA",
+          "RGBA",
+          "RGBA",
+          "RGBA",
+          "RGBA"
+        ],
+        "size": [
+          1024,
+          1024
+        ],
+        "recomposed_psnr_db": 27.38,
+        "transparent_share_per_layer": [
+          0.94,
+          0.932,
+          0.977,
+          0.738,
+          0.227,
+          0.0
+        ],
+        "spec_chars": 233,
+        "spec_head": "Decompose this image into 6 layers.\nLayer 1: all text\nLayer 2: illustration at the top right\nLayer 3: illustrations in the bottom corners\nLayer 4: red ribbon an",
+        "embedded_workflow": true
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose.json"
+    }
+  ],
+  "experiments": {
+    "sampling_shift_2048": {
+      "cases": [
+        "t2i_2048_seefest_aura386",
+        "t2i_2048_seefest_flux",
+        "t2i_2048_seefest_default",
+        "t2i_2048_retro_aura386",
+        "t2i_2048_retro_flux",
+        "t2i_2048_retro_default"
+      ],
+      "variants": {
+        "ModelSamplingAuraFlow 3.86 (reference mu 1.35)": "shipped",
+        "ModelSamplingFlux 1.15/0.5 at 2048 (template, mu ~3.23)": "smoothed the requested paper grain and yellowed edges, 'VINTAGE FINSS' on a shop sign",
+        "model default shift 3.16": "close to 3.86"
+      },
+      "sd3_multiplier_1000": "ModelSamplingSD3 3.86 gave pure noise (t2i_2048_official_386)"
+    },
+    "loaders_commit_2048": {
+      "core_loaders_peak_commit_gib": 96.61,
+      "core_loaders_min_ram_avail_gib": 0.01,
+      "readonly_loaders_peak_commit_gib": 77.21,
+      "commit_limit_gib": 97.37,
+      "weights_bit_identical": {
+        "text_encoder_tensors": 1707,
+        "dit_tensors": 882,
+        "vae_tensors": 194,
+        "mismatches": 0,
+        "key_order": "sorted like safetensors"
+      }
+    },
+    "attention": {
+      "comfy_kitchen_int8_s": 44.2,
+      "pytorch_s": 46.2,
+      "mean_abs_diff_0_255": 14.14,
+      "repeat_same_session_max_diff": 0,
+      "shipped": "pytorch attention"
+    },
+    "timings_warm_s": {
+      "t2i_1024": 10.0,
+      "t2i_2048_short_json": 38.1,
+      "t2i_2048_long_json": 48.3,
+      "edit_1024_bucket": 22.1,
+      "layers_6_1024": 232.9,
+      "layers_6_512": 50.2
+    },
+    "transparency": {
+      "rows_int8_matrix_1": [
+        {
+          "prefix_index": 0,
+          "subject": "sedan",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 0,
+          "subject": "cat",
+          "transparent_share": 0.709
+        },
+        {
+          "prefix_index": 0,
+          "subject": "fox",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 1,
+          "subject": "sedan",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 1,
+          "subject": "cat",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 1,
+          "subject": "fox",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 2,
+          "subject": "sedan",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 2,
+          "subject": "cat",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 2,
+          "subject": "fox",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 3,
+          "subject": "sedan",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 3,
+          "subject": "cat",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 3,
+          "subject": "fox",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 4,
+          "subject": "sedan",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 4,
+          "subject": "cat",
+          "transparent_share": 0.0
+        },
+        {
+          "prefix_index": 4,
+          "subject": "fox",
+          "transparent_share": 0.0
+        }
+      ],
+      "prefixes_matrix_1": [
+        "RGBA, 4-channel, transparent background",
+        "带透明通道，4通道RGBA图像",
+        "透明背景，alpha通道，无底图",
+        "cutout PNG, alpha=0 outside the object",
+        "production RGBA layer for compositing"
+      ],
+      "rows_matrix_2": [
+        {
+          "dit": "bf16",
+          "prefix_index": 0,
+          "subject": "sedan",
+          "transparent_share": 0.0,
+          "elapsed_s": 34.7
+        },
+        {
+          "dit": "bf16",
+          "prefix_index": 0,
+          "subject": "cat",
+          "transparent_share": 0.709,
+          "elapsed_s": 40.2
+        },
+        {
+          "dit": "bf16",
+          "prefix_index": 0,
+          "subject": "fox",
+          "transparent_share": 0.0,
+          "elapsed_s": 34.2
+        },
+        {
+          "dit": "bf16",
+          "prefix_index": 1,
+          "subject": "sedan",
+          "transparent_share": 0.0,
+          "elapsed_s": 34.1
+        },
+        {
+          "dit": "bf16",
+          "prefix_index": 1,
+          "subject": "cat",
+          "transparent_share": 0.0,
+          "elapsed_s": 28.2
+        },
+        {
+          "dit": "bf16",
+          "prefix_index": 1,
+          "subject": "fox",
+          "transparent_share": 0.0,
+          "elapsed_s": 30.1
+        },
+        {
+          "dit": "bf16",
+          "prefix_index": 2,
+          "subject": "sedan",
+          "transparent_share": 0.677,
+          "elapsed_s": 30.1
+        },
+        {
+          "dit": "bf16",
+          "prefix_index": 2,
+          "subject": "cat",
+          "transparent_share": 0.0,
+          "elapsed_s": 76.3
+        },
+        {
+          "dit": "bf16",
+          "prefix_index": 2,
+          "subject": "fox",
+          "transparent_share": 0.0,
+          "elapsed_s": 30.2
+        },
+        {
+          "dit": "int8",
+          "prefix_index": 0,
+          "subject": "sedan",
+          "transparent_share": 0.0,
+          "elapsed_s": 32.3
+        },
+        {
+          "dit": "int8",
+          "prefix_index": 0,
+          "subject": "cat",
+          "transparent_share": 0.703,
+          "elapsed_s": 18.1
+        },
+        {
+          "dit": "int8",
+          "prefix_index": 0,
+          "subject": "fox",
+          "transparent_share": 0.0,
+          "elapsed_s": 18.4
+        },
+        {
+          "dit": "int8",
+          "prefix_index": 1,
+          "subject": "sedan",
+          "transparent_share": 0.0,
+          "elapsed_s": 20.1
+        },
+        {
+          "dit": "int8",
+          "prefix_index": 1,
+          "subject": "cat",
+          "transparent_share": 0.752,
+          "elapsed_s": 22.1
+        },
+        {
+          "dit": "int8",
+          "prefix_index": 1,
+          "subject": "fox",
+          "transparent_share": 0.0,
+          "elapsed_s": 20.1
+        },
+        {
+          "dit": "int8",
+          "prefix_index": 2,
+          "subject": "sedan",
+          "transparent_share": 0.676,
+          "elapsed_s": 20.1
+        },
+        {
+          "dit": "int8",
+          "prefix_index": 2,
+          "subject": "cat",
+          "transparent_share": 0.745,
+          "elapsed_s": 22.1
+        },
+        {
+          "dit": "int8",
+          "prefix_index": 2,
+          "subject": "fox",
+          "transparent_share": 0.0,
+          "elapsed_s": 16.1
+        }
+      ],
+      "prefixes_matrix_2": [
+        "RGBA, 4-channel, transparent background",
+        "isolated subject, alpha matte, no background",
+        "transparent canvas, not white, not checkerboard"
+      ],
+      "finding": "real alpha in 6 of 18 matrix-2 runs (INT8 4/9, BF16 2/9); other runs painted white or a fake checkerboard; the Chinese prefix once produced a 2x2 grid",
+      "shipped": "prefix 'transparent canvas, not white, not checkerboard' + DaWMingAlphaFallback (BiRefNet mask when < 2 % transparent, lazy)"
+    },
+    "int8_vs_bf16": {
+      "visual": "near-identical (cat, sedan)",
+      "bf16_1024_s": [
+        34.7,
+        40.2,
+        34.2,
+        34.1,
+        28.2,
+        30.1,
+        30.1,
+        76.3,
+        30.2
+      ],
+      "int8_1024_s": [
+        32.3,
+        18.1,
+        18.4,
+        20.1,
+        22.1,
+        20.1,
+        20.1,
+        22.1,
+        16.1
+      ],
+      "shipped": "INT8 ConvRot"
+    },
+    "edit_multi_image": {
+      "photo_two_images": [
+        "edit_two_images",
+        "edit_two_v2",
+        "edit_two_v3",
+        "edit_two_seed1"
+      ],
+      "photo_result": "image 2 returned unchanged in 3 of 3 wordings (plus the first attempt)",
+      "design_two_images": "fox sticker placed over the date text",
+      "shipped": "one reference image like the official CLI"
+    },
+    "layers": {
+      "official_card_spec_1024_seed0_psnr_db": 30.75,
+      "official_card_spec_1024_seed1_psnr_db": 24.44,
+      "bucket512_psnr_db": {
+        "shift_3.86": 27.18,
+        "shift_1.88": 25.99
+      },
+      "bucket512_finding": "card and background merged into one layer (layer 5 empty) with both shifts",
+      "seed1_finding": "part of the glitter border moved into the background layer"
+    },
+    "prompt_writer": {
+      "design_long_request_s": 122.7,
+      "design_long_first_answer": "rejected (12,660 characters, not valid JSON), second seed accepted",
+      "design_short_request_s": 30.2,
+      "aspect_without_canvas_note": "3:4 for a square canvas",
+      "server": "llama.cpp b11209 HIP, --spec-type draft-mtp, ctx 8192"
+    }
+  },
+  "experiment_runs": [
+    {
+      "case": "t2i_1024_default_cold",
+      "status": "success",
+      "elapsed_s": 44.2,
+      "memory": {
+        "peak_commit_gib": 81.41,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 3.7,
+        "peak_vram0_used_gib": 31.51,
+        "peak_vram1_used_gib": 1.72,
+        "seconds": 46.0
+      },
+      "note": "cold, default model shift 3.16"
+    },
+    {
+      "case": "t2i_1024_default_warm",
+      "status": "success",
+      "elapsed_s": 10.0,
+      "memory": {
+        "peak_commit_gib": 81.96,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 5.95,
+        "peak_vram0_used_gib": 31.17,
+        "peak_vram1_used_gib": 1.7,
+        "seconds": 12.0
+      },
+      "note": "warm, seed 1"
+    },
+    {
+      "case": "t2i_2048_template_flux",
+      "status": "success",
+      "elapsed_s": 46.5,
+      "memory": {
+        "peak_commit_gib": 96.22,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.01,
+        "peak_vram0_used_gib": 30.77,
+        "peak_vram1_used_gib": 1.88,
+        "seconds": 48.0
+      },
+      "note": "template ModelSamplingFlux(1.15,0.5,2048,2048) mu~3.23"
+    },
+    {
+      "case": "t2i_2048_official_386",
+      "status": "success",
+      "elapsed_s": 38.1,
+      "memory": {
+        "peak_commit_gib": 96.38,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.67,
+        "peak_vram0_used_gib": 30.65,
+        "peak_vram1_used_gib": 1.84,
+        "seconds": 40.0
+      },
+      "note": "official mu 1.35 -> shift 3.86"
+    },
+    {
+      "case": "t2i_2048_default_316",
+      "status": "success",
+      "elapsed_s": 38.2,
+      "memory": {
+        "peak_commit_gib": 96.61,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.72,
+        "peak_vram0_used_gib": 30.95,
+        "peak_vram1_used_gib": 1.89,
+        "seconds": 40.0
+      },
+      "note": "model default shift 3.16"
+    },
+    {
+      "case": "t2i_2048_386_readonly_cold",
+      "status": "success",
+      "elapsed_s": 74.4,
+      "memory": {
+        "peak_commit_gib": 77.35,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.87,
+        "peak_vram0_used_gib": 30.96,
+        "peak_vram1_used_gib": 1.71,
+        "seconds": 76.0
+      },
+      "note": "read-only loaders, fresh server"
+    },
+    {
+      "case": "t2i_2048_386_readonly_warm",
+      "status": "success",
+      "elapsed_s": 38.2,
+      "memory": {
+        "peak_commit_gib": 77.21,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.73,
+        "peak_vram0_used_gib": 30.84,
+        "peak_vram1_used_gib": 1.71,
+        "seconds": 40.0
+      },
+      "note": "read-only loaders, warm, seed 1"
+    },
+    {
+      "case": "t2i_2048_seefest_aura386",
+      "status": "success",
+      "elapsed_s": 62.4,
+      "memory": {
+        "peak_commit_gib": 77.38,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.57,
+        "peak_vram0_used_gib": 30.96,
+        "peak_vram1_used_gib": 1.73,
+        "seconds": 64.0
+      },
+      "note": "read-only, same session, seed 0, aura386"
+    },
+    {
+      "case": "t2i_2048_seefest_flux",
+      "status": "success",
+      "elapsed_s": 38.1,
+      "memory": {
+        "peak_commit_gib": 77.01,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 1.29,
+        "peak_vram0_used_gib": 30.84,
+        "peak_vram1_used_gib": 1.73,
+        "seconds": 40.0
+      },
+      "note": "read-only, same session, seed 0, flux"
+    },
+    {
+      "case": "t2i_2048_seefest_default",
+      "status": "success",
+      "elapsed_s": 38.2,
+      "memory": {
+        "peak_commit_gib": 77.46,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 1.39,
+        "peak_vram0_used_gib": 31.27,
+        "peak_vram1_used_gib": 1.73,
+        "seconds": 40.0
+      },
+      "note": "read-only, same session, seed 0, default"
+    },
+    {
+      "case": "t2i_2048_retro_aura386",
+      "status": "success",
+      "elapsed_s": 58.5,
+      "memory": {
+        "peak_commit_gib": 82.84,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.71,
+        "peak_vram0_used_gib": 30.98,
+        "peak_vram1_used_gib": 1.86,
+        "seconds": 60.0
+      },
+      "note": "read-only, same session, seed 0, aura386"
+    },
+    {
+      "case": "t2i_2048_retro_flux",
+      "status": "success",
+      "elapsed_s": 50.2,
+      "memory": {
+        "peak_commit_gib": 86.2,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.64,
+        "peak_vram0_used_gib": 30.87,
+        "peak_vram1_used_gib": 1.86,
+        "seconds": 52.0
+      },
+      "note": "read-only, same session, seed 0, flux"
+    },
+    {
+      "case": "t2i_2048_retro_default",
+      "status": "success",
+      "elapsed_s": 48.3,
+      "memory": {
+        "peak_commit_gib": 86.09,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.77,
+        "peak_vram0_used_gib": 30.54,
+        "peak_vram1_used_gib": 1.86,
+        "seconds": 50.0
+      },
+      "note": "read-only, same session, seed 0, default"
+    },
+    {
+      "case": "t2i_2048_retro_aura386_ck",
+      "status": "success",
+      "elapsed_s": 44.2,
+      "memory": {
+        "peak_commit_gib": 79.56,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 5.34,
+        "peak_vram0_used_gib": 30.33,
+        "peak_vram1_used_gib": 1.7,
+        "seconds": 46.0
+      },
+      "note": "comfy kitchen INT8 attention"
+    },
+    {
+      "case": "t2i_2048_retro_aura386_again",
+      "status": "success",
+      "elapsed_s": 46.2,
+      "memory": {
+        "peak_commit_gib": 78.28,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 5.61,
+        "peak_vram0_used_gib": 30.28,
+        "peak_vram1_used_gib": 1.71,
+        "seconds": 48.0
+      },
+      "note": "pytorch attention repeat (determinism)"
+    },
+    {
+      "case": "alpha_1024_plain",
+      "status": "success",
+      "elapsed_s": 44.3,
+      "memory": {
+        "peak_commit_gib": 78.1,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 4.04,
+        "peak_vram0_used_gib": 31.63,
+        "peak_vram1_used_gib": 1.86,
+        "seconds": 46.0
+      },
+      "note": "official prefix, no writer"
+    },
+    {
+      "case": "alpha_1024_writer",
+      "status": "success",
+      "elapsed_s": 50.2,
+      "memory": {
+        "peak_commit_gib": 82.81,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 3.52,
+        "peak_vram0_used_gib": 31.27,
+        "peak_vram1_used_gib": 15.13,
+        "seconds": 52.0
+      },
+      "note": "writer + prefix"
+    },
+    {
+      "case": "edit_card_date",
+      "status": "success",
+      "elapsed_s": 24.1,
+      "memory": {
+        "peak_commit_gib": 64.73,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 17.1,
+        "peak_vram0_used_gib": 30.56,
+        "peak_vram1_used_gib": 1.72,
+        "seconds": 26.0
+      },
+      "note": "design edit, 1024 bucket"
+    },
+    {
+      "case": "edit_portrait_jacket",
+      "status": "success",
+      "elapsed_s": 22.1,
+      "memory": {
+        "peak_commit_gib": 65.45,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 17.75,
+        "peak_vram0_used_gib": 30.31,
+        "peak_vram1_used_gib": 1.72,
+        "seconds": 24.0
+      },
+      "note": "photo edit"
+    },
+    {
+      "case": "edit_two_images",
+      "status": "success",
+      "elapsed_s": 34.2,
+      "memory": {
+        "peak_commit_gib": 67.02,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 16.09,
+        "peak_vram0_used_gib": 29.81,
+        "peak_vram1_used_gib": 1.72,
+        "seconds": 36.0
+      },
+      "note": "two references"
+    },
+    {
+      "case": "edit_two_v2",
+      "status": "success",
+      "elapsed_s": 34.2,
+      "memory": {
+        "peak_commit_gib": 64.91,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 16.4,
+        "peak_vram0_used_gib": 29.57,
+        "peak_vram1_used_gib": 1.72,
+        "seconds": 36.0
+      },
+      "note": "explicit wording"
+    },
+    {
+      "case": "edit_two_v3",
+      "status": "success",
+      "elapsed_s": 40.2,
+      "memory": {
+        "peak_commit_gib": 71.23,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 11.89,
+        "peak_vram0_used_gib": 31.27,
+        "peak_vram1_used_gib": 1.88,
+        "seconds": 42.0
+      },
+      "note": "replace wording"
+    },
+    {
+      "case": "edit_two_seed1",
+      "status": "success",
+      "elapsed_s": 114.6,
+      "memory": {
+        "peak_commit_gib": 71.02,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 12.78,
+        "peak_vram0_used_gib": 31.31,
+        "peak_vram1_used_gib": 1.88,
+        "seconds": 116.1
+      },
+      "note": "seed 1"
+    },
+    {
+      "case": "edit_two_design",
+      "status": "success",
+      "elapsed_s": 52.3,
+      "memory": {
+        "peak_commit_gib": 72.11,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 11.06,
+        "peak_vram0_used_gib": 31.37,
+        "peak_vram1_used_gib": 1.9,
+        "seconds": 54.0
+      },
+      "note": "design: add sticker"
+    },
+    {
+      "case": "ui_t2i_default",
+      "status": "success",
+      "elapsed_s": 110.9,
+      "memory": {
+        "peak_commit_gib": 85.92,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.62,
+        "peak_vram0_used_gib": 30.97,
+        "peak_vram1_used_gib": 15.15,
+        "seconds": 113.1
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Text-to-Image.json"
+    },
+    {
+      "case": "ui_edit_default",
+      "status": "success",
+      "elapsed_s": 64.4,
+      "memory": {
+        "peak_commit_gib": 79.02,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 1.92,
+        "peak_vram0_used_gib": 31.39,
+        "peak_vram1_used_gib": 2.18,
+        "seconds": 66.0
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Image-Edit.json"
+    },
+    {
+      "case": "Ming_exp_ab_bf16_0_sedan",
+      "status": "success",
+      "elapsed_s": 34.7,
+      "memory": {
+        "peak_commit_gib": 87.9,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.53,
+        "peak_vram0_used_gib": 31.21,
+        "peak_vram1_used_gib": 2.25,
+        "seconds": 37.0
+      },
+      "note": "alpha matrix bf16"
+    },
+    {
+      "case": "Ming_exp_ab_bf16_0_cat",
+      "status": "success",
+      "elapsed_s": 40.2,
+      "memory": {
+        "peak_commit_gib": 84.0,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 11.2,
+        "peak_vram0_used_gib": 31.39,
+        "peak_vram1_used_gib": 2.26,
+        "seconds": 42.0
+      },
+      "note": "alpha matrix bf16"
+    },
+    {
+      "case": "Ming_exp_ab_bf16_0_fox",
+      "status": "success",
+      "elapsed_s": 34.2,
+      "memory": {
+        "peak_commit_gib": 86.67,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 10.73,
+        "peak_vram0_used_gib": 31.39,
+        "peak_vram1_used_gib": 2.26,
+        "seconds": 36.0
+      },
+      "note": "alpha matrix bf16"
+    },
+    {
+      "case": "Ming_exp_ab_bf16_1_sedan",
+      "status": "success",
+      "elapsed_s": 34.1,
+      "memory": {
+        "peak_commit_gib": 83.19,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 10.61,
+        "peak_vram0_used_gib": 31.39,
+        "peak_vram1_used_gib": 2.32,
+        "seconds": 36.0
+      },
+      "note": "alpha matrix bf16"
+    },
+    {
+      "case": "Ming_exp_ab_bf16_1_cat",
+      "status": "success",
+      "elapsed_s": 28.2,
+      "memory": {
+        "peak_commit_gib": 83.02,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 12.25,
+        "peak_vram0_used_gib": 31.39,
+        "peak_vram1_used_gib": 2.36,
+        "seconds": 30.0
+      },
+      "note": "alpha matrix bf16"
+    },
+    {
+      "case": "Ming_exp_ab_bf16_1_fox",
+      "status": "success",
+      "elapsed_s": 30.1,
+      "memory": {
+        "peak_commit_gib": 86.33,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 10.66,
+        "peak_vram0_used_gib": 31.4,
+        "peak_vram1_used_gib": 2.35,
+        "seconds": 32.0
+      },
+      "note": "alpha matrix bf16"
+    },
+    {
+      "case": "Ming_exp_ab_bf16_2_sedan",
+      "status": "success",
+      "elapsed_s": 30.1,
+      "memory": {
+        "peak_commit_gib": 86.19,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 11.0,
+        "peak_vram0_used_gib": 31.4,
+        "peak_vram1_used_gib": 2.4,
+        "seconds": 32.0
+      },
+      "note": "alpha matrix bf16"
+    },
+    {
+      "case": "Ming_exp_ab_bf16_2_cat",
+      "status": "success",
+      "elapsed_s": 76.3,
+      "memory": {
+        "peak_commit_gib": 83.63,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 10.66,
+        "peak_vram0_used_gib": 31.39,
+        "peak_vram1_used_gib": 2.63,
+        "seconds": 78.0
+      },
+      "note": "alpha matrix bf16"
+    },
+    {
+      "case": "Ming_exp_ab_bf16_2_fox",
+      "status": "success",
+      "elapsed_s": 30.2,
+      "memory": {
+        "peak_commit_gib": 83.76,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 11.68,
+        "peak_vram0_used_gib": 31.39,
+        "peak_vram1_used_gib": 2.34,
+        "seconds": 32.0
+      },
+      "note": "alpha matrix bf16"
+    },
+    {
+      "case": "Ming_exp_ab_int8_0_sedan",
+      "status": "success",
+      "elapsed_s": 32.3,
+      "memory": {
+        "peak_commit_gib": 83.64,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 13.03,
+        "peak_vram0_used_gib": 31.41,
+        "peak_vram1_used_gib": 2.33,
+        "seconds": 34.0
+      },
+      "note": "alpha matrix int8"
+    },
+    {
+      "case": "Ming_exp_ab_int8_0_cat",
+      "status": "success",
+      "elapsed_s": 18.1,
+      "memory": {
+        "peak_commit_gib": 75.96,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 18.82,
+        "peak_vram0_used_gib": 31.1,
+        "peak_vram1_used_gib": 2.33,
+        "seconds": 20.0
+      },
+      "note": "alpha matrix int8"
+    },
+    {
+      "case": "Ming_exp_ab_int8_0_fox",
+      "status": "success",
+      "elapsed_s": 18.4,
+      "memory": {
+        "peak_commit_gib": 76.06,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 19.2,
+        "peak_vram0_used_gib": 31.32,
+        "peak_vram1_used_gib": 2.32,
+        "seconds": 20.0
+      },
+      "note": "alpha matrix int8"
+    },
+    {
+      "case": "Ming_exp_ab_int8_1_sedan",
+      "status": "success",
+      "elapsed_s": 20.1,
+      "memory": {
+        "peak_commit_gib": 76.06,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 19.05,
+        "peak_vram0_used_gib": 31.32,
+        "peak_vram1_used_gib": 2.32,
+        "seconds": 22.0
+      },
+      "note": "alpha matrix int8"
+    },
+    {
+      "case": "Ming_exp_ab_int8_1_cat",
+      "status": "success",
+      "elapsed_s": 22.1,
+      "memory": {
+        "peak_commit_gib": 76.21,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 18.85,
+        "peak_vram0_used_gib": 31.23,
+        "peak_vram1_used_gib": 2.33,
+        "seconds": 24.0
+      },
+      "note": "alpha matrix int8"
+    },
+    {
+      "case": "Ming_exp_ab_int8_1_fox",
+      "status": "success",
+      "elapsed_s": 20.1,
+      "memory": {
+        "peak_commit_gib": 75.72,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 18.73,
+        "peak_vram0_used_gib": 31.33,
+        "peak_vram1_used_gib": 2.33,
+        "seconds": 22.0
+      },
+      "note": "alpha matrix int8"
+    },
+    {
+      "case": "Ming_exp_ab_int8_2_sedan",
+      "status": "success",
+      "elapsed_s": 20.1,
+      "memory": {
+        "peak_commit_gib": 75.59,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 19.36,
+        "peak_vram0_used_gib": 31.33,
+        "peak_vram1_used_gib": 2.34,
+        "seconds": 22.0
+      },
+      "note": "alpha matrix int8"
+    },
+    {
+      "case": "Ming_exp_ab_int8_2_cat",
+      "status": "success",
+      "elapsed_s": 22.1,
+      "memory": {
+        "peak_commit_gib": 73.64,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 19.31,
+        "peak_vram0_used_gib": 31.23,
+        "peak_vram1_used_gib": 2.35,
+        "seconds": 24.0
+      },
+      "note": "alpha matrix int8"
+    },
+    {
+      "case": "Ming_exp_ab_int8_2_fox",
+      "status": "success",
+      "elapsed_s": 16.1,
+      "memory": {
+        "peak_commit_gib": 69.1,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 23.38,
+        "peak_vram0_used_gib": 30.55,
+        "peak_vram1_used_gib": 2.1,
+        "seconds": 18.0
+      },
+      "note": "alpha matrix int8"
+    },
+    {
+      "case": "ui_transparent_default",
+      "status": "success",
+      "elapsed_s": 78.2,
+      "memory": {
+        "peak_commit_gib": 66.86,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 5.77,
+        "peak_vram0_used_gib": 31.5,
+        "peak_vram1_used_gib": 15.34,
+        "seconds": 80.0
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_INT8-Transparent-RGBA.json"
+    },
+    {
+      "case": "layers_official_spec_1024",
+      "status": "success",
+      "elapsed_s": 255.0,
+      "memory": {
+        "peak_commit_gib": 73.28,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.67,
+        "peak_vram0_used_gib": 28.47,
+        "peak_vram1_used_gib": 2.06,
+        "seconds": 257.1
+      },
+      "note": "official 6-layer spec, no writer, 1024"
+    },
+    {
+      "case": "ui_layers_default",
+      "status": "success",
+      "elapsed_s": 309.2,
+      "memory": {
+        "peak_commit_gib": 79.22,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 0.22,
+        "peak_vram0_used_gib": 29.61,
+        "peak_vram1_used_gib": 15.45,
+        "seconds": 311.2
+      },
+      "note": "frontend-serialized Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose.json"
+    },
+    {
+      "case": "layers_official_spec_1024_warm",
+      "status": "success",
+      "elapsed_s": 232.9,
+      "memory": {
+        "peak_commit_gib": 76.06,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 13.86,
+        "peak_vram0_used_gib": 28.47,
+        "peak_vram1_used_gib": 2.16,
+        "seconds": 235.1
+      },
+      "note": "warm, seed 1, 1024"
+    },
+    {
+      "case": "layers_official_spec_512_warm",
+      "status": "success",
+      "elapsed_s": 50.2,
+      "memory": {
+        "peak_commit_gib": 74.35,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 12.74,
+        "peak_vram0_used_gib": 30.55,
+        "peak_vram1_used_gib": 2.27,
+        "seconds": 52.0
+      },
+      "note": "warm, 512 bucket, shift 3.86"
+    },
+    {
+      "case": "layers_official_spec_512_shift188",
+      "status": "success",
+      "elapsed_s": 48.2,
+      "memory": {
+        "peak_commit_gib": 63.68,
+        "peak_commit_limit_gib": 97.37,
+        "min_ram_avail_gib": 26.04,
+        "peak_vram0_used_gib": 29.96,
+        "peak_vram1_used_gib": 2.08,
+        "seconds": 50.0
+      },
+      "note": "warm, 512 bucket, official shift for 512 (mu 0.63)"
+    }
+  ]
+}

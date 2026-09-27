@@ -1,0 +1,6 @@
+# Mira-Scene's CCM pipeline is a diffusers pipeline (ModelMixin/ConfigMixin, DINOv2-with-registers from transformers).
+# The scene assembly writes GLB with trimesh and builds the voxel preview meshes with scikit-image (marching cubes).
+# torch, transformers and einops come with ComfyUI; none of these is upgraded if already present (no --upgrade).
+diffusers>=0.36
+trimesh>=4.0
+scikit-image>=0.24

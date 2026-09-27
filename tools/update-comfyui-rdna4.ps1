@@ -98,10 +98,18 @@ $CustomNodeNames = @(
     "ComfyUI-DaWasteh-H3-AutoLength",
     "ComfyUI-DaWasteh-H3-MusicVideo",
     "ComfyUI-DaWasteh-LiveAvatar",
+    "ComfyUI-DaWasteh-MingImage",
+    "ComfyUI-DaWasteh-MiraScene",
     "ComfyUI-DaWasteh-MultiGPU-Control",
     "ComfyUI-DaWasteh-Qwen3TTS-LoRA",
     "ComfyUI-DaWasteh-VisionTools"
 )
+
+# v1.2.9: ComfyUI-DaWasteh-MiraScene loads Mira-Scene's CCM code from a pinned checkout (the upstream repository has
+# no license file yet: private use; nothing of it is copied into the bundle). Pinned like a lock file, independent of
+# -SkipUpstream, because the node pack was tested against exactly this commit.
+$MiraSceneRepoUrl = "https://github.com/VAST-AI-Research/Mira-Scene.git"
+$MiraSceneCommit = "18f42656f3b6f96ef61d9b291c93d1036bdaa016"
 
 $PixaromaNodeName = "ComfyUI-Pixaroma"
 $PixaromaRepoUrl = "https://github.com/pixaroma/ComfyUI-Pixaroma.git"
@@ -209,6 +217,48 @@ function Ensure-GitDirectory {
     }
 
     Invoke-NativeCommand "git" "clone" $RepositoryUrl $Path
+}
+
+function Ensure-PinnedCheckout {
+    param(
+        [Parameter(Mandatory = $true)][string] $Path,
+        [Parameter(Mandatory = $true)][string] $RepositoryUrl,
+        [Parameter(Mandatory = $true)][string] $Commit
+    )
+
+    $parent = Split-Path -Parent $Path
+    if (!(Test-Path -LiteralPath $parent)) { New-Item -ItemType Directory -Path $parent | Out-Null }
+    Assert-NoReparsePoints -TargetRoot $parent -Candidate $Path
+    $initialize = !(Test-Path -LiteralPath $Path)
+    if (!$initialize -and !(Test-Path -LiteralPath (Join-Path $Path ".git"))) {
+        if (Get-ChildItem -LiteralPath $Path -Force | Select-Object -First 1) {
+            throw "Ziel existiert, ist aber kein Git-Repository und wird nicht automatisch geloescht: $Path"
+        }
+        $initialize = $true
+    }
+    if ($initialize) {
+        Invoke-NativeCommand "git" "init" "-q" $Path
+        Invoke-NativeCommand "git" "-C" $Path "remote" "add" "origin" $RepositoryUrl
+    }
+    else {
+        $remote = & git -C $Path remote get-url origin
+        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($remote) -or
+            (Normalize-GitRemote $remote.Trim()) -ne (Normalize-GitRemote $RepositoryUrl)) {
+            throw "Git-Repository unter '$Path' hat nicht den erwarteten Remote '$RepositoryUrl'."
+        }
+        # --verify --quiet: no stderr for a repository without commits (PS 5.1 + Stop treats native stderr as fatal).
+        $head = & git -C $Path rev-parse --verify --quiet HEAD
+        if ($LASTEXITCODE -eq 0 -and "$head".Trim() -eq $Commit) {
+            Write-Log "Mira-Scene bereits auf $($Commit.Substring(0, 12)): $Path" -Color DarkGray
+            return
+        }
+        $changes = @(& git -C $Path status --porcelain --untracked-files=no)
+        if ($changes.Count -gt 0) {
+            throw "Lokale Aenderungen in '$Path'; der gepinnte Stand $Commit wird nicht erzwungen."
+        }
+    }
+    Invoke-NativeCommand "git" "-C" $Path "fetch" "--depth" "1" "origin" $Commit
+    Invoke-NativeCommand "git" "-C" $Path "checkout" "-q" "--detach" $Commit
 }
 
 function Warn-PixaromaManagerCopies {
@@ -1005,6 +1055,11 @@ foreach ($nodeName in $CustomNodeNames) {
         $ChangedCustomNodeNames.Add($nodeName)
     }
 }
+$MiraSceneTarget = Join-Path $Root "third_party\Mira-Scene"
+Write-Log "Mira-Scene-Code (gepinnt $($MiraSceneCommit.Substring(0, 12))): $MiraSceneTarget" -Color DarkCyan
+if ($DryRun) { Write-DryRun "wuerde Mira-Scene auf $MiraSceneCommit auschecken: $MiraSceneTarget" }
+else { Ensure-PinnedCheckout -Path $MiraSceneTarget -RepositoryUrl $MiraSceneRepoUrl -Commit $MiraSceneCommit }
+
 # v1.1.7: start scripts use the same commit/hash/backup/local-edit protection as nodes.
 $launcherSync = Install-GitTrackedDirectory `
     -RelativeSource "tools" `
