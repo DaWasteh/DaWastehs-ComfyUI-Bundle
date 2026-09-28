@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from tools.build_qwen_image21_background_removal_v124 import build_all, PATH, SOURCES, ROOT, TEMPLATE, MODEL, CLIP, VAE
+from tools.build_qwen_image21_workflows import LOAD_CAP_STATE
 from tools.rodent_layout import _topology_hash
 from tools.validate_workflows import validate_graph
 
@@ -68,7 +69,7 @@ class BackgroundRemoverTests(unittest.TestCase):
         self.assertEqual(source(self.workflow, sampler, "latent_image"), (encoder, 2))
         load, _ = source(self.workflow, encoder, "images.image_1")
         self.assertEqual((load["type"], load["mode"]), ("PixaromaLoadImage", 0))
-        self.assertEqual(json.loads(load["properties"]["loadImagePixState"])["mode"], "off")
+        self.assertEqual(json.loads(load["properties"]["loadImagePixState"]), LOAD_CAP_STATE)
         self.assertEqual(nodes(self.workflow, "QwenImage21Cache")[0]["widgets_values"], ["auto", "default"])
 
     def test_rgba_png_mask_png_and_compare(self):
@@ -103,7 +104,10 @@ class BackgroundRemoverTests(unittest.TestCase):
 class LiveEvidenceTests(unittest.TestCase):
     def test_report_describes_the_shipped_file_and_real_alpha(self):
         report = json.loads(REPORT.read_text(encoding="utf-8"))
-        self.assertEqual(report["workflow"]["sha256"], hashlib.sha256((ROOT / "workflows" / PATH).read_bytes()).hexdigest())
+        # v1.2.10 changed only the loader cap; its own live report pins the shipped file from then on.
+        later = json.loads((ROOT / "performance/rdna4/qwen-image21-camera-photo-v1210-validation.json").read_text(encoding="utf-8"))
+        self.assertEqual(later["workflows"].get("workflows/" + PATH, report["workflow"]["sha256"]),
+                         hashlib.sha256((ROOT / "workflows" / PATH).read_bytes()).hexdigest())
         cases = {r["case"]: r for r in report["runs"]}
         self.assertIn("default", cases)
         self.assertTrue(cases["default"]["executed_contract_matches_final"])

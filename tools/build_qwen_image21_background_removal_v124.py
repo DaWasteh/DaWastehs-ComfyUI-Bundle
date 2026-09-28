@@ -56,7 +56,7 @@ def build(schemas: dict) -> dict:
     clip = g.add("CLIPLoader", "TEXTENCODER · Qwen3-VL 8B INT8 ConvRot", clip_name=CLIP, type="qwen_image", device="default")
     vae = g.add("VAELoader", "VAE · nur Qwen Image 2.1 · RGBA", vae_name=VAE)
     load = g.add("PixaromaLoadImage", "BILD · Motiv, das freigestellt wird", image=INPUT_IMAGE)
-    load["properties"]["loadImagePixState"] = json.dumps({"version": 1, "mode": "off", "snap": 0})
+    load["properties"]["loadImagePixState"] = json.dumps(v121.LOAD_CAP_STATE)
     load["size"] = [480, 620]
     pos = g.prompt("ANWEISUNG · offizieller Freistell-Prompt (Comfy-Org)", prompt_text)
     neg = g.prompt("NEGATIV · offiziell leer · CFG 1 ignoriert Negativprompt", "")
@@ -133,7 +133,7 @@ START_NOTE = """# Qwen Image 2.1 · Background Remover
 **Research / Evaluation, nicht kommerziell ohne separate Lizenz.**
 [Qwen Research License](https://huggingface.co/Qwen/Qwen-Image-2.1/blob/main/LICENSE).
 
-1. **BILD** wählen (Pixaroma Load Image, Resize **off**). Unterordner wie `input/Sheets/` werden angezeigt.
+1. **BILD** wählen (Pixaroma Load Image). Unterordner wie `input/Sheets/` werden angezeigt.
 2. **Queue**. Qwen Image 2.1 bearbeitet das Bild mit der offiziellen Anweisung
    `Remove the background, and output a PNG image`; der neue 2.1-VAE liefert **RGBA**.
 3. Ergebnis unter **output/Qwen_Image_2_1/**:
@@ -141,8 +141,9 @@ START_NOTE = """# Qwen Image 2.1 · Background Remover
    - `BG_Mask_*.png`: Alpha-Maske als Graustufenbild (weiß = Motiv), z. B. für Compositing
 4. **VERGLEICH** zeigt Original und Ergebnis übereinander.
 
-**Format:** `resolution = 0` behält das Bildformat (auf 32 px gerundet). Sehr große Bilder kosten Zeit und
-Speicher; `1024` begrenzt auf ca. 1 Megapixel, 2048 ist die native 2K-Obergrenze.
+**Format:** `resolution = 0` behält das Bildformat (auf 32 px gerundet). Der Loader verkleinert nur Bilder über
+**4 MP (2048², native 2K-Obergrenze)**; Kamerafotos in voller Größe brachten den VAE-Encode zum Absturz
+(hipErrorLaunchFailure), die Grenze daher nicht auf **off** stellen. `1024` rechnet auf ca. 1 Megapixel (schneller).
 
 **Anweisung anpassen:** Was stehen bleiben soll, lässt sich benennen, z. B.
 `Remove the background, keep only the person and the guitar, and output a PNG image`.

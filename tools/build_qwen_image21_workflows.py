@@ -30,6 +30,10 @@ MODEL = "Qwen\\qwen_image_2.1_bf16.safetensors"
 CLIP = "Qwen\\qwen3vl_8b_int8_convrot.safetensors"
 VAE = "qwen-image\\qwen_image_2.1_vae_bf16.safetensors"
 MARKER = "dawasteh_qwen_image21"
+# resolution 0 keeps every reference at its own size: a 45 MP camera photo went through the VAE at 5464x8192 and died
+# with hipErrorLaunchFailure (v1.2.10). The loaders only shrink to the native 2K budget (4 MP = 2048², floored to the
+# encoder's 32 px grid), so smaller images stay untouched and nothing is resized twice.
+LOAD_CAP_STATE = {"version": 1, "mode": "max_mp", "max_mp": 4.0, "allow_upscale": False, "snap": 32, "resample": "auto"}
 
 
 def finish(g: Graph, path: str, mode: str) -> dict:
@@ -95,7 +99,7 @@ def build(mode: str, schemas: dict) -> dict:
         loads = []
         for i, image in enumerate(("portrait_model_denim.png", "clothing_light_blue_denim_shirt.png"), 1):
             load = g.add("PixaromaLoadImage", f"BILD {i} · " + ("Basis / Ausgabeformat" if i == 1 else "Kleidung / zusätzliche Referenz"), image=image)
-            load["properties"]["loadImagePixState"] = json.dumps({"version": 1, "mode": "off", "snap": 0})
+            load["properties"]["loadImagePixState"] = json.dumps(LOAD_CAP_STATE)
             load["size"] = [480, 620]
             loads.append(load)
             g.connect(load, 0, encode, f"images.image_{i}")
@@ -145,9 +149,11 @@ def build(mode: str, schemas: dict) -> dict:
    PNG erhält Alpha und Workflow-Metadaten; JPG verliert beides/Transparenz.
 
 {'## Bilder und Format' if edit else '## Format und Transparenz'}
-""" + ("""Pixaroma Load Image startet mit Resize **off**. Keine doppelte Skalierung.
-**resolution = 0** am Textencoder übernimmt jede Referenzgröße, auf Vielfache von 32 gerundet.
-**1024** bedeutet ca. 1 Megapixel je Referenz, nicht eine feste Breite. Das Seitenverhältnis bleibt erhalten.
+""" + ("""Pixaroma Load Image verkleinert nur Bilder über **4 MP (2048²)**, auf das 32-px-Raster; kleinere bleiben unverändert.
+Kamerafotos (24–45 MP) in voller Größe brachten den VAE-Encode zum Absturz (hipErrorLaunchFailure):
+diese Grenze im Loader nicht auf **off** stellen. Keine doppelte Skalierung.
+**resolution = 0** am Textencoder übernimmt die so begrenzte Referenzgröße, auf Vielfache von 32 gerundet.
+**1024** rechnet jede Referenz auf ca. 1 Megapixel (schneller), nicht eine feste Breite. Das Seitenverhältnis bleibt erhalten.
 Das LATENT von TextEncodeQwenImage21 bestimmt korrekt das Ausgabeformat von Bild 1.
 FREIE GRÖSSE **aus** ist die Herstellerempfehlung; **an** nutzt Pixaroma Resolution,
 kann aber bei abweichendem Format Motiv/Position verschieben. Der Schalter erzeugt keine Maske.

@@ -1,0 +1,200 @@
+{
+  "release": "v1.2.10",
+  "date": "2026-09-28",
+  "problem": "Qwen_Image_2_1_BF16-Multi-Image-Edit (and the Background Remover, same setup) loaded images with Pixaroma resize off and TextEncodeQwenImage21 resolution 0, so a 45 MP camera JPG (5464x8192 after EXIF rotation) was VAE-encoded at full size: torch.AcceleratorError hipErrorLaunchFailure in vae2_2 encoder (RMS_norm -> vector_norm); the prompt worker thread then died on soft_empty_cache.",
+  "fix": "PixaromaLoadImage state max_mp 4.0 (2048x2048, the model's native 2K budget), allow_upscale false, snap 32 (floor, the encoder's grid): images above 4 MP are resized once, smaller images pass untouched.",
+  "scope": "Final shipped workflow files serialized by the real frontend (headless Edge, app.graphToPrompt via performance/rdna4/bench/ui_to_api.py) and executed serially on a fresh test server. Default cases are unmodified except the save prefix; camera cases change only the documented user inputs (image, instruction, second loader muted, save prefix).",
+  "system": {
+    "os": "win32",
+    "comfyui_version": "0.37.0",
+    "comfyui_commit": "8d534945ebd53cff61e8def81757c6a6c1b9cf2d",
+    "pixaroma_commit": "7c464447ce2a17dff9489b79d4daf32e55b28f38",
+    "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+    "python_version": "3.13.13",
+    "gpu": "gpu:0 AMD Radeon AI PRO R9700 32 GB",
+    "profile": "start-MultiGPU.ps1 v0.9.8 profile on port 8192 (reserve-vram 4, VRAM guard 3 GiB, cache-ram)"
+  },
+  "workflows": {
+    "workflows/Image Editing/Qwen_Image_2_1_BF16-Multi-Image-Edit.json": "a079ab17dfae43d1df95e7cd2bf9b9c12070df79b4df89bb34d0f89e7d7ea60d",
+    "workflows/Image Editing/Qwen_Image_2_1_BF16-Background-Remover.json": "2a9e09cc401825608f6416dfc7fa79ae81ca73db43664aa6660c12c5a33733da"
+  },
+  "sources": [
+    {
+      "path": "tools/build_qwen_image21_workflows.py",
+      "sha256": "73ef93c62f0ed35081e3326f664152d0ddeceabe75460f915ec71ddbe33b2167"
+    },
+    {
+      "path": "tools/build_qwen_image21_background_removal_v124.py",
+      "sha256": "a73fa17c552ad19dcff970f31314af3a57afc3d3e06fb47a90d0244dfedfd016"
+    },
+    {
+      "path": "performance/rdna4/bench/ui_to_api.py",
+      "sha256": "3dedcf488935641d1f376700d1baad7ccdf02b383f9b3de3d51300a98b010920"
+    }
+  ],
+  "runs": [
+    {
+      "case": "edit_default",
+      "workflow": "workflows/Image Editing/Qwen_Image_2_1_BF16-Multi-Image-Edit.json",
+      "workflow_sha256": "a079ab17dfae43d1df95e7cd2bf9b9c12070df79b4df89bb34d0f89e7d7ea60d",
+      "tested_ui_sha256": "ee8efa1492e1a49d313602468ca8d8a52052995c90bd1642844b18a4da26827e",
+      "prompt_id": "e757cad4-b52f-4da4-9d59-138e57b64824",
+      "status": "success",
+      "errors": [],
+      "seconds": 90.31,
+      "steps": 25,
+      "api_contract_sha256": "ead42524f18a9e1e5e329dc07ad9a5a95970417a168c24150c953738cb4b0019",
+      "executed_contract_matches_final": true,
+      "outputs": [
+        {
+          "node": "15",
+          "file": "output/Qwen_Image_2_1/v1210_Default_Edit_00001.png",
+          "size": 1827598,
+          "sha256": "e7b47630a68e76df2ba714fca900a12c07de67ab9f2561846199adbe8272ba3d",
+          "width": 896,
+          "height": 1152,
+          "mode": "RGBA",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true,
+          "alpha_min": 253,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.0
+        }
+      ]
+    },
+    {
+      "case": "remover_default",
+      "workflow": "workflows/Image Editing/Qwen_Image_2_1_BF16-Background-Remover.json",
+      "workflow_sha256": "2a9e09cc401825608f6416dfc7fa79ae81ca73db43664aa6660c12c5a33733da",
+      "tested_ui_sha256": "c7cf3926becec0c1f5ed2c8cc76a707fce392f3ef14134b4e999f9d39af7d46c",
+      "prompt_id": "f8760f37-ea4e-4346-b1e8-3523b9d63890",
+      "status": "success",
+      "errors": [],
+      "seconds": 46.16,
+      "steps": 25,
+      "api_contract_sha256": "7bc59343caafef9f1c14d5ddc15cf84f5542fd631df37269d409c1cabc21a79e",
+      "executed_contract_matches_final": true,
+      "outputs": [
+        {
+          "node": "11",
+          "file": "output/Qwen_Image_2_1/v1210_Default_BG_Removed_00001.png",
+          "size": 1206989,
+          "sha256": "c416704842ca724dd2cf4afcaa97068354bd5878a4513b7a36791e192e753f12",
+          "width": 896,
+          "height": 1152,
+          "mode": "RGBA",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true,
+          "alpha_min": 0,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.5778
+        },
+        {
+          "node": "15",
+          "file": "output/Qwen_Image_2_1/v1210_Default_BG_Mask_00001.png",
+          "size": 237195,
+          "sha256": "2efbf3ffeb3063861f5e244c1835385f9fa6bcfd649814a2511093302942b01c",
+          "width": 896,
+          "height": 1152,
+          "mode": "RGB",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true
+        }
+      ]
+    },
+    {
+      "case": "edit_camera_photo_45mp",
+      "workflow": "workflows/Image Editing/Qwen_Image_2_1_BF16-Multi-Image-Edit.json",
+      "workflow_sha256": "a079ab17dfae43d1df95e7cd2bf9b9c12070df79b4df89bb34d0f89e7d7ea60d",
+      "tested_ui_sha256": "1733d9e7a2ef0930a5e88eb0e768399f1fe9fdde2bbcc2e7f43dec42bbf5f441",
+      "prompt_id": "ac023051-9214-46e7-b9a3-a0d677883c35",
+      "status": "success",
+      "errors": [],
+      "seconds": 419.2,
+      "steps": 25,
+      "api_contract_sha256": "8e57e24f87eef01cb1912b1dad014aef52356967418c30814501d28d1d926096",
+      "executed_contract_matches_final": true,
+      "outputs": [
+        {
+          "node": "15",
+          "file": "output/Qwen_Image_2_1/v1210_Camera_Edit_00001.png",
+          "size": 5462894,
+          "sha256": "989d80e3ddd4cb1fa9f92e5ff213e73338c9fb6361c127b0205d2bbacce6f9ba",
+          "width": 1664,
+          "height": 2496,
+          "mode": "RGBA",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true,
+          "alpha_min": 251,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.0
+        }
+      ],
+      "input": {
+        "kind": "private camera JPG, not published",
+        "bytes": 8309831,
+        "stored_size": [
+          8192,
+          5464
+        ],
+        "exif_orientation": 8,
+        "width": 5464,
+        "height": 8192,
+        "megapixels": 44.8
+      }
+    },
+    {
+      "case": "remover_camera_photo_45mp",
+      "workflow": "workflows/Image Editing/Qwen_Image_2_1_BF16-Background-Remover.json",
+      "workflow_sha256": "2a9e09cc401825608f6416dfc7fa79ae81ca73db43664aa6660c12c5a33733da",
+      "tested_ui_sha256": "12ccad214b06cc5a2592d9d3664f20bdaca3dd6d7fa17dd312538dba5454bd0b",
+      "prompt_id": "fa57503d-ffd7-4581-86c7-6a576e1fdb3c",
+      "status": "success",
+      "errors": [],
+      "seconds": 427.12,
+      "steps": 25,
+      "api_contract_sha256": "0d60932438ef756300851dfd65161a452aedebe47ee3a4c1706bfd284ce98e2b",
+      "executed_contract_matches_final": true,
+      "outputs": [
+        {
+          "node": "11",
+          "file": "output/Qwen_Image_2_1/v1210_Camera_BG_Removed_00001.png",
+          "size": 3479593,
+          "sha256": "f1b2cebda2a9fc1e298b3fadaa67e18e288d8222e5c8970555b4883ca6bdcccc",
+          "width": 1664,
+          "height": 2496,
+          "mode": "RGBA",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true,
+          "alpha_min": 0,
+          "alpha_max": 255,
+          "alpha_below_128_fraction": 0.5135
+        },
+        {
+          "node": "15",
+          "file": "output/Qwen_Image_2_1/v1210_Camera_BG_Mask_00001.png",
+          "size": 700287,
+          "sha256": "fea3724b66add6af7e334d5f8f4ec5d3c57fb53d4caf612b613a2f4bf2a1c60a",
+          "width": 1664,
+          "height": 2496,
+          "mode": "RGB",
+          "workflow_metadata_matches": true,
+          "prompt_metadata_matches": true
+        }
+      ],
+      "input": {
+        "kind": "private camera JPG, not published",
+        "bytes": 8309831,
+        "stored_size": [
+          8192,
+          5464
+        ],
+        "exif_orientation": 8,
+        "width": 5464,
+        "height": 8192,
+        "megapixels": 44.8
+      }
+    }
+  ],
+  "metadata_note": "prompt_metadata_matches ignores the per-node is_changed field that ComfyUI adds to the PNG prompt."
+}

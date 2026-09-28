@@ -13,14 +13,16 @@ Qwen Research License: Forschung und Evaluation, nicht kommerziell ohne separate
 
 ## Bedienung
 
-1. **BILD** im Pixaroma Load Image wählen (Resize **off**; Unterordner wie `input/Sheets/` werden angezeigt).
+1. **BILD** im Pixaroma Load Image wählen (Unterordner wie `input/Sheets/` werden angezeigt).
 2. **Queue**. Anweisung ist die offizielle `Remove the background, and output a PNG image`.
 3. Ergebnisse unter `output/Qwen_Image_2_1/`:
    - `BG_Removed_*.png`: Motiv mit Transparenz
    - `BG_Mask_*.png`: Maske, weiß = Motiv, schwarz = entfernt (für Compositing in anderen Programmen)
 4. **VERGLEICH** zeigt Original und Ergebnis übereinander.
 
-`resolution = 0` behält das Bildformat (auf 32 px gerundet). Offizielle Samplerwerte: 25 Schritte, CFG 1, Euler,
+`resolution = 0` behält das Bildformat (auf 32 px gerundet). Seit v1.2.10 verkleinert der Loader nur Bilder über
+**4 MP (2048²)**; Kamerafotos in voller Größe brachten den VAE zum Absturz, siehe
+[v1.2.10](QWEN_IMAGE21_CAMERA_PHOTO_V1210.md). Offizielle Samplerwerte: 25 Schritte, CFG 1, Euler,
 Simple, Seed 0 (fest, reproduzierbar).
 
 ### Anweisung anpassen

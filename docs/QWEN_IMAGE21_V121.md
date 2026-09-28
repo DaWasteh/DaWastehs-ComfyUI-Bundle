@@ -53,8 +53,8 @@ PNG erhält den Alpha-Kanal. Ein vorhandener Alpha-Kanal allein bedeutet noch ke
 ### Multi-Image Edit
 
 1. **Bild 1** ist die Basis, **Bild 2** die zusätzliche Referenz. Im Prompt mit `<image1>` und `<image2>` darauf verweisen.
-2. Pixaroma Load Image startet mit Resize **off**. Die Skalierung übernimmt **einmal** der offizielle `TextEncodeQwenImage21`.
-3. `resolution = 0` erhält jede Referenzgröße, gerundet auf das 32px-Raster. `1024` bedeutet ca. 1024² Gesamtpixel je Bild bei erhaltenem Seitenverhältnis, nicht 1024 Pixel Breite.
+2. Pixaroma Load Image verkleinert seit v1.2.10 nur Bilder über **4 MP (2048²)**, abgerundet auf das 32px-Raster (`max_mp 4`, Hochskalieren aus). Kleinere Bilder bleiben unverändert, skaliert wird höchstens **einmal**. Vorher (Resize **off**) ging ein Kamerafoto mit 45 MP in voller Größe in den VAE und brach mit `hipErrorLaunchFailure` ab; siehe [v1.2.10](QWEN_IMAGE21_CAMERA_PHOTO_V1210.md).
+3. `resolution = 0` erhält die so begrenzte Referenzgröße, gerundet auf das 32px-Raster. `1024` bedeutet ca. 1024² Gesamtpixel je Bild bei erhaltenem Seitenverhältnis, nicht 1024 Pixel Breite (schneller).
 4. **FREIE GRÖSSE aus**: das vom Textencoder ausgegebene Latent übernimmt das Format von Bild 1. Das ist der offizielle, positionsstabile Standard.
 5. **FREIE GRÖSSE an**: nutzt das separate Empty Latent mit Pixaroma Resolution. Ein stark abweichendes Format kann Motiv und Position verschieben. Der nicht gewählte Zweig ist lazy.
 6. Vergleich von Bild 1 und Ergebnis im Pixaroma Compare; PNGs unter `output/Qwen_Image_2_1/Edit_*.png`.

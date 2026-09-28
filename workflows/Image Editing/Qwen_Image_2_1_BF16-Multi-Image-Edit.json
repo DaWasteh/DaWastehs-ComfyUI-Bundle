@@ -508,7 +508,7 @@
       ],
       "properties": {
         "Node name for S&R": "PixaromaLoadImage",
-        "loadImagePixState": "{\"version\": 1, \"mode\": \"off\", \"snap\": 0}"
+        "loadImagePixState": "{\"version\": 1, \"mode\": \"max_mp\", \"max_mp\": 4.0, \"allow_upscale\": false, \"snap\": 32, \"resample\": \"auto\"}"
       },
       "widgets_values": [
         "portrait_model_denim.png"
@@ -580,7 +580,7 @@
       ],
       "properties": {
         "Node name for S&R": "PixaromaLoadImage",
-        "loadImagePixState": "{\"version\": 1, \"mode\": \"off\", \"snap\": 0}"
+        "loadImagePixState": "{\"version\": 1, \"mode\": \"max_mp\", \"max_mp\": 4.0, \"allow_upscale\": false, \"snap\": 32, \"resample\": \"auto\"}"
       },
       "widgets_values": [
         "clothing_light_blue_denim_shirt.png"
@@ -923,7 +923,7 @@
       ],
       "size": [
         680,
-        1282
+        1370
       ],
       "flags": {},
       "order": 0,
@@ -934,7 +934,7 @@
         "Node name for S&R": "MarkdownNote"
       },
       "widgets_values": [
-        "# Qwen Image 2.1 · Multi-Image Edit\n\n**Research / Evaluation, nicht kommerziell ohne separate Lizenz.**\n[Qwen Research License](https://huggingface.co/Qwen/Qwen-Image-2.1/blob/main/LICENSE).\n\n1. Modellnamen prüfen, Pixaroma-Prompt bearbeiten, dann Queue starten.\n2. Offizielle Startwerte: **25 Schritte, CFG 1, Euler, Simple, Denoise 1**.\n   Seed 0 ist fest für reproduzierbare Ergebnisse; im Sampler auf randomize stellen für Variation.\n   CFG 1 ignoriert den Negativprompt. Höhere CFG verändert Verhalten und Rechenaufwand.\n3. Genau eine zentrale DaW GPU-Steuerung; MODEL/CLIP/VAE sind wirklich verbunden.\n   Standard: alles R9700 (gpu:0), kein ungeprüfter Split. gpu:1 ist optional, keine Parallelberechnung.\n4. Pixaroma Timer misst den Lauf; PNG landet unter **output/Qwen_Image_2_1/**.\n   PNG erhält Alpha und Workflow-Metadaten; JPG verliert beides/Transparenz.\n\n## Bilder und Format\nPixaroma Load Image startet mit Resize **off**. Keine doppelte Skalierung.\n**resolution = 0** am Textencoder übernimmt jede Referenzgröße, auf Vielfache von 32 gerundet.\n**1024** bedeutet ca. 1 Megapixel je Referenz, nicht eine feste Breite. Das Seitenverhältnis bleibt erhalten.\nDas LATENT von TextEncodeQwenImage21 bestimmt korrekt das Ausgabeformat von Bild 1.\nFREIE GRÖSSE **aus** ist die Herstellerempfehlung; **an** nutzt Pixaroma Resolution,\nkann aber bei abweichendem Format Motiv/Position verschieben. Der Schalter erzeugt keine Maske.\n\n<image1> = Basis, <image2> = Kleidung/Referenz. Für nur ein Bild den zweiten Loader\nmit Strg+M stummschalten UND den Prompt anpassen. Weitere Bilder am Autogrow-Eingang\nverbinden (Core unterstützt bis zu 16); zusätzliche Referenzen kosten VRAM/RAM.\nDie zwei Startbilder kommen aus Comfy-Orgs offiziellen Beispielen; Links im Download-Hinweis.\nDie RGB-Loader geben Eingabe-Alpha getrennt als MASK aus; diese ist hier nicht verbunden.\nDies ist kein Masken-Inpainting-Workflow. Der Decoder kann dennoch RGBA ausgeben.\n\nKV-Cache auto/default bleibt verlustfrei. cpu kann VRAM sparen; off rechnet Referenzen\nin jedem Schritt neu. int8/int4 sind qualitätsverändernde Optionen, nicht Standard.\n\nBedienung und genaue Testgrenzen: docs/QWEN_IMAGE21_V121.md. Kein Cloud-API-Aufruf.\n"
+        "# Qwen Image 2.1 · Multi-Image Edit\n\n**Research / Evaluation, nicht kommerziell ohne separate Lizenz.**\n[Qwen Research License](https://huggingface.co/Qwen/Qwen-Image-2.1/blob/main/LICENSE).\n\n1. Modellnamen prüfen, Pixaroma-Prompt bearbeiten, dann Queue starten.\n2. Offizielle Startwerte: **25 Schritte, CFG 1, Euler, Simple, Denoise 1**.\n   Seed 0 ist fest für reproduzierbare Ergebnisse; im Sampler auf randomize stellen für Variation.\n   CFG 1 ignoriert den Negativprompt. Höhere CFG verändert Verhalten und Rechenaufwand.\n3. Genau eine zentrale DaW GPU-Steuerung; MODEL/CLIP/VAE sind wirklich verbunden.\n   Standard: alles R9700 (gpu:0), kein ungeprüfter Split. gpu:1 ist optional, keine Parallelberechnung.\n4. Pixaroma Timer misst den Lauf; PNG landet unter **output/Qwen_Image_2_1/**.\n   PNG erhält Alpha und Workflow-Metadaten; JPG verliert beides/Transparenz.\n\n## Bilder und Format\nPixaroma Load Image verkleinert nur Bilder über **4 MP (2048²)**, auf das 32-px-Raster; kleinere bleiben unverändert.\nKamerafotos (24–45 MP) in voller Größe brachten den VAE-Encode zum Absturz (hipErrorLaunchFailure):\ndiese Grenze im Loader nicht auf **off** stellen. Keine doppelte Skalierung.\n**resolution = 0** am Textencoder übernimmt die so begrenzte Referenzgröße, auf Vielfache von 32 gerundet.\n**1024** rechnet jede Referenz auf ca. 1 Megapixel (schneller), nicht eine feste Breite. Das Seitenverhältnis bleibt erhalten.\nDas LATENT von TextEncodeQwenImage21 bestimmt korrekt das Ausgabeformat von Bild 1.\nFREIE GRÖSSE **aus** ist die Herstellerempfehlung; **an** nutzt Pixaroma Resolution,\nkann aber bei abweichendem Format Motiv/Position verschieben. Der Schalter erzeugt keine Maske.\n\n<image1> = Basis, <image2> = Kleidung/Referenz. Für nur ein Bild den zweiten Loader\nmit Strg+M stummschalten UND den Prompt anpassen. Weitere Bilder am Autogrow-Eingang\nverbinden (Core unterstützt bis zu 16); zusätzliche Referenzen kosten VRAM/RAM.\nDie zwei Startbilder kommen aus Comfy-Orgs offiziellen Beispielen; Links im Download-Hinweis.\nDie RGB-Loader geben Eingabe-Alpha getrennt als MASK aus; diese ist hier nicht verbunden.\nDies ist kein Masken-Inpainting-Workflow. Der Decoder kann dennoch RGBA ausgeben.\n\nKV-Cache auto/default bleibt verlustfrei. cpu kann VRAM sparen; off rechnet Referenzen\nin jedem Schritt neu. int8/int4 sind qualitätsverändernde Optionen, nicht Standard.\n\nBedienung und genaue Testgrenzen: docs/QWEN_IMAGE21_V121.md. Kein Cloud-API-Aufruf.\n"
       ]
     },
     {
@@ -943,7 +943,7 @@
       "title": "DOWNLOADS · Modelle / Zielordner / keine alten Qwen-VAEs",
       "pos": [
         40.0,
-        1400.0
+        1480.0
       ],
       "size": [
         680,
@@ -966,7 +966,7 @@
       "type": "PixaromaRunTimer",
       "pos": [
         40.0,
-        2240.0
+        2320.0
       ],
       "size": [
         226,
@@ -1420,7 +1420,7 @@
       "type": "DaWMultiGPUDeviceControl",
       "pos": [
         40.0,
-        2420.0
+        2500.0
       ],
       "size": [
         380,
@@ -1806,7 +1806,7 @@
         0.0,
         0.0,
         760.0,
-        2640.0
+        2720.0
       ],
       "color": "#5B6472",
       "font_size": 24,
@@ -1954,7 +1954,7 @@
         40
       ],
       "stage_gap": 120,
-      "topology_sha256": "2604cd1e8436af6a6ca5274170d5c12f521327d6675efa35131d282162062b91",
+      "topology_sha256": "939711ce28da67341d0fe91f79eece4a0a95d20b6ceaf6274117611da0024e0e",
       "exceptions": []
     }
   },

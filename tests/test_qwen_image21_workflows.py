@@ -8,7 +8,7 @@ import tempfile
 from unittest.mock import patch
 
 from tools import migrate_workflows_v092 as migration
-from tools.build_qwen_image21_workflows import build_all, PATHS, SOURCES, ROOT, MARKER, MODEL, CLIP, VAE
+from tools.build_qwen_image21_workflows import build_all, PATHS, SOURCES, ROOT, MARKER, MODEL, CLIP, VAE, LOAD_CAP_STATE
 from tools.rodent_layout import _topology_hash
 from tools.validate_workflows import validate_graph
 
@@ -81,7 +81,7 @@ class QwenImage21Tests(unittest.TestCase):
             load, _ = source(workflow, enc, f"images.image_{i}")
             self.assertEqual(load["type"], "PixaromaLoadImage")
             self.assertEqual(load["mode"], 0)
-            self.assertEqual(json.loads(load["properties"]["loadImagePixState"])["mode"], "off")
+            self.assertEqual(json.loads(load["properties"]["loadImagePixState"]), LOAD_CAP_STATE)
         self.assertFalse(any(s["name"] == "images" for s in enc["inputs"]))
         self.assertEqual(node(workflow, "QwenImage21Cache")["widgets_values"], ["auto", "default"])
         self.assertEqual(source(workflow, node(workflow, "KSampler"), "latent_image")[0]["id"], switch["id"])
@@ -119,8 +119,11 @@ class QwenImage21Tests(unittest.TestCase):
     def test_audit_sources_and_frontend_contract_hashes_are_pinned(self):
         report = json.loads((ROOT / "performance/rdna4/qwen-image21-v121-validation.json").read_text(encoding="utf-8"))
         contracts = json.loads((SOURCES / "frontend-contracts.json").read_text(encoding="utf-8"))
+        later = json.loads((ROOT / "performance/rdna4/qwen-image21-camera-photo-v1210-validation.json").read_text(encoding="utf-8"))
+        repinned = {entry["path"]: entry["sha256"] for entry in later["sources"]}  # v1.2.10 changed the builder
         for entry in report["sources"]:
-            self.assertEqual(hashlib.sha256((ROOT / entry["path"]).read_bytes()).hexdigest(), entry["sha256"])
+            expected = repinned.get(entry["path"], entry["sha256"])
+            self.assertEqual(hashlib.sha256((ROOT / entry["path"]).read_bytes()).hexdigest(), expected)
         for case, row in contracts.items():
             output = {k: {"class_type": v["class_type"], "inputs": v["inputs"]} for k, v in row["output"].items()}
             digest = hashlib.sha256(json.dumps(output, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()).hexdigest()
@@ -150,11 +153,14 @@ class QwenImage21Tests(unittest.TestCase):
         report = json.loads((ROOT / "performance/rdna4/qwen-image21-v121-validation.json").read_text(encoding="utf-8"))
         defaults = {r["workflow"]: r for r in report["runs"] if r["case"] == "default"}
         self.assertEqual(set(defaults), {"workflows/" + p for p in self.workflows})
+        # v1.2.10 changed only the edit loaders; its own live report pins that file from then on.
+        later = json.loads((ROOT / "performance/rdna4/qwen-image21-camera-photo-v1210-validation.json").read_text(encoding="utf-8"))
         for path in self.workflows:
             record = defaults["workflows/" + path]
             self.assertEqual(record["status"], "success")
             self.assertTrue(record["executed_contract_matches_final"])
-            self.assertEqual(record["workflow_sha256"], hashlib.sha256((ROOT / "workflows" / path).read_bytes()).hexdigest())
+            pinned = later["workflows"].get("workflows/" + path, record["workflow_sha256"])
+            self.assertEqual(pinned, hashlib.sha256((ROOT / "workflows" / path).read_bytes()).hexdigest())
             self.assertTrue(record["outputs"])
             for output in record["outputs"]:
                 self.assertGreater(output["size"], 0)

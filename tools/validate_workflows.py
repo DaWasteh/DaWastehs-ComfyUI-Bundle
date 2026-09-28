@@ -625,6 +625,22 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tupl
             sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head_raw)),
             sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head_raw)),
         )
+    extra = current.get("extra", {})
+    if "dawasteh_qwen_image21" in extra or "dawasteh_qwen_image21_background_removal" in extra:
+        # v1.2.10 caps the Qwen Image 2.1 reference loaders at 4 MP; the graphs stay reproducible from their builders.
+        try:
+            from tools.build_qwen_image21_workflows import build_all as build_v121
+            from tools.build_qwen_image21_background_removal_v124 import build_all as build_v124
+        except ModuleNotFoundError:
+            from build_qwen_image21_workflows import build_all as build_v121
+            from build_qwen_image21_background_removal_v124 import build_all as build_v124
+        key = _path_key(path).removeprefix("workflows/")
+        if {**build_v121(), **build_v124()}.get(key) != current:
+            errors.append(f"{path}: differs from deterministic v1.2.10 Qwen Image 2.1 workflow")
+        return (
+            sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head_raw)),
+            sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head_raw)),
+        )
     # v1.1.1 (RDNA4 performance pass): files carrying the v111 marker are compared against the
     # deterministic, idempotent v111 form of the baseline (see tools/upgrade_v111.py).
     v111_key = _path_key(path).removeprefix("workflows/")
