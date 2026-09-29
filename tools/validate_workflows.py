@@ -803,6 +803,7 @@ def main() -> int:
     v126_additions = {}
     v128_additions = {}
     v129_additions = {}
+    v130_additions = {}
     if args.against_head:
         # Import lazily so historical validators and pure graph tests do not
         # acquire a generator dependency unless checking collection migration.
@@ -848,6 +849,11 @@ def main() -> int:
             from build_ming_image_workflows_v129 import build_all as build_v129
             from build_mira_scene_workflows_v129 import build_all as build_v129_mira
         v129_additions = {**build_v129(), **build_v129_mira()}
+        try:
+            from tools.build_prompt_enhancer_v130 import build_all as build_v130
+        except ModuleNotFoundError:
+            from build_prompt_enhancer_v130 import build_all as build_v130
+        v130_additions = build_v130()
     if args.against_head and not args.skip_collection_totals:
         baseline_paths = git_baseline_workflow_paths()
         expected_paths = {
@@ -869,6 +875,7 @@ def main() -> int:
         expected_paths.update(f"workflows/{key}" for key in v126_additions)
         expected_paths.update(f"workflows/{key}" for key in v128_additions)
         expected_paths.update(f"workflows/{key}" for key in v129_additions)
+        expected_paths.update(f"workflows/{key}" for key in v130_additions)
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
@@ -924,7 +931,10 @@ def main() -> int:
                 key = _path_key(path).removeprefix("workflows/")
                 addition = next((item for item in ADDITIONS if item.path == key), None)
                 autosongwriter = next((item for item in V093_TARGET_WORKFLOWS if item.path == key), None)
-                if key in v129_additions:
+                if key in v130_additions:
+                    if v130_additions[key] != workflow:
+                        errors.append(f"{path}: differs from deterministic v1.3.0 image prompt enhancer workflow")
+                elif key in v129_additions:
                     if v129_additions[key] != workflow:
                         errors.append(f"{path}: differs from deterministic v1.2.9 Ming Image / Mira-Scene workflow")
                 elif key in v128_additions:
@@ -1006,7 +1016,9 @@ def main() -> int:
     # and video, new category "Pose & Depth"): +5 files, +157 nodes, +65 notes, +109 links, +5 timers.
     # v1.2.9 adds four flat Ming Image workflows (design text to image, transparent RGBA, image edit, Design-Layer
     # decomposition): +4 files, +170 nodes, +72 notes, +111 links, +4 timers.
-    expected = {"files": 264, "graphs": 317, "nodes": 12050, "notes": 5470, "links": 8393, "timers": 245}
+    # v1.3.0 adds the flat image prompt enhancer workflow (Qwen3.8 27B writer, optional image, two text views):
+    # +1 file, +11 nodes, +2 notes, +4 links, +1 timer.
+    expected = {"files": 265, "graphs": 318, "nodes": 12061, "notes": 5472, "links": 8397, "timers": 246}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

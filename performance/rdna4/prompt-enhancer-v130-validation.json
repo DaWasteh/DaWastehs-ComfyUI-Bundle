@@ -1,0 +1,472 @@
+{
+ "release": "v1.3.0",
+ "date": "2026-09-29",
+ "scope": "Image prompt enhancer: DaWImagePromptEnhancer (Qwen3.8 27B GGUF via llama.cpp) in Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer",
+ "system": {
+  "os": "win32",
+  "comfyui_version": "0.37.0",
+  "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+  "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+  "ram_total": 50860650496
+ },
+ "workflows": {
+  "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json": {
+   "sha256": "40276fa371fc017e62ccc301f9c9b2eb0a4d4709a7a32fdbfa55d743efb061d9"
+  }
+ },
+ "runs": [
+  {
+   "status": "success",
+   "elapsed_s": 30.5,
+   "memory": {
+    "peak_commit_gib": 61.47,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 9.52,
+    "llama_server_seen": true,
+    "peak_llama_dedicated_gib": 11.68,
+    "peak_llama_shared_gib": 2.57,
+    "seconds": 30.5
+   },
+   "node_errors": {},
+   "prompt": "A weathered stone lighthouse stands defiantly on a jagged rocky promontory amidst a violent storm. Thick, dark clouds swirl overhead, casting deep shadows across the rough, textured masonry of the tower. Large white gulls dive and soar through the heavy rain, their wings spread wide against the chaotic sky. Intense, dramatic lightning strikes illuminate the scene from behind, creating high-contrast beams that cut through the gloom and highlight the splashing, foaming waves crashing violently against the base of the structure. The atmosphere is tense and foreboding, with a palette dominated by slate greys, deep blues, and stark white highlights. Captured with a wide-angle lens from a low angle, the composition emphasizes the towering height of the lighthouse against the tumultuous sea. Realistic photograph style with high dynamic range and sharp focus on the wet stone surfaces.",
+   "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · mittel · 136 Wörter · 30 s",
+   "case": "default_german_draft_natural",
+   "final": true,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "settings": {
+    "detail": "mittel",
+    "enhance": true,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 0,
+    "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 136,
+    "tags": 12,
+    "chars": 889
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 36.3,
+   "memory": {
+    "peak_commit_gib": 61.54,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 10.07,
+    "llama_server_seen": true,
+    "peak_llama_dedicated_gib": 11.52,
+    "peak_llama_shared_gib": 2.1,
+    "seconds": 36.3
+   },
+   "node_errors": {},
+   "prompt": "A weathered stone lighthouse stands defiantly against a violent storm, its white paint peeling to reveal rough grey masonry beneath. Thick bands of dark cloud churn overhead, illuminated from within by flashes of jagged lightning that pierce the gloom. A flock of seagulls scatters wildly across the sky, their white feathers contrasting sharply with the turbulent atmosphere. The ocean below crashes in towering waves of deep indigo and charcoal, sending sprays of saltwater high into the air around the tower's base. Dramatic chiaroscuro lighting defines the scene, with harsh electric blue highlights striking the wet stone while deep shadows engulf the lower structure. A low-angle shot captures the imposing height of the lighthouse, emphasizing its isolation and resilience amidst the chaos. The image is a realistic photograph taken with a wide-angle lens, showcasing hyper-detailed textures of wet rock and churning water in a moody, cinematic style that conveys intense tension and atmospheric grandeur.",
+   "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · mittel · 153 Wörter · 36 s",
+   "case": "seed_variation",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "settings": {
+    "detail": "mittel",
+    "enhance": true,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 7,
+    "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 153,
+    "tags": 9,
+    "chars": 1012
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 24.1,
+   "memory": {
+    "peak_commit_gib": 61.43,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 9.61,
+    "llama_server_seen": true,
+    "peak_llama_dedicated_gib": 11.63,
+    "peak_llama_shared_gib": 2.56,
+    "seconds": 24.1
+   },
+   "node_errors": {},
+   "prompt": "A vertical poster design for a jazz festival featuring a large, dark blue silhouette of a saxophonist playing an alto saxophone in the center. The background is a deep midnight blue gradient fading into black at the edges. At the top, the title \"BLUE NOTE NIGHTS\" appears in bold, white sans-serif capital letters with a subtle glow. Below the central figure, the text \"14. August · Stadtpark · Eintritt frei\" is printed in smaller, light grey serif font, centered horizontally. The composition uses high contrast to emphasize the musical theme. The rendering style is clean vector art with smooth edges and flat colors, suitable for print production.",
+   "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Text im Bild · mittel · 107 Wörter · 23 s",
+   "case": "text_in_image_poster",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "Poster für ein Jazzfestival, Titel \"BLUE NOTE NIGHTS\", darunter \"14. August · Stadtpark · Eintritt frei\", Saxophonist als Silhouette",
+   "settings": {
+    "detail": "mittel",
+    "enhance": true,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 0,
+    "target": "Text im Bild (Poster, Logo, Schild)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 107,
+    "tags": 8,
+    "chars": 651
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 19.6,
+   "memory": {
+    "peak_commit_gib": 61.38,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 9.94,
+    "llama_server_seen": true,
+    "peak_llama_dedicated_gib": 11.61,
+    "peak_llama_shared_gib": 2.13,
+    "seconds": 19.6
+   },
+   "node_errors": {},
+   "prompt": "masterpiece, best quality, highly detailed, 1boy, knight, male, full body, black armor, plate armor, helmet, visor, dark metal, riding, horse, brown horse, standing on horseback, reins, village, burning village, fire, flames, smoke, ash, rubble, destruction, medieval, fantasy, chaos, war, dramatic, cinematic lighting, volumetric light, orange glow, red accents, dark atmosphere, low angle, wide shot, dynamic composition, realistic, photorealistic, 8k, sharp focus",
+   "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Tags · ausführlich · 42 Tags · 18 s",
+   "case": "tags_long",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "a knight in black armor riding a horse through a burning village",
+   "settings": {
+    "detail": "ausführlich",
+    "enhance": true,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 0,
+    "target": "Tags (SDXL, Pony, Illustrious)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 61,
+    "tags": 42,
+    "chars": 466
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 30.2,
+   "memory": {
+    "peak_commit_gib": 61.56,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 10.0,
+    "llama_server_seen": true,
+    "peak_llama_dedicated_gib": 11.44,
+    "peak_llama_shared_gib": 2.18,
+    "seconds": 30.2
+   },
+   "node_errors": {},
+   "prompt": "Ein verwitterter, steinerner Leuchtturm steht auf einer felsigen Klippe in einem tosenden Sturm, während Möwen durch die stürmische Luft kreisen. Der Turm ist von zerfressener Rost und abgeblätterter weißer Farbe gezeichnet, mit einer offenen Laterne, die warmes, goldenes Licht in den nassen Wind wirft. Dunkle, bedrohliche Wolken rollen über dem Horizont auf, während weiße Gischt gegen die Felsen schlägt. Dramatisches, kontrastreiches Licht durchbricht die Schwärze, und der Blick aus leichter Unterwasserperspektive betont die Höhe des Turms. Realistische Fotografie mit kühlen Blau- und Grautönen, die von warmen Lichtakzenten gebrochen werden.",
+   "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · kurz · 89 Wörter · 30 s",
+   "case": "german_output_short",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "settings": {
+    "detail": "kurz",
+    "enhance": true,
+    "language": "Deutsch",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 0,
+    "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 89,
+    "tags": 11,
+    "chars": 650
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 27.1,
+   "memory": {
+    "peak_commit_gib": 59.47,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 11.8,
+    "llama_server_seen": true,
+    "peak_llama_dedicated_gib": 11.69,
+    "peak_llama_shared_gib": 2.05,
+    "seconds": 27.1
+   },
+   "node_errors": {},
+   "prompt": "A sun-drenched market street in Marrakesh stretches into the distance under a blazing noon sky. The narrow alley is lined with vibrant stalls displaying pyramids of saffron, cumin, and dried apricots, alongside hanging lanterns and woven rugs in rich terracotta, ochre, and deep amber hues. Stone walls covered in intricate zellige tilework frame the scene, casting sharp geometric shadows across the packed earth pavement. The atmosphere is quiet and still, emphasizing the texture of the fabrics and the dust motes dancing in the intense light. The image features a warm color palette dominated by golds and reds, rendered with the soft grain and slight color shift characteristic of 35mm film photography. Captured from a low angle looking down the length of the street, the composition draws the eye toward the glowing vanishing point. The medium is a realistic photograph with natural lighting, evoking a sense of heat, tradition, and serene emptiness in this historic Moroccan setting.",
+   "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · mittel · 156 Wörter · 26 s",
+   "case": "notes_no_people",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "a market street in Marrakesh at noon",
+   "settings": {
+    "detail": "mittel",
+    "enhance": true,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "no people in the picture, warm colours, 35 mm film look",
+    "seed": 0,
+    "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 156,
+    "tags": 13,
+    "chars": 991
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 0.0,
+   "memory": {
+    "peak_commit_gib": 42.56,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 27.33,
+    "llama_server_seen": false,
+    "peak_llama_dedicated_gib": 0.0,
+    "peak_llama_shared_gib": 0.0,
+    "seconds": 0.0
+   },
+   "node_errors": {},
+   "prompt": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "info": "Enhancer aus: Entwurf unverändert",
+   "case": "enhance_off_passthrough",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "settings": {
+    "detail": "mittel",
+    "enhance": false,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 0,
+    "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 8,
+    "tags": 3,
+    "chars": 57
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 33.2,
+   "memory": {
+    "peak_commit_gib": 60.07,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 11.45,
+    "llama_server_seen": true,
+    "peak_llama_dedicated_gib": 11.7,
+    "peak_llama_shared_gib": 2.26,
+    "seconds": 33.2
+   },
+   "node_errors": {},
+   "prompt": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "info": "Entwurf unverändert: keine brauchbare Antwort des Modells (Details im ComfyUI-Log)",
+   "case": "truncated_answer_falls_back",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "settings": {
+    "detail": "mittel",
+    "enhance": true,
+    "language": "English",
+    "max_tokens": 128,
+    "notes": "",
+    "seed": 0,
+    "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 8,
+    "tags": 3,
+    "chars": 57
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 19.8,
+   "memory": {
+    "peak_commit_gib": 57.71,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 13.27,
+    "llama_server_seen": true,
+    "peak_llama_dedicated_gib": 12.7,
+    "peak_llama_shared_gib": 0.92,
+    "seconds": 19.8
+   },
+   "node_errors": {},
+   "prompt": "Place a tall black felt top hat with a matching ribbon band on the broccoli figure's stem, centered above its head and partially covering the lower florets. Keep the face, pose, texture, colors, lighting and background exactly as they are.",
+   "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Bearbeiten · kurz · 40 Wörter · 19 s",
+   "case": "edit_with_image",
+   "final": true,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "gib der Brokkoli-Figur einen Zylinderhut",
+   "settings": {
+    "detail": "kurz",
+    "enhance": true,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 0,
+    "target": "Bearbeiten (Anweisung für Edit-Modelle)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 40,
+    "tags": 6,
+    "chars": 239
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 24.2,
+   "memory": {
+    "peak_commit_gib": 58.93,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 11.91,
+    "llama_server_seen": true,
+    "peak_llama_dedicated_gib": 12.7,
+    "peak_llama_shared_gib": 0.92,
+    "seconds": 24.2
+   },
+   "node_errors": {},
+   "prompt": "A soft green broccoli plush toy stands upright on a small wooden table in a cozy children’s room, its fluffy stem featuring large expressive eyes with dark pupils and thick black eyebrows furrowed in an angry scowl, topped by a dense canopy of textured florets rendered in realistic felt fabric. The background shows blurred shelves lined with colorful picture books and pastel stuffed animals, bathed in warm afternoon sunlight streaming through sheer white curtains that cast soft geometric shadows across the light oak floor. The camera captures the character from a low angle using a medium telephoto lens, keeping the plush figure sharp against the gentle bokeh of the nursery interior, creating a whimsical and inviting atmosphere typical of high-quality commercial product photography for children’s toys.",
+   "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · mittel · 126 Wörter · 23 s",
+   "case": "reference_image_natural",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "die Figur als Plüschtier in einem Kinderzimmer",
+   "settings": {
+    "detail": "mittel",
+    "enhance": true,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 0,
+    "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 126,
+    "tags": 6,
+    "chars": 812
+   }
+  },
+  {
+   "status": "error",
+   "elapsed_s": 1.5,
+   "memory": {
+    "peak_commit_gib": 45.31,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 24.97,
+    "llama_server_seen": false,
+    "peak_llama_dedicated_gib": 0.0,
+    "peak_llama_shared_gib": 0.0,
+    "seconds": 1.5
+   },
+   "node_errors": {},
+   "error": "Qwen3.8 27B ist nicht eingerichtet: Das Startprofil (start-MultiGPU.ps1) setzt DAWASTEH_PROMPT_LLM_GGUF (GGUF, aktuell: nicht gesetzt oder Datei fehlt) und DAWASTEH_LLAMA_SERVER (llama-server.exe, aktuell: nicht gesetzt) nur, wenn beide Dateien existieren. ComfyUI über start-MultiGPU.bat starten oder den Schalter 'enhance' am Knoten ausschalten (Entwurf wird unverändert genutzt).\n",
+   "prompt": "",
+   "info": "",
+   "case": "no_gguf_in_start_profile_clear_error",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "expected_status": "error",
+   "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "settings": {
+    "detail": "mittel",
+    "enhance": true,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 0,
+    "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 0,
+    "tags": 0,
+    "chars": 0
+   }
+  },
+  {
+   "status": "success",
+   "elapsed_s": 0.3,
+   "memory": {
+    "peak_commit_gib": 45.44,
+    "peak_commit_limit_gib": 99.37,
+    "min_ram_avail_gib": 24.89,
+    "llama_server_seen": false,
+    "peak_llama_dedicated_gib": 0.0,
+    "peak_llama_shared_gib": 0.0,
+    "seconds": 0.3
+   },
+   "node_errors": {},
+   "prompt": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "info": "Enhancer aus: Entwurf unverändert",
+   "case": "enhance_off_without_gguf",
+   "final": false,
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+   "settings": {
+    "detail": "mittel",
+    "enhance": false,
+    "language": "English",
+    "max_tokens": 1024,
+    "notes": "",
+    "seed": 0,
+    "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+    "temperature": 0.7
+   },
+   "check": {
+    "words": 8,
+    "tags": 0,
+    "chars": 57
+   }
+  }
+ ],
+ "frontend": "1.53.6 (headless Edge, app.graphToPrompt via performance/rdna4/bench/ui_to_api.py)",
+ "profile": "start-MultiGPU.ps1 R9700 profile on test port 8192 (reserve-vram 4, VRAM guard 3 GiB, hipBLASLt, cache-ram, pytorch attention), fresh server for the run (no output cache); prompt writer: llama.cpp b11249 HIP, Qwen3.8-27B-IQ4_XS on the RX 9070 XT (HIP device 1); the no-GGUF cases on a second server (port 8193) without the DAWASTEH_PROMPT_LLM_GGUF / DAWASTEH_LLAMA_SERVER variables",
+ "gpu_defaults": {
+  "MODEL": "gpu:0 R9700 32GB",
+  "CLIP": "gpu:0",
+  "VAE": "gpu:0",
+  "prompt_writer": "llama-server, HIP device 1 (RX 9070 XT)"
+ },
+ "llama_server": {
+  "build": 11249,
+  "commit": "6d78fb072",
+  "args": "-ngl 999 -c 8192 -fa on -np 1 --reasoning off --no-mmproj-offload --spec-type draft-mtp"
+ },
+ "model_verification": {
+  "files": [
+   {
+    "path": "LLM/Qwen3.8/Qwen3.8-27B-IQ4_XS-3.84bpw.gguf",
+    "size": 13083052416,
+    "sha256": "89434f23dc89c5f990894e3fe9fdad19d88c370f0d3638a176f29933f218b78b",
+    "verified": true
+   },
+   {
+    "path": "LLM/Qwen3.8/mmproj-Qwen3.8-27B-IQ4_XS-3.84bpw-bf16.gguf",
+    "size": 931145952,
+    "sha256": "e43a597863a21bfa48b0fbd4553a771ae4117e25bb172e66f1dbc3fc6d037131",
+    "verified": true
+   }
+  ],
+  "note": "GGUF and vision projector from ComfyUI/models/LLM/Qwen3.8, the same files as the MV 2 prompt writer (v1.2.5)"
+ },
+ "memory_note": "peak_commit_gib is the host commit charge (the machine idles at about 44 GiB with ComfyUI, the desktop and other programs); peak_llama_* are the Windows GPU process counters of llama-server (dedicated VRAM and shared = host-backed GPU memory)"
+}

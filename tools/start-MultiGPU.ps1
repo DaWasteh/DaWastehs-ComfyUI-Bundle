@@ -87,7 +87,8 @@ $PromptLlmGguf = Join-Path $ComfyPath "models\LLM\Qwen3.8\Qwen3.8-27B-IQ4_XS-3.8
 $LlamaServerExe = "auto"
 $LlamaBuildRoot = "L:\LAB\ai-local"
 $LlamaHipDevice = "1"              # physical HIP index for the server: 1 = RX 9070 XT
-# Ming Image (v1.2.9) uses the same GGUF and server for its official prompt rewriters.
+# Ming Image (v1.2.9) uses the same GGUF and server for its official prompt rewriters, and so does the
+# image prompt enhancer (v1.3.0, workflow Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer).
 
 if (!(Test-Path -LiteralPath $ComfyPath)) { throw "ComfyUI folder not found: $ComfyPath" }
 if (!(Test-Path -LiteralPath $PythonExe)) { throw "Python venv not found: $PythonExe" }
@@ -170,7 +171,7 @@ if ((Test-Path -LiteralPath $PromptLlmGguf) -and (Test-Path -LiteralPath $LlamaS
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "ComfyUI Dual-GPU Launcher v1.2.9 (performance profile v0.9.8)" -ForegroundColor Cyan
+Write-Host "ComfyUI Dual-GPU Launcher v1.3.0 (performance profile v0.9.8)" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor DarkCyan
 Write-Host "ComfyUI: $ComfyPath"
 Write-Host "Port:    $Port"
@@ -183,7 +184,7 @@ Write-Host "Profile: DynamicVRAM=$EnableDynamicVram, async-offload=$AsyncOffload
 Write-Host "BLAS:    hipBLASLt=$PreferHipBlasLt"
 Write-Host "Opt-in:  ck-attention=$UseComfyKitchenAttention, fp8_matrix_mult=$FastFp8MatrixMult"
 Write-Host "Guard:   VRAM guard=$VramGuard (reserve $VramGuardReserveGib GiB per GPU, DAWASTEH_VRAM_GUARD)"
-Write-Host "LLM:     MV 2 / Ming prompt writer = $PromptLlm"
+Write-Host "LLM:     MV 2 / Ming / image prompt enhancer = $PromptLlm"
 Write-Host ""
 
 $ComfyArgs = @(

@@ -101,6 +101,7 @@ $CustomNodeNames = @(
     "ComfyUI-DaWasteh-MingImage",
     "ComfyUI-DaWasteh-MiraScene",
     "ComfyUI-DaWasteh-MultiGPU-Control",
+    "ComfyUI-DaWasteh-PromptEnhancer",
     "ComfyUI-DaWasteh-Qwen3TTS-LoRA",
     "ComfyUI-DaWasteh-VisionTools"
 )

@@ -100,3 +100,12 @@ tests/test_mira_scene_workflows_v129.py text eol=lf
 tests/test_mira_scene_nodes_v129.py text eol=lf
 performance/rdna4/mira-scene-v129-validation.json text eol=lf
 docs/MIRA_SCENE_V129.md text eol=lf
+# v1.3.0: image prompt enhancer (builder, pinned schemas, PromptEnhancer pack, tests, evidence, docs).
+tools/workflow_templates/v130/* text eol=lf
+tools/build_prompt_enhancer_v130.py text eol=lf
+workflows/**/LLM_Qwen3_8_27B-*.json text eol=lf
+custom_nodes/ComfyUI-DaWasteh-PromptEnhancer/* text eol=lf
+tests/test_prompt_enhancer_nodes_v130.py text eol=lf
+tests/test_prompt_enhancer_workflow_v130.py text eol=lf
+performance/rdna4/prompt-enhancer-v130-validation.json text eol=lf
+docs/PROMPT_ENHANCER_V130.md text eol=lf

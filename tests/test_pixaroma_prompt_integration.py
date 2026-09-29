@@ -82,6 +82,8 @@ class PixaromaIntegrationTests(unittest.TestCase):
         generated_unmanaged.update(f"workflows/{key}" for key in build_v129())
         from tools.build_mira_scene_workflows_v129 import build_all as build_v129_mira
         generated_unmanaged.update(f"workflows/{key}" for key in build_v129_mira())
+        from tools.build_prompt_enhancer_v130 import build_all as build_v130
+        generated_unmanaged.update(f"workflows/{key}" for key in build_v130())
         self.assertEqual(
             paths - set(manifest_paths),
             {

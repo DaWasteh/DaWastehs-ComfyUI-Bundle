@@ -1,0 +1,676 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "type": "PixaromaPrompt",
+      "title": "1 · ENTWURF · grob, Deutsch oder Englisch (Texte im Bild in \"Anführungszeichen\")",
+      "pos": [
+        880.0,
+        80.0
+      ],
+      "size": [
+        480,
+        360
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text_in",
+          "type": "STRING",
+          "link": null,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixaromaPrompt",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "promptState": {
+          "text": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
+          "order": "mine",
+          "sep": "\n",
+          "accent": null,
+          "showExpanded": true
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 2,
+      "type": "PixaromaLoadImage",
+      "title": "2 · BILD (optional · Strg+M zum Aktivieren) · Referenz oder zu bearbeitendes Bild",
+      "pos": [
+        880.0,
+        480.0
+      ],
+      "size": [
+        480,
+        620
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "image"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": []
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": []
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": []
+        },
+        {
+          "name": "filename",
+          "type": "STRING",
+          "links": []
+        },
+        {
+          "name": "original_width",
+          "type": "INT",
+          "links": []
+        },
+        {
+          "name": "original_height",
+          "type": "INT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixaromaLoadImage",
+        "loadImagePixState": "{\"version\": 1, \"mode\": \"off\", \"snap\": 0}"
+      },
+      "widgets_values": [
+        "example.png"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "DaWImagePromptEnhancer",
+      "title": "PROMPT-ENHANCER · Qwen3.8 27B · Inference über llama.cpp auf der RX 9070 XT · Ziel, Länge, Sprache",
+      "pos": [
+        1520.0,
+        80.0
+      ],
+      "size": [
+        520,
+        720
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "draft",
+          "type": "STRING",
+          "link": 1,
+          "widget": {
+            "name": "draft"
+          }
+        },
+        {
+          "name": "target",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "target"
+          }
+        },
+        {
+          "name": "detail",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "detail"
+          }
+        },
+        {
+          "name": "language",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "language"
+          }
+        },
+        {
+          "name": "enhance",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "enhance"
+          }
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "temperature",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "temperature"
+          }
+        },
+        {
+          "name": "max_tokens",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "max_tokens"
+          }
+        },
+        {
+          "name": "notes",
+          "type": "STRING",
+          "link": null,
+          "shape": 7,
+          "widget": {
+            "name": "notes"
+          }
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 2,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "info",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWImagePromptEnhancer"
+      },
+      "widgets_values": [
+        "",
+        "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+        "mittel",
+        "English",
+        true,
+        0,
+        "randomize",
+        0.7,
+        1024,
+        ""
+      ]
+    },
+    {
+      "id": 4,
+      "type": "PixaromaShowText",
+      "title": "3 · FERTIGER PROMPT · kopieren oder per Verbindung weiterreichen",
+      "pos": [
+        2200.0,
+        80.0
+      ],
+      "size": [
+        520,
+        520
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixaromaShowText"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 5,
+      "type": "PixaromaShowText",
+      "title": "INFO · Modell, Ziel, Länge, Dauer (oder warum der Entwurf unverändert blieb)",
+      "pos": [
+        2200.0,
+        640.0
+      ],
+      "size": [
+        520,
+        200
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PixaromaShowText"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "MarkdownNote",
+      "title": "START HIER · Bild-Prompt-Enhancer · Qwen3.8 27B · v1.3.0",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        680,
+        952
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# Bild-Prompt-Enhancer · Entwurf → fertiger Prompt · Qwen3.8 27B\n\nAus ein paar Wörtern wird der ausformulierte Prompt für ein Bildmodell. Geschrieben vom **Qwen3.8 27B**, demselben Modell\nwie beim Musikvideo-Prompt-Writer (MV 2), lokal über llama.cpp auf der RX 9070 XT.\n\n1. **ENTWURF** (Knoten 1): grob beschreiben, Deutsch oder Englisch. Texte, die im Bild stehen sollen, in „Anführungszeichen“.\n2. **Ziel** am Enhancer wählen, für welches Modell der Prompt ist:\n   - **Fließtext**: Z-Image, FLUX, Qwen Image, Krea (ein Absatz, Motiv → Umgebung → Licht → Kamera → Stil)\n   - **Text im Bild**: Poster, Logo, Schild (exakte Texte in Anführungszeichen, Position und Schriftbild)\n   - **Tags**: SDXL, Pony, Illustrious (kleingeschriebene englische Tags, `1girl`, `1boy` …)\n   - **Bearbeiten**: Anweisung für Edit-Modelle (was ändert sich, was bleibt); dafür **BILD** aktivieren\n3. **Länge** (kurz / mittel / ausführlich) und **Sprache** (English ist für die meisten Bildmodelle am besten; Tags immer\n   Englisch). **notes** nimmt eigene Zusatzregeln („immer 35-mm-Film-Look“, „keine Personen“).\n4. **Queue**. Der fertige Prompt steht unter **FERTIGER PROMPT**; **INFO** zeigt Modell, Länge und Dauer.\n\n**BILD (optional)**: Knoten 2 mit **Strg+M** aktivieren und ein Bild wählen. Das Modell sieht es: als Referenz für das,\nwas der Entwurf erwähnt („dieselbe Szene im Winter“), beim Ziel **Bearbeiten** als das zu bearbeitende Bild.\n**Seed** steht auf *randomize*: jeder Lauf ist eine neue Variante; für dieselbe Antwort auf *fixed* stellen.\n**enhance aus** reicht den Entwurf unverändert durch (das Modell wird dann nicht gestartet).\nDen fertigen Prompt in einen Bild-Workflow zu übernehmen geht per Kopieren oder mit einer Verbindung vom Enhancer-Ausgang\n`prompt` zum Prompt-Eingang des Bildmodells.\n"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "MarkdownNote",
+      "title": "TECHNIK · Modell, Startprofil, Speicher, Grenzen",
+      "pos": [
+        40.0,
+        1080.0
+      ],
+      "size": [
+        680,
+        688
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# Technik\n\n**Modell:** das Qwen3.8-27B-GGUF aus dem Startprofil (`start-MultiGPU.ps1`: `$PromptLlmGguf`, `$LlamaServerExe`, HIP-Gerät 1 =\nRX 9070 XT), Standard `Qwen3.8-27B-IQ4_XS-3.84bpw.gguf` in `ComfyUI/models/LLM/Qwen3.8/`. Der Enhancer startet den\nllama-server nur für die Dauer des Schreibens (Start ca. 15–30 s, danach Sekunden je Prompt) und beendet ihn danach:\nVRAM und RAM sind wieder frei. Fehlen GGUF oder llama-server im Startprofil, bricht der Knoten mit einer Meldung ab, die\nsagt, was fehlt.\n\n**Antworten prüfen:** Leere, mitten im Satz abgebrochene, für die gewählte Länge zu kurze Antworten und Ablehnungen des\nModells werden einmal mit Seed + 1000 wiederholt. Danach geht der **Entwurf unverändert** weiter, und INFO nennt den Grund.\n\n**Speicher und Dauer:** Der Server belegt ca. 11,5–12,7 GiB VRAM der RX 9070 XT und 1–3 GiB im Host-RAM (der Desktop läuft\nauf derselben Karte); der Rechner-Commit steigt dabei um ca. 18 GiB. Ein Lauf dauert 20–35 s, davon ca. 16 s Serverstart.\nAndere GPU-lastige Programme auf dieser Karte vorher schließen.\n\nBedienung, Beispiele und Messwerte: `docs/PROMPT_ENHANCER_V130.md`.\n"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        1800.0
+      ],
+      "size": [
+        226,
+        136
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 9,
+      "type": "MarkdownNote",
+      "pos": [
+        2880.0,
+        80.0
+      ],
+      "size": [
+        680,
+        1766
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · PROMPT-ENHANCER · Qwen3.8 27B · Inference über llama.cpp auf der RX 9070 XT · Ziel, Länge, Sprache · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 3,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · PROMPT-ENHANCER · Qwen3.8 27B · Inference über llama.cpp auf der RX 9070 XT · Ziel, Länge, Sprache · Node 3\n\n**Zweck:** Turns a rough draft (German or English) into the finished prompt for an image model. Qwen3.8 27B runs through llama.cpp on the RX 9070 XT (GGUF from the start profile, the same model as the MV 2 music-video prompt writer) and is stopped afterwards, so VRAM and RAM are free again. Targets: running text for Z-Image / FL…\n\n**Einstellbare Werte**\n- `draft` = `` — The rough idea, a few words or a paragraph, German or English. Texts that must appear in the image go in \"quotation marks\". Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `target` = `Fließtext (Z-Image, FLUX, Qwen Image, Krea)` — Which kind of image model the prompt is for: running text (Z-Image, FLUX, Qwen Image, Krea), a design with lettering, SDXL-style tags, or an instruction for an edit model. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `detail` = `mittel` — Length: Fließtext kurz ~55 / mittel ~115 / ausführlich ~220 words; Tags 15-25 / 25-40 / 40-60; Bearbeiten 1 / 2-3 / up to 5 sentences. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `language` = `English` — Language of the finished prompt. English suits most image models best; tags are always English. Texts in quotation marks are never translated. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `enhance` = `True` — On: Qwen3.8 27B writes the prompt. Off: the draft is passed on unchanged and the GGUF is not started. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `seed` = `0` — Another seed gives another variation of the same draft. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `randomize` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `temperature` = `0.7` — Lower = closer to the draft, higher = more inventive. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `max_tokens` = `1024` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `notes` = `` — Optional extra rules for the writer, e.g. \"always 35 mm film look, warm colours\" or \"no people in the picture\". Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `draft` (STRING, Link 1): The rough idea, a few words or a paragraph, German or English. Texts that must appear in the image go in \"quotation marks\".\n- `target` (COMBO, nicht verbunden): Which kind of image model the prompt is for: running text (Z-Image, FLUX, Qwen Image, Krea), a design with lettering, SDXL-style tags, or an instruct…\n- `detail` (COMBO, nicht verbunden): Length: Fließtext kurz ~55 / mittel ~115 / ausführlich ~220 words; Tags 15-25 / 25-40 / 40-60; Bearbeiten 1 / 2-3 / up to 5 sentences.\n- `language` (COMBO, nicht verbunden): Language of the finished prompt. English suits most image models best; tags are always English. Texts in quotation marks are never translated.\n- `enhance` (BOOLEAN, nicht verbunden): On: Qwen3.8 27B writes the prompt. Off: the draft is passed on unchanged and the GGUF is not started.\n- `seed` (INT, nicht verbunden): Another seed gives another variation of the same draft.\n- `temperature` (FLOAT, nicht verbunden): Lower = closer to the draft, higher = more inventive.\n- `max_tokens` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `notes` (STRING, nicht verbunden): Optional extra rules for the writer, e.g. \"always 35 mm film look, warm colours\" or \"no people in the picture\".\n- `image` (IMAGE, Link 2): Optional. The writer sees it: as visual reference for what the draft mentions, or, for the edit target, as the image to be edited.\n\n**Ausgänge**\n- `prompt` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `info` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 10,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1980.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 11,
+      "type": "MarkdownNote",
+      "pos": [
+        3640.0,
+        80.0
+      ],
+      "size": [
+        680,
+        666
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 10",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 10,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 10\n\n**Zweck:** Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector. ↵  ↵ Connect these COMBO outputs to the ``device`` input of ComfyUI's official ↵ Select Model Device, Select CLIP Device, and Select VAE Device nodes. The ↵ node chooses labels only; the official selectors remain responsible for ↵ validating…\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      3,
+      0,
+      "STRING"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      9,
+      "IMAGE"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      4,
+      3,
+      1,
+      5,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        760.0,
+        2200.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        840.0,
+        0.0,
+        560.0,
+        1140.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        1480.0,
+        0.0,
+        600.0,
+        840.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2160.0,
+        0.0,
+        600.0,
+        880.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        2840.0,
+        0.0,
+        1520.0,
+        1880.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "dawasteh_prompt_enhancer_v130": {
+      "version": 1,
+      "kind": "image_prompt_enhancer",
+      "source_manifest": "tools/workflow_templates/v130/node-schemas.json",
+      "validation_report": "performance/rdna4/prompt-enhancer-v130-validation.json"
+    },
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 2,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "LLM_Qwen3_8_27B-Image-Prompt-Enhancer",
+      "source": "workflows/Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "d88ad766a68d3214b5255bbdc8ffc5207d3264cee9ce00aae791fa0ad1e4a8f0",
+      "exceptions": []
+    }
+  },
+  "version": 0.4,
+  "last_node_id": 11,
+  "last_link_id": 4,
+  "id": "c7c06a99-2b56-559d-bc55-5906c6e64a77",
+  "revision": 0
+}

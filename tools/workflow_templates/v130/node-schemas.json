@@ -1,0 +1,597 @@
+{
+ "DaWImagePromptEnhancer": {
+  "input": {
+   "required": {
+    "draft": [
+     "STRING",
+     {
+      "tooltip": "The rough idea, a few words or a paragraph, German or English. Texts that must appear in the image go in \"quotation marks\".",
+      "default": "",
+      "multiline": true
+     }
+    ],
+    "target": [
+     "COMBO",
+     {
+      "tooltip": "Which kind of image model the prompt is for: running text (Z-Image, FLUX, Qwen Image, Krea), a design with lettering, SDXL-style tags, or an instruction for an edit model.",
+      "default": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+      "multiselect": false,
+      "options": [
+       "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
+       "Text im Bild (Poster, Logo, Schild)",
+       "Tags (SDXL, Pony, Illustrious)",
+       "Bearbeiten (Anweisung für Edit-Modelle)"
+      ]
+     }
+    ],
+    "detail": [
+     "COMBO",
+     {
+      "tooltip": "Length: Fließtext kurz ~55 / mittel ~115 / ausführlich ~220 words; Tags 15-25 / 25-40 / 40-60; Bearbeiten 1 / 2-3 / up to 5 sentences.",
+      "default": "mittel",
+      "multiselect": false,
+      "options": [
+       "kurz",
+       "mittel",
+       "ausführlich"
+      ]
+     }
+    ],
+    "language": [
+     "COMBO",
+     {
+      "tooltip": "Language of the finished prompt. English suits most image models best; tags are always English. Texts in quotation marks are never translated.",
+      "default": "English",
+      "multiselect": false,
+      "options": [
+       "English",
+       "Deutsch",
+       "wie der Entwurf"
+      ]
+     }
+    ],
+    "enhance": [
+     "BOOLEAN",
+     {
+      "tooltip": "On: Qwen3.8 27B writes the prompt. Off: the draft is passed on unchanged and the GGUF is not started.",
+      "default": true
+     }
+    ],
+    "seed": [
+     "INT",
+     {
+      "tooltip": "Another seed gives another variation of the same draft.",
+      "default": 0,
+      "min": 0,
+      "max": 2147483647,
+      "control_after_generate": true
+     }
+    ],
+    "temperature": [
+     "FLOAT",
+     {
+      "tooltip": "Lower = closer to the draft, higher = more inventive.",
+      "advanced": true,
+      "default": 0.7,
+      "min": 0.0,
+      "max": 1.5,
+      "step": 0.05
+     }
+    ],
+    "max_tokens": [
+     "INT",
+     {
+      "advanced": true,
+      "default": 1024,
+      "min": 128,
+      "max": 4096
+     }
+    ]
+   },
+   "optional": {
+    "notes": [
+     "STRING",
+     {
+      "tooltip": "Optional extra rules for the writer, e.g. \"always 35 mm film look, warm colours\" or \"no people in the picture\".",
+      "default": "",
+      "multiline": true
+     }
+    ],
+    "image": [
+     "IMAGE",
+     {
+      "tooltip": "Optional. The writer sees it: as visual reference for what the draft mentions, or, for the edit target, as the image to be edited."
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "draft",
+    "target",
+    "detail",
+    "language",
+    "enhance",
+    "seed",
+    "temperature",
+    "max_tokens"
+   ],
+   "optional": [
+    "notes",
+    "image"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING",
+   "STRING"
+  ],
+  "output_is_list": [
+   false,
+   false
+  ],
+  "output_name": [
+   "prompt",
+   "info"
+  ],
+  "output_tooltips": [
+   null,
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWImagePromptEnhancer",
+  "display_name": "DaW Image Prompt Enhancer (Qwen3.8 27B GGUF)",
+  "description": "Turns a rough draft (German or English) into the finished prompt for an image model. Qwen3.8 27B runs through llama.cpp on the RX 9070 XT (GGUF from the start profile, the same model as the MV 2 music-video prompt writer) and is stopped afterwards, so VRAM and RAM are free again. Targets: running text for Z-Image / FLUX / Qwen Image / Krea, designs with lettering, tags for SDXL / Pony / Illustrious, and instructions for image-edit models. An optional image is shown to the model (required in spirit for edit instructions). Unusable answers are retried once with another seed, then the draft is passed on unchanged; a refusal counts as unusable.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-PromptEnhancer",
+  "category": "DaWasteh/prompt enhancer",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "PixaromaPrompt": {
+  "input": {
+   "required": {},
+   "optional": {
+    "text_in": [
+     "STRING",
+     {
+      "forceInput": true,
+      "tooltip": "Optional. Wire another prompt in and it is joined with your typed prompt (order + separator set on the node). Leave it unconnected to output just your prompt."
+     }
+    ]
+   },
+   "hidden": {
+    "PromptState": [
+     "STRING",
+     {
+      "default": "{}"
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [],
+   "optional": [
+    "text_in"
+   ],
+   "hidden": [
+    "PromptState"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "text"
+  ],
+  "name": "PixaromaPrompt",
+  "display_name": "Prompt Pixaroma",
+  "description": "Prompt Pixaroma - a prompt box with a single text output, plus a personal library of reusable @tags and an optional text input you can join with.\n\nType your prompt and drop in @tags for the parts you reuse a lot. Save a tag called oilpainting whose full text is a long 'oil painting, thick brush strokes, Rembrandt lighting, ...' and then just type @oilpainting. Type @ in the box for a searchable list grouped by category; known tags glow, unknown ones warn you of a typo. Each @tag is swapped for its full text at run time, so the box stays short. Turn on Show expanded to preview what is sent.\n\nWire a prompt into the text input and it is joined with yours - choose My prompt first or Wired first, and the separator. With nothing wired, the output is just your prompt.\n\nManage tags with the Tags button: a fullscreen library with categories. Your library is saved in ComfyUI's settings, so it stays private to you and survives updating the plugin; share it on purpose with Export / Import.",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/💬 Prompt & Text",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "Your prompt with every @tag expanded, joined with the wired text input if one is connected."
+  ],
+  "search_aliases": []
+ },
+ "PixaromaLoadImage": {
+  "input": {
+   "required": {
+    "image": [
+     [
+      "example.png"
+     ],
+     {
+      "image_upload": true,
+      "tooltip": "The image to load from ComfyUI's input folder. Use the Upload Image button, drag a file onto the node, paste from the clipboard, or pick one from the dropdown."
+     }
+    ]
+   },
+   "hidden": {
+    "LoadImagePixState": [
+     "STRING",
+     {
+      "default": "{\"version\": 1, \"mode\": \"off\", \"max_mp\": 1.0, \"longest_side\": 1024, \"scale_factor\": 1.0, \"fit_w\": 1024, \"fit_h\": 1024, \"cover_w\": 1024, \"cover_h\": 1024, \"ratio_preset\": \"1:1\", \"ratio_w\": 1, \"ratio_h\": 1, \"ratio_action\": \"crop\", \"pad_color\": \"#808080\", \"pad_top\": 0, \"pad_bottom\": 0, \"pad_left\": 0, \"pad_right\": 0, \"crop_anchor\": \"center\", \"crop_scale\": true, \"snap\": 0, \"resample\": \"auto\", \"allow_upscale\": true}"
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "image"
+   ],
+   "hidden": [
+    "LoadImagePixState"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "IMAGE",
+   "MASK",
+   "INT",
+   "INT",
+   "STRING",
+   "INT",
+   "INT"
+  ],
+  "output_is_list": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "output_name": [
+   "image",
+   "mask",
+   "width",
+   "height",
+   "filename",
+   "original_width",
+   "original_height"
+  ],
+  "name": "PixaromaLoadImage",
+  "display_name": "Load Image Pixaroma",
+  "description": "Load Image Pixaroma - native LoadImage parity (upload, drag-drop, paste, multi-frame, alpha to mask) plus inline resize: max megapixels, longest side, scale by, fit inside, crop to fill, match aspect ratio. Snap chips, resample picker, upscale guard. Outputs: image, mask, width, height, filename, original_width, original_height.\n\nEliminates the need for downstream Get Image Size + Image Scale + Image Resize chains in most workflows.",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/🖼️ Image",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "The loaded image, after any resize.",
+   "The image's mask, from its alpha channel (blank if it has none).",
+   "Output width in pixels, after any resize.",
+   "Output height in pixels, after any resize.",
+   "The image's filename.",
+   "Width of the original image, before any resize.",
+   "Height of the original image, before any resize."
+  ],
+  "search_aliases": []
+ },
+ "PixaromaShowText": {
+  "input": {
+   "required": {
+    "source": [
+     "*",
+     {
+      "tooltip": "Anything to inspect. Tensors are summarized as shape / dtype / min / max; latents show their sample shape; everything else uses str(value). The string representation is also passed through unchanged to the 'text' output."
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "source"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "STRING"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "text"
+  ],
+  "name": "PixaromaShowText",
+  "display_name": "Show Text Pixaroma",
+  "description": "Show Text Pixaroma - inspect what's flowing through your nodes in a real read-only text box you can select and copy from. Wire ANYTHING into source - strings, ints, floats, latents, IMAGE tensors, even unknown types - and the node prints a compact human-readable form:\n\n- Tensors: shape, dtype, min, max\n- Latents: sample shape\n- Anything else: str(value)\n\nResize the node freely; long text scrolls with a scrollbar instead of forcing the node to grow. The same string is also passed through to the 'text' STRING output, so you can chain it into other nodes (useful for inspecting a prompt before passing it through).",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/💬 Prompt & Text",
+  "output_node": true,
+  "has_intermediate_output": false,
+  "output_tooltips": [
+   "The same text shown in the box, passed through so you can keep chaining it."
+  ],
+  "search_aliases": []
+ },
+ "PixaromaRunTimer": {
+  "input": {
+   "required": {}
+  },
+  "input_order": {
+   "required": []
+  },
+  "is_input_list": false,
+  "output": [],
+  "output_is_list": [],
+  "output_name": [],
+  "name": "PixaromaRunTimer",
+  "display_name": "Run Timer Pixaroma",
+  "description": "Run Timer Pixaroma - a clock that times how long a workflow takes. It resets to zero when you press Run, counts up while the workflow is working, and freezes on the total time the moment it finishes, then plays a chime so you know it is done even when you are in another tab.\n\nThe node face shows only the clock. Right-click the node for settings: turn the chime on or off, pick the sound and volume (with a Preview button), choose how many decimals to show, and set the clock color.\n\nChime sounds are the same library as Notify Pixaroma - drop a .mp3, .wav, or .ogg with a simple name (letters, numbers, dashes) into assets/sounds/ to add more (restart ComfyUI to pick up new files). A master mute for every run timer chime sits at the top of this node's own settings, opened with the gear button on the node toolbar or by right-clicking the node.",
+  "python_module": "custom_nodes.ComfyUI-Pixaroma",
+  "category": "👑 Pixaroma/🔀 Logic & Flow",
+  "output_node": false,
+  "has_intermediate_output": false,
+  "search_aliases": []
+ },
+ "SelectModelDevice": {
+  "input": {
+   "required": {
+    "model": [
+     "MODEL",
+     {}
+    ],
+    "device": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "default",
+       "cpu",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "model",
+    "device"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "MODEL"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "MODEL"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "SelectModelDevice",
+  "display_name": "Select Model Device",
+  "description": "Place the diffusion model on a specific device (default / cpu / gpu:N).\n\n- \"default\" restores the device assigned by the loader (even after a\n  prior Select Model Device call).\n- \"cpu\" pins both the load and offload device to CPU.\n- \"gpu:N\" pins the load device to the Nth available GPU; the offload\n  device is restored to the loader's original choice.\n\nWhen the requested device differs from the device the input model is\nalready on, a fresh model is spawned via the loader's reload factory\n(cached_patcher_init) so the new patcher owns independent weights on\nthe new device. Loaders that don't support multigpu (no factory) will\ncause the node to pass through unchanged with a warning.\n\nIf the workflow already has MultiGPU CFG Split applied and the chosen\nGPU collides with one of the existing multigpu clones, that clone is\ndropped so two patchers don't end up bound to the same device.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the model through unchanged and logs a message\ninstead of failing.\n\nNOTE: Placing Select Model Device *after* a node that has already\nconsumed the same model (e.g. a KSampler that ran on this model on\nthe original device) is not recommended -- any state the prior\nconsumer mutated on the original model will be observed when the\nselected device matches the original (fast path). Place Select Model\nDevice before any consumer of the model.",
+  "python_module": "comfy_extras.nodes_multigpu",
+  "category": "advanced/multigpu",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "SelectCLIPDevice": {
+  "input": {
+   "required": {
+    "clip": [
+     "CLIP",
+     {}
+    ],
+    "device": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "default",
+       "cpu",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "clip",
+    "device"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "CLIP"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "CLIP"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "SelectCLIPDevice",
+  "display_name": "Select CLIP Device",
+  "description": "Place the CLIP text encoder on a specific device (default / cpu / gpu:N).\n\n- \"default\" restores the device assigned by the loader.\n- \"cpu\" pins both the load and offload device to CPU.\n- \"gpu:N\" pins the load device to the Nth available GPU.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the CLIP through unchanged and logs a message\ninstead of failing.",
+  "python_module": "comfy_extras.nodes_multigpu",
+  "category": "advanced/multigpu",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "SelectVAEDevice": {
+  "input": {
+   "required": {
+    "vae": [
+     "VAE",
+     {}
+    ],
+    "device": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "default",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "vae",
+    "device"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "VAE"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "VAE"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "SelectVAEDevice",
+  "display_name": "Select VAE Device",
+  "description": "Place the VAE on a specific device (default / gpu:N).\n\n- \"default\" restores the device assigned by the loader.\n- \"gpu:N\" pins the load device to the Nth available GPU; the offload\n  device is set to the standard VAE offload device.\n\nCPU is intentionally not exposed in the UI for the VAE; if a workflow\nsupplies \"cpu\" anyway (e.g. opened from another machine), the request\nis dropped with a log message and the VAE is passed through unchanged.\n\nWhen the selected device does not exist on the current machine\n(e.g. a workflow built on a 2-GPU box opened on a 1-GPU box),\nthe node passes the VAE through unchanged and logs a message\ninstead of failing.",
+  "python_module": "comfy_extras.nodes_multigpu",
+  "category": "advanced/multigpu",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
+ "DaWMultiGPUDeviceControl": {
+  "input": {
+   "required": {
+    "model_device": [
+     "COMBO",
+     {
+      "default": "gpu:0",
+      "multiselect": false,
+      "options": [
+       "default",
+       "cpu",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ],
+    "clip_device": [
+     "COMBO",
+     {
+      "default": "gpu:1",
+      "multiselect": false,
+      "options": [
+       "default",
+       "cpu",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ],
+    "vae_device": [
+     "COMBO",
+     {
+      "default": "gpu:1",
+      "multiselect": false,
+      "options": [
+       "default",
+       "gpu:0",
+       "gpu:1"
+      ]
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "model_device",
+    "clip_device",
+    "vae_device"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "COMBO",
+   "COMBO",
+   "COMBO"
+  ],
+  "output_is_list": [
+   false,
+   false,
+   false
+  ],
+  "output_name": [
+   "model_device",
+   "clip_device",
+   "vae_device"
+  ],
+  "output_tooltips": [
+   null,
+   null,
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "DaWMultiGPUDeviceControl",
+  "display_name": "DaW Multi-GPU Device Control",
+  "description": "Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector.\n\nConnect these COMBO outputs to the ``device`` input of ComfyUI's official\nSelect Model Device, Select CLIP Device, and Select VAE Device nodes. The\nnode chooses labels only; the official selectors remain responsible for\nvalidating and moving the actual model objects.",
+  "python_module": "custom_nodes.ComfyUI-DaWasteh-MultiGPU-Control",
+  "category": "DaWasteh/multigpu",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
+ }
+}
