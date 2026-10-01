@@ -28,6 +28,7 @@ try:
     from tools.refine_workflows import refine_workflow
     from tools.rodent_layout import apply_rodent_layout
     from tools.upgrade_v113 import MARKER_KEY as V113_MARKER_KEY, MARKER_VERSION as V113_MARKER_VERSION
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:
     from build_workflows_v118 import Graph
     import migrate_workflows_v092 as migration
@@ -35,10 +36,11 @@ except ModuleNotFoundError:
     from refine_workflows import refine_workflow
     from rodent_layout import apply_rodent_layout
     from upgrade_v113 import MARKER_KEY as V113_MARKER_KEY, MARKER_VERSION as V113_MARKER_VERSION
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "tools/workflow_templates/v122"
-PATH = "Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"
+PATH = "Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json"
 MARKER = "dawasteh_h3_music_video_v122"
 BS = "\\"
 MODEL = "MiniMax H3" + BS + "fastvideo_fasth3_8step_v2_pruned_int8_convrot.safetensors"
@@ -235,7 +237,7 @@ def _upscale_model_lines() -> list[str]:
 
 def finish(g: Graph, schemas: dict) -> dict:
     install_run_timer(g.w)
-    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v122:" + PATH))
+    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v122:" + original_name(PATH)))
     g.w["revision"] = 0
     g.w["extra"][MARKER] = {
         "version": 1,
@@ -256,7 +258,7 @@ def finish(g: Graph, schemas: dict) -> dict:
         install_central_device_control(g.w, PATH, h3_director=False, devices=DEVICES)
         g.w["extra"].setdefault("dawasteh_dual_gpu", {}).update({
             "version": 3, "scope": "collection-wide optional GPU placement", "family": "MiniMax FastH3 Music Video",
-            "source": f"workflows/{PATH}", "server": "127.0.0.1:8188", "backend": "ROCm/HIP", "selector_count": inserted,
+            "source": f"workflows/{original_name(PATH)}", "server": "127.0.0.1:8188", "backend": "ROCm/HIP", "selector_count": inserted,
             "curated_split_default": True, "defaults": dict(DEVICES),
             "execution": "device placement only; text models are loaded and released inside MV 2 / MV 3",
         })

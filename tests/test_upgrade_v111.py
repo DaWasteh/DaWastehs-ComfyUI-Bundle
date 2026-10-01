@@ -23,12 +23,17 @@ class UpgradeV111Tests(unittest.TestCase):
             self.assertEqual(up.apply(up.apply(wf, rel), rel), wf, rel)
 
     def test_targets_carry_marker_and_others_do_not(self):
+        from tools.build_finetune_fixes_v131 import FIXES
+        from tools.workflow_names_v131 import new_key
         targets = up.targets()
         self.assertGreaterEqual(len(targets), 70)
+        # v1.3.1 rebuilt two finetunes from base graphs that v1.1.1 migrated; they carry their base's marker
+        inherited = {new_key(fix["target"]) for fix in FIXES if new_key(fix["base"]) in targets}
+        self.assertEqual(len(inherited), 2)
         for path in sorted(WORKFLOWS.glob("*/*.json")):
             rel = path.relative_to(WORKFLOWS).as_posix()
             marker = load(rel).get("extra", {}).get(up.MARKER_KEY, {}).get("version")
-            self.assertEqual(marker == up.MARKER_VERSION, rel in targets, rel)
+            self.assertEqual(marker == up.MARKER_VERSION, rel in targets or rel in inherited, rel)
 
     def test_wan_i2v_graphs_use_16_channel_latent_path(self):
         for rel in up.WAN_I2V:
@@ -55,6 +60,10 @@ class UpgradeV111Tests(unittest.TestCase):
             self.assertEqual(node["widgets_values"][names.index("seed") + 1], "fixed", rel)
 
     def test_cleanup_barriers_keep_unload_only_outside_image_audio_categories(self):
+        from tools.fix_gallery_findings_v131 import AUDIOREACT
+        from tools.workflow_names_v131 import new_key
+        # v1.3.1: unloading moved the models into RAM right before the Pixaroma audio engine, which keeps its frames there
+        keep_loaded = {new_key(AUDIOREACT)}
         for path in sorted(WORKFLOWS.glob("*/*.json")):
             rel = path.relative_to(WORKFLOWS).as_posix()
             category = rel.split("/")[0]
@@ -64,7 +73,7 @@ class UpgradeV111Tests(unittest.TestCase):
                     if n.get("type") != "VRAM_Debug":
                         continue
                     unload = n["widgets_values"][2]
-                    if category in up.E1_CATEGORIES and rel not in up.E1_EXCLUDE:
+                    if (category in up.E1_CATEGORIES and rel not in up.E1_EXCLUDE) or rel in keep_loaded:
                         self.assertIs(unload, False, rel)
                     else:
                         self.assertIs(unload, True, rel)

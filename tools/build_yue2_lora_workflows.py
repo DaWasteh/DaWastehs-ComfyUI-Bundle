@@ -17,18 +17,19 @@ from tools import migrate_workflows_v092 as migration
 from tools.generate_dual_gpu_workflows import install_run_timer
 from tools.refine_workflows import refine_workflow, build_note_text
 from tools.rodent_layout import apply_rodent_layout
+from tools.workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "tools/workflow_templates/yue2-lora/node-schemas.json"
 CHECKPOINT = "yue2_3b_bf16.safetensors"
-TRAIN_PATH = "LoRA Generation/YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json"
-MUSIC_PATH = "Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json"
+TRAIN_PATH = "LoRA Generation/YuE2_3B_BF16-PRIVATE-Songs-to-Style-LoRA.json"
+MUSIC_PATH = "Music Generation/YuE2_3B_BF16+LoRA-PRIVATE-Tags+Lyrics-to-Song.json"
 
 
 class LoRAGraph(Graph):
     def finish(self, path):
         install_run_timer(self.w)
-        self.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v119:" + path))
+        self.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v119:" + original_name(path)))
         self.w["revision"] = 0
         self.w.setdefault("extra", {})["dawasteh_yue2_lora"] = {
             "version": 1,

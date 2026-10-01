@@ -98,8 +98,8 @@ class Qwen3TTSLoRAUtilityTests(unittest.TestCase):
     def test_generator_emits_refined_byte_identical_workflows(self):
         generator = ROOT / "tools" / "generate_voice_lora_workflows.py"
         paths = [
-            ROOT / "workflows" / "LoRA Generation" / "Qwen3-TTS_0.6B-Voice-LoRA-Training.json",
-            ROOT / "workflows" / "Voice Design" / "Qwen3-TTS_LoRA-Low-Latency-Live-Voice.json",
+            ROOT / "workflows" / "LoRA Generation" / "Qwen3_TTS_0_6B_Base-Recordings-to-Voice-LoRA.json",
+            ROOT / "workflows" / "Voice Design" / "Qwen3_TTS_0_6B_Base+LoRA-Text-to-Speech-Live.json",
             ROOT / "workflows" / "Live Avatar" / "LiveAvatar-04-LivePortrait-Webcam-Spout-OBS+Qwen3TTS-Voice-LoRA.json",
         ]
         before = [path.read_bytes() for path in paths]

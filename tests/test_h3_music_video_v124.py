@@ -303,8 +303,11 @@ class LiveEvidenceV124Tests(unittest.TestCase):
     def test_report_pins_the_shipped_workflow_and_sources(self):
         import hashlib
         import subprocess
-        # v1.2.5 changed MV 2 (prompt model, section directions); this evidence describes the v1.2.4 files.
-        released = lambda p: hashlib.sha256(subprocess.check_output(["git", "show", "v1.2.4:" + p], cwd=ROOT)).hexdigest()
+        from tools.workflow_names_v131 import old_path
+        # v1.2.5 changed MV 2 (prompt model, section directions); this evidence describes the v1.2.4 files
+        # (under their v1.3.0 names: v1.3.1 renamed the workflow).
+        released = lambda p: hashlib.sha256(
+            subprocess.check_output(["git", "show", "v1.2.4:" + old_path(p)], cwd=ROOT)).hexdigest()
         workflow = self.report["workflow"]
         self.assertEqual(workflow["sha256"], released(workflow["path"]))
         self.assertTrue(workflow["executed_contract_matches_final"])

@@ -35,34 +35,34 @@ class DurationSpec:
 
 
 SPECS: dict[str, DurationSpec] = {
-    "Text to Video/LTX23_dev_mxfp8-Text-to-Video.json": DurationSpec(25, 8, 9, ((4, "length"), (19, "frames_number")), 4.0),
-    "Text to Video/LTX23_dev_Q8_GGUF-Text-to-Video.json": DurationSpec(25, 8, 9, ((4, "length"), (19, "frames_number")), 4.0),
-    "Text to Video/LTX23_distilled_fp8-Text-to-Video.json": DurationSpec(25, 8, 9, ((5, "length"), (20, "frames_number")), 4.0),
-    "Text to Video/LTX23_distilled_mxfp8-Text-to-Video.json": DurationSpec(25, 8, 9, ((5, "length"), (20, "frames_number")), 4.0),
-    "Controlled Video/WAN22_5B_Fun-Control-to-Video.json": DurationSpec(24, 4, 5, ((60, "length"),), 5.0),
-    "Text+Image to Video/Kandinsky5_Lite-Text+Image-to-Video.json": DurationSpec(24, 4, 5, ((78, "length"),), 5.0),
-    "Text+Image to Video/WAN22_5B-Text+Image-to-Video.json": DurationSpec(24, 4, 5, ((55, "length"),), 10.0),
-    "Text+Image to Video/WAN22_bernini_i2v-Text+Image-to-Video.json": DurationSpec(16, 4, 5, ((10, "length"),), 5.0),
-    "Text+Image to Video/WAN22_i2v_14B_fp8_lightx2v-Text+Image-to-Video.json": DurationSpec(16, 4, 5, ((12, "length"),), 5.0),
-    "Text+Image to Video/WAN22_i2v_14B_Q8_GGUF_lightx2v-Text+Image-to-Video.json": DurationSpec(16, 4, 5, ((10, "length"),), 5.0),
-    "Character Animation/SCAIL2-Character-Animation.json": DurationSpec(16, 4, 5, ((101, "length"), (113, "frame_load_cap")), 5.0),
-    "Character Animation/SCAIL2-Character-Replacement.json": DurationSpec(16, 4, 5, ((101, "length"), (113, "frame_load_cap")), 5.0),
+    "Text to Video/LTX23_22B_Dev_MXFP8-Text-to-Video.json": DurationSpec(25, 8, 9, ((4, "length"), (19, "frames_number")), 4.0),
+    "Text to Video/LTX23_22B_Dev_Q8_0-Text-to-Video.json": DurationSpec(25, 8, 9, ((4, "length"), (19, "frames_number")), 4.0),
+    "Text to Video/LTX23_22B_Distilled_FP8-Text-to-Video.json": DurationSpec(25, 8, 9, ((5, "length"), (20, "frames_number")), 4.0),
+    "Text to Video/LTX23_22B_Distilled_MXFP8-Text-to-Video.json": DurationSpec(25, 8, 9, ((5, "length"), (20, "frames_number")), 4.0),
+    "Controlled Video/WAN22_Fun_Control_5B_BF16-Image+Control-Video-to-Video.json": DurationSpec(24, 4, 5, ((60, "length"),), 5.0),
+    "Text+Image to Video/Kandinsky5_Lite_BF16-Text+Image-to-Video.json": DurationSpec(24, 4, 5, ((78, "length"),), 5.0),
+    "Text+Image to Video/WAN22_TI2V_5B_FP16-Text+Image-to-Video.json": DurationSpec(24, 4, 5, ((55, "length"),), 10.0),
+    "Text+Image to Video/Bernini_R_14B_FP8-Text+Image-to-Video.json": DurationSpec(16, 4, 5, ((10, "length"),), 5.0),
+    "Text+Image to Video/WAN22_I2V_14B_FP8+LightX2V-Text+Image-to-Video.json": DurationSpec(16, 4, 5, ((12, "length"),), 5.0),
+    "Text+Image to Video/WAN22_I2V_14B_Q8_0_LightX2V-Text+Image-to-Video.json": DurationSpec(16, 4, 5, ((10, "length"),), 5.0),
+    "Character Animation/WAN21_SCAIL2_14B_FP8-Image+Video-to-Video-Character-Animation.json": DurationSpec(16, 4, 5, ((101, "length"), (113, "frame_load_cap")), 5.0),
+    "Character Animation/WAN21_SCAIL2_14B_FP8-Image+Video-to-Video-Character-Replacement.json": DurationSpec(16, 4, 5, ((101, "length"), (113, "frame_load_cap")), 5.0),
 }
 
 DYNAMIC_SOURCE_FPS_PATHS = {
-    "Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json",
+    "Character Animation/WanAnimate2_14B_INT8-Image+Video-to-Video-Motion-Transfer.json",
 }
 
 SOURCE_DURATION_PATHS = {
-    "Audio to Video/FLUX2_Klein_4B_Gemma4-Audio-Context-to-AudioReact-Video.json",
-    "Audio to Video/LTX23-Image+Audio-to-Generative-Matching-Length-Video.json",
+    "Audio to Video/FLUX2_Klein_4B_BF16+Gemma4_E4B-Audio-to-AudioReact-Video.json",
+    "Audio to Video/LTX23_22B_FP8-Image+Audio-to-Video.json",
     "Audio to Video/Pixaroma-Image+Audio-to-AudioReact-Video.json",
-    "Character Animation/WAN21_SCAIL2-Character-Replacement.json",
-    "Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
-    "Reference to Video/MiniMax_H3_Spectrum_RefImage_Audio_to_Video_OriginalAudio_AutoLength.json",
-    "Reference to Video/MiniMax_H3_Spectrum_RefImage_RefVideo_to_Video_Audio_AutoLength.json",
-    "Talking Video/WAN21_InfiniteTalk-Multi-Speaker.json",
-    "Video Editing/Bernini_R-Video-Editing.json",
+    "Character Animation/WAN21_SCAIL2_14B_FP8+DPO-Image+Video-to-Long-Video-Character-Replacement.json",
+    "Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json",
+    "Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Audio-to-Video.json",
+    "Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video-Keep-Sound.json",
+    "Talking Video/WAN21_InfiniteTalk_14B_FP8-Images+Voices-to-Talking-Video.json",
+    "Video Editing/Bernini_R_14B_FP8-Video+Text-to-Video-Edit.json",
 }
 
 

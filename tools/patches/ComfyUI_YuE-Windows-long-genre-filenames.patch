@@ -1,0 +1,24 @@
+--- a/yue_node.py
++++ b/yue_node.py
+@@ -1,6 +1,7 @@
+ # !/usr/bin/env python
+ # -*- coding: UTF-8 -*-
+ import os
++import re
+ import sys
+ import torch
+ import gc
+@@ -571,8 +572,11 @@
+                 instrumentals.append(instrumentals_ids)
+             vocals = np.concatenate(vocals, axis=1)
+             instrumentals = np.concatenate(instrumentals, axis=1)
+-            vocal_save_path = os.path.join(stage1_output_dir, f"{genres_prompt.replace(' ', '-')}_tp{top_p}_T{temperature}_rp{repetition_penalty}_maxtk{max_new_tokens}_{random_id}_vtrack".replace('.', '@')+'.npy')
+-            inst_save_path = os.path.join(stage1_output_dir, f"{genres_prompt.replace(' ', '-')}_tp{top_p}_T{temperature}_rp{repetition_penalty}_maxtk{max_new_tokens}_{random_id}_itrack".replace('.', '@')+'.npy')
++            # Windows: the genre text became the file name (255 characters per name), so long genre prompts failed with
++            # OSError 22. Keep a short, file-system-safe slug; the rest of the name stays unchanged.
++            genre_slug = re.sub(r"[^0-9A-Za-z,_-]+", "-", genres_prompt.strip()).strip("-")[:60].rstrip("-,_") or "yue"
++            vocal_save_path = os.path.join(stage1_output_dir, f"{genre_slug}_tp{top_p}_T{temperature}_rp{repetition_penalty}_maxtk{max_new_tokens}_{random_id}_vtrack".replace('.', '@')+'.npy')
++            inst_save_path = os.path.join(stage1_output_dir, f"{genre_slug}_tp{top_p}_T{temperature}_rp{repetition_penalty}_maxtk{max_new_tokens}_{random_id}_itrack".replace('.', '@')+'.npy')
+             np.save(vocal_save_path, vocals)
+             np.save(inst_save_path, instrumentals)
+             stage1_output_set.append(vocal_save_path)

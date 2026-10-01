@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 from tools.refine_workflows import _effect, _fallback_purpose, build_note_text, map_widget_values
-from tools.validate_workflows import compare_head
+from tools.validate_workflows import baseline_path, compare_head
 
 class WidgetMappingTests(unittest.TestCase):
     @classmethod
@@ -149,13 +149,13 @@ class WidgetMappingTests(unittest.TestCase):
             "quantized_backward", "algorithm", "gradient_checkpointing", "checkpoint_depth",
             "offloading", "existing_lora", "bucket_mode", "bypass_mode",
         ]
-        paths = sorted((Path("workflows") / "LoRA Generation").glob("*-LoRA-Training.json"))
+        paths = sorted((Path("workflows") / "LoRA Generation").glob("*-to-*LoRA.json"))  # all eight training workflows
         generated = [
             path for path in paths
             if path.name not in {
-                "ACE-Step1_5_XL-Voice-LoRA-Training.json",
-                "Qwen3-TTS_0.6B-Voice-LoRA-Training.json",
-                "YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json",  # Dedicated NAR trainer, not Core TrainLoraNode.
+                "ACE_Step1_5_XL_SFT_BF16-Songs-to-Voice-LoRA.json",
+                "Qwen3_TTS_0_6B_Base-Recordings-to-Voice-LoRA.json",
+                "YuE2_3B_BF16-PRIVATE-Songs-to-Style-LoRA.json",  # Dedicated NAR trainer, not Core TrainLoraNode.
             }
         ]
         self.assertEqual(len(generated), 5)
@@ -172,7 +172,7 @@ class WidgetMappingTests(unittest.TestCase):
             self.assertIs(values["bucket_mode"], True, path.name)
 
     def test_song_idea_workflows_route_generated_lyrics(self):
-        paths = sorted((Path("workflows") / "Music Generation").glob("*Idea-to-Lyrics-to-Music.json"))
+        paths = sorted((Path("workflows") / "Music Generation").glob("HeartMuLa_*-Idea-to-Lyrics-to-Song.json"))
         self.assertEqual(len(paths), 2)
         for path in paths:
             workflow = json.loads(path.read_text(encoding="utf-8"))
@@ -382,8 +382,8 @@ class WidgetMappingTests(unittest.TestCase):
         )
 
     def test_qwen3_tts_lora_workflows_use_real_peft_adapters(self):
-        training_path = Path("workflows/LoRA Generation/Qwen3-TTS_0.6B-Voice-LoRA-Training.json")
-        inference_path = Path("workflows/Voice Design/Qwen3-TTS_LoRA-Low-Latency-Live-Voice.json")
+        training_path = Path("workflows/LoRA Generation/Qwen3_TTS_0_6B_Base-Recordings-to-Voice-LoRA.json")
+        inference_path = Path("workflows/Voice Design/Qwen3_TTS_0_6B_Base+LoRA-Text-to-Speech-Live.json")
         training = json.loads(training_path.read_text(encoding="utf-8"))
         inference = json.loads(inference_path.read_text(encoding="utf-8"))
         for path, workflow in ((training_path, training), (inference_path, inference)):
@@ -407,7 +407,7 @@ class WidgetMappingTests(unittest.TestCase):
         self.assertEqual(nodes["SaveAudio"]["widgets_values"], ["audio/avatar-voice/qwen3tts-lora"])
 
     def test_qwen3_tts_v092_migration_rejects_unexpected_rank(self):
-        path = Path("workflows/LoRA Generation/Qwen3-TTS_0.6B-Voice-LoRA-Training.json")
+        path = Path("workflows/LoRA Generation/Qwen3_TTS_0_6B_Base-Recordings-to-Voice-LoRA.json")
         workflow = json.loads(path.read_text(encoding="utf-8"))
         corrupted = copy.deepcopy(workflow)
         train = next(node for node in corrupted["nodes"] if node["type"] == "DaWastehQwen3TTSLoRATrain")
@@ -415,7 +415,7 @@ class WidgetMappingTests(unittest.TestCase):
         train["widgets_values"][9] = "not-a-rank"
         note["widgets_values"][0] = "unexpected note"
         errors: list[str] = []
-        compare_head(path, corrupted, errors)
+        compare_head(path, corrupted, errors, baseline_path(path))  # the baseline may still have the v1.3.0 name
         self.assertTrue(any("differs from deterministic v0.9.2 collection migration" in error for error in errors), errors)
 
     def test_qwen3_tts_lora_node_uses_safe_adapter_files(self):

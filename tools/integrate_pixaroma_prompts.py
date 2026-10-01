@@ -5,17 +5,17 @@ import argparse, hashlib, json, subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]; WF=ROOT/'workflows'; MAN=ROOT/'tools/pixaroma_prompt_manifest.json'; MARK='dawasteh_pixaroma_prompt_integration'
 PAUSES={
-'workflows/Audio to Image/FLUX2_Klein_4B_Gemma4-Audio-Context-to-Image.json':(19,8,6),
-'workflows/Audio to Video/FLUX2_Klein_4B_Gemma4-Audio-Context-to-AudioReact-Video.json':(16,3,13),
-'workflows/Image Editing/FLUX2_Klein_9B_Qwen3_5-Image-to-Prompt-to-Image.json':(212,6,259),
-'workflows/Text to Image/FLUX2_Klein_9B_Qwen3_5-Text-to-Prompt-to-Image.json':(212,6,259),
-'workflows/Music Generation/StableAudio3_Medium_Gemma4-Text-to-Music.json':(30,5,20),
-'workflows/Music Generation/StableAudio3_Medium_Gemma4-Text-to-Sound.json':(30,5,20),
-'workflows/Text to Image/Krea2_turbo-2K-Text-to-Image.json':(212,6,259),
-'workflows/Text to Image/Krea2_turbo-Uncensored-Prompt-Enhanced-Text-to-Image.json':(214,6,262),
+'workflows/Audio to Image/FLUX2_Klein_4B_BF16+Gemma4_E4B-Audio-to-Image.json':(19,8,6),
+'workflows/Audio to Video/FLUX2_Klein_4B_BF16+Gemma4_E4B-Audio-to-AudioReact-Video.json':(16,3,13),
+'workflows/Image Editing/FLUX2_Klein_9B_KV_FP8+Qwen3_5_4B-Image-to-Prompt-to-Image.json':(212,6,259),
+'workflows/Text to Image/FLUX2_Klein_9B_KV_FP8+Qwen3_5_4B-Idea-to-Prompt-to-Image.json':(212,6,259),
+'workflows/Music Generation/StableAudio3_Medium_FP32+Gemma4_E4B-Text-to-Music.json':(30,5,20),
+'workflows/Music Generation/StableAudio3_Medium_FP32+Gemma4_E4B-Text-to-Sound.json':(30,5,20),
+'workflows/Text to Image/Krea2_Turbo_FP8-Idea-to-Prompt-to-2K-Image.json':(212,6,259),
+'workflows/Text to Image/Krea2_Turbo_FP8+Qwen3VL_4B_Abliterated-Idea-to-Prompt-to-Image.json':(214,6,262),
 'workflows/Prompt Tools/Pixaroma-Find-and-Replace+ZImage.json':(207,6,247)}
-FORMULA_PATHS={'workflows/Music Generation/StableAudio3_Medium_Gemma4-Text-to-Music.json','workflows/Music Generation/StableAudio3_Medium_Gemma4-Text-to-Sound.json','workflows/Prompt Enhancer/LLM_Qwen3_5_4B-Text-to-Prompt.json','workflows/Prompt Enhancer/Qwen3VL_8b_fp8_scaled-Krea2-Prompt-Enhancer.json','workflows/Prompt Tools/Pixaroma-Find-and-Replace+ZImage.json','workflows/Text to Image/FLUX2_Klein_9B_Qwen3_5-Text-to-Prompt-to-Image.json','workflows/Text to Image/Krea2_turbo-2K-Text-to-Image.json','workflows/Text to Image/Krea2_turbo-Uncensored-Prompt-Enhanced-Text-to-Image.json'}
-QWEN={'workflows/Image Editing/Qwen_Image_Edit_2511_Action-LoRA-Image-Edit.json':(231,0),'workflows/Image Fusion/Krea2_INT8_3-Reference_Fusion.json':(6,0)}
+FORMULA_PATHS={'workflows/Music Generation/StableAudio3_Medium_FP32+Gemma4_E4B-Text-to-Music.json','workflows/Music Generation/StableAudio3_Medium_FP32+Gemma4_E4B-Text-to-Sound.json','workflows/Prompt Enhancer/LLM_Qwen3_5_4B_BF16-Text-to-Prompt.json','workflows/Prompt Enhancer/LLM_Qwen3VL_8B_FP8-Idea-to-Krea2-Prompt.json','workflows/Prompt Tools/Pixaroma-Find-and-Replace+ZImage.json','workflows/Text to Image/FLUX2_Klein_9B_KV_FP8+Qwen3_5_4B-Idea-to-Prompt-to-Image.json','workflows/Text to Image/Krea2_Turbo_FP8-Idea-to-Prompt-to-2K-Image.json','workflows/Text to Image/Krea2_Turbo_FP8+Qwen3VL_4B_Abliterated-Idea-to-Prompt-to-Image.json'}
+QWEN={'workflows/Image Editing/Qwen_Image_Edit_2511_BF16+Action_LoRA-Image-Edit.json':(231,0),'workflows/Image Fusion/Krea2_Turbo_FP8-Three-Images-to-Image-Fusion.json':(6,0)}
 def h(x):return hashlib.sha256(json.dumps(x,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
 sha=h
 def read(p):return p.read_text(encoding='utf-8')

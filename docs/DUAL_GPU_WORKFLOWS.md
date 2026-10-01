@@ -35,10 +35,10 @@ MiniMax Music 3 bleibt die dokumentierte Ausnahme zur üblichen Split-Belegung: 
 Die früher ausschließlich im Dual-GPU-Ordner vorhandenen offiziellen Template-Graphen liegen jetzt hier:
 
 ```text
-workflows/Text to Video/LTX25_INT8_ConvRot-Text-to-Video.json
-workflows/Text+Image to Video/LTX25_INT8_ConvRot-Image-to-Video.json
-workflows/Text+Image to Video/LTX25_INT8_ConvRot-First+Last-Frame-to-Video.json
-workflows/Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json
+workflows/Text to Video/LTX25_22B_INT8-Text-to-Video.json
+workflows/Text+Image to Video/LTX25_22B_INT8-Text+Image-to-Video.json
+workflows/Text+Image to Video/LTX25_22B_INT8-First+Last-Frame-to-Video.json
+workflows/Character Animation/WanAnimate2_14B_INT8-Image+Video-to-Video-Motion-Transfer.json
 ```
 
 Alle anderen früheren Dual-GPU-Varianten wurden in ihren bereits vorhandenen kanonischen Workflow integriert, statt als Duplikat erhalten zu bleiben.
@@ -50,7 +50,7 @@ MiniMax_H3_Spectrum_FL2VA_All_Supported_Inputs.json
 MiniMax_H3_Spectrum_FL2VA_MAXIMUM_All_Supported_Inputs.json
 ```
 
-wurden entfernt. `MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json` deckt ihre FL2VA-Eingaben bereits ab und besitzt nun selbst die optionale zentrale GPU-Steuerung.
+wurden entfernt. `MiniMax_H3_FL2VA_INT8-First+Last-Frame-to-Video.json` deckt ihre FL2VA-Eingaben bereits ab und besitzt nun selbst die optionale zentrale GPU-Steuerung.
 
 ## Start auf Port 8188
 

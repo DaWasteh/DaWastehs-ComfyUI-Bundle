@@ -1,7 +1,7 @@
 {
  "release": "v1.3.0",
  "date": "2026-09-29",
- "scope": "Image prompt enhancer: DaWImagePromptEnhancer (Qwen3.8 27B GGUF via llama.cpp) in Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer",
+ "scope": "Image prompt enhancer: DaWImagePromptEnhancer (Qwen3.8 27B GGUF via llama.cpp) in Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt",
  "system": {
   "os": "win32",
   "comfyui_version": "0.37.0",
@@ -10,7 +10,7 @@
   "ram_total": 50860650496
  },
  "workflows": {
-  "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json": {
+  "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json": {
    "sha256": "40276fa371fc017e62ccc301f9c9b2eb0a4d4709a7a32fdbfa55d743efb061d9"
   }
  },
@@ -32,7 +32,7 @@
    "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · mittel · 136 Wörter · 30 s",
    "case": "default_german_draft_natural",
    "final": true,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
    "settings": {
     "detail": "mittel",
@@ -67,7 +67,7 @@
    "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · mittel · 153 Wörter · 36 s",
    "case": "seed_variation",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
    "settings": {
     "detail": "mittel",
@@ -102,7 +102,7 @@
    "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Text im Bild · mittel · 107 Wörter · 23 s",
    "case": "text_in_image_poster",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "Poster für ein Jazzfestival, Titel \"BLUE NOTE NIGHTS\", darunter \"14. August · Stadtpark · Eintritt frei\", Saxophonist als Silhouette",
    "settings": {
     "detail": "mittel",
@@ -137,7 +137,7 @@
    "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Tags · ausführlich · 42 Tags · 18 s",
    "case": "tags_long",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "a knight in black armor riding a horse through a burning village",
    "settings": {
     "detail": "ausführlich",
@@ -172,7 +172,7 @@
    "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · kurz · 89 Wörter · 30 s",
    "case": "german_output_short",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
    "settings": {
     "detail": "kurz",
@@ -207,7 +207,7 @@
    "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · mittel · 156 Wörter · 26 s",
    "case": "notes_no_people",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "a market street in Marrakesh at noon",
    "settings": {
     "detail": "mittel",
@@ -242,7 +242,7 @@
    "info": "Enhancer aus: Entwurf unverändert",
    "case": "enhance_off_passthrough",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
    "settings": {
     "detail": "mittel",
@@ -277,7 +277,7 @@
    "info": "Entwurf unverändert: keine brauchbare Antwort des Modells (Details im ComfyUI-Log)",
    "case": "truncated_answer_falls_back",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
    "settings": {
     "detail": "mittel",
@@ -312,7 +312,7 @@
    "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Bearbeiten · kurz · 40 Wörter · 19 s",
    "case": "edit_with_image",
    "final": true,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "gib der Brokkoli-Figur einen Zylinderhut",
    "settings": {
     "detail": "kurz",
@@ -347,7 +347,7 @@
    "info": "Qwen3.8-27B-IQ4_XS-3.84bpw.gguf · Fließtext · mittel · 126 Wörter · 23 s",
    "case": "reference_image_natural",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "die Figur als Plüschtier in einem Kinderzimmer",
    "settings": {
     "detail": "mittel",
@@ -383,7 +383,7 @@
    "info": "",
    "case": "no_gguf_in_start_profile_clear_error",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "expected_status": "error",
    "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
    "settings": {
@@ -419,7 +419,7 @@
    "info": "Enhancer aus: Entwurf unverändert",
    "case": "enhance_off_without_gguf",
    "final": false,
-   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json",
+   "workflow": "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json",
    "draft": "Ein alter Leuchtturm bei Sturm, Möwen, dramatisches Licht",
    "settings": {
     "detail": "mittel",

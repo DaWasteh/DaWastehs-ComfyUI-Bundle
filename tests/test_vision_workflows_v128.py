@@ -212,7 +212,7 @@ class VideoFrameTests(unittest.TestCase):
             w = built[PATHS[key]]
             with self.subTest(key=key):
                 batch = one(w, "VHS_BatchManager")
-                self.assertEqual(batch["widgets_values"], [SETTINGS["frames_per_batch"]])
+                self.assertEqual(batch["widgets_values"], {"frames_per_batch": SETTINGS["frames_per_batch"], "count": 0})
                 load = one(w, "DaWLoadVideoBatches")  # VHS loader, safe for silent videos and after cancelled runs
                 self.assertEqual(load["widgets_values"][1:], [0, 0])
                 self.assertEqual(source(w, load, "meta_batch"), (batch, 0))

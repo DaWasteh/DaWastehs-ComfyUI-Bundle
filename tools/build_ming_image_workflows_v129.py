@@ -21,12 +21,14 @@ try:
     from tools.generate_dual_gpu_workflows import install_run_timer
     from tools.refine_workflows import refine_workflow
     from tools.rodent_layout import apply_rodent_layout
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:
     from build_workflows_v118 import Graph
     import migrate_workflows_v092 as migration
     from generate_dual_gpu_workflows import install_run_timer
     from refine_workflows import refine_workflow
     from rodent_layout import apply_rodent_layout
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "tools/workflow_templates/v129"
@@ -35,9 +37,9 @@ RELEASE = "v1.2.9"
 BS = "\\"
 PATHS = {
     "t2i": "Text to Image/Ming_Image_0_1_Design_INT8-Text-to-Image.json",
-    "transparent": "Text to Image/Ming_Image_0_1_Design_INT8-Transparent-RGBA.json",
+    "transparent": "Text to Image/Ming_Image_0_1_Design_INT8-Text-to-Transparent-Image.json",
     "edit": "Image Editing/Ming_Image_0_1_Design_INT8-Image-Edit.json",
-    "layers": "Image Utilities/Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose.json",
+    "layers": "Image Utilities/Ming_Image_0_1_Design_Layer_INT8-Image-to-Layers.json",
 }
 UNET = "Ming" + BS + "ming_image_0.1_design_int8_convrot.safetensors"
 UNET_LAYER = "Ming" + BS + "ming_image_0.1_design_layer_int8_convrot.safetensors"
@@ -166,7 +168,7 @@ def _model_lines(keys: list[str], extra_inputs: list[str]) -> str:
 def finish(g: Graph, key: str) -> dict:
     path = PATHS[key]
     install_run_timer(g.w)
-    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v129:" + path))
+    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v129:" + original_name(path)))
     g.w["revision"] = 0
     g.w["extra"][MARKER] = {
         "version": 1,

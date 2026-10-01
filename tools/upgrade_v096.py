@@ -16,12 +16,14 @@ try:
         UPGRADE_KEY as V095_UPGRADE_KEY,
         UPGRADE_VERSION as V095_UPGRADE_VERSION,
     )
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:  # Direct execution
     from upgrade_v095 import (
         HUNYUAN_PATH,
         UPGRADE_KEY as V095_UPGRADE_KEY,
         UPGRADE_VERSION as V095_UPGRADE_VERSION,
     )
+    from workflow_names_v131 import original_name
 
 
 UPGRADE_KEY = "dawasteh_v096_game_dev"
@@ -329,7 +331,7 @@ def _upgrade_hunyuan(workflow: dict[str, Any]) -> None:
     gpu = workflow.setdefault("extra", {}).setdefault("dawasteh_dual_gpu", {})
     gpu.update({
         "family": "Hunyuan3D 2.1 Low-Poly LOD Set for Godot",
-        "source": f"workflows/{HUNYUAN_PATH}",
+        "source": f"workflows/{original_name(HUNYUAN_PATH)}",
         "curated_split_default": False,
         "defaults": {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
     })

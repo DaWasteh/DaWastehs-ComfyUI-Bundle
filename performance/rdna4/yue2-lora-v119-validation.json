@@ -60,14 +60,14 @@
   },
   "workflows": [
     {
-      "path": "workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json",
+      "path": "workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Songs-to-Style-LoRA.json",
       "sha256": "d1e544718ab120d4c188980cd8a3a4976364466ebf53d9ae4f414f8849fa7a03",
       "frontend_contract_sha256": "55294c1f3a5eb86f3c0c070b02fa67309021f95fa4f45bb65456ff052be86b33",
       "runtime_workflow_hash_matches": true,
       "frontend_contract_fixture": "tools/workflow_templates/yue2-lora/frontend-contracts.json"
     },
     {
-      "path": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "path": "workflows/Music Generation/YuE2_3B_BF16+LoRA-PRIVATE-Tags+Lyrics-to-Song.json",
       "sha256": "a7a4aae17ad1aa773e753fb8c90ad326df8b30128c8a916a1d4ed820dc46665b",
       "frontend_contract_sha256": "b9622dd41375308cc4ebe9963c2c7750b124734f057323feecae807e20f05810",
       "runtime_workflow_hash_matches": true,
@@ -77,7 +77,7 @@
   "runs": [
     {
       "name": "v119_synthetic_100",
-      "workflow": "workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json",
+      "workflow": "workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Songs-to-Style-LoRA.json",
       "prompt_id": "58994f74-e91b-465a-87ac-fe1d64575feb",
       "status": "success",
       "completed": true,
@@ -105,7 +105,7 @@
     },
     {
       "name": "baseline",
-      "workflow": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "workflow": "workflows/Music Generation/YuE2_3B_BF16+LoRA-PRIVATE-Tags+Lyrics-to-Song.json",
       "prompt_id": "1127b63c-00ae-40a8-9dd2-0b20e2b19a8c",
       "status": "success",
       "completed": true,
@@ -142,7 +142,7 @@
     },
     {
       "name": "ema",
-      "workflow": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "workflow": "workflows/Music Generation/YuE2_3B_BF16+LoRA-PRIVATE-Tags+Lyrics-to-Song.json",
       "prompt_id": "13a3b03d-423e-4649-9564-9bcdaf2e77e6",
       "status": "success",
       "completed": true,
@@ -182,7 +182,7 @@
     },
     {
       "name": "raw",
-      "workflow": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "workflow": "workflows/Music Generation/YuE2_3B_BF16+LoRA-PRIVATE-Tags+Lyrics-to-Song.json",
       "prompt_id": "a95ec0b4-3089-4982-a9a9-1de91b5a4e5b",
       "status": "success",
       "completed": true,
@@ -222,7 +222,7 @@
     },
     {
       "name": "baseline_restored",
-      "workflow": "workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json",
+      "workflow": "workflows/Music Generation/YuE2_3B_BF16+LoRA-PRIVATE-Tags+Lyrics-to-Song.json",
       "prompt_id": "78b61d9d-21d8-47c3-8c53-3e0f06ef3e0e",
       "status": "success",
       "completed": true,

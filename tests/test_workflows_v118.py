@@ -7,6 +7,7 @@ from tools.build_workflows_v118 import build_all, SCHEMAS
 from tools.install_models_v118 import model_files
 from tools.validate_workflows import validate_graph
 from tools.rodent_layout import _topology_hash
+from tools.workflow_names_v131 import old_key
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -91,7 +92,7 @@ class WorkflowV118Tests(unittest.TestCase):
             self.assertEqual(save["widgets_values"][2], 16)
             self.assertEqual(w["extra"]["dawasteh_duration_seconds"]["fps"], 16)
         w = self.workflows[
-            "Controlled Video/Cosmos_Predict2_2B-Video-Continuation.json"
+            "Controlled Video/Cosmos_Predict2_2B_BF16-Video-to-Video-Continuation.json"
         ]
         load = next(n for n in w["nodes"] if n["type"] == "DaWVideoFrames")
         self.assertEqual(load["widgets_values"][1:], [16, 848, 480, 5])
@@ -106,7 +107,7 @@ class WorkflowV118Tests(unittest.TestCase):
             self.assertIn("DaWCollisionProxy", types)
             self.assertNotIn(
                 "VaeDecodeTextureTrellis", types
-            ) if "Shape-Collision" in path else self.assertIn(
+            ) if "Shape-Collision" in old_key(path) else self.assertIn(  # the v1.1.8 mode names
                 "VaeDecodeTextureTrellis", types
             )
             if "TRELLIS2" in path:
@@ -142,7 +143,7 @@ class WorkflowV118Tests(unittest.TestCase):
                 link for link in w["links"] if link[3] == 322 and link[4] == 0
             )
             self.assertEqual(nodes[converter_link[1]]["type"], "MeshToFile3D")
-            if "Shape-Collision" in path:
+            if "Shape-Collision" in old_key(path):
                 self.assertTrue(
                     any(
                         link[1] == 186 and link[3] == converter_link[1]
@@ -151,7 +152,7 @@ class WorkflowV118Tests(unittest.TestCase):
                 )
 
     def test_cosmos_text_to_video_really_chains_both_models(self):
-        w = self.workflows["Controlled Video/Cosmos_Predict2_2B-Text-to-Video.json"]
+        w = self.workflows["Controlled Video/Cosmos_Predict2_2B_BF16-Text-to-Video.json"]
         nodes = {n["id"]: n for n in w["nodes"]}
         self.assertEqual(sum(n["type"] == "UNETLoader" for n in nodes.values()), 2)
         self.assertEqual(sum(n["type"] == "KSampler" for n in nodes.values()), 2)

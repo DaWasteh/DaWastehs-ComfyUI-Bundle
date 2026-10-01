@@ -9,7 +9,7 @@ und Positionen) als funktional identisch belegt:
       ``General-Prompt-Enhancer.json`` haben identische Knoten-IDs, identische ``links`` und einen
       byteidentischen ``TextGenerate``-Systemprompt. Sie unterscheiden sich ausschliesslich im
       ``CLIPLoader``-Widget sowie in Notiztexten und Layout-Markern. Ergebnis ist ein Workflow
-      ``LLM_General-Prompt-Enhancer.json``, in dem das Modell ueber den ``CLIPLoader`` gewaehlt
+      ``LLM_Gemma4_E4B_FP8-Idea-to-Prompt.json``, in dem das Modell ueber den ``CLIPLoader`` gewaehlt
       wird; die dokumentierte Preset-Tabelle nennt zu jedem Modell den noetigen ``type``, weil
       dieser modellspezifisch ist (Gemma 3 12B: ``ltxv``, Gemma 4 e4b: ``stable_diffusion``).
 
@@ -31,10 +31,10 @@ NICHT zusammengefuehrt (bewusste Entscheidung, dokumentiert):
   echte Betriebsartentrennung, kein blosser Modellwechsel.
 
 Alt -> Neu:
-  Prompt Enhancer/LLM_Gemma3_12B_General-Prompt-Enhancer.json             -> LLM_General-Prompt-Enhancer.json (CLIPLoader: Gemma 3 12B / type ltxv)
-  Prompt Enhancer/LLM_Gemma4_e4b_General-Prompt-Enhancer.json             -> LLM_General-Prompt-Enhancer.json (CLIPLoader: Gemma 4 e4b / type stable_diffusion)
-  Prompt Enhancer/LLM_Gemma4_e4b_abliterated_General-Prompt-Enhancer.json -> LLM_General-Prompt-Enhancer.json (CLIPLoader: Gemma 4 e4b abliterated / type stable_diffusion)
-  Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json -> MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json (Geraete all-gpu:0)
+  Prompt Enhancer/LLM_Gemma3_12B_General-Prompt-Enhancer.json             -> LLM_Gemma4_E4B_FP8-Idea-to-Prompt.json (CLIPLoader: Gemma 3 12B / type ltxv)
+  Prompt Enhancer/LLM_Gemma4_e4b_General-Prompt-Enhancer.json             -> LLM_Gemma4_E4B_FP8-Idea-to-Prompt.json (CLIPLoader: Gemma 4 e4b / type stable_diffusion)
+  Prompt Enhancer/LLM_Gemma4_e4b_abliterated_General-Prompt-Enhancer.json -> LLM_Gemma4_E4B_FP8-Idea-to-Prompt.json (CLIPLoader: Gemma 4 e4b abliterated / type stable_diffusion)
+  Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json -> MiniMax_H3_Ref2VA_INT8-All-References-to-Video.json (Geraete all-gpu:0)
 
   python tools/consolidate_workflows_v113.py --check
   python tools/consolidate_workflows_v113.py --apply
@@ -51,7 +51,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 WORKFLOWS = REPO / "workflows"
 
-TARGET_PATH = "Prompt Enhancer/LLM_General-Prompt-Enhancer.json"
+TARGET_PATH = "Prompt Enhancer/LLM_Gemma4_E4B_FP8-Idea-to-Prompt.json"
 TARGET_SOURCE = "Prompt Enhancer/LLM_Gemma4_e4b_General-Prompt-Enhancer.json"
 
 
@@ -94,7 +94,7 @@ C1_SOURCES = {
 
 # Dublette, die zugunsten der MAXIMUM-Datei entfaellt.
 C2_REMOVED = "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json"
-C2_KEPT = "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json"
+C2_KEPT = "Reference to Video/MiniMax_H3_Ref2VA_INT8-All-References-to-Video.json"
 
 REMOVED_PATHS = set(C1_SOURCES) | {C2_REMOVED}
 ADDED_PATHS = {TARGET_PATH}

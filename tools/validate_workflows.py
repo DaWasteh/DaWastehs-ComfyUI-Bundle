@@ -33,6 +33,7 @@ try:
     from tools.upgrade_v112 import MARKER_KEY as V112_MARKER_KEY, MARKER_VERSION as V112_MARKER_VERSION, apply as v112_apply
     from tools.upgrade_v113 import MARKER_KEY as V113_MARKER_KEY, MARKER_VERSION as V113_MARKER_VERSION, apply as v113_apply
     from tools.upgrade_v115 import MARKER_KEY as V115_MARKER_KEY, MARKER_VERSION as V115_MARKER_VERSION, apply as v115_apply
+    from tools import workflow_fixes_v131 as v131_fixes
     from tools.consolidate_workflows_v113 import (
         ADDED_PATHS as V113_ADDED_PATHS,
         REMOVED_PATHS as V113_REMOVED_PATHS,
@@ -41,6 +42,7 @@ try:
         build_target as build_v113_target,
     )
 except ModuleNotFoundError:  # Direct execution: python tools/validate_workflows.py
+    import workflow_fixes_v131 as v131_fixes
     from refine_workflows import DOC_TYPES, NOTE_PROPERTY, REFINEMENT_KEY, graph_children, is_target
     from integrate_pixaroma_prompts import pause_node as expected_pause_node, prompt as expected_prompt_node
     from integrate_h3_turbo_lora import DIRECTOR_WORKFLOW, VISIBLE_WORKFLOWS, integrate_director, integrate_visible
@@ -75,18 +77,18 @@ BASELINE_REF = "HEAD"
 INTEGRATION_MARKER = "dawasteh_pixaroma_prompt_integration"
 MANIFEST_PATH = Path(__file__).with_name("pixaroma_prompt_manifest.json")
 AUTHORIZED_WIDGET_DELTAS: dict[str, dict[int, set[int]]] = {
-    "workflows/LoRA Generation/Qwen3-TTS_0.6B-Voice-LoRA-Training.json": {
+    "workflows/LoRA Generation/Qwen3_TTS_0_6B_Base-Recordings-to-Voice-LoRA.json": {
         1: {0},  # document the supported <audio-stem>_Text.txt transcript alias
         2: {9},  # serialize numeric-looking COMBO choices as strings for ComfyUI validation
     },
-    "workflows/Music Generation/YuE_7B-FP16_R9700-Reference-Voice-ICL-Music-Generation.json": {
+    "workflows/Music Generation/YuE_7B_ICL_FP16-Voice+Lyrics-to-Song.json": {
         2: {1, 4},  # restore the 20-section/600-second-safe lyrics capacity
     },
-    "workflows/Music Generation/YuE_7B-FP16_R9700-Music-Generation.json": {
+    "workflows/Music Generation/YuE_7B_FP16-Tags+Lyrics-to-Song.json": {
         2: {1, 4, 5},  # restore 20 sections and the documented 540-second target
         8: {0},  # keep the generated parameter note synchronized with those values
     },
-    "workflows/Music Generation/HeartMuLa_HappyNewYear_3B_R9700-Music-Generation.json": {
+    "workflows/Music Generation/HeartMuLa_3B_HappyNewYear-Tags+Lyrics-to-Song.json": {
         3: {2},  # restore the documented 300-second default upper bound
         10: {0},  # keep the generated parameter note synchronized with that value
     },
@@ -95,7 +97,7 @@ AUTHORIZED_NODE_REPLACEMENTS: dict[str, dict[int, str]] = {
     # Pin the v0.8.4 Identity-Lock Director serialization, user-facing guide,
     # and schema-generated parameter note. This includes ComfyUI's control-after-
     # generate widget immediately after the integer seed.
-    "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json": {
+    "workflows/Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json": {
         1: "31109d644802d5d7fea67f890802fec3bf3b5e6c5dda3d6979e7e09a91b85cbb",
         2: "692d4b2a3dba7827b661f8560e0723f57a5a3e01e95a910d7ee4accd2741a042",
         4: "8d1d238d1f26397d0458d6db5f9278878e67b3674b0a3eb3ecbb67e259813aaa",
@@ -135,7 +137,7 @@ AUTHORIZED_NODE_REPLACEMENTS: dict[str, dict[int, str]] = {
     },
 }
 AUTHORIZED_WIDGET_VALUE_HASHES: dict[str, dict[int, dict[int, str]]] = {
-    "workflows/LoRA Generation/Qwen3-TTS_0.6B-Voice-LoRA-Training.json": {
+    "workflows/LoRA Generation/Qwen3_TTS_0_6B_Base-Recordings-to-Voice-LoRA.json": {
         1: {0: "2709348679a192c731239fc1f71f73a1d1deb3369d821717d6279b5d9d1ba08f"},
         2: {9: "17eed2c0e7c9788d0b46fafdf328b3e955aa0a22132c16cde72aa4f32dcd5282"},
     },
@@ -216,6 +218,19 @@ def git_ref_json(path_key: str) -> dict[str, Any]:
 
 def git_head_json(path: Path) -> dict[str, Any]:
     return git_ref_json(_path_key(path))
+
+
+def baseline_path(path: Path) -> Path:
+    """v1.3.1 renamed 207 workflows (tools/workflow_renames_v131.json); an older baseline has them under the old name."""
+    key = _path_key(path).removeprefix("workflows/")
+    old = v131_fixes.old_key(key)
+    if old == key:
+        return path
+    try:
+        git_ref_json(f"workflows/{key}")
+        return path
+    except subprocess.CalledProcessError:
+        return Path("workflows") / old
 
 
 def git_baseline_workflow_paths() -> set[str]:
@@ -373,6 +388,9 @@ def _manifest_entries() -> dict[str, dict[str, Any]]:
 
 
 def _path_key(path: Path) -> str:
+    if not path.is_absolute():
+        # relative to the repository root; resolve() would also fold case-only renames onto the file on disk
+        return path.as_posix()
     root = Path(__file__).resolve().parents[1]
     try:
         return path.resolve().relative_to(root).as_posix()
@@ -598,8 +616,49 @@ def validate_integration_delta(
         errors.append(f"{prefix}: last_link_id is not the exact maximum")
 
 
-def compare_head(path: Path, current: dict[str, Any], errors: list[str]) -> tuple[int, int]:
-    head_raw = git_head_json(path)
+_V131_REBUILT: dict[str, Any] = {}
+
+
+def _v131_rebuilt() -> dict[str, Any]:
+    """Builder outputs of the renamed workflows whose content v1.3.1 changes with the rename.
+
+    The builders keep each workflow's identity (id, provenance, subgraph ids) on its v1.3.0 name
+    (tools/workflow_names_v131.original_name), so a renamed builder-made workflow stays byte-identical to its baseline.
+    Only visible cross references follow the new names: the two Mira-Scene notes name each other."""
+    if not _V131_REBUILT:
+        try:
+            from tools.build_mira_scene_workflows_v129 import build_all as build_mira
+        except ModuleNotFoundError:
+            from build_mira_scene_workflows_v129 import build_all as build_mira
+        _V131_REBUILT.update(build_mira())
+    return _V131_REBUILT
+
+
+def compare_head(path: Path, current: dict[str, Any], errors: list[str], head_path: Path | None = None) -> tuple[int, int]:
+    """``path`` is the current file (its key selects the release tables), ``head_path`` its name in the baseline."""
+    head_path = head_path or path
+    head_raw = git_head_json(head_path)
+    if current != head_raw:
+        # v1.3.1 repairs (finetunes rebuilt, subgraph device values, shifted widgets, LTX Director 2.x schema) are
+        # rebuilt from the baseline graphs, which the v1.3.1 tools address by their v1.3.0 names.
+        v131 = v131_fixes.expected(
+            _path_key(head_path).removeprefix("workflows/"), head_raw, lambda key: git_ref_json(f"workflows/{key}"))
+        if v131 is not None:
+            if v131 != current:
+                errors.append(f"{path}: differs from deterministic v1.3.1 repair")
+            return (
+                sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head_raw)),
+                sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head_raw)),
+            )
+        rebuilt = _v131_rebuilt().get(_path_key(path).removeprefix("workflows/"))
+        if rebuilt is not None and head_path != path:
+            # Renamed builder-made workflows whose notes name other workflows follow the new names.
+            if rebuilt != current:
+                errors.append(f"{path}: differs from its builder after the v1.3.1 rename")
+            return (
+                sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head_raw)),
+                sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head_raw)),
+            )
     if current.get("extra", {}).get("dawasteh_yue2_lora", {}).get("release") == "v1.2.0":
         try:
             from tools.build_yue2_lora_workflows import build_all as build_yue2
@@ -876,6 +935,8 @@ def main() -> int:
         expected_paths.update(f"workflows/{key}" for key in v128_additions)
         expected_paths.update(f"workflows/{key}" for key in v129_additions)
         expected_paths.update(f"workflows/{key}" for key in v130_additions)
+        # v1.3.1 renames (tools/workflow_renames_v131.json)
+        expected_paths = {f"workflows/{v131_fixes.new_key(key.removeprefix('workflows/'))}" for key in expected_paths}
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
@@ -909,7 +970,8 @@ def main() -> int:
 
         if args.against_head:
             try:
-                head_workflow = git_head_json(path)
+                head_path = baseline_path(path)
+                head_workflow = git_head_json(head_path)
                 baseline_errors: list[str] = []
                 if head_workflow.get("version") != 0.4:
                     baseline_errors.append(f"{path}: root version is not 0.4")
@@ -925,7 +987,7 @@ def main() -> int:
                 baseline_set = set(baseline_errors)
                 errors.extend(error for error in path_errors if error not in baseline_set)
 
-                old_nodes, old_links = compare_head(path, workflow, errors)
+                old_nodes, old_links = compare_head(path, workflow, errors, head_path)
                 totals["old_nodes"] += old_nodes; totals["old_links"] += old_links
             except subprocess.CalledProcessError:
                 key = _path_key(path).removeprefix("workflows/")
@@ -1018,7 +1080,11 @@ def main() -> int:
     # decomposition): +4 files, +170 nodes, +72 notes, +111 links, +4 timers.
     # v1.3.0 adds the flat image prompt enhancer workflow (Qwen3.8 27B writer, optional image, two text views):
     # +1 file, +11 nodes, +2 notes, +4 links, +1 timer.
-    expected = {"files": 265, "graphs": 318, "nodes": 12061, "notes": 5472, "links": 8397, "timers": 246}
+    # v1.3.1 rebuilds the two finetunes filed as SDXL on their real architecture (Z-Image Turbo, FLUX.1 dev):
+    # +12 nodes, +5 notes, +3 links; the FLUX.1 Kontext character-keep negative gets its missing input link back and
+    # the Ideogram 4 idea -> JSON -> image writer now feeds the prompt builder (+2 links); the other repairs (the
+    # multi-checkpoint chain moves one link) and the renames keep every count.
+    expected = {"files": 265, "graphs": 318, "nodes": 11923, "notes": 5402, "links": 8264, "timers": 246}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

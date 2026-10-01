@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ComfyUI-Bundle Beispiele</title>
+  <meta name="description" content="Beispiele zu jedem Workflow des DaWasteh ComfyUI-Bundles: Screenshot, Eingaben, Ausgaben, Prompts, Einstellungen, Dauer und RAM/VRAM-Verbrauch.">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/gallery-data.js"></script>
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#app">Zum Inhalt springen</a>
+  <header class="topbar">
+    <a class="brand" href="#/">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22"><rect x="2" y="3" width="8" height="7" rx="2"/><rect x="14" y="3" width="8" height="7" rx="2"/><rect x="8" y="14" width="8" height="7" rx="2"/><path d="M6 10v2h6v2M18 10v2h-6" fill="none" stroke-width="1.6"/></svg>
+      <span>ComfyUI-Bundle <b>Beispiele</b></span>
+    </a>
+    <nav class="mainnav" aria-label="Hauptnavigation">
+      <a href="#/" data-nav="home">Workflows</a>
+      <a href="#/vergleich" data-nav="vergleich">Modellvergleich</a>
+      <a href="#/quants" data-nav="quants">Quant-Vergleich</a>
+      <a href="#/info" data-nav="info">Messung &amp; Hinweise</a>
+      <a href="https://github.com/DaWasteh/DaWastehs-ComfyUI-Bundle" rel="noopener">GitHub</a>
+    </nav>
+    <button class="icon-btn" id="theme-toggle" type="button" aria-label="Hell/Dunkel umschalten" title="Hell/Dunkel umschalten">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+    </button>
+  </header>
+  <main id="app" tabindex="-1">
+    <noscript><p class="notice">Diese Seite braucht JavaScript. Die Beispiele liegen auch als Markdown im Ordner <code>examples/</code> des Repositorys.</p></noscript>
+  </main>
+  <div id="lightbox" class="lightbox" hidden>
+    <div class="lb-bar">
+      <span class="lb-title"></span>
+      <span class="lb-hint">Mausrad: Zoom · Ziehen: verschieben · Doppelklick: 100 % / einpassen · Esc: schließen</span>
+      <a class="btn small lb-open" target="_blank" rel="noopener">Original öffnen</a>
+      <button class="icon-btn lb-close" type="button" aria-label="Schließen">✕</button>
+    </div>
+    <div class="lb-stage"><img alt=""></div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <footer class="footer">
+    <p>Alle Beispiele wurden lokal mit den Workflows dieses Repositorys erzeugt (Windows 11, AMD Radeon AI PRO R9700 32 GB + RX 9070 XT 16 GB, ROCm). Eingabebilder, -videos und -stimmen sind selbst generiert. <a href="#/info">Wie gemessen wurde</a>.</p>
+  </footer>
+</body>
+</html>

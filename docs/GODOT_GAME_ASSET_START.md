@@ -19,7 +19,7 @@ Modellvergleich, Checksums, Budgets und Lizenzhinweise:
 
 Workflow:
 
-`workflows/Game Development/FLUX2_Klein_4B-PS1-Texture-Concept.json`
+`workflows/Game Development/FLUX2_Klein_4B_BF16-Text-to-PS1-Texture.json`
 
 Bereits vorhandene Gewichte:
 
@@ -65,7 +65,7 @@ oder Aseprite auswählen beziehungsweise auf eine echte UV-Vorlage übertragen.
 
 Workflow:
 
-`workflows/Game Development/Hunyuan3D_v2_1-Low-Poly-Static-Mesh-for-Godot.json`
+`workflows/Game Development/Hunyuan3D_2_1_FP16-Image-to-LowPoly-Mesh-Godot.json`
 
 Bereits vorhandener Checkpoint:
 
@@ -167,7 +167,7 @@ und [MeshAnything V2 samt Lizenz](https://github.com/buaacyw/MeshAnythingV2).
 
 Workflow:
 
-`workflows/Game Development/Pixal3D_INT8-Buildings-and-Environment-PBR-for-Godot.json`
+`workflows/Game Development/Pixal3D_INT8-Image-to-PBR-Mesh-Buildings-Godot.json`
 
 Der Standard erzeugt bei 1024³ ein einzelnes PBR-GLB mit maximal 12.000
 Dreiecken, 1024px-Atlas, vier Pixeln UV-Padding und 45°-Crease-Normalen. Das ist
@@ -179,7 +179,7 @@ für eine komplette Straße. Ausgabe:
 
 Workflow:
 
-`workflows/Game Development/Pixal3D_INT8-Humanoids-and-Animals-PBR-for-Godot.json`
+`workflows/Game Development/Pixal3D_INT8-Image-to-PBR-Mesh-Characters-Godot.json`
 
 Der Standard erzeugt bei 1024³ ein einzelnes PBR-GLB mit maximal 24.000
 Dreiecken, 2048px-Atlas, acht Pixeln UV-Padding und weichen organischen

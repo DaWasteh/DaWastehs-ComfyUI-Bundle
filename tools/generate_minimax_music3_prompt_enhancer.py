@@ -22,7 +22,7 @@ TEMPLATE = ROOT / "assets" / "workflow-bases" / "Qwen3VL_8b_fp8_scaled-Krea2-Pro
 SKILL_DIR = ROOT / "prompt-libraries" / "MiniMax-Music3-Official-Skill"
 SKILL = SKILL_DIR / "SKILL.md"
 GENRE_ROUTER = SKILL_DIR / "genre-router.md"
-OUTPUT = PROMPT_DIR / "MiniMax_Music3-Official-Skill-Caption-Enhancer.json"
+OUTPUT = PROMPT_DIR / "LLM_Qwen3_5_4B_BF16-Idea-to-Music3-Caption.json"
 MODEL = r"Qwen\qwen3.5_4b_bf16.safetensors"
 
 
@@ -143,7 +143,7 @@ def build() -> dict:
         "output_contract": ["### Global Metadata", "### Vocal Details", "### Arrangement"],
     }
     refresh_refinement(workflow)
-    return migrate_workflow(workflow, "Prompt Enhancer/MiniMax_Music3-Official-Skill-Caption-Enhancer.json")
+    return migrate_workflow(workflow, "Prompt Enhancer/LLM_Qwen3_5_4B_BF16-Idea-to-Music3-Caption.json")
 
 
 def generate(destination: Path = OUTPUT) -> Path:

@@ -22,6 +22,7 @@ try:
     from tools.refine_workflows import refine_workflow
     from tools.rodent_layout import apply_rodent_layout
     from tools.build_h3_music_video_v122 import MODEL, VIDEO_VAE, AUDIO_VAE, TEXT_ENCODER, SAMPLING, _block_sparse
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:
     from build_workflows_v118 import Graph
     import migrate_workflows_v092 as migration
@@ -29,6 +30,7 @@ except ModuleNotFoundError:
     from refine_workflows import refine_workflow
     from rodent_layout import apply_rodent_layout
     from build_h3_music_video_v122 import MODEL, VIDEO_VAE, AUDIO_VAE, TEXT_ENCODER, SAMPLING, _block_sparse
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "tools/workflow_templates/v123"
@@ -47,13 +49,13 @@ PROMPT = ("integrated_multimodal_description: [Shot 1] Live-action, cinematic vi
 
 METHODS = {
     "ultimate": {
-        "path": "Video Upscaling/MiniMax_H3-Ultimate-Upscale-FastH3.json",
+        "path": "Video Upscaling/MiniMax_FastH3_INT8-Video-Ultimate-Upscale.json",
         "title": "MiniMax H3 Ultimate Upscale · FastH3 · PlagueKind",
         "blocks": (7.0, 2.0, 10.0), "align": H3_ALIGN,
         "sampling": {"scheduler": "linear_quadratic", "steps": 4, "denoise": 0.25},
     },
     "latent3d": {
-        "path": "Video Upscaling/MiniMax_H3-Latent-Upscaler-3D-FastH3.json",
+        "path": "Video Upscaling/MiniMax_FastH3_INT8-Video-Latent-Upscale.json",
         "title": "MiniMax H3 Latent Upscaler 3D · FastH3 · LBH-123-AI",
         "blocks": (4.0, 2.0, 4.45), "align": H3_ALIGN,
         "sampling": {"scheduler": "beta", "steps": 2, "denoise": 0.25},
@@ -240,7 +242,7 @@ def build(method: str, schemas: dict) -> dict:
 def finish(g: Graph, schemas: dict, method: str) -> dict:
     path = METHODS[method]["path"]
     install_run_timer(g.w)
-    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v123:" + path))
+    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v123:" + original_name(path)))
     g.w["revision"] = 0
     g.w["extra"][MARKER] = {"version": 1, "method": method, "source_manifest": "tools/workflow_templates/v123/models.json",
                             "video": "https://www.youtube.com/watch?v=fjWeg8so8y0",
@@ -253,7 +255,7 @@ def finish(g: Graph, schemas: dict, method: str) -> dict:
         install_central_device_control(g.w, path, h3_director=False, devices=DEVICES)
         g.w["extra"].setdefault("dawasteh_dual_gpu", {}).update({
             "version": 3, "scope": "collection-wide optional GPU placement", "family": "Video Upscaling",
-            "source": f"workflows/{path}", "server": "127.0.0.1:8188", "backend": "ROCm/HIP", "selector_count": inserted,
+            "source": f"workflows/{original_name(path)}", "server": "127.0.0.1:8188", "backend": "ROCm/HIP", "selector_count": inserted,
             "curated_split_default": False, "defaults": dict(DEVICES),
             "execution": "device placement only; the H3 text encoder is loaded and released inside the prompt node",
         })

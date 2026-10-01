@@ -255,6 +255,7 @@ def inference_workflow(object_info: dict[str, Any]) -> dict[str, Any]:
                 "German",
                 0.3,
                 0,
+                "fixed",
                 2048,
                 0.8,
                 20,
@@ -359,6 +360,7 @@ def live_avatar_workflow(object_info: dict[str, Any]) -> dict[str, Any]:
             "German",
             0.3,
             0,
+            "fixed",
             2048,
             0.8,
             20,
@@ -417,11 +419,11 @@ def main() -> int:
 
     generated = [
         (
-            REPO_ROOT / "workflows" / "LoRA Generation" / "Qwen3-TTS_0.6B-Voice-LoRA-Training.json",
+            REPO_ROOT / "workflows" / "LoRA Generation" / "Qwen3_TTS_0_6B_Base-Recordings-to-Voice-LoRA.json",
             training_workflow(object_info),
         ),
         (
-            REPO_ROOT / "workflows" / "Voice Design" / "Qwen3-TTS_LoRA-Low-Latency-Live-Voice.json",
+            REPO_ROOT / "workflows" / "Voice Design" / "Qwen3_TTS_0_6B_Base+LoRA-Text-to-Speech-Live.json",
             inference_workflow(object_info),
         ),
         (

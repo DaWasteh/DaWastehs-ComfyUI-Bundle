@@ -6,10 +6,10 @@ Die Ergebnisse haben **Originalgröße** und sind deckungsgleich mit der Quelle;
 
 | Workflow | Ergebnis unter `output/` |
 |---|---|
-| `SDPose-Pose-from-Image` | `Pose/Pose_*.png` (Skelett auf Schwarz, OpenPose-Farben) + `Pose/Pose_Keypoints_*.json` (OpenPose-JSON) |
-| `SDPose-Pose-from-Video` | `Pose/Pose_Video_*.mp4` |
-| `DepthAnything3-Depth-from-Image` | `Depth/Depth_*.png` (8 Bit, hell = nah) + `Depth/Depth16_*_.png` (16 Bit, voller Bereich) |
-| `DepthAnything3-Depth-from-Video` | `Depth/Depth_Video_*.mp4` (hell = nah) |
+| `SDPose_WholeBody_FP16-Image-to-Pose` | `Pose/Pose_*.png` (Skelett auf Schwarz, OpenPose-Farben) + `Pose/Pose_Keypoints_*.json` (OpenPose-JSON) |
+| `SDPose_WholeBody_FP16-Video-to-Pose-Video` | `Pose/Pose_Video_*.mp4` |
+| `DepthAnything3_Large_FP32-Image-to-Depth` | `Depth/Depth_*.png` (8 Bit, hell = nah) + `Depth/Depth16_*_.png` (16 Bit, voller Bereich) |
+| `DepthAnything3_Large_FP32-Video-to-Depth-Video` | `Depth/Depth_Video_*.mp4` (hell = nah) |
 
 ## Modelle (gepinnt in `tools/workflow_templates/v128/models.json`)
 

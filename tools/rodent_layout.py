@@ -431,3 +431,19 @@ def apply_rodent_layout(workflow: dict[str, Any], workflow_key: str = "") -> int
             refinement.update({"layout": "rodent-v1", "x_scale": 1.0, "y_scale": 1.0, "gap": NODE_GAP_Y})
         count += 1
     return count
+
+
+def refresh_topology_hashes(workflow: dict[str, Any]) -> int:
+    """Re-pin ``topology_sha256`` of every RODENT-marked graph after an in-place value repair.
+
+    For repairs that change widget values, links or node inputs without moving nodes (v1.3.1 repair tools). The
+    layout itself is left alone; returns the number of updated markers."""
+    count = 0
+    for graph in graph_children(workflow):
+        marker = (graph.get("extra") or {}).get(RODENT_KEY)
+        if isinstance(marker, dict) and "topology_sha256" in marker:
+            digest = _topology_hash(graph)
+            if marker["topology_sha256"] != digest:
+                marker["topology_sha256"] = digest
+                count += 1
+    return count

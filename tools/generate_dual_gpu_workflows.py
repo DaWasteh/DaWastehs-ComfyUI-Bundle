@@ -24,8 +24,10 @@ from typing import Any
 
 try:
     from tools.refine_workflows import NOTE_PROPERTY, REFINEMENT_KEY, refine_workflow
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:  # Direct execution: python tools/generate_dual_gpu_workflows.py
     from refine_workflows import NOTE_PROPERTY, REFINEMENT_KEY, refine_workflow
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / "workflows"
@@ -57,30 +59,30 @@ class Family:
 
 
 FAMILIES = (
-    Family("SD 1.5", "Text to Image/SD15_v1-5-pruned-emaonly-Text-to-Image.json", "SD15-DualGPU-Text-to-Image.json"),
-    Family("SD 2.1", "Text to Image/SD21_wd-1-5-beta2-unclip-Text-to-Image.json", "SD21-DualGPU-Text-to-Image.json"),
-    Family("SDXL", "Text to Image/SDXL_RealVisXL_V4-Text-to-Image.json", "SDXL-DualGPU-Text-to-Image.json"),
-    Family("Anima", "Text to Image/Anima_base_v1-Text-to-Image.json", "Anima-DualGPU-Text-to-Image.json"),
-    Family("Boogu", "Text to Image/Boogu_image_base-Text-to-Image.json", "Boogu-DualGPU-Text-to-Image.json"),
-    Family("FLUX.1", "Text to Image/FLUX1_dev_fp8-Text-to-Image.json", "FLUX1-DualGPU-Text-to-Image.json"),
-    Family("FLUX.2", "Text to Image/FLUX2_dev_fp8mixed-Text-to-Image.json", "FLUX2-DualGPU-Text-to-Image.json"),
-    Family("FLUX.2 Klein", "Text to Image/FLUX2_Klein_4b-Text-to-Image.json", "FLUX2-Klein-DualGPU-Text-to-Image.json"),
-    Family("Ideogram 4", "Text to Image/Ideogram4-Text-to-Image.json", "Ideogram4-DualGPU-Text-to-Image.json"),
-    Family("Krea 2", "Text to Image/Krea2_raw-Text-to-Image.json", "Krea2-DualGPU-Text-to-Image.json"),
-    Family("LongCat Image", "Text to Image/LongCat_image-Text-to-Image.json", "LongCat-Image-DualGPU-Text-to-Image.json"),
-    Family("Z-Image", "Text to Image/ZImage_turbo-Text-to-Image.json", "ZImage-DualGPU-Text-to-Image.json"),
-    Family("Qwen Image Edit", "Image Editing/Qwen_Image_Edit_2509-Image-Edit.json", "Qwen-Image-Edit-DualGPU.json"),
-    Family("SCAIL 2", "Character Animation/SCAIL2-Character-Animation.json", "SCAIL2-DualGPU-Character-Animation.json"),
-    Family("Bernini-R", "Image Editing/Bernini_R-Image-Edit.json", "Bernini-R-DualGPU-Image-Edit.json"),
-    Family("WAN 2.2", "Text to Video/WAN22_14B_fp8_lightx2v-Text-to-Video.json", "WAN22-DualGPU-Text-to-Video.json"),
-    Family("LTX 2.3", "Text to Video/LTX23_dev_mxfp8-Text-to-Video.json", "LTX23-DualGPU-Text-to-Video.json"),
+    Family("SD 1.5", "Text to Image/SD15_Base_FP16-Text-to-Image.json", "SD15-DualGPU-Text-to-Image.json"),
+    Family("SD 2.1", "Text to Image/SD21_WaifuDiffusion_1_5_Beta2_FP16-Text-to-Image.json", "SD21-DualGPU-Text-to-Image.json"),
+    Family("SDXL", "Text to Image/SDXL_RealVisXL_V4_FP16-Text-to-Image.json", "SDXL-DualGPU-Text-to-Image.json"),
+    Family("Anima", "Text to Image/Anima_Base_V1_BF16-Text-to-Image.json", "Anima-DualGPU-Text-to-Image.json"),
+    Family("Boogu", "Text to Image/Boogu_Image_Base_BF16-Text-to-Image.json", "Boogu-DualGPU-Text-to-Image.json"),
+    Family("FLUX.1", "Text to Image/FLUX1_Dev_FP8-Text-to-Image.json", "FLUX1-DualGPU-Text-to-Image.json"),
+    Family("FLUX.2", "Text to Image/FLUX2_Dev_FP8mixed-Text-to-Image.json", "FLUX2-DualGPU-Text-to-Image.json"),
+    Family("FLUX.2 Klein", "Text to Image/FLUX2_Klein_4B_BF16-Text-to-Image.json", "FLUX2-Klein-DualGPU-Text-to-Image.json"),
+    Family("Ideogram 4", "Text to Image/Ideogram4_FP8-Text-to-Image.json", "Ideogram4-DualGPU-Text-to-Image.json"),
+    Family("Krea 2", "Text to Image/Krea2_Raw_BF16-Text-to-Image.json", "Krea2-DualGPU-Text-to-Image.json"),
+    Family("LongCat Image", "Text to Image/LongCat_Image_BF16-Text-to-Image.json", "LongCat-Image-DualGPU-Text-to-Image.json"),
+    Family("Z-Image", "Text to Image/ZImage_Turbo_BF16-Text-to-Image.json", "ZImage-DualGPU-Text-to-Image.json"),
+    Family("Qwen Image Edit", "Image Editing/Qwen_Image_Edit_2509_FP8-Image-Edit.json", "Qwen-Image-Edit-DualGPU.json"),
+    Family("SCAIL 2", "Character Animation/WAN21_SCAIL2_14B_FP8-Image+Video-to-Video-Character-Animation.json", "SCAIL2-DualGPU-Character-Animation.json"),
+    Family("Bernini-R", "Image Editing/Bernini_R_14B_FP8-Image-Edit.json", "Bernini-R-DualGPU-Image-Edit.json"),
+    Family("WAN 2.2", "Text to Video/WAN22_14B_FP8+LightX2V-Text-to-Video.json", "WAN22-DualGPU-Text-to-Video.json"),
+    Family("LTX 2.3", "Text to Video/LTX23_22B_Dev_MXFP8-Text-to-Video.json", "LTX23-DualGPU-Text-to-Video.json"),
     Family("LTX 2.5 Text to Video", "", "LTX25-DualGPU-Text-to-Video.json", template="video_ltx2_5_t2v.json"),
     Family("LTX 2.5 Image to Video", "", "LTX25-DualGPU-Image-to-Video.json", template="video_ltx2_5_i2v.json"),
     Family("LTX 2.5 FLF2V", "", "LTX25-DualGPU-FLF2V.json", template="video_ltx2_5_flf2v.json"),
     Family("Wan Animate 2 Motion Transfer", "", "Wan-Animate-2-DualGPU-Motion-Transfer.json", template="video_wan_animate2.json"),
-    Family("Kandinsky 5", "Text+Image to Video/Kandinsky5_Lite-Text+Image-to-Video.json", "Kandinsky5-DualGPU-Text+Image-to-Video.json"),
-    Family("ACE-Step 1.5", "Music Generation/ACE-Step1_5_Turbo_4B-Music-Generation.json", "ACE-Step1_5-DualGPU-Music-Generation.json"),
-    Family("Stable Audio 3", "Music Generation/StableAudio3_Medium-Audio-Generation.json", "StableAudio3-DualGPU-Audio-Generation.json"),
+    Family("Kandinsky 5", "Text+Image to Video/Kandinsky5_Lite_BF16-Text+Image-to-Video.json", "Kandinsky5-DualGPU-Text+Image-to-Video.json"),
+    Family("ACE-Step 1.5", "Music Generation/ACE_Step1_5_Turbo_BF16-Tags+Lyrics-to-Song.json", "ACE-Step1_5-DualGPU-Music-Generation.json"),
+    Family("Stable Audio 3", "Music Generation/StableAudio3_Medium_FP32+Qwen3_5_2B-Text-to-Audio.json", "StableAudio3-DualGPU-Audio-Generation.json"),
     Family(
         "MiniMax Music 3",
         "",
@@ -94,7 +96,7 @@ FAMILIES = (
     ),
     Family(
         "MiniMax H3",
-        "Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
+        "Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json",
         "MiniMax-H3-DualGPU-Complete-Song-Music-Video-One-Click.json",
         h3_director=True,
     ),
@@ -405,7 +407,8 @@ def _prepare_subgraph_control(
         else:
             index = len(graph.setdefault("inputs", []))
             item = {
-                "id": str(uuid.uuid5(uuid.NAMESPACE_URL, f"{workflow_key}:{graph.get('id')}:{name}")),
+                # v1.3.1 renamed the files; the subgraph input ids stay derived from the historical name
+                "id": str(uuid.uuid5(uuid.NAMESPACE_URL, f"{original_name(workflow_key)}:{graph.get('id')}:{name}")),
                 "name": name,
                 "type": "COMBO",
                 "linkIds": [],
@@ -432,16 +435,30 @@ def _prepare_subgraph_control(
     return source_slots
 
 
+def _append_instance_device_values(instance: dict[str, Any], values: list[str]) -> None:
+    """Keep the device values positional with the instance's promoted widgets.
+
+    Instances that promote inner widgets through ``properties.proxyWidgets`` keep those values in the inner nodes
+    and usually carry no ``widgets_values`` at all. Appending the three device values there made the frontend put
+    "gpu:0" into the first three proxied widgets (prompt, width, duration ...), found in v1.3.1.
+    """
+    if not instance.get("widgets_values") and (instance.get("properties") or {}).get("proxyWidgets"):
+        return
+    instance.setdefault("widgets_values", []).extend(values)
+
+
 def _wire_subgraph_instance(
     graph: dict[str, Any], instance: dict[str, Any], source_id: Any, source_slots: dict[str, int],
     source_link_lists: dict[str, list[int]], devices: dict[str, str] | None = None,
 ) -> None:
+    values = []
     for role, (_, default, _) in CONTROL_ROLES.items():
         _append_control_link(
             graph, source_id, source_slots[role], source_link_lists[role], instance, f"daw_{role}",
         )
         kind = role.removesuffix("_device").upper()
-        instance.setdefault("widgets_values", []).append((devices or {}).get(kind, default))
+        values.append((devices or {}).get(kind, default))
+    _append_instance_device_values(instance, values)
     if isinstance(instance.get("size"), list) and len(instance["size"]) >= 2:
         instance["size"][1] = float(instance["size"][1]) + 60.0
 
@@ -527,10 +544,12 @@ def install_central_device_control(
             continue
         _prepare_subgraph_control(child, workflow_key, devices)
         for instance in [node for node in root.get("nodes", []) if node.get("type") == child.get("id")]:
+            values = []
             for role, (_, default, _) in CONTROL_ROLES.items():
                 _append_control_link(root, node_id, source_slots[role], source_link_lists[role], instance, f"daw_{role}")
                 kind = role.removesuffix("_device").upper()
-                instance.setdefault("widgets_values", []).append((devices or {}).get(kind, default))
+                values.append((devices or {}).get(kind, default))
+            _append_instance_device_values(instance, values)
             if isinstance(instance.get("size"), list) and len(instance["size"]) >= 2:
                 instance["size"][1] = float(instance["size"][1]) + 60.0
 
@@ -675,7 +694,7 @@ def _device_label(device: str) -> str:
 def _dual_gpu_metadata(family: Family) -> dict[str, Any]:
     source = (
         f"comfyui-workflow-templates-json:{family.template}"
-        if family.template else f"workflows/{family.source}"
+        if family.template else f"workflows/{original_name(family.source)}"
     )
     metadata = {
         "version": 2,

@@ -25,6 +25,7 @@ from tools.consolidate_ace_autosongwriters_v093 import (
 from tools.upgrade_v095 import addition_sources as v095_addition_sources
 from tools.consolidate_workflows_v113 import ADDED_PATHS as V113_ADDED_PATHS, REMOVED_PATHS as V113_REMOVED_PATHS
 from tools.validate_workflows import git_baseline_workflow_paths, git_head_json
+from tools.workflow_names_v131 import new_key
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / "workflows"
@@ -63,14 +64,24 @@ class DualGPUWorkflowTests(unittest.TestCase):
                 self.assertEqual(workflow["extra"][MIGRATION_KEY]["version"], MIGRATION_VERSION)
                 self.assertEqual(workflow["extra"]["dawasteh_dual_gpu"]["version"], 3)
 
+    # v1.3.1: curated splits that no longer fit (measured in the example gallery runs)
+    V131_RESPLIT = {
+        "Text to Video/LTX23_22B_Dev_MXFP8-Text-to-Video.json": ALL_R9700,
+        "Text+Image to Video/Kandinsky5_Lite_BF16-Text+Image-to-Video.json": {"MODEL": "gpu:0", "CLIP": "gpu:1",
+                                                                               "VAE": "gpu:0"},
+    }
+
     def test_defaults_are_r9700_unless_a_curated_split_is_retained(self):
-        counts = {"all_r9700": 0, "curated_split": 0}
+        counts = {"all_r9700": 0, "curated_split": 0, "v131_resplit": 0}
         for path in paths():
             key = path.relative_to(WORKFLOWS).as_posix()
             workflow = json.loads(path.read_text(encoding="utf-8"))
             control = next(node for node in workflow["nodes"] if node.get("type") == DEVICE_CONTROL_TYPE)
             defaults = workflow["extra"]["dawasteh_dual_gpu"]["defaults"]
-            if key in CURATED_PROFILES:
+            if workflow["extra"]["dawasteh_dual_gpu"].get("v131_resplit"):
+                expected = self.V131_RESPLIT[key]
+                counts["v131_resplit"] += 1
+            elif key in CURATED_PROFILES:
                 expected = CURATED_PROFILES[key][1]
                 counts["curated_split"] += 1
             else:
@@ -79,8 +90,9 @@ class DualGPUWorkflowTests(unittest.TestCase):
             self.assertEqual(defaults, expected, key)
             self.assertEqual(control["widgets_values"], [expected["MODEL"], expected["CLIP"], expected["VAE"]], key)
         # v1.2.3 adds three R9700 defaults, v1.2.4 and v1.2.6 one more each, v1.2.8 five, v1.2.9 four, v1.3.0 one;
-        # curated assignments stay intact.
-        self.assertEqual(counts, {"all_r9700": 234, "curated_split": 31})
+        # curated assignments stay intact; v1.3.1 moves LTX-2.3 dev MXFP8 back to the R9700 (its 25 GB text encoder
+        # does not fit the 16 GB card) and the Kandinsky 5 VAE next to its model (the text encoder fills the 16 GB card).
+        self.assertEqual(counts, {"all_r9700": 234, "curated_split": 29, "v131_resplit": 2})
 
     def test_every_selector_is_driven_by_the_root_control_or_subgraph_interface(self):
         selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
@@ -124,7 +136,7 @@ class DualGPUWorkflowTests(unittest.TestCase):
             self.assertFalse((WORKFLOWS / key).exists(), key)
         for addition in ADDITIONS:
             self.assertTrue((WORKFLOWS / addition.path).is_file(), addition.path)
-        self.assertTrue((WORKFLOWS / "Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json").is_file())
+        self.assertTrue((WORKFLOWS / "Reference to Video/MiniMax_H3_FL2VA_INT8-First+Last-Frame-to-Video.json").is_file())
 
     def test_migration_is_idempotent(self):
         for path in paths():
@@ -133,7 +145,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
             self.assertEqual(migrate_workflow(workflow, key), workflow, key)
 
     def test_head_lookup_normalizes_absolute_paths(self):
-        path = (WORKFLOWS / "Text to Image/SD15_v1-5-pruned-emaonly-Text-to-Image.json").resolve()
+        # a workflow that kept its name in v1.3.1, so HEAD has it before and after the rename commit
+        path = (WORKFLOWS / "Image Utilities/Image-Blend.json").resolve()
         head = git_head_json(path)
         self.assertEqual(head["version"], 0.4)
         self.assertEqual(head["extra"][MIGRATION_KEY]["release"], "v0.9.2")
@@ -171,6 +184,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
         expected.update(f"workflows/{key}" for key in build_v129_mira())
         from tools.build_prompt_enhancer_v130 import build_all as build_v130
         expected.update(f"workflows/{key}" for key in build_v130())
+        # v1.3.1 renames (tools/workflow_renames_v131.json); the baseline may still carry the old names
+        expected = {f"workflows/{new_key(path.removeprefix('workflows/'))}" for path in expected}
         actual = {path.relative_to(ROOT).as_posix() for path in paths()}
         self.assertEqual(actual, expected)
 

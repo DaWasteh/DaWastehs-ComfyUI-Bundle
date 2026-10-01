@@ -30,16 +30,16 @@ MARKER_KEY = "dawasteh_rdna4_v111"
 MARKER_VERSION = 1
 
 WAN_I2V = {
-    "Text+Image to Video/WAN22_i2v_14B_fp8_lightx2v-Text+Image-to-Video.json",
-    "Text+Image to Video/WAN22_i2v_14B_Q8_GGUF_lightx2v-Text+Image-to-Video.json",
-    "Text+Image to Video/WAN22_bernini_i2v-Text+Image-to-Video.json",
+    "Text+Image to Video/WAN22_I2V_14B_FP8+LightX2V-Text+Image-to-Video.json",
+    "Text+Image to Video/WAN22_I2V_14B_Q8_0_LightX2V-Text+Image-to-Video.json",
+    "Text+Image to Video/Bernini_R_14B_FP8-Text+Image-to-Video.json",
 }
 TRAIN = {
-    "LoRA Generation/Boogu_Image_Base-LoRA-Training.json",
-    "LoRA Generation/FLUX1_Dev-LoRA-Training.json",
-    "LoRA Generation/FLUX2_Klein_4B_Base-LoRA-Training.json",
-    "LoRA Generation/SDXL-LoRA-Training.json",
-    "LoRA Generation/ZImage_Base-LoRA-Training.json",
+    "LoRA Generation/Boogu_Image_Base_BF16-Images-to-LoRA.json",
+    "LoRA Generation/FLUX1_Dev_FP8-Images-to-LoRA.json",
+    "LoRA Generation/FLUX2_Klein_Base_4B_BF16-Images-to-LoRA.json",
+    "LoRA Generation/SDXL_RealVisXL_V4_FP16-Images-to-LoRA.json",
+    "LoRA Generation/ZImage_Base_BF16-Images-to-LoRA.json",
 }
 E1_CATEGORIES = {
     "Audio to Image", "Batch Processing", "Character & Consistency", "Image Editing", "Image Fusion",
@@ -48,29 +48,29 @@ E1_CATEGORIES = {
 }  # "Prompt Enhancer" is generator-managed (tools/generate_*_enhancer*.py) and stays untouched
 # integrity-guarded by tools/consolidate_ace_autosongwriters_v093.py; left untouched
 E1_EXCLUDE = {
-    "Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-Genre-Selector.json",
-    "Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-Genre-Selector.json",
+    "Music Generation/ACE_Step1_5_XL_SFT_BF16+Gemma4_E4B-Idea-to-Lyrics-to-Song.json",
+    "Music Generation/ACE_Step1_5_XL_SFT_BF16+Qwen3_5_4B-Idea-to-Lyrics-to-Song.json",
 }
 E2_IMAGE = {
-    "Image Editing/Bernini_R-Image-Edit.json",
-    "Image Editing/Qwen_Image_Edit_2509-Image-Edit.json",
-    "Text to Image/Anima_base_v1-Text-to-Image.json",
-    "Text to Image/Boogu_image_base-Text-to-Image.json",
-    "Text to Image/FLUX1_dev_fp8-Text-to-Image.json",
-    "Text to Image/FLUX2_Klein_4b-Text-to-Image.json",
-    "Text to Image/FLUX2_dev_fp8mixed-Text-to-Image.json",
-    "Text to Image/Ideogram4-Text-to-Image.json",
-    "Text to Image/Krea2_raw-Text-to-Image.json",
-    "Text to Image/LongCat_image-Text-to-Image.json",
-    "Text to Image/SD15_v1-5-pruned-emaonly-Text-to-Image.json",
-    "Text to Image/SD21_wd-1-5-beta2-unclip-Text-to-Image.json",
-    "Text to Image/SDXL_RealVisXL_V4-Text-to-Image.json",
-    "Text to Image/ZImage_turbo-Text-to-Image.json",
+    "Image Editing/Bernini_R_14B_FP8-Image-Edit.json",
+    "Image Editing/Qwen_Image_Edit_2509_FP8-Image-Edit.json",
+    "Text to Image/Anima_Base_V1_BF16-Text-to-Image.json",
+    "Text to Image/Boogu_Image_Base_BF16-Text-to-Image.json",
+    "Text to Image/FLUX1_Dev_FP8-Text-to-Image.json",
+    "Text to Image/FLUX2_Klein_4B_BF16-Text-to-Image.json",
+    "Text to Image/FLUX2_Dev_FP8mixed-Text-to-Image.json",
+    "Text to Image/Ideogram4_FP8-Text-to-Image.json",
+    "Text to Image/Krea2_Raw_BF16-Text-to-Image.json",
+    "Text to Image/LongCat_Image_BF16-Text-to-Image.json",
+    "Text to Image/SD15_Base_FP16-Text-to-Image.json",
+    "Text to Image/SD21_WaifuDiffusion_1_5_Beta2_FP16-Text-to-Image.json",
+    "Text to Image/SDXL_RealVisXL_V4_FP16-Text-to-Image.json",
+    "Text to Image/ZImage_Turbo_BF16-Text-to-Image.json",
 }
 E2B_LTX = {
-    "Text to Video/LTX25_INT8_ConvRot-Text-to-Video.json",
-    "Text+Image to Video/LTX25_INT8_ConvRot-Image-to-Video.json",
-    "Text+Image to Video/LTX25_INT8_ConvRot-First+Last-Frame-to-Video.json",
+    "Text to Video/LTX25_22B_INT8-Text-to-Video.json",
+    "Text+Image to Video/LTX25_22B_INT8-Text+Image-to-Video.json",
+    "Text+Image to Video/LTX25_22B_INT8-First+Last-Frame-to-Video.json",
 }
 
 

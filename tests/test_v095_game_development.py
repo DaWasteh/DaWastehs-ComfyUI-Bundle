@@ -13,6 +13,7 @@ from tools.upgrade_v095 import (
     UPGRADE_KEY,
     UPGRADE_VERSION,
 )
+from tools.workflow_names_v131 import old_key
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,7 +34,7 @@ class V095GameDevelopmentTests(unittest.TestCase):
             with self.subTest(target=target):
                 previous = json.loads(
                     subprocess.check_output(
-                        ["git", "show", f"v0.9.4:workflows/{source}"],
+                        ["git", "show", f"v0.9.4:workflows/{old_key(source)}"],  # v1.3.1 renamed the files
                         cwd=ROOT,
                         text=True,
                         encoding="utf-8",

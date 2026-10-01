@@ -1,7 +1,7 @@
 # Song → Musikvideo · v1.2.7: Upscale nach jeder Freigabe (MV 5c), Favoriten 960×544 und 1280×704
 
 v1.2.7 erweitert den Workflow
-`workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` um einen optionalen Upscale.
+`workflows/Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json` um einen optionalen Upscale.
 Er sitzt direkt hinter der Szenen-Prüfung (MV 5b) und skaliert jede **freigegebene** Szene hoch, bevor die nächste
 gerendert und zur Prüfung vorgelegt wird. Wählbar sind die vier Methoden aus `workflows/Video Upscaling/`.
 Am Ende legt MV 6 den Originalfilm, den hochskalierten Film und ein Vergleichsvideo ab. Planung, Prompts, Extend und

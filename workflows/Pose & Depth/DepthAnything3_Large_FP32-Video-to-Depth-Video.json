@@ -1,0 +1,1319 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadDA3Model",
+      "title": "DEPTH ANYTHING 3 · Mono Large",
+      "pos": [
+        880.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "model_name"
+          }
+        },
+        {
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "weight_dtype"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "DA3_MODEL",
+          "type": "DA3_MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadDA3Model"
+      },
+      "widgets_values": [
+        "DepthAnything3\\depth_anything_3_mono_large.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "VHS_BatchManager",
+      "title": "META-BATCH · 64 Frames je Durchgang · beliebige Videolänge",
+      "pos": [
+        880.0,
+        380.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "frames_per_batch",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "frames_per_batch"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "meta_batch",
+          "type": "VHS_BatchManager",
+          "links": [
+            1,
+            8,
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_BatchManager"
+      },
+      "widgets_values": {
+        "frames_per_batch": 64,
+        "count": 0
+      }
+    },
+    {
+      "id": 3,
+      "type": "DaWLoadVideoBatches",
+      "title": "VIDEO · Szene, deren Tiefe geschätzt wird · Originalgröße und -fps",
+      "pos": [
+        880.0,
+        680.0
+      ],
+      "size": [
+        480,
+        700
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "video"
+          }
+        },
+        {
+          "name": "skip_first_frames",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "skip_first_frames"
+          }
+        },
+        {
+          "name": "frame_load_cap",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "frame_load_cap"
+          }
+        },
+        {
+          "name": "meta_batch",
+          "type": "VHS_BatchManager",
+          "link": 1,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "frame_count",
+          "type": "INT",
+          "links": []
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            7,
+            12
+          ]
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "links": [
+            6,
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWLoadVideoBatches"
+      },
+      "widgets_values": [
+        "empty_room_assembly.mp4",
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "type": "DA3Inference",
+      "title": "DA3 · Tiefe je Frame · kurze Kante 504 px",
+      "pos": [
+        1520.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "da3_model",
+          "type": "DA3_MODEL",
+          "link": 2
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 3
+        },
+        {
+          "name": "resolution",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "resolution"
+          }
+        },
+        {
+          "name": "resize_method",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "resize_method"
+          }
+        },
+        {
+          "name": "mode",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "link": null,
+          "widget": {
+            "name": "mode"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "da3_geometry",
+          "type": "DA3_GEOMETRY",
+          "links": [
+            4,
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DA3Inference"
+      },
+      "widgets_values": [
+        504,
+        "lower_bound_resize",
+        "mono"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "DA3Render",
+      "title": "TIEFENKARTE · Graustufen · hell = nah",
+      "pos": [
+        2100.0,
+        80.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "da3_geometry",
+          "type": "DA3_GEOMETRY",
+          "link": 4
+        },
+        {
+          "name": "output",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "link": null,
+          "widget": {
+            "name": "output"
+          }
+        },
+        {
+          "name": "output.normalization",
+          "type": "COMBO",
+          "widget": {
+            "name": "output.normalization"
+          },
+          "link": null
+        },
+        {
+          "name": "output.apply_sky_clip",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "output.apply_sky_clip"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DA3Render"
+      },
+      "widgets_values": [
+        "depth",
+        "v2_style",
+        false
+      ]
+    },
+    {
+      "id": 6,
+      "type": "VHS_VideoCombine",
+      "title": "SPEICHERN · Tiefen-Video · MP4 mit Originalton und -fps",
+      "pos": [
+        2100.0,
+        680.0
+      ],
+      "size": [
+        520,
+        760
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 5
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "link": 6,
+          "widget": {
+            "name": "frame_rate"
+          }
+        },
+        {
+          "name": "loop_count",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "loop_count"
+          }
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "filename_prefix"
+          }
+        },
+        {
+          "name": "format",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "format"
+          }
+        },
+        {
+          "name": "pingpong",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "pingpong"
+          }
+        },
+        {
+          "name": "save_output",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "save_output"
+          }
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 7,
+          "shape": 7
+        },
+        {
+          "name": "meta_batch",
+          "type": "VHS_BatchManager",
+          "link": 8,
+          "shape": 7
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "pix_fmt",
+          "type": [
+            "yuv420p",
+            "yuv420p10le"
+          ],
+          "widget": {
+            "name": "pix_fmt"
+          },
+          "link": null
+        },
+        {
+          "name": "crf",
+          "type": "INT",
+          "widget": {
+            "name": "crf"
+          },
+          "link": null
+        },
+        {
+          "name": "save_metadata",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_metadata"
+          },
+          "link": null
+        },
+        {
+          "name": "trim_to_audio",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "trim_to_audio"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_VideoCombine",
+        "cnr_id": "comfyui-videohelpersuite"
+      },
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "Depth/Depth_Video",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 17,
+        "save_metadata": true,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": true,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {}
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "DA3Render",
+      "title": "KONTROLLE · Tiefe eingefärbt (Turbo)",
+      "pos": [
+        2100.0,
+        380.0
+      ],
+      "size": [
+        420,
+        260
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "da3_geometry",
+          "type": "DA3_GEOMETRY",
+          "link": 9
+        },
+        {
+          "name": "output",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "link": null,
+          "widget": {
+            "name": "output"
+          }
+        },
+        {
+          "name": "output.normalization",
+          "type": "COMBO",
+          "widget": {
+            "name": "output.normalization"
+          },
+          "link": null
+        },
+        {
+          "name": "output.apply_sky_clip",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "output.apply_sky_clip"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DA3Render"
+      },
+      "widgets_values": [
+        "depth_colored",
+        "v2_style",
+        false
+      ]
+    },
+    {
+      "id": 8,
+      "type": "VHS_VideoCombine",
+      "title": "KONTROLLE · Tiefe eingefärbt (nur Vorschau)",
+      "pos": [
+        2100.0,
+        1480.0
+      ],
+      "size": [
+        520,
+        760
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 10
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "link": 11,
+          "widget": {
+            "name": "frame_rate"
+          }
+        },
+        {
+          "name": "loop_count",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "loop_count"
+          }
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "filename_prefix"
+          }
+        },
+        {
+          "name": "format",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "format"
+          }
+        },
+        {
+          "name": "pingpong",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "pingpong"
+          }
+        },
+        {
+          "name": "save_output",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "save_output"
+          }
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 12,
+          "shape": 7
+        },
+        {
+          "name": "meta_batch",
+          "type": "VHS_BatchManager",
+          "link": 13,
+          "shape": 7
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "pix_fmt",
+          "type": [
+            "yuv420p",
+            "yuv420p10le"
+          ],
+          "widget": {
+            "name": "pix_fmt"
+          },
+          "link": null
+        },
+        {
+          "name": "crf",
+          "type": "INT",
+          "widget": {
+            "name": "crf"
+          },
+          "link": null
+        },
+        {
+          "name": "save_metadata",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_metadata"
+          },
+          "link": null
+        },
+        {
+          "name": "trim_to_audio",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "trim_to_audio"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_VideoCombine",
+        "cnr_id": "comfyui-videohelpersuite"
+      },
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "Depth/Depth_Color",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 17,
+        "save_metadata": true,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": false,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {}
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "MarkdownNote",
+      "title": "START HIER · Tiefe aus Video · Depth Anything 3 · v1.2.8",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# Tiefe aus einem Video · Depth Anything 3 Mono Large\n\n1. **VIDEO** wählen (VHS Load Video; Originalgröße und Original-fps bleiben).\n2. **Queue**. Der Workflow läuft in **Meta-Batches** zu je 64 Frames und stellt sich selbst neu in die Warteschlange,\n   bis das Video fertig ist. Dadurch bleibt der RAM bei jeder Videolänge klein.\n3. Ergebnis: **output/Depth/Depth_Video_*.mp4** (hell = nah) mit Originalton und Original-fps.\n   Die eingefärbte KONTROLLE ist nur eine Vorschau (temp).\n\n**Auflösung:** kurze Kante 504 px (Vielfache von 14), das Ergebnis wird auf die Videogröße skaliert.\n**Dauer (R9700):** 5-s-Clip 720p ca. 25 s, 60 s 1080p ca. 7,5 min; der RAM bleibt dabei konstant.\n**Nur einen Teil verarbeiten:** am Video-Knoten `skip_first_frames` und `frame_load_cap` setzen.\nDie Tiefe ist **relativ** und wird je Frame normalisiert. Bedienung und Messwerte: `docs/POSE_DEPTH_V128.md`.\n"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "MarkdownNote",
+      "title": "DOWNLOADS · Modelle / Zielordner",
+      "pos": [
+        40.0,
+        740.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# Benötigte Dateien\n\n- [depth_anything_3_mono_large.safetensors](https://huggingface.co/Comfy-Org/Depth-Anything-3/resolve/1aaeea516f22fb2f4c7fae761c8ed470c6cf9f93/geometry_estimation/depth_anything_3_mono_large.safetensors) → `ComfyUI/models/geometry_estimation/DepthAnything3/depth_anything_3_mono_large.safetensors` (1.24 GiB)\n\n- [empty_room_assembly.mp4](https://raw.githubusercontent.com/Comfy-Org/workflow_templates/25ff90a51cc8f6ee56bd78ec3b11f294925fb36d/input/empty_room_assembly.mp4) → `ComfyUI/input/empty_room_assembly.mp4` (Beispiel)\n\nDepth Anything 3 (ByteDance Seed) als Comfy-Org-Umpackung, läuft mit den Core-Nodes von ComfyUI.\nKein Cloud-API-Aufruf.\n"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        1400.0
+      ],
+      "size": [
+        226,
+        136
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 12,
+      "type": "MarkdownNote",
+      "pos": [
+        2780.0,
+        80.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · DEPTH ANYTHING 3 · Mono Large · Node 1",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 1,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · DEPTH ANYTHING 3 · Mono Large · Node 1\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `LoadDA3Model` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `model_name` = `DepthAnything3\\depth_anything_3_mono_large.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `model_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `DA3_MODEL` (DA3_MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "pos": [
+        2780.0,
+        740.0
+      ],
+      "size": [
+        680,
+        620
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · META-BATCH · 64 Frames je Durchgang · beliebige Videolänge · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · META-BATCH · 64 Frames je Durchgang · beliebige Videolänge · Node 2\n\n**Zweck:** Meta Batch Manager 🎥🅥🅗🅢  Split the processing of a very long video into sets of smaller Meta Batches   The Meta Batch Manager allows for extremely long input videos to be processed when all other methods for fitting the content in RAM fail. It does not effect VRAM usage.  It must be connected to at least one Input (a …\n\n**Einstellbare Werte**\n- `frames_per_batch` = `64` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n\n**Eingänge**\n- `frames_per_batch` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `meta_batch` (VHS_BatchManager, 3 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 14,
+      "type": "MarkdownNote",
+      "pos": [
+        2780.0,
+        1400.0
+      ],
+      "size": [
+        680,
+        930
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VIDEO · Szene, deren Tiefe geschätzt wird · Originalgröße und -fps · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 3,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VIDEO · Szene, deren Tiefe geschätzt wird · Originalgröße und -fps · Node 3\n\n**Zweck:** Loads a video in original size and frame rate through VideoHelperSuite. With a VHS Meta Batch Manager the prompt re-queues itself per batch, so RAM stays bounded for any length. Silent videos give no audio (VHS' lazy audio map would fail when ComfyUI scans the linked output), and a run after a cancelled or failed one …\n\n**Einstellbare Werte**\n- `video` = `empty_room_assembly.mp4` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `skip_first_frames` = `0` — Start later: number of frames to skip. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `frame_load_cap` = `0` — Maximum number of frames to process, 0 = up to the end. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `video` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `skip_first_frames` (INT, nicht verbunden): Start later: number of frames to skip.\n- `frame_load_cap` (INT, nicht verbunden): Maximum number of frames to process, 0 = up to the end.\n- `meta_batch` (VHS_BatchManager, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `images` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `frame_count` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `audio` (AUDIO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `fps` (FLOAT, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 15,
+      "type": "MarkdownNote",
+      "pos": [
+        3540.0,
+        80.0
+      ],
+      "size": [
+        680,
+        974
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · DA3 · Tiefe je Frame · kurze Kante 504 px · Node 4",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 4,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · DA3 · Tiefe je Frame · kurze Kante 504 px · Node 4\n\n**Zweck:** Run Depth Anything 3 on an image. In multi-view mode each image is treated as a separate view of the same scene.\n\n**Einstellbare Werte**\n- `resolution` = `504` — Resolution the model runs at (longest side, multiple of 14). ↵ Lower = faster / less VRAM. ↵ Higher = more detail. ↵ Output is upsampled back to the original size. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `resize_method` = `lower_bound_resize` — upper_bound_resize: scale so the longest side = resolution (caps memory, default). ↵ lower_bound_resize: scale so the shortest side = resolution (preserves more detail on tall/wid… Die Auswahl ändert die Skalierungsmethode und damit Schärfe, Kanten und mögliche Artefakte.\n- `mode` = `mono` — mono: single view image (works with any model variant). ↵ multiview: all images processed together for geometric consistency + camera pose (for Small/Base models only). Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n\n**Eingänge**\n- `da3_model` (DA3_MODEL, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 3): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `resolution` (INT, nicht verbunden): Resolution the model runs at (longest side, multiple of 14). ↵ Lower = faster / less VRAM. ↵ Higher = more detail. ↵ Output is upsampled back to the …\n- `resize_method` (COMBO, nicht verbunden): upper_bound_resize: scale so the longest side = resolution (caps memory, default). ↵ lower_bound_resize: scale so the shortest side = resolution (pre…\n- `mode` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): mono: single view image (works with any model variant). ↵ multiview: all images processed together for geometric consistency + camera pose (for Small…\n\n**Ausgänge**\n- `da3_geometry` (DA3_GEOMETRY, 2 Verbindung(en)): Dictionary of non-normalized tensors. ↵ Always has the keys: depth, image, mode. ↵ Optional keys: sky (for Mono/Metric), confidence (for Small/Base),…"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 16,
+      "type": "MarkdownNote",
+      "pos": [
+        3540.0,
+        1100.0
+      ],
+      "size": [
+        680,
+        864
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · TIEFENKARTE · Graustufen · hell = nah · Node 5",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 5,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · TIEFENKARTE · Graustufen · hell = nah · Node 5\n\n**Zweck:** Render a depth map, confidence map, or sky mask from Depth Anything 3 geometry data.\n\n**Einstellbare Werte**\n- `output` = `depth` — - depth: normalised greyscale depth image. ↵ - depth_colored: depth mapped through the Turbo colormap. ↵ - sky_mask: sky probability in [0, 1] (for Mono/Metric models only). ↵ - c… Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `normalization` = `v2_style` — - v2_style: mean/std normalisation for perceptually balanced results (default). ↵ - min_max: stretches the full depth range to [0, 1] for maximum contrast. ↵ - raw: no scaling,pre… Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `apply_sky_clip` = `False` — Clip sky-region depth to the 99th percentile of foreground depth before normalisation. Requires a sky key in the da3_geometry input (for Mono/Metric models only). AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `da3_geometry` (DA3_GEOMETRY, Link 4): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): - depth: normalised greyscale depth image. ↵ - depth_colored: depth mapped through the Turbo colormap. ↵ - sky_mask: sky probability in [0, 1] (for M…\n- `output.normalization` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output.apply_sky_clip` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 17,
+      "type": "MarkdownNote",
+      "pos": [
+        3540.0,
+        2000.0
+      ],
+      "size": [
+        680,
+        1546
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SPEICHERN · Tiefen-Video · MP4 mit Originalton und -fps · Node 6",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 6,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SPEICHERN · Tiefen-Video · MP4 mit Originalton und -fps · Node 6\n\n**Zweck:** Video Combine 🎥🅥🅗🅢  Combine an image sequence into a video     [ - ]  Inputs:   [ - ]  images: The images to be turned into a video    [ - ]  audio: (optional) audio to add to the video    [ - ]  meta_batch: (optional) Connect to a Meta Batch manager to divide extremely long image sequences into sub batches. See the d…\n\n**Einstellbare Werte**\n- `frame_rate` = `24` — Steuert diesen Parameter. Höher wirkt flüssiger und erzeugt/verarbeitet mehr Frames pro Sekunde; niedriger spart Rechenzeit/Dateigröße.\n- `loop_count` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `filename_prefix` = `Depth/Depth_Video` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `format` = `video/h264-mp4` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `pix_fmt` = `yuv420p` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `crf` = `17` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `save_metadata` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `trim_to_audio` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `pingpong` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `save_output` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `images` (IMAGE, Link 5): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `frame_rate` (FLOAT, Link 6): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `loop_count` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `format` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `pingpong` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `save_output` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio` (AUDIO, Link 7): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `meta_batch` (VHS_BatchManager, Link 8): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `pix_fmt` (['yuv420p', 'yuv420p10le'], nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `crf` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `save_metadata` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `trim_to_audio` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `Filenames` (VHS_FILENAMES, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 18,
+      "type": "MarkdownNote",
+      "pos": [
+        4300.0,
+        80.0
+      ],
+      "size": [
+        680,
+        864
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · KONTROLLE · Tiefe eingefärbt (Turbo) · Node 7",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 7,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · KONTROLLE · Tiefe eingefärbt (Turbo) · Node 7\n\n**Zweck:** Render a depth map, confidence map, or sky mask from Depth Anything 3 geometry data.\n\n**Einstellbare Werte**\n- `output` = `depth_colored` — - depth: normalised greyscale depth image. ↵ - depth_colored: depth mapped through the Turbo colormap. ↵ - sky_mask: sky probability in [0, 1] (for Mono/Metric models only). ↵ - c… Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `normalization` = `v2_style` — - v2_style: mean/std normalisation for perceptually balanced results (default). ↵ - min_max: stretches the full depth range to [0, 1] for maximum contrast. ↵ - raw: no scaling,pre… Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `apply_sky_clip` = `False` — Clip sky-region depth to the 99th percentile of foreground depth before normalisation. Requires a sky key in the da3_geometry input (for Mono/Metric models only). AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `da3_geometry` (DA3_GEOMETRY, Link 9): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): - depth: normalised greyscale depth image. ↵ - depth_colored: depth mapped through the Turbo colormap. ↵ - sky_mask: sky probability in [0, 1] (for M…\n- `output.normalization` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `output.apply_sky_clip` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 19,
+      "type": "MarkdownNote",
+      "pos": [
+        4300.0,
+        980.0
+      ],
+      "size": [
+        680,
+        1568
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · KONTROLLE · Tiefe eingefärbt (nur Vorschau) · Node 8",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 8,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · KONTROLLE · Tiefe eingefärbt (nur Vorschau) · Node 8\n\n**Zweck:** Video Combine 🎥🅥🅗🅢  Combine an image sequence into a video     [ - ]  Inputs:   [ - ]  images: The images to be turned into a video    [ - ]  audio: (optional) audio to add to the video    [ - ]  meta_batch: (optional) Connect to a Meta Batch manager to divide extremely long image sequences into sub batches. See the d…\n\n**Einstellbare Werte**\n- `frame_rate` = `24` — Steuert diesen Parameter. Höher wirkt flüssiger und erzeugt/verarbeitet mehr Frames pro Sekunde; niedriger spart Rechenzeit/Dateigröße.\n- `loop_count` = `0` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `filename_prefix` = `Depth/Depth_Color` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `format` = `video/h264-mp4` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `pix_fmt` = `yuv420p` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `crf` = `17` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `save_metadata` = `True` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `trim_to_audio` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `pingpong` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `save_output` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `images` (IMAGE, Link 10): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `frame_rate` (FLOAT, Link 11): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `loop_count` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `format` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `pingpong` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `save_output` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio` (AUDIO, Link 12): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `meta_batch` (VHS_BatchManager, Link 13): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `vae` (VAE, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `pix_fmt` (['yuv420p', 'yuv420p10le'], nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `crf` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `save_metadata` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `trim_to_audio` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `Filenames` (VHS_FILENAMES, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 20,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1580.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 21,
+      "type": "MarkdownNote",
+      "pos": [
+        4300.0,
+        2580.0
+      ],
+      "size": [
+        680,
+        666
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 20",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 20,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 20\n\n**Zweck:** Provide one central set of dropdowns for MODEL, CLIP, and every VAE selector. ↵  ↵ Connect these COMBO outputs to the ``device`` input of ComfyUI's official ↵ Select Model Device, Select CLIP Device, and Select VAE Device nodes. The ↵ node chooses labels only; the official selectors remain responsible for ↵ validating…\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      3,
+      3,
+      "VHS_BatchManager"
+    ],
+    [
+      2,
+      1,
+      0,
+      4,
+      0,
+      "DA3_MODEL"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      1,
+      "IMAGE"
+    ],
+    [
+      4,
+      4,
+      0,
+      5,
+      0,
+      "DA3_GEOMETRY"
+    ],
+    [
+      5,
+      5,
+      0,
+      6,
+      0,
+      "IMAGE"
+    ],
+    [
+      6,
+      3,
+      3,
+      6,
+      1,
+      "FLOAT"
+    ],
+    [
+      7,
+      3,
+      2,
+      6,
+      7,
+      "AUDIO"
+    ],
+    [
+      8,
+      2,
+      0,
+      6,
+      8,
+      "VHS_BatchManager"
+    ],
+    [
+      9,
+      4,
+      0,
+      7,
+      0,
+      "DA3_GEOMETRY"
+    ],
+    [
+      10,
+      7,
+      0,
+      8,
+      0,
+      "IMAGE"
+    ],
+    [
+      11,
+      3,
+      3,
+      8,
+      1,
+      "FLOAT"
+    ],
+    [
+      12,
+      3,
+      2,
+      8,
+      7,
+      "AUDIO"
+    ],
+    [
+      13,
+      2,
+      0,
+      8,
+      8,
+      "VHS_BatchManager"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        760.0,
+        1800.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        840.0,
+        0.0,
+        560.0,
+        1420.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        1480.0,
+        0.0,
+        500.0,
+        380.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        2060.0,
+        0.0,
+        600.0,
+        2280.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        2740.0,
+        0.0,
+        2280.0,
+        3580.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "dawasteh_vision_v128": {
+      "version": 1,
+      "kind": "depth_video",
+      "source_manifest": "tools/workflow_templates/v128/sources.json",
+      "model_manifest": "tools/workflow_templates/v128/models.json",
+      "validation_report": "performance/rdna4/vision-workflows-v128-validation.json"
+    },
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 9,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "DepthAnything3-Depth-from-Video",
+      "source": "workflows/Pose & Depth/DepthAnything3-Depth-from-Video.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "1523be027d94c3d94c071a128eacacc8e110191ef07dce8db2d385994718d23c",
+      "exceptions": []
+    }
+  },
+  "version": 0.4,
+  "last_node_id": 21,
+  "last_link_id": 13,
+  "id": "4e44e8c9-7c12-55e6-835d-511b7fec48c4",
+  "revision": 0
+}

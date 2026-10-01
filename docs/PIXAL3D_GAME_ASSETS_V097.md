@@ -2,8 +2,8 @@
 
 v0.9.7 ergänzt zwei lokale Image-to-3D-Workflows mit vollständigem PBR-Material:
 
-- `workflows/Game Development/Pixal3D_INT8-Buildings-and-Environment-PBR-for-Godot.json`
-- `workflows/Game Development/Pixal3D_INT8-Humanoids-and-Animals-PBR-for-Godot.json`
+- `workflows/Game Development/Pixal3D_INT8-Image-to-PBR-Mesh-Buildings-Godot.json`
+- `workflows/Game Development/Pixal3D_INT8-Image-to-PBR-Mesh-Characters-Godot.json`
 
 Beide verwenden den offiziellen ComfyUI-Core-Pfad für **Pixal3D INT8 ConvRot**,
 erzeugen bei 1024³ eine hochaufgelöste Referenzform, vereinfachen sie auf ein

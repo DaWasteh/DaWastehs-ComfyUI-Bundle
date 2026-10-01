@@ -18,18 +18,20 @@ try:
     from tools.generate_dual_gpu_workflows import install_run_timer
     from tools.refine_workflows import refine_workflow
     from tools.rodent_layout import apply_rodent_layout
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:
     from build_workflows_v118 import Graph
     import migrate_workflows_v092 as migration
     from generate_dual_gpu_workflows import install_run_timer
     from refine_workflows import refine_workflow
     from rodent_layout import apply_rodent_layout
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "tools/workflow_templates/v130"
 MARKER = "dawasteh_prompt_enhancer_v130"
 RELEASE = "v1.3.0"
-PATH = "Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer.json"
+PATH = "Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt.json"
 # Defaults the tests pin (docs/PROMPT_ENHANCER_V130.md): running text, medium length, English, a fresh seed per queue.
 SETTINGS = {
     "target": "Fließtext (Z-Image, FLUX, Qwen Image, Krea)",
@@ -75,7 +77,7 @@ def build(schemas: dict) -> dict:
 
 def finish(g: Graph) -> dict:
     install_run_timer(g.w)
-    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v130:" + PATH))
+    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v130:" + original_name(PATH)))
     g.w["revision"] = 0
     g.w["extra"][MARKER] = {
         "version": 1,

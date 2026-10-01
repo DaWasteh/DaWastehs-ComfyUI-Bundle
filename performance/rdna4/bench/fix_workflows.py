@@ -20,16 +20,16 @@ SRC = REPO / "workflows"
 DST = Path(__file__).resolve().parents[1] / "workflows"
 
 WAN_I2V = [
-    "Text+Image to Video/WAN22_i2v_14B_fp8_lightx2v-Text+Image-to-Video.json",
-    "Text+Image to Video/WAN22_i2v_14B_Q8_GGUF_lightx2v-Text+Image-to-Video.json",
-    "Text+Image to Video/WAN22_bernini_i2v-Text+Image-to-Video.json",
+    "Text+Image to Video/WAN22_I2V_14B_FP8+LightX2V-Text+Image-to-Video.json",
+    "Text+Image to Video/WAN22_I2V_14B_Q8_0_LightX2V-Text+Image-to-Video.json",
+    "Text+Image to Video/Bernini_R_14B_FP8-Text+Image-to-Video.json",
 ]
 TRAIN = [
-    "LoRA Generation/Boogu_Image_Base-LoRA-Training.json",
-    "LoRA Generation/FLUX1_Dev-LoRA-Training.json",
-    "LoRA Generation/FLUX2_Klein_4B_Base-LoRA-Training.json",
-    "LoRA Generation/SDXL-LoRA-Training.json",
-    "LoRA Generation/ZImage_Base-LoRA-Training.json",
+    "LoRA Generation/Boogu_Image_Base_BF16-Images-to-LoRA.json",
+    "LoRA Generation/FLUX1_Dev_FP8-Images-to-LoRA.json",
+    "LoRA Generation/FLUX2_Klein_Base_4B_BF16-Images-to-LoRA.json",
+    "LoRA Generation/SDXL_RealVisXL_V4_FP16-Images-to-LoRA.json",
+    "LoRA Generation/ZImage_Base_BF16-Images-to-LoRA.json",
 ]
 
 

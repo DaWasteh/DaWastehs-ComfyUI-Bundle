@@ -13,6 +13,7 @@ from tools.install_yue2_lora_model import MODEL, install
 from tools.install_yue2_lora_node import MANIFEST, verify_node
 from tools.rodent_layout import _topology_hash
 from tools.validate_workflows import validate_graph
+from tools.workflow_names_v131 import old_key
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -76,7 +77,7 @@ class WorkflowTests(unittest.TestCase):
 
     def test_frontend_seed_alignment_and_device_socket_contract(self):
         contracts = json.loads((ROOT / "tools/workflow_templates/yue2-lora/frontend-contracts.json").read_text(encoding="utf-8"))
-        actual = contracts[builder.TRAIN_PATH]["2"]["inputs"]
+        actual = contracts[old_key(builder.TRAIN_PATH)]["2"]["inputs"]  # the pinned contracts keep the v1.1.9 names
         self.assertEqual({k: actual[k] for k in ("seed", "optimizer", "lr_scheduler", "warmup_steps", "grad_accum", "ema_decay", "live_curve")},
                          {"seed": 119, "optimizer": "adamw", "lr_scheduler": "cosine", "warmup_steps": 10, "grad_accum": 1, "ema_decay": 0.99, "live_curve": True})
         schemas = json.loads(builder.SCHEMAS.read_text(encoding="utf-8"))
@@ -99,11 +100,13 @@ class WorkflowTests(unittest.TestCase):
             # Historical graph hashes belong to v1.1.9. Current bytes are
             # verified separately against the v1.2.0 release evidence.
             self.assertRegex(entry["sha256"], r"^[a-f0-9]{64}$")
-            self.assertEqual(digest(contracts[entry["path"].removeprefix("workflows/")]), entry["frontend_contract_sha256"])
+            # the pinned contracts keep the v1.1.9 names; the report names the files as renamed in v1.3.1
+            self.assertEqual(digest(contracts[old_key(entry["path"].removeprefix("workflows/"))]),
+                             entry["frontend_contract_sha256"])
         for entry in report["runs"]:
             self.assertEqual(entry["status"], "success")
             import copy
-            prompt = copy.deepcopy(contracts[entry["workflow"].removeprefix("workflows/")])
+            prompt = copy.deepcopy(contracts[old_key(entry["workflow"].removeprefix("workflows/"))])
             for override in entry["overrides"]:
                 node = prompt[override["node_id"]]
                 self.assertEqual(node["class_type"], override["class_type"])

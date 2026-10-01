@@ -27,6 +27,7 @@ try:
         ENVIRONMENT_PATH,
         _rebuild_link_references,
     )
+    from tools.workflow_names_v131 import new_key, original_name
 except ModuleNotFoundError:  # Direct execution from tools/.
     import migrate_workflows_v092 as migration
     from generate_dual_gpu_workflows import install_run_timer
@@ -42,6 +43,7 @@ except ModuleNotFoundError:  # Direct execution from tools/.
         ENVIRONMENT_PATH,
         _rebuild_link_references,
     )
+    from workflow_names_v131 import new_key, original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "tools/workflow_templates/v118"
@@ -207,7 +209,7 @@ class Graph:
 
     def finish(self, path, family, inputs):
         install_run_timer(self.w)
-        self.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v118:" + path))
+        self.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v118:" + original_name(path)))
         self.w["revision"] = 0
         self.w.setdefault("extra", {})["dawasteh_v118"] = {
             "version": 1,
@@ -319,7 +321,8 @@ def yue(schemas, mode):
         "START HIER · YuE2 / PRIVAT / KEIN STREAMING",
         "**CC-BY-NC-4.0: nur nichtkommerziell.** Für Bastis komplett privates HalfLife3-Projekt; Streaming-Musik weiter mit ACE-Step. Kein Voice-Cloning und kein Echtzeit-Streaming: die gesamte Audiodatei wird nach der Queue ausgegeben.\n\nStyle beschreibt Klang, Sprache, Tempo und Stimme; Lyrics enthalten nur singbaren Text/Abschnitts-Tags. Eigene ABC-Notation kann im ABC-Workflow eingegeben oder leer gelassen werden (Modus off). Im Text-Workflow erzeugt der ABC-Node Melodie/Akkorde. Cover überträgt symbolische Melodie, nicht die Identität der Referenzstimme. Bei Cover beide mode-Felder zusammen auf melody/full setzen.\n\nMax Duration ist eine OBERGRENZE, keine exakte Länge. Standard 120s; für schnelle Vorabtests auf 30s reduzieren und für längere Stücke schrittweise erhöhen. Seed und Sampling sind sichtbar. INT8, SDPA, kein torch.compile. Native Vorlage: Comfy-Org/workflow_templates v0.11.60.\n\nNur eigene oder ausreichend lizenzierte Referenzen laden. Private Songideen werden nicht im öffentlichen Repository veröffentlicht.",
     )
-    path = f"Music Generation/YuE2_3B_INT8-PRIVATE-{mode}.json"
+    # the v1.1.8 name; v1.3.1 renamed the file (tools/workflow_renames_v131.json)
+    path = new_key(f"Music Generation/YuE2_3B_INT8-PRIVATE-{mode}.json")
     return path, g.finish(path, "YuE2", mode)
 
 
@@ -403,7 +406,7 @@ def cosmos(schemas, mode):
         "START HIER · Cosmos Predict2 2B / Physik-VIDEO",
         "Cosmos erzeugt Pixel/Videos mit physikalisch orientierten Bewegungen, KEINE Simulation, keine Collision, keine Kraft-/Materialdaten. Für echte Game-Physik die separaten GamePhysics-Ausgaben benutzen.\n\n2B statt 14B begrenzt VRAM/RAM. Video: offizielles 480p/16fps-Modell, 848×480, 93 Frames, 30 Euler/simple-Schritte. Das ergibt 5,8125s Containerdauer. Auflösung/FPS nicht beliebig ändern: Gewichte sind darauf trainiert.\n\nEingaben: Text→Bild, Bild→Video, Start+Endbild, kurzer Videoanfang→Fortsetzung; Text→Video kombiniert den T2I- mit dem Video2World-Checkpoint. Video-Referenz wird auf 16fps und maximal fünf Frames begrenzt; keine Audioübernahme. Start/End müssen dieselbe Szene zeigen, Übergänge sind nicht garantiert. First/Last ist experimentell: In der lokalen Sichtprüfung trat Farbkippen am Ende auf; Text→Video zeigte kleine Geisterfragmente. Erfolgreiche Ausführung bedeutet keine physikalische Qualitätsgarantie.\n\nWICHTIG: oldt5_xxl ist T5 1.0; vorhandenes Flux-T5 1.1 ist kein Ersatz. Predict2 verwendet WAN 2.1 VAE, NICHT Cosmos CV8. NVIDIA Open Model License und Modell-Nutzungsbedingungen prüfen. Quelle: comfyanonymous/ComfyUI_examples/cosmos_predict2.",
     )
-    path = (
+    path = new_key(
         f"Text to Image/Cosmos_Predict2_2B-{mode}.json"
         if image_only
         else f"Controlled Video/Cosmos_Predict2_2B-{mode}.json"
@@ -528,7 +531,7 @@ def asset(schemas, family, mode):
         "START HIER · " + family + " / " + mode,
         "Ein statisches Asset pro Lauf. Shape erzeugt untexturierte Geometrie; PBR zusätzlich Base Color, Metallic/Roughness, Normal und AO. 1024³ statt ungeprüftem 1536³; AMD-sicherer 256³-UDF-Remesh, QEF AUS, midpoint, maximal 12.000 Sichtmesh-Dreiecke. Textur 1024px. Frei einstellbar, aber höhere Budgets erst separat testen.\n\nBild: vollständiges einzelnes Objekt, ruhiges Licht, keine Nachbarobjekte. Vorhandene Alpha-Maske: Background-Switch ausschalten; sonst BiRefNet. MultiView: eigener MultiView-Checkpoint, Front/links/hinten/rechts in 90°-Abständen, gleiche Skala, schwarzer Hintergrund, FOV 20° für kalibrierte Render. Unbenötigte Ansichten am Conditioning-Eingang TRENNEN. Das sind Anforderungen an deine Eingabebilder, keine automatisch geprüften Kamera-/Skalengarantien. Kein beliebiges Fotobatch, keine erfundene Mehransicht!\n\nCollision: separates CPU-Convex-Hull oder Box, max. 128 Vertices; zu komplexe Hüllen fallen ausdrücklich auf eine konservative Box zurück. Ergebnis enthält GLB plus echte Godot-4-.tscn mit CollisionShape3D und StaticBody3D/RigidBody3D. Das Sichtmesh selbst bleibt ohne Rig.\n\nEine konvexe Hülle verschließt Türen/Innenräume und Zwischenräume von Beinen. Nur für massive Props, nicht begehbare Gebäude oder artikulierte Figuren. Solche Assets brauchen manuelle Compound-Collider. Keine automatische Physiksimulation aus einem Foto. Achsen/Einheiten bleiben erhalten; Maßstab und Sichtmesh-Ausrichtung vor Nutzung prüfen. RigidBody-Masse ist manuell, nicht aus dem Bild geschätzt.\n\nRODENT: Nerdy Rodent; DaWasteh-Touch: zentrale GPU-Wahl, Timer, Parameterreferenz, klare Eingaben und getrennte Spielausgaben. Pixaroma-Vorlagen geprüft; neuraler Graph und AMD-Remesh stammen aus dem gepinnten offiziellen Core-Template/v0.9.7. MIT-Gewichte; DINOv3 unter Meta-Lizenz. GPU0 R9700, keine Gaming-GPU nötig.",
     )
-    path = f"Game Development/{family}_INT8-{mode}.json"
+    path = new_key(f"Game Development/{family}_INT8-{mode}.json")
     return path, g.finish(path, family, mode)
 
 

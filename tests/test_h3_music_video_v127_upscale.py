@@ -402,8 +402,16 @@ class LiveEvidenceTests(unittest.TestCase):
 
     def test_report_pins_the_shipped_workflow_and_sources(self):
         import hashlib
+        import subprocess
+        from tools.workflow_names_v131 import old_path
+        # The evidence describes the v1.2.7 release. v1.3.1 renamed the workflow (content unchanged) and gave its
+        # builder the rename map, so the files are compared as released (v1.3.0 names).
+        released = lambda p: hashlib.sha256(
+            subprocess.check_output(["git", "show", "v1.2.7:" + old_path(p)], cwd=ROOT)).hexdigest()
         for entry in [self.report["workflow"], *self.report["sources"]]:
-            self.assertEqual(hashlib.sha256((ROOT / entry["path"]).read_bytes()).hexdigest(), entry["sha256"], entry["path"])
+            self.assertEqual(released(entry["path"]), entry["sha256"], entry["path"])
+        workflow = self.report["workflow"]
+        self.assertEqual(hashlib.sha256((ROOT / workflow["path"]).read_bytes()).hexdigest(), workflow["sha256"])
 
     def test_all_four_methods_ran_and_wan_is_the_measured_default(self):
         methods = self.report["method_comparison"]["methods"]

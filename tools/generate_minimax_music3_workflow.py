@@ -28,7 +28,7 @@ except ModuleNotFoundError:
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = WORKFLOW_TEMPLATES / "audio_minimax_music_3.json"
-OUTPUT = ROOT / "workflows" / "Music Generation" / "MiniMax_Music3_FP32-BF16-Text-to-Music.json"
+OUTPUT = ROOT / "workflows" / "Music Generation" / "MiniMax_Music3_FP32-Tags+Lyrics-to-Song.json"
 
 
 def build() -> dict:
@@ -55,7 +55,7 @@ def build() -> dict:
         },
     }
     refresh_refinement(workflow)
-    return migrate_workflow(workflow, "Music Generation/MiniMax_Music3_FP32-BF16-Text-to-Music.json")
+    return migrate_workflow(workflow, "Music Generation/MiniMax_Music3_FP32-Tags+Lyrics-to-Song.json")
 
 
 def generate(destination: Path = OUTPUT) -> Path:

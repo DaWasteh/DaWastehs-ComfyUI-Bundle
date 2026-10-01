@@ -8,8 +8,8 @@ gepinnten Mira-Code, alles andere über ComfyUIs native Modelle.
 
 | Workflow (`Image to 3D-Mesh`) | Ergebnis unter `output/` |
 |---|---|
-| `Mira_Scene-Layout-Preview` | `Mira_Scene/layout_*.glb`: Miras Voxelformen platziert, Boden, Fotokamera (ca. 2 min) |
-| `Mira_Scene-Image-to-3D-Scene` | `Mira_Scene/scene_*.glb`: texturierte TRELLIS.2-Modelle platziert, Boden, Fotokamera; `Mira_Scene/objects/object_*.glb` einzeln |
+| `Mira_Scene-Image-to-3D-Layout-Preview` | `Mira_Scene/layout_*.glb`: Miras Voxelformen platziert, Boden, Fotokamera (ca. 2 min) |
+| `Mira_Scene+TRELLIS2_INT8-Image-to-3D-Scene` | `Mira_Scene/scene_*.glb`: texturierte TRELLIS.2-Modelle platziert, Boden, Fotokamera; `Mira_Scene/objects/object_*.glb` einzeln |
 
 **Lizenz:** Das Mira-Scene-Repository hat noch **keine Lizenzdatei** (Upstream-Issue #4). Das Bundle kopiert keinen
 Mira-Code und keine Gewichte; der Updater holt den Code auf einen festen Commit, die Gewichte lädt man selbst. Nur privat

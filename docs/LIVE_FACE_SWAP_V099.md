@@ -96,7 +96,7 @@ DirectML-Adapterindizes sind nicht die HIP-Indizes. Auf diesem Rechner:
 
 Spout und OBS laufen auf der R9700, deshalb ist `dml_device_id = 1` der
 Standard. Der DirectML-RVC-Begleiter belegt weiterhin die RX 9070 XT
-(`Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json`).
+(`Voice Design/RVC_DirectML-Microphone-to-Voice-Swap-Live.json`).
 
 ## Bedienung
 

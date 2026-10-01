@@ -13,8 +13,10 @@ from typing import Any
 
 try:
     from tools import migrate_workflows_v092 as v092
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:  # Direct execution
     import migrate_workflows_v092 as v092
+    from workflow_names_v131 import original_name
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,14 +60,14 @@ class TargetWorkflow:
 
 TARGET_WORKFLOWS = (
     TargetWorkflow(
-        "Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-Genre-Selector.json",
+        "Music Generation/ACE_Step1_5_XL_SFT_BF16+Gemma4_E4B-Idea-to-Lyrics-to-Song.json",
         "Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-POP-120-Cmajor.json",
         "Gemma4-e4B",
         "Gemma 4 e4B FP8 (lower VRAM)",
         "audio/ACE_Album/POP_Track",
     ),
     TargetWorkflow(
-        "Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-Genre-Selector.json",
+        "Music Generation/ACE_Step1_5_XL_SFT_BF16+Qwen3_5_4B-Idea-to-Lyrics-to-Song.json",
         "Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-POP-120-Cmajor.json",
         "Qwen3.5-4B",
         "Qwen 3.5 4B BF16 (quality)",
@@ -283,7 +285,7 @@ The former per-genre files differed mainly in musical direction, BPM, key, filen
 ACE-Step receives concrete linked BPM, key, and language values. Save Audio receives the profile-specific prefix (`POP_Track`, `GLOW_Track`, and so on; `CUSTOM_Track` for a new genre). CUSTOM replaces the former generic Idea-to-Lyrics workflow while keeping the newer two-stage lyrics-and-caption pipeline."""],
     })
 
-    workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-v093:{target.path}"))
+    workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-v093:{original_name(target.path)}"))
     workflow["last_link_id"] = filename_link
     workflow.setdefault("extra", {}).setdefault("dawasteh_workflow_refinement", {}).update({
         "version": 3,
@@ -301,8 +303,8 @@ ACE-Step receives concrete linked BPM, key, and language values. Save Audio rece
     }
     gpu = workflow["extra"].get("dawasteh_dual_gpu", {})
     gpu.update({
-        "family": Path(target.path).stem,
-        "source": f"workflows/{target.path}",
+        "family": Path(original_name(target.path)).stem,
+        "source": f"workflows/{original_name(target.path)}",
     })
 
     _remove_generated_notes(workflow, {94, 107, 138, 141})

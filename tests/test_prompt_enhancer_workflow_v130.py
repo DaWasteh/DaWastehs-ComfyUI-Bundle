@@ -127,7 +127,7 @@ class PackAndLauncherTests(unittest.TestCase):
         self.assertIn('"ComfyUI-DaWasteh-PromptEnhancer"', updater)
         script = (ROOT / "tools" / "start-MultiGPU.ps1").read_text(encoding="utf-8-sig")
         self.assertIn("image prompt enhancer", script)
-        self.assertIn("Launcher v1.3.0", script)
+        self.assertRegex(script, r"Launcher v1\.3\.\d+")  # the v1.3.x launcher
         self.assertIn('$PromptLlmGguf = Join-Path $ComfyPath "models\\LLM\\Qwen3.8\\Qwen3.8-27B-IQ4_XS-3.84bpw.gguf"', script)
 
     def test_the_h3_backend_the_node_loads_exists_and_is_installed_too(self):

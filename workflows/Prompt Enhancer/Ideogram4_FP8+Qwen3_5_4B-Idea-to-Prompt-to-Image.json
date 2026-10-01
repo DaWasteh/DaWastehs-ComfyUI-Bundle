@@ -1,0 +1,4180 @@
+{
+  "id": "fdcfc2b2-168f-4f3d-a1d0-6986b802fce5",
+  "revision": 0,
+  "last_node_id": 255,
+  "last_link_id": 317,
+  "nodes": [
+    {
+      "id": 161,
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        3640.0,
+        820.0
+      ],
+      "size": [
+        304,
+        336
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "noise",
+          "name": "noise",
+          "type": "NOISE",
+          "link": 227
+        },
+        {
+          "localized_name": "guider",
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 254
+        },
+        {
+          "localized_name": "sampler",
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 228
+        },
+        {
+          "localized_name": "sigmas",
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 264
+        },
+        {
+          "localized_name": "latent_image",
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 230
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "output",
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            231
+          ]
+        },
+        {
+          "localized_name": "denoised_output",
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 184,
+      "type": "CFGOverride",
+      "pos": [
+        2580.0,
+        680.0
+      ],
+      "size": [
+        272,
+        176
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 291
+        },
+        {
+          "localized_name": "cfg",
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "start_percent",
+          "name": "start_percent",
+          "type": "FLOAT",
+          "widget": {
+            "name": "start_percent"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "end_percent",
+          "name": "end_percent",
+          "type": "FLOAT",
+          "widget": {
+            "name": "end_percent"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            257
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CFGOverride",
+        "cnr_id": "comfy-core",
+        "ver": "0.23.0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": [
+        3,
+        0.7,
+        1
+      ]
+    },
+    {
+      "id": 182,
+      "type": "DualModelGuider",
+      "pos": [
+        3640.0,
+        580.0
+      ],
+      "size": [
+        272,
+        192
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 257
+        },
+        {
+          "localized_name": "positive",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 252
+        },
+        {
+          "localized_name": "model_negative",
+          "name": "model_negative",
+          "shape": 7,
+          "type": "MODEL",
+          "link": 278
+        },
+        {
+          "localized_name": "negative",
+          "name": "negative",
+          "shape": 7,
+          "type": "CONDITIONING",
+          "link": 253
+        },
+        {
+          "localized_name": "cfg",
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "GUIDER",
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            254
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualModelGuider",
+        "cnr_id": "comfy-core",
+        "ver": "0.23.0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": [
+        7
+      ]
+    },
+    {
+      "id": 159,
+      "type": "ConditioningZeroOut",
+      "pos": [
+        3040.0,
+        240.0
+      ],
+      "size": [
+        225,
+        8
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "conditioning",
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 224
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            253
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut",
+        "cnr_id": "comfy-core",
+        "ver": "0.9.1",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 165,
+      "type": "RandomNoise",
+      "pos": [
+        3640.0,
+        240.0
+      ],
+      "size": [
+        272,
+        112
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "noise_seed",
+          "name": "noise_seed",
+          "type": "INT",
+          "widget": {
+            "name": "noise_seed"
+          },
+          "link": 280
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "NOISE",
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            227
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": [
+        1335735769456,
+        "fixed"
+      ]
+    },
+    {
+      "id": 189,
+      "type": "SigmasPreview",
+      "pos": [
+        4180.0,
+        840.0
+      ],
+      "size": [
+        272,
+        372
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "sigmas",
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 263
+        },
+        {
+          "localized_name": "print_as_list",
+          "name": "print_as_list",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "print_as_list"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "line_color",
+          "name": "line_color",
+          "type": "STRING",
+          "widget": {
+            "name": "line_color"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SigmasPreview",
+        "cnr_id": "RES4LYF",
+        "ver": "119679d8d8d26e6db52757e705488abb6399d7d4",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        false,
+        "blue"
+      ]
+    },
+    {
+      "id": 160,
+      "type": "EmptyFlux2LatentImage",
+      "pos": [
+        4180.0,
+        80.0
+      ],
+      "size": [
+        272,
+        176
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 283
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 284
+        },
+        {
+          "localized_name": "batch_size",
+          "name": "batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "batch_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            230
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyFlux2LatentImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 163,
+      "type": "KSamplerSelect",
+      "pos": [
+        3640.0,
+        80.0
+      ],
+      "size": [
+        388.54998779296875,
+        113.30000305175781
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "sampler_name",
+          "name": "sampler_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "SAMPLER",
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            228
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": 167,
+      "type": "CLIPTextEncode",
+      "pos": [
+        3040.0,
+        80.0
+      ],
+      "size": [
+        448,
+        116
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 279
+        },
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 285
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CONDITIONING",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            224,
+            252
+          ]
+        }
+      ],
+      "title": "CLIP Text Encode (Positive Prompt)",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 190,
+      "type": "Ideogram4Scheduler",
+      "pos": [
+        3640.0,
+        400.0
+      ],
+      "size": [
+        272,
+        144
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "steps",
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 292
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 317
+        },
+        {
+          "localized_name": "mu",
+          "name": "mu",
+          "type": "FLOAT",
+          "widget": {
+            "name": "mu"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "std",
+          "name": "std",
+          "type": "FLOAT",
+          "widget": {
+            "name": "std"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "SIGMAS",
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            263,
+            264
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Ideogram4Scheduler",
+        "cnr_id": "comfy-core",
+        "ver": "0.24.0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        20,
+        1024,
+        1024,
+        0.0,
+        1.75
+      ],
+      "title": "Ideogram 4 Scheduler (20 Schritte)"
+    },
+    {
+      "id": 198,
+      "type": "ModelSamplingAuraFlow",
+      "pos": [
+        2580.0,
+        560.0
+      ],
+      "size": [
+        272,
+        80
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 293
+        },
+        {
+          "localized_name": "shift",
+          "name": "shift",
+          "type": "FLOAT",
+          "widget": {
+            "name": "shift"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            291
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ModelSamplingAuraFlow",
+        "cnr_id": "comfy-core",
+        "ver": "0.24.0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        1.0
+      ]
+    },
+    {
+      "id": 199,
+      "type": "PreviewAny",
+      "pos": [
+        4680.0,
+        440.0
+      ],
+      "size": [
+        287.3666687011719,
+        270.3999938964844
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "source",
+          "name": "source",
+          "type": "*",
+          "link": 294
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny",
+        "cnr_id": "comfy-core",
+        "ver": "0.24.0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "id": 181,
+      "type": "UNETLoader",
+      "pos": [
+        1940.0,
+        600.0
+      ],
+      "size": [
+        550.0999755859375,
+        140
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 1,
+      "mode": 0,
+      "showAdvanced": true,
+      "inputs": [
+        {
+          "localized_name": "unet_name",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weight_dtype",
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_dtype"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            306
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "models": [
+          {
+            "name": "ideogram4_unconditional_fp8_scaled.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/Ideogram-4/resolve/main/diffusion_models/ideogram4_unconditional_fp8_scaled.safetensors",
+            "directory": "diffusion_models"
+          }
+        ]
+      },
+      "widgets_values": [
+        "Ideogram4\\ideogram4_unconditional_fp8_scaled.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 166,
+      "type": "UNETLoader",
+      "pos": [
+        1940.0,
+        240.0
+      ],
+      "size": [
+        481.6499938964844,
+        140
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 2,
+      "mode": 0,
+      "showAdvanced": true,
+      "inputs": [
+        {
+          "localized_name": "unet_name",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weight_dtype",
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_dtype"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            307
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "models": [
+          {
+            "name": "ideogram4_fp8_scaled.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/Ideogram-4/resolve/main/diffusion_models/ideogram4_fp8_scaled.safetensors",
+            "directory": "diffusion_models"
+          }
+        ]
+      },
+      "widgets_values": [
+        "Ideogram4\\ideogram4_fp8_scaled.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 168,
+      "type": "CLIPLoader",
+      "pos": [
+        1940.0,
+        420.0
+      ],
+      "size": [
+        464,
+        140
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "type",
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            308
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "models": [
+          {
+            "name": "qwen3vl_8b_fp8_scaled.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/Qwen3-VL/resolve/main/text_encoders/qwen3vl_8b_fp8_scaled.safetensors",
+            "directory": "text_encoders"
+          }
+        ]
+      },
+      "widgets_values": [
+        "Qwen\\qwen3vl_8b_fp8_scaled.safetensors",
+        "ideogram4",
+        "default"
+      ]
+    },
+    {
+      "id": 158,
+      "type": "VAELoader",
+      "pos": [
+        1940.0,
+        80.0
+      ],
+      "size": [
+        480,
+        112
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae_name",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            309
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "models": [
+          {
+            "name": "flux2-vae.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/vae/flux2-vae.safetensors",
+            "directory": "vae"
+          }
+        ]
+      },
+      "widgets_values": [
+        "FLUX2\\flux2-vae.safetensors"
+      ]
+    },
+    {
+      "id": 162,
+      "type": "VAEDecode",
+      "pos": [
+        4680.0,
+        760.0
+      ],
+      "size": [
+        240,
+        112
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 28,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 231
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 232
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            297
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode",
+        "cnr_id": "comfy-core",
+        "ver": "0.8.2",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        },
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 192,
+      "type": "easy showAnything",
+      "pos": [
+        4180.0,
+        300.0
+      ],
+      "size": [
+        288,
+        176
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "anything",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 268
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "output",
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy showAnything",
+        "cnr_id": "comfyui-easy-use",
+        "ver": "130c1b5796d9876a5f853fa0bea88e808cfda4ad",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "752 x 1328"
+      ]
+    },
+    {
+      "id": 191,
+      "type": "FluxResolutionNode",
+      "pos": [
+        760.0,
+        80.0
+      ],
+      "size": [
+        443.8166809082031,
+        312.6666564941406
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "megapixel",
+          "name": "megapixel",
+          "type": "COMBO",
+          "widget": {
+            "name": "megapixel"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "aspect_ratio",
+          "name": "aspect_ratio",
+          "type": "COMBO",
+          "widget": {
+            "name": "aspect_ratio"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "divisible_by",
+          "name": "divisible_by",
+          "type": "COMBO",
+          "widget": {
+            "name": "divisible_by"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "custom_ratio",
+          "name": "custom_ratio",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "custom_ratio"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "custom_aspect_ratio",
+          "name": "custom_aspect_ratio",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "custom_aspect_ratio"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "links": [
+            283,
+            286,
+            292
+          ]
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "links": [
+            284,
+            287,
+            317
+          ]
+        },
+        {
+          "localized_name": "resolution",
+          "name": "resolution",
+          "type": "STRING",
+          "links": [
+            268
+          ]
+        },
+        {
+          "localized_name": "preview",
+          "name": "preview",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FluxResolutionNode",
+        "cnr_id": "controlaltai-nodes",
+        "ver": "721492b66c9cede8ae23ae10615462ad80cfd061",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "1.0",
+        "9:16 (Slim Vertical)",
+        "16",
+        false,
+        "1:1"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 197,
+      "type": "Seed (rgthree)",
+      "pos": [
+        760.0,
+        440.0
+      ],
+      "size": [
+        320,
+        188
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "dir": 4,
+          "name": "SEED",
+          "shape": 3,
+          "type": "INT",
+          "links": [
+            280
+          ]
+        }
+      ],
+      "properties": {
+        "randomMax": 1125899906842624,
+        "randomMin": 0,
+        "cnr_id": "rgthree-comfy",
+        "ver": "738105af5fb14e96fbecaf406dc356e284797e8c",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        105920486448495,
+        null,
+        null,
+        null
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 185,
+      "type": "Ideogram4PromptBuilderKJ",
+      "pos": [
+        760.0,
+        1760.0
+      ],
+      "size": [
+        1020.6500244140625,
+        572
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 14,
+      "mode": 0,
+      "showAdvanced": false,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "import_json",
+          "name": "import_json",
+          "shape": 7,
+          "type": "STRING",
+          "link": 316
+        },
+        {
+          "localized_name": "bboxes",
+          "name": "bboxes",
+          "shape": 7,
+          "type": "BOUNDING_BOX",
+          "link": null
+        },
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 286
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 287
+        },
+        {
+          "localized_name": "high_level_description",
+          "name": "high_level_description",
+          "type": "STRING",
+          "widget": {
+            "name": "high_level_description"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "background",
+          "name": "background",
+          "type": "STRING",
+          "widget": {
+            "name": "background"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "style",
+          "name": "style",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "style"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "aesthetics",
+          "name": "aesthetics",
+          "type": "STRING",
+          "widget": {
+            "name": "aesthetics"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lighting",
+          "name": "lighting",
+          "type": "STRING",
+          "widget": {
+            "name": "lighting"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "medium",
+          "name": "medium",
+          "type": "STRING",
+          "widget": {
+            "name": "medium"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "import_mode",
+          "name": "import_mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "import_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "output_format",
+          "name": "output_format",
+          "type": "STRING",
+          "widget": {
+            "name": "output_format"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "links": [
+            285,
+            294
+          ]
+        },
+        {
+          "localized_name": "preview",
+          "name": "preview",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "localized_name": "bboxes",
+          "name": "bboxes",
+          "type": "BOUNDING_BOX",
+          "links": null
+        },
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Ideogram4PromptBuilderKJ",
+        "cnr_id": "comfyui-kjnodes",
+        "ver": "16890aa76b7cd39c68205d84cf7f4a029d8f4669",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        },
+        "liveBg": false,
+        "dockPinned": true,
+        "dockGraph": {
+          "x": -6.427754990949599,
+          "y": 624.0609202169195,
+          "w": 1029,
+          "h": 1971
+        },
+        "docked": true,
+        "dockMin": false,
+        "textSize": 17
+      },
+      "widgets_values": [
+        752,
+        1328,
+        "",
+        "",
+        "none",
+        "",
+        "",
+        "",
+        "",
+        "",
+        25,
+        "when empty",
+        "compact",
+        ""
+      ],
+      "ideo": {
+        "boxes": [],
+        "palette": [],
+        "importMode": "when empty",
+        "outputFormat": "compact",
+        "dock": {
+          "pinned": true,
+          "graph": {
+            "x": -6.427754990949599,
+            "y": 624.0609202169195,
+            "w": 1029,
+            "h": 1971
+          },
+          "panelH": 150,
+          "min": false
+        }
+      }
+    },
+    {
+      "id": 202,
+      "type": "SaveImageAdvanced",
+      "pos": [
+        4680.0,
+        920.0
+      ],
+      "size": [
+        1101.88330078125,
+        144
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 297
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "format",
+          "name": "format",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "format.bit_depth",
+          "name": "format.bit_depth",
+          "type": "COMBO",
+          "widget": {
+            "name": "format.bit_depth"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "format.input_color_space",
+          "name": "format.input_color_space",
+          "type": "COMBO",
+          "widget": {
+            "name": "format.input_color_space"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImageAdvanced"
+      },
+      "widgets_values": [
+        "ideogram_",
+        "png",
+        "8-bit",
+        "sRGB"
+      ]
+    },
+    {
+      "id": 206,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        760.0,
+        660.0
+      ],
+      "size": [
+        420,
+        320
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "value",
+          "name": "value",
+          "type": "STRING",
+          "widget": {
+            "name": "value"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            299
+          ]
+        }
+      ],
+      "title": "① DEINE BILDIDEE (Deutsch, natürliche Sprache)",
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core",
+        "ver": "0.9.1"
+      },
+      "widgets_values": [
+        "Ein müder Astronom-Magier steht in voller Körpergröße vor einem schlichten cremefarbenen Hintergrund, hält ein altes Sternenatlas-Buch, trägt einen mitternachtsblauen Sternenmantel. Halbrealistischer Dark-Fantasy-Illustrationsstil. Hochformat.\n"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 207,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        760.0,
+        1020.0
+      ],
+      "size": [
+        420,
+        300
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "value",
+          "name": "value",
+          "type": "STRING",
+          "widget": {
+            "name": "value"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            300
+          ]
+        }
+      ],
+      "title": "SYSTEM-PROMPT (NICHT ÄNDERN — Regeln für Qwen)",
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline",
+        "cnr_id": "comfy-core",
+        "ver": "0.9.1"
+      },
+      "widgets_values": [
+        "You convert a natural-language image idea (the user may write in German) into ONE structured JSON caption that the Ideogram 4 image model consumes. Output ONLY the JSON object. No markdown fences, no commentary, no thinking, nothing before or after.\n\nOUTPUT CONTRACT — exactly three top-level keys, in this order, single-line minified JSON:\n{\"aspect_ratio\":\"W:H\",\"high_level_description\":\"...\",\"compositional_deconstruction\":{\"background\":\"...\",\"elements\":[ ... ]}}\n\nLANGUAGE: All prose fields (high_level_description, background, every element desc) are ALWAYS written in ENGLISH, even when the user idea is in German. ONLY the literal \"text\" field of text-elements keeps the user's verbatim language and characters.\n\naspect_ratio (pick FIRST, it drives every bbox):\n- If the user states a concrete W:H, echo it.\n- Else choose to fit subject/medium: panoramic→16:9 or 3:1; portrait/standing person→9:16 or 4:5; book/poster→2:3 or 3:4; ambiguous→1:1. Never output the word \"auto\".\n\nhigh_level_description — 50-word HARD CAP, one long sentence (max two). Reads like a short natural prompt, starts with the subject. No \"this image shows/depicts\". Names real entities by full name (Eiffel Tower, NVIDIA RTX 5090). Don't enumerate every color/detail. For transparent requests include the literal phrase \"on a transparent background\".\n\nELEMENTS — each is either:\n{\"type\":\"obj\",\"bbox\":[y1,x1,y2,x2],\"desc\":\"...\"}\n{\"type\":\"text\",\"bbox\":[y1,x1,y2,x2],\"text\":\"LINE ONE\\nLINE TWO\",\"desc\":\"...\"}\n\nSINGLE SUBJECT = SINGLE ELEMENT. One animal/person/vehicle/building = exactly ONE obj. Anatomical/structural parts (limbs, wheels, windows, petals) are attributes inside that element's desc, NEVER separate elements. Multiple distinct subjects (a person AND a dog, two runners) = multiple elements, one each. A held prop or worn item described as its own focal detail may be its own element only if the user clearly features it (a glowing pendant, a specific logo).\n\nElement desc — 30-60 word HARD CAP. Identity first, then key attributes, then one distinguishing detail. Standalone (don't write \"the X\" assuming prior context).\n- People: skin tone, hair color+style, each garment with color, expression/gaze, pose, distinguishing feature.\n- Objects: shape, material, color, distinctive parts/markings.\n- Anchor placements to landmarks (\"resting at the base of his throat\", not \"on the skin\").\n- NO shadows (renderer infers them). NO camera/render words (bokeh, depth of field, motion blur) inside obj desc — only viewpoint/angle allowed. NO metaphor words (luminous, radiant, gorgeous) — use observable properties.\n\nBACKGROUND — the scene SHELL only: walls/finishes, floor/ground+surface state, ceiling/fixtures, windows-as-architecture, sky/clouds/fog, scene-wide ambient lighting, distant out-of-focus context.\n- ALWAYS background, never an obj: sky, clouds, horizon, distant mountains/cityscape/crowds, the floor/ground/turf/pavement the scene sits on (incl. wet/cracked/puddled/reflective surface states), ambient walls/studio backdrop. You cannot split these by region.\n- Furniture, vehicles, equipment, people, animals, decor, free-standing lamps → obj elements, NEVER background.\n- Anything named in background must NOT also appear as an obj. Decide once.\n- If the user wants a plain/empty/character-sheet background, write a short clean shell (\"A plain warm ivory-cream background, smooth, subtle gradient, only a soft shadow under the feet, no scene, no props\") and emit only the subject element(s).\n\nBBOX — normalized 0-1000 in BOTH axes, top-left origin, format [y1,x1,y2,x2] with y1<y2, x1<x2.\n- Values are 0-1000 on both axes regardless of aspect ratio. A region that should look square must have (x2-x1)/(y2-y1) ≈ W/H. Most failures come from ignoring this.\n- INCLUDE bbox where position matters (portraits, products, logos, signs, distinct objects). OMIT bbox on dense/unenumerable visuals (crowds, wildflower fields, starry skies, scattered particles).\n\nTEXT HANDLING:\n- Include every readable string: user-quoted text (verbatim, exact characters), format-required text (titles, taglines, dates, prices), in-scene signage/labels/plates/jersey numbers. Numbers ARE text.\n- Each text string is ONE text element (don't also describe its characters in a desc). Use \\n for line breaks within one element; separate visually-distinct blocks into separate elements.\n- For built environments (shops, stalls, vehicles, signage) generate text generously and specifically. For stylized hero titles, stack words with \\n at natural breaks.\n\nSPECIFICITY — commit to ONE value. Banned hedges: \"things like\", \"such as\", \"various\", \"or similar\", \"could include\", \"might be\". Banned alternative listings (\"oak or walnut\", \"cream or ivory\") — pick one. Typography: one typeface category, one weight, one style. Don't invent glitch/wireframe/dissolve effects the user didn't ask for.\n\nPOPULATE: when the brief is sparse and NOT explicitly minimal, add believable secondary subjects and props by depth layer (foreground/midground/background). When the brief says minimal/empty/lonely/single subject/negative space, respect the restraint.\n\nMEDIUM: photograph | illustration | 3D render | graphic design — express as natural framing inside HLD/background, not a separate key. Designed artifact (poster, cover, logo, UI, infographic) → graphic design. Drawn/painted/anime/named-studio → illustration. CGI/render → 3D render. Otherwise default to photograph (wizards/dragons in a photo are fine; only an explicit medium word changes it). For photoreal: prefer natural daylight, neutral white balance, off-center framing; AVOID the word \"warm\" as a grade and avoid DSLR-bokeh markers.\n\nRemember: emit ONLY the minified JSON object. Begin your output with { and end with }.\n\nSKETCH/REFERENCE IMAGE (if one is provided):\nTreat it as a LAYOUT REFERENCE, not as a scene to photograph. Read the rough placement of subjects, text blocks, and regions from the sketch and convert them into bbox positions and elements. Crude shapes/scribbles indicate WHERE things go and their relative size — not their final appearance or color. Take final look, style, colors, materials, and any literal text from the user's written idea; if the idea is silent on a detail, infer something plausible. Where sketch and text conflict on placement, follow the sketch; where they conflict on content/style, follow the text. If no image is provided, ignore this section entirely.\n\n----- USER IDEA BELOW -----\n"
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 208,
+      "type": "TextConcat",
+      "pos": [
+        4180.0,
+        520.0
+      ],
+      "size": [
+        300,
+        288
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "delimiter",
+          "name": "delimiter",
+          "type": "STRING",
+          "widget": {
+            "name": "delimiter"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "text1",
+          "name": "text1",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "text1"
+          },
+          "link": 300
+        },
+        {
+          "localized_name": "text2",
+          "name": "text2",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "text2"
+          },
+          "link": 299
+        },
+        {
+          "localized_name": "text3",
+          "name": "text3",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "text3"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "text4",
+          "name": "text4",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "text4"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "text5",
+          "name": "text5",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "text5"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            301
+          ]
+        }
+      ],
+      "title": "System + Idee zusammenführen",
+      "properties": {
+        "Node name for S&R": "TextConcat",
+        "cnr_id": "mikey_nodes",
+        "ver": "1.0.4"
+      },
+      "widgets_values": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "color": "#346434",
+      "bgcolor": "rgba(24,24,27,.9)"
+    },
+    {
+      "id": 209,
+      "type": "CLIPLoader",
+      "pos": [
+        1940.0,
+        780.0
+      ],
+      "size": [
+        300,
+        140
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "type",
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            310
+          ]
+        }
+      ],
+      "title": "Qwen3.5-VL laden (sieht den Sketch)",
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "cnr_id": "comfy-core",
+        "ver": "0.14.1",
+        "models": [
+          {
+            "name": "qwen3.5_4b_bf16.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/Qwen3.5/resolve/main/text_encoders/qwen3.5_4b_bf16.safetensors",
+            "directory": "text_encoders"
+          }
+        ],
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Qwen\\qwen3.5_4b_bf16.safetensors",
+        "stable_diffusion",
+        "default"
+      ]
+    },
+    {
+      "id": 210,
+      "type": "TextGenerate",
+      "pos": [
+        4180.0,
+        1260.0
+      ],
+      "size": [
+        420,
+        532
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 302
+        },
+        {
+          "localized_name": "image",
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 305
+        },
+        {
+          "localized_name": "video",
+          "name": "video",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 301
+        },
+        {
+          "localized_name": "max_length",
+          "name": "max_length",
+          "type": "INT",
+          "widget": {
+            "name": "max_length"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sampling_mode",
+          "name": "sampling_mode",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "sampling_mode"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "temperature",
+          "name": "sampling_mode.temperature",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.temperature"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "top_k",
+          "name": "sampling_mode.top_k",
+          "type": "INT",
+          "widget": {
+            "name": "sampling_mode.top_k"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "top_p",
+          "name": "sampling_mode.top_p",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.top_p"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "min_p",
+          "name": "sampling_mode.min_p",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.min_p"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "repetition_penalty",
+          "name": "sampling_mode.repetition_penalty",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.repetition_penalty"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "sampling_mode.seed",
+          "type": "INT",
+          "widget": {
+            "name": "sampling_mode.seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "presence_penalty",
+          "name": "sampling_mode.presence_penalty",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "sampling_mode.presence_penalty"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "thinking",
+          "name": "thinking",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "thinking"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "use_default_template",
+          "name": "use_default_template",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_default_template"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "generated_text",
+          "name": "generated_text",
+          "type": "STRING",
+          "links": [
+            303,
+            316
+          ]
+        }
+      ],
+      "title": "② Qwen3 → Ideogram-JSON erzeugen",
+      "properties": {
+        "Node name for S&R": "TextGenerate",
+        "cnr_id": "comfy-core",
+        "ver": "0.14.1",
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.8",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "(kommt automatisch aus dem Concat-Node)",
+        2048,
+        "on",
+        0.6,
+        40,
+        0.9,
+        0.05,
+        1.1,
+        0,
+        0,
+        false,
+        true
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 211,
+      "type": "PreviewAny",
+      "pos": [
+        4680.0,
+        80.0
+      ],
+      "size": [
+        380,
+        320
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "source",
+          "name": "source",
+          "type": "*",
+          "link": 303
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "Qwen-Output (rohes JSON) — Kontrolle",
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "id": 212,
+      "type": "Note",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        566.0166625976562,
+        915.7333374023438
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "📖 ANLEITUNG V3 — Generator + Builder getrennt (bitte lesen!)",
+      "properties": {
+        "Node name for S&R": "Note"
+      },
+      "widgets_values": [
+        "🧠 AUTO-IDEOGRAM4 V3 — der saubere Weg\n========================================\n\nWARUM SO? Der Builder hat einen bekannten Bug (KJNodes Issue #662):\nwird er per Kabel über \"import_json\" gefüttert, sieht er das neue JSON\nimmer erst beim NÄCHSTEN Lauf -> doppeltes Rendern, nervig.\nLösung: Wir trennen GENERATOR (Qwen) und BUILDER sauber.\nQwen baut nur das JSON, DU klickst es per Knopf in den Builder\n-> Kästchen erscheinen sofort, voll verschiebbar, EIN Render.\n\n═══════════════════════════════════════\nABLAUF (so machst du ein Bild):\n═══════════════════════════════════════\n\nSCHRITT 1 — JSON erzeugen (nur der Qwen-Teil):\n  • Idee in die GRÜNE Node ① schreiben (Deutsch ok).\n  • Optional: in Node ③ einen Paint-Sketch des Plakats laden\n    -> Qwen3.5-VL SIEHT ihn und leitet das Layout daraus ab.\n  • Builder (185) + Sampler kurz auf BYPASS (Strg+B), damit nur\n    Qwen läuft und nicht gleich ein leeres Bild gerendert wird.\n  • ▶ Run. Das JSON erscheint groß in der Node\n    \"Qwen-Output (rohes JSON)\".\n\nSCHRITT 2 — ins Builder laden (1 Klick):\n  • Den JSON-Text aus der Output-Node KOPIEREN.\n  • Am Builder (185) den \"Paste\"-Button klicken (oder Rechtsklick\n    -> Einfügen). Die Kästchen + Texte erscheinen auf dem Canvas.\n  • (Builder steht auf import_mode = \"always\", damit das Einfügen\n    den Canvas jedes Mal frisch übernimmt.)\n\nSCHRITT 3 — schieben & rendern:\n  • Jetzt Kästchen frei verschieben / Texte anpassen.\n  • Builder + Sampler vom Bypass nehmen (Strg+B).\n  • ▶ Run -> Bild. Jeder weitere Render nutzt den Canvas,\n    KEIN Doppellauf mehr. Du startest nie bei Null.\n\n═══════════════════════════════════════\nWARUM NICHT VOLLAUTOMATISCH PER KABEL?\n═══════════════════════════════════════\nWeil der Builder seinen Output IMMER aus dem Canvas baut, nicht aus\ndem Kabel-Input. Ein verkabeltes import_json wäre immer 1 Lauf zu spät.\nDer 1 Klick \"Paste\" umgeht das komplett. Das ist Absicht, kein Fehler.\n\nALTERNATIVEN, falls dir der Klick zu viel ist:\n  • V2-Workflow nehmen: Qwen -> direkt ins Bild, 1 Run fertig,\n    aber Kästchen NICHT mit Maus schiebbar (Korrektur per Sprache).\n\nKONTROLLE / TIPPS:\n  • Qwen-Output muss mit { anfangen, mit } enden. Kein Markdown.\n  • Sketch wird ignoriert? -> prüfen ob wirklich qwen3.5_4b_bf16\n    (vision) geladen ist und ③ in Qwens image-Eingang steckt.\n  • JSON abgeschnitten -> max_length in Node ② hoch (4096).\n  • Modell muss in ComfyUI/models/text_encoders/ liegen."
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 213,
+      "type": "LoadImage",
+      "pos": [
+        760.0,
+        1360.0
+      ],
+      "size": [
+        302.20001220703125,
+        360
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 2,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            305
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "③ SKETCH / PAINT-VORLAGE (optional)",
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.9.1"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 214,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        1040.0
+      ],
+      "size": [
+        226,
+        136
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma",
+        "ver": "ffcf2f56aa448f2df763b09b70857632792b7805"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ],
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 215,
+      "type": "MarkdownNote",
+      "pos": [
+        5940.0,
+        80.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load VAE · Node 158",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 158,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load VAE · Node 158\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `vae_name` = `FLUX2\\flux2-vae.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- `vae_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 216,
+      "type": "MarkdownNote",
+      "pos": [
+        5940.0,
+        420.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Conditioning Zero Out · Node 159",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 159,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Conditioning Zero Out · Node 159\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `conditioning` (CONDITIONING, Link 224): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 217,
+      "type": "MarkdownNote",
+      "pos": [
+        5940.0,
+        760.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Empty Flux 2 Latent · Node 160",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 160,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Empty Flux 2 Latent · Node 160\n\n**Zweck:** Erzeugt, kombiniert oder transformiert Daten im Latent-Raum vor Sampling oder Decoding.\n\n**Einstellbare Werte**\n- `width` = `1024` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `1024` — Steuert diesen Parameter. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `batch_size` = `1` — Steuert diesen Parameter. Höher verarbeitet mehr Beispiele parallel und braucht mehr VRAM; niedriger spart Speicher.\n\n**Eingänge**\n- `width` (INT, Link 283): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `height` (INT, Link 284): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `batch_size` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `LATENT` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 218,
+      "type": "MarkdownNote",
+      "pos": [
+        5940.0,
+        1160.0
+      ],
+      "size": [
+        390,
+        379
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SamplerCustomAdvanced · Node 161",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 161,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SamplerCustomAdvanced · Node 161\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `noise` (NOISE, Link 227): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `guider` (GUIDER, Link 254): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampler` (SAMPLER, Link 228): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sigmas` (SIGMAS, Link 264): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `latent_image` (LATENT, Link 230): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (LATENT, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `denoised_output` (LATENT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 219,
+      "type": "MarkdownNote",
+      "pos": [
+        5940.0,
+        1580.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · VAE Decode · Node 162",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 162,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · VAE Decode · Node 162\n\n**Zweck:** Decodes latent images back into pixel space images.\n\n**Einstellbare Werte**\n- Keine direkt einstellbaren Widgets; die Wirkung wird über Verbindungen bestimmt.\n\n**Eingänge**\n- `samples` (LATENT, Link 231): The latent to be decoded.\n- `vae` (VAE, Link 232): The VAE model used for decoding the latent.\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): The decoded image."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 220,
+      "type": "MarkdownNote",
+      "pos": [
+        5940.0,
+        1940.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · KSamplerSelect · Node 163",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 163,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · KSamplerSelect · Node 163\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `sampler_name` = `euler` — Steuert diesen Parameter. Die Auswahl ändert den Rauschabbau und damit Stil, Laufzeit und Ergebnischarakter.\n\n**Eingänge**\n- `sampler_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `SAMPLER` (SAMPLER, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 221,
+      "type": "MarkdownNote",
+      "pos": [
+        5940.0,
+        2280.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · RandomNoise · Node 165",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 165,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · RandomNoise · Node 165\n\n**Zweck:** Erzeugt oder verändert das Start-Rauschen, das die Variation des generierten Ergebnisses bestimmt.\n\n**Einstellbare Werte**\n- `noise_seed` = `1335735769456` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `noise_seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n\n**Eingänge**\n- `noise_seed` (INT, Link 280): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `NOISE` (NOISE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 222,
+      "type": "MarkdownNote",
+      "pos": [
+        5940.0,
+        2640.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Diffusion Model · Node 166",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 166,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Diffusion Model · Node 166\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `Ideogram4\\ideogram4_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 223,
+      "type": "MarkdownNote",
+      "pos": [
+        5940.0,
+        3000.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · CLIP Text Encode (Positive Prompt) · Node 167",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 167,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · CLIP Text Encode (Positive Prompt) · Node 167\n\n**Zweck:** Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.\n\n**Einstellbare Werte**\n- `text` = `` — The text to be encoded. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `clip` (CLIP, Link 279): The CLIP model used for encoding the text.\n- `text` (STRING, Link 285): The text to be encoded.\n\n**Ausgänge**\n- `CONDITIONING` (CONDITIONING, 2 Verbindung(en)): A conditioning containing the embedded text used to guide the diffusion model."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 224,
+      "type": "MarkdownNote",
+      "pos": [
+        6400.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load CLIP · Node 168",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 168,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load CLIP · Node 168\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `Qwen\\qwen3vl_8b_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `ideogram4` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 225,
+      "type": "MarkdownNote",
+      "pos": [
+        6400.0,
+        480.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Load Diffusion Model · Node 181",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 181,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Load Diffusion Model · Node 181\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `unet_name` = `Ideogram4\\ideogram4_unconditional_fp8_scaled.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `weight_dtype` = `default` — Steuert diesen Parameter. Die Auswahl ändert Rechenpräzision, Speicherbedarf und Hardware-Kompatibilität.\n\n**Eingänge**\n- `unet_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `weight_dtype` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 226,
+      "type": "MarkdownNote",
+      "pos": [
+        6400.0,
+        840.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 42,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Dual Model CFG Guider · Node 182",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 182,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Dual Model CFG Guider · Node 182\n\n**Zweck:** Erzeugt, kombiniert oder gewichtet Konditionierungen, die das generative Modell während des Samplings steuern.\n\n**Einstellbare Werte**\n- `cfg` = `7` — Steuert diesen Parameter. Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n\n**Eingänge**\n- `model` (MODEL, Link 257): Model used for the positive (conditional) pass.\n- `positive` (CONDITIONING, Link 252): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_negative` (MODEL, Link 278): Model used for the negative (unconditional) pass. Use the same model for ordinary CFG.\n- `negative` (CONDITIONING, Link 253): Negative conditioning run on the negative model. Leave unconnected for a text-free (image-only) unconditional pass.\n- `cfg` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `GUIDER` (GUIDER, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 227,
+      "type": "MarkdownNote",
+      "pos": [
+        6400.0,
+        1240.0
+      ],
+      "size": [
+        390,
+        379
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · CFG Override · Node 184",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 184,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · CFG Override · Node 184\n\n**Zweck:** Override cfg to a fixed value over a [start, end] percent (sigma) range. With multiple overrides, the one nearest the sampler wins on overlap.\n\n**Einstellbare Werte**\n- `cfg` = `3` — Steuert diesen Parameter. Höher folgt der Vorgabe stärker, kann unnatürlich/übersättigt wirken; niedriger lässt mehr Freiheit.\n- `start_percent` = `0.7` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `end_percent` = `1` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n\n**Eingänge**\n- `model` (MODEL, Link 291): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `cfg` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `start_percent` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `end_percent` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 228,
+      "type": "MarkdownNote",
+      "pos": [
+        6400.0,
+        1660.0
+      ],
+      "size": [
+        390,
+        540
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Ideogram 4 Prompt Builder KJ · Node 185",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 185,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Ideogram 4 Prompt Builder KJ · Node 185\n\n**Zweck:** Visual prompt builder for Ideogram 4's structured JSON caption format. ↵  ↵ Drag on the canvas to draw regions; select a region to set its type (obj/text),   ↵ description, text, and color palette. Set the background and optional style fields   ↵ as widgets. Outputs the assembled caption JSON string.   ↵  ↵ bbox is no…\n\n**Einstellbare Werte**\n- `width` = `752` — Canvas aspect width (also the pixel grid the bbox is measured in). Ideogram 4 needs multiples of 16. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `height` = `1328` — Canvas aspect height (also the pixel grid the bbox is measured in). Ideogram 4 needs multiples of 16. Höher liefert mehr Auflösung/Fläche, benötigt aber mehr VRAM und Zeit; niedriger ist schneller und sparsamer.\n- `high_level_description` = `` — Optional one-line overview of the whole image (blank = omitted). Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `background` = `` — Required scene background description. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `style` = `none` — Steuert diesen Parameter. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `aesthetics` = `` — Style descriptor (blank = omitted). Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `lighting` = `` — Style descriptor (blank = omitted). Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `medium` = `` — Style descriptor (blank = omitted). Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `style_palette_data` = `` — Serialized style color palette from the editor (managed by the node UI). Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `elements_data` = `` — Serialized regions from the editor (managed by the node UI). Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `bg_brightness` = `25` — Background image brightness % (managed by the node UI slider). Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `import_mode` = `when empty` — How a wired import_json is used: 'when empty' only seeds the editor while it has no regions (then the editor wins, so you can edit); 'always' makes the wired JSON authoritative so… Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `output_format` = `compact` — Output JSON formatting (set via the editor toolbar): 'compact' (default, what Ideogram 4 expects) or 'pretty' (indented, for readability). Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `image` (IMAGE, nicht verbunden): Optional reference image shown as the editor background (and behind the preview).\n- `import_json` (STRING, Link 316): Optional: a full caption JSON. When connected, it loads into the editor and drives the output per 'import_mode'.\n- `bboxes` (BOUNDING_BOX, nicht verbunden): Optional pixel-space boxes ({x, y, width, height}) used to seed the editor's regions when it has none. Ignored once regions exist.\n- `width` (INT, Link 286): Canvas aspect width (also the pixel grid the bbox is measured in). Ideogram 4 needs multiples of 16.\n- `height` (INT, Link 287): Canvas aspect height (also the pixel grid the bbox is measured in). Ideogram 4 needs multiples of 16.\n- `high_level_description` (STRING, nicht verbunden): Optional one-line overview of the whole image (blank = omitted).\n- `background` (STRING, nicht verbunden): Required scene background description.\n- `style` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `aesthetics` (STRING, nicht verbunden): Style descriptor (blank = omitted).\n- `lighting` (STRING, nicht verbunden): Style descriptor (blank = omitted).\n- `medium` (STRING, nicht verbunden): Style descriptor (blank = omitted).\n- `import_mode` (COMBO, nicht verbunden): How a wired import_json is used: 'when empty' only seeds the editor while it has no regions (then the editor wins, so you can edit); 'always' makes t…\n- `output_format` (STRING, nicht verbunden): Output JSON formatting (set via the editor toolbar): 'compact' (default, what Ideogram 4 expects) or 'pretty' (indented, for readability).\n\n**Ausgänge**\n- `prompt` (STRING, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `preview` (IMAGE, nicht verbunden): Ergebnis dieses Nodes\n- `bboxes` (BOUNDING_BOX, nicht verbunden): Ergebnis dieses Nodes\n- `width` (INT, nicht verbunden): Ergebnis dieses Nodes\n- `height` (INT, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 229,
+      "type": "MarkdownNote",
+      "pos": [
+        6400.0,
+        2240.0
+      ],
+      "size": [
+        390,
+        345
+      ],
+      "flags": {},
+      "order": 45,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SigmasPreview · Node 189",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 189,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SigmasPreview · Node 189\n\n**Zweck:** Saves the input images to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `print_as_list` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `line_color` = `blue` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `sigmas` (SIGMAS, Link 263): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `print_as_list` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `line_color` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 230,
+      "type": "MarkdownNote",
+      "pos": [
+        6400.0,
+        2620.0
+      ],
+      "size": [
+        390,
+        379
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Ideogram 4 Scheduler (20 Schritte) · Node 190",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 190,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Ideogram 4 Scheduler (20 Schritte) · Node 190\n\n**Zweck:** Rauschplan von Ideogram 4 (Logit-Normal-Zeitplan mit Auflösungsterm), wie in der offiziellen ComfyUI-Vorlage. Seit v1.3.1 statt BasicScheduler karras/28 mit res_2m: dieser Plan passt nicht zu dem Flow-Modell und hinterließ ein Raster-/Krakelee-Muster über dem ganzen Bild, unscharfe Flächen und unleserliche kleine Schrift.\n\n**Einstellbare Werte**\n- `steps` = `20` — Preset „Default“. „Quality“: 48 Schritte, mu 0, std 1,5; „Turbo“: 12 Schritte, mu 0,5, std 1,75.\n- `width` / `height` = `1024` — kommt vom Auflösungs-Node, wie beim Latent.\n- `mu` = `0` — Verschiebung des Plans (Preset-Wert).\n- `std` = `1.75` — Streuung des Plans.\n\n**Eingänge**\n- `steps` (INT, nicht verbunden): Schritte\n- `width` (INT, Link 292): Bildbreite\n- `height` (INT, Link 317): Bildhöhe\n- `mu` (FLOAT, nicht verbunden): Verschiebung\n- `std` (FLOAT, nicht verbunden): Streuung\n\n**Ausgänge**\n- `SIGMAS` (SIGMAS, 2 Verbindung(en)): Rauschplan für den Sampler"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 231,
+      "type": "MarkdownNote",
+      "pos": [
+        6400.0,
+        3040.0
+      ],
+      "size": [
+        390,
+        481
+      ],
+      "flags": {},
+      "order": 47,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Flux Resolution Calc · Node 191",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 191,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Flux Resolution Calc · Node 191\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `FluxResolutionNode` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `megapixel` = `1.0` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `aspect_ratio` = `9:16 (Slim Vertical)` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `divisible_by` = `16` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `custom_ratio` = `False` — Steuert diesen Parameter. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `custom_aspect_ratio` = `1:1` — Steuert diesen Parameter. Ändert Seitenverhältnis bzw. Rasterteilung; größere Vielfache erhöhen Kompatibilität, können Abmessungen aber stärker runden.\n\n**Eingänge**\n- `megapixel` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `aspect_ratio` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `divisible_by` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `custom_ratio` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `custom_aspect_ratio` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `width` (INT, 3 Verbindung(en)): Ergebnis dieses Nodes\n- `height` (INT, 3 Verbindung(en)): Ergebnis dieses Nodes\n- `resolution` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `preview` (IMAGE, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 232,
+      "type": "MarkdownNote",
+      "pos": [
+        6400.0,
+        3560.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 48,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Show Any · Node 192",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 192,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Show Any · Node 192\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `easy showAnything` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `value` = `752 x 1328` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `anything` (*, Link 268): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `output` (*, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 233,
+      "type": "MarkdownNote",
+      "pos": [
+        6880.0,
+        80.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 49,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Seed (rgthree) · Node 197",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 197,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Seed (rgthree) · Node 197\n\n**Zweck:** Verarbeitet die Ein- und Ausgaben des Node-Typs `Seed (rgthree)` gemäß seiner Workflow-Funktion.\n\n**Einstellbare Werte**\n- `seed` = `105920486448495` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `SEED` (INT, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 234,
+      "type": "MarkdownNote",
+      "pos": [
+        6880.0,
+        420.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · ModelSamplingAuraFlow · Node 198",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 198,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · ModelSamplingAuraFlow · Node 198\n\n**Zweck:** Steuert Sampling, Zeitplan oder Modell-Sampling für den schrittweisen Rauschabbau.\n\n**Einstellbare Werte**\n- `shift` = `1` — Steuert diesen Parameter. Höher verschiebt den Rausch-/Sigma-Zeitplan und gewichtet andere Denoising-Phasen; zu starke Abweichungen können Qualität kosten.\n\n**Eingänge**\n- `model` (MODEL, Link 293): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `shift` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 235,
+      "type": "MarkdownNote",
+      "pos": [
+        6880.0,
+        780.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 51,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Preview as Text · Node 199",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 199,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Preview as Text · Node 199\n\n**Zweck:** Preview any input value as text.\n\n**Einstellbare Werte**\n- `value` = `None` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `source` (*, Link 294): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 236,
+      "type": "MarkdownNote",
+      "pos": [
+        6880.0,
+        1120.0
+      ],
+      "size": [
+        390,
+        413
+      ],
+      "flags": {},
+      "order": 52,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Save Image (Advanced) · Node 202",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 202,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Save Image (Advanced) · Node 202\n\n**Zweck:** Saves the input images to your ComfyUI output directory.\n\n**Einstellbare Werte**\n- `filename_prefix` = `ideogram_` — The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd% or %Empty Latent Image.width%. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `format` = `png` — The file format in which to save the image. Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `bit_depth` = `8-bit` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `input_color_space` = `sRGB` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `images` (IMAGE, Link 297): The images to save.\n- `filename_prefix` (STRING, nicht verbunden): The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd% or %Empty Latent Image.width%.\n- `format` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): The file format in which to save the image.\n- `format.bit_depth` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `format.input_color_space` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- Keine Ausgänge."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 237,
+      "type": "MarkdownNote",
+      "pos": [
+        6880.0,
+        1580.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 53,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · ① DEINE BILDIDEE (Deutsch, natürliche Sprache) · Node 206",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 206,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · ① DEINE BILDIDEE (Deutsch, natürliche Sprache) · Node 206\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `Ein müder Astronom-Magier steht in voller Körpergröße vor einem schlichten cremefarbenen Hintergrund, hält ei…` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 238,
+      "type": "MarkdownNote",
+      "pos": [
+        6880.0,
+        1920.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 54,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SYSTEM-PROMPT (NICHT ÄNDERN — Regeln für Qwen) · Node 207",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 207,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SYSTEM-PROMPT (NICHT ÄNDERN — Regeln für Qwen) · Node 207\n\n**Zweck:** Stellt einen direkt einstellbaren Wert für verbundene Nodes bereit.\n\n**Einstellbare Werte**\n- `value` = `You convert a natural-language image idea (the user may write in German) into ONE structured JSON caption tha…` — Steuert diesen Parameter. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `value` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 239,
+      "type": "MarkdownNote",
+      "pos": [
+        6880.0,
+        2260.0
+      ],
+      "size": [
+        390,
+        464
+      ],
+      "flags": {},
+      "order": 55,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · System + Idee zusammenführen · Node 208",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 208,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · System + Idee zusammenführen · Node 208\n\n**Zweck:** Erzeugt, kombiniert, ersetzt oder extrahiert Text für nachfolgende Workflow-Schritte.\n\n**Einstellbare Werte**\n- `delimiter` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `text1` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `text2` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `text3` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `text4` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `text5` = `` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n\n**Eingänge**\n- `delimiter` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text1` (STRING, Link 300): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text2` (STRING, Link 299): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text3` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text4` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `text5` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 240,
+      "type": "MarkdownNote",
+      "pos": [
+        6880.0,
+        2760.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 56,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Qwen3.5-VL laden (sieht den Sketch) · Node 209",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 209,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Qwen3.5-VL laden (sieht den Sketch) · Node 209\n\n**Zweck:** Recipes: ↵ sd: clip-l ↵ stable cascade: clip-g ↵ sd3: t5 xxl / clip-g / clip-l ↵ stable audio: t5 base ↵ mochi: t5 xxl ↵ cogvideox: t5 xxl (226-token padding) ↵ cosmos: old t5 xxl ↵ lumina2: gemma 2 2B ↵ wan: umt5 xxl ↵ hidream: llama-3.1 (Recommend) or t5 ↵ omnigen2: qwen vl 2.5 3B ↵ joyimage: qwen3-vl 8B ↵ lens: gpt…\n\n**Einstellbare Werte**\n- `clip_name` = `Qwen\\qwen3.5_4b_bf16.safetensors` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `type` = `stable_diffusion` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `device` = `default` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `type` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 241,
+      "type": "MarkdownNote",
+      "pos": [
+        6880.0,
+        3160.0
+      ],
+      "size": [
+        390,
+        540
+      ],
+      "flags": {},
+      "order": 57,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · ② Qwen3 → Ideogram-JSON erzeugen · Node 210",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 210,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · ② Qwen3 → Ideogram-JSON erzeugen · Node 210\n\n**Zweck:** Erzeugt mit dem geladenen Sprachmodell Text aus Prompt und optionalen Bild-, Video- oder Audio-Eingaben.\n\n**Einstellbare Werte**\n- `prompt` = `(kommt automatisch aus dem Concat-Node)` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `max_length` = `2048` — Steuert diesen Parameter. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n- `sampling_mode` = `on` — Sampling Mode Ändert die Verarbeitung dieses Nodes entsprechend dem angeschlossenen Datentyp.\n- `temperature` = `0.6` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `top_k` = `40` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `top_p` = `0.9` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `min_p` = `0.05` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `repetition_penalty` = `1.1` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n- `seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `presence_penalty` = `0` — Steuert diesen Parameter. Höher bevorzugt neue Inhalte statt bereits verwendeter Tokens; 0 lässt die ursprüngliche Modellverteilung unverändert.\n- `thinking` = `False` — Operate in thinking mode if the model supports it. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n- `use_default_template` = `True` — Use the built in system prompt/template if the model has one. AN aktiviert die Funktion; AUS deaktiviert sie bzw. verwendet den Standardpfad.\n\n**Eingänge**\n- `clip` (CLIP, Link 302): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `image` (IMAGE, Link 305): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `video` (IMAGE, nicht verbunden): Video frames as image batch. Assumed to be 24 FPS; subsampled to 1 FPS internally.\n- `audio` (AUDIO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `prompt` (STRING, Link 301): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_length` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode` (COMFY_DYNAMICCOMBO_V3, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.top_k` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.top_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.min_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.repetition_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `sampling_mode.presence_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `thinking` (BOOLEAN, nicht verbunden): Operate in thinking mode if the model supports it.\n- `use_default_template` (BOOLEAN, nicht verbunden): Use the built in system prompt/template if the model has one.\n\n**Ausgänge**\n- `generated_text` (STRING, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 242,
+      "type": "MarkdownNote",
+      "pos": [
+        7360.0,
+        80.0
+      ],
+      "size": [
+        390,
+        294
+      ],
+      "flags": {},
+      "order": 58,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Qwen-Output (rohes JSON) — Kontrolle · Node 211",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 211,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Qwen-Output (rohes JSON) — Kontrolle · Node 211\n\n**Zweck:** Preview any input value as text.\n\n**Einstellbare Werte**\n- `value` = `None` — Direkter Primitive-Wert für verbundene Nodes. Höher gibt einen größeren Zahlenwert an verbundene Nodes weiter; niedriger einen kleineren, ohne eigene Zusatzwirkung.\n\n**Eingänge**\n- `source` (*, Link 303): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `STRING` (STRING, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 243,
+      "type": "MarkdownNote",
+      "pos": [
+        7360.0,
+        420.0
+      ],
+      "size": [
+        390,
+        328
+      ],
+      "flags": {},
+      "order": 59,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · ③ SKETCH / PAINT-VORLAGE (optional) · Node 213",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 213,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · ③ SKETCH / PAINT-VORLAGE (optional) · Node 213\n\n**Zweck:** Lädt die angegebene Ressource und stellt sie für nachfolgende Verarbeitungsschritte bereit.\n\n**Einstellbare Werte**\n- `image` = `example.png` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n\n**Eingänge**\n- `image` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `upload` (IMAGEUPLOAD, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `IMAGE` (IMAGE, 1 Verbindung(en)): Ergebnis dieses Nodes\n- `MASK` (MASK, nicht verbunden): Ergebnis dieses Nodes\n\n**v1.3.1:** standardmäßig stummgeschaltet – der Eingang ist optional, und eine fehlende Platzhalterdatei ließ ComfyUI den ganzen Qwen-Zweig verwerfen. Zum Verwenden Node auswählen und Strg+M drücken."
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 244,
+      "type": "SelectModelDevice",
+      "pos": [
+        1940.0,
+        960.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 60,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 306
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 311
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            278
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectModelDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectModelDevice · central control",
+      "color": "#16334a",
+      "bgcolor": "#1d4968"
+    },
+    {
+      "id": 245,
+      "type": "SelectModelDevice",
+      "pos": [
+        2580.0,
+        80.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 61,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 307
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 312
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            293
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectModelDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectModelDevice · central control",
+      "color": "#16334a",
+      "bgcolor": "#1d4968"
+    },
+    {
+      "id": 246,
+      "type": "SelectCLIPDevice",
+      "pos": [
+        2580.0,
+        200.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 62,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 308
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 313
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 0,
+          "links": [
+            279
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectCLIPDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectCLIPDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 247,
+      "type": "SelectVAEDevice",
+      "pos": [
+        2580.0,
+        320.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 63,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 309
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 314
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            232
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectVAEDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectVAEDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 248,
+      "type": "SelectCLIPDevice",
+      "pos": [
+        2580.0,
+        440.0
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 64,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 310
+        },
+        {
+          "localized_name": "device",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": 315
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 0,
+          "links": [
+            302
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SelectCLIPDevice",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "gpu:0"
+      ],
+      "title": "SelectCLIPDevice · central control",
+      "color": "#3b2d18",
+      "bgcolor": "#5a4322"
+    },
+    {
+      "id": 249,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1220.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 65,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": [
+            311,
+            312
+          ]
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": [
+            313,
+            315
+          ]
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": [
+            314
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 250,
+      "type": "MarkdownNote",
+      "pos": [
+        7360.0,
+        780.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 66,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectModelDevice · central control · Node 244",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 244,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectModelDevice · central control · Node 244\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 306): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 311): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 251,
+      "type": "MarkdownNote",
+      "pos": [
+        7360.0,
+        1140.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 67,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectModelDevice · central control · Node 245",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 245,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectModelDevice · central control · Node 245\n\n**Zweck:** Platziert das Diffusionsmodell auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `model` (MODEL, Link 307): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 312): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `MODEL` (MODEL, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 252,
+      "type": "MarkdownNote",
+      "pos": [
+        7360.0,
+        1500.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 68,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectCLIPDevice · central control · Node 246",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 246,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectCLIPDevice · central control · Node 246\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 308): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 313): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 253,
+      "type": "MarkdownNote",
+      "pos": [
+        7360.0,
+        1860.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 69,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectVAEDevice · central control · Node 247",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 247,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectVAEDevice · central control · Node 247\n\n**Zweck:** Platziert den Bild-, Video- oder Audio-VAE auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `vae` (VAE, Link 309): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 314): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `VAE` (VAE, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 254,
+      "type": "MarkdownNote",
+      "pos": [
+        7360.0,
+        2220.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 70,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · SelectCLIPDevice · central control · Node 248",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 248,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · SelectCLIPDevice · central control · Node 248\n\n**Zweck:** Platziert den CLIP- oder Textencoder auf einem bestimmten ComfyUI-GPU-Gerät.\n\n**Einstellbare Werte**\n- `device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl bestimmt das Rechen-Backend (z. B. GPU oder CPU) und damit Geschwindigkeit und Kompatibilität.\n\n**Eingänge**\n- `clip` (CLIP, Link 310): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `device` (COMBO, Link 315): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `CLIP` (CLIP, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 255,
+      "type": "MarkdownNote",
+      "pos": [
+        7360.0,
+        2580.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 71,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 249",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 249,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 249\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `clip_device` (COMBO, 2 Verbindung(en)): Ergebnis dieses Nodes\n- `vae_device` (COMBO, 1 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      224,
+      167,
+      0,
+      159,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      227,
+      165,
+      0,
+      161,
+      0,
+      "NOISE"
+    ],
+    [
+      228,
+      163,
+      0,
+      161,
+      2,
+      "SAMPLER"
+    ],
+    [
+      230,
+      160,
+      0,
+      161,
+      4,
+      "LATENT"
+    ],
+    [
+      231,
+      161,
+      0,
+      162,
+      0,
+      "LATENT"
+    ],
+    [
+      232,
+      247,
+      0,
+      162,
+      1,
+      "VAE"
+    ],
+    [
+      252,
+      167,
+      0,
+      182,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      253,
+      159,
+      0,
+      182,
+      3,
+      "CONDITIONING"
+    ],
+    [
+      254,
+      182,
+      0,
+      161,
+      1,
+      "GUIDER"
+    ],
+    [
+      257,
+      184,
+      0,
+      182,
+      0,
+      "MODEL"
+    ],
+    [
+      263,
+      190,
+      0,
+      189,
+      0,
+      "SIGMAS"
+    ],
+    [
+      264,
+      190,
+      0,
+      161,
+      3,
+      "SIGMAS"
+    ],
+    [
+      268,
+      191,
+      2,
+      192,
+      0,
+      "STRING"
+    ],
+    [
+      278,
+      244,
+      0,
+      182,
+      2,
+      "MODEL"
+    ],
+    [
+      279,
+      246,
+      0,
+      167,
+      0,
+      "CLIP"
+    ],
+    [
+      280,
+      197,
+      0,
+      165,
+      0,
+      "INT"
+    ],
+    [
+      283,
+      191,
+      0,
+      160,
+      0,
+      "INT"
+    ],
+    [
+      284,
+      191,
+      1,
+      160,
+      1,
+      "INT"
+    ],
+    [
+      285,
+      185,
+      0,
+      167,
+      1,
+      "STRING"
+    ],
+    [
+      286,
+      191,
+      0,
+      185,
+      3,
+      "INT"
+    ],
+    [
+      287,
+      191,
+      1,
+      185,
+      4,
+      "INT"
+    ],
+    [
+      291,
+      198,
+      0,
+      184,
+      0,
+      "MODEL"
+    ],
+    [
+      292,
+      191,
+      0,
+      190,
+      1,
+      "INT"
+    ],
+    [
+      293,
+      245,
+      0,
+      198,
+      0,
+      "MODEL"
+    ],
+    [
+      294,
+      185,
+      0,
+      199,
+      0,
+      "STRING"
+    ],
+    [
+      297,
+      162,
+      0,
+      202,
+      0,
+      "IMAGE"
+    ],
+    [
+      299,
+      206,
+      0,
+      208,
+      2,
+      "STRING"
+    ],
+    [
+      300,
+      207,
+      0,
+      208,
+      1,
+      "STRING"
+    ],
+    [
+      301,
+      208,
+      0,
+      210,
+      4,
+      "STRING"
+    ],
+    [
+      302,
+      248,
+      0,
+      210,
+      0,
+      "CLIP"
+    ],
+    [
+      303,
+      210,
+      0,
+      211,
+      0,
+      "*"
+    ],
+    [
+      305,
+      213,
+      0,
+      210,
+      1,
+      "IMAGE"
+    ],
+    [
+      306,
+      181,
+      0,
+      244,
+      0,
+      "MODEL"
+    ],
+    [
+      307,
+      166,
+      0,
+      245,
+      0,
+      "MODEL"
+    ],
+    [
+      308,
+      168,
+      0,
+      246,
+      0,
+      "CLIP"
+    ],
+    [
+      309,
+      158,
+      0,
+      247,
+      0,
+      "VAE"
+    ],
+    [
+      310,
+      209,
+      0,
+      248,
+      0,
+      "CLIP"
+    ],
+    [
+      311,
+      249,
+      0,
+      244,
+      1,
+      "COMBO"
+    ],
+    [
+      312,
+      249,
+      0,
+      245,
+      1,
+      "COMBO"
+    ],
+    [
+      313,
+      249,
+      1,
+      246,
+      1,
+      "COMBO"
+    ],
+    [
+      314,
+      249,
+      2,
+      247,
+      1,
+      "COMBO"
+    ],
+    [
+      315,
+      249,
+      1,
+      248,
+      1,
+      "COMBO"
+    ],
+    [
+      316,
+      210,
+      0,
+      185,
+      1,
+      "STRING"
+    ],
+    [
+      317,
+      191,
+      1,
+      190,
+      2,
+      "INT"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        640.0,
+        1440.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "O1 · ORIGIN INPUTS",
+      "bounding": [
+        720.0,
+        0.0,
+        1100.0,
+        2380.0
+      ],
+      "color": "#7C5CC4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "D1 · DEPENDENCIES",
+      "bounding": [
+        1900.0,
+        0.0,
+        1020.0,
+        1080.0
+      ],
+      "color": "#3F789E",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "E1 · ENCODE & CONDITION",
+      "bounding": [
+        3000.0,
+        0.0,
+        520.0,
+        320.0
+      ],
+      "color": "#C68B31",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        3600.0,
+        0.0,
+        460.0,
+        1200.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        4140.0,
+        0.0,
+        1680.0,
+        1840.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 7,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        5900.0,
+        0.0,
+        1900.0,
+        3900.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.3323517716472185,
+      "offset": [
+        -1939.7355382187443,
+        2378.79167426377
+      ]
+    },
+    "frontendVersion": "1.45.15",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true,
+    "ue_links": [],
+    "links_added_by_ue": [],
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 35,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [
+        "model_device",
+        "clip_device",
+        "vae_device"
+      ],
+      "placement_support": "official-selectors",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "Ideogram4_Qwen3_5-Auto-Prompt-to-Image",
+      "source": "workflows/Prompt Enhancer/Ideogram4_Qwen3_5-Auto-Prompt-to-Image.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 5,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "bb785fe6b8b7b78f3c72605b42705f1e4319acabce65e9fff3c0426d1d54ea7f",
+      "exceptions": []
+    }
+  },
+  "version": 0.4
+}

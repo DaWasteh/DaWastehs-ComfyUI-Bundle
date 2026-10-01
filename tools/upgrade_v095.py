@@ -13,14 +13,19 @@ import json
 import uuid
 from typing import Any
 
+try:
+    from tools.workflow_names_v131 import original_name
+except ModuleNotFoundError:  # Direct execution
+    from workflow_names_v131 import original_name
+
 
 UPGRADE_KEY = "dawasteh_v095_game_dev"
 UPGRADE_VERSION = 1
-TEXTURE_PATH = "Game Development/FLUX2_Klein_4B-PS1-Texture-Concept.json"
-TEXTURE_SOURCE = "Text to Image/FLUX2_Klein_4b-Text-to-Image.json"
-HUNYUAN_PATH = "Game Development/Hunyuan3D_v2_1-Low-Poly-Static-Mesh-for-Godot.json"
-HUNYUAN_SOURCE = "Image to 3D-Mesh/Hunyuan3D_v2_1-Image-to-3D-Mesh.json"
-VOICE_PATH = "Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json"
+TEXTURE_PATH = "Game Development/FLUX2_Klein_4B_BF16-Text-to-PS1-Texture.json"
+TEXTURE_SOURCE = "Text to Image/FLUX2_Klein_4B_BF16-Text-to-Image.json"
+HUNYUAN_PATH = "Game Development/Hunyuan3D_2_1_FP16-Image-to-LowPoly-Mesh-Godot.json"
+HUNYUAN_SOURCE = "Image to 3D-Mesh/Hunyuan3D_2_1_FP16-Image-to-Mesh.json"
+VOICE_PATH = "Voice Design/RVC_DirectML-Microphone-to-Voice-Swap-Live.json"
 VOICE_SOURCE = "Live Avatar/LiveAvatar-06-VRM-Full-Body-Hand-Face+Live-Mic.json"
 VOICE_UPGRADE_KEY = "dawasteh_v095_live_voice"
 ADDITION_SOURCES = {
@@ -118,7 +123,7 @@ def _mark_refresh(*nodes: dict[str, Any]) -> None:
 
 
 def _set_identity(workflow: dict[str, Any], path_key: str, family: str) -> None:
-    workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-v095:{path_key}"))
+    workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-v095:{original_name(path_key)}"))
     workflow["revision"] = 0
     for node in workflow.get("nodes", []):
         if node.get("type") == "DaWMultiGPUDeviceControl":
@@ -130,7 +135,7 @@ def _set_identity(workflow: dict[str, Any], path_key: str, family: str) -> None:
     gpu = workflow.setdefault("extra", {}).setdefault("dawasteh_dual_gpu", {})
     gpu.update({
         "family": family,
-        "source": f"workflows/{path_key}",
+        "source": f"workflows/{original_name(path_key)}",
         "curated_split_default": False,
         "defaults": {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
     })

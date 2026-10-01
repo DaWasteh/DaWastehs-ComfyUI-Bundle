@@ -1,6 +1,6 @@
 # Video-Upscaling mit WAN 2.2 (WAN 2.1 kompatibel) · v1.2.6
 
-Neuer Workflow in `workflows/Video Upscaling/`: **`WAN22_14B_LowNoise-Video-Upscale.json`**. Er vergrößert fertige
+Neuer Workflow in `workflows/Video Upscaling/`: **`WAN22_T2V_14B_LowNoise_FP8-Video-Upscale.json`**. Er vergrößert fertige
 Videos beliebiger Länge mit Lanczos auf die Zielgröße und lässt dann den **Low-Noise-Experten von WAN 2.2 A14B**
 (Text-to-Video, fp8) mit der lightx2v-LoRA kurz nachrechnen. Der Low-Noise-Experte ist genau für die letzte, feine
 Phase einer Generierung trainiert: Er ergänzt Haut-, Haar-, Stoff- und Fassadendetails, Komposition, Personen und

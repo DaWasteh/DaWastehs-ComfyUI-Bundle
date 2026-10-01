@@ -7,6 +7,7 @@ from pathlib import Path
 
 from tools.migrate_workflows_v092 import migrate_workflow
 from tools.upgrade_v098 import REMOVED_PACK, REPLACEMENTS, TARGET_PATHS, UPGRADE_KEY, UPGRADE_VERSION, upgrade_workflow
+from tools.workflow_names_v131 import old_key
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +25,7 @@ def by_id(workflow: dict) -> dict[int, dict]:
 def previous_release(path_key: str) -> dict:
     return json.loads(
         subprocess.check_output(
-            ["git", "show", f"v0.9.7:workflows/{path_key}"],
+            ["git", "show", f"v0.9.7:workflows/{old_key(path_key)}"],  # v1.3.1 renamed the files
             cwd=ROOT,
             text=True,
             encoding="utf-8",
@@ -45,7 +46,7 @@ class V098CorePrimitiveTests(unittest.TestCase):
                 upgraded, changed = upgrade_workflow(workflow, path_key)
                 self.assertFalse(changed)
                 self.assertEqual(upgraded, workflow)
-        untouched = "Text to Image/ZImage_turbo-Text-to-Image.json"
+        untouched = "Text to Image/ZImage_Turbo_BF16-Text-to-Image.json"
         workflow = load(untouched)
         upgraded, changed = upgrade_workflow(workflow, untouched)
         self.assertFalse(changed)

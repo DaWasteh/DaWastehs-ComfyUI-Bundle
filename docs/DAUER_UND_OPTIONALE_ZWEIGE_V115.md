@@ -14,7 +14,7 @@ Gemessen am 6. September 2026 gegen die Prompt-Validierung von ComfyUI 0.34.0:
 | **B** Loader stummgeschaltet (nicht im Prompt) | HTTP 200 |
 | **C** Loader im Prompt, aber unverbunden | HTTP 200 — unverbundene Knoten werden nicht geprüft |
 
-Der Workflow `MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs` lieferte **13 aktive
+Der Workflow `MiniMax_H3_Ref2VA_INT8-All-References-to-Video` lieferte **13 aktive
 Loader** aus, die auf Platzhalter (`REFERENCE_PICTURE_03.png` …) zeigen — Dateien, die es auf
 keiner Installation gibt. Das ist Fall A: **der Workflow scheiterte ausgeliefert an der
 Validierung, bevor überhaupt etwas gerechnet wurde.**

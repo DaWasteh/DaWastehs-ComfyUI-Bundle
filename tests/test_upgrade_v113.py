@@ -11,8 +11,10 @@ from tools import upgrade_v113 as up
 def historical_director_workflow() -> dict:
     """The one-node Director graph as released up to v1.2.1 (v1.2.2 replaced the file with the FastH3 pipeline)."""
     import subprocess
+    from tools.workflow_names_v131 import old_key
+    key = old_key("Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json")  # v1.3.1 renamed the file
     raw = subprocess.run(
-        ["git", "show", "v1.2.1:workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"],
+        ["git", "show", f"v1.2.1:workflows/{key}"],
         cwd=Path(__file__).resolve().parents[1], capture_output=True, check=True,
     ).stdout
     return json.loads(raw.decode("utf-8"))
@@ -133,9 +135,9 @@ class UpgradeV113Tests(unittest.TestCase):
         self.assertEqual(up.apply(older, up.DIRECTOR_WORKFLOW), wf)
 
     def test_non_target_workflows_are_returned_unchanged(self):
-        rel = "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_Picture_and_Video_to_Video_LOCAL.json"
+        rel = "Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video.json"
         self.assertIn(rel, up.targets())
-        rel = "Prompt Enhancer/LLM_General-Prompt-Enhancer.json"
+        rel = "Prompt Enhancer/LLM_Gemma4_E4B_FP8-Idea-to-Prompt.json"
         self.assertNotIn(rel, up.targets())
         wf = load(rel)
         self.assertEqual(up.apply(wf, rel), wf)

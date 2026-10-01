@@ -76,17 +76,17 @@ MARKER_VERSION = 1
 # Version durch ``tools/consolidate_workflows_v113.py`` als Dublette entfernt (Alt -> Neu:
 # ``..._Ref2VA_MAXIMUM_All_Reference_Inputs.json``).
 H3_AUDIO_PATH = {
-    "Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json",
-    "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json",
-    "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_Picture_and_Video_to_Video_LOCAL.json",
-    "Reference to Video/MiniMax_H3_Spectrum_RefImage_Audio_to_Video_OriginalAudio_AutoLength.json",
-    "Reference to Video/MiniMax_H3_Spectrum_RefImage_RefVideo_to_Video_Audio_AutoLength.json",
+    "Reference to Video/MiniMax_H3_FL2VA_INT8-First+Last-Frame-to-Video.json",
+    "Reference to Video/MiniMax_H3_Ref2VA_INT8-All-References-to-Video.json",
+    "Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video.json",
+    "Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Audio-to-Video.json",
+    "Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video-Keep-Sound.json",
 }
 
 # Der Music-Video-Director traegt dieselben drei Abweichungen in seinen eigenen Widgets
 # (Index 31/32 = shift_video/shift_audio, 33/34 = sampler/scheduler), gesetzt von
 # tools/integrate_h3_turbo_lora.py:200-201.
-DIRECTOR_WORKFLOW = "Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"
+DIRECTOR_WORKFLOW = "Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json"
 DIRECTOR_SHIFT_AUDIO_INDEX = 32
 DIRECTOR_SAMPLER_INDEX = 33
 DIRECTOR_SCHEDULER_INDEX = 34

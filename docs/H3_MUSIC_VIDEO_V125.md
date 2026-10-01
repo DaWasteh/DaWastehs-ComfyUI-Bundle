@@ -1,7 +1,7 @@
 # Song → Musikvideo · v1.2.5: jede Szene prüfen, Prompt Writer mit Qwen3.8 27B, 1664×928 als Standard
 
 v1.2.5 bringt drei Änderungen im Workflow
-`workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json`: den neuen Prüf-Node **MV 5b**
+`workflows/Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json`: den neuen Prüf-Node **MV 5b**
 nach jeder Szene, **MV 2 · Prompt Writer** mit Qwen3.8 27B und die Standardauflösung 1664×928. Planung, Encoder,
 Extend und Speicherverhalten bleiben wie in [`H3_MUSIC_VIDEO_V122.md`](H3_MUSIC_VIDEO_V122.md) und
 [`H3_MUSIC_VIDEO_V124.md`](H3_MUSIC_VIDEO_V124.md) beschrieben.

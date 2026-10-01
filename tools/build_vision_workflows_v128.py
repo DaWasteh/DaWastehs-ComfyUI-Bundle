@@ -24,6 +24,7 @@ try:
     from tools.generate_dual_gpu_workflows import install_run_timer
     from tools.refine_workflows import refine_workflow
     from tools.rodent_layout import apply_rodent_layout
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:
     from build_workflows_v118 import Graph
     import build_qwen_image21_workflows as v121
@@ -31,6 +32,7 @@ except ModuleNotFoundError:
     from generate_dual_gpu_workflows import install_run_timer
     from refine_workflows import refine_workflow
     from rodent_layout import apply_rodent_layout
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "tools/workflow_templates/v128"
@@ -38,11 +40,11 @@ MARKER = "dawasteh_vision_v128"
 RELEASE = "v1.2.8"
 BS = "\\"
 PATHS = {
-    "qwen_inpaint": "Image Inpainting/Qwen_Image_2_1_BF16-Mask-Inpaint.json",
-    "pose_image": "Pose & Depth/SDPose-Pose-from-Image.json",
-    "pose_video": "Pose & Depth/SDPose-Pose-from-Video.json",
-    "depth_image": "Pose & Depth/DepthAnything3-Depth-from-Image.json",
-    "depth_video": "Pose & Depth/DepthAnything3-Depth-from-Video.json",
+    "qwen_inpaint": "Image Inpainting/Qwen_Image_2_1_BF16-Image+Mask-Inpaint.json",
+    "pose_image": "Pose & Depth/SDPose_WholeBody_FP16-Image-to-Pose.json",
+    "pose_video": "Pose & Depth/SDPose_WholeBody_FP16-Video-to-Pose-Video.json",
+    "depth_image": "Pose & Depth/DepthAnything3_Large_FP32-Image-to-Depth.json",
+    "depth_video": "Pose & Depth/DepthAnything3_Large_FP32-Video-to-Depth-Video.json",
 }
 QWEN_MODEL, QWEN_CLIP, QWEN_VAE = v121.MODEL, v121.CLIP, v121.VAE
 SDPOSE = "SDPose" + BS + "sdpose_wholebody_fp16.safetensors"
@@ -142,6 +144,9 @@ def _combine(g: Graph, title: str, images: tuple[dict, int], fps: dict, audio: d
 def _video_frame(g: Graph, label: str, video: str) -> tuple[dict, dict]:
     batch = g.add("VHS_BatchManager", f"META-BATCH · {SETTINGS['frames_per_batch']} Frames je Durchgang · beliebige Videolänge",
                   frames_per_batch=SETTINGS["frames_per_batch"])
+    # VHS restores its nodes by widget name and adds a hidden "count" widget to the Meta Batch Manager: a plain list
+    # has one value too few and the frontend shows "Failed to restore node" (v1.3.1)
+    batch["widgets_values"] = {"frames_per_batch": SETTINGS["frames_per_batch"], "count": 0}
     load = _load_video(g, f"VIDEO · {label} · Originalgröße und -fps", video, batch)
     return batch, load
 
@@ -162,7 +167,7 @@ def _model_lines(keys: list[str], extra_inputs: list[str]) -> str:
 def finish(g: Graph, key: str) -> dict:
     path = PATHS[key]
     install_run_timer(g.w)
-    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v128:" + path))
+    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v128:" + original_name(path)))
     g.w["revision"] = 0
     g.w["extra"][MARKER] = {
         "version": 1,

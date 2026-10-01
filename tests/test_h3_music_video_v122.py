@@ -299,8 +299,10 @@ class LiveEvidenceTests(unittest.TestCase):
     def test_report_pins_shipped_workflow_and_sources(self):
         import hashlib
         import subprocess
+        from tools.workflow_names_v131 import old_path
         # v1.2.4 rebuilt the workflow around MV 0; this evidence describes the v1.2.2 file (see the v1.2.4 report).
-        shipped = subprocess.check_output(["git", "show", "v1.2.2:" + self.report["workflow"]["path"]], cwd=ROOT)
+        # The report names the file as renamed in v1.3.1; the release has it under the old name.
+        shipped = subprocess.check_output(["git", "show", "v1.2.2:" + old_path(self.report["workflow"]["path"])], cwd=ROOT)
         self.assertEqual(self.report["workflow"]["sha256"], hashlib.sha256(shipped).hexdigest())
         for entry in self.report["sources"]:
             # v1.2.3 fixed the shot-cut timestamps in mv2.py; the evidence describes the v1.2.2 run.

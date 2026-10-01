@@ -6,8 +6,8 @@
 
 Zwei native ComfyUI-Workflows im bekannten RODENT-Stil (Nerdy Rodent), mit deutschen Einstiegshinweisen, Parameterreferenzen, zentraler GPU-Steuerung und jeweils einem Pixaroma-Timer:
 
-- **Training:** `workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Style-LoRA-Training.json`
-- **Anwendung:** `workflows/Music Generation/YuE2_3B_BF16-PRIVATE-LoRA-Music-Generation.json`
+- **Training:** `workflows/LoRA Generation/YuE2_3B_BF16-PRIVATE-Songs-to-Style-LoRA.json`
+- **Anwendung:** `workflows/Music Generation/YuE2_3B_BF16+LoRA-PRIVATE-Tags+Lyrics-to-Song.json`
 
 Der Trainer lernt **echte Low-Rank-Adapter der akustischen NAR-Stufe**. Ziel sind Klangstil, Instrumentierung und Stimmfarbe. Das AR-Text-/Kompositionsmodell bleibt eingefroren. Das ist **kein verlässliches Voice-Cloning** und kein Training des gesamten YuE2-Modells. Die Trainingsaufgabe ist aus der veröffentlichten Inferenz rekonstruiert und bleibt experimentell.
 

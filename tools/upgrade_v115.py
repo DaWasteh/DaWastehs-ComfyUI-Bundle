@@ -78,9 +78,9 @@ MEDIA_RE = re.compile(r"\.(png|jpg|jpeg|webp|bmp|mp4|mov|mkv|webm|wav|mp3|flac|o
 LOADER_TYPES = {"LoadImage", "LoadAudio", "LoadVideo", "LoadImageMask", "VHS_LoadVideo"}
 
 OPTIONAL_BRANCH_WORKFLOWS = {
-    "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json",
-    "Reference to Video/MiniMax_H3_Spectrum_Ref2VA_Picture_and_Video_to_Video_LOCAL.json",
-    "Reference to Video/MiniMax_H3_Spectrum_RefImage_RefVideo_to_Video_Audio_AutoLength.json",
+    "Reference to Video/MiniMax_H3_Ref2VA_INT8-All-References-to-Video.json",
+    "Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video.json",
+    "Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video-Keep-Sound.json",
 }
 
 BRANCH_GROUP_PREFIX = "OPTIONAL · "   # Praefix der Knotentitel abgeschalteter Zweige

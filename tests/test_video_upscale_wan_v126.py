@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PATH = "Video Upscaling/WAN22_14B_LowNoise-Video-Upscale.json"
+PATH = "Video Upscaling/WAN22_T2V_14B_LowNoise_FP8-Video-Upscale.json"
 REPORT = ROOT / "performance/rdna4/video-upscale-wan-v126-validation.json"
 
 
@@ -158,8 +158,11 @@ class LiveEvidenceTests(unittest.TestCase):
         workflow = self.report["workflow"]
         self.assertEqual(workflow["path"], "workflows/" + PATH)
         self.assertEqual(workflow["sha256"], self.sha(workflow["path"]))
+        import subprocess
+        # v1.3.1 gave the builder the rename map; the evidence describes the sources as released in v1.2.6.
+        released = lambda p: hashlib.sha256(subprocess.check_output(["git", "show", "v1.2.6:" + p], cwd=ROOT)).hexdigest()
         for entry in self.report["sources"]:
-            self.assertEqual(self.sha(entry["path"]), entry["sha256"], entry["path"])
+            self.assertEqual(released(entry["path"]), entry["sha256"], entry["path"])
         manifest = json.loads((ROOT / "tools/workflow_templates/v126/models.json").read_text(encoding="utf-8"))
         self.assertEqual([m["sha256"] for m in manifest], [m["sha256"] for m in self.report["model_verification"]["files"]])
         self.assertTrue(all(m["verified"] for m in self.report["model_verification"]["files"]))

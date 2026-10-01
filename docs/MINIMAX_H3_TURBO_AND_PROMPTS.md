@@ -75,7 +75,7 @@ Die LoRA-Konvertierung passt strukturell zu beiden pruned Modellen. FL2VA ist de
 Die früher getrennten offenen Dual-GPU-Klone wurden in die kanonischen Graphen integriert:
 
 ```text
-workflows/Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json
+workflows/Reference to Video/MiniMax_H3_FL2VA_INT8-First+Last-Frame-to-Video.json
 workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_All_Reference_Inputs.json
 ```
 
@@ -127,8 +127,8 @@ workflows/Reference to Video/VIDEO_PROMPT_WRITING_GUIDE_ref_en.md
 Daraus werden zwei eigenständige Workflows erzeugt:
 
 ```text
-workflows/Prompt Enhancer/MiniMax_H3_Base_FL2VA-Official-Guide-Prompt-Enhancer.json
-workflows/Prompt Enhancer/MiniMax_H3_Ref2VA-Official-Guide-Prompt-Enhancer.json
+workflows/Prompt Enhancer/LLM_Qwen3_5_4B_BF16-Idea-to-H3-FL2VA-Prompt.json
+workflows/Prompt Enhancer/LLM_Qwen3_5_4B_BF16-Idea-to-H3-Ref2VA-Prompt.json
 ```
 
 Beide verwenden das vorhandene lokale `Qwen/qwen3.5_4b_bf16.safetensors` über ComfyUIs `TextGenerate`-Node. Der kurze Nutzerwunsch kommt in den separaten `PixaromaPrompt`-Node; die Guide-Regeln bleiben geschützt im vorgeschalteten Formel-Node.

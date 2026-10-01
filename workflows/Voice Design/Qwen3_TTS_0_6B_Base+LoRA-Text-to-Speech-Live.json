@@ -1,0 +1,698 @@
+{
+  "id": "qwen3-tts-lora-low-latency-live-voice",
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 2,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "PixaromaNote",
+      "pos": [
+        40.0,
+        80.0
+      ],
+      "size": [
+        940,
+        1080
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "note_json",
+          "name": "note_json",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "note_json"
+          }
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaNote",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        "{\"version\":1,\"content\":\"<h1>Qwen3-TTS Voice-LoRA · schnelle Avatar-Sprache</h1>\\n<p>Schreibt Text mit einem lokal trainierten, im Dropdown wechselbaren PEFT-LoRA-Adapter als Stimme. <b>R</b> auf dem Voice-Node aktualisiert die Adapterliste nach neuem Training.</p>\\n<h2>Bedienung</h2><ol><li><code>adapter_name</code> und den im Training verwendeten <code>speaker_name</code> wählen/eintragen.</li><li><code>model_size</code> muss zur Trainingsbasis passen.</li><li>Text ändern und genau einmal ausführen.</li><li><code>lora_scale</code> zuerst bei 0.30 lassen; 0.20/0.30/0.35/0.50 vergleichen.</li></ol>\\n<p>Der Browser spielt jede geänderte Ausgabe automatisch einmal ab. Für OBS die Browser-/Anwendungs-Audioaufnahme verwenden oder den Browser über ein vorhandenes virtuelles Audiokabel routen. Zusätzlich wird eine FLAC unter <code>ComfyUI/output/audio/avatar-voice/</code> gespeichert.</p>\\n<p><b>Live-Grenze:</b> Dies ist schnelle, request-basierte TTS und kein kontinuierlicher Mikrofon-Voice-Changer. ComfyUI liefert den vollständigen Clip nach einem Queue-Lauf. Unveränderte Audio-Nodes bleiben gecacht, sodass ein parallel laufender LivePortrait-Auto-Queue-Zweig nicht jedes Frame neu vertont.</p>\\n<p><b>Sicherheit:</b> Nur eigene oder ausdrücklich freigegebene Stimmen verwenden. Adapter werden ausschließlich aus Safetensors/JSON geladen.</p>\\n<h2>AMD RDNA4</h2><p><code>sdpa</code>, BF16 und das 0.6B-Modell sind für geringe Latenz auf der R9700 voreingestellt. Für bessere Qualität kann ein separat mit 1.7B trainierter Adapter verwendet werden.</p>\",\"buttonColor\":\"#f66744\",\"lineColor\":\"#f66744\",\"width\":940,\"height\":1040,\"backgroundColor\":\"#2a2a2a\"}",
+        ""
+      ],
+      "title": "START HIER · LoRA-Stimme und OBS-Audio",
+      "color": "#1d1d1d",
+      "bgcolor": "#2a2a2a"
+    },
+    {
+      "id": 2,
+      "type": "DaWastehQwen3TTSLoRAInference",
+      "pos": [
+        1140.0,
+        80.0
+      ],
+      "size": [
+        610,
+        700
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "text",
+          "name": "text",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "text"
+          }
+        },
+        {
+          "localized_name": "adapter_name",
+          "name": "adapter_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "adapter_name"
+          }
+        },
+        {
+          "localized_name": "speaker_name",
+          "name": "speaker_name",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "speaker_name"
+          }
+        },
+        {
+          "localized_name": "model_size",
+          "name": "model_size",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "model_size"
+          }
+        },
+        {
+          "localized_name": "language",
+          "name": "language",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "language"
+          }
+        },
+        {
+          "localized_name": "lora_scale",
+          "name": "lora_scale",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "lora_scale"
+          }
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "localized_name": "max_new_tokens",
+          "name": "max_new_tokens",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "max_new_tokens"
+          }
+        },
+        {
+          "localized_name": "top_p",
+          "name": "top_p",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "top_p"
+          }
+        },
+        {
+          "localized_name": "top_k",
+          "name": "top_k",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "top_k"
+          }
+        },
+        {
+          "localized_name": "temperature",
+          "name": "temperature",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "temperature"
+          }
+        },
+        {
+          "localized_name": "repetition_penalty",
+          "name": "repetition_penalty",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "repetition_penalty"
+          }
+        },
+        {
+          "localized_name": "attention",
+          "name": "attention",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "attention"
+          }
+        },
+        {
+          "localized_name": "unload_model_after_generate",
+          "name": "unload_model_after_generate",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "unload_model_after_generate"
+          }
+        },
+        {
+          "localized_name": "custom_adapter_path",
+          "name": "custom_adapter_path",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "custom_adapter_path"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            1,
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWastehQwen3TTSLoRAInference"
+      },
+      "widgets_values": [
+        "Hallo! Das ist meine lokal trainierte Avatar-Stimme.",
+        "my_voice/checkpoint-epoch-1",
+        "my_voice",
+        "0.6B",
+        "German",
+        0.3,
+        0,
+        "fixed",
+        2048,
+        0.8,
+        20,
+        1.0,
+        1.05,
+        "sdpa",
+        false,
+        ""
+      ],
+      "title": "Text → wählbare Voice-LoRA"
+    },
+    {
+      "id": 3,
+      "type": "PlaySoundKJ",
+      "pos": [
+        1920.0,
+        80.0
+      ],
+      "size": [
+        420,
+        270
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "audio_path",
+          "name": "audio_path",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "audio_path"
+          }
+        },
+        {
+          "localized_name": "mode",
+          "name": "mode",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "mode"
+          }
+        },
+        {
+          "localized_name": "volume",
+          "name": "volume",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "volume"
+          }
+        },
+        {
+          "localized_name": "duration",
+          "name": "duration",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "duration"
+          }
+        },
+        {
+          "localized_name": "any_input",
+          "name": "any_input",
+          "type": "*",
+          "link": null
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "any_output",
+          "name": "any_output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PlaySoundKJ",
+        "cnr_id": "comfyui-kjnodes"
+      },
+      "widgets_values": [
+        "",
+        "on_change",
+        0.8,
+        0.0
+      ],
+      "title": "Im Browser einmal abspielen"
+    },
+    {
+      "id": 4,
+      "type": "SaveAudio",
+      "pos": [
+        1920.0,
+        400.0
+      ],
+      "size": [
+        420,
+        180
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 2
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "filename_prefix"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveAudio",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "audio/avatar-voice/qwen3tts-lora"
+      ],
+      "title": "FLAC speichern"
+    },
+    {
+      "id": 5,
+      "type": "PixaromaRunTimer",
+      "pos": [
+        40.0,
+        1200.0
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PixaromaRunTimer",
+        "cnr_id": "ComfyUI-Pixaroma"
+      },
+      "widgets_values": [
+        {
+          "version": 1,
+          "color": "#f66744",
+          "decimals": 0,
+          "chime": true,
+          "sound": "",
+          "volume": 70
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "MarkdownNote",
+      "pos": [
+        2500.0,
+        80.0
+      ],
+      "size": [
+        390,
+        540
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Text → wählbare Voice-LoRA · Node 2",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 2,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Text → wählbare Voice-LoRA · Node 2\n\n**Zweck:** Generate a complete audio clip with a switchable Qwen3-TTS PEFT LoRA adapter.\n\n**Einstellbare Werte**\n- `text` = `Hallo! Das ist meine lokal trainierte Avatar-Stimme.` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `adapter_name` = `my_voice/checkpoint-epoch-1` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `speaker_name` = `my_voice` — Steuert diesen Parameter. Ändert den Text bzw. die Anweisung, die dieser Node verarbeitet.\n- `model_size` = `0.6B` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `language` = `German` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `lora_scale` = `0.3` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `seed` = `0` — Steuert diesen Parameter. Ein anderer Seed erzeugt eine andere Variation; derselbe Seed unterstützt reproduzierbare Ergebnisse.\n- `seed_control_after_generate` = `fixed` — Verhalten des Werts nach jedem Workflow-Lauf. `randomize` erzeugt pro Lauf eine neue Variation; `fixed` behält den Wert; andere Modi ändern ihn schrittweise.\n- `max_new_tokens` = `2048` — Steuert diesen Parameter. Höher erlaubt längere Text-/Sprachausgaben und benötigt mehr Zeit/Speicher; niedriger kürzt früher ab.\n- `top_p` = `0.8` — Steuert diesen Parameter. Ändert den Wahrscheinlichkeitsfilter: großzügiger erhöht Vielfalt, strenger erhöht Fokus/Konsistenz.\n- `top_k` = `20` — Steuert diesen Parameter. Höher erlaubt mehr Kandidaten und Vielfalt; niedriger begrenzt die Auswahl stärker.\n- `temperature` = `1.0` — Steuert diesen Parameter. Höher macht die Auswahl vielfältiger/zufälliger; niedriger wird deterministischer und konservativer.\n- `repetition_penalty` = `1.05` — Steuert diesen Parameter. Über 1 unterdrückt Wiederholungen zunehmend; zu hoch kann Wörter, Klang oder Kohärenz beschädigen, nahe 1 bleibt neutral.\n- `attention` = `sdpa` — Steuert diesen Parameter. Die Auswahl wechselt Algorithmus/Modus und damit Qualität, Geschwindigkeit oder Kompatibilität.\n- `unload_model_after_generate` = `False` — Steuert diesen Parameter. AN gibt Modell-/VRAM-Speicher nach dem Lauf frei, macht den nächsten Lauf aber langsamer; AUS hält das Modell für Wiederholungen im Cache.\n- `custom_adapter_path` = `` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `text` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `adapter_name` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `speaker_name` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `model_size` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `language` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `lora_scale` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `seed` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `max_new_tokens` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_p` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `top_k` (INT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `temperature` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `repetition_penalty` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `attention` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `unload_model_after_generate` (BOOLEAN, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `custom_adapter_path` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `audio` (AUDIO, 2 Verbindung(en)): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 7,
+      "type": "MarkdownNote",
+      "pos": [
+        2960.0,
+        80.0
+      ],
+      "size": [
+        390,
+        430
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Im Browser einmal abspielen · Node 3",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 3,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Im Browser einmal abspielen · Node 3\n\n**Zweck:** Plays the input audio in the browser. Modes: 'always' plays on every execution, 'on_empty_queue' plays only when the queue finishes, 'on_change' plays only when the audio content changes. Duration limits playback length (0 = full audio).\n\n**Einstellbare Werte**\n- `audio_path` = `` — Path to an audio file. Used when audio input is not connected. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n- `mode` = `on_change` — Steuert diesen Parameter. Die Auswahl bestimmt den Verarbeitungs- bzw. Dateimodus und dessen Kompatibilität.\n- `volume` = `0.8` — Steuert diesen Parameter. Höher setzt einen größeren numerischen Steuerwert; niedriger einen kleineren. Die genaue Einheit ergibt sich aus Parametername und Node-Beschreibung.\n- `duration` = `0.0` — Duration in seconds to play. 0 = play full audio. Höher erzeugt/verarbeitet mehr bzw. längeren Inhalt und steigert Zeit/VRAM; niedriger verkürzt ihn.\n\n**Eingänge**\n- `audio_path` (STRING, nicht verbunden): Path to an audio file. Used when audio input is not connected.\n- `mode` (COMBO, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `volume` (FLOAT, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `duration` (FLOAT, nicht verbunden): Duration in seconds to play. 0 = play full audio.\n- `any_input` (*, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `audio` (AUDIO, Link 1): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `any_output` (*, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 8,
+      "type": "MarkdownNote",
+      "pos": [
+        3440.0,
+        80.0
+      ],
+      "size": [
+        390,
+        311
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · FLAC speichern · Node 4",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 4,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · FLAC speichern · Node 4\n\n**Zweck:** Speichert das erzeugte Ergebnis mit den gewählten Ausgabeparametern.\n\n**Einstellbare Werte**\n- `filename_prefix` = `audio/avatar-voice/qwen3tts-lora` — Steuert diesen Parameter. Legt Quelle/Ziel oder Dateibenennung fest; ein anderer Wert ändert den verwendeten Speicherort.\n\n**Eingänge**\n- `audio` (AUDIO, Link 2): liefert Eingabedaten für diesen Verarbeitungsschritt\n- `filename_prefix` (STRING, nicht verbunden): liefert Eingabedaten für diesen Verarbeitungsschritt\n\n**Ausgänge**\n- `audio` (AUDIO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    },
+    {
+      "id": 9,
+      "type": "DaWMultiGPUDeviceControl",
+      "pos": [
+        40.0,
+        1340.0
+      ],
+      "size": [
+        380,
+        170
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "model_device",
+          "name": "model_device",
+          "type": "COMBO",
+          "slot_index": 0,
+          "links": []
+        },
+        {
+          "localized_name": "clip_device",
+          "name": "clip_device",
+          "type": "COMBO",
+          "slot_index": 1,
+          "links": []
+        },
+        {
+          "localized_name": "vae_device",
+          "name": "vae_device",
+          "type": "COMBO",
+          "slot_index": 2,
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DaWMultiGPUDeviceControl"
+      },
+      "widgets_values": [
+        "gpu:0",
+        "gpu:0",
+        "gpu:0"
+      ],
+      "title": "Central GPU Control · MODEL / CLIP / VAE",
+      "color": "#173f32",
+      "bgcolor": "#205845"
+    },
+    {
+      "id": 10,
+      "type": "MarkdownNote",
+      "pos": [
+        3920.0,
+        80.0
+      ],
+      "size": [
+        390,
+        362
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 9",
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core",
+        "dawasteh_note_for": 9,
+        "dawasteh_generated_note": true
+      },
+      "widgets_values": [
+        "# Erklärung · Central GPU Control · MODEL / CLIP / VAE · Node 9\n\n**Zweck:** Zentrale Dropdowns für die MODEL-, CLIP- und VAE-Geräte aller verbundenen offiziellen Selector-Nodes.\n\n**Einstellbare Werte**\n- `model_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `clip_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n- `vae_device` = `gpu:0` — Steuert diesen Parameter. Die Auswahl wechselt die geladene Ressource und beeinflusst VRAM-Bedarf, Qualität und Kompatibilität.\n\n**Eingänge**\n- Keine Eingänge.\n\n**Ausgänge**\n- `model_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `clip_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes\n- `vae_device` (COMBO, nicht verbunden): Ergebnis dieses Nodes"
+      ],
+      "color": "#1b2638",
+      "bgcolor": "#101722"
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      3,
+      5,
+      "AUDIO"
+    ],
+    [
+      2,
+      2,
+      0,
+      4,
+      0,
+      "AUDIO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "R1 · README & RUNTIME",
+      "bounding": [
+        0.0,
+        0.0,
+        1020.0,
+        1560.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "N1 · NEURAL EXECUTION",
+      "bounding": [
+        1100.0,
+        0.0,
+        700.0,
+        820.0
+      ],
+      "color": "#B85C5C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "T1 · TRANSFORM & TERMINAL",
+      "bounding": [
+        1880.0,
+        0.0,
+        500.0,
+        620.0
+      ],
+      "color": "#3F9E6D",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "R9 · PARAMETER REFERENCE",
+      "bounding": [
+        2460.0,
+        0.0,
+        1900.0,
+        660.0
+      ],
+      "color": "#5B6472",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "workflowRendererVersion": "LG",
+    "frontendVersion": "1.47.11",
+    "ds": {
+      "scale": 0.82,
+      "offset": [
+        100,
+        100
+      ]
+    },
+    "dawasteh_workflow_refinement": {
+      "version": 1,
+      "generated_notes": 4,
+      "x_scale": 1.0,
+      "y_scale": 1.0,
+      "gap": 40.0,
+      "layout": "rodent-v1"
+    },
+    "dawasteh_dual_gpu": {
+      "central_control": "DaWMultiGPUDeviceControl",
+      "connected_roles": [],
+      "placement_support": "control-only-no-standard-model-objects",
+      "manual_device_dropdowns": {
+        "model_device": "gpu:0",
+        "clip_device": "gpu:0",
+        "vae_device": "gpu:0"
+      },
+      "version": 3,
+      "scope": "collection-wide optional GPU placement",
+      "family": "Qwen3-TTS_LoRA-Low-Latency-Live-Voice",
+      "source": "workflows/Voice Design/Qwen3-TTS_LoRA-Low-Latency-Live-Voice.json",
+      "server": "127.0.0.1:8188",
+      "backend": "ROCm/HIP",
+      "selector_count": 0,
+      "curated_split_default": false,
+      "defaults": {
+        "MODEL": "gpu:0",
+        "CLIP": "gpu:0",
+        "VAE": "gpu:0"
+      },
+      "execution": "device placement only; ComfyUI graph stages remain sequential"
+    },
+    "dawasteh_v092_collection": {
+      "version": 1,
+      "release": "v0.9.2",
+      "dual_gpu_folder_dissolved": true,
+      "rodent_method": true,
+      "rodent_credit": "Nerdy Rodent"
+    },
+    "dawasteh_rodent_layout": {
+      "version": 1,
+      "method": "RODENT Method",
+      "credit": "Nerdy Rodent",
+      "algorithm": "rodent-v1",
+      "grid": 20,
+      "node_gap": [
+        80,
+        40
+      ],
+      "stage_gap": 120,
+      "topology_sha256": "ff2a844b399af5a91b8c7f66cdcf601a74a54f10057a31de871365381ac06213",
+      "exceptions": []
+    }
+  },
+  "version": 0.4
+}

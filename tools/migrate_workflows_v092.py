@@ -62,6 +62,7 @@ try:
         V097_OBJECT_INFO,
         specialize_game_asset_template,
     )
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:  # Direct execution
     from generate_dual_gpu_workflows import (
         DEVICE_CONTROL_TYPE,
@@ -107,6 +108,7 @@ except ModuleNotFoundError:  # Direct execution
         V097_OBJECT_INFO,
         specialize_game_asset_template,
     )
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / "workflows"
@@ -131,25 +133,25 @@ class Addition:
 
 ADDITIONS = (
     Addition(
-        "Text to Video/LTX25_INT8_ConvRot-Text-to-Video.json",
+        "Text to Video/LTX25_22B_INT8-Text-to-Video.json",
         "video_ltx2_5_t2v.json",
         "LTX 2.5 Text to Video",
         {"MODEL": "gpu:0", "CLIP": "gpu:1", "VAE": "gpu:1"},
     ),
     Addition(
-        "Text+Image to Video/LTX25_INT8_ConvRot-Image-to-Video.json",
+        "Text+Image to Video/LTX25_22B_INT8-Text+Image-to-Video.json",
         "video_ltx2_5_i2v.json",
         "LTX 2.5 Image to Video",
         {"MODEL": "gpu:0", "CLIP": "gpu:1", "VAE": "gpu:1"},
     ),
     Addition(
-        "Text+Image to Video/LTX25_INT8_ConvRot-First+Last-Frame-to-Video.json",
+        "Text+Image to Video/LTX25_22B_INT8-First+Last-Frame-to-Video.json",
         "video_ltx2_5_flf2v.json",
         "LTX 2.5 First/Last Frame to Video",
         {"MODEL": "gpu:0", "CLIP": "gpu:1", "VAE": "gpu:1"},
     ),
     Addition(
-        "Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json",
+        "Character Animation/WanAnimate2_14B_INT8-Image+Video-to-Video-Motion-Transfer.json",
         "video_wan_animate2.json",
         "Wan Animate 2 Motion Transfer",
         {"MODEL": "gpu:0", "CLIP": "gpu:1", "VAE": "gpu:1"},
@@ -206,9 +208,9 @@ def _curated_profiles() -> dict[str, tuple[str, dict[str, str], bool]]:
         if path in DELETED_PATHS:
             if "FL2VA" not in family.name:
                 continue
-            path = "Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json"
+            path = "Reference to Video/MiniMax_H3_FL2VA_INT8-First+Last-Frame-to-Video.json"
         profiles[path] = (family.name, family.devices, family.h3_director)
-    profiles["Music Generation/MiniMax_Music3_FP32-BF16-Text-to-Music.json"] = (
+    profiles["Music Generation/MiniMax_Music3_FP32-Tags+Lyrics-to-Song.json"] = (
         "MiniMax Music 3",
         {"MODEL": "gpu:1", "CLIP": "gpu:0", "VAE": "gpu:1"},
         False,
@@ -240,7 +242,7 @@ def _curated_profiles() -> dict[str, tuple[str, dict[str, str], bool]]:
     # v1.2.2 (docs/H3_MUSIC_VIDEO_V122.md): the FastH3 extend pipeline replaced the one-node Director.
     # Measured: the continuity encode allocates 7.2 GiB next to the 5 GiB video VAE, which exceeds the
     # guarded 12.8 GiB of the RX 9070 XT (OOM) but fits on the R9700. No Director remains in the graph.
-    v122_path = "Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"
+    v122_path = "Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json"
     profiles[v122_path] = ("MiniMax FastH3 Music Video", {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"}, False)
     return profiles
 
@@ -272,7 +274,8 @@ def _profile(path_key: str) -> tuple[str, dict[str, str], bool, bool]:
     if curated:
         family, devices, h3_director = curated
         return family, dict(devices), h3_director, True
-    return Path(path_key).stem, dict(ALL_R9700), False, False
+    # v1.3.1 renamed the files; the family name stays the historical file name
+    return Path(original_name(path_key)).stem, dict(ALL_R9700), False, False
 
 
 def _ensure_parameter_notes(workflow: dict[str, Any]) -> None:
@@ -410,7 +413,7 @@ def migrate_workflow(workflow: dict[str, Any], path_key: str) -> dict[str, Any]:
         "version": 3,
         "scope": "collection-wide optional GPU placement",
         "family": family,
-        "source": f"workflows/{path_key}",
+        "source": f"workflows/{original_name(path_key)}",
         "server": "127.0.0.1:8188",
         "backend": "ROCm/HIP",
         "selector_count": inserted,
@@ -448,7 +451,7 @@ def build_addition(addition: Addition) -> dict[str, Any]:
     if not addition.path.startswith("Live Avatar/"):
         # Live Avatar roots stay timer-free by explicit user decision.
         install_run_timer(workflow)
-    workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-v092:{addition.path}"))
+    workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-v092:{original_name(addition.path)}"))
     workflow["revision"] = 0
     workflow.setdefault("extra", {})["dawasteh_template_source"] = {
         "template": addition.template,

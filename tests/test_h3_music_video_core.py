@@ -13,8 +13,10 @@ from unittest import mock
 def historical_director_workflow() -> dict:
     """The one-node Director graph as released up to v1.2.1 (v1.2.2 replaced the file with the FastH3 pipeline)."""
     import subprocess
+    from tools.workflow_names_v131 import old_key
+    key = old_key("Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json")  # v1.3.1 renamed the file
     raw = subprocess.run(
-        ["git", "show", "v1.2.1:workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"],
+        ["git", "show", f"v1.2.1:workflows/{key}"],
         cwd=Path(__file__).resolve().parents[1], capture_output=True, check=True,
     ).stdout
     return json.loads(raw.decode("utf-8"))

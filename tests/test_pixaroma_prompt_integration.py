@@ -13,6 +13,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 from tools.integrate_pixaroma_prompts import MARK, apply, sha
 from tools.validate_workflows import rect, overlaps, validate_integration_delta
 from tools.consolidate_workflows_v113 import ADDED_PATHS as V113_ADDED_PATHS
+from tools import workflow_fixes_v131
+from tools.workflow_names_v131 import old_key, old_path
 
 MANIFEST_PATH = ROOT / "tools" / "pixaroma_prompt_manifest.json"
 LIBRARY_PATH = ROOT / "prompt-libraries" / "DaWasteh-Pixaroma-Prompt-Library.json"
@@ -22,13 +24,33 @@ def load(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def git_head(rel: str) -> str:
+    return subprocess.check_output(
+        ["git", "show", f"HEAD:{rel}"], text=True, encoding="utf-8", stderr=subprocess.DEVNULL)
+
+
+def head_text(rel: str) -> str:
+    """HEAD's file under its current name; before the v1.3.1 rename is committed, under its v1.3.0 name."""
+    try:
+        return git_head(rel)
+    except subprocess.CalledProcessError:
+        if old_path(rel) == rel:
+            raise
+        return git_head(old_path(rel))
+
+
 def head_json(path: Path):
-    raw = subprocess.check_output(
-        ["git", "show", f"HEAD:{path.relative_to(ROOT).as_posix()}"],
-        text=True,
-        encoding="utf-8",
-    )
-    return json.loads(raw)
+    """The committed graph; before the v1.3.1 commit the v1.3.0 file in its v1.3.1 form (tools/workflow_fixes_v131)."""
+    rel = path.relative_to(ROOT).as_posix()
+    try:
+        return json.loads(git_head(rel))
+    except subprocess.CalledProcessError:
+        if old_path(rel) == rel:
+            raise
+    before = json.loads(git_head(old_path(rel)))
+    fixed = workflow_fixes_v131.expected(
+        old_key(rel.removeprefix("workflows/")), before, lambda key: json.loads(git_head(f"workflows/{key}")))
+    return before if fixed is None else fixed
 
 
 class PixaromaIntegrationTests(unittest.TestCase):
@@ -47,19 +69,19 @@ class PixaromaIntegrationTests(unittest.TestCase):
         generated_unmanaged = {
             path for path in paths
             if path in {
-                "workflows/Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json",
-                "workflows/Text to Video/LTX25_INT8_ConvRot-Text-to-Video.json",
-                "workflows/Text+Image to Video/LTX25_INT8_ConvRot-First+Last-Frame-to-Video.json",
-                "workflows/Text+Image to Video/LTX25_INT8_ConvRot-Image-to-Video.json",
-                "workflows/Prompt Enhancer/MiniMax_H3_Base_FL2VA-Official-Guide-Prompt-Enhancer.json",
-                "workflows/Prompt Enhancer/MiniMax_H3_Ref2VA-Official-Guide-Prompt-Enhancer.json",
-                "workflows/Prompt Enhancer/MiniMax_Music3-Official-Skill-Caption-Enhancer.json",
-                "workflows/Music Generation/MiniMax_Music3_FP32-BF16-Text-to-Music.json",
-                "workflows/Game Development/FLUX2_Klein_4B-PS1-Texture-Concept.json",
-                "workflows/Game Development/Hunyuan3D_v2_1-Low-Poly-Static-Mesh-for-Godot.json",
-                "workflows/Game Development/Pixal3D_INT8-Buildings-and-Environment-PBR-for-Godot.json",
-                "workflows/Game Development/Pixal3D_INT8-Humanoids-and-Animals-PBR-for-Godot.json",
-                "workflows/Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json",
+                "workflows/Character Animation/WanAnimate2_14B_INT8-Image+Video-to-Video-Motion-Transfer.json",
+                "workflows/Text to Video/LTX25_22B_INT8-Text-to-Video.json",
+                "workflows/Text+Image to Video/LTX25_22B_INT8-First+Last-Frame-to-Video.json",
+                "workflows/Text+Image to Video/LTX25_22B_INT8-Text+Image-to-Video.json",
+                "workflows/Prompt Enhancer/LLM_Qwen3_5_4B_BF16-Idea-to-H3-FL2VA-Prompt.json",
+                "workflows/Prompt Enhancer/LLM_Qwen3_5_4B_BF16-Idea-to-H3-Ref2VA-Prompt.json",
+                "workflows/Prompt Enhancer/LLM_Qwen3_5_4B_BF16-Idea-to-Music3-Caption.json",
+                "workflows/Music Generation/MiniMax_Music3_FP32-Tags+Lyrics-to-Song.json",
+                "workflows/Game Development/FLUX2_Klein_4B_BF16-Text-to-PS1-Texture.json",
+                "workflows/Game Development/Hunyuan3D_2_1_FP16-Image-to-LowPoly-Mesh-Godot.json",
+                "workflows/Game Development/Pixal3D_INT8-Image-to-PBR-Mesh-Buildings-Godot.json",
+                "workflows/Game Development/Pixal3D_INT8-Image-to-PBR-Mesh-Characters-Godot.json",
+                "workflows/Voice Design/RVC_DirectML-Microphone-to-Voice-Swap-Live.json",
                 "workflows/Live Avatar/LiveAvatar-16-Live-Face-Swap-DirectML-Spout-OBS.json",
                 "workflows/Live Avatar/LiveAvatar-17-Live-Person-Swap-Matting-Voice-DirectML-Spout-OBS.json",
             }
@@ -87,19 +109,19 @@ class PixaromaIntegrationTests(unittest.TestCase):
         self.assertEqual(
             paths - set(manifest_paths),
             {
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Gemma4_e4B-AutoSongwriter-Genre-Selector.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_Qwen3_5_4B-AutoSongwriter-Genre-Selector.json",
-                "workflows/Music Generation/HeartMuLa_HappyNewYear_3B_Gemma4_e4B-Idea-to-Lyrics-to-Music.json",
-                "workflows/Music Generation/HeartMuLa_HappyNewYear_3B_Qwen3_5_4B-Idea-to-Lyrics-to-Music.json",
-                "workflows/Music Generation/ACE-Step1_5_XL_SFT_INT8_ConvRot-Music-Generation.json",
-                "workflows/Music Generation/StableAudio3_Medium_INT8_ConvRot-Audio-Generation.json",
-                "workflows/Music Generation/YuE_7B-INT8_R9700-Music-Generation.json",
-                "workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json",
-                "workflows/Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json",
-                "workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json",
-                "workflows/Reference to Video/MiniMax_H3_Spectrum_Ref2VA_Picture_and_Video_to_Video_LOCAL.json",
-                "workflows/Reference to Video/MiniMax_H3_Spectrum_RefImage_Audio_to_Video_OriginalAudio_AutoLength.json",
-                "workflows/Reference to Video/MiniMax_H3_Spectrum_RefImage_RefVideo_to_Video_Audio_AutoLength.json",
+                "workflows/Music Generation/ACE_Step1_5_XL_SFT_BF16+Gemma4_E4B-Idea-to-Lyrics-to-Song.json",
+                "workflows/Music Generation/ACE_Step1_5_XL_SFT_BF16+Qwen3_5_4B-Idea-to-Lyrics-to-Song.json",
+                "workflows/Music Generation/HeartMuLa_3B_HappyNewYear+Gemma4_E4B-Idea-to-Lyrics-to-Song.json",
+                "workflows/Music Generation/HeartMuLa_3B_HappyNewYear+Qwen3_5_4B-Idea-to-Lyrics-to-Song.json",
+                "workflows/Music Generation/ACE_Step1_5_XL_SFT_INT8-Tags+Lyrics-to-Song.json",
+                "workflows/Music Generation/StableAudio3_Medium_INT8+Qwen3_5_2B-Text-to-Audio.json",
+                "workflows/Music Generation/YuE_7B_INT8-Tags+Lyrics-to-Song.json",
+                "workflows/Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json",
+                "workflows/Reference to Video/MiniMax_H3_FL2VA_INT8-First+Last-Frame-to-Video.json",
+                "workflows/Reference to Video/MiniMax_H3_Ref2VA_INT8-All-References-to-Video.json",
+                "workflows/Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video.json",
+                "workflows/Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Audio-to-Video.json",
+                "workflows/Reference to Video/MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video-Keep-Sound.json",
                 "workflows/Live Avatar/LiveAvatar-01-SDXL-Avatar-Generation.json",
                 "workflows/Live Avatar/LiveAvatar-02-RMBG-Transparency.json",
                 "workflows/Live Avatar/LiveAvatar-03-LivePortrait-Webcam-Spout-OBS.json",
@@ -117,8 +139,8 @@ class PixaromaIntegrationTests(unittest.TestCase):
                 "workflows/Live Avatar/LiveAvatar-13-Synthetic-Character-Sheet.json",
                 "workflows/Live Avatar/LiveAvatar-14-Local-Hunyuan3D-Multiview-Mesh-Unrigged.json",
                 "workflows/Live Avatar/LiveAvatar-15-Local-High-Realism-VRM.json",
-                "workflows/LoRA Generation/Qwen3-TTS_0.6B-Voice-LoRA-Training.json",
-                "workflows/Voice Design/Qwen3-TTS_LoRA-Low-Latency-Live-Voice.json",
+                "workflows/LoRA Generation/Qwen3_TTS_0_6B_Base-Recordings-to-Voice-LoRA.json",
+                "workflows/Voice Design/Qwen3_TTS_0_6B_Base+LoRA-Text-to-Speech-Live.json",
             } | generated_unmanaged,
         )
         for entry in self.manifest["entries"]:
@@ -212,8 +234,8 @@ class PixaromaIntegrationTests(unittest.TestCase):
         minimax_enhancer_marked_prompts = sum(
             node.get("properties", {}).get(MARK, {}).get("kind") == "prompt"
             for pattern in (
-                "MiniMax_H3_*Official-Guide-Prompt-Enhancer.json",
-                "MiniMax_Music3-Official-Skill-Caption-Enhancer.json",
+                "LLM_Qwen3_5_4B_BF16-Idea-to-H3-*-Prompt.json",  # v1.3.1 names of the two H3 guide enhancers
+                "LLM_Qwen3_5_4B_BF16-Idea-to-Music3-Caption.json",
             )
             for path in (ROOT / "workflows" / "Prompt Enhancer").glob(pattern)
             for node in load(path)["nodes"]
@@ -278,7 +300,7 @@ class PixaromaIntegrationTests(unittest.TestCase):
                         self.assertFalse(overlaps(rect(node), rect(other)), f"{path}: {node['id']} overlaps {other['id']}")
 
     def test_validator_rejects_old_node_corruption_and_disconnected_pause(self):
-        rel = "workflows/Text to Image/Krea2_turbo-2K-Text-to-Image.json"
+        rel = "workflows/Text to Image/Krea2_Turbo_FP8-Idea-to-Prompt-to-2K-Image.json"
         before = head_json(ROOT / rel)
         entry = self.entries[rel]
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -312,9 +334,9 @@ class PixaromaIntegrationTests(unittest.TestCase):
         self.assertTrue(any("upstream link" in error for error in errors))
 
     def test_integrator_second_apply_is_byte_identical_and_corruption_fails(self):
-        rel = "workflows/Text to Image/Krea2_turbo-2K-Text-to-Image.json"
+        rel = "workflows/Text to Image/Krea2_Turbo_FP8-Idea-to-Prompt-to-2K-Image.json"
         entry = self.entries[rel]
-        raw = subprocess.check_output(["git", "show", f"HEAD:{rel}"], text=True, encoding="utf-8")
+        raw = head_text(rel)
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "workflow.json"
             path.write_text(raw, encoding="utf-8")

@@ -6,10 +6,10 @@ from pathlib import Path
 
 OUT = Path("workflows/LoRA Generation")
 CONFIGS = [
- ("ZImage_Base-LoRA-Training.json", "zimage-base", "Z-Image Base", "Z-Image\\z_image_bf16.safetensors", ("CLIPLoader", ["Qwen\\qwen_3_4b.safetensors", "lumina2", "default"]), "FLUX\\ae.safetensors", False),
- ("Boogu_Image_Base-LoRA-Training.json", "boogu-image-base", "Boogu Image Base", "Boogu\\boogu_image_base_bf16.safetensors", ("CLIPLoader", ["Qwen\\qwen3vl_8b_fp8_scaled.safetensors", "boogu", "default"]), "FLUX\\flux1_vae_bf16.safetensors", False),
- ("FLUX1_Dev-LoRA-Training.json", "flux1-dev", "FLUX.1 Dev (experimentell)", "FLUX\\flux1-dev-fp8.safetensors", ("DualCLIPLoader", ["clip_l.safetensors", "T5\\t5xxl_fp8_e4m3fn.safetensors", "flux", "default"]), "FLUX\\ae.safetensors", True),
- ("FLUX2_Klein_4B_Base-LoRA-Training.json", "flux2-klein-4b-base", "FLUX.2 Klein 4B Base", "FLUX\\flux-2-klein-base-4b.safetensors", ("CLIPLoader", ["Qwen\\qwen_3_4b.safetensors", "flux2", "default"]), "FLUX2\\flux2-vae.safetensors", False),
+ ("ZImage_Base_BF16-Images-to-LoRA.json", "zimage-base", "Z-Image Base", "Z-Image\\z_image_bf16.safetensors", ("CLIPLoader", ["Qwen\\qwen_3_4b.safetensors", "lumina2", "default"]), "FLUX\\ae.safetensors", False),
+ ("Boogu_Image_Base_BF16-Images-to-LoRA.json", "boogu-image-base", "Boogu Image Base", "Boogu\\boogu_image_base_bf16.safetensors", ("CLIPLoader", ["Qwen\\qwen3vl_8b_fp8_scaled.safetensors", "boogu", "default"]), "FLUX\\flux1_vae_bf16.safetensors", False),
+ ("FLUX1_Dev_FP8-Images-to-LoRA.json", "flux1-dev", "FLUX.1 Dev (experimentell)", "FLUX\\flux1-dev-fp8.safetensors", ("DualCLIPLoader", ["clip_l.safetensors", "T5\\t5xxl_fp8_e4m3fn.safetensors", "flux", "default"]), "FLUX\\ae.safetensors", True),
+ ("FLUX2_Klein_Base_4B_BF16-Images-to-LoRA.json", "flux2-klein-4b-base", "FLUX.2 Klein 4B Base", "FLUX\\flux-2-klein-base-4b.safetensors", ("CLIPLoader", ["Qwen\\qwen_3_4b.safetensors", "flux2", "default"]), "FLUX2\\flux2-vae.safetensors", False),
 ]
 
 def socket(name, typ, link=None, widget=False):
@@ -63,7 +63,7 @@ def build(filename,slug,label,unet,clip,vae,flux=False,sdxl=False):
 
 def main():
  OUT.mkdir(parents=True,exist_ok=True)
- configs=CONFIGS+[("SDXL-LoRA-Training.json","sdxl","SDXL",None,None,None,False)]
+ configs=CONFIGS+[("SDXL_RealVisXL_V4_FP16-Images-to-LoRA.json","sdxl","SDXL",None,None,None,False)]
  for c in configs:
   fn,slug,label,unet,clip,vae,flux=c
   data=build(fn,slug,label,unet,clip,vae,flux,fn.startswith("SDXL"))

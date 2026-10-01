@@ -8,6 +8,7 @@ from pathlib import Path
 from tools.migrate_workflows_v092 import migrate_workflow
 from tools.upgrade_v095 import HUNYUAN_PATH
 from tools.upgrade_v096 import UPGRADE_KEY, UPGRADE_VERSION, upgrade_workflow
+from tools.workflow_names_v131 import old_key
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,7 +27,7 @@ class V096GameDevelopmentTests(unittest.TestCase):
     def test_v095_release_reconstructs_current_v096_exactly(self):
         previous = json.loads(
             subprocess.check_output(
-                ["git", "show", f"v0.9.5:workflows/{HUNYUAN_PATH}"],
+                ["git", "show", f"v0.9.5:workflows/{old_key(HUNYUAN_PATH)}"],  # v1.3.1 renamed the file
                 cwd=ROOT,
                 text=True,
                 encoding="utf-8",

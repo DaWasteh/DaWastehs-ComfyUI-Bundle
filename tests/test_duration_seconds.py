@@ -92,7 +92,7 @@ class DurationSecondsTests(unittest.TestCase):
 
     def test_wan_animate_uses_seconds_source_fps_and_4n_plus_1_frames(self):
         self.assertEqual(DYNAMIC_SOURCE_FPS_PATHS, {
-            "Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json"
+            "Character Animation/WanAnimate2_14B_INT8-Image+Video-to-Video-Motion-Transfer.json"
         })
         key = next(iter(DYNAMIC_SOURCE_FPS_PATHS))
         workflow = json.loads((WORKFLOWS / key).read_text(encoding="utf-8"))

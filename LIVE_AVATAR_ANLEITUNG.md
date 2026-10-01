@@ -47,7 +47,7 @@ Diese Anleitung beschreibt die lokalen Live-Avatar-Wege dieses Repositories auf 
 | 12-I | Extern installierter, lizenzierter Kandidat mit hash-gepinnter Konfiguration, Loopback-Health-Adapter und aktiver Identitätsfreigabe; standardmäßig vollständig deaktiviert |
 | 12-II | Dieselben LivePortrait-Voraussetzungen wie 05 plus aktualisierte DaWasteh-Node für DirectShow- und Transport-/AI-Metriken |
 | 12-III | Dieselben lokalen Browser-/VRM-Voraussetzungen wie 06 |
-| 13 | Die bereits installierten Qwen-Image-Edit-2511-Modelle und Multiple-Angles-LoRA aus `Multi-Character-Angles-One-Click` |
+| 13 | Die bereits installierten Qwen-Image-Edit-2511-Modelle und Multiple-Angles-LoRA aus `Qwen_Image_Edit_2511_BF16-Image-to-8-Camera-Angles` |
 | 14 | Installierter Core-Checkpoint `Hunyuan3D\\hunyuan_3d_v2.1.safetensors`; keine CUDA-Texture-Wrapper erforderlich |
 
 Workflow 07 und 08 verwenden die gepinnten KI-Assets. Zuerst `Run (Instant)` stoppen und eine leere Queue abwarten, dann aus dem Repository-Root ausführen:

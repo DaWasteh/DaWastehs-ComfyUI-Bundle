@@ -103,10 +103,10 @@
     ]
   },
   "workflows": {
-    "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Scene.json": {
+    "Image to 3D-Mesh/Mira_Scene+TRELLIS2_INT8-Image-to-3D-Scene.json": {
       "sha256": "be6fe5b9e83412b1f88a99136bf115fb4de022b38b3ceb8a19a89a5fc5970d4d"
     },
-    "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json": {
+    "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Layout-Preview.json": {
       "sha256": "08420dba82a18cd0b9fb86c8b7820edaf93d08c892dc3463e9bd6e789fdf1561"
     }
   },
@@ -119,7 +119,7 @@
     {
       "case": "mira_final_layout",
       "final": true,
-      "workflow": "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json",
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Layout-Preview.json",
       "input": "modern_living_room.png",
       "status": "success",
       "elapsed_s": 197.0,
@@ -298,12 +298,12 @@
         ],
         "peak_commit_gib": 57.06
       },
-      "note": "frontend-serialized Mira_Scene-Layout-Preview.json"
+      "note": "frontend-serialized Mira_Scene-Image-to-3D-Layout-Preview.json"
     },
     {
       "case": "mira_final_scene",
       "final": true,
-      "workflow": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Scene.json",
+      "workflow": "Image to 3D-Mesh/Mira_Scene+TRELLIS2_INT8-Image-to-3D-Scene.json",
       "input": "modern_living_room.png",
       "status": "success",
       "elapsed_s": 1029.8,
@@ -483,12 +483,12 @@
         ],
         "peak_commit_gib": 67.22
       },
-      "note": "frontend-serialized Mira_Scene-Image-to-3D-Scene.json"
+      "note": "frontend-serialized Mira_Scene+TRELLIS2_INT8-Image-to-3D-Scene.json"
     },
     {
       "case": "mira_layout_office",
       "final": false,
-      "workflow": "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json",
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Layout-Preview.json",
       "input": "mira_test_home_office.png",
       "status": "success",
       "elapsed_s": 112.3,
@@ -611,12 +611,12 @@
         ],
         "peak_commit_gib": 56.59
       },
-      "note": "frontend-serialized Mira_Scene-Layout-Preview.json"
+      "note": "frontend-serialized Mira_Scene-Image-to-3D-Layout-Preview.json"
     },
     {
       "case": "mira_scene_lobby",
       "final": false,
-      "workflow": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Scene.json",
+      "workflow": "Image to 3D-Mesh/Mira_Scene+TRELLIS2_INT8-Image-to-3D-Scene.json",
       "input": "mira_test_hotel_lobby.png",
       "status": "success",
       "elapsed_s": 734.5,
@@ -754,12 +754,12 @@
         ],
         "peak_commit_gib": 67.44
       },
-      "note": "frontend-serialized Mira_Scene-Image-to-3D-Scene.json"
+      "note": "frontend-serialized Mira_Scene+TRELLIS2_INT8-Image-to-3D-Scene.json"
     },
     {
       "case": "mira_layout_nofloor",
       "final": false,
-      "workflow": "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json",
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Layout-Preview.json",
       "input": "mira_test_home_office.png",
       "status": "success",
       "elapsed_s": 108.5,
@@ -874,12 +874,12 @@
         ],
         "peak_commit_gib": 56.73
       },
-      "note": "frontend-serialized Mira_Scene-Layout-Preview.json"
+      "note": "frontend-serialized Mira_Scene-Image-to-3D-Layout-Preview.json"
     },
     {
       "case": "mira_layout_noobjects",
       "final": false,
-      "workflow": "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json",
+      "workflow": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Layout-Preview.json",
       "input": "mira_test_home_office.png",
       "status": "error",
       "elapsed_s": 2.0,
@@ -898,7 +898,7 @@
         ],
         "peak_commit_gib": 52.72
       },
-      "note": "frontend-serialized Mira_Scene-Layout-Preview.json",
+      "note": "frontend-serialized Mira_Scene-Image-to-3D-Layout-Preview.json",
       "expected_status": "error"
     }
   ],

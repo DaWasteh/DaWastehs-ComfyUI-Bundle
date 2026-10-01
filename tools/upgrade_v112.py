@@ -37,16 +37,16 @@ MARKER_KEY = "dawasteh_rdna4_v112"
 MARKER_VERSION = 1
 
 TRAIN_DEPTH2 = {
-    "LoRA Generation/Boogu_Image_Base-LoRA-Training.json",
-    "LoRA Generation/FLUX1_Dev-LoRA-Training.json",
-    "LoRA Generation/FLUX2_Klein_4B_Base-LoRA-Training.json",
-    "LoRA Generation/SDXL-LoRA-Training.json",
-    "LoRA Generation/ZImage_Base-LoRA-Training.json",
+    "LoRA Generation/Boogu_Image_Base_BF16-Images-to-LoRA.json",
+    "LoRA Generation/FLUX1_Dev_FP8-Images-to-LoRA.json",
+    "LoRA Generation/FLUX2_Klein_Base_4B_BF16-Images-to-LoRA.json",
+    "LoRA Generation/SDXL_RealVisXL_V4_FP16-Images-to-LoRA.json",
+    "LoRA Generation/ZImage_Base_BF16-Images-to-LoRA.json",
 }
 CHECKPOINT_DEPTH = 2
 E2_REMAINING = {
-    "Music Generation/ACE-Step1_5_Turbo_4B-Music-Generation.json",
-    "Text to Video/WAN22_14B_fp8_lightx2v-Text-to-Video.json",
+    "Music Generation/ACE_Step1_5_Turbo_BF16-Tags+Lyrics-to-Song.json",
+    "Text to Video/WAN22_14B_FP8+LightX2V-Text-to-Video.json",
 }
 ALL_GPU0 = ["gpu:0", "gpu:0", "gpu:0"]
 

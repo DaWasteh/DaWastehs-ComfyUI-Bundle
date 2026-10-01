@@ -19,19 +19,21 @@ try:
     from tools.generate_dual_gpu_workflows import install_central_device_control, insert_device_selectors, install_run_timer
     from tools.refine_workflows import refine_workflow
     from tools.rodent_layout import apply_rodent_layout
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:
     from build_workflows_v118 import Graph
     import migrate_workflows_v092 as migration
     from generate_dual_gpu_workflows import install_central_device_control, insert_device_selectors, install_run_timer
     from refine_workflows import refine_workflow
     from rodent_layout import apply_rodent_layout
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "tools/workflow_templates/v126"
 MARKER = "dawasteh_video_upscale_v126"
 RELEASE = "v1.2.6"
 BS = "\\"
-PATH = "Video Upscaling/WAN22_14B_LowNoise-Video-Upscale.json"
+PATH = "Video Upscaling/WAN22_T2V_14B_LowNoise_FP8-Video-Upscale.json"
 TITLE = "WAN 2.2 Video Upscale · A14B Low-Noise · lightx2v"
 MODEL = "WAN" + BS + "wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
 LORA = "WAN" + BS + "wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors"
@@ -171,7 +173,7 @@ def build(schemas: dict) -> dict:
 
 def finish(g: Graph, schemas: dict) -> dict:
     install_run_timer(g.w)
-    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v126:" + PATH))
+    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v126:" + original_name(PATH)))
     g.w["revision"] = 0
     g.w["extra"][MARKER] = {"version": 1, "release": RELEASE, "method": "wan22_low_noise",
                             "source_manifest": "tools/workflow_templates/v126/models.json",
@@ -184,7 +186,7 @@ def finish(g: Graph, schemas: dict) -> dict:
         install_central_device_control(g.w, PATH, h3_director=False, devices=DEVICES)
         g.w["extra"].setdefault("dawasteh_dual_gpu", {}).update({
             "version": 3, "scope": "collection-wide optional GPU placement", "family": "Video Upscaling",
-            "source": f"workflows/{PATH}", "server": "127.0.0.1:8188", "backend": "ROCm/HIP", "selector_count": inserted,
+            "source": f"workflows/{original_name(PATH)}", "server": "127.0.0.1:8188", "backend": "ROCm/HIP", "selector_count": inserted,
             "curated_split_default": False, "defaults": dict(DEVICES),
             "execution": "device placement only; model, UMT5 and VAE on the R9700",
         })

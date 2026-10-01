@@ -29,9 +29,9 @@ REPLACEMENTS: dict[str, dict[str, Any]] = {
 }
 
 TARGET_PATHS: frozenset[str] = frozenset({
-    "Image Editing/SDXL_Illustrious-Super-Composite.json",
-    "NSFW/SDXL_AniToReal_v1-Image-to-Image.json",
-    "NSFW/SDXL_AniToReal_v2-Image-to-Image.json",
+    "Image Editing/SDXL_Illustrious_FP16-Image-to-Image-Composite.json",
+    "NSFW/SDXL_OneObsession+IllusReal_FP16-Text-to-Anime-to-Real-Image.json",
+    "NSFW/SDXL_OneObsession+RealVisXL_FP16-Text-to-Anime-to-Real-Image.json",
 })
 
 

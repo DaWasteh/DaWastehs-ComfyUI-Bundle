@@ -225,10 +225,16 @@ class ManifestTests(unittest.TestCase):
 @unittest.skipUnless(REPORT.is_file(), "live evidence is written by the v1.2.9 GPU run")
 class LiveEvidenceTests(unittest.TestCase):
     def test_report_matches_the_shipped_files_and_every_run_succeeded(self):
+        import subprocess
+        from tools.workflow_names_v131 import old_key
         report = json.loads(REPORT.read_text(encoding="utf-8"))
+        built = build_all()
         for path in PATHS.values():
-            self.assertEqual(report["workflows"][path]["sha256"],
-                             hashlib.sha256((ROOT / "workflows" / path).read_bytes()).hexdigest(), path)
+            # The evidence describes the files as released in v1.2.9 (v1.3.0 names). v1.3.1 renamed them and the notes
+            # that name each other follow, so today's files are the builder's output instead.
+            released = subprocess.check_output(["git", "show", f"v1.2.9:workflows/{old_key(path)}"], cwd=ROOT)
+            self.assertEqual(report["workflows"][path]["sha256"], hashlib.sha256(released).hexdigest(), path)
+            self.assertEqual(json.loads((ROOT / "workflows" / path).read_text(encoding="utf-8")), built[path], path)
         for name in ("nodes.py", "helpers.py", "mira_runtime.py"):
             self.assertEqual(report["pack"][name], hashlib.sha256((PACK / name).read_bytes()).hexdigest(), name)
         finals = [run for run in report["runs"] if run.get("final")]

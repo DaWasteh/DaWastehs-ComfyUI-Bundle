@@ -13,19 +13,19 @@ Alle 13 Ergänzungen verwenden RODENT-Funktionsgruppen (Credit: Nerdy Rodent), d
 
 | Ordner | Datei / Eingaben |
 |---|---|
-| `Music Generation` | `YuE2_3B_INT8-PRIVATE-Text-to-Music.json`: Style + Lyrics → ABC-Plan → Musik |
-| `Music Generation` | `YuE2_3B_INT8-PRIVATE-ABC-to-Music.json`: Style + Lyrics + eigene ABC-Notation; leerer ABC-Eingang schaltet die Planung aus |
-| `Music Generation` | `YuE2_3B_INT8-PRIVATE-Audio-Cover.json`: Referenzaudio → SheetSage2 → symbolische Melodie → neues Arrangement |
-| `Text to Image` | `Cosmos_Predict2_2B-Text-to-Image.json`: Text → Bild |
-| `Controlled Video` | `Cosmos_Predict2_2B-Image-to-Video.json`: Text + Startbild |
-| `Controlled Video` | `Cosmos_Predict2_2B-First-Last-Frame.json`: Text + Start-/Endbild |
-| `Controlled Video` | `Cosmos_Predict2_2B-Video-Continuation.json`: Text + kurzer Videoanfang |
-| `Controlled Video` | `Cosmos_Predict2_2B-Text-to-Video.json`: eigener T2I-Checkpoint erzeugt das Startbild für Video2World |
-| `Game Development` | `TRELLIS2_INT8-Shape-Collision.json`: Einzelbild → vereinfachte Form + Collision |
-| `Game Development` | `TRELLIS2_INT8-PBR-Collision.json`: Einzelbild → PBR-Sichtmesh + Collision |
-| `Game Development` | `Pixal3D_INT8-Shape-Collision.json`: Einzelbild + Kameraschätzung → Form + Collision |
-| `Game Development` | `Pixal3D_INT8-PBR-Collision.json`: Einzelbild + Kameraschätzung → PBR + Collision |
-| `Game Development` | `Pixal3D_INT8-MultiView-PBR-Collision.json`: Front/links/hinten/rechts → PBR + Collision, eigener MultiView-Checkpoint |
+| `Music Generation` | `YuE2_3B_INT8-PRIVATE-Tags+Lyrics-to-Song.json`: Style + Lyrics → ABC-Plan → Musik |
+| `Music Generation` | `YuE2_3B_INT8-PRIVATE-ABC+Lyrics-to-Song.json`: Style + Lyrics + eigene ABC-Notation; leerer ABC-Eingang schaltet die Planung aus |
+| `Music Generation` | `YuE2_3B_INT8-PRIVATE-Song+Lyrics-to-Cover-Song.json`: Referenzaudio → SheetSage2 → symbolische Melodie → neues Arrangement |
+| `Text to Image` | `Cosmos_Predict2_2B_BF16-Text-to-Image.json`: Text → Bild |
+| `Controlled Video` | `Cosmos_Predict2_2B_BF16-Image-to-Video.json`: Text + Startbild |
+| `Controlled Video` | `Cosmos_Predict2_2B_BF16-First+Last-Frame-to-Video.json`: Text + Start-/Endbild |
+| `Controlled Video` | `Cosmos_Predict2_2B_BF16-Video-to-Video-Continuation.json`: Text + kurzer Videoanfang |
+| `Controlled Video` | `Cosmos_Predict2_2B_BF16-Text-to-Video.json`: eigener T2I-Checkpoint erzeugt das Startbild für Video2World |
+| `Game Development` | `TRELLIS2_INT8-Image-to-Mesh+Collision.json`: Einzelbild → vereinfachte Form + Collision |
+| `Game Development` | `TRELLIS2_INT8-Image-to-PBR-Mesh+Collision.json`: Einzelbild → PBR-Sichtmesh + Collision |
+| `Game Development` | `Pixal3D_INT8-Image-to-Mesh+Collision.json`: Einzelbild + Kameraschätzung → Form + Collision |
+| `Game Development` | `Pixal3D_INT8-Image-to-PBR-Mesh+Collision.json`: Einzelbild + Kameraschätzung → PBR + Collision |
+| `Game Development` | `Pixal3D_MultiView_INT8-4-Views-to-PBR-Mesh+Collision.json`: Front/links/hinten/rechts → PBR + Collision, eigener MultiView-Checkpoint |
 
 ### YuE2
 

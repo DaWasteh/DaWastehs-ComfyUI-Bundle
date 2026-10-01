@@ -1,11 +1,11 @@
 # Bild-Prompt-Enhancer · Entwurf → fertiger Prompt mit Qwen3.8 27B · v1.3.0
 
-Neuer Workflow `Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer`: aus einem groben Entwurf (ein paar Wörter,
+Neuer Workflow `Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt`: aus einem groben Entwurf (ein paar Wörter,
 Deutsch oder Englisch) wird der ausformulierte Prompt für ein Bildmodell. Geschrieben wird er vom **Qwen3.8 27B**, dem
 Modell, das auch der Musikvideo-Prompt-Writer (MV 2) und die Ming-Image-Writer benutzen: dasselbe GGUF, derselbe
 `llama-server`, dieselbe Grafikkarte (RX 9070 XT), aus demselben Startprofil.
 
-Die vorhandenen Enhancer im Ordner (Gemma 4 e4B, Qwen3.5 4B, `LLM_General-Prompt-Enhancer`) laufen im ComfyUI-Prozess mit
+Die vorhandenen Enhancer im Ordner (Gemma 4 e4B, Qwen3.5 4B, `LLM_Gemma4_E4B_FP8-Idea-to-Prompt`) laufen im ComfyUI-Prozess mit
 kleinen Modellen und bleiben unverändert. Der neue Workflow ist die große, sorgfältigere Variante; sein Preis ist der
 Serverstart (siehe Dauer).
 
@@ -130,6 +130,6 @@ Ohne Modell (Enhancer aus, ohne GGUF) bleibt alles beim Leerlaufwert.
 - **Bearbeiten**: Die Anweisung ist nur so gut wie das, was das Modell im Bild erkennt; ob das Edit-Modell sie umsetzt,
   prüft der Enhancer nicht.
 - Kein Dauerserver: jeder Lauf startet das GGUF (ca. 16 s). Für Serien vieler Prompts ist das langsamer als ein
-  ComfyUI-internes 4B-Modell (`LLM_General-Prompt-Enhancer`), dafür ist es das größere Modell.
+  ComfyUI-internes 4B-Modell (`LLM_Gemma4_E4B_FP8-Idea-to-Prompt`), dafür ist es das größere Modell.
 - Braucht die RX 9070 XT weitgehend frei; bei zu wenig VRAM lagert Windows in den Host-RAM aus und das Schreiben wird
   langsam (Warnung im Log).

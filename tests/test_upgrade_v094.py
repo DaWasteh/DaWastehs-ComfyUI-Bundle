@@ -8,6 +8,7 @@ from pathlib import Path
 
 from tools.migrate_workflows_v092 import migrate_workflow
 from tools.upgrade_v094 import UPGRADE_KEY, UPGRADE_VERSION, WAN_PATH
+from tools.workflow_names_v131 import old_key
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,7 +22,7 @@ class UpgradeV094Tests(unittest.TestCase):
 
     def test_v093_release_upgrades_deterministically_to_checked_workflow(self):
         previous_text = subprocess.check_output(
-            ["git", "show", f"v0.9.3:workflows/{WAN_PATH}"],
+            ["git", "show", f"v0.9.3:workflows/{old_key(WAN_PATH)}"],  # v1.3.1 renamed the file
             cwd=ROOT,
             text=True,
             encoding="utf-8",

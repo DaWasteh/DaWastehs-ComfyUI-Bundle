@@ -13,14 +13,19 @@ from __future__ import annotations
 import copy
 from typing import Any
 
+try:
+    from tools.workflow_names_v131 import original_name
+except ModuleNotFoundError:  # Direct execution
+    from workflow_names_v131 import original_name
+
 
 UPGRADE_KEY = "dawasteh_v097_game_dev"
 UPGRADE_VERSION = 1
 SOURCE_TEMPLATE = "3d_pixal3d_trellis2_image_to_model.json"
 SOURCE_TEMPLATE_SHA256 = "594295ae20490b4ed990655686f2d0c15ba06732df5553bc22bda98966c40a97"
 
-ENVIRONMENT_PATH = "Game Development/Pixal3D_INT8-Buildings-and-Environment-PBR-for-Godot.json"
-CREATURE_PATH = "Game Development/Pixal3D_INT8-Humanoids-and-Animals-PBR-for-Godot.json"
+ENVIRONMENT_PATH = "Game Development/Pixal3D_INT8-Image-to-PBR-Mesh-Buildings-Godot.json"
+CREATURE_PATH = "Game Development/Pixal3D_INT8-Image-to-PBR-Mesh-Characters-Godot.json"
 GAME_PATHS = {ENVIRONMENT_PATH, CREATURE_PATH}
 
 MODEL_FILES = [
@@ -579,7 +584,7 @@ def specialize_game_asset_template(workflow: dict[str, Any], path_key: str) -> d
     }
     result["extra"]["dawasteh_dual_gpu"] = {
         "family": spec["family"],
-        "source": f"workflows/{path_key}",
+        "source": f"workflows/{original_name(path_key)}",
         "curated_split_default": False,
         "defaults": {"MODEL": "gpu:0", "CLIP": "gpu:0", "VAE": "gpu:0"},
     }

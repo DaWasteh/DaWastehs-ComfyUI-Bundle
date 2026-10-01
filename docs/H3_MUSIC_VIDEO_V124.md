@@ -1,6 +1,6 @@
 # Song → Musikvideo · v1.2.4: Realismus-LoRA und 1920×1088 ohne OOM
 
-v1.2.4 erweitert `workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` um einen
+v1.2.4 erweitert `workflows/Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json` um einen
 eigenen Modell-Loader **MV 0** mit optionaler Realismus-LoRA und behebt den Speicherfehler, der bei 1920×1088 in
 der Extend-Schleife auftrat. Bedienung und Pipeline sind unverändert, siehe [`H3_MUSIC_VIDEO_V122.md`](H3_MUSIC_VIDEO_V122.md).
 

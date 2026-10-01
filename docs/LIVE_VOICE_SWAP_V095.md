@@ -2,7 +2,7 @@
 
 Workflow:
 
-`workflows/Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json`
+`workflows/Voice Design/RVC_DirectML-Microphone-to-Voice-Swap-Live.json`
 
 Der Workflow ist ein sicheres ComfyUI-Kontrollpanel für einen echten
 Mikrofon→RVC→Audioausgang-Pfad. Die kontinuierliche Audiokonvertierung läuft

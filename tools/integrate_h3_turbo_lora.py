@@ -13,13 +13,13 @@ LORA_NAME = r"MiniMax H3\minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetens
 LORA_SOURCE = "drbaph/MiniMax-H3-Turbo-Lora-ComfyUI"
 LORA_SHA256 = "7098acf3ee75028fd9fcd948f50fcc8d995057fabb76f86bd3ca2c0ffc58e409"
 VISIBLE_WORKFLOWS = (
-    "MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json",
-    "MiniMax_H3_Spectrum_Ref2VA_MAXIMUM_All_Reference_Inputs.json",
-    "MiniMax_H3_Spectrum_Ref2VA_Picture_and_Video_to_Video_LOCAL.json",
-    "MiniMax_H3_Spectrum_RefImage_Audio_to_Video_OriginalAudio_AutoLength.json",
-    "MiniMax_H3_Spectrum_RefImage_RefVideo_to_Video_Audio_AutoLength.json",
+    "MiniMax_H3_FL2VA_INT8-First+Last-Frame-to-Video.json",
+    "MiniMax_H3_Ref2VA_INT8-All-References-to-Video.json",
+    "MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video.json",
+    "MiniMax_H3_Ref2VA_INT8-Image+Audio-to-Video.json",
+    "MiniMax_H3_Ref2VA_INT8-Image+Video-to-Video-Keep-Sound.json",
 )
-DIRECTOR_WORKFLOW = "MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json"
+DIRECTOR_WORKFLOW = "MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json"
 
 
 def _link_id(link: Any) -> Any:

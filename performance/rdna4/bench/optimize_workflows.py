@@ -31,28 +31,28 @@ E1_CATEGORIES = {
 
 # E2 scope: image workflows only (video/audio splits are evaluated separately).
 IMAGE_SPLIT_TO_GPU0 = [
-    "Image Editing/Bernini_R-Image-Edit.json",
-    "Image Editing/Qwen_Image_Edit_2509-Image-Edit.json",
-    "Text to Image/Anima_base_v1-Text-to-Image.json",
-    "Text to Image/Boogu_image_base-Text-to-Image.json",
-    "Text to Image/FLUX1_dev_fp8-Text-to-Image.json",
-    "Text to Image/FLUX2_Klein_4b-Text-to-Image.json",
-    "Text to Image/FLUX2_dev_fp8mixed-Text-to-Image.json",
-    "Text to Image/Ideogram4-Text-to-Image.json",
-    "Text to Image/Krea2_raw-Text-to-Image.json",
-    "Text to Image/LongCat_image-Text-to-Image.json",
-    "Text to Image/SD15_v1-5-pruned-emaonly-Text-to-Image.json",
-    "Text to Image/SD21_wd-1-5-beta2-unclip-Text-to-Image.json",
-    "Text to Image/SDXL_RealVisXL_V4-Text-to-Image.json",
-    "Text to Image/ZImage_turbo-Text-to-Image.json",
+    "Image Editing/Bernini_R_14B_FP8-Image-Edit.json",
+    "Image Editing/Qwen_Image_Edit_2509_FP8-Image-Edit.json",
+    "Text to Image/Anima_Base_V1_BF16-Text-to-Image.json",
+    "Text to Image/Boogu_Image_Base_BF16-Text-to-Image.json",
+    "Text to Image/FLUX1_Dev_FP8-Text-to-Image.json",
+    "Text to Image/FLUX2_Klein_4B_BF16-Text-to-Image.json",
+    "Text to Image/FLUX2_Dev_FP8mixed-Text-to-Image.json",
+    "Text to Image/Ideogram4_FP8-Text-to-Image.json",
+    "Text to Image/Krea2_Raw_BF16-Text-to-Image.json",
+    "Text to Image/LongCat_Image_BF16-Text-to-Image.json",
+    "Text to Image/SD15_Base_FP16-Text-to-Image.json",
+    "Text to Image/SD21_WaifuDiffusion_1_5_Beta2_FP16-Text-to-Image.json",
+    "Text to Image/SDXL_RealVisXL_V4_FP16-Text-to-Image.json",
+    "Text to Image/ZImage_Turbo_BF16-Text-to-Image.json",
 ]
 
 
 # E2b scope: LTX-2.5 graphs (measured on T2V: cold 548 s -> 152 s, frames bit-identical): CLIP on gpu:0, VAE stays on gpu:1.
 LTX_CLIP_TO_GPU0 = [
-    "Text to Video/LTX25_INT8_ConvRot-Text-to-Video.json",
-    "Text+Image to Video/LTX25_INT8_ConvRot-Image-to-Video.json",
-    "Text+Image to Video/LTX25_INT8_ConvRot-First+Last-Frame-to-Video.json",
+    "Text to Video/LTX25_22B_INT8-Text-to-Video.json",
+    "Text+Image to Video/LTX25_22B_INT8-Text+Image-to-Video.json",
+    "Text+Image to Video/LTX25_22B_INT8-First+Last-Frame-to-Video.json",
 ]
 
 

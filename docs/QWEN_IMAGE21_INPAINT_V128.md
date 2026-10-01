@@ -1,6 +1,6 @@
 # Qwen Image 2.1 · Bild mit Maske bearbeiten · v1.2.8
 
-`workflows/Image Inpainting/Qwen_Image_2_1_BF16-Mask-Inpaint.json`: Bild laden, Maske malen, auf Englisch
+`workflows/Image Inpainting/Qwen_Image_2_1_BF16-Image+Mask-Inpaint.json`: Bild laden, Maske malen, auf Englisch
 beschreiben, was im markierten Bereich entstehen soll, fertig. Alles außerhalb der Maske bleibt **pixelgenau das
 Original**, auch bei großen Fotos. Modelle wie bei den übrigen Qwen-Image-2.1-Workflows (v1.2.1): BF16-DiT,
 Qwen3-VL 8B INT8 ConvRot, 2.1-VAE. Es gibt keinen neuen Download.

@@ -11,8 +11,8 @@ from tools.validate_workflows import graph_locator, validate_graph
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MUSIC = ROOT / "workflows" / "Music Generation" / "MiniMax_Music3_FP32-BF16-Text-to-Music.json"
-ENHANCER = ROOT / "workflows" / "Prompt Enhancer" / "MiniMax_Music3-Official-Skill-Caption-Enhancer.json"
+MUSIC = ROOT / "workflows" / "Music Generation" / "MiniMax_Music3_FP32-Tags+Lyrics-to-Song.json"
+ENHANCER = ROOT / "workflows" / "Prompt Enhancer" / "LLM_Qwen3_5_4B_BF16-Idea-to-Music3-Caption.json"
 SKILL = ROOT / "prompt-libraries" / "MiniMax-Music3-Official-Skill" / "SKILL.md"
 ROUTER = ROOT / "prompt-libraries" / "MiniMax-Music3-Official-Skill" / "genre-router.md"
 

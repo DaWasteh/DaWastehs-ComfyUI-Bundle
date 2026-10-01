@@ -25,12 +25,14 @@ try:
     from tools.generate_dual_gpu_workflows import install_run_timer
     from tools.refine_workflows import refine_workflow
     from tools.rodent_layout import apply_rodent_layout
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:
     from build_workflows_v118 import Graph
     import migrate_workflows_v092 as migration
     from generate_dual_gpu_workflows import install_run_timer
     from refine_workflows import refine_workflow
     from rodent_layout import apply_rodent_layout
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "tools/workflow_templates/v129"
@@ -38,8 +40,8 @@ MARKER = "dawasteh_mira_scene_v129"
 RELEASE = "v1.2.9"
 BS = "\\"
 PATHS = {
-    "scene": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Scene.json",
-    "layout": "Image to 3D-Mesh/Mira_Scene-Layout-Preview.json",
+    "scene": "Image to 3D-Mesh/Mira_Scene+TRELLIS2_INT8-Image-to-3D-Scene.json",
+    "layout": "Image to 3D-Mesh/Mira_Scene-Image-to-3D-Layout-Preview.json",
 }
 SAM3 = "SAM3" + BS + "sam3.1_multiplex_fp16.safetensors"
 MOGE = "moge_2_vitl_normal_fp16.safetensors"
@@ -130,7 +132,7 @@ def _assemble(g: Graph, front: dict, meshes: dict | None, prefix: str, title: st
 def finish(g: Graph, key: str) -> dict:
     path = PATHS[key]
     install_run_timer(g.w)
-    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v129:" + path))
+    g.w["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, "dawasteh-v129:" + original_name(path)))
     g.w["revision"] = 0
     g.w["extra"][MARKER] = {
         "version": 1,
@@ -240,7 +242,7 @@ Jedes erkannte Objekt wird ein eigenes, texturiertes 3D-Modell (TRELLIS.2) und a
 3. **Queue**. Ergebnis: **output/Mira_Scene/scene_*.glb** (alle Objekte + Boden + Fotokamera, Y oben, Boden bei y = 0,
    Meter) und **output/Mira_Scene/objects/object_*.glb** (jedes Objekt einzeln). BERICHT listet Größe und Auflage je Objekt.
 
-Tipp: erst den Workflow **Mira_Scene-Layout-Preview** laufen lassen (ca. 1–2 min): Er zeigt, ob Objekte und Boden
+Tipp: erst den Workflow **Mira_Scene-Image-to-3D-Layout-Preview** laufen lassen (ca. 1–2 min): Er zeigt, ob Objekte und Boden
 richtig erkannt und platziert werden, bevor TRELLIS.2 minutenlang rechnet.
 
 """ + COMMON + """
@@ -258,7 +260,7 @@ CCM-Modell. Dauert ca. 1–2 Minuten und zeigt, ob Objekte, Größen und Boden s
 
 1. **FOTO** und **OBJEKTE** wie im Szenen-Workflow eintragen, **Queue**.
 2. Ergebnis: **output/Mira_Scene/layout_*.glb**; BERICHT mit Größe, Aufrecht-Winkel und Auflage je Objekt.
-3. Passt alles, dieselbe Objektliste in **Mira_Scene-Image-to-3D-Scene** verwenden.
+3. Passt alles, dieselbe Objektliste in **Mira_Scene+TRELLIS2_INT8-Image-to-3D-Scene** verwenden.
 
 """ + COMMON + """
 Bedienung und Messwerte: `docs/MIRA_SCENE_V129.md`.

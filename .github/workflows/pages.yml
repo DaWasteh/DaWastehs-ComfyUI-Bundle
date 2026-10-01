@@ -1,0 +1,49 @@
+# Publishes the example gallery (examples/) as the GitHub Pages site of this repository.
+# The workflow JSON files are copied next to it so every gallery page can offer a same-origin download
+# and a "copy workflow" button.
+name: Beispiel-Galerie (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "examples/**"
+      - "workflows/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Seite zusammenstellen
+        run: |
+          mkdir -p _site/workflows
+          cp -r examples/. _site/
+          cp -r workflows/. _site/workflows/
+          touch _site/.nojekyll
+          du -sh _site
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

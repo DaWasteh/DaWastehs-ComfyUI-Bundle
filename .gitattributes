@@ -109,3 +109,15 @@ tests/test_prompt_enhancer_nodes_v130.py text eol=lf
 tests/test_prompt_enhancer_workflow_v130.py text eol=lf
 performance/rdna4/prompt-enhancer-v130-validation.json text eol=lf
 docs/PROMPT_ENHANCER_V130.md text eol=lf
+# v1.3.1: renamed workflows keep the line endings of their old names (tools/workflow_renames_v131.json).
+workflows/Controlled?Video/Cosmos_Predict2_2B_BF16-*.json text eol=lf
+workflows/Text?to?Image/Cosmos_Predict2_2B_BF16-*.json text eol=lf
+workflows/Game?Development/Pixal3D_INT8-Image-to-*Mesh+Collision.json text eol=lf
+workflows/Game?Development/Pixal3D_MultiView_INT8-4-Views-to-PBR-Mesh+Collision.json text eol=lf
+workflows/Game?Development/TRELLIS2_INT8-Image-to-*Mesh+Collision.json text eol=lf
+workflows/Image?to?3D-Mesh/Mira_Scene+TRELLIS2_INT8-Image-to-3D-Scene.json text eol=lf
+workflows/Music?Generation/YuE2_3B_BF16+LoRA-PRIVATE-*.json text eol=lf
+workflows/Pose?&?Depth/DepthAnything3_Large_FP32-*.json text eol=lf
+workflows/Pose?&?Depth/SDPose_WholeBody_FP16-*.json text eol=lf
+workflows/Prompt?Enhancer/LLM_Qwen3_8_27B_IQ4_XS-*.json text eol=lf
+workflows/Reference?to?Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json text eol=lf

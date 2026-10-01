@@ -7,9 +7,9 @@ Anführungszeichen buchstabengetreu; Design-Layer zerlegt ein fertiges, flaches 
 | Workflow | Ergebnis unter `output/` |
 |---|---|
 | `Text to Image/Ming_Image_0_1_Design_INT8-Text-to-Image` | `Ming_Image/Design_*.png` (Standard 2048×2048) |
-| `Text to Image/Ming_Image_0_1_Design_INT8-Transparent-RGBA` | `Ming_Image/Transparent_*.png` (RGBA, Standard 1024×1024) |
+| `Text to Image/Ming_Image_0_1_Design_INT8-Text-to-Transparent-Image` | `Ming_Image/Transparent_*.png` (RGBA, Standard 1024×1024) |
 | `Image Editing/Ming_Image_0_1_Design_INT8-Image-Edit` | `Ming_Image/Edit_*.png` (Arbeitsgröße des 1024er-Buckets) |
-| `Image Utilities/Ming_Image_0_1_Design_Layer_INT8-Layer-Decompose` | `Ming_Image/Layers/Layer_*.png` (N RGBA-Ebenen, 1 = vorne) |
+| `Image Utilities/Ming_Image_0_1_Design_Layer_INT8-Image-to-Layers` | `Ming_Image/Layers/Layer_*.png` (N RGBA-Ebenen, 1 = vorne) |
 
 ## Modelle (gepinnt in `tools/workflow_templates/v129/models.json`)
 

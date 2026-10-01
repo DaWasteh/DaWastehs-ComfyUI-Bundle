@@ -13,9 +13,11 @@ from pathlib import Path
 try:
     from tools.generate_dual_gpu_workflows import refresh_refinement
     from tools.migrate_workflows_v092 import migrate_workflow
+    from tools.workflow_names_v131 import original_name
 except ModuleNotFoundError:
     from generate_dual_gpu_workflows import refresh_refinement
     from migrate_workflows_v092 import migrate_workflow
+    from workflow_names_v131 import original_name
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE_DIR = ROOT / "workflows" / "Reference to Video"
@@ -37,13 +39,13 @@ class Enhancer:
 ENHANCERS = (
     Enhancer(
         "MiniMax H3 Base / FL2VA",
-        "MiniMax_H3_Base_FL2VA-Official-Guide-Prompt-Enhancer.json",
+        "LLM_Qwen3_5_4B_BF16-Idea-to-H3-FL2VA-Prompt.json",
         (BASE_GUIDE,),
         "Rewrite T2VA, I2VA, FL2VA, or L2VA requests into the exact three-field MiniMax H3 base-mode format.",
     ),
     Enhancer(
         "MiniMax H3 Ref2VA",
-        "MiniMax_H3_Ref2VA-Official-Guide-Prompt-Enhancer.json",
+        "LLM_Qwen3_5_4B_BF16-Idea-to-H3-Ref2VA-Prompt.json",
         (REF_GUIDE, BASE_GUIDE),
         "Rewrite full-reference requests into the exact six-section MiniMax H3 Ref2VA format.",
     ),
@@ -145,7 +147,8 @@ def build(enhancer: Enhancer) -> dict:
     })
     workflow["last_node_id"] = regex_id
     workflow["last_link_id"] = new_link_id
-    workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-h3-prompt-enhancer:{enhancer.output}"))
+    historical = Path(original_name(f"Prompt Enhancer/{enhancer.output}")).name
+    workflow["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"dawasteh-h3-prompt-enhancer:{historical}"))
     workflow["revision"] = 0
     workflow.setdefault("extra", {})["dawasteh_h3_prompt_guide"] = {
         "version": 1,

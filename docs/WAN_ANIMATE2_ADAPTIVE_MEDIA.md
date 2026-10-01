@@ -13,7 +13,7 @@ Die Nodes croppen nicht. Sie skalieren das vollständige Bild beziehungsweise je
 
 ## Wan Animate 2: Sekunden statt fester 81 Frames
 
-Im Workflow `workflows/Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json` steuert `OUTPUT DURATION · SECONDS` die aktive Motion-Transfer-Stufe:
+Im Workflow `workflows/Character Animation/WanAnimate2_14B_INT8-Image+Video-to-Video-Motion-Transfer.json` steuert `OUTPUT DURATION · SECONDS` die aktive Motion-Transfer-Stufe:
 
 ```text
 Sekunden × echte Pose-Video-FPS → nächster gültiger 4n+1-Framewert

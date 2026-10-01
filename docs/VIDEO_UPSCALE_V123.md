@@ -6,8 +6,8 @@ RODENT-Workflow für **fertige Videos beliebiger Länge**:
 
 | Workflow | Methode | Charakter (Rodent + eigene Messung) |
 |---|---|---|
-| `MiniMax_H3-Ultimate-Upscale-FastH3.json` | PlagueKind **MMH3 Ultimate Upscale**: zweiter FastH3-Durchgang in Zielgröße, zeitliche Chunks mit Anker, bei Bedarf räumliche Kacheln | die meisten neuen Details, verändert das Bild am stärksten |
-| `MiniMax_H3-Latent-Upscaler-3D-FastH3.json` | LBH-123-AI **Latent Upscaler 3D** (gelerntes Modell) + 2 FastH3-Schritte, Original-Audio-Latent | nah am Original, am schnellsten |
+| `MiniMax_FastH3_INT8-Video-Ultimate-Upscale.json` | PlagueKind **MMH3 Ultimate Upscale**: zweiter FastH3-Durchgang in Zielgröße, zeitliche Chunks mit Anker, bei Bedarf räumliche Kacheln | die meisten neuen Details, verändert das Bild am stärksten |
+| `MiniMax_FastH3_INT8-Video-Latent-Upscale.json` | LBH-123-AI **Latent Upscaler 3D** (gelerntes Modell) + 2 FastH3-Schritte, Original-Audio-Latent | nah am Original, am schnellsten |
 | `SeedVR2_3B_INT8-Video-Upscale.json` | **SeedVR2 3B INT8** (ComfyUI-Core), ein Schritt | schärfer, praktisch keine neuen Details; gut als letzter Durchgang |
 
 ## Bedienung (alle drei gleich)

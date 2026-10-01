@@ -8,12 +8,12 @@ from pathlib import Path
 
 
 ROOT = Path("workflows") / "Music Generation"
-COT_PATH = ROOT / "YuE_7B-FP16_R9700-Music-Generation.json"
-ICL_PATH = ROOT / "YuE_7B-FP16_R9700-Reference-Voice-ICL-Music-Generation.json"
-HEART_PATH = ROOT / "HeartMuLa_HappyNewYear_3B_R9700-Music-Generation.json"
-YUE_INT8_PATH = ROOT / "YuE_7B-INT8_R9700-Music-Generation.json"
-ACE_INT8_PATH = ROOT / "ACE-Step1_5_XL_SFT_INT8_ConvRot-Music-Generation.json"
-STABLE_INT8_PATH = ROOT / "StableAudio3_Medium_INT8_ConvRot-Audio-Generation.json"
+COT_PATH = ROOT / "YuE_7B_FP16-Tags+Lyrics-to-Song.json"
+ICL_PATH = ROOT / "YuE_7B_ICL_FP16-Voice+Lyrics-to-Song.json"
+HEART_PATH = ROOT / "HeartMuLa_3B_HappyNewYear-Tags+Lyrics-to-Song.json"
+YUE_INT8_PATH = ROOT / "YuE_7B_INT8-Tags+Lyrics-to-Song.json"
+ACE_INT8_PATH = ROOT / "ACE_Step1_5_XL_SFT_INT8-Tags+Lyrics-to-Song.json"
+STABLE_INT8_PATH = ROOT / "StableAudio3_Medium_INT8+Qwen3_5_2B-Text-to-Audio.json"
 
 
 def load(path: Path) -> dict:

@@ -15,7 +15,7 @@ Die Workflows verwenden bewusst den vollständigen FP32-DiT und vollständigen B
 ## Text-to-Music
 
 ```text
-workflows/Music Generation/MiniMax_Music3_FP32-BF16-Text-to-Music.json
+workflows/Music Generation/MiniMax_Music3_FP32-Tags+Lyrics-to-Song.json
 ```
 
 Der Workflow übernimmt die offizielle Music-3-Topologie: strukturierte Caption + getaggte Lyrics → nativer Music-3-Textencoder → 30 Euler/Simple-Schritte → DAV-Audiodecode → MP3. Der Standard ist 60 Sekunden; Music 3 unterstützt bis ungefähr 300 Sekunden. Für lange Songs reduziert `tiled_decode=true` den VAE-VRAM-Bedarf.
@@ -41,7 +41,7 @@ Der echte Dual-GPU-Smoke-Test am 2026-08-14 expandierte den Subgraph über Comfy
 ## Offizieller Caption-Enhancer
 
 ```text
-workflows/Prompt Enhancer/MiniMax_Music3-Official-Skill-Caption-Enhancer.json
+workflows/Prompt Enhancer/LLM_Qwen3_5_4B_BF16-Idea-to-Music3-Caption.json
 ```
 
 Nur die beiden grünen Felder bearbeiten:

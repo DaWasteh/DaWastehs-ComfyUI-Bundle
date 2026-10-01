@@ -130,7 +130,7 @@ class UpgradeV115Tests(unittest.TestCase):
                             f"{rel}: keine nicht ganzzahlige Stuetzstelle")
 
     def test_non_target_workflows_are_returned_unchanged(self):
-        rel = "Reference to Video/MiniMax_H3_Spectrum_FL2VA_First_Last_Frame_to_Video_LOCAL.json"
+        rel = "Reference to Video/MiniMax_H3_FL2VA_INT8-First+Last-Frame-to-Video.json"
         self.assertNotIn(rel, up.targets())
         wf = load(rel)
         self.assertEqual(up.apply(wf, rel), wf)

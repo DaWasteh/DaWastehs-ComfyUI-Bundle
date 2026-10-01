@@ -1,6 +1,6 @@
 # DaWasteh MiniMax H3 – Song → Musikvideo (FastH3 · v1.2.2, erweitert in v1.2.4, v1.2.5 und v1.2.7)
 
-Seit **v1.2.2** besteht der Workflow `MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` aus sichtbaren Schritten
+Seit **v1.2.2** besteht der Workflow `MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json` aus sichtbaren Schritten
 statt eines einzelnen Director-Nodes. Grundlage ist **FastH3** (FastVideo, 8 Schritte, VSA-Sparse-Attention).
 
 | Node | Aufgabe |
@@ -80,7 +80,7 @@ Die LoRA stammt aus `drbaph/MiniMax-H3-Turbo-Lora-ComfyUI`, ist die für pruned/
 1. Die Ordner `ComfyUI-DaWasteh-H3-MusicVideo` und `ComfyUI-DaWasteh-MultiGPU-Control` nach `L:\ComfyUI\ComfyUI\custom_nodes\` kopieren. Alternativ den beiliegenden PowerShell-Installer ausführen.
 2. ComfyUI vollständig neu starten.
 3. Im Browser `Strg+F5` drücken.
-4. `MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` laden. Seit v0.9.2 enthält dieser kanonische Workflow selbst die optionale GPU-Steuerung; ein separater Dual-GPU-Klon ist nicht mehr nötig.
+4. `MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json` laden. Seit v0.9.2 enthält dieser kanonische Workflow selbst die optionale GPU-Steuerung; ein separater Dual-GPU-Klon ist nicht mehr nötig.
 
 Keine zusätzlichen Python-Pakete werden installiert.
 

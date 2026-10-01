@@ -34,8 +34,8 @@ def _shipped_helpers() -> dict:
 
 H = _shipped_helpers()
 METHOD_FILES = {
-    "ultimate": "Video Upscaling/MiniMax_H3-Ultimate-Upscale-FastH3.json",
-    "latent3d": "Video Upscaling/MiniMax_H3-Latent-Upscaler-3D-FastH3.json",
+    "ultimate": "Video Upscaling/MiniMax_FastH3_INT8-Video-Ultimate-Upscale.json",
+    "latent3d": "Video Upscaling/MiniMax_FastH3_INT8-Video-Latent-Upscale.json",
     "seedvr2": "Video Upscaling/SeedVR2_3B_INT8-Video-Upscale.json",
 }
 

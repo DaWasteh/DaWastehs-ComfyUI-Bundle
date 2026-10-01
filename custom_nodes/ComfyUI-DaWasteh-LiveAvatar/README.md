@@ -65,7 +65,7 @@ Nodes: **Face Swap Models · DirectML** (cached sessions), **Face Swap Identity 
 
 ## Live voice-conversion companion
 
-Workflow 06 video remains separate from audio. v0.9.5 adds the independent `Voice Design/RVC_DirectML-Live-Microphone-Voice-Swap.json` control workflow and `DaWastehLiveVoiceSwapLauncher`. The node verifies the complete pinned b2332 tree, identifies the listener executable, and can start, inspect, open, or stop only that local DirectML service. The older PowerShell helpers remain available. This is RVC speech-to-speech conversion, **not** Qwen TTS/Voice-LoRA and not OmniVoice TTS.
+Workflow 06 video remains separate from audio. v0.9.5 adds the independent `Voice Design/RVC_DirectML-Microphone-to-Voice-Swap-Live.json` control workflow and `DaWastehLiveVoiceSwapLauncher`. The node verifies the complete pinned b2332 tree, identifies the listener executable, and can start, inspect, open, or stop only that local DirectML service. The older PowerShell helpers remain available. This is RVC speech-to-speech conversion, **not** Qwen TTS/Voice-LoRA and not OmniVoice TTS.
 
 Supply only an RVC model you own or are explicitly licensed to use. No voice model is distributed in Git. For the local v0.9.5 demo, the official Amitaro Hakihaki v1.0 model was downloaded from its author page, kept outside the repository, credited, imported as Safetensors plus index, and converted by b2332 to its own compatible ONNX. On RX 9070 XT DirectML with `rmvpe_onnx`, 65 consecutive 100-ms chunks completed without errors; warm REST round-trip measured median 92.96 ms / p95 100.69 ms and the model stage median 70.24 ms / p95 78.74 ms. This validates conversion, not microphone/OBS routing or subjective voice quality.
 

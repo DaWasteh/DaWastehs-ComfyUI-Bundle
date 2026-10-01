@@ -14,6 +14,15 @@ try:
 except Exception as exc:  # never block node registration
     logging.warning("[DaWasteh peft_compat] not applied: %s", exc)
 
+# v1.3.1: the FB and AILab Qwen3-TTS packs share the module name qwen_tts.inference.qwen3_tts_model; after an AILab
+# node ran, the FB "Save Voice" node could not pickle its voice any more (see qwen_tts_compat.py).
+try:
+    from .qwen_tts_compat import install as install_qwen_tts_compat
+
+    install_qwen_tts_compat()
+except Exception as exc:  # never block node registration
+    logging.warning("[DaWasteh qwen_tts_compat] not installed: %s", exc)
+
 NODE_CLASS_MAPPINGS = {
     "DaWastehQwen3TTSLoRATrain": Qwen3TTSLoRATrain,
     "DaWastehQwen3TTSLoRAInference": Qwen3TTSLoRAInference,

@@ -1,6 +1,6 @@
 # DaWasteh PromptEnhancer
 
-ComfyUI-Node (`comfy_api.latest`) für den v1.3.0-Workflow `Prompt Enhancer/LLM_Qwen3_8_27B-Image-Prompt-Enhancer`:
+ComfyUI-Node (`comfy_api.latest`) für den v1.3.0-Workflow `Prompt Enhancer/LLM_Qwen3_8_27B_IQ4_XS-Draft-to-Image-Prompt`:
 aus einem groben Entwurf wird der fertig ausformulierte Prompt für ein Bildmodell.
 
 - **DaWImagePromptEnhancer** (`DaW Image Prompt Enhancer (Qwen3.8 27B GGUF)`):

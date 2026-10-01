@@ -8,7 +8,7 @@ from typing import Any
 
 UPGRADE_KEY = "dawasteh_v094_adaptive_media"
 UPGRADE_VERSION = 4
-WAN_PATH = "Character Animation/WanAnimate2_INT8_ConvRot-Motion-Transfer.json"
+WAN_PATH = "Character Animation/WanAnimate2_14B_INT8-Image+Video-to-Video-Motion-Transfer.json"
 AUTO_PROFILE = "Auto (connected model)"
 WAN_PROFILE = "Wan 2.x / Animate 2 (480p)"
 NATIVE_QUALITY = "Model native (100%)"

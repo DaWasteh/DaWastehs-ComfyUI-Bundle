@@ -20,7 +20,7 @@
   },
   "runs": [
     {
-      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B-First-Last-Frame.json",
+      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B_BF16-First+Last-Frame-to-Video.json",
       "workflow_sha256": "7dbfe9b57c107fedd9f6b26b798df6cbaa13a00c5009cc43fb229f613a3fc1e1",
       "api_contract_sha256": "02d87b772ff14a814c031409c1d81386eab1c7044d52d014f2a0ff0d2995227b",
       "executed_contract_matches_final": true,
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B-Image-to-Video.json",
+      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B_BF16-Image-to-Video.json",
       "workflow_sha256": "f37d2dcb28672372d1dfb2824b55951650b0667cd7107b27b225861609eceb9e",
       "api_contract_sha256": "f138fa42f50ce097689b3fb573ec83810819261c55a0ca46c91b858c466ca7a1",
       "executed_contract_matches_final": true,
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B-Text-to-Video.json",
+      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B_BF16-Text-to-Video.json",
       "workflow_sha256": "adcc9e1197b9b7cafdb12ebd2362b7b7b0585118ce58420377341334a0b86fad",
       "api_contract_sha256": "22b5d7fc4f11847509895136c4f4ea3b0e6d7170490717b89843351bab7f6f37",
       "executed_contract_matches_final": true,
@@ -113,7 +113,7 @@
       ]
     },
     {
-      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B-Video-Continuation.json",
+      "workflow": "workflows/Controlled Video/Cosmos_Predict2_2B_BF16-Video-to-Video-Continuation.json",
       "workflow_sha256": "6176a92b369554272ca4386ae2797bf2135ab18d01d287a03f0ac34359e5fe2f",
       "api_contract_sha256": "ba0239395db3e93b84b889fe1607b312848cb97435f30c2bd333a6e8f0c6ef12",
       "executed_contract_matches_final": true,
@@ -131,7 +131,7 @@
       ]
     },
     {
-      "workflow": "workflows/Game Development/Pixal3D_INT8-MultiView-PBR-Collision.json",
+      "workflow": "workflows/Game Development/Pixal3D_MultiView_INT8-4-Views-to-PBR-Mesh+Collision.json",
       "workflow_sha256": "ff407a84a4361888967141a83210fafe970c7fc3d98ca7c2c5524d2c38ab4e2f",
       "api_contract_sha256": "5ac27626b4a2fadb34fdbbf559e03e948f2f8279e70d953b290bb768c8280e42",
       "executed_contract_matches_final": true,
@@ -173,7 +173,7 @@
       ]
     },
     {
-      "workflow": "workflows/Game Development/Pixal3D_INT8-PBR-Collision.json",
+      "workflow": "workflows/Game Development/Pixal3D_INT8-Image-to-PBR-Mesh+Collision.json",
       "workflow_sha256": "85e7008c18db146c10dcf1426ba35d090930232871b21071115b719fff19785a",
       "api_contract_sha256": "34ad4d570a4cf5d7b6dff409ad04b4b12e587277cd080c3d903a9e11559e99d4",
       "executed_contract_matches_final": true,
@@ -241,7 +241,7 @@
       ]
     },
     {
-      "workflow": "workflows/Game Development/Pixal3D_INT8-Shape-Collision.json",
+      "workflow": "workflows/Game Development/Pixal3D_INT8-Image-to-Mesh+Collision.json",
       "workflow_sha256": "c115a057914494d23213359fd07be57711a5db7aa9f201f230fb1b9af2db8ae4",
       "api_contract_sha256": "312d6c16bbe5bab51198626ce321a86752abc4c1e1da90a996629c2881061f1a",
       "executed_contract_matches_final": true,
@@ -274,7 +274,7 @@
       ]
     },
     {
-      "workflow": "workflows/Game Development/TRELLIS2_INT8-PBR-Collision.json",
+      "workflow": "workflows/Game Development/TRELLIS2_INT8-Image-to-PBR-Mesh+Collision.json",
       "workflow_sha256": "fbcb9f270a78c087071a45df9b9373a4b8adb5af8e9dcd65065b1967885a7b0e",
       "api_contract_sha256": "8d06c1658d3d2d3d6ebaf9dd8c06e085fcd4c49796e458d1d4191fe19994406e",
       "executed_contract_matches_final": true,
@@ -338,7 +338,7 @@
       ]
     },
     {
-      "workflow": "workflows/Game Development/TRELLIS2_INT8-Shape-Collision.json",
+      "workflow": "workflows/Game Development/TRELLIS2_INT8-Image-to-Mesh+Collision.json",
       "workflow_sha256": "22488f0456e538cee62293953dbbd00937e892770352577756ffc3f04eec1e45",
       "api_contract_sha256": "5942786bd0cdef1399abf6a75b85c6b78fc8f113e6adc4a391966a0e541b0c2e",
       "executed_contract_matches_final": true,
@@ -371,7 +371,7 @@
       ]
     },
     {
-      "workflow": "workflows/Music Generation/YuE2_3B_INT8-PRIVATE-ABC-to-Music.json",
+      "workflow": "workflows/Music Generation/YuE2_3B_INT8-PRIVATE-ABC+Lyrics-to-Song.json",
       "workflow_sha256": "0749d97be1861a8bbd9cf51e1ec37c9c3986c571cd0e6f79ccd15f392d26268e",
       "api_contract_sha256": "fabcf0e1e050e5e45b08aa57d12ac9bb0b28bfbd7f5f5fcf2bcb65a25dab23ee",
       "executed_contract_matches_final": true,
@@ -397,7 +397,7 @@
       ]
     },
     {
-      "workflow": "workflows/Music Generation/YuE2_3B_INT8-PRIVATE-Audio-Cover.json",
+      "workflow": "workflows/Music Generation/YuE2_3B_INT8-PRIVATE-Song+Lyrics-to-Cover-Song.json",
       "workflow_sha256": "c6d9c28aaaae89e104ed697e41441809aef51556f49ac023ab6b7075db528219",
       "api_contract_sha256": "b97210499e12defaec724f0162d33f63546bb860f9580d6b59fa7a6e9b9c348e",
       "executed_contract_matches_final": true,
@@ -423,7 +423,7 @@
       ]
     },
     {
-      "workflow": "workflows/Music Generation/YuE2_3B_INT8-PRIVATE-Text-to-Music.json",
+      "workflow": "workflows/Music Generation/YuE2_3B_INT8-PRIVATE-Tags+Lyrics-to-Song.json",
       "workflow_sha256": "1d12cffe9ee41c7a9322fb7aa968aebe34691580d33ab6dcc477d21be10086d4",
       "api_contract_sha256": "64225cd0f42127e47e378c0bf48728122ea98cdd512350e902830bf98746c164",
       "executed_contract_matches_final": true,
@@ -449,7 +449,7 @@
       ]
     },
     {
-      "workflow": "workflows/Text to Image/Cosmos_Predict2_2B-Text-to-Image.json",
+      "workflow": "workflows/Text to Image/Cosmos_Predict2_2B_BF16-Text-to-Image.json",
       "workflow_sha256": "95a4968b8d0cff1829174b86f98782f50ed979878da25be33d4ab4c3cfd5c476",
       "api_contract_sha256": "8deaecf586db60f8dd804112de9aedc1c9167b28932c60ad07d5bac0d2684d7c",
       "executed_contract_matches_final": true,

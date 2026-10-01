@@ -1,6 +1,6 @@
 # Song → Musikvideo mit MiniMax FastH3 · v1.2.2
 
-`workflows/Reference to Video/MiniMax_H3_Complete_Song_to_Music_Video_One_Click.json` wurde von Grund auf neu gebaut.
+`workflows/Reference to Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json` wurde von Grund auf neu gebaut.
 Der bisherige Ein-Node-Director (bis v1.2.1) lief immer gleich ab: pro Szene dasselbe Referenzbild, fester Seed, ein
 kleines Kamera-Vokabular und keine Verbindung zwischen den Szenen. Das Ergebnis war ein Vor-und-zurück der Kamera
 ohne Handlung. Der neue Graph arbeitet in sichtbaren Schritten mit **FastH3**, echtem **Extend** zwischen den Szenen,

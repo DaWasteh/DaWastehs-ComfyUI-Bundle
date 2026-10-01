@@ -1,0 +1,41 @@
+{
+  "name": "v131_examples",
+  "description": "Example gallery (v1.3.1): the start-MultiGPU.ps1 R9700 profile (reserve-vram 4, DaWasteh VRAM guard 3 GiB, hipBLASLt, cache-ram, pytorch attention) on a test port, with the Qwen3.8 27B llama-server of the prompt writers and a private input folder.",
+  "env": {
+    "HIP_VISIBLE_DEVICES": "0,1",
+    "CUDA_VISIBLE_DEVICES": "0,1",
+    "TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL": "1",
+    "TORCH_BLAS_PREFER_HIPBLASLT": "1",
+    "OMP_NUM_THREADS": "24",
+    "MKL_NUM_THREADS": "24",
+    "OPENBLAS_NUM_THREADS": "24",
+    "NUMEXPR_NUM_THREADS": "24",
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "DAWASTEH_VRAM_GUARD": "1",
+    "DAWASTEH_VRAM_GUARD_RESERVE_GIB": "3",
+    "DAWASTEH_PROMPT_LLM_GGUF": "L:/ComfyUI/ComfyUI/models/LLM/Qwen3.8/Qwen3.8-27B-IQ4_XS-3.84bpw.gguf",
+    "DAWASTEH_LLAMA_SERVER": "L:/LAB/ai-local/b11249_hip_llama.cpp/build/bin/llama-server.exe",
+    "DAWASTEH_LLAMA_HIP_DEVICE": "1"
+  },
+  "unset_env": [
+    "TORCH_BLAS_PREFER_CUBLASLT",
+    "DISABLE_ADDMM_CUDA_LT",
+    "HSA_OVERRIDE_GFX_VERSION",
+    "PYTORCH_TUNABLEOP_ENABLED",
+    "RDNA4_VRAM_GUARD"
+  ],
+  "args": [
+    "--default-device",
+    "0",
+    "--use-pytorch-cross-attention",
+    "--reserve-vram",
+    "4",
+    "--disable-dynamic-vram",
+    "--disable-async-offload",
+    "--disable-pinned-memory",
+    "--cache-ram",
+    "--input-directory",
+    "L:/ComfyUI/tmp/examples-v131/input"
+  ]
+}

@@ -49,9 +49,9 @@ class AutoSongwriterConsolidationTests(unittest.TestCase):
         expected = {target.path for target in TARGET_WORKFLOWS}
         actual = {
             path.relative_to(WORKFLOWS).as_posix()
-            for path in (WORKFLOWS / "Music Generation").glob(
-                "ACE-Step1_5_XL_SFT_*AutoSongwriter*.json"
-            )
+            # v0.9.3 names and the v1.3.1 names of the two targets (tools/workflow_renames_v131.json)
+            for pattern in ("ACE-Step1_5_XL_SFT_*AutoSongwriter*.json", "ACE_Step1_5_XL_SFT_*-Idea-to-Lyrics-to-Song.json")
+            for path in (WORKFLOWS / "Music Generation").glob(pattern)
         }
         self.assertEqual(actual, expected)
 
