@@ -32,6 +32,13 @@ try:
 except Exception as exc:  # never block node registration because of the patch
     logging.warning("[DaWasteh SAM3 reload] not applied: %s", exc)
 
+try:
+    from . import splat_inverse
+
+    splat_inverse.apply()
+except Exception as exc:  # never block node registration because of the patch
+    logging.warning("[DaWasteh splat linalg] not applied: %s", exc)
+
 WEB_DIRECTORY = "./web"
 
 __all__ = ["comfy_entrypoint", "WEB_DIRECTORY"]

@@ -1,0 +1,62 @@
+[
+  {
+    "role": "AnyAngle LoRA for Qwen Image 2.1 (rank 24, bf16): carries an image to the camera angle of a coarse render",
+    "repo_id": "lilylilith/QI_2.1_AnyAngle",
+    "revision": "5f6e234c1705c9b4eb653cb1d3452b0cfc987996",
+    "source_path": "QI2.1_AnyAngle.safetensors",
+    "path": "loras/Qwen/QI2.1_AnyAngle.safetensors",
+    "size": 119590312,
+    "sha256": "e4d7a0d44a45ed62daabd0f2484a1a59046618a4c47e76b1eab5e386a7a35d8a",
+    "license": "Apache-2.0"
+  },
+  {
+    "role": "TripoSplat diffusion model fp16 (image -> 3D gaussian splat)",
+    "repo_id": "VAST-AI/TripoSplat",
+    "revision": "56a96e603204ec410c4da60c13ea4fa09a2169a9",
+    "source_path": "diffusion_models/triposplat_fp16.safetensors",
+    "path": "diffusion_models/TripoSplat/triposplat_fp16.safetensors",
+    "size": 741106994,
+    "sha256": "c870b97ac1d6bc9177608a5ec625e19ef9f3c5019aa68f64b0fb7803abcd6d20",
+    "license": "MIT"
+  },
+  {
+    "role": "TripoSplat VAE decoder fp16 (latent -> gaussians)",
+    "repo_id": "VAST-AI/TripoSplat",
+    "revision": "56a96e603204ec410c4da60c13ea4fa09a2169a9",
+    "source_path": "vae/triposplat_vae_decoder_fp16.safetensors",
+    "path": "vae/TripoSplat/triposplat_vae_decoder_fp16.safetensors",
+    "size": 576148442,
+    "sha256": "ed0d0c3d43b599e326845d0ec70f3cf77be9a55e2d97627ac3b34d2830763cc8",
+    "license": "MIT"
+  },
+  {
+    "role": "DINOv3 ViT-H/16+ image encoder for TripoSplat conditioning",
+    "repo_id": "VAST-AI/TripoSplat",
+    "revision": "56a96e603204ec410c4da60c13ea4fa09a2169a9",
+    "source_path": "clip_vision/dino_v3_vit_h.safetensors",
+    "path": "clip_vision/dino_v3_vit_h.safetensors",
+    "size": 1681247696,
+    "sha256": "a29ef35101a16966972a0d50732a6f3a608ff7cfffb2afa9bbe9007cb842cc53",
+    "license": "MIT (DINOv3 weights: see VAST-AI/TripoSplat)"
+  },
+  {
+    "role": "FLUX.2 VAE (reference latent for TripoSplat; same file as the bundle's FLUX.2 workflows)",
+    "repo_id": "VAST-AI/TripoSplat",
+    "revision": "56a96e603204ec410c4da60c13ea4fa09a2169a9",
+    "source_path": "vae/flux2-vae.safetensors",
+    "path": "vae/FLUX2/flux2-vae.safetensors",
+    "size": 336213556,
+    "sha256": "d64f3a68e1cc4f9f4e29b6e0da38a0204fe9a49f2d4053f0ec1fa1ca02f9c4b5",
+    "license": "see repository"
+  },
+  {
+    "role": "BiRefNet background removal (foreground mask for TripoSplat)",
+    "repo_id": "Comfy-Org/BiRefNet",
+    "revision": "25511f8787e51912e1480706b4e47b8f467fbf72",
+    "source_path": "background_removal/birefnet.safetensors",
+    "path": "background_removal/birefnet.safetensors",
+    "size": 444473596,
+    "sha256": "9ab37426bf4de0567af6b5d21b16151357149139362e6e8992021b8ce356a154",
+    "license": "MIT"
+  }
+]

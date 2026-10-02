@@ -51,7 +51,7 @@ CATALOG: list[Example] = []
 SIZE_TYPES = {"EmptyLatentImage", "EmptySD3LatentImage", "EmptyFlux2LatentImage", "ModelSamplingFlux", "Flux2Scheduler",
               "EmptyHunyuanLatentVideo", "EmptyChromaRadianceLatentImage"}
 SEED_WIDGETS = {"KSampler": "seed", "KSamplerAdvanced": "noise_seed", "RandomNoise": "noise_seed",
-                "SamplerCustom": "noise_seed", "FaceDetailer": "seed"}
+                "SamplerCustom": "noise_seed", "FaceDetailer": "seed", "LanPaint_KSampler": "seed"}
 _cache: dict[str, dict] = {}
 
 

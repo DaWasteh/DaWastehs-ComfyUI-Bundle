@@ -224,7 +224,7 @@ class EnvironmentTests(unittest.TestCase):
 
     def test_launcher_names_the_release(self):
         script = (ROOT / "tools" / "start-MultiGPU.ps1").read_text(encoding="utf-8-sig")
-        self.assertIn("Launcher v1.3.1", script)
+        self.assertRegex(script, r"Launcher v1\.3\.\d+")  # the banner names the current release (v1.3.1 or later)
 
 
 class PagesTests(unittest.TestCase):

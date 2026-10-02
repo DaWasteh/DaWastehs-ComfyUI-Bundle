@@ -152,6 +152,38 @@ ex(R, "jacket", "Kleidung aus Bild 2", inputs={9: PW, 10: JACKET}, shot=True, pr
     "Keep the woman, her face and her pose in <image1> unchanged, dress her in the yellow rain jacket from <image2>, keep "
     "the grey background")})
 
+# v1.3.2: AnyAngle (camera angles from a coarse render). The TripoSplat run also writes the coarse render that the
+# guide workflow loads (asset = the left-45° control image).
+AA = "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_LoRA+TripoSplat-Image-to-4-Camera-Angles.json"
+AA_SHOW = ["26", "34", "42", "50", "21", "29", "37", "45"]
+AA_CAPTIONS = {"26": "45° links", "34": "90° links (Seitenansicht)", "42": "45° rechts", "50": "Vogelperspektive",
+               "21": "Grobes Render · 45° links", "29": "Grobes Render · 90° links", "37": "Grobes Render · 45° rechts",
+               "45": "Grobes Render · Vogelperspektive"}
+ex(AA, "fox", "Figur: vier Kamerawinkel", inputs={6: FOX}, shot=True, timeout=7200, show=AA_SHOW, captions=AA_CAPTIONS,
+   params={"idea": "angles"}, asset="character_fox_guide_left.png", asset_node="21",
+   changes="Eingabe ist die Fuchs-Figur; Prompt und die vier Kameras stehen fest im Workflow.")
+ex(AA, "woman", "Person: vier Kamerawinkel", inputs={6: FB}, timeout=7200, show=AA_SHOW, captions=AA_CAPTIONS,
+   params={"idea": "angles"}, changes="Eingabe ist ein Ganzkörperfoto; Prompt und die vier Kameras stehen fest im Workflow.")
+ex(AA, "teapot", "Produkt: vier Kamerawinkel", inputs={6: "product_teapot.png"}, timeout=7200, show=AA_SHOW,
+   captions=AA_CAPTIONS, params={"idea": "angles"},
+   changes="Eingabe ist ein Produktfoto; Prompt und die vier Kameras stehen fest im Workflow.")
+R = "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_LoRA-Image+Guide-to-Camera-Angle.json"
+ex(R, "fox-left", "Eigenes Render → neue Ansicht", inputs={6: FOX, 7: "character_fox_guide_left.png"}, shot=True,
+   params={"idea": "angles"},
+   input_captions={"ex_" + FOX: "Original (<image1>)", "ex_character_fox_guide_left.png": "Grobes Render (<image2>)"},
+   changes="Das grobe Render stammt aus dem TripoSplat-Workflow (KONTROLLE · 45° LINKS).")
+# The studio node runs only with a scene applied in its editor: tools/examples/anyangle_studio_scene.py drives the editor
+# in headless Edge (reconstruct, camera 45° / 10°, apply) and stores the token of that scene in the staging assets.
+_STUDIO = Path("L:/ComfyUI/tmp/examples-v131/assets/anyangle_studio_fox.json")
+if _STUDIO.exists():
+    import json as _json
+    R = "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_Studio_T8-Image-to-Camera-Angle.json"
+    ex(R, "fox-studio", "Kamera im Studio gesetzt (45° / 10°)", inputs={6: FOX}, shot=True,
+       extra=widget(7, "snapshot", _json.loads(_STUDIO.read_text(encoding="utf-8"))["snapshot"]),
+       params={"idea": "angles"}, show=["13", "8"],
+       captions={"13": "Ergebnis", "8": "Guide aus dem Studio"},
+       changes="Im AnyAngle Studio: 3D aus dem Foto rekonstruiert, Azimut 45°, Elevation 10°, „Apply to node“.")
+
 R = "Image Editing/Qwen_Image_Edit_2509-Image-Edit.json"
 ex(R, "anime-to-photo", "Anime → Foto", inputs={78: ANIME}, shot=True, extra=widget(435, "value", (
     "Turn this anime illustration into a realistic photograph of a young woman with short silver hair, green eyes, a red "
@@ -208,6 +240,27 @@ R = "Image Inpainting/Qwen_Image_2_1_BF16-Mask-Inpaint.json"
 ex(R, "jacket", "Maske: Kleidung tauschen", inputs={6: "portrait_woman_mask_sweater.png"}, shot=True,
    prompts={9: "Change the green sweater into a red leather jacket with a silver zipper"},
    input_captions={"ex_portrait_woman_mask_sweater.png": "Bild mit Maske (Alphakanal)"})
+# v1.3.2: the same masks through the plain Qwen 2.1 sampler (above) and through LanPaint, for a direct comparison
+ex(R, "hair", "Maske: Haarfarbe", inputs={6: "portrait_woman_mask_hair.png"},
+   prompts={9: "Change her hair to platinum blonde, same haircut"},
+   input_captions={"ex_portrait_woman_mask_hair.png": "Bild mit Maske (Alphakanal)"})
+ex(R, "plant", "Maske: Objekt ersetzen", inputs={6: "living_room_mask_plant.png"},
+   prompts={9: "Replace the plant with a tall floor lamp with a white fabric shade, switched on"},
+   input_captions={"ex_living_room_mask_plant.png": "Bild mit Maske (Alphakanal)"})
+R = "Image Inpainting/Qwen_Image_2_1_BF16+LanPaint-Image+Mask-Inpaint.json"
+ex(R, "jacket", "Maske: Kleidung tauschen", inputs={5: "portrait_woman_mask_sweater.png"}, shot=True, variant="CFG 4",
+   prompts={8: "Change the green sweater into a red leather jacket with a silver zipper"},
+   input_captions={"ex_portrait_woman_mask_sweater.png": "Bild mit Maske (Alphakanal)"})
+ex(R, "jacket-cfg1", "Maske: Kleidung tauschen", inputs={5: "portrait_woman_mask_sweater.png"}, variant="CFG 1",
+   prompts={8: "Change the green sweater into a red leather jacket with a silver zipper"}, extra=widget(12, "cfg", 1.0),
+   input_captions={"ex_portrait_woman_mask_sweater.png": "Bild mit Maske (Alphakanal)"},
+   changes="cfg = 1 am LanPaint-Sampler (offizielle Qwen-Werte, Negativprompt wirkt nicht, halbe Rechenzeit).")
+ex(R, "hair", "Maske: Haarfarbe", inputs={5: "portrait_woman_mask_hair.png"},
+   prompts={8: "Change her hair to platinum blonde, same haircut"},
+   input_captions={"ex_portrait_woman_mask_hair.png": "Bild mit Maske (Alphakanal)"})
+ex(R, "plant", "Maske: Objekt ersetzen", inputs={5: "living_room_mask_plant.png"},
+   prompts={8: "Replace the plant with a tall floor lamp with a white fabric shade, switched on"},
+   input_captions={"ex_living_room_mask_plant.png": "Bild mit Maske (Alphakanal)"})
 R = "Image Outpainting/FLUX2_Klein_9B_KV-Outpaint-Custom-Ratio.json"
 ex(R, "wide", "Quadrat → 16:9", inputs={198: PW}, shot=True)
 ex(R, "portrait-lake", "Querformat → 9:16", inputs={198: LAKE}, extra=widget(214, "aspect_ratio", "9:16 (Portrait Widescreen)"))

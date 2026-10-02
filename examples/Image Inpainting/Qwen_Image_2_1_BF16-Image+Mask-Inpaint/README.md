@@ -46,4 +46,50 @@ Change the green sweater into a red leather jacket with a silver zipper
 | RAM (ComfyUI-Prozess) | 26,9 GiB |
 
 Eingabe · Bild mit Maske (Alphakanal): ![Bild mit Maske (Alphakanal)](thumbs/input_ex_portrait_woman_mask_sweater.webp) ([Datei](input_ex_portrait_woman_mask_sweater.webp))  
-Ausgabe · 4 · SPEICHERN · fertiges Bild · PNG + Workflow: [![4 · SPEICHERN · fertiges Bild · PNG + Workflow](thumbs/jacket.webp)](jacket.webp) · [Volle Auflösung (1024×1024, WebP mit Workflow – per Drag & Drop in ComfyUI ladbar)](jacket.webp)
+Ausgabe · 4 · SPEICHERN · fertiges Bild · PNG + Workflow: [![4 · SPEICHERN · fertiges Bild · PNG + Workflow](thumbs/jacket.webp)](jacket.webp) · [Volle Auflösung (1024×1024, WebP mit Workflow – per Drag & Drop in ComfyUI ladbar)](jacket.webp)  
+
+### Maske: Haarfarbe
+
+Prompt:
+
+```text
+Change her hair to platinum blonde, same haircut
+```
+
+| Einstellung | Wert |
+|---|---|
+| seed | 7 |
+| steps | 25 |
+| cfg | 1.0 |
+| sampler_name | euler |
+| scheduler | simple |
+| denoise | 1.0 |
+| Dauer (Ausführung) | 1 min 4 s |
+| VRAM R9700 (belegt / PyTorch-Spitze) | 30,6 GiB / 25,1 GiB |
+| RAM (ComfyUI-Prozess) | 27,3 GiB |
+
+Eingabe · Bild mit Maske (Alphakanal): ![Bild mit Maske (Alphakanal)](thumbs/input_ex_portrait_woman_mask_hair.webp) ([Datei](input_ex_portrait_woman_mask_hair.webp))  
+Ausgabe · 4 · SPEICHERN · fertiges Bild · PNG + Workflow: [![4 · SPEICHERN · fertiges Bild · PNG + Workflow](thumbs/hair.webp)](hair.webp)  
+
+### Maske: Objekt ersetzen
+
+Prompt:
+
+```text
+Replace the plant with a tall floor lamp with a white fabric shade, switched on
+```
+
+| Einstellung | Wert |
+|---|---|
+| seed | 7 |
+| steps | 25 |
+| cfg | 1.0 |
+| sampler_name | euler |
+| scheduler | simple |
+| denoise | 1.0 |
+| Dauer (Ausführung) | 29 s |
+| VRAM R9700 (belegt / PyTorch-Spitze) | 28,3 GiB / 24,5 GiB |
+| RAM (ComfyUI-Prozess) | 4,5 GiB |
+
+Eingabe · Bild mit Maske (Alphakanal): ![Bild mit Maske (Alphakanal)](thumbs/input_ex_living_room_mask_plant.webp) ([Datei](input_ex_living_room_mask_plant.webp))  
+Ausgabe · 4 · SPEICHERN · fertiges Bild · PNG + Workflow: [![4 · SPEICHERN · fertiges Bild · PNG + Workflow](thumbs/plant.webp)](plant.webp)

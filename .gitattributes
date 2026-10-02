@@ -121,3 +121,15 @@ workflows/Pose?&?Depth/DepthAnything3_Large_FP32-*.json text eol=lf
 workflows/Pose?&?Depth/SDPose_WholeBody_FP16-*.json text eol=lf
 workflows/Prompt?Enhancer/LLM_Qwen3_8_27B_IQ4_XS-*.json text eol=lf
 workflows/Reference?to?Video/MiniMax_FastH3_INT8-Song+Lyrics-to-Music-Video.json text eol=lf
+# v1.3.2: LanPaint mask inpaint and AnyAngle camera angles (builder, pinned schemas, splat linalg patch, tests, evidence, docs).
+tools/workflow_templates/v132/* text eol=lf
+tools/workflow_templates/v132/inputs/*.png binary
+tools/build_anyangle_lanpaint_v132.py text eol=lf
+workflows/Image?Editing/Qwen_Image_2_1_BF16+AnyAngle_*.json text eol=lf
+workflows/Image?Inpainting/Qwen_Image_2_1_BF16+LanPaint-*.json text eol=lf
+custom_nodes/ComfyUI-DaWasteh-MultiGPU-Control/splat_inverse.py text eol=lf
+tests/test_anyangle_lanpaint_v132.py text eol=lf
+tests/test_splat_inverse_v132.py text eol=lf
+tools/examples/anyangle_studio_scene.py text eol=lf
+performance/rdna4/anyangle-lanpaint-v132-validation.json text eol=lf
+docs/ANYANGLE_LANPAINT_V132.md text eol=lf

@@ -52,6 +52,21 @@ m(E + "Ming_Image_0_1_Design_INT8-Image-Edit.json", "Ming Image 0.1 Design · De
 m(E + "Multi-Character-Angles-One-Click.json", "Qwen Image Edit 2511 · acht Kamerawinkel",
   "Aus einem Bild einer Figur entstehen acht Ansichten (nah, 45°/90° links/rechts, Vogel-/Froschperspektive, Weitwinkel) "
   "mit der Multiple-Angles-LoRA.", ["Bild"], ["Bilder"])
+m(E + "Qwen_Image_2_1_BF16+AnyAngle_LoRA+TripoSplat-Image-to-4-Camera-Angles.json",
+  "Qwen Image 2.1 + AnyAngle · vier Kamerawinkel aus einem Bild",
+  "TripoSplat baut aus dem freigestellten Motiv ein 3D-Splat, ComfyUI rendert es grob aus vier neuen Kameras, und Qwen "
+  "Image 2.1 mit der AnyAngle-LoRA überträgt Stil und Details des Originals auf jede Ansicht. Ohne Editor, ein Klick; "
+  "als Vorbereitung für Video-Workflows, die mehrere Ansichten derselben Figur brauchen.", ["Bild"], ["Bilder"])
+m(E + "Qwen_Image_2_1_BF16+AnyAngle_LoRA-Image+Guide-to-Camera-Angle.json",
+  "Qwen Image 2.1 + AnyAngle · eigenes Render → neue Kameraansicht",
+  "Original plus ein grobes Render der Zielansicht (Splat, Blender, 3D-Szene): die AnyAngle-LoRA bringt das Original in "
+  "genau diesen Kamerawinkel.", ["Bild", "Render"], ["Bild"])
+m(E + "Qwen_Image_2_1_BF16+AnyAngle_Studio_T8-Image-to-Camera-Angle.json",
+  "Qwen Image 2.1 + AnyAngle Studio T8 · interaktive 3D-Kamera",
+  "3D-Werkbank im Browser: Motiv per TripoSplat rekonstruieren, Kamera frei drehen, Render mit einem Klick übergeben; "
+  "auch GLB-Modelle, Posen-Figur und Batch-Winkel.", ["Bild"], ["Bild"],
+  note="Der Workflow startet erst, wenn im Studio eine Kamera gesetzt und mit „Apply to node“ übergeben wurde. Für das "
+       "Beispiel wurde der Editor im Browser bedient (rekonstruieren, 45° / 10°, anwenden).")
 m(E + "Qwen_Image_2_1_BF16-Background-Remover.json", "Qwen Image 2.1 · Hintergrund entfernen",
   "Offizieller Freistell-Prompt von Qwen Image 2.1: Ergebnis als PNG mit Alphakanal plus separate Maske.", ["Bild"],
   ["Bild (RGBA)"])
@@ -84,6 +99,10 @@ m("Image Inpainting/FLUX2_Klein_9B_KV-Inpaint.json", "FLUX.2 Klein 9B · Inpaint
   "Klein 9B KV (FP8) malt den maskierten Bereich neu, der Rest bleibt pixelgenau.", ["Bild", "Maske", "Text"], ["Bild"])
 m("Image Inpainting/Qwen_Image_2_1_BF16-Mask-Inpaint.json", "Qwen Image 2.1 · Inpainting mit Maske",
   "Qwen Image 2.1 bearbeitet nur den maskierten 1024-px-Ausschnitt (plus 64 px Umgebung) und setzt ihn wieder ein.",
+  ["Bild", "Maske", "Text"], ["Bild"])
+m("Image Inpainting/Qwen_Image_2_1_BF16+LanPaint-Image+Mask-Inpaint.json", "Qwen Image 2.1 + LanPaint · Inpainting mit Maske",
+  "Wie das Qwen-2.1-Masken-Inpainting, aber mit dem LanPaint-Sampler (2.2): trainingsfreies Inpainting, das je Schritt "
+  "mehrfach „nachdenkt“, damit der neue Inhalt nahtlos zur Umgebung passt. Zum direkten Vergleich dieselben Masken.",
   ["Bild", "Maske", "Text"], ["Bild"])
 m("Image Outpainting/FLUX2_Klein_9B_KV-Outpaint-Custom-Ratio.json", "FLUX.2 Klein 9B · Bild erweitern (Outpainting)",
   "Das Bild wird auf ein neues Seitenverhältnis (z. B. 16:9) gepolstert und Klein 9B füllt die Ränder passend auf.",

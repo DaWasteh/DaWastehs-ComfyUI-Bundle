@@ -171,7 +171,7 @@ if ((Test-Path -LiteralPath $PromptLlmGguf) -and (Test-Path -LiteralPath $LlamaS
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "ComfyUI Dual-GPU Launcher v1.3.1 (performance profile v0.9.8)" -ForegroundColor Cyan
+Write-Host "ComfyUI Dual-GPU Launcher v1.3.2 (performance profile v0.9.8)" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor DarkCyan
 Write-Host "ComfyUI: $ComfyPath"
 Write-Host "Port:    $Port"

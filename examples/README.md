@@ -74,6 +74,9 @@ Jeder Ordner enthält einen Screenshot des Workflows in ComfyUI (mit Eingabe und
 | [FLUX2_Klein_9B_KV_FP8-Two-Image-Edit](Image%20Editing/FLUX2_Klein_9B_KV_FP8-Two-Image-Edit/README.md)<br>FLUX.2 Klein 9B · zwei Bilder kombinieren | Bild + Text → Bild | 1 |
 | [FLUX2_Klein_9B_KV_FP8-Two-Images-to-Image-Blend](Image%20Editing/FLUX2_Klein_9B_KV_FP8-Two-Images-to-Image-Blend/README.md)<br>FLUX.2 Klein 9B · Objekt in Hintergrund einfügen | Bild + Text → Bild | 1 |
 | [Ming_Image_0_1_Design_INT8-Image-Edit](Image%20Editing/Ming_Image_0_1_Design_INT8-Image-Edit/README.md)<br>Ming Image 0.1 Design · Design bearbeiten | Bild + Text → Bild | 1 |
+| [Qwen_Image_2_1_BF16+AnyAngle_LoRA+TripoSplat-Image-to-4-Camera-Angles](Image%20Editing/Qwen_Image_2_1_BF16%2BAnyAngle_LoRA%2BTripoSplat-Image-to-4-Camera-Angles/README.md)<br>Qwen Image 2.1 + AnyAngle · vier Kamerawinkel aus einem Bild | Bild → Bilder | 3 |
+| [Qwen_Image_2_1_BF16+AnyAngle_LoRA-Image+Guide-to-Camera-Angle](Image%20Editing/Qwen_Image_2_1_BF16%2BAnyAngle_LoRA-Image%2BGuide-to-Camera-Angle/README.md)<br>Qwen Image 2.1 + AnyAngle · eigenes Render → neue Kameraansicht | Bild + Render → Bild | 1 |
+| [Qwen_Image_2_1_BF16+AnyAngle_Studio_T8-Image-to-Camera-Angle](Image%20Editing/Qwen_Image_2_1_BF16%2BAnyAngle_Studio_T8-Image-to-Camera-Angle/README.md)<br>Qwen Image 2.1 + AnyAngle Studio T8 · interaktive 3D-Kamera | Bild → Bild | 1 |
 | [Qwen_Image_2_1_BF16-Background-Remover](Image%20Editing/Qwen_Image_2_1_BF16-Background-Remover/README.md)<br>Qwen Image 2.1 · Hintergrund entfernen | Bild → Bild (RGBA) | 1 |
 | [Qwen_Image_2_1_BF16-Multi-Image-Edit](Image%20Editing/Qwen_Image_2_1_BF16-Multi-Image-Edit/README.md)<br>Qwen Image 2.1 · mehrere Bilder bearbeiten | Bild + Text → Bild | 1 |
 | [Qwen_Image_Edit_2509_FP8-Image-Edit](Image%20Editing/Qwen_Image_Edit_2509_FP8-Image-Edit/README.md)<br>Qwen Image Edit 2509 (FP8) · Bild bearbeiten | Bild + Text → Bild | 1 |
@@ -91,7 +94,8 @@ Jeder Ordner enthält einen Screenshot des Workflows in ComfyUI (mit Eingabe und
 | [FLUX2_Klein_4B_BF16-Image+Mask-Inpaint](Image%20Inpainting/FLUX2_Klein_4B_BF16-Image%2BMask-Inpaint/README.md)<br>FLUX.2 Klein 4B · Inpainting mit Maske | Bild + Maske + Text → Bild | 2 |
 | [FLUX2_Klein_9B_KV_FP8-Image+Mask-Inpaint](Image%20Inpainting/FLUX2_Klein_9B_KV_FP8-Image%2BMask-Inpaint/README.md)<br>FLUX.2 Klein 9B · Inpainting mit Maske | Bild + Maske + Text → Bild | 1 |
 | [FLUX2_Klein_9B_KV_FP8-Image+Mask-Pixaroma-Inpaint](Image%20Inpainting/FLUX2_Klein_9B_KV_FP8-Image%2BMask-Pixaroma-Inpaint/README.md)<br>FLUX.2 Klein 9B · Pixaroma-Inpainting | Bild + Maske + Text → Bild | 1 |
-| [Qwen_Image_2_1_BF16-Image+Mask-Inpaint](Image%20Inpainting/Qwen_Image_2_1_BF16-Image%2BMask-Inpaint/README.md)<br>Qwen Image 2.1 · Inpainting mit Maske | Bild + Maske + Text → Bild | 1 |
+| [Qwen_Image_2_1_BF16+LanPaint-Image+Mask-Inpaint](Image%20Inpainting/Qwen_Image_2_1_BF16%2BLanPaint-Image%2BMask-Inpaint/README.md)<br>Qwen Image 2.1 + LanPaint · Inpainting mit Maske | Bild + Maske + Text → Bild | 4 |
+| [Qwen_Image_2_1_BF16-Image+Mask-Inpaint](Image%20Inpainting/Qwen_Image_2_1_BF16-Image%2BMask-Inpaint/README.md)<br>Qwen Image 2.1 · Inpainting mit Maske | Bild + Maske + Text → Bild | 3 |
 
 ## Image Outpainting
 

@@ -123,7 +123,13 @@ $GitTrackedNodes = @(
     @{ Name = $PixaromaNodeName; Url = $PixaromaRepoUrl },
     @{ Name = "comfyui-spectrum-minimax-h3"; Url = "https://github.com/xmarre/ComfyUI-Spectrum-MiniMax-H3.git" },
     @{ Name = "Comfyui-PlagueKind-Nodes"; Url = "https://github.com/PlagueKind/Comfyui-PlagueKind-Nodes.git" },
-    @{ Name = "Comfyui_Minimax_h3_latent_Upscaler"; Url = "https://github.com/LBH-123-AI/Comfyui_Minimax_h3_latent_Upscaler.git" }
+    @{ Name = "Comfyui_Minimax_h3_latent_Upscaler"; Url = "https://github.com/LBH-123-AI/Comfyui_Minimax_h3_latent_Upscaler.git" },
+    # v1.3.2: LanPaint (>= 2.2.0 for Qwen Image 2.1) and the AnyAngle Studio workbench. Neither needs a pip install here:
+    # LanPaint has no dependencies, the studio needs onnxruntime (onnxruntime-directml provides it), OpenCV and
+    # huggingface_hub, all part of the bundle environment. Its own requirements.txt would pull the plain onnxruntime
+    # wheel over the DirectML one, so it is deliberately not installed.
+    @{ Name = "LanPaint"; Url = "https://github.com/scraed/LanPaint.git" },
+    @{ Name = "ComfyUI-AnyAngle-Studio-T8"; Url = "https://github.com/T8mars/Comfyui-Qwen-Image-2.1-MultiAngle-T8.git" }
 )
 
 $BackupRoot = Join-Path $Root ("_update_backups\{0}" -f (Get-Date -Format "yyyyMMdd-HHmmss"))

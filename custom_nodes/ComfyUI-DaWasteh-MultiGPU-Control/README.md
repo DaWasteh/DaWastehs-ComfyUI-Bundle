@@ -32,6 +32,10 @@ On Windows/ROCm, ComfyUI's safetensors loading maps every file copy-on-write, an
 
 Select CLIP Device moves a CLIP by reloading it from the checkpoint. For SAM3 / SAM 3.1 the text encoder weights are only collected while the image model is processed, and the model-config base class answers the missing attribute with `None`: the reload failed with "'NoneType' object has no attribute 'keys'". `sam3_reload.py` collects them from the checkpoint in that case; the normal load path is unchanged. `DAWASTEH_SAM3_RELOAD_FIX=0` disables it. Reported upstream as [ComfyUI #16675](https://github.com/Comfy-Org/ComfyUI/issues/16675).
 
+## Render Splat on ROCm (v1.3.2)
+
+ComfyUI's gaussian-splat nodes (Render Splat, Splat to Mesh, Transform Splat) invert one 3x3 covariance per gaussian in a single batched `torch.linalg.inv` call. On PyTorch 2.13 + ROCm 10.1 that call fails above 65 535 matrices with `hipErrorInvalidConfiguration` (60 000 work, 70 000 do not); a TripoSplat reconstruction has 262 144 gaussians, so Render Splat always failed. `splat_inverse.py` gives that core module a `torch` whose `linalg.inv` / `eigh` / `det` run in chunks of 32 768 matrices and return the same values. CUDA builds are left alone. `DAWASTEH_SPLAT_LINALG_FIX=0` disables it, `DAWASTEH_SPLAT_LINALG_CHUNK` sets the chunk size.
+
 ## Adaptive Load Image / Load Video
 
 The same pack also provides:

@@ -49,8 +49,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
     def test_collection_has_one_central_control_per_workflow(self):
         # v1.2.3: three video-upscale workflows added; v1.2.4: the Qwen Image 2.1 background remover;
         # v1.2.6: the WAN 2.2 video upscale; v1.2.8: Qwen Image 2.1 mask inpaint and four pose/depth workflows;
-        # v1.2.9: four Ming Image workflows; v1.3.0: the image prompt enhancer.
-        self.assertEqual(len(paths()), 265)
+        # v1.2.9: four Ming Image workflows; v1.3.0: the image prompt enhancer; v1.3.2: LanPaint inpaint and three AnyAngle workflows.
+        self.assertEqual(len(paths()), 269)
         for path in paths():
             with self.subTest(path=path.relative_to(ROOT)):
                 workflow = json.loads(path.read_text(encoding="utf-8"))
@@ -92,7 +92,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
         # v1.2.3 adds three R9700 defaults, v1.2.4 and v1.2.6 one more each, v1.2.8 five, v1.2.9 four, v1.3.0 one;
         # curated assignments stay intact; v1.3.1 moves LTX-2.3 dev MXFP8 back to the R9700 (its 25 GB text encoder
         # does not fit the 16 GB card) and the Kandinsky 5 VAE next to its model (the text encoder fills the 16 GB card).
-        self.assertEqual(counts, {"all_r9700": 234, "curated_split": 29, "v131_resplit": 2})
+        # v1.3.2 adds four R9700 defaults (LanPaint inpaint, three AnyAngle workflows).
+        self.assertEqual(counts, {"all_r9700": 238, "curated_split": 29, "v131_resplit": 2})
 
     def test_every_selector_is_driven_by_the_root_control_or_subgraph_interface(self):
         selector_roles = {selector_type: role for role, (_, _, selector_type) in CONTROL_ROLES.items()}
@@ -186,6 +187,8 @@ class DualGPUWorkflowTests(unittest.TestCase):
         expected.update(f"workflows/{key}" for key in build_v130())
         # v1.3.1 renames (tools/workflow_renames_v131.json); the baseline may still carry the old names
         expected = {f"workflows/{new_key(path.removeprefix('workflows/'))}" for path in expected}
+        from tools.build_anyangle_lanpaint_v132 import build_all as build_v132  # named in the v1.3.1 scheme already
+        expected.update(f"workflows/{key}" for key in build_v132())
         actual = {path.relative_to(ROOT).as_posix() for path in paths()}
         self.assertEqual(actual, expected)
 

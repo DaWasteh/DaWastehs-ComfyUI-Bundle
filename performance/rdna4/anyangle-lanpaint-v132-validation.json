@@ -1,0 +1,549 @@
+{
+ "release": "v1.3.2",
+ "date": "2026-10-02",
+ "scope": "Qwen Image 2.1 with LanPaint 2.2 (mask inpaint) and with the AnyAngle LoRA (camera angles from TripoSplat renders, an own guide image, AnyAngle Studio T8)",
+ "system": {
+  "os": "win32",
+  "comfyui_version": "0.38.0",
+  "pytorch_version": "2.13.0+rocm10.1.0a20260822",
+  "python_version": "3.13.13 (tags/v3.13.13:01104ce, Apr  7 2026, 19:25:48) [MSC v.1944 64 bit (AMD64)]",
+  "ram_total": 50860650496
+ },
+ "frontend": "1.53.10 (headless Edge, app.queuePrompt via tools/examples/runner.py)",
+ "profile": "start-MultiGPU.ps1 R9700 profile on test port 8192 (reserve-vram 4, VRAM guard 3 GiB, hipBLASLt, cache-ram)",
+ "node_packs": {
+  "LanPaint": {
+   "url": "https://github.com/scraed/LanPaint",
+   "commit": "2d7912f",
+   "release": "2.2.0",
+   "license": "GPL-3.0"
+  },
+  "ComfyUI-AnyAngle-Studio-T8": {
+   "url": "https://github.com/T8mars/Comfyui-Qwen-Image-2.1-MultiAngle-T8",
+   "commit": "1f1fb3a",
+   "license": "MIT"
+  }
+ },
+ "gpu_defaults": {
+  "MODEL": "gpu:0 R9700 32GB",
+  "CLIP": "gpu:0",
+  "VAE": "gpu:0"
+ },
+ "model_verification": {
+  "manifest": "tools/workflow_templates/v132/models.json",
+  "files": [
+   {
+    "path": "loras/Qwen/QI2.1_AnyAngle.safetensors",
+    "size": 119590312,
+    "sha256": "e4d7a0d44a45ed62daabd0f2484a1a59046618a4c47e76b1eab5e386a7a35d8a",
+    "matches_manifest": true
+   },
+   {
+    "path": "diffusion_models/TripoSplat/triposplat_fp16.safetensors",
+    "size": 741106994,
+    "sha256": "c870b97ac1d6bc9177608a5ec625e19ef9f3c5019aa68f64b0fb7803abcd6d20",
+    "matches_manifest": true
+   },
+   {
+    "path": "vae/TripoSplat/triposplat_vae_decoder_fp16.safetensors",
+    "size": 576148442,
+    "sha256": "ed0d0c3d43b599e326845d0ec70f3cf77be9a55e2d97627ac3b34d2830763cc8",
+    "matches_manifest": true
+   },
+   {
+    "path": "clip_vision/dino_v3_vit_h.safetensors",
+    "size": 1681247696,
+    "sha256": "a29ef35101a16966972a0d50732a6f3a608ff7cfffb2afa9bbe9007cb842cc53",
+    "matches_manifest": true
+   },
+   {
+    "path": "vae/FLUX2/flux2-vae.safetensors",
+    "size": 336211292,
+    "sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
+    "matches_manifest": false
+   },
+   {
+    "path": "background_removal/birefnet.safetensors",
+    "size": 444473596,
+    "sha256": "9ab37426bf4de0567af6b5d21b16151357149139362e6e8992021b8ce356a154",
+    "matches_manifest": true
+   }
+  ],
+  "note": "vae/FLUX2/flux2-vae.safetensors is the copy the bundle's FLUX.2 workflows already use (same weights, other packaging than VAST-AI's); TripoSplat ran with it"
+ },
+ "workflows": {
+  "Image Inpainting/Qwen_Image_2_1_BF16+LanPaint-Image+Mask-Inpaint.json": {
+   "sha256": "45bd5a6559702c0f668848344096b5affca7e7a792c930c7991bf27b125acbeb"
+  },
+  "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_LoRA+TripoSplat-Image-to-4-Camera-Angles.json": {
+   "sha256": "1e046d7642fd901760018e8623dda805cec995f0a0249e3f17b0c4f8ce2e61f1"
+  },
+  "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_LoRA-Image+Guide-to-Camera-Angle.json": {
+   "sha256": "bbffaadfe7c802679b6d7b993ca0777e3c48eace5a2546d90b3ab9d00ea84d62"
+  },
+  "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_Studio_T8-Image-to-Camera-Angle.json": {
+   "sha256": "5980e47f6cc0fc7c9a483ef65a3a384cd98586b8350a34c4cc681a167ff7e17d"
+  }
+ },
+ "sources": {
+  "tools/build_anyangle_lanpaint_v132.py": "e28359e9aa4b8a1cbbe2fbc9395c7c69bc4c16eaa4149c01fe0e4250daa557bf",
+  "tools/workflow_templates/v132/node-schemas.json": "671de488c481c578e9b2b4f3209482f4868c1da06015492162af6f1951e2f75e"
+ },
+ "runs": [
+  {
+   "case": "anyangle_splat_fox",
+   "workflow": "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_LoRA+TripoSplat-Image-to-4-Camera-Angles.json",
+   "status": "success",
+   "error": null,
+   "params": {
+    "idea": "angles",
+    "seed": 7
+   },
+   "changes": [],
+   "inputs": [
+    "character_fox.png"
+   ],
+   "exec_seconds": 474.5,
+   "memory": {
+    "peak_vram_gib": 28.26,
+    "peak_vram_allocated_gib": 25.54,
+    "gpu_counter_dedicated_gib": 29.63,
+    "peak_system_commit_gib": 105.2,
+    "commit_limit_gib": 145.68,
+    "peak_process_rss_gib": 28.55
+   },
+   "outputs": [
+    "top35_00005.png",
+    "left90_00005.png",
+    "right45_00005.png",
+    "left45_00005.png"
+   ],
+   "check": {
+    "saved_images": 4,
+    "sizes": [
+     [
+      1024,
+      1024
+     ],
+     [
+      1024,
+      1024
+     ],
+     [
+      1024,
+      1024
+     ],
+     [
+      1024,
+      1024
+     ]
+    ]
+   }
+  },
+  {
+   "case": "anyangle_splat_woman",
+   "workflow": "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_LoRA+TripoSplat-Image-to-4-Camera-Angles.json",
+   "status": "success",
+   "error": null,
+   "params": {
+    "idea": "angles",
+    "seed": 7
+   },
+   "changes": [],
+   "inputs": [
+    "fullbody_woman.png"
+   ],
+   "exec_seconds": 513.9,
+   "memory": {
+    "peak_vram_gib": 28.66,
+    "peak_vram_allocated_gib": 25.96,
+    "gpu_counter_dedicated_gib": 29.9,
+    "peak_system_commit_gib": 105.09,
+    "commit_limit_gib": 145.68,
+    "peak_process_rss_gib": 28.62
+   },
+   "outputs": [
+    "left45_00003.png",
+    "right45_00003.png",
+    "left90_00003.png",
+    "top35_00003.png"
+   ],
+   "check": {
+    "saved_images": 4,
+    "sizes": [
+     [
+      832,
+      1248
+     ],
+     [
+      832,
+      1248
+     ],
+     [
+      832,
+      1248
+     ],
+     [
+      832,
+      1248
+     ]
+    ]
+   }
+  },
+  {
+   "case": "anyangle_splat_teapot",
+   "workflow": "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_LoRA+TripoSplat-Image-to-4-Camera-Angles.json",
+   "status": "success",
+   "error": null,
+   "params": {
+    "idea": "angles",
+    "seed": 7
+   },
+   "changes": [],
+   "inputs": [
+    "product_teapot.png"
+   ],
+   "exec_seconds": 589.9,
+   "memory": {
+    "peak_vram_gib": 28.69,
+    "peak_vram_allocated_gib": 25.98,
+    "gpu_counter_dedicated_gib": 29.66,
+    "peak_system_commit_gib": 110.36,
+    "commit_limit_gib": 145.68,
+    "peak_process_rss_gib": 28.68
+   },
+   "outputs": [
+    "right45_00004.png",
+    "left45_00004.png",
+    "left90_00004.png",
+    "top35_00004.png"
+   ],
+   "check": {
+    "saved_images": 4,
+    "sizes": [
+     [
+      1024,
+      1024
+     ],
+     [
+      1024,
+      1024
+     ],
+     [
+      1024,
+      1024
+     ],
+     [
+      1024,
+      1024
+     ]
+    ]
+   }
+  },
+  {
+   "case": "anyangle_guide_fox-left",
+   "workflow": "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_LoRA-Image+Guide-to-Camera-Angle.json",
+   "status": "success",
+   "error": null,
+   "params": {
+    "idea": "angles",
+    "seed": 7
+   },
+   "changes": [],
+   "inputs": [
+    "character_fox.png",
+    "character_fox_guide_left.png"
+   ],
+   "exec_seconds": 131.9,
+   "memory": {
+    "peak_vram_gib": 26.19,
+    "peak_vram_allocated_gib": 25.5,
+    "gpu_counter_dedicated_gib": 29.23,
+    "peak_system_commit_gib": 95.74,
+    "commit_limit_gib": 145.68,
+    "peak_process_rss_gib": 28.77
+   },
+   "outputs": [
+    "Guide_00003.png"
+   ],
+   "check": {
+    "saved_images": 1,
+    "sizes": [
+     [
+      1024,
+      1024
+     ]
+    ]
+   }
+  },
+  {
+   "case": "anyangle_studio_fox-studio",
+   "workflow": "Image Editing/Qwen_Image_2_1_BF16+AnyAngle_Studio_T8-Image-to-Camera-Angle.json",
+   "status": "success",
+   "error": null,
+   "params": {
+    "idea": "angles",
+    "seed": 7
+   },
+   "changes": [
+    {
+     "select": {
+      "id": 7,
+      "path": ""
+     },
+     "widget": "snapshot",
+     "value": "{\"version\":1,\"id\":\"2533f705994bb8c591fe68fad7046f841c7afc2539f1ba994690e6623b636e02\"}"
+    }
+   ],
+   "inputs": [
+    "character_fox.png"
+   ],
+   "exec_seconds": 127.0,
+   "memory": {
+    "peak_vram_gib": 28.13,
+    "peak_vram_allocated_gib": 25.5,
+    "gpu_counter_dedicated_gib": 30.41,
+    "peak_system_commit_gib": 96.62,
+    "commit_limit_gib": 145.68,
+    "peak_process_rss_gib": 28.71
+   },
+   "outputs": [
+    "Studio_00001.png"
+   ],
+   "check": {
+    "saved_images": 1,
+    "sizes": [
+     [
+      1024,
+      1024
+     ]
+    ]
+   }
+  },
+  {
+   "case": "lanpaint_inpaint_jacket",
+   "workflow": "Image Inpainting/Qwen_Image_2_1_BF16+LanPaint-Image+Mask-Inpaint.json",
+   "status": "success",
+   "error": null,
+   "params": {
+    "prompt": "Change the green sweater into a red leather jacket with a silver zipper",
+    "seed": 7
+   },
+   "changes": [],
+   "inputs": [
+    "portrait_woman_mask_sweater.png"
+   ],
+   "exec_seconds": 111.2,
+   "memory": {
+    "peak_vram_gib": 26.86,
+    "peak_vram_allocated_gib": 25.36,
+    "gpu_counter_dedicated_gib": 29.37,
+    "peak_system_commit_gib": 72.84,
+    "commit_limit_gib": 145.68,
+    "peak_process_rss_gib": 27.62
+   },
+   "outputs": [
+    "LanPaint_00001.png"
+   ],
+   "check": {
+    "image": [
+     1024,
+     1024
+    ],
+    "mask_fraction": 0.2986,
+    "outside_changed_pixels": 0,
+    "inside_changed_fraction": 0.9834
+   }
+  },
+  {
+   "case": "lanpaint_inpaint_jacket-cfg1",
+   "workflow": "Image Inpainting/Qwen_Image_2_1_BF16+LanPaint-Image+Mask-Inpaint.json",
+   "status": "success",
+   "error": null,
+   "params": {
+    "prompt": "Change the green sweater into a red leather jacket with a silver zipper",
+    "seed": 7
+   },
+   "changes": [
+    {
+     "select": {
+      "id": 12,
+      "path": ""
+     },
+     "widget": "cfg",
+     "value": 1.0
+    }
+   ],
+   "inputs": [
+    "portrait_woman_mask_sweater.png"
+   ],
+   "exec_seconds": 38.8,
+   "memory": {
+    "peak_vram_gib": 25.98,
+    "peak_vram_allocated_gib": 24.36,
+    "gpu_counter_dedicated_gib": 29.28,
+    "peak_system_commit_gib": 71.37,
+    "commit_limit_gib": 145.68,
+    "peak_process_rss_gib": 1.77
+   },
+   "outputs": [
+    "LanPaint_00002.png"
+   ],
+   "check": {
+    "image": [
+     1024,
+     1024
+    ],
+    "mask_fraction": 0.2986,
+    "outside_changed_pixels": 0,
+    "inside_changed_fraction": 0.9797
+   }
+  },
+  {
+   "case": "lanpaint_inpaint_hair",
+   "workflow": "Image Inpainting/Qwen_Image_2_1_BF16+LanPaint-Image+Mask-Inpaint.json",
+   "status": "success",
+   "error": null,
+   "params": {
+    "prompt": "Change her hair to platinum blonde, same haircut",
+    "seed": 7
+   },
+   "changes": [],
+   "inputs": [
+    "portrait_woman_mask_hair.png"
+   ],
+   "exec_seconds": 147.6,
+   "memory": {
+    "peak_vram_gib": 28.08,
+    "peak_vram_allocated_gib": 26.47,
+    "gpu_counter_dedicated_gib": 30.65,
+    "peak_system_commit_gib": 73.86,
+    "commit_limit_gib": 145.68,
+    "peak_process_rss_gib": 4.66
+   },
+   "outputs": [
+    "LanPaint_00003.png"
+   ],
+   "check": {
+    "image": [
+     1024,
+     1024
+    ],
+    "mask_fraction": 0.1273,
+    "outside_changed_pixels": 0,
+    "inside_changed_fraction": 0.9162
+   }
+  },
+  {
+   "case": "lanpaint_inpaint_plant",
+   "workflow": "Image Inpainting/Qwen_Image_2_1_BF16+LanPaint-Image+Mask-Inpaint.json",
+   "status": "success",
+   "error": null,
+   "params": {
+    "prompt": "Replace the plant with a tall floor lamp with a white fabric shade, switched on",
+    "seed": 7
+   },
+   "changes": [],
+   "inputs": [
+    "living_room_mask_plant.png"
+   ],
+   "exec_seconds": 103.3,
+   "memory": {
+    "peak_vram_gib": 26.79,
+    "peak_vram_allocated_gib": 25.64,
+    "gpu_counter_dedicated_gib": 30.88,
+    "peak_system_commit_gib": 74.13,
+    "commit_limit_gib": 145.68,
+    "peak_process_rss_gib": 3.99
+   },
+   "outputs": [
+    "LanPaint_00004.png"
+   ],
+   "check": {
+    "image": [
+     1024,
+     1024
+    ],
+    "mask_fraction": 0.0557,
+    "outside_changed_pixels": 0,
+    "inside_changed_fraction": 0.5424
+   }
+  }
+ ],
+ "inpaint_check": "outside = pixels farther than 48 px from the painted mask, compared with the untouched source; inside = masked pixels that changed by more than 8/255",
+ "experiments": [
+  {
+   "topic": "AnyAngle image order (API prompt, fox, render left 45 deg, seed 7, 20 steps, CFG 3, 1024 px)",
+   "variants": [
+    {
+     "image_1": "original",
+     "image_2": "coarse render",
+     "kv_cache": true,
+     "seconds": 101.6,
+     "result": "view follows the render (left 45 deg), style and details of the original"
+    },
+    {
+     "image_1": "original",
+     "image_2": "coarse render",
+     "kv_cache": false,
+     "seconds": 100.8,
+     "result": "same image as with the cache"
+    },
+    {
+     "image_1": "coarse render",
+     "image_2": "original",
+     "kv_cache": false,
+     "seconds": 99.9,
+     "result": "front view of the original again, the render is ignored"
+    }
+   ],
+   "conclusion": "original = <image1>, render = <image2> (the wiring of AnyAngle Studio); the first full run with the order of the model card returned four front views"
+  },
+  {
+   "topic": "Render Splat orbit camera on a TripoSplat of the fox (pitch 10, distance 2.5, fov 35)",
+   "variants": [
+    {
+     "yaw": 90,
+     "view": "front, the camera of the input image"
+    },
+    {
+     "yaw": 0,
+     "view": "the subject's right profile"
+    },
+    {
+     "yaw": 180,
+     "view": "the subject's left profile"
+    },
+    {
+     "yaw": 270,
+     "view": "back"
+    }
+   ],
+   "conclusion": "the workflow's cameras are 90 + offset; distance 2.0 cut the feet in two views, 2.3 keeps the whole figure"
+  },
+  {
+   "topic": "TripoSplat reconstruction alone (BiRefNet, DINOv3-H, FLUX.2 VAE, 20 steps, 262144 gaussians, two renders)",
+   "seconds": 30.1
+  }
+ ],
+ "findings": [
+  {
+   "topic": "Render Splat (ComfyUI 0.38 core) on ROCm",
+   "observed": "torch.AcceleratorError: CUDA error: invalid configuration argument (hipErrorInvalidConfiguration) in comfy_extras/nodes_gaussian_splat.py _render_gaussian: si = torch.linalg.inv(cam_cov) with 262144 gaussians; 32768 gaussians render in 1.8 s",
+   "cause": "PyTorch 2.13 + ROCm 10.1: a batched torch.linalg.inv of 3x3 matrices fails above 65535 matrices per call (60000 ok, 70000 fails)",
+   "fix": "custom_nodes/ComfyUI-DaWasteh-MultiGPU-Control/splat_inverse.py gives the core gaussian-splat module a torch whose linalg.inv/eigh/det run in chunks of 32768 (same values); DAWASTEH_SPLAT_LINALG_FIX=0 turns it off"
+  },
+  {
+   "topic": "AnyAngle LoRA model card names the images the other way round",
+   "observed": "with <image1> = coarse render and <image2> = original all four outputs showed the unchanged front view",
+   "cause": "the LoRA works with the original as the first reference image",
+   "fix": "TextEncodeQwenImage21: image_1 = original, image_2 = render in all AnyAngle workflows; pinned by tests/test_anyangle_lanpaint_v132.py"
+  },
+  {
+   "topic": "AnyAngle Studio requirements.txt",
+   "observed": "it names onnxruntime; the bundle environment has onnxruntime-directml (same module)",
+   "cause": "pip would install the plain wheel over the DirectML build used by the live avatar workflows",
+   "fix": "the updater tracks the pack from GitHub without installing its requirements; OpenCV and huggingface_hub are already present"
+  }
+ ]
+}

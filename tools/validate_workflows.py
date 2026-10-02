@@ -863,6 +863,7 @@ def main() -> int:
     v128_additions = {}
     v129_additions = {}
     v130_additions = {}
+    v132_additions = {}
     if args.against_head:
         # Import lazily so historical validators and pure graph tests do not
         # acquire a generator dependency unless checking collection migration.
@@ -913,6 +914,11 @@ def main() -> int:
         except ModuleNotFoundError:
             from build_prompt_enhancer_v130 import build_all as build_v130
         v130_additions = build_v130()
+        try:
+            from tools.build_anyangle_lanpaint_v132 import build_all as build_v132
+        except ModuleNotFoundError:
+            from build_anyangle_lanpaint_v132 import build_all as build_v132
+        v132_additions = build_v132()
     if args.against_head and not args.skip_collection_totals:
         baseline_paths = git_baseline_workflow_paths()
         expected_paths = {
@@ -937,6 +943,8 @@ def main() -> int:
         expected_paths.update(f"workflows/{key}" for key in v130_additions)
         # v1.3.1 renames (tools/workflow_renames_v131.json)
         expected_paths = {f"workflows/{v131_fixes.new_key(key.removeprefix('workflows/'))}" for key in expected_paths}
+        # v1.3.2 additions already carry names of the v1.3.1 scheme
+        expected_paths.update(f"workflows/{key}" for key in v132_additions)
         current_paths = {_path_key(path) for path in paths}
         if current_paths != expected_paths:
             errors.append(
@@ -993,7 +1001,10 @@ def main() -> int:
                 key = _path_key(path).removeprefix("workflows/")
                 addition = next((item for item in ADDITIONS if item.path == key), None)
                 autosongwriter = next((item for item in V093_TARGET_WORKFLOWS if item.path == key), None)
-                if key in v130_additions:
+                if key in v132_additions:
+                    if v132_additions[key] != workflow:
+                        errors.append(f"{path}: differs from deterministic v1.3.2 LanPaint / AnyAngle workflow")
+                elif key in v130_additions:
                     if v130_additions[key] != workflow:
                         errors.append(f"{path}: differs from deterministic v1.3.0 image prompt enhancer workflow")
                 elif key in v129_additions:
@@ -1084,7 +1095,10 @@ def main() -> int:
     # +12 nodes, +5 notes, +3 links; the FLUX.1 Kontext character-keep negative gets its missing input link back and
     # the Ideogram 4 idea -> JSON -> image writer now feeds the prompt builder (+2 links); the other repairs (the
     # multi-checkpoint chain moves one link) and the renames keep every count.
-    expected = {"files": 265, "graphs": 318, "nodes": 11923, "notes": 5402, "links": 8264, "timers": 246}
+    # v1.3.2 adds four flat Qwen Image 2.1 workflows (LanPaint mask inpaint; AnyAngle with TripoSplat renders from four
+    # cameras, with an own guide image and with the AnyAngle Studio editor): +4 files, +220 nodes, +94 notes, +176 links,
+    # +4 timers.
+    expected = {"files": 269, "graphs": 322, "nodes": 12143, "notes": 5496, "links": 8440, "timers": 250}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():
