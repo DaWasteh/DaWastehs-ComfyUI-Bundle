@@ -1,6 +1,6 @@
 # Dauer in Sekunden und optionale Zweige · v1.1.5
 
-Setzt §5 und §6 des Auftrags `COMFYUI_v1.1.3_Arbeitsauftrag.md` um.
+Dokumentiert das Verhalten optionaler Eingangs-Zweige und die Vereinheitlichung der Video-/Audio-Dauerangaben auf Sekunden (eingeführt in v1.1.5).
 
 ## 1 · Optionale Zweige (§6)
 

@@ -4,7 +4,7 @@
 
 ## Was die Galerie zeigt
 
-Zu jedem der 265 Workflows gibt es eine eigene Seite:
+Zu jedem Workflow gibt es eine eigene Seite (265 in v1.3.1, 269 seit v1.3.2):
 
 - einen **Screenshot aus ComfyUI** nach dem Lauf, mit Eingabe und Ergebnis direkt im Workflow. Die Erklärungstafeln sind ausgeblendet, die Gruppen auf ihren Inhalt zusammengeschoben;
 - die **Ausgaben** (Bild, Video, Audio, 3D-Modell zum Drehen, Text) und die Eingabedateien;

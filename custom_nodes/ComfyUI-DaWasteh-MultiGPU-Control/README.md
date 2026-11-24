@@ -20,6 +20,10 @@ Change the three dropdowns before queuing a workflow. Every connected selector f
 
 The node does not pool VRAM and does not make graph branches execute in parallel.
 
+## VRAM guard (v1.1.2)
+
+On Windows/ROCm, the HIP allocator never raises `OutOfMemoryError` past dedicated VRAM; the WDDM driver spills GPU allocations into host RAM until the system freezes. `vram_guard.py` sets `torch.cuda.set_per_process_memory_fraction` per device on startup to `free_vram - 3 GiB` so over-allocation becomes a normal catchable OOM. Environment: `DAWASTEH_VRAM_GUARD=0` disables it, `DAWASTEH_VRAM_GUARD_RESERVE_GIB` changes the reserve.
+
 ## Compute dtype after Select Model Device (v1.3.1)
 
 ComfyUI's core **Select Model Device** re-derives the compute dtype after moving a model but ignores the dtypes the model supports: FP8 weights always got float16. Qwen Image (Edit) overflows in float16 and saves a black image. The pack patches that function at start-up (`compute_dtype.py`): if ComfyUI's choice is not supported by the model, it picks from the model's own list (bfloat16 for Qwen Image), exactly like ComfyUI's loader. Models that support float16 (FLUX, FLUX.2, Krea 2, WAN …) are unchanged. `DAWASTEH_COMPUTE_DTYPE_FIX=0` disables the patch. Reported upstream as [ComfyUI #16682](https://github.com/Comfy-Org/ComfyUI/issues/16682).
@@ -47,4 +51,4 @@ The included browser extension follows downstream graph connections, displays th
 
 Automatic profiles cover SD 1.5, SDXL/FLUX, Qwen Image, Wan 2.x/Wan Animate 2, LTX Video, Hunyuan Video, SCAIL 2, and MiniMax H3. Unknown graphs use the documented general 1024 fallback until a manual profile is selected. Graphs connected to multiple detected model families are shown as ambiguous and also require a manual choice.
 
-Tested with ComfyUI 0.33.0 at commit `7fe8a613`. The pack uses ComfyUI's current V3 `comfy_api.latest` interface and should be updated together with ComfyUI through the bundle updater.
+Verified with ComfyUI 0.46.0 (commit `da8bd08e4`, PyTorch 2.13+rocm10.1, HIP 7.16). Uses ComfyUI's V3 `comfy_api.latest` interface and is updated together with ComfyUI through the bundle updater.

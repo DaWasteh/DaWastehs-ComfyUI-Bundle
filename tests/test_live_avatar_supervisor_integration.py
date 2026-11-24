@@ -54,7 +54,10 @@ class SupervisorIntegrationTests(unittest.TestCase):
             service.write_text(FAKE_SERVICE, encoding="utf-8")
             face = root / "face.png"
             face.write_bytes(b"authorized integration face")
-            python = Path(sys.executable).resolve()
+            # On Windows, a venv's Scripts/python.exe is a launcher shim that spawns a child
+            # python.exe, so os.getpid() in the service would differ from Start-Process's PID.
+            base_exe = Path(getattr(sys, "_base_executable", sys.executable))
+            python = (base_exe if base_exe.is_file() else Path(sys.executable)).resolve()
             model_hash = sha256(service)
             model_set = hashlib.sha256(model_hash.encode("ascii")).hexdigest()
             face_hash = sha256(face)

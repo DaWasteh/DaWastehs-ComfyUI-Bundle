@@ -3,11 +3,11 @@
     Uebernimmt die freigegebenen Projektdateien dieses Repositories in eine ComfyUI-Installation.
 
 .DESCRIPTION
-    Aktualisiert im Standardlauf ComfyUI-Core, Pixaroma und Spectrum MiniMax H3 per Fast-Forward,
+    Aktualisiert im Standardlauf ComfyUI-Core und die externen GitHub-Node-Packs per Fast-Forward,
     die Python-/Torch-/ROCm-Abhaengigkeiten sowie die eigenen Workflows und Node-Packs aus dem
     Bundle-Repository. Modelle, input/, output/, Zugangsdaten und private Einstellungen werden
     nie angefasst. Mit -SkipUpstream bzw. -SkipDependencies lassen sich die Upstream-Pulls und
-    die pip-Aktualisierung gezielt auslassen (v1.1.3 bis v1.1.5 waren beide faelschlich Opt-in).
+    die pip-Aktualisierung gezielt auslassen.
 
 .PARAMETER ComfyUIRoot
     Wurzel der ComfyUI-Installation (enthaelt ComfyUI\ und .venv\). Standard: L:\ComfyUI
@@ -28,7 +28,7 @@
     Stellt einen frueheren Lauf aus dessen Backup-Verzeichnis wieder her und beendet sich danach.
 
 .PARAMETER SkipUpstream
-    ComfyUI-Core, Pixaroma und Spectrum NICHT aktualisieren (Standard: werden aktualisiert).
+    ComfyUI-Core und externe GitHub-Node-Packs NICHT aktualisieren (Standard: werden aktualisiert).
 
 .PARAMETER SkipDependencies
     Python-Umgebung NICHT veraendern: auch Qwen3-TTS- und DirectML-Pins sowie pip-Uninstall
@@ -1204,7 +1204,7 @@ if ($IncludeUpstream) {
     else { Update-GitRepository $Repo }
 
     Write-Log ""
-    Write-Log "=== Update Pixaroma und Spectrum MiniMax H3 ===" -Color Cyan
+    Write-Log "=== Update externe GitHub-Node-Packs ===" -Color Cyan
     Warn-PixaromaManagerCopies
     foreach ($trackedNode in $GitTrackedNodes) {
         $trackedTarget = Join-Path (Join-Path $Repo "custom_nodes") $trackedNode.Name
@@ -1559,7 +1559,7 @@ if ($DryRun) {
     Write-Log "Trockenlauf fertig. Es wurde nichts geschrieben, geloescht oder installiert." -Color Green
 }
 else {
-    $upstreamNote = if ($IncludeUpstream) { "ComfyUI-Core, Pixaroma und Spectrum MiniMax H3 wurden per Fast-Forward von GitHub aktualisiert." }
+    $upstreamNote = if ($IncludeUpstream) { "ComfyUI-Core und externe GitHub-Node-Packs wurden per Fast-Forward von GitHub aktualisiert." }
                     else { "ComfyUI-Core und fremde Node-Packs blieben unveraendert (-SkipUpstream)." }
     $depsNote = if ($UpdateDependencies) { "pip/torch/requirements wurden aktualisiert." }
                 else { "Python-Umgebung blieb unveraendert (-SkipDependencies)." }

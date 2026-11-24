@@ -81,8 +81,9 @@ gewählten Methode in den laufenden Prompt, mit denselben Nodes und Einstellunge
    selbst** aus `conditioning/`.
 2. **Methode:** SeedVR2 Lanczos → Preprocess → VAE-Encode 1024 → 1 Schritt → Decode 512 → Post (lab).
    WAN Lanczos → WAN-VAE → Low-Noise-Experte + lightx2v, 2 Schritte bei Denoise 0,15, Kacheln 832×480, Fenster 33.
-   Latent 3D: H3-AV-Latent → gelerntes 3D-Upscale → 2 FastH3-Schritte (beta, 0,25). Ultimate: MMH3 Ultimate Upscale
-   mit gelerntem Upscale, Zeitfenstern 136/17 und Token-Budget 70 000 (linear_quadratic, 4 Schritte, 0,25).
+   Latent 3D: H3-AV-Latent → gelerntes 3D-Upscale → 2 FastH3-Schritte (beta, 0,25). Ultimate (seit v1.3.3 über
+   LBH-123-AIs `MMH3SplitUpscale` nach Entfernung von PlagueKinds `MMH3UltimateUpscale` in v1.6.0): H3-AV-Latent →
+   gelerntes 3D-Upscale → `MMH3SplitUpscale` mit Zeitfenstern 124/22 und Kacheln 864×480 (linear_quadratic, 4 Schritte, 0,25).
 3. **Upscale Save** (`DaWMV2UpscaleSave`) schneidet Vorlauf und Auffüllung ab, speichert unter
    `upscaled/<Methode>_<B>x<H>/`, prüft die Frame-Zahl und legt eine Vorschau mit Originalton an.
 

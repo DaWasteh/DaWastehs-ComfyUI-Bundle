@@ -308,7 +308,7 @@ class PackAndUpdaterTests(unittest.TestCase):
 
     def test_launcher_names_the_release(self):
         script = (ROOT / "tools" / "start-MultiGPU.ps1").read_text(encoding="utf-8-sig")
-        self.assertIn("Launcher v1.3.2", script)
+        self.assertRegex(script, r"Launcher v1\.3\.\d+")
 
     def test_gallery_catalog_runs_the_new_workflows(self):
         catalog = (ROOT / "tools" / "examples" / "catalog_image.py").read_text(encoding="utf-8")

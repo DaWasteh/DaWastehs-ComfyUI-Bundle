@@ -50,7 +50,7 @@ PROMPT = ("integrated_multimodal_description: [Shot 1] Live-action, cinematic vi
 METHODS = {
     "ultimate": {
         "path": "Video Upscaling/MiniMax_FastH3_INT8-Video-Ultimate-Upscale.json",
-        "title": "MiniMax H3 Ultimate Upscale · FastH3 · PlagueKind",
+        "title": "MiniMax H3 Ultimate / Split Upscale · FastH3 · LBH-123-AI",
         "blocks": (7.0, 2.0, 10.0), "align": H3_ALIGN,
         "sampling": {"scheduler": "linear_quadratic", "steps": 4, "denoise": 0.25},
     },
@@ -106,24 +106,25 @@ def _block_chain(g: Graph, method: str, label: str, plan, planner, shared: dict,
         for src, slot, name in ((vae, 0, "vae"), (audio_vae, 0, "audio_vae"), (load, 0, "images"), (load, 1, "audio")):
             g.connect(src, slot, av, name)
         noise = g.add("RandomNoise", f"{label} · Rauschen", noise_seed=20260924)
+        split = g.add("LTXVSeparateAVLatent", f"{label} · Video- und Audio-Latent trennen")
+        g.connect(av, 0, split, "av_latent")
+        lat3d = _dyn(g, "MinimaxH3LatentUpscaler3D", f"{label} · Latent Upscaler 3D · gelerntes Modell",
+                     [LATENT_UPSCALER, "target dimensions", 1280, 704, 32, True, True, "rocm", "bf16"])
+        g.connect(split, 0, lat3d, "latent")
+        g.connect(planner, 3, lat3d, "mode.width")
+        g.connect(planner, 4, lat3d, "mode.height")
+        join = g.add("LTXVConcatAVLatent", f"{label} · hochskaliertes Video + Original-Audio-Latent")
+        g.connect(lat3d, 0, join, "video_latent")
+        g.connect(split, 1, join, "audio_latent")
         if method == "ultimate":
-            up = g.add("MMH3UltimateUpscale", f"{label} · MMH3 Ultimate Upscale · zweiter FastH3-Durchgang", cfg=1.0)
-            for src, slot, name in ((model, 0, "model"), (cond, 0, "conditioning"), (av, 0, "latent"), (noise, 0, "noise"),
-                                    (sampler, 0, "sampler"), (sigmas, 0, "sigmas"), (shared["up_param"], 0, "latent_upscale_param"),
+            up = g.add("MMH3SplitUpscale", f"{label} · MMH3 Split Upscale · zweiter FastH3-Durchgang",
+                       cfg=1.0, seam_polish="auto", color_match=True)
+            for src, slot, name in ((model, 0, "model"), (cond, 0, "conditioning"), (join, 0, "latent"), (noise, 0, "noise"),
+                                    (sampler, 0, "sampler"), (sigmas, 0, "sigmas"),
                                     (shared["t_param"], 0, "temporal_split_param"), (shared["s_param"], 0, "spatial_split_param")):
                 g.connect(src, slot, up, name)
             latent = up
         else:
-            split = g.add("LTXVSeparateAVLatent", f"{label} · Video- und Audio-Latent trennen")
-            g.connect(av, 0, split, "av_latent")
-            lat3d = _dyn(g, "MinimaxH3LatentUpscaler3D", f"{label} · Latent Upscaler 3D · gelerntes Modell",
-                         [LATENT_UPSCALER, "target dimensions", 1280, 704, 32, True, True, "rocm", "bf16"])
-            g.connect(split, 0, lat3d, "latent")
-            g.connect(planner, 3, lat3d, "mode.width")
-            g.connect(planner, 4, lat3d, "mode.height")
-            join = g.add("LTXVConcatAVLatent", f"{label} · hochskaliertes Video + Original-Audio-Latent")
-            g.connect(lat3d, 0, join, "video_latent")
-            g.connect(split, 1, join, "audio_latent")
             guider = g.add("BasicGuider", f"{label} · Guider · CFG 1")
             g.connect(model, 0, guider, "model")
             g.connect(cond, 0, guider, "conditioning")
@@ -189,21 +190,15 @@ def build(method: str, schemas: dict) -> dict:
         model, vae, audio_vae, cond, sampler, sigmas = _h3_models(g, spec["sampling"])
         shared.update(model=model, vae=vae, audio_vae=audio_vae, cond=cond, sampler=sampler, sigmas=sigmas)
         if method == "ultimate":
-            # Learned 3D latent upscale instead of Rodent's bicubic: at denoise 0.25 the bicubic latent kept visible blocks
-            # and FastH3 turned them into invented objects (glasses, caps, glitch lines) on the finished test video.
-            up = g.add("MMH3LatentUpscaleWithModelParams", "ULTIMATE · Zielgröße aus dem Planer · gelerntes 3D-Upscale-Modell",
-                       model_name=LATENT_UPSCALER, device="cuda", precision="bf16")
-            g.connect(planner, 3, up, "width")
-            g.connect(planner, 4, up, "height")
-            tparam = g.add("MMH3TemporalSplitParams", "ULTIMATE · zeitliche Chunks 136 / Überlappung 17 / Anker 1,0",
-                           chunk_length=136, temporal_overlap=17, anchor_strength=1.0)
-            sparam = g.add("MMH3SpatialSplitParams", "ULTIMATE · räumliche Kacheln auto · Token-Budget 70000",
-                           tile_size_mode="auto", tile_width=864, tile_height=480, spatial_w_overlap=128, spatial_h_overlap=128,
-                           fade_width=32, fade_height=32, min_tile_size=352, overlap_mode="earlier", overlap_blend="linear",
-                           joint_steps=True, token_budget=70000)
-            g.connect(planner, 3, sparam, "upscale_width")
-            g.connect(planner, 4, sparam, "upscale_height")
-            shared.update(up_param=up, t_param=tparam, s_param=sparam)
+            # v1.3.3: PlagueKind v1.6.0 removed MMH3UltimateUpscale (LD). Migrated to LBH-123-AI's MMH3SplitUpscale
+            # successor in Comfyui_Minimax_h3_latent_Upscaler (same learned 3D latent upscaler + tiled/chunked pass).
+            tparam = g.add("MMH3TemporalSplitParamsV10", "ULTIMATE · zeitliche Chunks 124 / Überlappung 22 / Dreifach-Anker",
+                           chunk_frames=124, temporal_overlap_frames=22, anchor_strength=0.999,
+                           motion_anchor_frames="22", identity_anchor_frames=24)
+            sparam = g.add("MMH3SpatialSplitParamsV10", "ULTIMATE · räumliche Kacheln 864×480 / 25 % Überlappung",
+                           tile_width=864, tile_height=480, overlap_ratio=0.25, fade_ratio=0.5,
+                           min_tile_size=352, seam_denoise=0.7)
+            shared.update(t_param=tparam, s_param=sparam)
     else:
         shared["model"] = g.add("UNETLoader", "SEEDVR2 · 3B INT8 ConvRot", unet_name=SEEDVR2_MODEL)
         shared["vae"] = g.add("VAELoader", "SEEDVR2 · EMA-VAE fp16", vae_name=SEEDVR2_VAE)
@@ -232,7 +227,7 @@ def build(method: str, schemas: dict) -> dict:
         if method in entry["methods"]:
             url = f"https://huggingface.co/{entry['repo_id']}/resolve/{entry['revision']}/{entry['source_path']}"
             lines.append(f"- [{Path(entry['source_path']).name}]({url}) → `ComfyUI/models/{entry['path']}`")
-    packs = {"ultimate": "- Node-Pack [PlagueKind-Nodes](https://github.com/PlagueKind/Comfyui-PlagueKind-Nodes) (vom Updater mitgepflegt)\n",
+    packs = {"ultimate": "- Node-Pack [Comfyui_Minimax_h3_latent_Upscaler](https://github.com/LBH-123-AI/Comfyui_Minimax_h3_latent_Upscaler) (vom Updater mitgepflegt; v1.3.3: `MMH3SplitUpscale` ersetzt PlagueKinds entferntes `MMH3UltimateUpscale`)\n",
              "latent3d": "- Node-Pack [Comfyui_Minimax_h3_latent_Upscaler](https://github.com/LBH-123-AI/Comfyui_Minimax_h3_latent_Upscaler) (vom Updater mitgepflegt)\n",
              "seedvr2": "- SeedVR2-Nodes sind im ComfyUI-Core enthalten.\n"}[method]
     g.note("DOWNLOADS · Modelle / Node-Packs", "# Benötigte Dateien\n\n" + "\n\n".join(lines) + "\n\n" + packs)
@@ -285,16 +280,13 @@ COMMON_START = """
    `output/video/DaWasteh_VideoUpscale/`. Der Originalton wird unverändert übernommen (`-c:a copy`).
 """
 START_NOTES = {
-    "ultimate": "# MiniMax H3 Ultimate Upscale · FastH3\n\nMethode 1 aus Nerdy Rodents Video „MiniMax H3 Ultimate Upscaling“: "
-                "PlagueKinds **MMH3 Ultimate Upscale** rechnet das Video als zweiten FastH3-Durchgang in der Zielgröße neu – "
-                "in zeitlichen Chunks mit Anker zum Vorgänger-Chunk und bei Bedarf in räumlichen Kacheln. **Die meisten neuen "
-                "Details**, verändert das Bild aber am stärksten.\n" + COMMON_START +
-                "\n**Zwei Abweichungen von Rodent, beide am fertigen Testvideo gemessen:**\n\n"
-                "- **Denoise 0,25** statt 0,45: Mit FastH3s Sigma-Shift 10 startet 0,45 bei 97,5 % Rauschen und erfindet die "
-                "Szene bei fertigen Videos neu. 0,45 passt nur für Latents, die gerade mit demselben Prompt erzeugt wurden.\n"
-                "- **Gelerntes 3D-Upscale-Modell** (`MMH3 Latent Upscale with Model Params`, gleiches Pack) statt bicubic: "
-                "Bei 0,25 blieb das bicubisch vergrößerte Latent blockig, FastH3 machte daraus Brillen, Kappen und "
-                "Glitch-Linien. Mit dem Modell bleibt das Bild sauber und bekommt trotzdem neue Details.\n\n"
+    "ultimate": "# MiniMax H3 Ultimate / Split Upscale · FastH3\n\nMethode 1 (gekachelter zweiter FastH3-Durchgang): "
+                "Seit v1.3.3 nutzt der Workflow LBH-123-AIs **MMH3 Split Upscale** (`Comfyui_Minimax_h3_latent_Upscaler`), "
+                "den Nachfolger von PlagueKinds in v1.6.0 entferntem `MMH3UltimateUpscale`. Das Video-Latent wird zuerst mit "
+                "dem gelernten 3D-Upscaler vergrößert und danach in zeitlichen Chunks (Dreifach-Anker) und räumlichen Kacheln "
+                "mit Farbabgleich und Naht-Glättung neu gesampelt. **Die meisten neuen Details**, verändert das Bild aber am stärksten.\n" + COMMON_START +
+                "\n**Einstellungen:** Denoise **0,25** (4 Schritte `linear_quadratic`, FastH3-Shift 10), gelerntes 3D-Upscale-Modell "
+                "statt bicubic, 864×480-Kacheln mit 25 % Überlappung und `seam_denoise = 0,7`.\n\n"
                 "Den PROMPT so schreiben, dass er beschreibt, was im Video zu sehen ist.\n",
     "latent3d": "# MiniMax H3 Latent Upscaler 3D · FastH3\n\nMethode 2 aus Nerdy Rodents Video: LBH-123-AIs gelerntes **Latent-"
                 "Upscale-Modell (3D)** vergrößert nur das Video-Latent, das Original-Audio-Latent bleibt, danach schärft "

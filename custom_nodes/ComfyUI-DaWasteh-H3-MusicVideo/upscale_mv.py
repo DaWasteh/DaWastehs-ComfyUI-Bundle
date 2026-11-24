@@ -87,19 +87,22 @@ METHODS: dict[str, dict[str, Any]] = {
     },
     ULTIMATE: {
         "label": "H3 Ultimate Upscale · zeichnet am freiesten neu",
-        "align": "h3 (17k+5)", "lead": 0, "h3": True, "version": 1,
+        "align": "h3 (17k+5)", "lead": 0, "h3": True, "version": 2,
         "noise_seed": 20260924, "sampler_name": "euler", "cfg": 1.0,
         "schedule": {"scheduler": "linear_quadratic", "steps": 4, "denoise": 0.25},
-        "upscale_param": {"device": "cuda", "precision": "bf16"},
-        "temporal": {"chunk_length": 136, "temporal_overlap": 17, "anchor_strength": 1.0},
-        "spatial": {"tile_size_mode": "auto", "tile_width": 864, "tile_height": 480, "grid_rows": 2, "grid_cols": 2,
-                    "spatial_w_overlap": 128, "spatial_h_overlap": 128, "fade_width": 32, "fade_height": 32,
-                    "min_tile_size": 352, "overlap_mode": "earlier", "overlap_blend": "linear", "joint_steps": True,
-                    "token_budget": 70000},
+        "upscaler": {"align": 32, "enable_temporal_chunking": True, "force_unload": True, "device": "rocm", "precision": "bf16"},
+        # v1.3.3: PlagueKind v1.6.0 removed MMH3UltimateUpscale (LD); migrated to LBH-123-AI's MMH3SplitUpscale
+        # successor in Comfyui_Minimax_h3_latent_Upscaler (same 3D latent upscaler model, tiled/chunked re-sample).
+        "temporal": {"chunk_frames": 124, "temporal_overlap_frames": 22, "anchor_strength": 0.999,
+                     "motion_anchor_frames": "22", "identity_anchor_frames": 24},
+        "spatial": {"tile_width": 864, "tile_height": 480, "overlap_ratio": 0.25, "fade_ratio": 0.5,
+                    "min_tile_size": 352, "seam_denoise": 0.7},
+        "split": {"seam_polish": "auto", "color_match": True},
         "files": [("latent_upscale_models", LATENT_UPSCALER)],
-        "classes": ["MMH3UltimateUpscale", "MMH3LatentUpscaleWithModelParams", "MMH3TemporalSplitParams",
-                    "MMH3SpatialSplitParams", "RandomNoise", "KSamplerSelect", "BasicScheduler", "VAEDecode", "DaWH3VideoToAVLatent"],
-        "pack": "Node-Pack PlagueKind-Nodes (vom Updater mitgepflegt)",
+        "classes": ["MinimaxH3LatentUpscaler3D", "LTXVSeparateAVLatent", "LTXVConcatAVLatent",
+                    "MMH3SplitUpscale", "MMH3TemporalSplitParamsV10", "MMH3SpatialSplitParamsV10",
+                    "RandomNoise", "KSamplerSelect", "BasicScheduler", "VAEDecode", "DaWH3VideoToAVLatent"],
+        "pack": "Node-Pack Comfyui_Minimax_h3_latent_Upscaler (LBH-123-AI, vom Updater mitgepflegt)",
     },
 }
 # WAN first: the default. Measured on a 960x544 scene -> 1920x1088 (docs/H3_MUSIC_VIDEO_V127.md): WAN keeps faces and
@@ -213,23 +216,20 @@ def build_chain(graph, method: str, source, models, links: dict[str, list], widt
     noise = graph.node("RandomNoise", noise_seed=spec["noise_seed"])
     sampler = graph.node("KSamplerSelect", sampler_name=spec["sampler_name"])
     sigmas = graph.node("BasicScheduler", model=model, **spec["schedule"])
+    split = graph.node("LTXVSeparateAVLatent", av_latent=av.out(0))
+    upscale = graph.node("MinimaxH3LatentUpscaler3D", latent=split.out(0), model_name=LATENT_UPSCALER,
+                         mode="target dimensions", **{"mode.width": width, "mode.height": height}, **spec["upscaler"])
+    join = graph.node("LTXVConcatAVLatent", video_latent=upscale.out(0), audio_latent=split.out(1))
     if method == LATENT3D:
-        split = graph.node("LTXVSeparateAVLatent", av_latent=av.out(0))
-        upscale = graph.node("MinimaxH3LatentUpscaler3D", latent=split.out(0), model_name=LATENT_UPSCALER,
-                             mode="target dimensions", **{"mode.width": width, "mode.height": height}, **spec["upscaler"])
-        join = graph.node("LTXVConcatAVLatent", video_latent=upscale.out(0), audio_latent=split.out(1))
         guider = graph.node("BasicGuider", model=model, conditioning=source.out(2))
         latent = graph.node("SamplerCustomAdvanced", noise=noise.out(0), guider=guider.out(0), sampler=sampler.out(0),
                             sigmas=sigmas.out(0), latent_image=join.out(0))
     else:
-        param = graph.node("MMH3LatentUpscaleWithModelParams", model_name=LATENT_UPSCALER, width=width, height=height,
-                           **spec["upscale_param"])
-        temporal = graph.node("MMH3TemporalSplitParams", **spec["temporal"])
-        spatial = graph.node("MMH3SpatialSplitParams", upscale_width=width, upscale_height=height, **spec["spatial"])
-        latent = graph.node("MMH3UltimateUpscale", model=model, conditioning=source.out(2), latent=av.out(0),
+        temporal = graph.node("MMH3TemporalSplitParamsV10", **spec["temporal"])
+        spatial = graph.node("MMH3SpatialSplitParamsV10", **spec["spatial"])
+        latent = graph.node("MMH3SplitUpscale", model=model, conditioning=source.out(2), latent=join.out(0),
                             noise=noise.out(0), sampler=sampler.out(0), sigmas=sigmas.out(0), cfg=spec["cfg"],
-                            latent_upscale_param=param.out(0), temporal_split_param=temporal.out(0),
-                            spatial_split_param=spatial.out(0))
+                            temporal_split_param=temporal.out(0), spatial_split_param=spatial.out(0), **spec["split"])
     decode = graph.node("VAEDecode", samples=latent.out(0), vae=vae)
     return decode.out(0)
 

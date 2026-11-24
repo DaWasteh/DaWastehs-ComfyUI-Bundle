@@ -151,15 +151,19 @@ class WorkflowTests(unittest.TestCase):
         # Denoise 0.25, not Rodent's 0.45/0.4: with FastH3's shift 10 those start at 97 %/85 % noise on finished footage.
         self.assertEqual(self.nodes("ultimate", "BasicScheduler")[0]["widgets_values"], ["linear_quadratic", 4, 0.25])
         self.assertEqual(self.nodes("latent3d", "BasicScheduler")[0]["widgets_values"], ["beta", 2, 0.25])
-        # Learned 3D latent upscale inside Ultimate: bicubic at denoise 0.25 turned latent blocks into invented objects.
+        # v1.3.3: PlagueKind v1.6.0 removed MMH3UltimateUpscale; migrated to LBH-123-AI's MMH3SplitUpscale + 3D upscaler.
+        self.assertEqual(self.nodes("ultimate", "MMH3UltimateUpscale"), [])
         self.assertEqual(self.nodes("ultimate", "MMH3LatentUpscaleParams"), [])
-        (model_up,) = self.nodes("ultimate", "MMH3LatentUpscaleWithModelParams")
-        self.assertEqual(model_up["widgets_values"], ["minimax_h3_latent_upscaler_3d_conv_v1_bf16.safetensors", 1280, 704, "cuda", "bf16"])
-        self.assertEqual(self.linked_from("ultimate", model_up, "width"), ("DaWVUPlanner", 3))
-        for up in self.nodes("latent3d", "MinimaxH3LatentUpscaler3D"):
-            self.assertEqual(up["widgets_values"][1:], ["target dimensions", 1280, 704, 32, True, True, "rocm", "bf16"])
-            self.assertEqual(self.linked_from("latent3d", up, "mode.width"), ("DaWVUPlanner", 3))
-            self.assertEqual(self.linked_from("latent3d", up, "mode.height"), ("DaWVUPlanner", 4))
+        self.assertEqual(len(self.nodes("ultimate", "MMH3SplitUpscale")), 2)
+        (tparam,) = self.nodes("ultimate", "MMH3TemporalSplitParamsV10")
+        self.assertEqual(tparam["widgets_values"], [124, 22, 0.999, "22", 24])
+        (sparam,) = self.nodes("ultimate", "MMH3SpatialSplitParamsV10")
+        self.assertEqual(sparam["widgets_values"], [864, 480, 0.25, 0.5, 352, 0.7])
+        for method in ("ultimate", "latent3d"):
+            for up in self.nodes(method, "MinimaxH3LatentUpscaler3D"):
+                self.assertEqual(up["widgets_values"][1:], ["target dimensions", 1280, 704, 32, True, True, "rocm", "bf16"])
+                self.assertEqual(self.linked_from(method, up, "mode.width"), ("DaWVUPlanner", 3))
+                self.assertEqual(self.linked_from(method, up, "mode.height"), ("DaWVUPlanner", 4))
         for resize in self.nodes("seedvr2", "ResizeImageMaskNode"):
             self.assertEqual(resize["widgets_values"], ["scale dimensions", 1280, 704, "disabled", "lanczos"])
             self.assertEqual(self.linked_from("seedvr2", resize, "resize_type.width"), ("DaWVUPlanner", 3))
@@ -205,7 +209,14 @@ class LiveEvidenceTests(unittest.TestCase):
         self.assertEqual(set(self.report["methods"]), set(METHOD_FILES))
         for method, entry in self.report["methods"].items():
             self.assertEqual(entry["workflow"]["path"], "workflows/" + METHOD_FILES[method])
-            self.assertEqual(entry["workflow"]["sha256"], self.sha(entry["workflow"]["path"]), method)
+            if method == "ultimate":
+                # v1.3.3 migrated ultimate from PlagueKind's removed MMH3UltimateUpscale to LBH's MMH3SplitUpscale;
+                # the v1.2.3 evidence report pins the v1.3.2 release bytes of that workflow.
+                self.assertEqual(entry["workflow"]["sha256"],
+                                 hashlib.sha256(subprocess.check_output(["git", "show", "v1.3.2:" + entry["workflow"]["path"]], cwd=ROOT)).hexdigest(),
+                                 method)
+            else:
+                self.assertEqual(entry["workflow"]["sha256"], self.sha(entry["workflow"]["path"]), method)
         for entry in self.report["sources"]:
             self.assertEqual(released(entry["path"]), entry["sha256"], entry["path"])
         manifest = json.loads((ROOT / "tools/workflow_templates/v123/models.json").read_text(encoding="utf-8"))

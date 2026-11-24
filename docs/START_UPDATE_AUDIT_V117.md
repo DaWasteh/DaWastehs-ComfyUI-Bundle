@@ -1,5 +1,7 @@
 # Start-/Update-Audit v1.1.7 · 11. September 2026
 
+> **Hinweis (v1.3.3):** Aktueller Kompatibilitäts- und Skript-Stand für ComfyUI `0.46.0`: [`COMPATIBILITY_AUDIT_V133.md`](COMPATIBILITY_AUDIT_V133.md). Dieses Dokument beschreibt das historische Audit der Sync-/Sicherheits-Architektur aus v1.1.7.
+
 ## Geprüfter Stand
 
 - Windows 11, Intel Core Ultra 9 285K (24 Kerne/Threads), 48 GB Host-RAM.

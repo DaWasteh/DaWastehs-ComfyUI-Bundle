@@ -107,7 +107,7 @@ class MethodTests(unittest.TestCase):
 
     def test_missing_packs_and_models_are_named(self):
         problems = up.missing_requirements(up.ULTIMATE, {"RandomNoise"}, lambda folder, name: False)
-        self.assertTrue(any("MMH3UltimateUpscale" in p and "PlagueKind" in p for p in problems))
+        self.assertTrue(any("MMH3SplitUpscale" in p and "LBH-123-AI" in p for p in problems))
         self.assertIn("Modell fehlt: models/latent_upscale_models/" + up.LATENT_UPSCALER, problems)
         everything = {c for spec in up.METHODS.values() for c in spec["classes"]}
         for method in up.METHODS:
@@ -168,15 +168,13 @@ class SameSettingsAsTheStandaloneWorkflowsTests(unittest.TestCase):
         # the one deliberate deviation: colour correction "lab" (measured at x2, see upscale_mv.METHODS)
         self.assertEqual((shipped["seedvr2"]["SeedVR2PostProcessing"], s["color_correction"]), (["none"], "lab"))
         u = up.METHODS[up.ULTIMATE]
-        self.assertEqual(shipped["ultimate"]["MMH3TemporalSplitParams"], list(u["temporal"].values()))
-        spatial = shipped["ultimate"]["MMH3SpatialSplitParams"]
-        self.assertEqual(spatial[2:], list(u["spatial"].values()))
-        self.assertEqual(shipped["ultimate"]["MMH3LatentUpscaleWithModelParams"][3:], [u["upscale_param"]["device"], u["upscale_param"]["precision"]])
-        self.assertEqual(shipped["ultimate"]["MMH3UltimateUpscale"], [u["cfg"]])
-        latent = shipped["latent3d"]["MinimaxH3LatentUpscaler3D"]
-        self.assertEqual(latent[0], up.LATENT_UPSCALER)
-        self.assertEqual(latent[4:], list(up.METHODS[up.LATENT3D]["upscaler"].values()))
+        self.assertEqual(shipped["ultimate"]["MMH3TemporalSplitParamsV10"], list(u["temporal"].values()))
+        self.assertEqual(shipped["ultimate"]["MMH3SpatialSplitParamsV10"], list(u["spatial"].values()))
+        self.assertEqual(shipped["ultimate"]["MMH3SplitUpscale"], [u["cfg"], u["split"]["seam_polish"], u["split"]["color_match"]])
         for method in (up.LATENT3D, up.ULTIMATE):
+            latent = shipped[method]["MinimaxH3LatentUpscaler3D"]
+            self.assertEqual(latent[0], up.LATENT_UPSCALER)
+            self.assertEqual(latent[4:], list(up.METHODS[method]["upscaler"].values()))
             self.assertEqual(shipped[method]["RandomNoise"][0], up.METHODS[method]["noise_seed"])
 
     def test_wan_matches_v126(self):
@@ -258,14 +256,14 @@ class ChainTests(unittest.TestCase):
             self.assertEqual(by["DaWH3VideoToAVLatent"][1]["inputs"]["audio_vae"], ["72", 0])
             self.assertEqual(by["BasicScheduler"][1]["inputs"]["model"], ["15", 0])
             self.assertEqual(by["VAEDecode"][1]["inputs"]["vae"], ["71", 0])
+            inputs = by["MinimaxH3LatentUpscaler3D"][1]["inputs"]
+            self.assertEqual((inputs["mode"], inputs["mode.width"], inputs["mode.height"]), ("target dimensions", 1920, 1088))
             if method == up.LATENT3D:
-                inputs = by["MinimaxH3LatentUpscaler3D"][1]["inputs"]
-                self.assertEqual((inputs["mode"], inputs["mode.width"], inputs["mode.height"]), ("target dimensions", 1920, 1088))
                 self.assertEqual(by["BasicGuider"][1]["inputs"], {"model": ["15", 0], "conditioning": [source_id, 2]})
             else:
-                inputs = by["MMH3UltimateUpscale"][1]["inputs"]
+                inputs = by["MMH3SplitUpscale"][1]["inputs"]
                 self.assertEqual((inputs["model"], inputs["conditioning"]), (["15", 0], [source_id, 2]))
-                self.assertEqual(by["MMH3LatentUpscaleWithModelParams"][1]["inputs"]["width"], 1920)
+                self.assertEqual(by["MMH3SpatialSplitParamsV10"][1]["inputs"]["tile_width"], 864)
 
     def test_save_gets_the_lead_in_and_the_upscaled_frames(self):
         for method in up.METHODS:

@@ -752,6 +752,16 @@ def compare_head(path: Path, current: dict[str, Any], errors: list[str], head_pa
             sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head)),
             sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
         )
+    if current.get("extra", {}).get("dawasteh_video_upscale_v123", {}).get("version") == 1:
+        try:
+            from tools.build_video_upscale_v123 import build_all as build_v123
+        except ModuleNotFoundError:
+            from build_video_upscale_v123 import build_all as build_v123
+        if build_v123().get(key) == current:
+            return (
+                sum(len(graph.get("nodes", [])) for _, graph in graph_locator(head)),
+                sum(len(graph.get("links", {}) or []) for _, graph in graph_locator(head)),
+            )
     if current.get("extra", {}).get(MIGRATION_KEY, {}).get("version") == MIGRATION_VERSION:
         expected = _v111(migrate_workflow(head_raw, key))
         if expected != current:
@@ -1098,7 +1108,9 @@ def main() -> int:
     # v1.3.2 adds four flat Qwen Image 2.1 workflows (LanPaint mask inpaint; AnyAngle with TripoSplat renders from four
     # cameras, with an own guide image and with the AnyAngle Studio editor): +4 files, +220 nodes, +94 notes, +176 links,
     # +4 timers.
-    expected = {"files": 269, "graphs": 322, "nodes": 12143, "notes": 5496, "links": 8440, "timers": 250}
+    # v1.3.3 migrates MiniMax_FastH3_INT8-Video-Ultimate-Upscale from PlagueKind's removed MMH3UltimateUpscale to
+    # LBH-123-AI's MinimaxH3LatentUpscaler3D + MMH3SplitUpscale: +10 nodes, +5 notes, +6 links.
+    expected = {"files": 269, "graphs": 322, "nodes": 12153, "notes": 5501, "links": 8446, "timers": 250}
     actual = {"files": len(paths), **{k: totals[k] for k in ("graphs", "nodes", "notes", "links", "timers")}}
     if not args.skip_collection_totals:
         for key, value in expected.items():

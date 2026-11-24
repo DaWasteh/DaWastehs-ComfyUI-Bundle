@@ -1,108 +1,56 @@
-# Optionale GPU-Platzierung · R9700 + RX 9070 XT · v1.0.0
+# Optionale GPU-Platzierung & RDNA4-Startprofil · v1.3.3
 
-Seit v0.9.2 gibt es keinen getrennten Ordner `Dual GPU - R9700 + RX 9070 XT` mehr. Die GPU-Steuerung ist direkt in **allen 234 kanonischen Workflows** enthalten. Dadurch existiert pro Aufgabe nur noch ein Workflow, dessen Gerätebelegung vor dem Queue-Lauf geändert werden kann.
+Die GPU-Steuerung ist direkt in **allen 269 Workflows** enthalten — pro Aufgabe existiert genau ein Workflow, dessen Gerätebelegung vor dem Start angepasst werden kann.
 
 ## Gerätezuordnung
 
-| ComfyUI/HIP-Gerät | Physische GPU | Standardrolle in kuratierten Split-Profilen |
+| ComfyUI/HIP-Gerät | Physische GPU | Standardrolle in Split-Profilen |
 |---|---|---|
-| `gpu:0` | AMD Radeon AI PRO R9700 · 32 GB | großes Diffusionsmodell/UNET und Sampling |
-| `gpu:1` | AMD Radeon RX 9070 XT · 16 GB | CLIP/Textencoder sowie Bild-, Video- und Audio-VAE |
+| `gpu:0` | AMD Radeon AI PRO R9700 · 32 GB | Diffusionsmodell/UNET und Sampling |
+| `gpu:1` | AMD Radeon RX 9070 XT · 16 GB | optional CLIP/Textencoder, VAE sowie temporärer `llama-server` (Qwen3.8 27B) |
 
-Diese Indizes sind HIP-/PyTorch-Indizes und nicht mit der Vulkan-Reihenfolge anderer Programme gleichzusetzen. Die Verteilung erzeugt keinen gemeinsamen 48-GB-VRAM-Pool und führt Graphstufen nicht automatisch parallel aus.
+Die Indizes sind HIP-/PyTorch-Indizes (nicht Vulkan). Die Verteilung erzeugt keinen gemeinsamen 48-GB-VRAM-Pool und führt Graphstufen nicht automatisch parallel aus.
 
-## Zentraler Control-Node in jedem Workflow
+## Zentraler Control-Node (`DaW Multi-GPU Device Control`)
 
-Jeder Workflow besitzt genau einen Root-Node:
+Jeder Workflow besitzt genau einen Root-Node `DaW Multi-GPU Device Control`. Seine Dropdowns `model_device`, `clip_device` und `vae_device` steuern alle verbundenen Core-Nodes `Select Model Device`, `Select CLIP Device` und `Select VAE Device` (auch innerhalb von Subgraphs):
 
-```text
-DaW Multi-GPU Device Control
-```
+- **Bild-Workflows:** starten vollständig auf `gpu:0` (R9700). Ein Geräte-Split über `SelectCLIPDevice`/`SelectVAEDevice` erzeugt in ComfyUI einen Host-RAM-Deep-Clone und verlängert warme Läufe messbar ([`performance/rdna4/REPORT.md`](../performance/rdna4/REPORT.md)).
+- **Kuratierte Split-Profile (Video/Audio):** behalten ihre getestete Aufteilung (u. a. LTX-2.5-VAE auf `gpu:1`, MiniMax Music 3 mit `MODEL=gpu:1`, `CLIP=gpu:0`, `VAE=gpu:1`).
+- **Proprietäre Modell-Nodes** (YuE, HeartMuLa, MOSS-TTS, Qwen-TTS) geben keine standardisierten `MODEL`/`CLIP`/`VAE`-Objekte aus; der Control-Node bleibt dort bewusst passiv.
 
-Seine Dropdowns `model_device`, `clip_device` und `vae_device` steuern alle kompatiblen offiziellen `Select Model Device`, `Select CLIP Device` und `Select VAE Device`-Nodes, auch innerhalb eingebetteter Subgraphs.
+## Laufzeit-Patches in `ComfyUI-DaWasteh-MultiGPU-Control`
 
-- **v1.1.1:** Ein `SelectCLIPDevice`/`SelectVAEDevice` auf ein anderes Gerät als das des Loaders erzeugt in ComfyUI 0.34 einen vollständigen Deep-Clone des Modells im Host-RAM (8–31 s, doppelter Speicher) und hinterlässt ein „totes" `LoadedModel`, das bei jedem Modellwechsel eine volle Garbage-Collection auslöst. Die 14 Bild-Workflows mit CLIP/VAE auf `gpu:1` laufen deshalb jetzt vollständig auf `gpu:0` (Z-Image Turbo 15,6 → 6,2 s warm zusammen mit den entschärften Aufräumnodes, SDXL 10,5 → 9,1 s, Ausgaben bitidentisch), die drei LTX-2.5-Workflows legen nur noch die VAE auf `gpu:1` (kalt 548 → 152 s). Messprotokoll: `performance/rdna4/REPORT.md`.
-- **13 explizit kuratierte Split-Profile** (Video/Audio: H3-Spectrum, WAN T2V, Kandinsky, SCAIL2, WanAnimate2, LTX 2.3, ACE Turbo, Stable Audio, MiniMax Music 3, LTX-2.5-VAE) behalten ihre Geräteaufteilung; sie wurden in v1.1.1 nicht einzeln gemessen.
-- **übrige Workflows** starten mit MODEL, CLIP und VAE vollständig auf `gpu:0`, der R9700.
-- Reine Utility-Graphen und proprietäre Modellobjekte besitzen den zentralen Control-Node ebenfalls, aber ohne vorgetäuschte Verbindungen zu inkompatiblen Objekten.
+Beim ComfyUI-Start aktiviert das Node-Pack fünf zielgerichtete, per Umgebungsvariable abschaltbare Fixes (alle unter ComfyUI `0.46.0` geprüft):
 
-YuE, HeartMuLa, MOSS-TTS und Qwen-TTS geben keine standardisierten ComfyUI-Objekte vom Typ MODEL, CLIP oder VAE aus. Offizielle Selector-Nodes können diese Objekte nicht zuverlässig umplatzieren. Der Control-Node bleibt dort bewusst passiv; standardisierte Modell-/LLM-Loader im selben Workflow dürfen trotzdem korrekt angebunden sein.
+| Modul | Wirkung | Abschalten |
+|---|---|---|
+| `vram_guard.py` | Begrenzt den HIP-Allokator je GPU auf „freier VRAM beim Start − 3 GiB“, verhindert Windows/WDDM-Spilling in den Host-RAM | `DAWASTEH_VRAM_GUARD=0` |
+| `readonly_load.py` | Lädt `.safetensors` ab 1 GiB schreibgeschützt (`mmap.ACCESS_READ`), spart Windows-Commit-Charge (z. B. FLUX.2 dev FP8 mixed: 159 → 104–120 GiB) | `DAWASTEH_READONLY_SAFETENSORS=0` |
+| `compute_dtype.py` | Erhält die unterstützten Rechentypen eines Modells nach `Select Model Device` (verhindert schwarze FP8-Bilder bei Qwen Image Edit, [ComfyUI #16682](https://github.com/Comfy-Org/ComfyUI/issues/16682)) | `DAWASTEH_COMPUTE_DTYPE_FIX=0` |
+| `sam3_reload.py` | Ermöglicht das Verschieben des SAM3-Textencoders auf `gpu:1` ([ComfyUI #16675](https://github.com/Comfy-Org/ComfyUI/issues/16675)) | `DAWASTEH_SAM3_RELOAD_FIX=0` |
+| `splat_inverse.py` | Teilt gebatchte `torch.linalg`-Aufrufe in `Render Splat` / `Splat to Mesh` auf ROCm in 32 768er-Chunks (verhindert `hipErrorInvalidConfiguration` über 65 535 Gaussians) | `DAWASTEH_SPLAT_LINALG_FIX=0` |
 
-MiniMax Music 3 bleibt die dokumentierte Ausnahme zur üblichen Split-Belegung: Der große BF16-Autoregressions-/Text-Stack läuft auf `gpu:0` (R9700), während FP32-Flow-Matching-DiT und DAV auf `gpu:1` (RX 9070 XT) liegen. Der zentrale Node startet daher mit `MODEL=gpu:1`, `CLIP=gpu:0`, `VAE=gpu:1`.
+## Start auf Port 8188 (`start-MultiGPU.ps1`)
 
-## Funktionale Ablage statt Dual-GPU-Sonderordner
+Versionierte Starter: `tools/start-MultiGPU.ps1` und `tools/start-MultiGPU.bat` (vom Updater nach `L:\ComfyUI\` verteilt).
 
-Die früher ausschließlich im Dual-GPU-Ordner vorhandenen offiziellen Template-Graphen liegen jetzt hier:
+- `HIP_VISIBLE_DEVICES=0,1` und `CUDA_VISIBLE_DEVICES=0,1` + `--default-device 0` (umgeht den Windows-Single-GPU-Zwang von ComfyUI)
+- `TORCH_BLAS_PREFER_HIPBLASLT=1` (100–122 TFLOPS auf `gfx1201`) und `--use-pytorch-cross-attention` (AOTriton SDPA)
+- `--cache-ram`, `--reserve-vram 4`, VRAM-Guard mit 3 GiB Reserve (`DAWASTEH_VRAM_GUARD_RESERVE_GIB=3`)
+- `--disable-dynamic-vram`, `--disable-async-offload`, `--disable-pinned-memory` (statischer Loader; schützt den 48-GB-Host vor Paging/Hängern)
+- Opt-in-Schalter im Skriptkopf: `$UseComfyKitchenAttention` (`--use-ck-attention`), `$FastFp8MatrixMult` (`--fast fp8_matrix_mult`)
+- Automatische Erkennung des neuesten `b<Build>_hip_llama.cpp\build\bin\llama-server.exe` unter `L:\LAB\ai-local` für `Qwen3.8-27B-IQ4_XS` auf `gpu:1`
 
-```text
-workflows/Text to Video/LTX25_22B_INT8-Text-to-Video.json
-workflows/Text+Image to Video/LTX25_22B_INT8-Text+Image-to-Video.json
-workflows/Text+Image to Video/LTX25_22B_INT8-First+Last-Frame-to-Video.json
-workflows/Character Animation/WanAnimate2_14B_INT8-Image+Video-to-Video-Motion-Transfer.json
-```
-
-Alle anderen früheren Dual-GPU-Varianten wurden in ihren bereits vorhandenen kanonischen Workflow integriert, statt als Duplikat erhalten zu bleiben.
-
-Die redundanten Dateien
-
-```text
-MiniMax_H3_Spectrum_FL2VA_All_Supported_Inputs.json
-MiniMax_H3_Spectrum_FL2VA_MAXIMUM_All_Supported_Inputs.json
-```
-
-wurden entfernt. `MiniMax_H3_FL2VA_INT8-First+Last-Frame-to-Video.json` deckt ihre FL2VA-Eingaben bereits ab und besitzt nun selbst die optionale zentrale GPU-Steuerung.
-
-## Start auf Port 8188
-
-Die versionierten Starter liegen unter:
-
-- `tools/start-MultiGPU.ps1`
-- `tools/start-MultiGPU.bat`
-
-Für die lokale Installation werden sie nach `L:\ComfyUI\` kopiert. Das Profil v0.9.8 verwendet:
-
-- `HIP_VISIBLE_DEVICES=0,1`
-- `CUDA_VISIBLE_DEVICES=0,1` als PyTorch-ROCm-Kompatibilitätsvariable; seit ComfyUI 0.34 erzwingt `main.py` unter Windows sonst eine einzelne GPU
-- `--default-device 0`
-- Port `8188`
-- `user/comfyui-multigpu.db`
-- `TORCH_BLAS_PREFER_HIPBLASLT=1`: auf gfx1201 gemessen 100–122 TFLOPS bei Transformer-GEMMs statt 60–95 TFLOPS mit klassischem hipBLAS; die früheren `HIPBLAS_STATUS_NOT_SUPPORTED`-Warnfluten für YuE-/HeartCodec-Conv1d-Formen treten mit PyTorch 2.13 nicht mehr auf
-- Pinned Memory bleibt aus (`$DisablePinnedMemory = $true`): gemessen zwar 26 GiB/s Host→GPU statt 16 GiB/s pageable, aber ComfyUI pinnt bis zu 40 % des Host-RAM (19 GB von 48 GB); mit einem parallel residenten 27B-llama-server (31 GB Commit) swappte der Host und Wan 2.2 14B fiel auf 765 s pro Schritt. Nur bei freiem Host-RAM einschalten
-- DynamicVRAM (comfy-aimdo 0.5.2) blieb auf der R9700 trotz 27 GB nutzbarem VRAM über acht Minuten ohne GPU-Last in „Model Initializing“ hängen, während der statische Loader denselben Z-Image-Graphen in 84 s beendete; `$EnableDynamicVram` bleibt deshalb aus und wird nach jedem ComfyUI-/aimdo-Update neu geprüft, weil ComfyUI `--disable-dynamic-vram` entfernen will
-- `--cache-ram` statt `--cache-classic`: der RAM-druckabhängige Standard-Cache vermeidet die in v0.9.7 dokumentierte Host-RAM-Erschöpfung bei mehreren großen Pixal3D-Läufen
-- `--disable-dynamic-vram` und `--disable-async-offload` bleiben als Schalter im Skript (`$EnableDynamicVram`, `$AsyncOffloadStreams`); die gemessenen Standardwerte stehen im Skriptkopf
-- Opt-in-Schalter: `$UseComfyKitchenAttention` (`--use-ck-attention`, INT8-QK-Attention der comfy-kitchen-HIP-Kernel) und `$FastFp8MatrixMult` (`--fast fp8_matrix_mult`, `torch._scaled_mm` mit 117 TFLOPS gemessen); beide bleiben wegen des Qualitäts-Trade-offs standardmäßig aus
-- v1.1.2 · VRAM-Guard (`$VramGuard = $true`, Umgebungsvariable `DAWASTEH_VRAM_GUARD`, Reserve `$VramGuardReserveGib = 3`): Unter Windows/ROCm löst der HIP-Allokator **keinen** Out-of-Memory-Fehler aus; jenseits des VRAM lagert der WDDM-Treiber jede weitere GPU-Allokation still in den Host-RAM aus (gemessen am 2026-09-06: 18,4 GiB auf der 16-GiB-RX-9070-XT, 0,5 GiB Host-RAM je 512-MiB-Block), bis der Rechner einfriert (die beiden Systemabstürze des Core-`TrainLoraNode` am 2026-09-05). Das Node-Pack `ComfyUI-DaWasteh-MultiGPU-Control` setzt deshalb beim Laden `torch.cuda.set_per_process_memory_fraction` je GPU auf „freier VRAM beim Start minus 3 GiB“ (R9700: 28,7 GiB, RX 9070 XT: 12,8 GiB), sodass ein Überlauf als normaler `torch.OutOfMemoryError` endet, den ComfyUI abfängt. Fremde residente Prozesse (z. B. der AutoTuner-llama-server) werden über den freien VRAM automatisch berücksichtigt; `DAWASTEH_VRAM_GUARD=0` schaltet den Guard ab.
-
-Vor dem Start prüft das Skript die erwartete Reihenfolge:
-
-```text
-gpu:0 = AMD Radeon AI PRO R9700
-gpu:1 = AMD Radeon RX 9070 XT
-```
-
-Während eines schweren Jobs sollte kein weiterer GPU-intensiver Server gleichzeitig um die RX 9070 XT konkurrieren.
-
-## LTX-2.5, Wan Animate 2, MiniMax Music 3 und Pixal3D
-
-Die offiziellen Quelltemplates sind bytegenau unter `tools/workflow_templates/` gepinnt; Paketversionen, Upstream und SHA-256-Werte stehen in `tools/workflow_templates/README.md`.
-
-- LTX-2.5 nutzt INT8-ConvRot-DiT und -Textencoder sowie die lokalisierten Modellunterordner.
-- Wan Animate 2 nutzt den speichersicheren CPU-/INT8-Pose-Cache; CLIP-Vision bleibt mangels kompatiblem CLIP-Ausgang unverändert.
-- MiniMax Music 3 nutzt den vorhandenen FP32-DiT, BF16-Textencoder und DAV.
-- Pixal3D nutzt das offizielle kombinierte Pixal3D-/TRELLIS.2-Template als SHA-256-gepinnte Quelle; die beiden Game-Development-Graphen reduzieren es deterministisch auf den Pixal3D-INT8-Pfad und starten wegen der 32-GB-Anforderung vollständig auf `gpu:0`.
-
-Die v0.9.0-Abnahmeläufe für LTX-2.5 T2V/I2V/FLF2V und Wan Animate 2 endeten jeweils mit `execution_success` und nichtleeren MP4-Dateien. Der v0.9.1-MiniMax-Music-3-Test bestätigte sowohl vollständige R9700-Belegung als auch die kuratierte verteilte Belegung bis zu einer nichtleeren 7,988-Sekunden-Stereo-FLAC. Diese historischen Smoke-Nachweise gelten weiterhin für die unveränderte Rechentopologie; v0.9.2 konsolidiert Ablage, Steuerung und Layout.
-
-## Regeneration und Prüfung
+Vor jedem Start laufen ein CLI-Preflight gegen `comfy.cli_args` und eine HIP-Reihenfolgeprüfung (`gpu:0 = R9700`, `gpu:1 = RX 9070 XT`):
 
 ```powershell
-python tools/migrate_workflows_v092.py --check
-python tools/consolidate_ace_autosongwriters_v093.py --check
-python -m unittest tests.test_dual_gpu_workflows tests.test_rodent_layout tests.test_duration_seconds tests.test_ace_autosongwriter_consolidation
-python tools/validate_workflows.py --against-head
-# Nach dem v0.9.7-Commit die Änderungen gegen den vorherigen Release reproduzieren:
-python tools/validate_workflows.py --against-head --baseline-ref v0.9.6
+L:\ComfyUI\start-MultiGPU.ps1 -CheckOnly
 ```
 
-Der Validator rekonstruiert GPU-Controls, Sekundensteuerung, RODENT-Layout, die v0.9.3-AutoSongwriter-Konsolidierung, den v0.9.4-Wan-Animate-2-Umbau, die drei aus v0.9.4-Quellen abgeleiteten v0.9.5-Godot-/Live-Voice-Workflows, die v0.9.6-Low-Poly-LOD-Kette sowie beide v0.9.7-Pixal3D-Additionen deterministisch aus dem gewählten Basis-Ref. Er prüft zusätzlich die erwarteten Löschungen, zwei Genre-Selector-Ziele und sechs gepinnte Template-Neuzugänge. Statische Tests sichern Topologie und Geräteverbindungen; beide Pixal3D-Profile wurden darüber hinaus real auf Windows-ROCm bis zum in Blender und Godot importierten PBR-GLB ausgeführt.
+## Validierung
+
+```powershell
+L:\ComfyUI\.venv\Scripts\python.exe -B tools/validate_workflows.py --against-head
+L:\ComfyUI\.venv\Scripts\python.exe -B -m pytest -q
+```

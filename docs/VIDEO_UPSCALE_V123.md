@@ -1,12 +1,10 @@
-# Video-Upscaling · drei Methoden aus Nerdy Rodents Video · v1.2.3
+# Video-Upscaling · drei Methoden (aktualisiert v1.3.3)
 
-Neue Kategorie `workflows/Video Upscaling/` mit den drei Upscale-Methoden aus Nerdy Rodents Video
-[„MiniMax H3 Ultimate Upscaling“](https://www.youtube.com/watch?v=fjWeg8so8y0), jeweils als eigener flacher
-RODENT-Workflow für **fertige Videos beliebiger Länge**:
+Kategorie `workflows/Video Upscaling/` mit drei flachen RODENT-Workflows für **fertige Videos beliebiger Länge** (ergänzt in v1.2.6 um WAN 2.2 Low-Noise, siehe [`VIDEO_UPSCALE_WAN_V126.md`](VIDEO_UPSCALE_WAN_V126.md)):
 
 | Workflow | Methode | Charakter (Rodent + eigene Messung) |
 |---|---|---|
-| `MiniMax_FastH3_INT8-Video-Ultimate-Upscale.json` | PlagueKind **MMH3 Ultimate Upscale**: zweiter FastH3-Durchgang in Zielgröße, zeitliche Chunks mit Anker, bei Bedarf räumliche Kacheln | die meisten neuen Details, verändert das Bild am stärksten |
+| `MiniMax_FastH3_INT8-Video-Ultimate-Upscale.json` | LBH-123-AI **MMH3 Split Upscale** + **Latent Upscaler 3D** (seit v1.3.3 Ersatz für PlagueKinds in v1.6.0 entferntes `MMH3UltimateUpscale`): zweiter FastH3-Durchgang in zeitlichen Chunks (Dreifach-Anker) und räumlichen Kacheln | die meisten neuen Details, verändert das Bild am stärksten |
 | `MiniMax_FastH3_INT8-Video-Latent-Upscale.json` | LBH-123-AI **Latent Upscaler 3D** (gelerntes Modell) + 2 FastH3-Schritte, Original-Audio-Latent | nah am Original, am schnellsten |
 | `SeedVR2_3B_INT8-Video-Upscale.json` | **SeedVR2 3B INT8** (ComfyUI-Core), ein Schritt | schärfer, praktisch keine neuen Details; gut als letzter Durchgang |
 
@@ -63,7 +61,7 @@ Komposition, Person und Bewegung.
 
 | Methode | Blöcke (Ziel / max) | Sampling | Sonstiges |
 |---|---|---|---|
-| Ultimate | 7 s / 10 s | euler, linear_quadratic, 4 Schritte, Denoise 0,25, CFG 1 | Latent-Upscale mit dem gelernten 3D-Modell (`MMH3 Latent Upscale with Model Params`); zeitliche Chunks 136 / Überlappung 17 / Anker 1,0; räumlich auto (Kachel 864×480, Überlappung 128, Fade 32, Token-Budget 70000) wie im Video |
+| Ultimate / Split (v1.3.3) | 7 s / 10 s | euler, linear_quadratic, 4 Schritte, Denoise 0,25, CFG 1 | `MinimaxH3LatentUpscaler3D` → `MMH3SplitUpscale` (`Comfyui_Minimax_h3_latent_Upscaler`); zeitliche Chunks 124 / Überlappung 22 / Dreifach-Anker; räumliche Kacheln 864×480 / 25 % Überlappung / `seam_denoise 0,7` / `seam_polish auto` / `color_match` |
 | Latent 3D | 4 s / **4,45 s** | euler, beta, 2 Schritte, Denoise 0,25, CFG 1 | Zielmaße aus dem Planer, align 32, zeitliches Chunking, force_unload, `rocm`, bf16 |
 | SeedVR2 | 7 s / 10 s | 1 Schritt, euler, simple, Denoise 1 | Lanczos auf Zielmaß; VAE-Encode Kachel 1024, Decode Kachel **512**; Chunk-Überlappung 2, auto |
 
@@ -124,10 +122,8 @@ durch `tests/test_video_upscale_v123.py`.
 | `seedvr2_ema_vae_fp16.safetensors` (501 MB) | [Comfy-Org/SeedVR2](https://huggingface.co/Comfy-Org/SeedVR2) | `models/vae/SeedVR2/` |
 | FastH3, Qwen3-VL-Encoder, H3-Video-/Audio-VAE | wie v1.2.2 | `models/.../MiniMax H3/` |
 
-Revisionen und SHA-256 stehen in `tools/workflow_templates/v123/models.json`. Die Node-Packs
-[Comfyui-PlagueKind-Nodes](https://github.com/PlagueKind/Comfyui-PlagueKind-Nodes) und
-[Comfyui_Minimax_h3_latent_Upscaler](https://github.com/LBH-123-AI/Comfyui_Minimax_h3_latent_Upscaler) pflegt der
-Bundle-Updater jetzt wie Pixaroma per Git mit; keines bringt zusätzliche Python-Abhängigkeiten mit.
+Revisionen und SHA-256 stehen in `tools/workflow_templates/v123/models.json`. Beide H3-Upscale-Workflows (Ultimate/Split und Latent 3D) laufen seit v1.3.3 vollständig über
+[Comfyui_Minimax_h3_latent_Upscaler](https://github.com/LBH-123-AI/Comfyui_Minimax_h3_latent_Upscaler) (vom Bundle-Updater per Git mitgepflegt; keine zusätzlichen Python-Abhängigkeiten). `Comfyui-PlagueKind-Nodes` bleibt im Updater, wird für Ultimate Upscale aber seit v1.6.0/v1.3.3 nicht mehr benötigt.
 
 ## Grenzen
 

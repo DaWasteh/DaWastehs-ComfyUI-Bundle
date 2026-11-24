@@ -4,9 +4,9 @@
 # venv: L:\ComfyUI\.venv
 # HIP order: gpu:0 = R9700, gpu:1 = RX 9070 XT
 #
-# Profile v0.9.8 (2026-09-05), re-measured on this machine with
-# ComfyUI 0.34.0, PyTorch 2.13.0+rocm10.1 (HIP 7.16), comfy-kitchen 0.2.31
-# (HIP/WMMA backend active on gfx1201), comfy-aimdo 0.5.2:
+# Profile v0.9.8 (2026-09-05), re-verified on ComfyUI 0.46.0 (2026-11-24),
+# PyTorch 2.13.0+rocm10.1 (HIP 7.16), comfy-kitchen 0.2.42 (HIP/WMMA backend
+# active on gfx1201), comfy-aimdo 0.6.0, frontend 1.59.11:
 #
 # - hipBLASLt: 100-122 TFLOPS on transformer-sized GEMMs vs. 60-95 TFLOPS
 #   with classic hipBLAS. The earlier HIPBLAS_STATUS_NOT_SUPPORTED warning
@@ -171,7 +171,7 @@ if ((Test-Path -LiteralPath $PromptLlmGguf) -and (Test-Path -LiteralPath $LlamaS
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor DarkCyan
-Write-Host "ComfyUI Dual-GPU Launcher v1.3.2 (performance profile v0.9.8)" -ForegroundColor Cyan
+Write-Host "ComfyUI Dual-GPU Launcher v1.3.3 (performance profile v0.9.8)" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor DarkCyan
 Write-Host "ComfyUI: $ComfyPath"
 Write-Host "Port:    $Port"
